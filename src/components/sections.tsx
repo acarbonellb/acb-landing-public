@@ -7,6 +7,8 @@ import {
   type SkillGroup,
   type SpokenLanguage,
 } from "@/content/profile";
+import { heroTerminal } from "./hero-terminal";
+import { TypewriterTerminal } from "./typewriter-terminal";
 import { Section, Tag, Window } from "./ui";
 
 export function Hero({ profile }: { profile: Profile }) {
@@ -26,26 +28,10 @@ export function Hero({ profile }: { profile: Profile }) {
       </p>
 
       <Window title="zsh — whoami" className="mt-10 max-w-2xl">
-        <pre className="text-sm leading-relaxed whitespace-pre-wrap">
-          <span className="text-green">❯</span>{" "}
-          <span className="text-blue">whoami</span>
-          {"\n"}
-          <span className="text-fg-dark">{profile.tagline}</span>
-          {"\n\n"}
-          <span className="text-green">❯</span>{" "}
-          <span className="text-blue">cat</span>{" "}
-          <span className="text-yellow">status.json</span>
-          {"\n"}
-          <span className="text-fg-dark">{"{ "}</span>
-          <span className="text-teal">&quot;open_to_work&quot;</span>
-          <span className="text-fg-dark">: </span>
-          <span className="text-orange">true</span>
-          <span className="text-fg-dark">, </span>
-          <span className="text-teal">&quot;focus&quot;</span>
-          <span className="text-fg-dark">: </span>
-          <span className="text-green">&quot;AI agents&quot;</span>
-          <span className="text-fg-dark">{" }"}</span>
-        </pre>
+        <TypewriterTerminal
+          className="text-sm leading-relaxed whitespace-pre-wrap"
+          segments={heroTerminal(profile)}
+        />
       </Window>
 
       <div className="mt-10 flex flex-wrap gap-3 text-sm">
