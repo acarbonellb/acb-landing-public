@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The agent service lints itself (agent/eslint.config.js).
+    "agent/**",
   ]),
 ]);
 

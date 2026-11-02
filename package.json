@@ -9,7 +9,11 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "agent:dev": "pnpm --filter agent dev",
+    "agent:lint": "pnpm --filter agent lint",
+    "agent:test": "pnpm --filter agent test",
+    "agent:build": "pnpm --filter agent build"
   },
   "dependencies": {
     "next": "16.4.3",
