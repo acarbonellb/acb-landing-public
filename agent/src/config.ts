@@ -7,6 +7,7 @@ import { chatLimits } from "./chat";
 import type { ModelClient } from "./model";
 
 const intFromEnv = z.coerce.number().int().positive();
+const usdFromEnv = z.coerce.number().nonnegative();
 
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
@@ -14,6 +15,13 @@ const envSchema = z.object({
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
+  RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
+  RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
+  MONTHLY_SPEND_CAP_USD: usdFromEnv.default(20),
+  // Claude Opus 5.5 list prices; change them with AGENT_MODEL.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(4),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(20),
+  TRUSTED_PROXY_HOPS: intFromEnv.default(1),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -40,6 +48,17 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: { maxIterations: e.AGENT_MAX_ITERATIONS, maxTokens: e.AGENT_MAX_TOKENS },
+    guardrails: {
+      chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
+      mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
+      monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
+      pricing: {
+        inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
+        outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
+      },
+      /** Proxies that append to X-Forwarded-For (Cloud Run: 1). */
+      trustedProxyHops: e.TRUSTED_PROXY_HOPS,
+    },
     /** The production model client, or `null` when no API key is set. */
     createModelClient(): ModelClient | null {
       if (!e.ANTHROPIC_API_KEY) return null;

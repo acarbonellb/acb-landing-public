@@ -74,6 +74,12 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `AGENT_MAX_TOKENS` | `4096` | Output-token cap per model call |
 | `AGENT_MAX_ITERATIONS` | `5` | Max model calls (tool-use iterations) per chat request |
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
+| `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
+| `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |
+| `MONTHLY_SPEND_CAP_USD` | `20` | Estimated model spend per UTC month before the chat closes (`0` turns it off) |
+| `AGENT_PRICE_INPUT_USD_PER_MTOK` | `4` | Input price used to estimate spend (Claude Opus 5.5; cached input counts as full input) |
+| `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `20` | Output price used to estimate spend |
+| `TRUSTED_PROXY_HOPS` | `1` | Proxies that append to `X-Forwarded-For`; the client IP is the entry this many from the end (Cloud Run: 1) |
 
 Try the chat locally:
 
@@ -105,7 +111,8 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | --- | --- | --- |
 | 400 | `invalid_request` | Not JSON or fails validation (`message` says why) |
 | 413 | `invalid_request` | Body too large |
-| 503 | `unavailable` | No model configured |
+| 429 | `rate_limited` | Too many requests from this IP; body adds `retryAfterSeconds`, header `Retry-After` (exposed to the browser via CORS) |
+| 503 | `unavailable` | No model configured, or the monthly spend cap is reached (then body adds `resetsAt`, the ISO time the budget renews, and `message` says so) |
 
 **Stream.** Otherwise `200` with `Content-Type: text/event-stream`. Each SSE frame has `event: <type>` and `data: <JSON>`, where the JSON also carries `type`. Use `fetch` and read the body (an `EventSource` can't `POST`). Events, in order of appearance:
 
@@ -119,6 +126,12 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `error` | `code`, `message` | Last event of a failed turn; `message` is safe to show |
 
 `stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the token cap), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream or unreachable: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
+
+### Guardrails
+
+- **Per-IP rate limits** on `/chat` and `/mcp`, counted separately (`agent/src/rate-limit.ts`, fixed one-minute window). Over the limit, `/chat` answers the `429 rate_limited` JSON above and `/mcp` answers `429` with `Retry-After` and a JSON-RPC error `{"code":-32000,"data":{"code":"rate_limited","retryAfterSeconds"}}`.
+- **Monthly spend cap** (`agent/src/spend-cap.ts`): every `usage` event's tokens are priced and added to the month's total; once it reaches `MONTHLY_SPEND_CAP_USD`, `/chat` answers `503 unavailable` without calling the model until the next UTC month. MCP tools cost nothing and keep working.
+- Both sit behind interfaces injected through `AppDeps` (`RateLimiter`, `SpendCap`, with an injectable clock). **The defaults keep their state in memory, per instance**: Cloud Run may run several instances (each with its own counts and its own full budget) and scales to zero (a cold start forgets everything). Keep Cloud Run's max instances low and set a billing alert in the Anthropic Console as the real backstop. For global, durable limits, implement the same interfaces over a shared store (Redis/Memorystore, or a Firestore document per month) and inject them in `createApp`.
 
 Connect Claude Code to the local server:
 

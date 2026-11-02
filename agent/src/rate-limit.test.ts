@@ -1,0 +1,67 @@
+import { describe, expect, it } from "vitest";
+import { createMemoryRateLimiter } from "./rate-limit";
+
+function fakeClock(start = Date.UTC(2026, 10, 2, 12, 0, 0)) {
+  let now = start;
+  return {
+    now: () => now,
+    advance: (ms: number) => {
+      now += ms;
+    },
+  };
+}
+
+describe("createMemoryRateLimiter", () => {
+  it("allows up to `limit` hits per key in a window, then refuses with the wait", async () => {
+    const clock = fakeClock();
+    const limiter = createMemoryRateLimiter({ limit: 3, windowMs: 60_000, now: clock.now });
+
+    for (let i = 0; i < 3; i++) {
+      expect(await limiter.hit("1.2.3.4")).toEqual({ allowed: true });
+    }
+    clock.advance(15_000);
+    expect(await limiter.hit("1.2.3.4")).toEqual({
+      allowed: false,
+      retryAfterSeconds: 45,
+    });
+  });
+
+  it("counts each key separately", async () => {
+    const limiter = createMemoryRateLimiter({ limit: 1, windowMs: 60_000, now: fakeClock().now });
+    expect(await limiter.hit("a")).toEqual({ allowed: true });
+    expect(await limiter.hit("b")).toEqual({ allowed: true });
+    expect((await limiter.hit("a")).allowed).toBe(false);
+  });
+
+  it("allows the key again once its window has passed", async () => {
+    const clock = fakeClock();
+    const limiter = createMemoryRateLimiter({ limit: 1, windowMs: 60_000, now: clock.now });
+    await limiter.hit("a");
+    clock.advance(59_999);
+    expect(await limiter.hit("a")).toEqual({ allowed: false, retryAfterSeconds: 1 });
+    clock.advance(1);
+    expect(await limiter.hit("a")).toEqual({ allowed: true });
+  });
+
+  it("does not extend the window with refused hits", async () => {
+    const clock = fakeClock();
+    const limiter = createMemoryRateLimiter({ limit: 1, windowMs: 10_000, now: clock.now });
+    await limiter.hit("a");
+    for (let i = 0; i < 5; i++) {
+      clock.advance(1_000);
+      await limiter.hit("a");
+    }
+    clock.advance(5_000);
+    expect(await limiter.hit("a")).toEqual({ allowed: true });
+  });
+
+  it("forgets expired keys so memory stays bounded", async () => {
+    const clock = fakeClock();
+    const limiter = createMemoryRateLimiter({ limit: 1, windowMs: 1_000, now: clock.now });
+    for (let i = 0; i < 100; i++) await limiter.hit(`ip-${i}`);
+    expect(limiter.size()).toBe(100);
+    clock.advance(1_000);
+    await limiter.hit("late");
+    expect(limiter.size()).toBe(1);
+  });
+});

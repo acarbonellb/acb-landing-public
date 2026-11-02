@@ -41,6 +41,35 @@ describe("loadConfig", () => {
     });
   });
 
+  it("defaults the guardrails: per-IP limits, a $20 monthly cap, Opus 5.5 prices, one proxy hop", () => {
+    expect(loadConfig({}).guardrails).toEqual({
+      chatRequestsPerMinute: 10,
+      mcpRequestsPerMinute: 60,
+      monthlyBudgetUsd: 20,
+      pricing: { inputUsdPerMTok: 4, outputUsdPerMTok: 20 },
+      trustedProxyHops: 1,
+    });
+  });
+
+  it("reads guardrail overrides; a zero budget is allowed (chat off)", () => {
+    const config = loadConfig({
+      RATE_LIMIT_CHAT_PER_MINUTE: "5",
+      RATE_LIMIT_MCP_PER_MINUTE: "100",
+      MONTHLY_SPEND_CAP_USD: "0",
+      AGENT_PRICE_INPUT_USD_PER_MTOK: "2",
+      AGENT_PRICE_OUTPUT_USD_PER_MTOK: "10",
+      TRUSTED_PROXY_HOPS: "2",
+    });
+    expect(config.guardrails).toEqual({
+      chatRequestsPerMinute: 5,
+      mcpRequestsPerMinute: 100,
+      monthlyBudgetUsd: 0,
+      pricing: { inputUsdPerMTok: 2, outputUsdPerMTok: 10 },
+      trustedProxyHops: 2,
+    });
+    expect(() => loadConfig({ MONTHLY_SPEND_CAP_USD: "-1" })).toThrow(/MONTHLY_SPEND_CAP_USD/);
+  });
+
   it("rejects invalid values instead of silently ignoring them", () => {
     expect(() => loadConfig({ AGENT_MAX_TOKENS: "lots" })).toThrow(/AGENT_MAX_TOKENS/);
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);

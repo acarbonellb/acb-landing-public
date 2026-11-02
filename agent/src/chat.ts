@@ -90,10 +90,14 @@ export type ChatOptions = {
 export const refusalText =
   "Sorry, I can't help with that. I can tell you about Alberto's experience, projects, stack or how to contact him.";
 
-export const errorMessages: Record<ChatErrorCode, string> = {
+/** User-facing messages, safe to show as-is. */
+export const errorMessages = {
   unavailable: "The agent is unavailable right now. Please try again in a minute.",
   internal: "Something went wrong on my side. Please try again.",
-};
+  rateLimited: "Too many requests. Please wait a moment and try again.",
+  spendCap:
+    "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
+} as const satisfies Record<ChatErrorCode, string> & Record<string, string>;
 
 function modelTools(toolset: Toolset): ModelTool[] {
   return toolset.list().map((tool) => {
