@@ -7,6 +7,8 @@ import {
   type SkillGroup,
   type SpokenLanguage,
 } from "@/content/profile";
+import { agentUrls } from "@/lib/agent-endpoint";
+import { AgentChat } from "./agent-chat";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
 import { TypewriterTerminal } from "./typewriter-terminal";
@@ -221,30 +223,7 @@ export function Agent() {
   return (
     <Section id="agent" index="06" title="ask my agent">
       <Window title="agent — claude · tool use">
-        <div className="space-y-3 text-sm">
-          <p>
-            <span className="text-comment">[system]</span>{" "}
-            <span className="text-fg-dark">
-              An agent that answers questions about my experience and
-              projects.
-            </span>
-          </p>
-          <p>
-            <span className="text-cyan">you ›</span>{" "}
-            <span className="text-fg">What have you built with agents?</span>
-          </p>
-          <p>
-            <span className="text-magenta">agent ›</span>{" "}
-            <span className="text-fg-dark">
-              calling <span className="text-yellow">get_projects()</span>…
-            </span>
-          </p>
-        </div>
-        <div className="mt-6 flex items-center gap-2 rounded border border-dashed border-border px-3 py-2 text-sm text-comment">
-          <span className="text-green">❯</span>
-          <span>coming soon</span>
-          <span className="cursor" aria-hidden />
-        </div>
+        <AgentChat chatUrl={agentUrls.chat} mcpUrl={agentUrls.mcp} />
       </Window>
     </Section>
   );

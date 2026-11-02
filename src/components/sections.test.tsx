@@ -226,6 +226,15 @@ describe("Agent", () => {
       screen.getByRole("heading", { name: /ask my agent/ }),
     ).toBeInTheDocument();
   });
+
+  it("holds the chat, pointed at the local agent by default", () => {
+    render(<Agent />);
+
+    expect(
+      screen.getByRole("textbox", { name: /ask the agent/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("http://localhost:8080/mcp")).toBeInTheDocument();
+  });
 });
 
 describe("Contact", () => {
