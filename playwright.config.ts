@@ -7,7 +7,9 @@ if (!existsSync("out/index.html")) {
   throw new Error("No static export found in out/. Run `pnpm build` first.");
 }
 
-const PORT = 4173;
+// Override with E2E_PORT when another checkout's server already holds 4173
+// (reuseExistingServer would otherwise silently test that other build).
+const PORT = Number(process.env.E2E_PORT ?? 4173);
 
 // Use a preinstalled Chromium when one is provided (CHROMIUM_PATH, or the
 // sandbox default); otherwise Playwright's own download (`playwright install`).

@@ -19,12 +19,20 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label="Toggle colour scheme"
       className="group flex items-center gap-2 rounded border border-border bg-bg-dark px-2.5 py-1 text-xs text-fg-dark transition-colors hover:border-blue hover:text-fg"
     >
-      <span className="hidden text-comment sm:inline">:colorscheme</span>
-      <span className="text-magenta light:hidden">tokyonight</span>
-      <span className="hidden text-magenta light:inline">tokyolight</span>
+      {/* Name comes from screen-reader text rather than aria-label, so the
+          decorative vim-style label below can't mismatch it (axe). */}
+      <span className="sr-only">Toggle colour scheme</span>
+      <span aria-hidden className="hidden text-comment sm:inline">
+        :colorscheme
+      </span>
+      <span aria-hidden className="text-magenta light:hidden">
+        tokyonight
+      </span>
+      <span aria-hidden className="hidden text-magenta light:inline">
+        tokyolight
+      </span>
       <span aria-hidden className="text-yellow light:hidden">
         ☾
       </span>

@@ -79,7 +79,7 @@ export function Stack({ skillGroups }: { skillGroups: SkillGroup[] }) {
   return (
     <Section id="stack" index="02" title="stack">
       <Window title="stack.ts">
-        <pre className="overflow-x-auto text-sm leading-7">
+        <pre className="text-sm leading-7 break-words whitespace-pre-wrap">
           <span className="text-magenta">export const</span>{" "}
           <span className="text-blue">stack</span>{" "}
           <span className="text-cyan">=</span> {"{"}
