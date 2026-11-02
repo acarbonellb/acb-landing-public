@@ -6,6 +6,10 @@
     "ignore": ["firebase.json", "**/.*"],
     "headers": [
       {
+        "source": "/@(opengraph-image|apple-icon)",
+        "headers": [{ "key": "Content-Type", "value": "image/png" }]
+      },
+      {
         "source": "/_next/static/**",
         "headers": [
           {

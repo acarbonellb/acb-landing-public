@@ -7,6 +7,11 @@ async function openInTheme(page: Page, theme: (typeof themes)[number]) {
   await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+  // Audit the final state: axe skips the hero terminal's not-yet-typed
+  // (opacity 0) characters, so wait until the typewriter has revealed them.
+  await expect(page.locator(".typewriter-pending")).toHaveCount(0, {
+    timeout: 10_000,
+  });
 }
 
 for (const width of [360, 390]) {
