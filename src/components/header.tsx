@@ -7,6 +7,7 @@ const nav: NavItem[] = [
   { href: "#stack", label: "stack" },
   { href: "#experience", label: "experience" },
   { href: "#projects", label: "projects" },
+  { href: "#education", label: "education" },
   { href: "#agent", label: "agent" },
   { href: "#contact", label: "contact" },
 ];
