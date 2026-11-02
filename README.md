@@ -26,3 +26,7 @@ The workflow is skipped until these repository variables exist:
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
 
 The upcoming agent will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
+
+## Roadmap
+
+Planned work is tracked in [GitHub Issues](https://github.com/acarbonellb/acb-landing-public/issues).

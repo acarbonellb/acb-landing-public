@@ -1,6 +1,6 @@
 # acb-landing-public
 
-Portfolio for albertocarbonell.dev. Next.js static export, React, TypeScript, Tailwind. Plan in `ROADMAP.md`, content in `src/content/profile.ts`.
+Portfolio for albertocarbonell.dev. Next.js static export, React, TypeScript, Tailwind. Plan in GitHub Issues (spec: #2), content in `src/content/profile.ts`.
 
 ## Agent skills
 
