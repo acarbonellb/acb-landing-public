@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # needed for Workload Identity Federation
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  hosting:
+    # Skipped until the GCP project is configured as repository variables.
+    if: vars.GCP_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm build
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - run: pnpm dlx firebase-tools@15 deploy --only hosting --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
