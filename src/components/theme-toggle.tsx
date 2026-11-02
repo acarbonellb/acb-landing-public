@@ -22,7 +22,7 @@ export function ThemeToggle() {
       aria-label="Toggle colour scheme"
       className="group flex items-center gap-2 rounded border border-border bg-bg-dark px-2.5 py-1 text-xs text-fg-dark transition-colors hover:border-blue hover:text-fg"
     >
-      <span className="text-comment">:colorscheme</span>
+      <span className="hidden text-comment sm:inline">:colorscheme</span>
       <span className="text-magenta light:hidden">tokyonight</span>
       <span className="hidden text-magenta light:inline">tokyolight</span>
       <span aria-hidden className="text-yellow light:hidden">

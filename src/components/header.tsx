@@ -1,7 +1,8 @@
 import { profile } from "@/content/profile";
+import { MobileMenu, type NavItem } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
 
-const nav = [
+const nav: NavItem[] = [
   { href: "#about", label: "about" },
   { href: "#stack", label: "stack" },
   { href: "#experience", label: "experience" },
@@ -21,7 +22,9 @@ export function Header() {
         >
           ~/{profile.handle}
         </a>
-        <nav className="hidden flex-1 items-center gap-1 text-sm md:flex">
+        <nav
+          aria-label="Sections"
+          className="hidden flex-1 items-center gap-1 text-sm md:flex">
           {nav.map((item, i) => (
             <a
               key={item.href}
@@ -33,8 +36,9 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
+          <MobileMenu items={nav} />
         </div>
       </div>
     </header>

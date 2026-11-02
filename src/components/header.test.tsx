@@ -21,6 +21,14 @@ describe("Header", () => {
     ]);
   });
 
+  it("offers a section menu for small screens", () => {
+    render(<Header />);
+
+    expect(
+      screen.getByRole("button", { name: "Section menu" }),
+    ).toHaveAttribute("aria-expanded", "false");
+  });
+
   it("offers the colour scheme toggle", () => {
     render(<Header />);
 
