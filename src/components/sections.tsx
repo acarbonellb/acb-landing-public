@@ -7,6 +7,9 @@ import {
   type SkillGroup,
   type SpokenLanguage,
 } from "@/content/profile";
+import { ExperienceEntry } from "./experience-entry";
+import { heroTerminal } from "./hero-terminal";
+import { TypewriterTerminal } from "./typewriter-terminal";
 import { Section, Tag, Window } from "./ui";
 
 export function Hero({ profile }: { profile: Profile }) {
@@ -26,26 +29,10 @@ export function Hero({ profile }: { profile: Profile }) {
       </p>
 
       <Window title="zsh — whoami" className="mt-10 max-w-2xl">
-        <pre className="text-sm leading-relaxed whitespace-pre-wrap">
-          <span className="text-green">❯</span>{" "}
-          <span className="text-blue">whoami</span>
-          {"\n"}
-          <span className="text-fg-dark">{profile.tagline}</span>
-          {"\n\n"}
-          <span className="text-green">❯</span>{" "}
-          <span className="text-blue">cat</span>{" "}
-          <span className="text-yellow">status.json</span>
-          {"\n"}
-          <span className="text-fg-dark">{"{ "}</span>
-          <span className="text-teal">&quot;open_to_work&quot;</span>
-          <span className="text-fg-dark">: </span>
-          <span className="text-orange">true</span>
-          <span className="text-fg-dark">, </span>
-          <span className="text-teal">&quot;focus&quot;</span>
-          <span className="text-fg-dark">: </span>
-          <span className="text-green">&quot;AI agents&quot;</span>
-          <span className="text-fg-dark">{" }"}</span>
-        </pre>
+        <TypewriterTerminal
+          className="text-sm leading-relaxed whitespace-pre-wrap"
+          segments={heroTerminal(profile)}
+        />
       </Window>
 
       <div className="mt-10 flex flex-wrap gap-3 text-sm">
@@ -92,7 +79,7 @@ export function Stack({ skillGroups }: { skillGroups: SkillGroup[] }) {
   return (
     <Section id="stack" index="02" title="stack">
       <Window title="stack.ts">
-        <pre className="overflow-x-auto text-sm leading-7">
+        <pre className="text-sm leading-7 break-words whitespace-pre-wrap">
           <span className="text-magenta">export const</span>{" "}
           <span className="text-blue">stack</span>{" "}
           <span className="text-cyan">=</span> {"{"}
@@ -124,38 +111,7 @@ export function Experience({ roles }: { roles: Role[] }) {
       </p>
       <ol className="relative space-y-10 border-l border-border pl-6">
         {roles.map((job, i) => (
-          <li key={job.slug} className="relative">
-            <span
-              aria-hidden
-              className={`absolute top-1.5 -left-[29.5px] size-2.5 rounded-full ring-4 ring-bg ${
-                i === 0 ? "bg-green" : "bg-comment"
-              }`}
-            />
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-sm text-yellow">{job.hash}</span>
-              <h3 className="text-lg font-bold text-fg">{job.role}</h3>
-              <span className="text-magenta">@ {job.company}</span>
-              {i === 0 && (
-                <span className="text-xs text-cyan">(HEAD -&gt; main)</span>
-              )}
-            </div>
-            <p className="mt-1 text-xs text-comment">
-              {`${formatPeriod(job.period)} · ${job.place}`}
-            </p>
-            {job.description && (
-              <p className="mt-3 max-w-3xl font-sans leading-relaxed">
-                {job.description}
-              </p>
-            )}
-            <ul className="mt-3 space-y-1 text-sm">
-              {job.highlights.map((h) => (
-                <li key={h} className="flex gap-2">
-                  <span className="text-green">+</span>
-                  <span>{h}</span>
-                </li>
-              ))}
-            </ul>
-          </li>
+          <ExperienceEntry key={job.slug} role={job} head={i === 0} />
         ))}
       </ol>
     </Section>

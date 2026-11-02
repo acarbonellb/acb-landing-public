@@ -9,7 +9,11 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "agent:dev": "pnpm --filter agent dev",
+    "agent:lint": "pnpm --filter agent lint",
+    "agent:test": "pnpm --filter agent test",
+    "agent:build": "pnpm --filter agent build"
   },
   "dependencies": {
     "next": "16.4.3",
@@ -17,6 +21,7 @@
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/turbopack": "^4",
     "@testing-library/dom": "^10.4.2",

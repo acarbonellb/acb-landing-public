@@ -38,7 +38,33 @@ The workflow is skipped until these repository variables exist:
 | `GCP_WIF_PROVIDER` | `projects/123456789/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
 
-The upcoming agent will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
+The agent service (below) will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
+
+## Agent service
+
+`agent/` is a separate TypeScript service (pnpm workspace package) that answers questions about me. One set of read-only tools (`get_profile`, `get_experience`, `get_projects`, `get_stack`, `get_contact`) reads the same `src/content/profile.ts` as the landing, bundled in at build time, so the agent and the page never disagree.
+
+The tools are served as an **MCP server over Streamable HTTP** (stateless, public, read-only), built with the official `@modelcontextprotocol/sdk` on [Hono](https://hono.dev).
+
+```bash
+pnpm agent:dev     # http://localhost:8080 (set PORT to change it), reloads on change
+pnpm agent:test    # Vitest: tool unit tests + an MCP client against the HTTP service
+pnpm agent:lint    # tsc + ESLint
+pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node agent/dist/main.js`
+```
+
+| Path | What |
+| --- | --- |
+| `POST /mcp` | MCP endpoint (Streamable HTTP) |
+| `GET /health` | Health check, returns `{"status":"ok"}` |
+
+Connect Claude Code to the local server:
+
+```bash
+claude mcp add --transport http albertocarbonell http://localhost:8080/mcp
+```
+
+Any other MCP client works the same way: point its Streamable HTTP transport at `/mcp`. To poke at it by hand, `npx @modelcontextprotocol/inspector` and connect to the same URL.
 
 ## Roadmap
 
