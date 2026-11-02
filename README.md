@@ -13,6 +13,8 @@ pnpm dev
 
 Content lives in `src/content/profile.ts`.
 
+The "ask my agent" chat calls the agent service (below) straight from the browser. Its base URL is inlined at build time from `NEXT_PUBLIC_AGENT_URL` (default `http://localhost:8080`, the local `pnpm agent:dev`); the chat uses `<base>/chat` and the page shows `<base>/mcp` as the public MCP endpoint. For example `NEXT_PUBLIC_AGENT_URL=https://agent.example.run.app pnpm build`.
+
 ## Tests
 
 Tests check behaviour through accessible roles, text and the `data-theme` attribute, never CSS classes or markup structure.
@@ -37,6 +39,8 @@ The workflow is skipped until these repository variables exist:
 | `GCP_PROJECT_ID` | `acb-landing` |
 | `GCP_WIF_PROVIDER` | `projects/123456789/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
+
+`AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`.
 
 The agent service (below) will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
 
