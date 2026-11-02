@@ -18,7 +18,7 @@ albertocarbonell.es ──► 301 redirect to albertocarbonell.dev
 - [x] Retro dev style, Tokyo Night (default) / Tokyo Light switcher
 - [x] Sections with placeholder content: hero, about, stack, experience, projects, agent, contact
 - [x] GitHub Actions deploy to Firebase Hosting with Workload Identity Federation
-- [ ] Create public GitHub repo `acb-landing-public` and push
+- [x] Create public GitHub repo `acb-landing-public` and push
 - [ ] Replace lorem ipsum with real content (`src/content/profile.ts`)
 - [ ] Open Graph image, favicon, `robots.txt`, `sitemap.xml`
 
