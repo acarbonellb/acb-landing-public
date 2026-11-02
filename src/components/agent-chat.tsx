@@ -7,10 +7,9 @@ import {
   type ChatMessage,
   streamChat,
 } from "@/lib/chat-client";
+import { chatRequestLimits } from "@/lib/chat-contract";
 
-// Limits from the chat endpoint contract (README, "Chat endpoint contract").
-const MAX_MESSAGES = 20;
-const MAX_CHARS = 2000;
+const { maxMessages: MAX_MESSAGES, maxMessageChars: MAX_CHARS } = chatRequestLimits;
 
 type Part =
   | { kind: "text"; text: string }

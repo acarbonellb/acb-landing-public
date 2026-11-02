@@ -56,7 +56,7 @@ describe("agent service over HTTP", () => {
       }
       const projects = tools.find((t) => t.name === "get_projects");
       expect(projects?.inputSchema.properties?.status).toMatchObject({
-        enum: ["live", "in-progress"],
+        enum: ["in-progress", "personal-project"],
       });
     });
 

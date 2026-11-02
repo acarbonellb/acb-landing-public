@@ -49,11 +49,18 @@ const agents: AgentProject[] = [
   {
     slug: "notes-agent",
     name: "Notes Agent",
-    status: "live",
-    context: "Personal project",
+    status: "personal-project",
+    context: "This notebook",
     description: "Answers questions about the notes.",
     stack: ["Ink"],
     href: "#agent",
+  },
+  {
+    slug: "loom-agent",
+    name: "Loom Agent",
+    context: "Built for a weaving mill",
+    description: "Weaves patterns.",
+    stack: ["Jacquard"],
   },
 ];
 
@@ -194,7 +201,13 @@ describe("Projects", () => {
       screen.getByRole("article", { name: "./Notes Agent" }),
     );
     expect(notes.queryByText("in progress")).not.toBeInTheDocument();
+    expect(notes.getByText("personal project")).toBeInTheDocument();
     expect(notes.getByRole("link")).toHaveAttribute("href", "#agent");
+
+    // No status claimed: no badge at all.
+    const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
+    expect(loom.getByText("Weaves patterns.")).toBeInTheDocument();
+    expect(loom.queryByText(/in progress|personal project|live/)).not.toBeInTheDocument();
   });
 });
 
@@ -234,6 +247,17 @@ describe("Agent", () => {
       screen.getByRole("textbox", { name: /ask the agent/i }),
     ).toBeInTheDocument();
     expect(screen.getByText("http://localhost:8080/mcp")).toBeInTheDocument();
+  });
+
+  it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
+    render(<Agent endpoints={null} />);
+
+    expect(screen.getByText(/agent coming soon/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: /ask the agent/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/claude mcp add/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/localhost/)).not.toBeInTheDocument();
   });
 });
 

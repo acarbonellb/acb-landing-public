@@ -15,13 +15,15 @@ const envSchema = z.object({
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
+  AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(20),
   // Claude Opus 5.5 list prices; change them with AGENT_MODEL.
   AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(4),
   AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(20),
-  TRUSTED_PROXY_HOPS: intFromEnv.default(1),
+  // At least 1: 0 or less would make `clientIpFrom` read no proxy entry.
+  TRUSTED_PROXY_HOPS: z.coerce.number().int().min(1).default(1),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -47,7 +49,11 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     model: e.AGENT_MODEL,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
-    chatLimits: { maxIterations: e.AGENT_MAX_ITERATIONS, maxTokens: e.AGENT_MAX_TOKENS },
+    chatLimits: {
+      maxIterations: e.AGENT_MAX_ITERATIONS,
+      maxTokens: e.AGENT_MAX_TOKENS,
+      maxRequestTokens: e.AGENT_MAX_REQUEST_TOKENS,
+    },
     guardrails: {
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,

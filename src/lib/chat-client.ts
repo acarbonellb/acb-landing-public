@@ -2,15 +2,23 @@
 // README, "Chat endpoint contract"). It turns the wire protocol into the few
 // events the UI renders, and folds every failure (HTTP error, stream `error`
 // event, network failure, truncated stream) into one typed `error` event.
+import type {
+  ChatErrorCode,
+  ChatEvent,
+  ChatMessage,
+  ChatStopReason,
+  HttpErrorBody,
+  HttpErrorCode,
+} from "./chat-contract";
 
-export type ChatMessage = { role: "user" | "assistant"; content: string };
+export type { ChatMessage };
 
+/** What the UI shows for a failure: wire error codes folded into three kinds. */
 export type ChatErrorKind = "rate_limited" | "unavailable" | "error";
 
 export type ChatClientEvent =
-  | { type: "text"; delta: string }
-  | { type: "tool_call"; id: string; name: string; input: unknown }
-  | { type: "done"; stopReason: string }
+  | Extract<ChatEvent, { type: "text" | "tool_call" }>
+  | { type: "done"; stopReason: ChatStopReason }
   | {
       type: "error";
       kind: ChatErrorKind;
@@ -18,16 +26,13 @@ export type ChatClientEvent =
       retryAfterSeconds?: number;
     };
 
-type ErrorPayload = {
-  code?: unknown;
-  message?: unknown;
-  retryAfter?: unknown;
-  retryAfterSeconds?: unknown;
-};
+// What arrives off the wire: shaped like the contract, but unchecked.
+type ErrorPayload = Partial<Record<keyof HttpErrorBody["error"], unknown>>;
 
 function kindOf(code: unknown, status?: number): ChatErrorKind {
-  if (code === "rate_limited" || status === 429) return "rate_limited";
-  if (code === "unavailable" || status === 503) return "unavailable";
+  const known = code as HttpErrorCode | ChatErrorCode | undefined;
+  if (known === "rate_limited" || status === 429) return "rate_limited";
+  if (known === "unavailable" || status === 503) return "unavailable";
   return "error";
 }
 
@@ -52,8 +57,7 @@ function toError(
   }
   const retry =
     seconds(retryAfterHeader ?? undefined) ??
-    seconds(payload?.retryAfterSeconds) ??
-    seconds(payload?.retryAfter);
+    seconds(payload?.retryAfterSeconds);
   if (retry !== undefined) event.retryAfterSeconds = retry;
   return event;
 }
@@ -98,7 +102,8 @@ function toClientEvent(e: Record<string, unknown>): ChatClientEvent | undefined 
         input: e.input,
       };
     case "done":
-      return { type: "done", stopReason: String(e.stopReason) };
+      // Unchecked off the wire: an unknown reason just gets no note in the UI.
+      return { type: "done", stopReason: String(e.stopReason) as ChatStopReason };
     case "error":
       return toError(e as ErrorPayload);
     default:

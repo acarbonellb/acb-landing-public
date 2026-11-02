@@ -53,10 +53,11 @@ function prefersReducedMotion() {
   );
 }
 
-// Terminal text that "types" itself on load. The full text is always in the
-// DOM (static HTML, screen readers); characters not yet typed are only made
-// transparent, so the box keeps its final size. Without JavaScript or with
-// reduced motion everything is shown (see `.typewriter-pending` in CSS).
+// Terminal text that "types" itself on load. Screen readers get the full text
+// at once (an `sr-only` copy, in the static HTML too); the on-screen copy is
+// `aria-hidden` and keeps characters not yet typed `visibility: hidden`, so
+// the box keeps its final size. Without JavaScript or with reduced motion
+// everything is shown (see `.typewriter-pending` in CSS).
 export function TypewriterTerminal({
   segments,
   className = "",
@@ -87,19 +88,25 @@ export function TypewriterTerminal({
 
   return (
     <pre className={className}>
-      {segments.map(({ text, className }, i) => {
-        const shown = Math.max(0, Math.min(visible - starts[i], text.length));
-        return (
-          <span key={i} className={className}>
-            {shown > 0 && text.slice(0, shown)}
-            {shown < text.length && (
-              <span className="typewriter-pending" style={{ opacity: 0 }}>
-                {text.slice(shown)}
-              </span>
-            )}
-          </span>
-        );
-      })}
+      <span className="sr-only">{segments.map((s) => s.text).join("")}</span>
+      <span aria-hidden>
+        {segments.map(({ text, className }, i) => {
+          const shown = Math.max(0, Math.min(visible - starts[i], text.length));
+          return (
+            <span key={i} className={className}>
+              {shown > 0 && text.slice(0, shown)}
+              {shown < text.length && (
+                <span
+                  className="typewriter-pending"
+                  style={{ visibility: "hidden" }}
+                >
+                  {text.slice(shown)}
+                </span>
+              )}
+            </span>
+          );
+        })}
+      </span>
     </pre>
   );
 }

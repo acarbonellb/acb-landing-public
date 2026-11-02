@@ -29,11 +29,11 @@ describe("content module", () => {
     });
   });
 
-  it("lists the three agents, with the fraud agent in progress", () => {
+  it("lists the three agents with only the statuses the CV gives them", () => {
     expect(agents.map((a) => [a.name, a.status])).toEqual([
       ["Fraud Detection Agent", "in-progress"],
-      ["Organizer Support Agent", "live"],
-      ["Portfolio Agent", "live"],
+      ["Organizer Support Agent", undefined],
+      ["Portfolio Agent", "personal-project"],
     ]);
   });
 

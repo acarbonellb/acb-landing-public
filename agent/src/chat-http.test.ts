@@ -94,7 +94,7 @@ describe("POST /chat", () => {
       toolCalls: [{ id: "c", name: "get_profile", input: {} }],
     };
     const { url, model } = await startWith([loop, loop, loop], {
-      chatLimits: { maxIterations: 2, maxTokens: 500 },
+      chatLimits: { maxIterations: 2, maxTokens: 500, maxRequestTokens: 5000 },
     });
     const events = (await readSse(await post(url, ask("Tell me everything")))).map(
       (f) => f.data,

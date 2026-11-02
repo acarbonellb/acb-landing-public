@@ -13,7 +13,7 @@ pnpm dev
 
 Content lives in `src/content/profile.ts`.
 
-The "ask my agent" chat calls the agent service (below) straight from the browser. Its base URL is inlined at build time from `NEXT_PUBLIC_AGENT_URL` (default `http://localhost:8080`, the local `pnpm agent:dev`); the chat uses `<base>/chat` and the page shows `<base>/mcp` as the public MCP endpoint. For example `NEXT_PUBLIC_AGENT_URL=https://agent.example.run.app pnpm build`.
+The "ask my agent" chat calls the agent service (below) straight from the browser. Its base URL is inlined at build time from `NEXT_PUBLIC_AGENT_URL`; the chat uses `<base>/chat` and the page shows `<base>/mcp` as the public MCP endpoint. For example `NEXT_PUBLIC_AGENT_URL=https://agent.example.run.app pnpm build`. `next dev` defaults to `http://localhost:8080` (the local `pnpm agent:dev`); a production build without it shows an "agent coming soon" note instead of the chat, so the site never publishes a localhost endpoint.
 
 ## Tests
 
@@ -22,7 +22,7 @@ Tests check behaviour through accessible roles, text and the `data-theme` attrib
 | Suite | Command | What it covers |
 | --- | --- | --- |
 | Unit | `pnpm test` (`pnpm test:watch` while developing) | Components with Vitest + React Testing Library. Files sit next to the code: `src/**/*.test.tsx`. |
-| Browser | `pnpm build && pnpm test:e2e` | Playwright against the static export in `out/`, served locally on port 4173. Files live in `e2e/*.spec.ts`. |
+| Browser | `NEXT_PUBLIC_AGENT_URL=http://localhost:8080 pnpm build && pnpm test:e2e` | Playwright against the static export in `out/`, served locally on port 4173. Files live in `e2e/*.spec.ts`. The chat tests stub `<agent>/chat`, so build with an agent URL (otherwise the page shows "agent coming soon"). |
 
 Browser tests need a Chromium: run `pnpm exec playwright install chromium` once, or point `CHROMIUM_PATH` at an existing Chromium binary.
 
@@ -40,7 +40,7 @@ The workflow is skipped until these repository variables exist:
 | `GCP_WIF_PROVIDER` | `projects/123456789/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
 
-`AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`.
+`AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
 The agent service (below) will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
 
@@ -76,6 +76,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `AGENT_MODEL` | `claude-opus-5-5` | Claude model for the chat |
 | `AGENT_EFFORT` | `low` | `low` / `medium` / `high` / `xhigh` / `max` |
 | `AGENT_MAX_TOKENS` | `4096` | Output-token cap per model call |
+| `AGENT_MAX_REQUEST_TOKENS` | `8192` | Output-token budget for a whole chat request, shared by all its model calls (each gets the smaller of `AGENT_MAX_TOKENS` and what's left) |
 | `AGENT_MAX_ITERATIONS` | `5` | Max model calls (tool-use iterations) per chat request |
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
 | `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
@@ -83,7 +84,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `MONTHLY_SPEND_CAP_USD` | `20` | Estimated model spend per UTC month before the chat closes (`0` turns it off) |
 | `AGENT_PRICE_INPUT_USD_PER_MTOK` | `4` | Input price used to estimate spend (Claude Opus 5.5; cached input counts as full input) |
 | `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `20` | Output price used to estimate spend |
-| `TRUSTED_PROXY_HOPS` | `1` | Proxies that append to `X-Forwarded-For`; the client IP is the entry this many from the end (Cloud Run: 1) |
+| `TRUSTED_PROXY_HOPS` | `1` | Proxies that append to `X-Forwarded-For`; the client IP is the entry this many from the end (Cloud Run: 1). Must be at least 1 |
 
 Try the chat locally:
 
@@ -95,7 +96,7 @@ curl -N localhost:8080/chat -H 'content-type: application/json' \
 
 ### Chat endpoint contract
 
-The model client is an injected interface (`agent/src/model.ts`): production uses Claude (`agent/src/anthropic.ts`), tests use a scripted fake (`agent/src/fake-model.ts`), and other providers can be added behind the same interface. The loop (`agent/src/chat.ts`) keeps the agent on topic and grounded in the tools through its system prompt, caps tokens per model call and model calls per request, and returns invalid tool input to the model as an error result.
+The model client is an injected interface (`agent/src/model.ts`): production uses Claude (`agent/src/anthropic.ts`), tests use a scripted fake (`agent/src/fake-model.ts`), and other providers can be added behind the same interface. The loop (`agent/src/chat.ts`) keeps the agent on topic and grounded in the tools through its system prompt, caps output tokens per model call and per request (one budget shared by all the request's calls) and model calls per request, and returns invalid tool input to the model as an error result. The wire types and limits below live in `src/lib/chat-contract.ts`, imported by both the site and the agent.
 
 **Request.** `POST /chat` with `Content-Type: application/json`. The conversation is stateless: the browser sends what it shows, ending with the new question.
 
@@ -123,19 +124,25 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `type` | Fields | Meaning |
 | --- | --- | --- |
 | `text` | `delta` | A piece of the answer; append it |
-| `tool_call` | `id`, `name`, `input` | The agent calls a tool, e.g. `get_projects({"status":"live"})` |
+| `tool_call` | `id`, `name`, `input` | The agent calls a tool, e.g. `get_projects({"status":"in-progress"})` |
 | `tool_result` | `id`, `name`, `isError`, `output` | That tool's result (`output` is the tool's JSON, or `{error}`) |
-| `usage` | `iteration`, `inputTokens`, `outputTokens` | Tokens spent by one model call |
+| `usage` | `iteration`, `inputTokens`, `outputTokens`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap) |
 | `done` | `stopReason`, `usage` | Last event of a successful turn; `usage` is the turn total |
 | `error` | `code`, `message` | Last event of a failed turn; `message` is safe to show |
 
-`stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the token cap), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream or unreachable: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
+`stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream or unreachable: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
 
 ### Guardrails
 
 - **Per-IP rate limits** on `/chat` and `/mcp`, counted separately (`agent/src/rate-limit.ts`, fixed one-minute window). Over the limit, `/chat` answers the `429 rate_limited` JSON above and `/mcp` answers `429` with `Retry-After` and a JSON-RPC error `{"code":-32000,"data":{"code":"rate_limited","retryAfterSeconds"}}`.
-- **Monthly spend cap** (`agent/src/spend-cap.ts`): every `usage` event's tokens are priced and added to the month's total; once it reaches `MONTHLY_SPEND_CAP_USD`, `/chat` answers `503 unavailable` without calling the model until the next UTC month. MCP tools cost nothing and keep working.
-- Both sit behind interfaces injected through `AppDeps` (`RateLimiter`, `SpendCap`, with an injectable clock). **The defaults keep their state in memory, per instance**: Cloud Run may run several instances (each with its own counts and its own full budget) and scales to zero (a cold start forgets everything). Keep Cloud Run's max instances low and set a billing alert in the Anthropic Console as the real backstop. For global, durable limits, implement the same interfaces over a shared store (Redis/Memorystore, or a Firestore document per month) and inject them in `createApp`.
+- **Per-request token cap**: one output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model calls of a request; when it runs out the turn ends with `stopReason: "max_tokens"`.
+- **Monthly spend cap** (`agent/src/spend-cap.ts`): before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. MCP tools cost nothing and keep working.
+- Both sit behind interfaces injected through `AppDeps` (`RateLimiter`, `SpendCap`, with an injectable clock).
+
+**The spend cap is in memory, per instance, and resets on every cold start.** It is a soft guard against runaway use, not a billing limit: Cloud Run scales to zero (a cold start begins the month again at $0) and each extra instance gets its own full budget; the rate limits are per instance too. Durable, global limits need a shared store, which is infrastructure for #17 and out of scope here (implement `SpendCap`/`RateLimiter` over Firestore or Redis and inject them in `createApp`). Until then:
+
+- **Set a monthly spend limit in the Anthropic Console** for the API key's workspace: that is the hard backstop.
+- **Deploy the agent with Cloud Run `--max-instances=1`**, so one in-memory budget covers all traffic between cold starts.
 
 Connect Claude Code to the local server:
 

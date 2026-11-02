@@ -3,21 +3,16 @@ import { profile } from "../src/content/profile";
 
 const finalText = `❯ whoami\n${profile.tagline}\n\n❯ cat status.json\n{ "open_to_work": true, "focus": "AI agents" }`;
 
-const terminal = (page: Page) =>
-  page.locator("pre").filter({ hasText: "whoami" });
+// Pieces of the on-screen terminal, as a sighted visitor reads them.
+const command = (page: Page) => page.getByText("whoami", { exact: true });
+const tagline = (page: Page) => page.getByText(profile.tagline, { exact: true });
+const lastOutput = (page: Page) =>
+  page.getByText('"AI agents"', { exact: true });
 
-// Text the visitor can currently see: characters still pending are opacity 0.
-function visibleText(page: Page) {
-  return terminal(page).evaluate((pre) => {
-    let text = "";
-    const walker = document.createTreeWalker(pre, NodeFilter.SHOW_TEXT);
-    while (walker.nextNode()) {
-      const el = walker.currentNode.parentElement!;
-      if (getComputedStyle(el).opacity === "0") continue;
-      text += walker.currentNode.textContent;
-    }
-    return text;
-  });
+async function expectAllShown(page: Page) {
+  await expect(command(page)).toBeVisible();
+  await expect(tagline(page)).toBeVisible();
+  await expect(lastOutput(page)).toBeVisible();
 }
 
 test("the hero terminal types itself out and ends with the full text", async ({
@@ -28,24 +23,34 @@ test("the hero terminal types itself out and ends with the full text", async ({
   await page.clock.install({ time: start });
   await page.clock.pauseAt(new Date(start.getTime() + 1000));
   await page.goto("/");
-  const box = await terminal(page).boundingBox();
+  // Whatever follows the terminal: it moves if the terminal resizes.
+  const below = page.getByRole("link", { name: "./contact.sh" });
+  const position = await below.boundingBox();
 
-  expect(await visibleText(page)).toBe("");
+  await expect(command(page)).toBeHidden();
+  await expect(tagline(page)).toBeHidden();
+  await expect(lastOutput(page)).toBeHidden();
+  // Screen readers get the full text from the start.
+  // (The snapshot is YAML: whitespace collapsed, quotes escaped.)
+  const spoken = (await page.getByRole("main").ariaSnapshot()).replaceAll('\\"', '"');
+  expect(spoken).toContain(finalText.replace(/\s+/g, " "));
 
   await page.clock.resume();
-  await expect.poll(() => visibleText(page), { timeout: 5000 }).toBe(finalText);
+  await expect(lastOutput(page)).toBeVisible({ timeout: 5000 });
+  await expectAllShown(page);
 
-  // The text was in the DOM all along and the box never resized.
-  await expect(terminal(page)).toHaveText(finalText);
-  expect(await terminal(page).boundingBox()).toEqual(box);
+  // The box never resized.
+  expect(await below.boundingBox()).toEqual(position);
 });
 
 test.describe("with reduced motion", () => {
   test.use({ reducedMotion: "reduce" });
 
   test("shows the full text immediately", async ({ page }) => {
+    await page.clock.install();
+    await page.clock.pauseAt(new Date(Date.now() + 1000));
     await page.goto("/");
-    expect(await visibleText(page)).toBe(finalText);
+    await expectAllShown(page);
   });
 });
 
@@ -54,6 +59,6 @@ test.describe("without JavaScript", () => {
 
   test("shows the full text", async ({ page }) => {
     await page.goto("/");
-    expect(await visibleText(page)).toBe(finalText);
+    await expectAllShown(page);
   });
 });

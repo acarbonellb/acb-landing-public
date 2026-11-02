@@ -28,6 +28,9 @@ jobs:
       - run: pnpm agent:test
       - run: pnpm agent:build
       - run: pnpm build
+        env:
+          # The browser tests stub this agent; never deployed from this job.
+          NEXT_PUBLIC_AGENT_URL: http://localhost:8080
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
 

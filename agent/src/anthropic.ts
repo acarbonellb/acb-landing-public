@@ -85,6 +85,15 @@ function stopReason(reason: Anthropic.Beta.BetaStopReason | null): ModelStopReas
   }
 }
 
+/** Cached input is counted as input: an upper bound for spend tracking. */
+function inputTokens(usage: Anthropic.Beta.BetaUsage): number {
+  return (
+    usage.input_tokens +
+    (usage.cache_creation_input_tokens ?? 0) +
+    (usage.cache_read_input_tokens ?? 0)
+  );
+}
+
 function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
   const { usage } = message;
   return {
@@ -93,14 +102,7 @@ function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
       b.type === "tool_use" ? [{ id: b.id, name: b.name, input: b.input }] : [],
     ),
     stopReason: stopReason(message.stop_reason),
-    usage: {
-      // Cached input is counted as input: an upper bound for spend tracking.
-      inputTokens:
-        usage.input_tokens +
-        (usage.cache_creation_input_tokens ?? 0) +
-        (usage.cache_read_input_tokens ?? 0),
-      outputTokens: usage.output_tokens,
-    },
+    usage: { inputTokens: inputTokens(usage), outputTokens: usage.output_tokens },
     providerContent: message.content,
   };
 }
@@ -148,7 +150,12 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
       try {
         const stream = client.beta.messages.stream(params, { signal: request.signal });
         for await (const event of stream) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+          if (event.type === "message_start") {
+            yield { type: "input_usage", inputTokens: inputTokens(event.message.usage) };
+          } else if (
+            event.type === "content_block_delta" &&
+            event.delta.type === "text_delta"
+          ) {
             yield { type: "text_delta", text: event.delta.text };
           }
         }

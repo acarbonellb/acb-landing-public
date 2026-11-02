@@ -143,9 +143,9 @@ body::after {
 }
 
 /* Typewriter (hero terminal): without JS or with reduced motion, show the
-   whole text instead of leaving untyped characters transparent. */
+   whole text instead of leaving untyped characters hidden. */
 @media (scripting: none), (prefers-reduced-motion: reduce) {
   .typewriter-pending {
-    opacity: 1 !important;
+    visibility: visible !important;
   }
 }

@@ -1,5 +1,6 @@
 import {
   type AgentProject,
+  type AgentStatus,
   type Education as EducationEntry,
   formatPeriod,
   type Profile,
@@ -7,7 +8,7 @@ import {
   type SkillGroup,
   type SpokenLanguage,
 } from "@/content/profile";
-import { agentUrls } from "@/lib/agent-endpoint";
+import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
 import { AgentChat } from "./agent-chat";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
@@ -120,6 +121,14 @@ export function Experience({ roles }: { roles: Role[] }) {
   );
 }
 
+const statusBadge: Record<AgentStatus, { label: string; className: string }> = {
+  "in-progress": { label: "in progress", className: "border-yellow text-yellow" },
+  "personal-project": {
+    label: "personal project",
+    className: "border-cyan text-cyan",
+  },
+};
+
 export function Projects({ agents }: { agents: AgentProject[] }) {
   return (
     <Section id="projects" index="04" title="agents i've built">
@@ -149,17 +158,23 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
                     </>
                   )}
                 </h3>
-                {a.status === "in-progress" ? (
-                  <span className="shrink-0 rounded border border-yellow px-2 py-0.5 text-xs text-yellow">
-                    in progress
-                  </span>
-                ) : (
-                  a.href && (
-                    <span className="text-comment transition-colors group-hover:text-blue">
+                <div className="flex shrink-0 items-center gap-2">
+                  {a.status && (
+                    <span
+                      className={`rounded border px-2 py-0.5 text-xs ${statusBadge[a.status].className}`}
+                    >
+                      {statusBadge[a.status].label}
+                    </span>
+                  )}
+                  {a.href && (
+                    <span
+                      aria-hidden
+                      className="text-comment transition-colors group-hover:text-blue"
+                    >
                       ↗
                     </span>
-                  )
-                )}
+                  )}
+                </div>
               </div>
               <p className="mt-1 text-xs text-comment">{a.context}</p>
               <p className="mt-3 flex-1 font-sans text-sm leading-relaxed">
@@ -218,12 +233,27 @@ export function Education({
   );
 }
 
-// Placeholder for the upcoming "ask my agent" chat (phase 2).
-export function Agent() {
+// The live chat with the agent service, or a "coming soon" note when the
+// build has no agent URL (see `agent-endpoint.ts`).
+export function Agent({
+  endpoints = agentUrls,
+}: {
+  endpoints?: AgentEndpoints | null;
+}) {
   return (
     <Section id="agent" index="06" title="ask my agent">
       <Window title="agent — claude · tool use">
-        <AgentChat chatUrl={agentUrls.chat} mcpUrl={agentUrls.mcp} />
+        {endpoints ? (
+          <AgentChat chatUrl={endpoints.chat} mcpUrl={endpoints.mcp} />
+        ) : (
+          <p className="text-sm leading-relaxed">
+            <span className="text-comment">[system]</span>{" "}
+            <span className="text-fg-dark">
+              Agent coming soon: a chat that answers questions about my
+              experience and projects, also open to other agents over MCP.
+            </span>
+          </p>
+        )}
       </Window>
     </Section>
   );

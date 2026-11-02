@@ -9,6 +9,8 @@ const segments: Segment[] = [
   { text: "I write notes on engines." },
 ];
 
+const fullText = "❯ whoami\nI write notes on engines.";
+
 function stubReducedMotion(reduce: boolean) {
   vi.stubGlobal(
     "matchMedia",
@@ -21,18 +23,8 @@ function stubReducedMotion(reduce: boolean) {
   );
 }
 
-// Pieces of text the visitor can currently see (not opacity 0).
-function visibleText(container: HTMLElement) {
-  const pre = container.querySelector("pre")!;
-  let text = "";
-  const walker = document.createTreeWalker(pre, NodeFilter.SHOW_TEXT);
-  while (walker.nextNode()) {
-    const node = walker.currentNode;
-    if (node.parentElement?.closest('[style*="opacity: 0"]')) continue;
-    text += node.textContent;
-  }
-  return text;
-}
+// The on-screen terminal, as a sighted visitor reads it.
+const shown = (text: string) => screen.getByText(text, { exact: true });
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -44,41 +36,48 @@ afterEach(() => {
 });
 
 describe("TypewriterTerminal", () => {
-  it("keeps the full text in the DOM from the first render", () => {
+  it("gives screen readers the full text from the first render", () => {
     stubReducedMotion(false);
     render(<TypewriterTerminal segments={segments} />);
 
-    expect(screen.getByText("whoami")).toBeInTheDocument();
-    expect(screen.getByText("I write notes on engines.")).toBeInTheDocument();
+    expect(
+      screen.getByText(fullText, { normalizer: (s) => s }),
+    ).toBeInTheDocument();
   });
 
   it("reveals the command character by character, then its output", () => {
     stubReducedMotion(false);
-    const { container } = render(<TypewriterTerminal segments={segments} />);
+    render(<TypewriterTerminal segments={segments} />);
 
-    expect(visibleText(container)).toBe("");
+    expect(shown("whoami")).not.toBeVisible();
+    expect(shown("I write notes on engines.")).not.toBeVisible();
 
-    act(() => vi.advanceTimersByTime(600));
-    const partway = visibleText(container);
-    expect(partway.startsWith("❯ w")).toBe(true);
-    expect(partway).not.toContain("I write");
+    act(() => vi.advanceTimersByTime(400));
+    expect(shown("wh")).toBeVisible();
+    expect(shown("oami")).not.toBeVisible();
+
+    act(() => vi.advanceTimersByTime(250));
+    expect(shown("whoami")).toBeVisible();
+    expect(shown("I write notes on engines.")).not.toBeVisible();
 
     act(() => vi.advanceTimersByTime(5000));
-    expect(visibleText(container)).toBe("❯ whoami\nI write notes on engines.");
+    expect(shown("I write notes on engines.")).toBeVisible();
   });
 
   it("finishes within a couple of seconds", () => {
     stubReducedMotion(false);
-    const { container } = render(<TypewriterTerminal segments={segments} />);
+    render(<TypewriterTerminal segments={segments} />);
 
     act(() => vi.advanceTimersByTime(2500));
-    expect(visibleText(container)).toBe("❯ whoami\nI write notes on engines.");
+    expect(shown("whoami")).toBeVisible();
+    expect(shown("I write notes on engines.")).toBeVisible();
   });
 
   it("shows the full text immediately when reduced motion is preferred", () => {
     stubReducedMotion(true);
-    const { container } = render(<TypewriterTerminal segments={segments} />);
+    render(<TypewriterTerminal segments={segments} />);
 
-    expect(visibleText(container)).toBe("❯ whoami\nI write notes on engines.");
+    expect(shown("whoami")).toBeVisible();
+    expect(shown("I write notes on engines.")).toBeVisible();
   });
 });

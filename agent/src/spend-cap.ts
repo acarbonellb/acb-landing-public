@@ -2,28 +2,46 @@
 // the budget, the chat answers `503 unavailable` without calling the model;
 // MCP tools (no model cost) keep working.
 //
+// Check and record race: a chat request streams for seconds, and its cost is
+// only known at the end. So each request first RESERVES its worst-case cost
+// (`reserve`): it is refused if that doesn't fit in what's left, and the
+// amount stays held while it runs, so concurrent requests can't all slip in
+// under the same remaining budget. Its model calls then RECORD their actual
+// usage against the reservation, and `settle` releases whatever was held but
+// not spent. Actual usage is always charged in full, even past the
+// reservation (the worst-case input is an estimate).
+//
 // The default store is in memory, so the running total is PER INSTANCE and
 // is lost on restart: Cloud Run may run several instances (each allowed the
-// full budget) and scales to zero (a cold start begins again at $0). Keep the
-// Cloud Run max-instances setting low and set a matching budget alert in the
-// Anthropic Console / GCP billing as the real backstop. To make the cap
-// global and durable, implement `SpendCap` over a shared store (e.g. a
-// Firestore document `spend/<YYYY-MM>` incremented with `FieldValue.increment`,
-// or Redis `INCRBYFLOAT spend:<YYYY-MM>`) and inject it through `AppDeps`.
+// full budget) and scales to zero (a cold start begins again at $0). Run
+// Cloud Run with max-instances=1 and set a monthly spend limit in the
+// Anthropic Console as the hard backstop. To make the cap global and
+// durable, implement `SpendCap` over a shared store (e.g. a Firestore
+// document `spend/<YYYY-MM>` updated in a transaction, or Redis
+// `INCRBYFLOAT spend:<YYYY-MM>`) and inject it through `AppDeps`.
 import type { Usage } from "./model";
 
 /** USD per million tokens. */
 export type Pricing = { inputUsdPerMTok: number; outputUsdPerMTok: number };
 
+/** Spend held for one running request. */
+export interface SpendReservation {
+  /** Charges the actual usage of one model call. */
+  record(usage: Usage): Promise<void>;
+  /** Ends the request: releases what was held and not spent. Idempotent. */
+  settle(): Promise<void>;
+}
+
 export type SpendCapStatus =
-  | { exhausted: false }
+  | { exhausted: false; reservation: SpendReservation }
   | { exhausted: true; /** ISO time the budget renews (next UTC month). */ resetsAt: string };
 
 export interface SpendCap {
-  /** Whether this month's budget is used up. */
-  check(): Promise<SpendCapStatus>;
-  /** Adds the cost of one model call to this month's spend. */
-  record(usage: Usage): Promise<void>;
+  /**
+   * Holds `worstCase` (the most a request may spend) if this month's budget
+   * has room for it; otherwise reports the budget as exhausted.
+   */
+  reserve(worstCase: Usage): Promise<SpendCapStatus>;
 }
 
 export type SpendCapOptions = {
@@ -54,25 +72,46 @@ export function createMemorySpendCap(options: SpendCapOptions): SpendCap {
   const { budgetUsd, pricing, now = Date.now } = options;
   let month = monthKey(now());
   let spentUsd = 0;
+  let heldUsd = 0;
 
-  function current(t: number) {
-    const key = monthKey(t);
+  function rollOver() {
+    const key = monthKey(now());
     if (key !== month) {
       month = key;
       spentUsd = 0;
+      heldUsd = 0;
     }
   }
 
   return {
-    async check() {
+    async reserve(worstCase) {
       const t = now();
-      current(t);
-      if (spentUsd < budgetUsd) return { exhausted: false };
-      return { exhausted: true, resetsAt: nextMonthStart(t).toISOString() };
-    },
-    async record(usage) {
-      current(now());
-      spentUsd += usageCostUsd(usage, pricing);
+      rollOver();
+      const costUsd = usageCostUsd(worstCase, pricing);
+      const committed = spentUsd + heldUsd;
+      if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
+        return { exhausted: true, resetsAt: nextMonthStart(t).toISOString() };
+      }
+      heldUsd += costUsd;
+      let leftUsd = costUsd;
+      const release = (usd: number) => {
+        heldUsd = Math.max(0, heldUsd - usd);
+        leftUsd -= usd;
+      };
+      return {
+        exhausted: false,
+        reservation: {
+          async record(usage) {
+            rollOver();
+            const usd = usageCostUsd(usage, pricing);
+            spentUsd += usd;
+            release(Math.min(usd, leftUsd));
+          },
+          async settle() {
+            release(leftUsd);
+          },
+        },
+      };
     },
   };
 }

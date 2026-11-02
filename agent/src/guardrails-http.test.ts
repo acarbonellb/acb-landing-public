@@ -1,12 +1,11 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { afterEach, describe, expect, it } from "vitest";
-import { createApp, paths, type AppDeps } from "./app";
-import { errorMessages } from "./chat";
+import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
 import { createFakeModel } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
-import { createMemorySpendCap } from "./spend-cap";
+import { createMemorySpendCap, type SpendCap } from "./spend-cap";
 
 let server: RunningServer | undefined;
 
@@ -150,7 +149,7 @@ describe("monthly spend cap", () => {
     expect(await res.json()).toEqual({
       error: {
         code: "unavailable",
-        message: errorMessages.spendCap,
+        message: httpErrorMessages.spendCap,
         resetsAt: "2026-12-01T00:00:00.000Z",
       },
     });
@@ -177,6 +176,76 @@ describe("monthly spend cap", () => {
     }
     expect((await chat(url)).status).toBe(503);
     expect(model.requests).toHaveLength(2);
+  });
+
+  describe("with a request's worst case of $0.02 (1,000 output tokens) against a $0.03 budget", () => {
+    const outputOnly = { inputUsdPerMTok: 0, outputUsdPerMTok: 20 };
+    const chatLimits = { maxIterations: 1, maxTokens: 1000, maxRequestTokens: 1000 };
+
+    /** A memory spend cap that tells when a request has settled. */
+    function observedCap() {
+      const cap = createMemorySpendCap({ budgetUsd: 0.03, pricing: outputOnly });
+      let settled!: () => void;
+      const settledOnce = new Promise<void>((resolve) => (settled = resolve));
+      const spendCap: SpendCap = {
+        async reserve(worstCase) {
+          const status = await cap.reserve(worstCase);
+          if (status.exhausted) return status;
+          const { reservation } = status;
+          return {
+            exhausted: false,
+            reservation: {
+              record: (usage) => reservation.record(usage),
+              settle: async () => {
+                await reservation.settle();
+                settled();
+              },
+            },
+          };
+        },
+      };
+      return { spendCap, settledOnce };
+    }
+
+    async function startChat(url: string, signal: AbortSignal) {
+      const res = await fetch(new URL(paths.chat, url), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Origin: origin },
+        body: JSON.stringify({ messages: [{ role: "user", content: "Who is Alberto?" }] }),
+        signal,
+      });
+      // Wait for the first streamed bytes: the model call is under way.
+      await res.body!.getReader().read();
+      return res;
+    }
+
+    it("holds a running chat's worst case, so a concurrent chat can't overshoot the budget", async () => {
+      const { spendCap } = observedCap();
+      const model = createFakeModel([{ text: "Thinking it over", hang: true }]);
+      const url = await start({ modelClient: model, spendCap, chatLimits });
+      const controller = new AbortController();
+
+      await startChat(url, controller.signal);
+      expect((await chat(url, "198.51.100.9")).status).toBe(503);
+      expect(model.requests).toHaveLength(1);
+      controller.abort();
+    });
+
+    it("still charges a chat the visitor abandons mid-answer, at its output cap", async () => {
+      const { spendCap, settledOnce } = observedCap();
+      const model = createFakeModel([
+        { text: "Thinking it over", hang: true, usage: { inputTokens: 500, outputTokens: 0 } },
+      ]);
+      const url = await start({ modelClient: model, spendCap, chatLimits });
+      const controller = new AbortController();
+
+      await startChat(url, controller.signal);
+      controller.abort();
+      await settledOnce;
+
+      // $0.02 charged for the abandoned call: another $0.02 doesn't fit.
+      expect((await chat(url)).status).toBe(503);
+    });
   });
 
   it("keeps the MCP tools working when the chat budget is spent", async () => {

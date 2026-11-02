@@ -1,10 +1,11 @@
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
-import { Hono, type Context } from "hono";
+import { Hono, type Context, type MiddlewareHandler } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import { cors } from "hono/cors";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import { chatRequestSchema, errorMessages, runChat } from "./chat";
+import type { HttpErrorBody, HttpErrorCode } from "../../src/lib/chat-contract";
+import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
 import { clientIp } from "./client-ip";
 import { loadConfig } from "./config";
 import { createMcpServer } from "./mcp";
@@ -12,6 +13,8 @@ import type { ModelClient } from "./model";
 import { createMemoryRateLimiter, type RateLimiter } from "./rate-limit";
 import { createMemorySpendCap, type SpendCap } from "./spend-cap";
 import { createToolset, type Toolset } from "./tools";
+
+export type { HttpErrorBody, HttpErrorCode };
 
 /** HTTP paths served by the agent service. */
 export const paths = {
@@ -23,6 +26,13 @@ export const paths = {
 /** Largest chat request body accepted, in bytes. */
 export const maxChatBodyBytes = 64 * 1024;
 
+/** User-facing messages of the HTTP-layer refusals, safe to show as-is. */
+export const httpErrorMessages = {
+  rateLimited: "Too many requests. Please wait a moment and try again.",
+  spendCap:
+    "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
+} as const;
+
 /**
  * Everything the service depends on. Tests inject fakes; production uses the
  * defaults, read from the environment (see `config.ts`).
@@ -33,7 +43,7 @@ export type AppDeps = {
   modelClient: ModelClient | null;
   /** Browser origins allowed to call the chat endpoint. */
   allowedOrigins: string[];
-  chatLimits: { maxIterations: number; maxTokens: number };
+  chatLimits: { maxIterations: number; maxTokens: number; maxRequestTokens: number };
   /**
    * Per-IP limits. The defaults keep counts in memory, per instance (see
    * `rate-limit.ts` for what that means on Cloud Run and how to share them).
@@ -46,28 +56,28 @@ export type AppDeps = {
   clientKey: (c: Context) => string;
 };
 
-/** Error codes of non-streamed (JSON) chat responses. */
-export type HttpErrorCode = "invalid_request" | "rate_limited" | "unavailable";
-
-/**
- * Body of every non-streamed chat error. `rate_limited` adds
- * `retryAfterSeconds` (also sent as `Retry-After`); `unavailable` because of
- * the monthly spend cap adds `resetsAt` (ISO time the budget renews).
- */
-export type HttpErrorBody = {
-  error: {
-    code: HttpErrorCode;
-    message: string;
-    retryAfterSeconds?: number;
-    resetsAt?: string;
-  };
-};
-
 const jsonError = (
   c: Context,
   status: 400 | 413 | 429 | 503,
   error: HttpErrorBody["error"],
 ) => c.json<HttpErrorBody>({ error }, status);
+
+/**
+ * Per-client rate limit: lets the request through, or sets `Retry-After` and
+ * answers with `refuse` (each endpoint words the refusal in its protocol).
+ */
+function rateLimit(
+  limiter: RateLimiter,
+  clientKey: (c: Context) => string,
+  refuse: (c: Context, retryAfterSeconds: number) => Response,
+): MiddlewareHandler {
+  return async (c, next) => {
+    const decision = await limiter.hit(clientKey(c));
+    if (decision.allowed) return next();
+    c.header("Retry-After", String(decision.retryAfterSeconds));
+    return refuse(c, decision.retryAfterSeconds);
+  };
+}
 
 const minute = 60_000;
 
@@ -114,23 +124,23 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
   );
 
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
-  app.use(paths.mcp, async (c, next) => {
-    const decision = await mcpRateLimiter.hit(clientKey(c));
-    if (decision.allowed) return next();
-    c.header("Retry-After", String(decision.retryAfterSeconds));
-    return c.json(
-      {
-        jsonrpc: "2.0",
-        id: null,
-        error: {
-          code: -32000,
-          message: errorMessages.rateLimited,
-          data: { code: "rate_limited", retryAfterSeconds: decision.retryAfterSeconds },
+  app.use(
+    paths.mcp,
+    rateLimit(mcpRateLimiter, clientKey, (c, retryAfterSeconds) =>
+      c.json(
+        {
+          jsonrpc: "2.0",
+          id: null,
+          error: {
+            code: -32000,
+            message: httpErrorMessages.rateLimited,
+            data: { code: "rate_limited" satisfies HttpErrorCode, retryAfterSeconds },
+          },
         },
-      },
-      429,
-    );
-  });
+        429,
+      ),
+    ),
+  );
 
   // Stateless Streamable HTTP: a fresh server and transport per request, so
   // any Cloud Run instance can answer any request and nothing is kept in
@@ -162,16 +172,13 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
   app.post(
     paths.chat,
     // Counted before anything else, so malformed requests count too.
-    async (c, next) => {
-      const decision = await chatRateLimiter.hit(clientKey(c));
-      if (decision.allowed) return next();
-      c.header("Retry-After", String(decision.retryAfterSeconds));
-      return jsonError(c, 429, {
+    rateLimit(chatRateLimiter, clientKey, (c, retryAfterSeconds) =>
+      jsonError(c, 429, {
         code: "rate_limited",
-        message: errorMessages.rateLimited,
-        retryAfterSeconds: decision.retryAfterSeconds,
-      });
-    },
+        message: httpErrorMessages.rateLimited,
+        retryAfterSeconds,
+      }),
+    ),
     bodyLimit({
       maxSize: maxChatBodyBytes,
       onError: (c) =>
@@ -197,30 +204,46 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
       if (!modelClient) {
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
-      const budget = await spendCap.check();
+      const { messages } = parsed.data;
+      // Hold the most this request can cost while it runs (see spend-cap.ts).
+      const budget = await spendCap.reserve(worstCaseUsage(toolset, messages, chatLimits));
       if (budget.exhausted) {
         return jsonError(c, 503, {
           code: "unavailable",
-          message: errorMessages.spendCap,
+          message: httpErrorMessages.spendCap,
           resetsAt: budget.resetsAt,
         });
       }
+      const { reservation } = budget;
 
       // A closed connection aborts the model call, so nobody pays for an
       // answer no one reads.
-      const signal = c.req.raw.signal;
+      const abort = new AbortController();
+      const stop = () => abort.abort();
+      c.req.raw.signal.addEventListener("abort", stop, { once: true });
       return streamSSE(c, async (stream) => {
-        for await (const event of runChat({
-          model: modelClient,
-          toolset,
-          messages: parsed.data.messages,
-          ...chatLimits,
-          signal,
-        })) {
-          // Every model call is paid for, even if the visitor has left.
-          if (event.type === "usage") await spendCap.record(event);
-          if (stream.aborted) break;
-          await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+        stream.onAbort(stop);
+        try {
+          for await (const event of runChat({
+            model: modelClient,
+            toolset,
+            messages,
+            ...chatLimits,
+            signal: abort.signal,
+          })) {
+            // Every model call is paid for, even if the visitor has left: keep
+            // draining after an abort, as the cut-off call still reports its
+            // (estimated) usage.
+            if (event.type === "usage") await reservation.record(event);
+            if (stream.aborted) continue;
+            try {
+              await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+            } catch {
+              stop();
+            }
+          }
+        } finally {
+          await reservation.settle();
         }
       });
     },

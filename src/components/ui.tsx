@@ -37,8 +37,15 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="py-12 sm:py-16">
-      <h2 className="mb-8 flex items-baseline gap-3 text-2xl font-bold text-fg sm:text-3xl">
+    <section
+      id={id}
+      aria-labelledby={`${id}-title`}
+      className="py-12 sm:py-16"
+    >
+      <h2
+        id={`${id}-title`}
+        className="mb-8 flex items-baseline gap-3 text-2xl font-bold text-fg sm:text-3xl"
+      >
         <span className="font-pixel text-3xl text-blue sm:text-4xl">
           {index}.
         </span>

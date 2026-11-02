@@ -56,11 +56,19 @@ export type ModelRequest = {
 };
 
 export type ModelStreamEvent =
+  /**
+   * Optional, before anything else: the call's input tokens as soon as the
+   * provider reports them, so a call that never finishes can still be priced.
+   */
+  | { type: "input_usage"; inputTokens: number }
   | { type: "text_delta"; text: string }
   | { type: "turn_end"; turn: ModelTurn };
 
 export interface ModelClient {
-  /** Streams one model call: text deltas, then exactly one `turn_end`. */
+  /**
+   * Streams one model call: an optional `input_usage`, text deltas, then
+   * exactly one `turn_end`.
+   */
   stream(request: ModelRequest): AsyncIterable<ModelStreamEvent>;
 }
 

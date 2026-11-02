@@ -8,8 +8,8 @@ async function openInTheme(page: Page, theme: (typeof themes)[number]) {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
   // Audit the final state: axe skips the hero terminal's not-yet-typed
-  // (opacity 0) characters, so wait until the typewriter has revealed them.
-  await expect(page.locator(".typewriter-pending")).toHaveCount(0, {
+  // (hidden) characters, so wait until its last output is on screen.
+  await expect(page.getByText('"AI agents"', { exact: true })).toBeVisible({
     timeout: 10_000,
   });
 }

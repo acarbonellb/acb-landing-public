@@ -3,6 +3,13 @@
 // the HTTP layer streams to the browser as-is.
 import * as z from "zod";
 import {
+  chatRequestLimits,
+  type ChatErrorCode,
+  type ChatEvent,
+  type ChatMessage,
+  type ChatStopReason,
+} from "../../src/lib/chat-contract";
+import {
   ModelUnavailableError,
   type ModelClient,
   type ModelMessage,
@@ -12,13 +19,20 @@ import {
 } from "./model";
 import { ToolInputError, type Toolset } from "./tools";
 
+// The wire contract lives in one module shared with the site.
+export type { ChatErrorCode, ChatEvent, ChatMessage, ChatStopReason };
+
 export const chatLimits = {
+  ...chatRequestLimits,
   /** Most model calls (tool-use iterations) in one chat request. */
   maxIterations: 5,
   /** Output-token cap per model call (thinking included). */
   maxTokens: 4096,
-  maxMessages: 20,
-  maxMessageChars: 2000,
+  /**
+   * Output-token budget for the whole request, shared by all its model calls:
+   * each call gets min(maxTokens, what's left).
+   */
+  maxRequestTokens: 8192,
 };
 
 export const systemPrompt = `You are the portfolio agent on albertocarbonell.dev. You answer visitors' questions about Alberto Carbonell: his profile, work experience, agent projects, tech stack, education, languages and how to contact him.
@@ -30,7 +44,7 @@ Rules:
 - Refer to him as "Alberto" in the third person.`;
 
 /** What the browser sends: the visible conversation, ending with the new question. */
-export const chatRequestSchema = z
+export const chatRequestSchema: z.ZodType<{ messages: ChatMessage[] }> = z
   .object({
     messages: z
       .array(
@@ -52,52 +66,48 @@ export const chatRequestSchema = z
   })
   .strict();
 
-export type ChatMessage = z.infer<typeof chatRequestSchema>["messages"][number];
-
-/**
- * Why a chat turn ended: answered (`end_turn`), cut by the token cap
- * (`max_tokens`), cut by the iteration cap (`max_iterations`), or the model
- * declined (`refusal`).
- */
-export type ChatStopReason = "end_turn" | "max_tokens" | "max_iterations" | "refusal";
-
-export type ChatErrorCode = "unavailable" | "internal";
-
-/** The streaming contract (see README, "Chat endpoint"). */
-export type ChatEvent =
-  | { type: "text"; delta: string }
-  | { type: "tool_call"; id: string; name: string; input: unknown }
-  | {
-      type: "tool_result";
-      id: string;
-      name: string;
-      isError: boolean;
-      output: unknown;
-    }
-  | ({ type: "usage"; iteration: number } & Usage)
-  | { type: "done"; stopReason: ChatStopReason; usage: Usage }
-  | { type: "error"; code: ChatErrorCode; message: string };
-
 export type ChatOptions = {
   model: ModelClient;
   toolset: Toolset;
   messages: ChatMessage[];
   maxIterations?: number;
   maxTokens?: number;
+  maxRequestTokens?: number;
   signal?: AbortSignal;
 };
 
 export const refusalText =
   "Sorry, I can't help with that. I can tell you about Alberto's experience, projects, stack or how to contact him.";
 
-/** User-facing messages, safe to show as-is. */
-export const errorMessages = {
+/** User-facing messages of the stream's `error` events, safe to show as-is. */
+export const errorMessages: Record<ChatErrorCode, string> = {
   unavailable: "The agent is unavailable right now. Please try again in a minute.",
   internal: "Something went wrong on my side. Please try again.",
-  rateLimited: "Too many requests. Please wait a moment and try again.",
-  spendCap:
-    "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
-} as const satisfies Record<ChatErrorCode, string> & Record<string, string>;
+};
+
+/**
+ * The most one request can spend, reserved against the spend cap before it
+ * runs (`spend-cap.ts`). Output is exact: the request's token budget. Input
+ * is an estimate: every call re-reads the system prompt, tools and
+ * conversation (counted generously at 2 characters per token) plus all
+ * output so far; tool results ride on that margin. Actual usage is charged
+ * afterwards either way.
+ */
+export function worstCaseUsage(
+  toolset: Toolset,
+  messages: ChatMessage[],
+  limits: { maxIterations: number; maxRequestTokens: number },
+): Usage {
+  const promptChars =
+    systemPrompt.length +
+    JSON.stringify(modelTools(toolset)).length +
+    messages.reduce((sum, m) => sum + m.content.length, 0);
+  const perCallInput = Math.ceil(promptChars / 2) + limits.maxRequestTokens;
+  return {
+    inputTokens: limits.maxIterations * perCallInput,
+    outputTokens: limits.maxRequestTokens,
+  };
+}
 
 function modelTools(toolset: Toolset): ModelTool[] {
   return toolset.list().map((tool) => {
@@ -113,6 +123,7 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
     toolset,
     maxIterations = chatLimits.maxIterations,
     maxTokens = chatLimits.maxTokens,
+    maxRequestTokens = chatLimits.maxRequestTokens,
     signal,
   } = options;
   const tools = modelTools(toolset);
@@ -122,33 +133,49 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
       : { role: "assistant", text: m.content },
   );
   const total: Usage = { inputTokens: 0, outputTokens: 0 };
+  // The model call in progress, to price it if it never reports its usage.
+  let inFlight:
+    | { iteration: number; maxTokens: number; inputTokens?: number }
+    | undefined;
+  let lastInputTokens = 0;
 
   try {
     for (let iteration = 1; ; iteration++) {
       let turn;
       let streamed = false;
+      const call = {
+        iteration,
+        maxTokens: Math.min(maxTokens, maxRequestTokens - total.outputTokens),
+      };
+      inFlight = call;
       for await (const event of model.stream({
         system: systemPrompt,
         messages,
         tools,
-        maxTokens,
+        maxTokens: call.maxTokens,
         signal,
       })) {
-        if (event.type === "text_delta") {
+        if (event.type === "input_usage") {
+          inFlight.inputTokens = event.inputTokens;
+        } else if (event.type === "text_delta") {
           streamed = true;
           yield { type: "text", delta: event.text };
         } else {
           turn = event.turn;
         }
       }
+      inFlight = undefined;
       if (!turn) throw new Error("Model stream ended without a turn");
 
+      lastInputTokens = turn.usage.inputTokens;
       total.inputTokens += turn.usage.inputTokens;
       total.outputTokens += turn.usage.outputTokens;
       // Tool events of this call come before its usage, so the browser sees
       // them as soon as they run.
       const wantsTools = turn.stopReason === "tool_use" && turn.toolCalls.length > 0;
-      const canRunTools = wantsTools && iteration < maxIterations;
+      // Running tools needs another model call to read their results.
+      const budgetLeft = total.outputTokens < maxRequestTokens;
+      const canRunTools = wantsTools && iteration < maxIterations && budgetLeft;
 
       const results: ToolResult[] = [];
       if (canRunTools) {
@@ -171,7 +198,8 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
         return;
       }
       if (!canRunTools) {
-        yield { type: "done", stopReason: "max_iterations", usage: total };
+        const stopReason = budgetLeft ? "max_iterations" : "max_tokens";
+        yield { type: "done", stopReason, usage: total };
         return;
       }
 
@@ -186,6 +214,20 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
       );
     }
   } catch (error) {
+    // A call cut off (the visitor left) or failed after the provider accepted
+    // it is still billed, but its usage never arrives: charge it
+    // conservatively as its whole output cap plus the input it reported (or,
+    // if it reported none, the previous call's input, which it includes).
+    const billed = inFlight && (signal?.aborted || inFlight.inputTokens !== undefined);
+    if (inFlight && billed) {
+      yield {
+        type: "usage",
+        iteration: inFlight.iteration,
+        inputTokens: inFlight.inputTokens ?? lastInputTokens,
+        outputTokens: inFlight.maxTokens,
+        estimated: true,
+      };
+    }
     if (signal?.aborted) return;
     const code: ChatErrorCode =
       error instanceof ModelUnavailableError ? "unavailable" : "internal";

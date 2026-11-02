@@ -36,7 +36,7 @@ const toolTurn = sse([
   {
     type: "content_block_delta",
     index: 1,
-    delta: { type: "input_json_delta", partial_json: '{"status":"live"}' },
+    delta: { type: "input_json_delta", partial_json: '{"status":"in-progress"}' },
   },
   { type: "content_block_stop", index: 1 },
   {
@@ -148,7 +148,9 @@ describe("Anthropic model client", () => {
       fetch,
     });
     const events = await collect(client.stream(request));
-    expect(events.slice(0, 2)).toEqual([
+    expect(events.slice(0, 3)).toEqual([
+      // Reported as soon as the call starts, so an aborted call can be priced.
+      { type: "input_usage", inputTokens: 120 },
       { type: "text_delta", text: "Let me " },
       { type: "text_delta", text: "check." },
     ]);
@@ -156,7 +158,7 @@ describe("Anthropic model client", () => {
     if (end?.type !== "turn_end") throw new Error("expected turn_end");
     expect(end.turn).toMatchObject({
       text: "Let me check.",
-      toolCalls: [{ id: "toolu_1", name: "get_projects", input: { status: "live" } }],
+      toolCalls: [{ id: "toolu_1", name: "get_projects", input: { status: "in-progress" } }],
       stopReason: "tool_use",
       usage: { inputTokens: 120, outputTokens: 30 },
     });

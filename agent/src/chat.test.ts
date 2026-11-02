@@ -128,6 +128,57 @@ describe("runChat", () => {
     expect(events.at(-1)).toMatchObject({ type: "done", stopReason: "max_tokens" });
   });
 
+  it("shares one output-token budget across every model call of a request", async () => {
+    const tool = (id: string): ScriptedTurn => ({
+      toolCalls: [{ id, name: "get_stack", input: {} }],
+      usage: { inputTokens: 100, outputTokens: 400 },
+    });
+    const { events, model } = await collect(
+      [tool("a"), tool("b"), { text: "Done." }],
+      { maxTokens: 500, maxRequestTokens: 1000 },
+    );
+    // 1000 → 600 left → 200 left: each call gets min(per-call cap, what's left).
+    expect(model.requests.map((r) => r.maxTokens)).toEqual([500, 500, 200]);
+    expect(events.at(-1)).toMatchObject({ type: "done", stopReason: "end_turn" });
+  });
+
+  it("stops gracefully, without another model call, once the request's token budget is spent", async () => {
+    const tool = (id: string): ScriptedTurn => ({
+      toolCalls: [{ id, name: "get_stack", input: {} }],
+      usage: { inputTokens: 100, outputTokens: 500 },
+    });
+    const { events, model } = await collect([tool("a"), tool("b"), tool("c")], {
+      maxTokens: 500,
+      maxRequestTokens: 1000,
+    });
+    expect(model.requests).toHaveLength(2);
+    // The second turn's tools are not run: no call is left to read their results.
+    expect(events.filter((e) => e.type === "tool_result")).toHaveLength(1);
+    expect(events.at(-1)).toMatchObject({ type: "done", stopReason: "max_tokens" });
+  });
+
+  it("still reports usage for a call aborted mid-stream: its full output cap plus the input it reported", async () => {
+    const controller = new AbortController();
+    const model = createFakeModel([
+      { text: "He works", hang: true, usage: { inputTokens: 300, outputTokens: 0 } },
+    ]);
+    const events: ChatEvent[] = [];
+    for await (const event of runChat({
+      model,
+      toolset: createToolset(),
+      messages: [{ role: "user", content: "Stack?" }],
+      maxTokens: 500,
+      signal: controller.signal,
+    })) {
+      events.push(event);
+      if (event.type === "text") controller.abort();
+    }
+    expect(events.filter((e) => e.type === "usage")).toEqual([
+      { type: "usage", iteration: 1, inputTokens: 300, outputTokens: 500, estimated: true },
+    ]);
+    expect(events.some((e) => e.type === "error" || e.type === "done")).toBe(false);
+  });
+
   it("does not run tools from a turn cut off by the token cap", async () => {
     const { events, model } = await collect([
       {
@@ -227,8 +278,18 @@ describe("runChat", () => {
   });
 
   it("ends with an internal error on anything else, without leaking details", async () => {
-    const { events } = await collect([{ error: new Error("secret stack") }]);
+    const { events } = await collect([
+      { error: new Error("secret stack"), usage: { inputTokens: 70, outputTokens: 0 } },
+    ]);
     expect(events).toEqual([
+      // The provider had accepted the call, so it is charged at its cap.
+      {
+        type: "usage",
+        iteration: 1,
+        inputTokens: 70,
+        outputTokens: 4096,
+        estimated: true,
+      },
       { type: "error", code: "internal", message: errorMessages.internal },
     ]);
   });

@@ -131,7 +131,7 @@ describe("streamChat", () => {
   it("reads retry info from the error body when there is no header", async () => {
     const { fetch } = fakeFetch(
       Response.json(
-        { error: { code: "rate_limited", message: "x", retryAfter: 7 } },
+        { error: { code: "rate_limited", message: "x", retryAfterSeconds: 7 } },
         { status: 429 },
       ),
     );

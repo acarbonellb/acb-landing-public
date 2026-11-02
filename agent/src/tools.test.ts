@@ -20,7 +20,7 @@ const fixture: Content = {
     {
       slug: "engine",
       name: "Engine Agent",
-      status: "live",
+      status: "personal-project",
       context: "Personal project",
       description: "Computes Bernoulli numbers.",
       stack: ["Punch cards"],
@@ -168,7 +168,7 @@ describe("get_projects", () => {
       projects: [
         {
           name: "Engine Agent",
-          status: "live",
+          status: "personal-project",
           context: "Personal project",
           description: "Computes Bernoulli numbers.",
           stack: ["Punch cards"],

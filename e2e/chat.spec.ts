@@ -68,6 +68,11 @@ async function ask(page: Page, question: string) {
   await input.press("Enter");
 }
 
+// Alerts are scoped to the section: Next adds its own route-announcer alert.
+function agentSection(page: Page) {
+  return page.getByRole("region", { name: /ask my agent/ });
+}
+
 function conversation(page: Page) {
   return page.getByRole("log", { name: /conversation/i });
 }
@@ -153,7 +158,7 @@ test("shows the rate-limit state", async ({ page }) => {
 
   await ask(page, "Hi");
 
-  const alert = page.locator("#agent").getByRole("alert");
+  const alert = agentSection(page).getByRole("alert");
   await expect(alert).toContainText("Rate limit reached.");
   await expect(alert).toContainText("Too many questions. Try again in 30s.");
   await expectAccessible(page);
@@ -171,7 +176,7 @@ test("shows the unavailable state", async ({ page }) => {
 
   await ask(page, "Hi");
 
-  const alert = page.locator("#agent").getByRole("alert");
+  const alert = agentSection(page).getByRole("alert");
   await expect(alert).toContainText("The agent is unavailable right now.");
   await expect(alert).toContainText("The chat is resting until next month.");
   await expectAccessible(page);
@@ -183,7 +188,7 @@ test("shows an error when the agent can't be reached", async ({ page }) => {
 
   await ask(page, "Hi");
 
-  await expect(page.locator("#agent").getByRole("alert")).toContainText("Something went wrong.");
+  await expect(agentSection(page).getByRole("alert")).toContainText("Something went wrong.");
 });
 
 test("shows the MCP endpoint and a ready-to-copy command", async ({

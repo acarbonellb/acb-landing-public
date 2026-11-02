@@ -13,6 +13,7 @@ describe("loadConfig", () => {
     expect(config.chatLimits).toEqual({
       maxIterations: chatLimits.maxIterations,
       maxTokens: chatLimits.maxTokens,
+      maxRequestTokens: chatLimits.maxRequestTokens,
     });
   });
 
@@ -73,5 +74,18 @@ describe("loadConfig", () => {
   it("rejects invalid values instead of silently ignoring them", () => {
     expect(() => loadConfig({ AGENT_MAX_TOKENS: "lots" })).toThrow(/AGENT_MAX_TOKENS/);
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);
+  });
+
+  it("rejects a TRUSTED_PROXY_HOPS below one (it would trust no proxy entry)", () => {
+    for (const hops of ["0", "-1", "abc", "1.5"]) {
+      expect(() => loadConfig({ TRUSTED_PROXY_HOPS: hops })).toThrow(/TRUSTED_PROXY_HOPS/);
+    }
+  });
+
+  it("reads the per-request output-token budget", () => {
+    expect(loadConfig({}).chatLimits.maxRequestTokens).toBe(chatLimits.maxRequestTokens);
+    expect(
+      loadConfig({ AGENT_MAX_REQUEST_TOKENS: "3000" }).chatLimits.maxRequestTokens,
+    ).toBe(3000);
   });
 });

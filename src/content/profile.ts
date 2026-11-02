@@ -18,12 +18,14 @@ export type Profile = {
   links: { email: string; github: string; linkedin: string };
 };
 
-export type AgentStatus = "live" | "in-progress";
+/** Statuses the CV states; a project without one makes no status claim. */
+export const agentStatuses = ["in-progress", "personal-project"] as const;
+export type AgentStatus = (typeof agentStatuses)[number];
 
 export type AgentProject = {
   slug: string;
   name: string;
-  status: AgentStatus;
+  status?: AgentStatus;
   /** Who it was built for. */
   context: string;
   description: string;
@@ -98,7 +100,6 @@ export const agents: AgentProject[] = [
   {
     slug: "organizer-support-agent",
     name: "Organizer Support Agent",
-    status: "live",
     context: satella,
     description:
       "Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API.",
@@ -107,8 +108,8 @@ export const agents: AgentProject[] = [
   {
     slug: "portfolio-agent",
     name: "Portfolio Agent",
-    status: "live",
-    context: "Personal project",
+    status: "personal-project",
+    context: "This portfolio site",
     description:
       "Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it.",
     stack: ["TypeScript", "Claude", "MCP"],
