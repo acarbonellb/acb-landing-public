@@ -243,6 +243,13 @@ export function AgentChat({
             {notice.retryAfterSeconds !== undefined &&
               ` Try again in ${notice.retryAfterSeconds}s.`}
           </p>
+          {/* The MCP tools don't use the model, so they outlive the chat. */}
+          {notice.kind === "unavailable" && (
+            <p className="mt-1 text-fg-dark [overflow-wrap:anywhere]">
+              The MCP server still works: connect any MCP client to{" "}
+              <code className="text-cyan">{mcpUrl}</code>.
+            </p>
+          )}
         </div>
       )}
 

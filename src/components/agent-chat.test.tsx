@@ -180,7 +180,7 @@ describe("AgentChat", () => {
     expect(input()).toBeEnabled();
   });
 
-  it("shows an unavailable notice with the agent's message", async () => {
+  it("shows an unavailable notice with the agent's message, pointing to the MCP server", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
       Response.json(
@@ -195,6 +195,9 @@ describe("AgentChat", () => {
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent(/unavailable/i);
     expect(alert).toHaveTextContent("Monthly budget reached.");
+    // The MCP tools don't use the model, so they keep working.
+    expect(alert).toHaveTextContent(/MCP server still works/i);
+    expect(alert).toHaveTextContent(MCP_URL);
   });
 
   it("shows an error notice when the stream fails, and keeps the partial answer", async () => {

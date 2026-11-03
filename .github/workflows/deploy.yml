@@ -8,6 +8,11 @@ on:
 permissions:
   contents: read
 
+env:
+  # The live site: the smoke checks hit it and the agent allows its origin.
+  # Defaults to the project's *.web.app URL.
+  SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -79,11 +84,10 @@ jobs:
       - run: pnpm dlx firebase-tools@15 deploy --only hosting --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
 
       # Fails the workflow if the live site is down or doesn't serve the real
-      # page, or if a redirect host doesn't 301 to it. SITE_URL defaults to the
-      # project's *.web.app URL; REDIRECT_HOSTS is space-separated, optional.
+      # page, or if a redirect host doesn't 301 to it. REDIRECT_HOSTS is
+      # space-separated, optional.
       - name: Smoke check
         env:
-          SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
           REDIRECT_HOSTS: ${{ vars.REDIRECT_HOSTS }}
         # REDIRECT_HOSTS is split into one argument per host on purpose.
         run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS
@@ -102,7 +106,6 @@ jobs:
     env:
       REGION: europe-southwest1
       IMAGE: europe-southwest1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/agent/agent:${{ github.sha }}
-      SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
     steps:
       - uses: actions/checkout@v7
 
