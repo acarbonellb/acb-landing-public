@@ -8,6 +8,7 @@ import {
   streamChat,
 } from "@/lib/chat-client";
 import { chatRequestLimits } from "@/lib/chat-contract";
+import { Markdown } from "./markdown";
 
 const { maxMessages: MAX_MESSAGES, maxMessageChars: MAX_CHARS } = chatRequestLimits;
 
@@ -40,6 +41,11 @@ const noticeFallback: Record<ChatErrorKind, string> = {
   unavailable: "Please try again later.",
   error: "Please try again.",
 };
+
+// The agent's Markdown in the terminal palette. Long URLs wrap anywhere so
+// they never push the page sideways on a phone.
+const answerStyle =
+  "min-w-0 flex-1 space-y-2 text-fg-dark [overflow-wrap:anywhere] [&_a]:text-blue [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-cyan [&_code]:text-yellow [&_em]:italic [&_li]:pl-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_strong]:font-bold [&_strong]:text-fg [&_ul]:list-['-_'] [&_ul]:pl-6";
 
 const stopNotes: Record<string, string> = {
   max_tokens: "[answer cut short by the length limit]",
@@ -200,10 +206,12 @@ export function AgentChat({
                   <code className="text-yellow">{part.label}</code>
                 </p>
               ) : (
-                <p key={i} className="break-words whitespace-pre-wrap">
-                  <span className="text-magenta">agent ›</span>{" "}
-                  <span className="text-fg-dark">{part.text.trim()}</span>
-                </p>
+                <div key={i} className="flex gap-[1ch]">
+                  <span className="shrink-0 text-magenta">agent ›</span>
+                  <div className={answerStyle}>
+                    <Markdown text={part.text.trim()} />
+                  </div>
+                </div>
               ),
             )}
             {turn.status === "streaming" && (

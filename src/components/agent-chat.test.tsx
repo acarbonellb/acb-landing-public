@@ -126,6 +126,30 @@ describe("AgentChat", () => {
     });
   });
 
+  it("renders the agent's Markdown but keeps the visitor's message plain", async () => {
+    const user = userEvent.setup();
+    const { fetch } = fakeFetch(
+      answer(
+        { type: "tool_call", id: "t1", name: "get_projects", input: { status: "in-progress" } },
+        { type: "text", delta: "He built **three** agents:\n\n- Fraud\n- Portfolio" },
+        { type: "done", stopReason: "end_turn", usage: {} },
+      ),
+    );
+    renderChat(fetch);
+
+    await ask(user, "Is he **good**?");
+
+    expect(await within(log()).findByText("three")).toHaveProperty("tagName", "STRONG");
+    expect(within(log()).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+      "Fraud",
+      "Portfolio",
+    ]);
+    expect(within(log()).getByText("Is he **good**?")).toBeInTheDocument();
+    expect(
+      within(log()).getByText('get_projects({"status":"in-progress"})'),
+    ).toBeInTheDocument();
+  });
+
   it("does not send an empty question", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch();
