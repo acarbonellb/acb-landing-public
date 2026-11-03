@@ -87,3 +87,55 @@ jobs:
           REDIRECT_HOSTS: ${{ vars.REDIRECT_HOSTS }}
         # REDIRECT_HOSTS is split into one argument per host on purpose.
         run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS
+
+  deploy-agent:
+    needs: test
+    # Only main deploys, and only once the agent's public URL is configured.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != '' && vars.AGENT_URL != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # needed for Workload Identity Federation
+    concurrency:
+      group: deploy-agent
+      cancel-in-progress: true
+    env:
+      REGION: europe-southwest1
+      IMAGE: europe-southwest1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/agent/agent:${{ github.sha }}
+      SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm agent:build
+
+      - uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - run: gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
+      - run: docker build -t "$IMAGE" agent && docker push "$IMAGE"
+
+      # The service's public (allUsers) invoker binding is set once by hand
+      # and kept across deploys; this job never changes IAM. The model and its
+      # prices are the code defaults (agent/src/config.ts).
+      - name: Deploy to Cloud Run
+        run: >-
+          gcloud run deploy agent --quiet
+          --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
+          --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest
+          --set-env-vars "ALLOWED_ORIGINS=$SITE_URL"
+          --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
+
+      # Never calls the model: health, MCP tools, CORS and validation only.
+      - name: Smoke check
+        run: scripts/agent-smoke-check.sh "${{ vars.AGENT_URL }}" "$SITE_URL"

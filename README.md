@@ -50,6 +50,12 @@ After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) 
 
 The agent service (below) runs as a separate Cloud Run service that the browser calls directly at `AGENT_URL`, not through a Firebase Hosting rewrite. The rewrite buffers the stream and retries long requests: [ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md).
 
+**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` (readable only by `agent-runtime`) and `ALLOWED_ORIGINS` set to `SITE_URL`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
+
+| Variable | Value |
+| --- | --- |
+| `AGENT_URL` | The service's URL; also inlined into the site as `NEXT_PUBLIC_AGENT_URL` |
+
 ## Agent service
 
 `agent/` is a separate TypeScript service (pnpm workspace package) that answers questions about me. One set of read-only tools (`get_profile`, `get_experience`, `get_projects`, `get_stack`, `get_contact`) reads the same `src/content/profile.ts` as the landing, bundled in at build time, so the agent and the page never disagree.
@@ -79,7 +85,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | Variable | Default | What |
 | --- | --- | --- |
 | `ANTHROPIC_API_KEY` | unset | Claude API key. Unset: `POST /chat` answers `503 unavailable`. |
-| `AGENT_MODEL` | `claude-opus-5-5` | Claude model for the chat |
+| `AGENT_MODEL` | `claude-haiku-5-5` | Claude model for the chat (Haiku 5.5: the cheapest current model) |
 | `AGENT_EFFORT` | `low` | `low` / `medium` / `high` / `xhigh` / `max` |
 | `AGENT_MAX_TOKENS` | `4096` | Output-token cap per model call |
 | `AGENT_MAX_REQUEST_TOKENS` | `8192` | Output-token budget for a whole chat request, shared by all its model calls (each gets the smaller of `AGENT_MAX_TOKENS` and what's left) |
@@ -88,8 +94,8 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
 | `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |
 | `MONTHLY_SPEND_CAP_USD` | `20` | Estimated model spend per UTC month before the chat closes (`0` turns it off) |
-| `AGENT_PRICE_INPUT_USD_PER_MTOK` | `4` | Input price used to estimate spend (Claude Opus 5.5; cached input counts as full input) |
-| `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `20` | Output price used to estimate spend |
+| `AGENT_PRICE_INPUT_USD_PER_MTOK` | `0.1` | Input price used to estimate spend (Claude Haiku 5.5, prompts up to 100K tokens; cached input counts as full input) |
+| `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `0.5` | Output price used to estimate spend |
 | `TRUSTED_PROXY_HOPS` | `1` | Proxies that append to `X-Forwarded-For`; the client IP is the entry this many from the end (Cloud Run: 1). Must be at least 1 |
 
 Try the chat locally:
@@ -174,7 +180,7 @@ Claude (or any non-local server) costs money: only with the owner's go-ahead, an
 
 ```bash
 ANTHROPIC_BASE_URL=https://api.anthropic.com ANTHROPIC_API_KEY=sk-ant-... \
-  AGENT_MODEL=claude-opus-5-5 AGENT_EVAL_PROVIDER=anthropic pnpm agent:eval --paid
+  AGENT_MODEL=claude-haiku-5-5 AGENT_EVAL_PROVIDER=anthropic pnpm agent:eval --paid
 ```
 
 Each provider/model gets its own recording set and report section; the provider label comes from `--provider`, then `AGENT_EVAL_PROVIDER`, then the server (`lmstudio` on localhost, `anthropic` otherwise). Run limits are the chat loop's code defaults (`chatLimits` in `agent/src/chat.ts`, plus the request limits in `src/lib/chat-contract.ts`), never your `AGENT_MAX_*` env.
