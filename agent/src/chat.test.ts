@@ -197,6 +197,8 @@ describe("runChat", () => {
     expect(systemPrompt).toMatch(/only discuss alberto/i);
     expect(systemPrompt).toMatch(/politely decline/i);
     expect(systemPrompt).toMatch(/never guess or invent/i);
+    expect(systemPrompt).toMatch(/never answer any part of the unrelated question/i);
+    expect(systemPrompt).toMatch(/judge every new message on its own/i);
   });
 
   it("streams the model's polite refusal for an off-topic question", async () => {
