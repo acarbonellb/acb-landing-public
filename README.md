@@ -41,7 +41,7 @@ The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, de
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
 | `SITE_URL` (optional) | URL the smoke check hits; defaults to `https://<GCP_PROJECT_ID>.web.app` |
 
-The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds a single role, Firebase Hosting Admin. It has no keys.
+The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds two roles: Firebase Hosting Admin, and Service Usage Viewer (firebase-tools checks the Hosting API is enabled before deploying). It has no keys.
 
 After deploying, a **smoke check** fetches `SITE_URL` and fails the workflow unless it answers 200 and the page contains "Alberto Carbonell" (five attempts, 10 s apart).
 
