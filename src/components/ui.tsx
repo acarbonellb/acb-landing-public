@@ -46,7 +46,7 @@ export function Section({
         id={`${id}-title`}
         className="mb-8 flex items-baseline gap-3 text-2xl font-bold text-fg sm:text-3xl"
       >
-        <span className="font-pixel text-3xl text-blue sm:text-4xl">
+        <span className="font-sans font-semibold text-blue">
           {index}.
         </span>
         <span>{title}</span>

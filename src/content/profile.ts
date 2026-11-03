@@ -75,8 +75,7 @@ export const profile: Profile = {
     "Senior engineer with 10+ years shipping production software in TypeScript, Node.js and PostgreSQL. Lately my focus has been building AI agents that handle real work end to end, wired into the tools and data a business already uses. With AI in the loop I ramp up fast on any new stack; what never changes is the fundamentals: clean design, tests and code that's easy to maintain.",
     "I work closely with non-technical teams to find where agents save time or money, then build, deploy and monitor them. I use Claude daily: through its API to build agents, and in my own engineering workflow via Claude Code and OpenCode.",
   ],
-  contactNote:
-    "Want an agent that saves your team time, or an engineer who ships? Drop me a line.",
+  contactNote: "Drop me a line:",
   links: {
     email: "alberto.carbonell.beceiro@gmail.com",
     github: "https://github.com/acarbonellb",

@@ -3,7 +3,6 @@ import {
   About,
   Agent,
   Contact,
-  Education,
   Experience,
   Hero,
   Projects,
@@ -12,9 +11,7 @@ import {
 import { StatusLine } from "@/components/status-line";
 import {
   agents,
-  education,
   experience,
-  languages,
   profile,
   skillGroups,
 } from "@/content/profile";
@@ -29,7 +26,6 @@ export default function Home() {
         <Stack skillGroups={skillGroups} />
         <Experience roles={experience} />
         <Projects agents={agents} />
-        <Education education={education} languages={languages} />
         <Agent />
         <Contact profile={profile} />
       </main>
