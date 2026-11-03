@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "681a576ac6de486eb495764ea2084998a807cab38e9dc35d5054635c21ada12c",
-      "latencyMs": 1740,
+      "latencyMs": 2513,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "QWlzLCoIvhdEl5YRWM1ApA1iV4xTTyqH",
+                "id": "0GXgx7xtTiPhIv69eznerdtAlov20kqK",
                 "name": "get_projects",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1980,
-              "outputTokens": 64
+              "outputTokens": 77
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "QWlzLCoIvhdEl5YRWM1ApA1iV4xTTyqH",
+                "id": "0GXgx7xtTiPhIv69eznerdtAlov20kqK",
                 "name": "get_projects",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "920ce97b74e9b4cba3fdb269ec8fa048d65c3d8e4f7054db8500555074e1854b",
-      "latencyMs": 3584,
+      "requestHash": "64526fc15b097fa5fd33c9a7e8c970a356090c94ea3dd26dbe9da13443059f53",
+      "latencyMs": 4780,
       "events": [
         {
           "type": "input_usage",
@@ -235,11 +235,7 @@
         },
         {
           "type": "text_delta",
-          "text": " bloque"
-        },
-        {
-          "type": "text_delta",
-          "text": "a"
+          "text": " marca"
         },
         {
           "type": "text_delta",
@@ -247,7 +243,11 @@
         },
         {
           "type": "text_delta",
-          "text": " marca"
+          "text": " bloque"
+        },
+        {
+          "type": "text_delta",
+          "text": "a"
         },
         {
           "type": "text_delta",
@@ -267,7 +267,71 @@
         },
         {
           "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "como"
+        },
+        {
+          "type": "text_delta",
+          "text": " pruebas"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " tarjetas"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
+        },
+        {
+          "type": "text_delta",
+          "text": " pat"
+        },
+        {
+          "type": "text_delta",
+          "text": "rones"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " re"
+        },
+        {
+          "type": "text_delta",
+          "text": "venta"
+        },
+        {
+          "type": "text_delta",
+          "text": " mas"
+        },
+        {
+          "type": "text_delta",
+          "text": "iva"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
           "text": " sin"
+        },
+        {
+          "type": "text_delta",
+          "text": " necesidad"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
         },
         {
           "type": "text_delta",
@@ -284,17 +348,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto construyó el agente de detección de fraude para **Satella Tickets**, la plataforma de venta de entradas que co-fundó y gestiona como negocio secundario. El agente monitorea las compras de entradas y bloquea o marca pedidos sospechosos sin revisión manual.",
+            "text": "Alberto construyó el agente de detección de fraude para **Satella Tickets**, la plataforma de venta de entradas que co-fundó y gestiona como negocio secundario. El agente monitorea las compras de entradas y marca o bloquea pedidos sospechosos (como pruebas de tarjetas o patrones de reventa masiva) sin necesidad de revisión manual.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2248,
-              "outputTokens": 133
+              "outputTokens": 149
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto construyó el agente de detección de fraude para **Satella Tickets**, la plataforma de venta de entradas que co-fundó y gestiona como negocio secundario. El agente monitorea las compras de entradas y bloquea o marca pedidos sospechosos sin revisión manual."
+                "text": "Alberto construyó el agente de detección de fraude para **Satella Tickets**, la plataforma de venta de entradas que co-fundó y gestiona como negocio secundario. El agente monitorea las compras de entradas y marca o bloquea pedidos sospechosos (como pruebas de tarjetas o patrones de reventa masiva) sin necesidad de revisión manual."
               }
             ]
           }

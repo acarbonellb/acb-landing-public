@@ -33,3 +33,7 @@ _Avoid_: outdated, invalid
 **Leak**:
 Any part of the answer to an off-topic, mixed or injection question that the agent should have declined.
 _Avoid_: jailbreak, failure
+
+**Eval history**:
+The metrics of every live run, one entry per recording set, oldest first. Only live runs add to it.
+_Avoid_: log, changelog, trend

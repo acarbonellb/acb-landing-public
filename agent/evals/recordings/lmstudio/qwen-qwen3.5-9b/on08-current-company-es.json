@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "0f554ad1f264db2e1a7e6a06d7da42cf3e72a8a230792c86f3aa97de19d3866d",
-      "latencyMs": 2320,
+      "latencyMs": 1973,
       "events": [
         {
           "type": "input_usage",
@@ -19,32 +19,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "tsS0Mg5ZC5WBrjr67Q5zqdKZbz5rxBmF",
+                "id": "Ueb41Y7ei4btT6Xeqq7ngLxykkq3hebX",
                 "name": "get_experience",
-                "input": {}
-              },
-              {
-                "id": "6aiTG0IvEbMID5XRpw6hmNOSyZKeigCJ",
-                "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1974,
-              "outputTokens": 87
+              "outputTokens": 52
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "tsS0Mg5ZC5WBrjr67Q5zqdKZbz5rxBmF",
+                "id": "Ueb41Y7ei4btT6Xeqq7ngLxykkq3hebX",
                 "name": "get_experience",
-                "input": {}
-              },
-              {
-                "type": "tool_use",
-                "id": "6aiTG0IvEbMID5XRpw6hmNOSyZKeigCJ",
-                "name": "get_profile",
                 "input": {}
               }
             ]
@@ -53,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "02e82547a2028202a4c80e65a375b074cf601ba94b3d62d8d2b3c975666474d8",
-      "latencyMs": 1402,
+      "requestHash": "7088f1f862582ac77289f314041d1f7903f0e3752d64357547c6ca4a7bab675d",
+      "latencyMs": 824,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2610
+          "inputTokens": 2324
         },
         {
           "type": "text_delta",
@@ -70,11 +59,7 @@
         },
         {
           "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
+          "text": " actualmente"
         },
         {
           "type": "text_delta",
@@ -82,43 +67,7 @@
         },
         {
           "type": "text_delta",
-          "text": " actualmente"
-        },
-        {
-          "type": "text_delta",
-          "text": " como"
-        },
-        {
-          "type": "text_delta",
-          "text": " **"
-        },
-        {
-          "type": "text_delta",
-          "text": "Senior"
-        },
-        {
-          "type": "text_delta",
-          "text": " Software"
-        },
-        {
-          "type": "text_delta",
-          "text": " Engineer"
-        },
-        {
-          "type": "text_delta",
-          "text": "**"
-        },
-        {
-          "type": "text_delta",
           "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " la"
-        },
-        {
-          "type": "text_delta",
-          "text": " empresa"
         },
         {
           "type": "text_delta",
@@ -134,83 +83,23 @@
         },
         {
           "type": "text_delta",
-          "text": "**,"
+          "text": "**"
         },
         {
           "type": "text_delta",
-          "text": " donde"
+          "text": " como"
         },
         {
           "type": "text_delta",
-          "text": " ha"
+          "text": " Senior"
         },
         {
           "type": "text_delta",
-          "text": " estado"
+          "text": " Software"
         },
         {
           "type": "text_delta",
-          "text": " desde"
-        },
-        {
-          "type": "text_delta",
-          "text": " "
-        },
-        {
-          "type": "text_delta",
-          "text": "2"
-        },
-        {
-          "type": "text_delta",
-          "text": "0"
-        },
-        {
-          "type": "text_delta",
-          "text": "1"
-        },
-        {
-          "type": "text_delta",
-          "text": "9"
-        },
-        {
-          "type": "text_delta",
-          "text": " hasta"
-        },
-        {
-          "type": "text_delta",
-          "text": " el"
-        },
-        {
-          "type": "text_delta",
-          "text": " presente"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " Su"
-        },
-        {
-          "type": "text_delta",
-          "text": " ubicación"
-        },
-        {
-          "type": "text_delta",
-          "text": " es"
-        },
-        {
-          "type": "text_delta",
-          "text": " Madrid"
-        },
-        {
-          "type": "text_delta",
-          "text": " /"
-        },
-        {
-          "type": "text_delta",
-          "text": " Remote"
+          "text": " Engineer"
         },
         {
           "type": "text_delta",
@@ -219,17 +108,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto Carbonell trabaja actualmente como **Senior Software Engineer** en la empresa **CoverWallet**, donde ha estado desde 2019 hasta el presente. Su ubicación es Madrid / Remote.",
+            "text": "Alberto actualmente trabaja en **CoverWallet** como Senior Software Engineer.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2610,
-              "outputTokens": 42
+              "inputTokens": 2324,
+              "outputTokens": 17
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto Carbonell trabaja actualmente como **Senior Software Engineer** en la empresa **CoverWallet**, donde ha estado desde 2019 hasta el presente. Su ubicación es Madrid / Remote."
+                "text": "Alberto actualmente trabaja en **CoverWallet** como Senior Software Engineer."
               }
             ]
           }

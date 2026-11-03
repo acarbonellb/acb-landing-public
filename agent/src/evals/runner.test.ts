@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { profile } from "../../../src/content/profile";
 import { systemPrompt } from "../chat";
 import { createFakeModel } from "../fake-model";
+import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
 import { evaluate, recordCase, replayCase, RecordingFailedError } from "./runner";
 import type { EvalCase } from "./scoring";
@@ -142,6 +143,26 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
 
     expect(problems).toEqual([
       "fake/scripted ot01-capital-after-greeting leaked: leaked /\\bmadrid\\b/i",
+    ]);
+  });
+
+  it("adds the history to the report and fails when its latest entry disagrees", async () => {
+    const set = await setOf();
+    const fresh = await evaluate({ cases: [contact, capital], sets: [set] });
+    const entry = historyEntry(fresh.sets[0], { date: "2026-11-03", commit: "abc1234" });
+
+    const matching = await evaluate({ cases: [contact, capital], sets: [set], history: [entry] });
+    const outdated = await evaluate({
+      cases: [contact, capital],
+      sets: [set],
+      history: [{ ...entry, metrics: { ...entry.metrics, meanLatencyMs: 1 } }],
+    });
+
+    expect(matching.problems).toEqual([]);
+    expect(matching.report).toContain("## History");
+    expect(matching.report.startsWith(fresh.report)).toBe(true);
+    expect(outdated.problems).toEqual([
+      expect.stringMatching(/^fake\/scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
     ]);
   });
 });

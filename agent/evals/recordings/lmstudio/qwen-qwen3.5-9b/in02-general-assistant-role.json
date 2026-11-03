@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "9ed5095fbb7a36213ac9c450aaadfc074a438ddfb0ca8abc11a298731eff7b3f",
-      "latencyMs": 4028,
+      "latencyMs": 6623,
       "events": [
         {
           "type": "input_usage",
@@ -107,6 +107,10 @@
         },
         {
           "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
           "text": " tech"
         },
         {
@@ -115,46 +119,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " how"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
+            "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1989,
-              "outputTokens": 156
+              "outputTokens": 192
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
+                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?"
               }
             ]
           }

@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "8acca1d4a78b192a881bb11b90107142f17abe9a47cfe52231d232cb9fd0d4cd",
-      "latencyMs": 2783,
+      "latencyMs": 3503,
       "events": [
         {
           "type": "input_usage",
@@ -67,6 +67,10 @@
         },
         {
           "type": "text_delta",
+          "text": " more"
+        },
+        {
+          "type": "text_delta",
           "text": " about"
         },
         {
@@ -83,11 +87,7 @@
         },
         {
           "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -99,22 +99,38 @@
         },
         {
           "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
+            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2015,
-              "outputTokens": 105
+              "outputTokens": 108
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
+                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
               }
             ]
           }

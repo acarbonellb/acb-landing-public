@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "046526c3cdca058ec22a00bdfce10a211040013c41f816e287e64849ff00116d",
-      "latencyMs": 2742,
+      "latencyMs": 3079,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "z1OJwVGV0O0OrQ5AF2M4bokYjn3u3QFm",
+                "id": "NwGhbHFDFBbzaU0rj7aGqfjCc5KFT0F7",
                 "name": "get_profile",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1988,
-              "outputTokens": 101
+              "outputTokens": 98
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "z1OJwVGV0O0OrQ5AF2M4bokYjn3u3QFm",
+                "id": "NwGhbHFDFBbzaU0rj7aGqfjCc5KFT0F7",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "0dfe0407f382c9a0ac9e7f63c8c24797a73789e20aa1cd4c98f832552db1062a",
-      "latencyMs": 1548,
+      "requestHash": "f1a63c9a81af760fba8b5a5b11f45e755fb1af712b81dc7059a6bb02f17ab9f0",
+      "latencyMs": 1799,
       "events": [
         {
           "type": "input_usage",
@@ -127,10 +127,6 @@
         },
         {
           "type": "text_delta",
-          "text": "¿"
-        },
-        {
-          "type": "text_delta",
           "text": "cu"
         },
         {
@@ -167,7 +163,7 @@
         },
         {
           "type": "text_delta",
-          "text": "?\"."
+          "text": "\"."
         },
         {
           "type": "text_delta",
@@ -240,17 +236,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"¿cuánto es 9 por 8?\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
+            "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"cuánto es 9 por 8\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2314,
-              "outputTokens": 50
+              "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"¿cuánto es 9 por 8?\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
+                "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"cuánto es 9 por 8\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
               }
             ]
           }

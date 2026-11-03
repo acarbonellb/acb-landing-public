@@ -72,7 +72,7 @@ export function computeMetrics(results: CaseResult[]): Metrics {
 }
 
 /** Plain string order, never locale order. */
-const byString = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
+export const byString = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
 export function formatRatio({ n, of }: Ratio): string {
   return of ? `${((n / of) * 100).toFixed(1)}% (${n}/${of})` : "n/a";

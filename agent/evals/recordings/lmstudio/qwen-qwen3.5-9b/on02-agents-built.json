@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "ea4a3a01b5a9bc9e9ad9e36b27400ee8082968b0e0ab455a6fa0426fa88473be",
-      "latencyMs": 1734,
+      "latencyMs": 2058,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "RA07FDYhIBPvhrhgfEBsbGjbkDXVMbEa",
+                "id": "sFNfj6r57BGeXFwNNxvMKjxeOKtqdIxD",
                 "name": "get_projects",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1973,
-              "outputTokens": 63
+              "outputTokens": 64
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "RA07FDYhIBPvhrhgfEBsbGjbkDXVMbEa",
+                "id": "sFNfj6r57BGeXFwNNxvMKjxeOKtqdIxD",
                 "name": "get_projects",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "8e4a9517894d5fe15220740e2b3d2dd04551eb9b12776f03bbfda0bbd6671126",
-      "latencyMs": 4784,
+      "requestHash": "2526b19e06d57b07e404d12bddfe63545f4faeed335285723c657ebca11ac02a",
+      "latencyMs": 5851,
       "events": [
         {
           "type": "input_usage",
@@ -151,15 +151,23 @@
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": " the"
         },
         {
           "type": "text_delta",
-          "text": " side"
+          "text": " event"
         },
         {
           "type": "text_delta",
-          "text": " business"
+          "text": " ticket"
+        },
+        {
+          "type": "text_delta",
+          "text": "ing"
+        },
+        {
+          "type": "text_delta",
+          "text": " platform"
         },
         {
           "type": "text_delta",
@@ -359,7 +367,23 @@
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "in"
+        },
+        {
+          "type": "text_delta",
+          "text": "-progress"
+        },
+        {
+          "type": "text_delta",
+          "text": "):"
         },
         {
           "type": "text_delta",
@@ -748,17 +772,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in-progress): Monitors ticket purchases for his side business Satella Tickets, flagging or blocking suspicious orders like card testing or bulk resale patterns without manual review. It escalates to a human below a confidence threshold. Built with TypeScript, PostgreSQL, and GCP.\n\n2. **Organizer Support Agent**: Answers event organizers' questions about sales, payouts, and setup for Satella Tickets without human review, pulling live data from PostgreSQL and the payments API. Built with TypeScript, tool calling, MCP, and PostgreSQL.\n\n3. **Portfolio Agent** (personal-project): An agent on his portfolio site that answers visitors' questions about his experience and projects in natural language. It's also exposed as an MCP server so external agents can query it. Built with TypeScript, Claude, and MCP.",
+            "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in-progress): Monitors ticket purchases for the event ticketing platform Satella Tickets, flagging or blocking suspicious orders like card testing or bulk resale patterns without manual review. It escalates to a human below a confidence threshold. Built with TypeScript, PostgreSQL, and GCP.\n\n2. **Organizer Support Agent** (in-progress): Answers event organizers' questions about sales, payouts, and setup for Satella Tickets without human review, pulling live data from PostgreSQL and the payments API. Built with TypeScript, tool calling, MCP, and PostgreSQL.\n\n3. **Portfolio Agent** (personal-project): An agent on his portfolio site that answers visitors' questions about his experience and projects in natural language. It's also exposed as an MCP server so external agents can query it. Built with TypeScript, Claude, and MCP.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2234,
-              "outputTokens": 180
+              "outputTokens": 186
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in-progress): Monitors ticket purchases for his side business Satella Tickets, flagging or blocking suspicious orders like card testing or bulk resale patterns without manual review. It escalates to a human below a confidence threshold. Built with TypeScript, PostgreSQL, and GCP.\n\n2. **Organizer Support Agent**: Answers event organizers' questions about sales, payouts, and setup for Satella Tickets without human review, pulling live data from PostgreSQL and the payments API. Built with TypeScript, tool calling, MCP, and PostgreSQL.\n\n3. **Portfolio Agent** (personal-project): An agent on his portfolio site that answers visitors' questions about his experience and projects in natural language. It's also exposed as an MCP server so external agents can query it. Built with TypeScript, Claude, and MCP."
+                "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in-progress): Monitors ticket purchases for the event ticketing platform Satella Tickets, flagging or blocking suspicious orders like card testing or bulk resale patterns without manual review. It escalates to a human below a confidence threshold. Built with TypeScript, PostgreSQL, and GCP.\n\n2. **Organizer Support Agent** (in-progress): Answers event organizers' questions about sales, payouts, and setup for Satella Tickets without human review, pulling live data from PostgreSQL and the payments API. Built with TypeScript, tool calling, MCP, and PostgreSQL.\n\n3. **Portfolio Agent** (personal-project): An agent on his portfolio site that answers visitors' questions about his experience and projects in natural language. It's also exposed as an MCP server so external agents can query it. Built with TypeScript, Claude, and MCP."
               }
             ]
           }
