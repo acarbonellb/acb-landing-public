@@ -164,7 +164,7 @@ With `AGENT_STORE=firestore` the rate limits and the spend cap live in Firestore
 - **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd` and the `holds` of the requests running (their reserved worst case and `expireAt`). A hold whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining budget.
 - **Cost**: a chat request is about one write for its rate limit, one to reserve, one per model call and one to settle; an MCP request is one. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
-- **Failure**: if Firestore can't be reached the request fails with `500`; the chat never runs unbudgeted.
+- **Failure**: if Firestore can't be reached, the rate-limit check or the reservation fails and the request answers `500`, so the chat never starts unbudgeted. If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's hold stays until it expires, covering that call's cost.
 
 Setting it up (once, by hand; `PROJECT=acb-landing`):
 

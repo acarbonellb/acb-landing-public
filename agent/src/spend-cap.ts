@@ -18,7 +18,7 @@
 // `holdTtlMs`, so a request whose instance died before settling doesn't hold
 // budget for the rest of the month; what it spent stays charged.
 import { randomUUID } from "node:crypto";
-import { createMemoryDocumentStore, type DocumentStore, type StoreDocument } from "./document-store";
+import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
 
 /** USD per million tokens. */
@@ -100,7 +100,7 @@ export function createStoreSpendCap(
       const id = randomUUID();
       const costUsd = usageCostUsd(worstCase, pricing);
 
-      return store.update(path, (doc): { doc?: StoreDocument; result: SpendCapStatus } => {
+      return store.update(path, (doc): StoreChange<SpendCapStatus> => {
         const month = readMonth(doc);
         const holds = Object.fromEntries(
           Object.entries(month.holds).filter(([, hold]) => hold.expireAt.getTime() > t),
@@ -123,19 +123,28 @@ export function createStoreSpendCap(
 
   function reservation(path: string, id: string): SpendReservation {
     let settled = false;
+    // Once a usage couldn't be recorded, the hold stays until it expires: it
+    // covers that call's cost, which would otherwise go uncharged.
+    let unrecorded = false;
     return {
       // Charged to the month the request started in.
       async record(usage) {
         const usd = usageCostUsd(usage, pricing);
-        await store.update(path, (doc) => {
-          const month = readMonth(doc);
-          const hold = month.holds[id];
-          if (hold) hold.usd = Math.max(0, hold.usd - usd);
-          return { doc: { spentUsd: month.spentUsd + usd, holds: month.holds }, result: undefined };
-        });
+        try {
+          await store.update(path, (doc) => {
+            const month = readMonth(doc);
+            const hold = month.holds[id];
+            if (hold) hold.usd = Math.max(0, hold.usd - usd);
+            return { doc: { spentUsd: month.spentUsd + usd, holds: month.holds }, result: undefined };
+          });
+        } catch (error) {
+          // Not rethrown: the visitor's answer is already streaming.
+          unrecorded = true;
+          console.error(`Spend cap: could not record $${usd} of usage`, error);
+        }
       },
       async settle() {
-        if (settled) return;
+        if (settled || unrecorded) return;
         settled = true;
         await store.update(path, (doc) => {
           const month = readMonth(doc);

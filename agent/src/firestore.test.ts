@@ -126,9 +126,14 @@ describe("createFirestoreDocumentStore", () => {
 
   it("gives up after too many conflicts, and reports other errors", async () => {
     const fake = fakeFirestore();
-    const store = emulator(fake);
+    const store = createFirestoreDocumentStore({
+      projectId: "acb-landing",
+      emulatorHost: "localhost:8081",
+      fetch: fake.fetch,
+      maxAttempts: 3,
+    });
     fake.beforeCommit = () => fake.write(`${root}/c/x`, {});
-    await expect(store.update("c/x", () => ({ doc: {}, result: 0 }))).rejects.toThrow(/conflict/i);
+    await expect(store.update("c/x", () => ({ doc: {}, result: 0 }))).rejects.toThrow(/after 3 conflicts/);
 
     await expect(
       createFirestoreDocumentStore({

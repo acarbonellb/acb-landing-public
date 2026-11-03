@@ -66,6 +66,13 @@ const metadataTokenUrl =
 /** Commit failures that mean "someone else wrote first": retry. */
 const conflictStatuses = new Set(["ABORTED", "ALREADY_EXISTS", "FAILED_PRECONDITION"]);
 
+/** Encodes each segment of a `a/b/c` path for a URL. */
+const urlPath = (path: string) => path.split("/").map(encodeURIComponent).join("/");
+
+/** Waits a random 10–50 ms × attempt, so writers racing for a document spread out. */
+const backoff = (attempt: number) =>
+  new Promise((resolve) => setTimeout(resolve, attempt * (10 + Math.random() * 40)));
+
 export function createFirestoreDocumentStore(options: FirestoreOptions): DocumentStore {
   const {
     projectId,
@@ -79,7 +86,7 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
   const base = emulatorHost
     ? `http://${emulatorHost}/v1`
     : "https://firestore.googleapis.com/v1";
-  const documentsUrl = `${base}/${documents.split("/").map(encodeURIComponent).join("/")}`;
+  const documentsUrl = `${base}/${urlPath(documents)}`;
 
   let token: { value: string; expiresAt: number } | undefined;
 
@@ -118,7 +125,7 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
 
   return {
     async update(path, change) {
-      const url = `${documentsUrl}/${path.split("/").map(encodeURIComponent).join("/")}`;
+      const url = `${documentsUrl}/${urlPath(path)}`;
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         const res = await call(url);
         if (!res.ok && res.status !== 404) throw await failure(res, `read of ${path}`);
@@ -144,6 +151,7 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
         if (commit.ok) return result;
         const status = await errorStatus(commit);
         if (!status || !conflictStatuses.has(status)) throw await failure(commit, `commit of ${path}`);
+        if (attempt < maxAttempts) await backoff(attempt);
       }
       throw new Error(`Firestore update of ${path} gave up after ${maxAttempts} conflicts`);
     },

@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { createMemoryDocumentStore } from "./document-store";
+import { describe, expect, it, vi } from "vitest";
+import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import {
   createMemorySpendCap,
   createStoreSpendCap,
@@ -153,6 +153,29 @@ describe("createStoreSpendCap", () => {
     // The hold is gone; the $2 spent stays: $6 fits in the $8 left, $9 doesn't.
     expect((await survivor.reserve({ inputTokens: 0, outputTokens: 450_000 })).exhausted).toBe(true);
     expect((await survivor.reserve(sixDollars)).exhausted).toBe(false);
+  });
+
+  it("keeps the hold when a usage can't be recorded, so the call it was for still counts", async () => {
+    const memory = createMemoryDocumentStore();
+    let down = false;
+    const store: DocumentStore = {
+      update: (path, change) =>
+        down ? Promise.reject(new Error("unreachable")) : memory.update(path, change),
+    };
+    const cap = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+    const status = await cap.reserve(sixDollars);
+    if (status.exhausted) throw new Error("expected room");
+
+    down = true;
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    // Doesn't throw: the answer the visitor is reading goes on.
+    await status.reservation.record({ inputTokens: 0, outputTokens: 50_000 });
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+    down = false;
+    await status.reservation.settle();
+    // The $6 stays held (until it expires) instead of the $1 going uncharged.
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
   });
 
   it("budgets each UTC month separately", async () => {
