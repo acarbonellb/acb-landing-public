@@ -11,7 +11,7 @@
   --border: #2f3549;
   --fg: #c0caf5;
   --fg-dark: #a9b1d6;
-  --comment: #565f89;
+  --comment: #8f96b9; /* lifted from #565f89 to meet WCAG AA */
   --blue: #7aa2f7;
   --cyan: #7dcfff;
   --magenta: #bb9af7;
@@ -25,23 +25,24 @@
   color-scheme: dark;
 }
 
-/* Tokyo Light (Tokyo Night Day) */
+/* Tokyo Light (Tokyo Night Day). Surfaces lightened and accents deepened so
+   all text meets WCAG AA (4.5:1) on bg, bg-dark and window title bars. */
 [data-theme="light"] {
-  --bg: #e1e2e7;
-  --bg-dark: #d0d5e3;
-  --bg-highlight: #c4c8da;
+  --bg: #e6e7ed;
+  --bg-dark: #dcdfe8;
+  --bg-highlight: #cdd1e0;
   --border: #a8aecb;
-  --fg: #3760bf;
-  --fg-dark: #6172b0;
-  --comment: #848cb5;
-  --blue: #2e7de9;
-  --cyan: #007197;
-  --magenta: #9854f1;
-  --orange: #b15c00;
-  --yellow: #8c6c3e;
-  --green: #587539;
-  --teal: #118c74;
-  --red: #f52a65;
+  --fg: #3054a7;
+  --fg-dark: #4a5a94;
+  --comment: #515a87;
+  --blue: #145aba;
+  --cyan: #006485;
+  --magenta: #771eed;
+  --orange: #904b00;
+  --yellow: #715832;
+  --green: #4b6431;
+  --teal: #0d6856;
+  --red: #ba093c;
   --scanline: rgb(55 96 191 / 0.06);
   --glow: rgb(46 125 233 / 0.2);
   color-scheme: light;
@@ -138,5 +139,13 @@ body::after {
   }
   .cursor {
     animation: none;
+  }
+}
+
+/* Typewriter (hero terminal): without JS or with reduced motion, show the
+   whole text instead of leaving untyped characters hidden. */
+@media (scripting: none), (prefers-reduced-motion: reduce) {
+  .typewriter-pending {
+    visibility: visible !important;
   }
 }

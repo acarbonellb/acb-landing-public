@@ -1,0 +1,274 @@
+// The one tool layer of the portfolio agent. The MCP server serves these tools
+// as-is and the chat endpoint hands them to the model, so both interfaces
+// answer from the same data. Read-only and public by design: every tool only
+// reads the shared content module.
+import * as z from "zod";
+import * as shared from "../../src/content/profile";
+import type {
+  AgentProject,
+  Education,
+  Profile,
+  Role,
+  SkillGroup,
+  SpokenLanguage,
+} from "../../src/content/profile";
+
+/** Everything the tools read. Defaults to the landing's content module. */
+export type Content = {
+  profile: Profile;
+  agents: AgentProject[];
+  experience: Role[];
+  skillGroups: SkillGroup[];
+  education: Education[];
+  languages: SpokenLanguage[];
+};
+
+export const siteContent: Content = {
+  profile: shared.profile,
+  agents: shared.agents,
+  experience: shared.experience,
+  skillGroups: shared.skillGroups,
+  education: shared.education,
+  languages: shared.languages,
+};
+
+/** A tool's input or output: always a JSON object (MCP structured content). */
+type ObjectSchema = z.ZodObject<z.ZodRawShape>;
+
+export type ToolDefinition<
+  I extends ObjectSchema = ObjectSchema,
+  O extends ObjectSchema = ObjectSchema,
+> = {
+  name: string;
+  title: string;
+  description: string;
+  inputSchema: I;
+  outputSchema: O;
+  run: (input: z.infer<I>) => z.infer<O>;
+};
+
+function defineTool<I extends ObjectSchema, O extends ObjectSchema>(
+  tool: ToolDefinition<I, O>,
+): ToolDefinition<I, O> {
+  return tool;
+}
+
+const period = z.string().describe('Year range, e.g. "2019 — now"');
+const { formatPeriod } = shared;
+
+function buildTools(content: Content) {
+  const groupKeys = content.skillGroups.map((g) => g.key);
+
+  return {
+    get_profile: defineTool({
+      name: "get_profile",
+      title: "Profile",
+      description:
+        "Who Alberto is: name, title, location, a one-line pitch, the about summary, education and spoken languages.",
+      inputSchema: z.object({}).strict(),
+      outputSchema: z.object({
+        name: z.string(),
+        title: z.string(),
+        location: z.string(),
+        tagline: z.string(),
+        summary: z.array(z.string()),
+        education: z.array(
+          z.object({
+            title: z.string(),
+            school: z.string(),
+            place: z.string(),
+            period,
+          }),
+        ),
+        languages: z.array(z.object({ name: z.string(), level: z.string() })),
+      }),
+      run: () => ({
+        name: content.profile.name,
+        title: content.profile.title,
+        location: content.profile.location,
+        tagline: content.profile.tagline,
+        summary: content.profile.summary,
+        education: content.education.map((e) => ({
+          title: e.title,
+          school: e.school,
+          place: e.place,
+          period: formatPeriod(e.period),
+        })),
+        languages: content.languages.map(({ name, level }) => ({ name, level })),
+      }),
+    }),
+
+    get_experience: defineTool({
+      name: "get_experience",
+      title: "Work experience",
+      description:
+        "Alberto's work history, most recent first: company, role, place, period, highlights and stack. Optionally filter by company name.",
+      inputSchema: z
+        .object({
+          company: z
+            .string()
+            .min(1)
+            .max(100)
+            .optional()
+            .describe("Case-insensitive part of a company name, e.g. \"indra\""),
+        })
+        .strict(),
+      outputSchema: z.object({
+        roles: z.array(
+          z.object({
+            company: z.string(),
+            role: z.string(),
+            place: z.string(),
+            period,
+            current: z.boolean(),
+            description: z.string().optional(),
+            highlights: z.array(z.string()),
+            stack: z.array(z.string()),
+          }),
+        ),
+      }),
+      run: ({ company }) => {
+        const query = company?.toLowerCase();
+        return {
+          roles: content.experience
+            .filter((r) => !query || r.company.toLowerCase().includes(query))
+            .map((r) => ({
+              company: r.company,
+              role: r.role,
+              place: r.place,
+              period: formatPeriod(r.period),
+              current: r.period.to === null,
+              ...(r.description ? { description: r.description } : {}),
+              highlights: r.highlights,
+              stack: r.stack,
+            })),
+        };
+      },
+    }),
+
+    get_projects: defineTool({
+      name: "get_projects",
+      title: "Agent projects",
+      description:
+        "AI agents Alberto has built: what each does, who it was built for, its status (only when there is one: in progress or personal project) and stack. Optionally filter by status.",
+      inputSchema: z
+        .object({
+          status: z
+            .enum(shared.agentStatuses)
+            .optional()
+            .describe("Only projects with this status"),
+        })
+        .strict(),
+      outputSchema: z.object({
+        projects: z.array(
+          z.object({
+            name: z.string(),
+            status: z.enum(shared.agentStatuses).optional(),
+            context: z.string(),
+            description: z.string(),
+            stack: z.array(z.string()),
+          }),
+        ),
+      }),
+      run: ({ status }) => ({
+        projects: content.agents
+          .filter((a) => !status || a.status === status)
+          .map((a) => ({
+            name: a.name,
+            status: a.status,
+            context: a.context,
+            description: a.description,
+            stack: a.stack,
+          })),
+      }),
+    }),
+
+    get_stack: defineTool({
+      name: "get_stack",
+      title: "Tech stack",
+      description:
+        "Alberto's skills grouped by area (AI/agents, languages, backend & data, infra, frontend). Optionally return a single group.",
+      inputSchema: z
+        .object({
+          group: z
+            .enum(groupKeys as [string, ...string[]])
+            .optional()
+            .describe("Key of one skill group"),
+        })
+        .strict(),
+      outputSchema: z.object({
+        groups: z.array(
+          z.object({
+            key: z.string(),
+            label: z.string(),
+            items: z.array(z.string()),
+          }),
+        ),
+      }),
+      run: ({ group }) => ({
+        groups: content.skillGroups
+          .filter((g) => !group || g.key === group)
+          .map(({ key, label, items }) => ({ key, label, items })),
+      }),
+    }),
+
+    get_contact: defineTool({
+      name: "get_contact",
+      title: "Contact",
+      description:
+        "How to reach Alberto: email, GitHub and LinkedIn, plus where he works from.",
+      inputSchema: z.object({}).strict(),
+      outputSchema: z.object({
+        name: z.string(),
+        note: z.string(),
+        email: z.string(),
+        github: z.string(),
+        linkedin: z.string(),
+        location: z.string(),
+      }),
+      run: () => ({
+        name: content.profile.name,
+        note: content.profile.contactNote,
+        email: content.profile.links.email,
+        github: content.profile.links.github,
+        linkedin: content.profile.links.linkedin,
+        location: content.profile.location,
+      }),
+    }),
+  };
+}
+
+type Tools = ReturnType<typeof buildTools>;
+export type ToolName = keyof Tools;
+export type ToolOutput<N extends ToolName> = ReturnType<Tools[N]["run"]>;
+
+export class ToolInputError extends Error {}
+
+export type Toolset = {
+  list(): ToolDefinition[];
+  /** Validates `args` against the tool's input schema, then runs it. */
+  call<N extends ToolName>(name: N, args: unknown): ToolOutput<N>;
+  call(name: string, args: unknown): Record<string, unknown>;
+};
+
+export function createToolset(content: Content = siteContent): Toolset {
+  const tools = buildTools(content);
+  const byName = new Map<string, ToolDefinition>(
+    Object.values(tools).map((t) => [t.name, t as unknown as ToolDefinition]),
+  );
+
+  return {
+    list: () => [...byName.values()],
+    call(name: string, args: unknown) {
+      const tool = byName.get(name);
+      if (!tool) throw new ToolInputError(`Unknown tool: ${name}`);
+      const parsed = tool.inputSchema.safeParse(args ?? {});
+      if (!parsed.success) {
+        throw new ToolInputError(
+          `Invalid input for ${name}: ${z.prettifyError(parsed.error)}`,
+        );
+      }
+      return tool.run(parsed.data);
+    },
+  } as Toolset;
+}

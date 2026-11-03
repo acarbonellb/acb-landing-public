@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono, VT323 } from "next/font/google";
+import { profile } from "@/content/profile";
+import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
@@ -19,16 +21,26 @@ const vt323 = VT323({
   subsets: ["latin"],
 });
 
+// The preview images come from the opengraph-image / twitter-image files
+// next to this layout; Next adds their tags automatically.
 export const metadata: Metadata = {
-  metadataBase: new URL("https://albertocarbonell.dev"),
-  title: "Alberto Carbonell — AI agent engineer",
-  description:
-    "Portfolio of Alberto Carbonell, software engineer building AI agents with TypeScript, React and LLMs.",
+  metadataBase: new URL(SITE_URL),
+  title: siteTitle,
+  description: siteDescription,
+  authors: [{ name: profile.name, url: SITE_URL }],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "Alberto Carbonell — AI agent engineer",
-    url: "https://albertocarbonell.dev",
+    title: siteTitle,
+    description: siteDescription,
+    url: "/",
     siteName: "albertocarbonell.dev",
+    locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
   },
 };
 
