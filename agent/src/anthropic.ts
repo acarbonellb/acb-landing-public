@@ -25,6 +25,11 @@ export type AnthropicModelOptions = {
   model: string;
   /** Thinking depth / token spend. Short, grounded answers do well on `low`. */
   effort: Effort;
+  /**
+   * Another Anthropic-compatible server, e.g. LM Studio for the evals.
+   * Defaults to `ANTHROPIC_BASE_URL` or the Anthropic API.
+   */
+  baseURL?: string;
   /** Test seam: a canned `fetch` so tests never reach the API. */
   fetch?: typeof globalThis.fetch;
   maxRetries?: number;
@@ -119,6 +124,7 @@ function isUnavailable(error: unknown): boolean {
 export function createAnthropicModelClient(options: AnthropicModelOptions): ModelClient {
   const client = new Anthropic({
     apiKey: options.apiKey,
+    baseURL: options.baseURL,
     fetch: options.fetch,
     maxRetries: options.maxRetries,
   });

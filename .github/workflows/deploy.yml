@@ -26,6 +26,8 @@ jobs:
       - run: pnpm test
       - run: pnpm agent:lint
       - run: pnpm agent:test
+      # Replays the committed eval recordings: no model, no network, no key.
+      - run: pnpm agent:eval:replay --check
       - run: pnpm agent:build
       - run: pnpm build
         env:
