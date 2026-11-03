@@ -40,10 +40,11 @@ The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, de
 | `GCP_WIF_PROVIDER` | `projects/864363287015/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
 | `SITE_URL` (optional) | URL the smoke check hits; defaults to `https://<GCP_PROJECT_ID>.web.app` |
+| `REDIRECT_HOSTS` (optional) | Space-separated hosts the smoke check expects to 301 to `SITE_URL` |
 
 The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds two roles: Firebase Hosting Admin, and Service Usage Viewer (firebase-tools checks the Hosting API is enabled before deploying). It has no keys.
 
-After deploying, a **smoke check** fetches `SITE_URL` and fails the workflow unless it answers 200 and the page contains "Alberto Carbonell" (five attempts, 10 s apart).
+After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell", and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
 
 `AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
