@@ -9,6 +9,10 @@ site="${site%/}"
 shift
 failures=0
 
+# Ask like a browser: the CDN caches one copy per Accept-Encoding, and a stale
+# copy can sit behind exactly the value browsers send (#11).
+browser=(--compressed -H "accept-encoding: gzip, deflate, br, zstd")
+
 # retry CMD...: runs CMD up to 5 times, 10 s apart, until it succeeds.
 retry() {
   local attempt
@@ -21,14 +25,14 @@ retry() {
 
 check_site() {
   local page
-  page=$(curl -fsS --max-time 20 "$site/") || { echo "  $site/ is down"; return 1; }
+  page=$(curl -fsS "${browser[@]}" --max-time 20 "$site/") || { echo "  $site/ is down"; return 1; }
   grep -q "Alberto Carbonell" <<<"$page" || { echo "  $site/ doesn't contain the expected content"; return 1; }
 }
 
 check_redirect() {
   local from="$1" first final
-  first=$(curl -s -o /dev/null --max-time 20 -w '%{http_code}' "$from") || first=000
-  final=$(curl -s -o /dev/null -L --max-time 30 -w '%{http_code} %{url_effective}' "$from") || final="000 $from"
+  first=$(curl -s "${browser[@]}" -o /dev/null --max-time 20 -w '%{http_code}' "$from") || first=000
+  final=$(curl -s "${browser[@]}" -o /dev/null -L --max-time 30 -w '%{http_code} %{url_effective}' "$from") || final="000 $from"
   if [[ "$first" != 301 ]]; then
     echo "  $from answered $first, expected 301"; return 1
   fi
