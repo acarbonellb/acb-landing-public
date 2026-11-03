@@ -77,6 +77,8 @@ export type ChatOptions = {
   model: ModelClient;
   toolset: Toolset;
   messages: ChatMessage[];
+  /** Defaults to the shipped `systemPrompt`; the evals swap it to prove staleness. */
+  system?: string;
   maxIterations?: number;
   maxTokens?: number;
   maxRequestTokens?: number;
@@ -128,6 +130,7 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
   const {
     model,
     toolset,
+    system = systemPrompt,
     maxIterations = chatLimits.maxIterations,
     maxTokens = chatLimits.maxTokens,
     maxRequestTokens = chatLimits.maxRequestTokens,
@@ -156,7 +159,7 @@ export async function* runChat(options: ChatOptions): AsyncGenerator<ChatEvent> 
       };
       inFlight = call;
       for await (const event of model.stream({
-        system: systemPrompt,
+        system,
         messages,
         tools,
         maxTokens: call.maxTokens,
