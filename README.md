@@ -32,18 +32,19 @@ Browser tests need a Chromium: run `pnpm exec playwright install chromium` once,
 
 `next build` produces a fully static site in `out/` (`output: "export"`), deployed to **Firebase Hosting** by the same workflow on every push to `main` once the checks pass. GitHub authenticates to GCP with Workload Identity Federation, so there are no service account keys.
 
-The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, default URL https://acb-landing.web.app). The deploy job runs only on `main` and only once `GCP_PROJECT_ID` is set; it uses these repository variables:
+The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, default URL https://acb-landing.web.app) and is served on **https://albertocarbonell.dev**. `www.albertocarbonell.dev`, `albertocarbonell.es` and `www.albertocarbonell.es` are Hosting custom domains that redirect (301) to it; their DNS is in GoDaddy (an `A` record to `199.36.158.100` plus a `hosting-site=acb-landing` `TXT` on each apex, which must stay for Firebase to keep verifying ownership, and `www` as a `CNAME` to `acb-landing.web.app`). The deploy job runs only on `main` and only once `GCP_PROJECT_ID` is set; it uses these repository variables:
 
 | Variable | Value |
 | --- | --- |
 | `GCP_PROJECT_ID` | `acb-landing` |
 | `GCP_WIF_PROVIDER` | `projects/864363287015/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
-| `SITE_URL` (optional) | URL the smoke check hits; defaults to `https://<GCP_PROJECT_ID>.web.app` |
+| `SITE_URL` | `https://albertocarbonell.dev`: URL the smoke check hits (defaults to `https://<GCP_PROJECT_ID>.web.app`) |
+| `REDIRECT_HOSTS` | `www.albertocarbonell.dev albertocarbonell.es www.albertocarbonell.es`: hosts the smoke check expects to 301 to `SITE_URL` |
 
 The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds two roles: Firebase Hosting Admin, and Service Usage Viewer (firebase-tools checks the Hosting API is enabled before deploying). It has no keys.
 
-After deploying, a **smoke check** fetches `SITE_URL` and fails the workflow unless it answers 200 and the page contains "Alberto Carbonell" (five attempts, 10 s apart).
+After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell", and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
 
 `AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
