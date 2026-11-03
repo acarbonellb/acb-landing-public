@@ -1,0 +1,113 @@
+{
+  "caseId": "on09",
+  "slug": "location",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "a3ba79517164dc5ea559603e20fed11d551a24114c6073007a4181ac499ad7a7",
+      "latencyMs": 2723,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1971
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "ROWp5Mno17UdrUOgmXhwENAVww95IzGM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1971,
+              "outputTokens": 80
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "ROWp5Mno17UdrUOgmXhwENAVww95IzGM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f0c6fbd3a37fd648774329fb15e3f5dab8da078181ae948d04e4047981e4f0b6",
+      "latencyMs": 706,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2280
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " based"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto is based in Spain and works remotely.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2280,
+              "outputTokens": 13
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto is based in Spain and works remotely."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

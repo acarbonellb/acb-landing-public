@@ -1,0 +1,117 @@
+{
+  "caseId": "on05",
+  "slug": "programming-languages",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "5f019a6d10f8b59cb0f9dba8fd2aa091e8428e786ca8d36e5d8a3694dfc9cf13",
+      "latencyMs": 5823,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1973
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "trl5B8vCPwdMGn0TiF7lNxBUBmIkgcW6",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1973,
+              "outputTokens": 188
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "trl5B8vCPwdMGn0TiF7lNxBUBmIkgcW6",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "b51c00527326ae363bb23f160c79ae1787f2a6cbcb4fb0c6f04319f079939674",
+      "latencyMs": 597,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2050
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " uses"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto uses TypeScript, JavaScript, and Ruby.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2050,
+              "outputTokens": 13
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto uses TypeScript, JavaScript, and Ruby."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

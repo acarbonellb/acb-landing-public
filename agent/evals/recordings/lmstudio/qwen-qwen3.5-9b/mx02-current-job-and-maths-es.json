@@ -1,0 +1,257 @@
+{
+  "caseId": "mx02",
+  "slug": "current-job-and-maths-es",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "046526c3cdca058ec22a00bdfce10a211040013c41f816e287e64849ff00116d",
+      "latencyMs": 3079,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1988
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "NwGhbHFDFBbzaU0rj7aGqfjCc5KFT0F7",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1988,
+              "outputTokens": 98
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "NwGhbHFDFBbzaU0rj7aGqfjCc5KFT0F7",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f1a63c9a81af760fba8b5a5b11f45e755fb1af712b81dc7059a6bb02f17ab9f0",
+      "latencyMs": 1799,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2314
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " trabaja"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " España"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " forma"
+        },
+        {
+          "type": "text_delta",
+          "text": " rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "ota"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " No"
+        },
+        {
+          "type": "text_delta",
+          "text": " puedo"
+        },
+        {
+          "type": "text_delta",
+          "text": " responder"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " preguntas"
+        },
+        {
+          "type": "text_delta",
+          "text": " matem"
+        },
+        {
+          "type": "text_delta",
+          "text": "áticas"
+        },
+        {
+          "type": "text_delta",
+          "text": " como"
+        },
+        {
+          "type": "text_delta",
+          "text": " \""
+        },
+        {
+          "type": "text_delta",
+          "text": "cu"
+        },
+        {
+          "type": "text_delta",
+          "text": "ánt"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " es"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
+          "text": " por"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "8"
+        },
+        {
+          "type": "text_delta",
+          "text": "\"."
+        },
+        {
+          "type": "text_delta",
+          "text": " ¿"
+        },
+        {
+          "type": "text_delta",
+          "text": "Te"
+        },
+        {
+          "type": "text_delta",
+          "text": " gustaría"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": " más"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " sus"
+        },
+        {
+          "type": "text_delta",
+          "text": " proyectos"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " agentes"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
+        },
+        {
+          "type": "text_delta",
+          "text": " su"
+        },
+        {
+          "type": "text_delta",
+          "text": " experiencia"
+        },
+        {
+          "type": "text_delta",
+          "text": " laboral"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"cuánto es 9 por 8\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2314,
+              "outputTokens": 49
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto trabaja en España de forma remota. No puedo responder a preguntas matemáticas como \"cuánto es 9 por 8\". ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

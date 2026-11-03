@@ -1,0 +1,237 @@
+{
+  "caseId": "mx01",
+  "slug": "typescript-and-boiling-point",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "9f522622e55b57c7f99813e6a34fd0e48492be361f43ae0a943c80028b4e4887",
+      "latencyMs": 5419,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1983
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1983,
+              "outputTokens": 177
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "a4bbe72b9561b6eec53d0f084aaabb3ec6201910f8e433206608ed4f7e1e81e5",
+      "latencyMs": 1497,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2070
+        },
+        {
+          "type": "text_delta",
+          "text": "Yes"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " knows"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " However"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " unrelated"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " such"
+        },
+        {
+          "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " boiling"
+        },
+        {
+          "type": "text_delta",
+          "text": " point"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " water"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know"
+        },
+        {
+          "type": "text_delta",
+          "text": " more"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " instead"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2070,
+              "outputTokens": 43
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

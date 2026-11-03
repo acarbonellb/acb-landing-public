@@ -1,0 +1,125 @@
+{
+  "caseId": "on07",
+  "slug": "spoken-languages",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "aae822a50cec3ceacb6e65316488fe7a2256bb2ef36588679df4525bb28f6008",
+      "latencyMs": 1870,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1972
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "kkIoYSvkZulkNN1hpbPAMx1UTJWGFWdj",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1972,
+              "outputTokens": 57
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "kkIoYSvkZulkNN1hpbPAMx1UTJWGFWdj",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "db2333a76b36b29ff23c3ab63befc45dc60b078cf71f92b1317c5ed61042892f",
+      "latencyMs": 1122,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2282
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " speaks"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spanish"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "native"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " English"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "C"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": ")."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto speaks Spanish (native) and English (C1).",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2282,
+              "outputTokens": 16
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto speaks Spanish (native) and English (C1)."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
