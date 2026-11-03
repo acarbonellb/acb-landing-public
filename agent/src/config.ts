@@ -4,6 +4,8 @@
 import * as z from "zod";
 import { createAnthropicModelClient, efforts } from "./anthropic";
 import { chatLimits } from "./chat";
+import type { DocumentStore } from "./document-store";
+import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
 
 const intFromEnv = z.coerce.number().int().positive();
@@ -34,6 +36,15 @@ const envSchema = z.object({
         .map((origin) => origin.trim())
         .filter(Boolean),
     ),
+  // Where the rate limits and spend cap keep their state: `memory` (per
+  // instance, lost on restart; local development) or `firestore` (shared).
+  AGENT_STORE: z.enum(["memory", "firestore"]).default("memory"),
+  FIRESTORE_PROJECT_ID: z.string().optional(),
+  FIRESTORE_DATABASE: z.string().min(1).default("(default)"),
+  FIRESTORE_EMULATOR_HOST: z.string().optional(),
+}).refine((e) => e.AGENT_STORE !== "firestore" || e.FIRESTORE_PROJECT_ID, {
+  message: "required when AGENT_STORE is firestore",
+  path: ["FIRESTORE_PROJECT_ID"],
 });
 
 export type Config = ReturnType<typeof loadConfig>;
@@ -46,6 +57,15 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     throw new Error(`Invalid agent configuration: ${z.prettifyError(parsed.error)}`);
   }
   const e = parsed.data;
+  const store =
+    e.AGENT_STORE === "firestore"
+      ? {
+          kind: "firestore" as const,
+          projectId: e.FIRESTORE_PROJECT_ID!,
+          databaseId: e.FIRESTORE_DATABASE,
+          emulatorHost: e.FIRESTORE_EMULATOR_HOST,
+        }
+      : { kind: "memory" as const };
   return {
     model: e.AGENT_MODEL,
     effort: e.AGENT_EFFORT,
@@ -65,6 +85,11 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       },
       /** Proxies that append to X-Forwarded-For (Cloud Run: 1). */
       trustedProxyHops: e.TRUSTED_PROXY_HOPS,
+    },
+    store,
+    /** The shared store for the guardrails, or `null` to keep them in memory. */
+    createDocumentStore(): DocumentStore | null {
+      return store.kind === "firestore" ? createFirestoreDocumentStore(store) : null;
     },
     /** The production model client, or `null` when no API key is set. */
     createModelClient(): ModelClient | null {

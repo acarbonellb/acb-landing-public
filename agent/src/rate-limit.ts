@@ -1,13 +1,10 @@
 // Per-key (per-IP) rate limiting for the chat and MCP endpoints.
 //
-// The default store is in memory, so its counts are PER INSTANCE: Cloud Run
-// may run several instances (each with its own counts, so the effective limit
-// is `limit × instances`) and scales to zero (a cold start forgets every
-// count). That is fine as an abuse brake for a portfolio; the monthly spend
-// cap is the hard cost guard. For a strict global limit, implement
-// `RateLimiter` over a shared store (e.g. Redis/Memorystore `INCR` + `PEXPIRE`
-// on `ratelimit:<key>:<window>`, or a Firestore counter in a transaction) and
-// inject it through `AppDeps`. The interface is async for that reason.
+// Two implementations of `RateLimiter`: `createStoreRateLimiter` keeps the
+// counts in a shared `DocumentStore` (Firestore in production), so they hold
+// across Cloud Run instances and cold starts; `createMemoryRateLimiter` keeps
+// them in this process, for local development and tests.
+import type { DocumentStore } from "./document-store";
 
 export type RateLimitDecision =
   | { allowed: true }
@@ -26,15 +23,37 @@ export type RateLimitOptions = {
   now?: () => number;
 };
 
+type Window = { start: number; count: number };
+
 /**
- * Fixed-window counter per key: the first request opens a window of
- * `windowMs`; up to `limit` requests pass in it. Refused requests don't count.
+ * Fixed-window counter: the first request opens a window of `windowMs`; up to
+ * `limit` requests pass in it. Refused requests don't count, so they leave
+ * the window as it was (`next` is undefined).
  */
+function hitWindow(
+  w: Window | undefined,
+  t: number,
+  { limit, windowMs }: RateLimitOptions,
+): { decision: RateLimitDecision; next?: Window } {
+  if (!w || t - w.start >= windowMs) {
+    return { decision: { allowed: true }, next: { start: t, count: 1 } };
+  }
+  if (w.count < limit) {
+    return { decision: { allowed: true }, next: { start: w.start, count: w.count + 1 } };
+  }
+  return {
+    decision: {
+      allowed: false,
+      retryAfterSeconds: Math.max(1, Math.ceil((w.start + windowMs - t) / 1000)),
+    },
+  };
+}
+
 export function createMemoryRateLimiter(
   options: RateLimitOptions,
 ): RateLimiter & { /** Keys currently tracked (for tests). */ size(): number } {
-  const { limit, windowMs, now = Date.now } = options;
-  const windows = new Map<string, { start: number; count: number }>();
+  const { windowMs, now = Date.now } = options;
+  const windows = new Map<string, Window>();
   let lastSweep = now();
 
   // Drop expired windows at most once per window length, so memory is
@@ -51,20 +70,43 @@ export function createMemoryRateLimiter(
     async hit(key) {
       const t = now();
       sweep(t);
-      const w = windows.get(key);
-      if (!w || t - w.start >= windowMs) {
-        windows.set(key, { start: t, count: 1 });
-        return { allowed: true };
-      }
-      if (w.count < limit) {
-        w.count++;
-        return { allowed: true };
-      }
-      return {
-        allowed: false,
-        retryAfterSeconds: Math.max(1, Math.ceil((w.start + windowMs - t) / 1000)),
-      };
+      const { decision, next } = hitWindow(windows.get(key), t, options);
+      if (next) windows.set(key, next);
+      return decision;
     },
     size: () => windows.size,
+  };
+}
+
+/** Collection of the store-backed windows, one document per limiter and key. */
+export const rateLimitCollection = "rateLimits";
+
+/**
+ * Rate limiter over a shared store: each key's window is the document
+ * `rateLimits/<name>:<key>`, updated atomically, so every instance counts
+ * against the same limit. Each window carries `expireAt` (its end) for a
+ * Firestore TTL policy to delete it.
+ */
+export function createStoreRateLimiter(
+  options: RateLimitOptions & {
+    store: DocumentStore;
+    /** Tells limiters on the same store apart (e.g. "chat", "mcp"). */
+    name: string;
+  },
+): RateLimiter {
+  const { store, name, windowMs, now = Date.now } = options;
+  return {
+    hit(key) {
+      const t = now();
+      const path = `${rateLimitCollection}/${name}:${encodeURIComponent(key)}`;
+      return store.update(path, (doc) => {
+        const w = doc && { start: Number(doc.start), count: Number(doc.count) };
+        const { decision, next } = hitWindow(w, t, options);
+        return {
+          result: decision,
+          doc: next && { ...next, expireAt: new Date(next.start + windowMs) },
+        };
+      });
+    },
   };
 }

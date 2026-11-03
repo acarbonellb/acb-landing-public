@@ -10,8 +10,12 @@ import { clientIp } from "./client-ip";
 import { loadConfig } from "./config";
 import { createMcpServer } from "./mcp";
 import type { ModelClient } from "./model";
-import { createMemoryRateLimiter, type RateLimiter } from "./rate-limit";
-import { createMemorySpendCap, type SpendCap } from "./spend-cap";
+import {
+  createMemoryRateLimiter,
+  createStoreRateLimiter,
+  type RateLimiter,
+} from "./rate-limit";
+import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
 import { createToolset, type Toolset } from "./tools";
 
 export type { HttpErrorBody, HttpErrorCode };
@@ -45,12 +49,12 @@ export type AppDeps = {
   allowedOrigins: string[];
   chatLimits: { maxIterations: number; maxTokens: number; maxRequestTokens: number };
   /**
-   * Per-IP limits. The defaults keep counts in memory, per instance (see
-   * `rate-limit.ts` for what that means on Cloud Run and how to share them).
+   * Per-IP limits. By default in the shared store when `AGENT_STORE` selects
+   * one, else in memory, per instance (`rate-limit.ts`).
    */
   chatRateLimiter: RateLimiter;
   mcpRateLimiter: RateLimiter;
-  /** Monthly model budget; in memory and per instance by default (`spend-cap.ts`). */
+  /** Monthly model budget; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
   /** Key for the rate limiters: the client IP by default. */
   clientKey: (c: Context) => string;
@@ -83,22 +87,24 @@ const minute = 60_000;
 
 export function createApp(deps: Partial<AppDeps> = {}): Hono {
   const config = loadConfig();
+  const store = config.createDocumentStore();
+  const rateLimiter = (name: string, limit: number) =>
+    store
+      ? createStoreRateLimiter({ store, name, limit, windowMs: minute })
+      : createMemoryRateLimiter({ limit, windowMs: minute });
+  const spendCapOptions = {
+    budgetUsd: config.guardrails.monthlyBudgetUsd,
+    pricing: config.guardrails.pricing,
+  };
   const {
     toolset = createToolset(),
     allowedOrigins = config.allowedOrigins,
     chatLimits = config.chatLimits,
-    chatRateLimiter = createMemoryRateLimiter({
-      limit: config.guardrails.chatRequestsPerMinute,
-      windowMs: minute,
-    }),
-    mcpRateLimiter = createMemoryRateLimiter({
-      limit: config.guardrails.mcpRequestsPerMinute,
-      windowMs: minute,
-    }),
-    spendCap = createMemorySpendCap({
-      budgetUsd: config.guardrails.monthlyBudgetUsd,
-      pricing: config.guardrails.pricing,
-    }),
+    chatRateLimiter = rateLimiter("chat", config.guardrails.chatRequestsPerMinute),
+    mcpRateLimiter = rateLimiter("mcp", config.guardrails.mcpRequestsPerMinute),
+    spendCap = store
+      ? createStoreSpendCap({ ...spendCapOptions, store })
+      : createMemorySpendCap(spendCapOptions),
     clientKey = (c: Context) => clientIp(c, config.guardrails.trustedProxyHops),
   } = deps;
   const modelClient =

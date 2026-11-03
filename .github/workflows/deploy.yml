@@ -129,14 +129,19 @@ jobs:
 
       # The service's public (allUsers) invoker binding is set once by hand
       # and kept across deploys; this job never changes IAM. The model and its
-      # prices are the code defaults (agent/src/config.ts).
+      # prices are the code defaults (agent/src/config.ts). The guardrails'
+      # store is `memory` until the AGENT_STORE variable says `firestore`
+      # (the database must exist first). `^@^` makes `@` the separator, as
+      # ALLOWED_ORIGINS may hold commas.
       - name: Deploy to Cloud Run
+        env:
+          AGENT_STORE: ${{ vars.AGENT_STORE || 'memory' }}
         run: >-
           gcloud run deploy agent --quiet
           --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
           --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
           --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest
-          --set-env-vars "ALLOWED_ORIGINS=$SITE_URL"
+          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
       # Never calls the model: health, MCP tools, CORS and validation only.
