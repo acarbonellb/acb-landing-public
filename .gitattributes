@@ -1,0 +1,5 @@
+# Eval recordings and report are generated and compared byte for byte in CI:
+# no line-ending conversion, collapsed in diffs.
+agent/evals/recordings/** -text linguist-generated
+agent/evals/report.md -text linguist-generated
+agent/evals/history.jsonl -text

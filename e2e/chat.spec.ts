@@ -125,6 +125,58 @@ test("a visitor asks a question and sees the tool calls and the answer", async (
   await expectAccessible(page);
 });
 
+const markdownAnswer = [
+  "He has built **three** agents:",
+  "",
+  "- *Fraud Detection Agent*",
+  "- Portfolio Agent, served over `MCP`",
+  "",
+  "Code: [GitHub](https://github.com/acarbonellb) or [this](javascript:alert(1)).",
+  'Ignore <img src=x onerror="alert(1)"> and https://example.com/a/very/long/path/that/keeps/going/and/going/without/any/spaces',
+].join("\n");
+
+for (const theme of ["night", "light"] as const) {
+  test(`renders the agent's Markdown safely in the ${theme} theme on a phone`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.addInitScript((t) => localStorage.setItem("theme", t), theme);
+    await stubChat(
+      page,
+      streamReply(
+        // Split mid-syntax, like a real stream.
+        { type: "text", delta: markdownAnswer.slice(0, 20) },
+        { type: "text", delta: markdownAnswer.slice(20) },
+        { type: "done", stopReason: "end_turn", usage: {} },
+      ),
+    );
+    await page.goto("/#agent");
+
+    await ask(page, "What has he **built**?");
+
+    const log = conversation(page);
+    await expect(log.getByRole("strong").filter({ hasText: "three" })).toBeVisible();
+    await expect(
+      log.getByRole("emphasis").filter({ hasText: "Fraud Detection Agent" }),
+    ).toBeVisible();
+    await expect(log.getByRole("listitem")).toHaveCount(2);
+    await expect(log.getByText("What has he **built**?")).toBeVisible();
+    const github = log.getByRole("link", { name: "GitHub" });
+    await expect(github).toHaveAttribute("href", "https://github.com/acarbonellb");
+    await expect(github).toHaveAttribute("target", "_blank");
+    await expect(github).toHaveAttribute("rel", "noopener noreferrer");
+    await expect(log.getByRole("link")).toHaveCount(1);
+    await expect(log.getByRole("img")).toHaveCount(0);
+    await expect(log.getByText('<img src=x onerror="alert(1)">')).toBeVisible();
+
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(overflow).toBe(0);
+    await expectAccessible(page);
+  });
+}
+
 test("the chat is usable from the keyboard alone", async ({ page }) => {
   await stubChat(
     page,

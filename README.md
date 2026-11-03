@@ -28,7 +28,7 @@ Browser tests need a Chromium: run `pnpm exec playwright install chromium` once,
 
 ## CI and deployment
 
-`.github/workflows/deploy.yml` runs lint, unit tests, build and browser tests on every push and pull request. A failing check blocks the deploy.
+`.github/workflows/deploy.yml` runs lint, unit tests, the agent evals (replayed, see [Evals](#evals)), build and browser tests on every push and pull request. A failing check blocks the deploy.
 
 `next build` produces a fully static site in `out/` (`output: "export"`), deployed to **Firebase Hosting** by the same workflow on every push to `main` once the checks pass. GitHub authenticates to GCP with Workload Identity Federation, so there are no service account keys.
 
@@ -151,6 +151,33 @@ claude mcp add --transport http albertocarbonell http://localhost:8080/mcp
 ```
 
 Any other MCP client works the same way: point its Streamable HTTP transport at `/mcp`. To poke at it by hand, `npx @modelcontextprotocol/inspector` and connect to the same URL.
+
+### Evals
+
+The unit tests use a scripted fake model, so they prove the loop and tools work, not that a real model follows the system prompt. The evals check that: about 30 eval cases (`agent/evals/cases/index.ts`) of five kinds: off-topic (trivia, maths, coding help, also after a friendly turn), mixed (a question about me plus an unrelated one), injection, on-topic and unknown (things the tools don't cover). They run through the real chat loop and tools; only the model is swapped. Why record/replay: [ADR 0001](docs/adr/0001-agent-evals-record-replay.md).
+
+```bash
+pnpm agent:eval                  # live run: real model, writes recordings and the report
+pnpm agent:eval:replay           # replays the committed recordings, rewrites agent/evals/report.md
+pnpm agent:eval:replay --check   # CI: no model, no network, no API key; writes nothing
+```
+
+**Recording (live, on your machine).** `pnpm agent:eval` defaults to a local model through LM Studio's Anthropic-compatible API, so it's free: start LM Studio's server with `qwen/qwen3.5-9b` loaded, then run it as is (it uses `ANTHROPIC_BASE_URL=http://localhost:1234`, `ANTHROPIC_API_KEY=lmstudio`, `AGENT_MODEL=qwen/qwen3.5-9b`). Each case that completes is written to `agent/evals/recordings/<provider>/<model>/<case>.json`: every model call's request hash and response events. A case that fails (model down, an error) keeps its previous recording. Then one line with the set's metrics is appended to `agent/evals/history.jsonl` and `agent/evals/report.md` is regenerated. `--only ot01,on02` re-records some cases (still one history line, for the whole set).
+
+Claude (or any non-local server) costs money: only with the owner's go-ahead, and the script refuses without `--paid`:
+
+```bash
+ANTHROPIC_BASE_URL=https://api.anthropic.com ANTHROPIC_API_KEY=sk-ant-... \
+  AGENT_MODEL=claude-opus-5-5 AGENT_EVAL_PROVIDER=anthropic pnpm agent:eval --paid
+```
+
+Each provider/model gets its own recording set and report section; the provider label comes from `--provider`, then `AGENT_EVAL_PROVIDER`, then the server (`lmstudio` on localhost, `anthropic` otherwise). Run limits are the chat loop's code defaults (`chatLimits` in `agent/src/chat.ts`, plus the request limits in `src/lib/chat-contract.ts`), never your `AGENT_MAX_*` env.
+
+**When to re-record.** A recording is only valid for the exact request it answered. Changing the system prompt, a tool's description or schema, `src/content/profile.ts` (tool results) or the chat limits changes the request, so `--check` fails as **stale** ("re-run `pnpm agent:eval` and commit"). Re-run it and commit the recordings, `history.jsonl` and `report.md` together. CI never re-records.
+
+**History.** Every live run appends one line per recording set to `agent/evals/history.jsonl`: date (UTC), the commit it started from, provider, model, system prompt hash, case count and the report's metrics. Replay never appends. The report's "History" section shows the last 10 runs per set, newest first, each metric with its change from the run before (pp = percentage points). A prompt hash that changes between rows means the system prompt changed; the same hash with different numbers means the model, tools or content did (or the model just answered differently). Small local models aren't deterministic, so a couple of points of fact coverage between identical runs is noise; any leak is not.
+
+**What CI gates.** `pnpm agent:eval:replay --check` runs in the `test` job and fails on a stale or missing recording, on any off-topic, mixed or injection case that leaks (the system prompt is the only defence, so a leak is a regression), when a set's latest history entry doesn't match its recordings (prompt hash and metrics, so a re-recording can't be committed without its history line), or when the regenerated `report.md` differs from the committed one. Tool accuracy, fact coverage and unknown handling are reported, not gated.
 
 ## Roadmap
 
