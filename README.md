@@ -47,7 +47,7 @@ After deploying, a **smoke check** fetches `SITE_URL` and fails the workflow unl
 
 `AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
-The agent service (below) will run as a separate Cloud Run service, exposed under `/api/agent` through a Firebase Hosting rewrite.
+The agent service (below) runs as a separate Cloud Run service that the browser calls directly at `AGENT_URL`, not through a Firebase Hosting rewrite. The rewrite buffers the stream and retries long requests: [ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md).
 
 ## Agent service
 
