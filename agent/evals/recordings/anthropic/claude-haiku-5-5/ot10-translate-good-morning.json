@@ -1,0 +1,65 @@
+{
+  "caseId": "ot10",
+  "slug": "translate-good-morning",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "d932a76bc93b111abda4e2fdc85a306be33e45501a479960bc6a6e71c6af6581",
+      "latencyMs": 899,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1406
+        },
+        {
+          "type": "text_delta",
+          "text": "I can only answer questions about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " Carbonell and"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work. Would you like to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know about his AI agents,"
+        },
+        {
+          "type": "text_delta",
+          "text": " his experience, or how to cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "act him?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1406,
+              "outputTokens": 47
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

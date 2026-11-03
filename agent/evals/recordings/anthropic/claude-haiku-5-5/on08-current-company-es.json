@@ -1,0 +1,168 @@
+{
+  "caseId": "on08",
+  "slug": "current-company-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "0f554ad1f264db2e1a7e6a06d7da42cf3e72a8a230792c86f3aa97de19d3866d",
+      "latencyMs": 826,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1415
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01RhcoAR5oDyFSqaZtzTuf6S",
+                "name": "get_experience",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1415,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01RhcoAR5oDyFSqaZtzTuf6S",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "0a23c79881af2d6e476ebf5e9c946b5a72300eb680cb26a54d2161e04ac1919d",
+      "latencyMs": 1077,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1977
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abaja actualmente como"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Senior Software Engine"
+        },
+        {
+          "type": "text_delta",
+          "text": "er en"
+        },
+        {
+          "type": "text_delta",
+          "text": " CoverWallet**"
+        },
+        {
+          "type": "text_delta",
+          "text": " (desde 2019),"
+        },
+        {
+          "type": "text_delta",
+          "text": " una"
+        },
+        {
+          "type": "text_delta",
+          "text": " plataforma insurtech"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid / rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "oto. All"
+        },
+        {
+          "type": "text_delta",
+          "text": "í lid"
+        },
+        {
+          "type": "text_delta",
+          "text": "era pro"
+        },
+        {
+          "type": "text_delta",
+          "text": "yectos trans"
+        },
+        {
+          "type": "text_delta",
+          "text": "versales de"
+        },
+        {
+          "type": "text_delta",
+          "text": " princip"
+        },
+        {
+          "type": "text_delta",
+          "text": "io a fin y"
+        },
+        {
+          "type": "text_delta",
+          "text": " ha integrado ag"
+        },
+        {
+          "type": "text_delta",
+          "text": "entes de IA en el"
+        },
+        {
+          "type": "text_delta",
+          "text": " flujo de trabajo"
+        },
+        {
+          "type": "text_delta",
+          "text": " de ingeniería del"
+        },
+        {
+          "type": "text_delta",
+          "text": " equipo."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto. Allí lidera proyectos transversales de principio a fin y ha integrado agentes de IA en el flujo de trabajo de ingeniería del equipo.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1977,
+              "outputTokens": 111
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto. Allí lidera proyectos transversales de principio a fin y ha integrado agentes de IA en el flujo de trabajo de ingeniería del equipo."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

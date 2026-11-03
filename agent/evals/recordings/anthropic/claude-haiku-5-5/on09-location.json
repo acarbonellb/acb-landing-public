@@ -1,0 +1,88 @@
+{
+  "caseId": "on09",
+  "slug": "location",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "a3ba79517164dc5ea559603e20fed11d551a24114c6073007a4181ac499ad7a7",
+      "latencyMs": 804,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1403
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01NcdF8S91VVxyG14JKkKo6M",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1403,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01NcdF8S91VVxyG14JKkKo6M",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "11c90583a1575d29fc695ef4ca51ba05d71fe65bf9734202a54bbe59f2d3f7d4",
+      "latencyMs": 702,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1876
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto is based in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works remotely."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto is based in Spain and works remotely.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1876,
+              "outputTokens": 18
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto is based in Spain and works remotely."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

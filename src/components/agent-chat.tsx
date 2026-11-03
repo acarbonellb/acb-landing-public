@@ -42,6 +42,15 @@ const noticeFallback: Record<ChatErrorKind, string> = {
   error: "Please try again.",
 };
 
+// The notice's body: the agent's message, minus a leading copy of the title
+// (the agent's own unavailable message starts with the same sentence).
+function noticeDetail(notice: Notice): string {
+  const title = noticeTitle[notice.kind];
+  const message = notice.message ?? noticeFallback[notice.kind];
+  const rest = message.startsWith(title) ? message.slice(title.length).trim() : message;
+  return rest || noticeFallback[notice.kind];
+}
+
 // The agent's Markdown in the terminal palette. Long URLs wrap anywhere so
 // they never push the page sideways on a phone.
 const answerStyle =
@@ -239,10 +248,17 @@ export function AgentChat({
         >
           <p className="font-bold">{noticeTitle[notice.kind]}</p>
           <p className="text-fg-dark">
-            {notice.message ?? noticeFallback[notice.kind]}
+            {noticeDetail(notice)}
             {notice.retryAfterSeconds !== undefined &&
               ` Try again in ${notice.retryAfterSeconds}s.`}
           </p>
+          {/* The MCP tools don't use the model, so they outlive the chat. */}
+          {notice.kind === "unavailable" && (
+            <p className="mt-1 text-fg-dark [overflow-wrap:anywhere]">
+              The MCP server still works: connect any MCP client to{" "}
+              <code className="text-cyan">{mcpUrl}</code>.
+            </p>
+          )}
         </div>
       )}
 

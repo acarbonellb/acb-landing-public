@@ -1,0 +1,192 @@
+{
+  "caseId": "on06",
+  "slug": "education-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "8119e6141076f56455b9573639ab99b184d7fc403ad226decbbad7da5054e9f2",
+      "latencyMs": 772,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1407
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01JRTkzuZpGzcWKSow4rfCxV",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1407,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01JRTkzuZpGzcWKSow4rfCxV",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f2710e8e07a39b911592f5ee4ea98090ea9ae3704c23c80a4adcb30d62b1d509",
+      "latencyMs": 1181,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1880
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto est"
+        },
+        {
+          "type": "text_delta",
+          "text": "udió "
+        },
+        {
+          "type": "text_delta",
+          "text": "Ciclos"
+        },
+        {
+          "type": "text_delta",
+          "text": " Formativos de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Grado Superior (C"
+        },
+        {
+          "type": "text_delta",
+          "text": "FGS) en el CI"
+        },
+        {
+          "type": "text_delta",
+          "text": "FP Rodolfo"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ucha Piñe"
+        },
+        {
+          "type": "text_delta",
+          "text": "iro,"
+        },
+        {
+          "type": "text_delta",
+          "text": " en A Coruña,"
+        },
+        {
+          "type": "text_delta",
+          "text": " entre 2010 y "
+        },
+        {
+          "type": "text_delta",
+          "text": "2015."
+        },
+        {
+          "type": "text_delta",
+          "text": " Los títulos fueron:"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n- Des"
+        },
+        {
+          "type": "text_delta",
+          "text": "arrollo de A"
+        },
+        {
+          "type": "text_delta",
+          "text": "plicaciones Web"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- Desarrollo de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Aplicaciones"
+        },
+        {
+          "type": "text_delta",
+          "text": " Multiplatafor"
+        },
+        {
+          "type": "text_delta",
+          "text": "ma\n- Administ"
+        },
+        {
+          "type": "text_delta",
+          "text": "ración de Sistemas"
+        },
+        {
+          "type": "text_delta",
+          "text": " Informáticos en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Red\n\n¿Quie"
+        },
+        {
+          "type": "text_delta",
+          "text": "res saber más sobre su"
+        },
+        {
+          "type": "text_delta",
+          "text": " experiencia prof"
+        },
+        {
+          "type": "text_delta",
+          "text": "esional o s"
+        },
+        {
+          "type": "text_delta",
+          "text": "us proyectos con"
+        },
+        {
+          "type": "text_delta",
+          "text": " agentes de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto estudió Ciclos Formativos de Grado Superior (CFGS) en el CIFP Rodolfo Ucha Piñeiro, en A Coruña, entre 2010 y 2015. Los títulos fueron:\n\n- Desarrollo de Aplicaciones Web\n- Desarrollo de Aplicaciones Multiplataforma\n- Administración de Sistemas Informáticos en Red\n\n¿Quieres saber más sobre su experiencia profesional o sus proyectos con agentes de IA?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1880,
+              "outputTokens": 177
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto estudió Ciclos Formativos de Grado Superior (CFGS) en el CIFP Rodolfo Ucha Piñeiro, en A Coruña, entre 2010 y 2015. Los títulos fueron:\n\n- Desarrollo de Aplicaciones Web\n- Desarrollo de Aplicaciones Multiplataforma\n- Administración de Sistemas Informáticos en Red\n\n¿Quieres saber más sobre su experiencia profesional o sus proyectos con agentes de IA?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

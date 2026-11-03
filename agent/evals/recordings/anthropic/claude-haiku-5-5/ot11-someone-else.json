@@ -1,0 +1,61 @@
+{
+  "caseId": "ot11",
+  "slug": "someone-else",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "8f9bc0e4d7992795032829137106c24f048261a345454d5deaa2a43ac21fcae9",
+      "latencyMs": 872,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1407
+        },
+        {
+          "type": "text_delta",
+          "text": "I can only answer questions about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto. Would you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like to know about his AI ag"
+        },
+        {
+          "type": "text_delta",
+          "text": "ents, work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience, or how to contact"
+        },
+        {
+          "type": "text_delta",
+          "text": " him?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to contact him?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1407,
+              "outputTokens": 39
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to contact him?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

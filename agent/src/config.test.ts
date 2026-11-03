@@ -3,9 +3,9 @@ import { chatLimits } from "./chat";
 import { loadConfig } from "./config";
 
 describe("loadConfig", () => {
-  it("defaults to the latest Opus, the site origins and the built-in caps", () => {
+  it("defaults to Claude Haiku 5.5 (the cheapest current model), the site origins and the built-in caps", () => {
     const config = loadConfig({});
-    expect(config.model).toBe("claude-opus-5-5");
+    expect(config.model).toBe("claude-haiku-5-5");
     expect(config.allowedOrigins).toEqual([
       "http://localhost:3000",
       "https://albertocarbonell.dev",
@@ -42,12 +42,12 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, a $20 monthly cap, Opus 5.5 prices, one proxy hop", () => {
+  it("defaults the guardrails: per-IP limits, a $20 monthly cap, Haiku 5.5 prices, one proxy hop", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
       monthlyBudgetUsd: 20,
-      pricing: { inputUsdPerMTok: 4, outputUsdPerMTok: 20 },
+      pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
       trustedProxyHops: 1,
     });
   });

@@ -11,7 +11,7 @@ const usdFromEnv = z.coerce.number().nonnegative();
 
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
-  AGENT_MODEL: z.string().min(1).default("claude-opus-5-5"),
+  AGENT_MODEL: z.string().min(1).default("claude-haiku-5-5"),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
@@ -19,9 +19,10 @@ const envSchema = z.object({
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(20),
-  // Claude Opus 5.5 list prices; change them with AGENT_MODEL.
-  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(4),
-  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(20),
+  // Claude Haiku 5.5 list prices (prompts up to 100K tokens, far above a
+  // chat request); change them with AGENT_MODEL.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(0.1),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(0.5),
   // At least 1: 0 or less would make `clientIpFrom` read no proxy entry.
   TRUSTED_PROXY_HOPS: z.coerce.number().int().min(1).default(1),
   ALLOWED_ORIGINS: z
