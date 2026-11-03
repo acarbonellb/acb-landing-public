@@ -1,0 +1,104 @@
+{
+  "caseId": "on05",
+  "slug": "programming-languages",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "5f019a6d10f8b59cb0f9dba8fd2aa091e8428e786ca8d36e5d8a3694dfc9cf13",
+      "latencyMs": 902,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1407
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_019JcnNVh6zgyvrDjr3vvpUp",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1407,
+              "outputTokens": 49
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_019JcnNVh6zgyvrDjr3vvpUp",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "49b064d40ae9cb1ceebee6dc4aa24a4baf372fa564e439b08b492af187ecc062",
+      "latencyMs": 789,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1506
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto works"
+        },
+        {
+          "type": "text_delta",
+          "text": " with three"
+        },
+        {
+          "type": "text_delta",
+          "text": " programming languages: Type"
+        },
+        {
+          "type": "text_delta",
+          "text": "Script, JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and Ruby."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1506,
+              "outputTokens": 32
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

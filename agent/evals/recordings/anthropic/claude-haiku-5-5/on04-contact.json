@@ -1,0 +1,128 @@
+{
+  "caseId": "on04",
+  "slug": "contact",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "e28bc49d6566eda77ae62872cb1f6349239a0c739dbbf5971125f1607437dd7c",
+      "latencyMs": 1327,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1401
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01KLoydrSXbueckf3SRpmTeA",
+                "name": "get_contact",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1401,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01KLoydrSXbueckf3SRpmTeA",
+                "name": "get_contact",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "2cd22c7920a9e8e73de98bb751c5969b31c366069459768e0be8ae737e404976",
+      "latencyMs": 843,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1538
+        },
+        {
+          "type": "text_delta",
+          "text": "You can reach Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " at:\n\n- **Email:"
+        },
+        {
+          "type": "text_delta",
+          "text": "** alberto.carbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell.beceiro@g"
+        },
+        {
+          "type": "text_delta",
+          "text": "mail.com\n- **G"
+        },
+        {
+          "type": "text_delta",
+          "text": "itHub:** https://github"
+        },
+        {
+          "type": "text_delta",
+          "text": ".com/acarbonell"
+        },
+        {
+          "type": "text_delta",
+          "text": "b\n- **Linked"
+        },
+        {
+          "type": "text_delta",
+          "text": "In:** https://www."
+        },
+        {
+          "type": "text_delta",
+          "text": "linkedin.com/in"
+        },
+        {
+          "type": "text_delta",
+          "text": "/albertocarbonell"
+        },
+        {
+          "type": "text_delta",
+          "text": "/\n\nHe is based in Sp"
+        },
+        {
+          "type": "text_delta",
+          "text": "ain and works remotely."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "You can reach Alberto at:\n\n- **Email:** alberto.carbonell.beceiro@gmail.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1538,
+              "outputTokens": 105
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "You can reach Alberto at:\n\n- **Email:** alberto.carbonell.beceiro@gmail.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

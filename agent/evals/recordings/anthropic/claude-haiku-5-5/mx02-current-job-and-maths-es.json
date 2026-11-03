@@ -1,0 +1,196 @@
+{
+  "caseId": "mx02",
+  "slug": "current-job-and-maths-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "calls": [
+    {
+      "requestHash": "046526c3cdca058ec22a00bdfce10a211040013c41f816e287e64849ff00116d",
+      "latencyMs": 977,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1433
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01Dz1X9AhkTvrwbAkcJFfTuK",
+                "name": "get_experience",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1433,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01Dz1X9AhkTvrwbAkcJFfTuK",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "6234d5cf8050bcac5656bea5d3fe595efe4648ca4e2b233ec6a0358b3a322a59",
+      "latencyMs": 1261,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1995
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abaja actualmente como"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior Software Engine"
+        },
+        {
+          "type": "text_delta",
+          "text": "er en CoverWallet"
+        },
+        {
+          "type": "text_delta",
+          "text": ", una plataforma insur"
+        },
+        {
+          "type": "text_delta",
+          "text": "tech,"
+        },
+        {
+          "type": "text_delta",
+          "text": " desde "
+        },
+        {
+          "type": "text_delta",
+          "text": "2019."
+        },
+        {
+          "type": "text_delta",
+          "text": " Su base"
+        },
+        {
+          "type": "text_delta",
+          "text": " es Madrid y"
+        },
+        {
+          "type": "text_delta",
+          "text": " tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abaja también"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " remoto.\n\nNo"
+        },
+        {
+          "type": "text_delta",
+          "text": " pu"
+        },
+        {
+          "type": "text_delta",
+          "text": "edo responder la"
+        },
+        {
+          "type": "text_delta",
+          "text": " par"
+        },
+        {
+          "type": "text_delta",
+          "text": "te de la mult"
+        },
+        {
+          "type": "text_delta",
+          "text": "iplicación,"
+        },
+        {
+          "type": "text_delta",
+          "text": " porque sol"
+        },
+        {
+          "type": "text_delta",
+          "text": "o h"
+        },
+        {
+          "type": "text_delta",
+          "text": "ablo de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto y su trab"
+        },
+        {
+          "type": "text_delta",
+          "text": "ajo. ¿Qu"
+        },
+        {
+          "type": "text_delta",
+          "text": "ieres saber s"
+        },
+        {
+          "type": "text_delta",
+          "text": "obre sus proyectos"
+        },
+        {
+          "type": "text_delta",
+          "text": " con"
+        },
+        {
+          "type": "text_delta",
+          "text": " agentes de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA o su experiencia"
+        },
+        {
+          "type": "text_delta",
+          "text": " previa?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, una plataforma insurtech, desde 2019. Su base es Madrid y trabaja también en remoto.\n\nNo puedo responder la parte de la multiplicación, porque solo hablo de Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia previa?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1995,
+              "outputTokens": 138
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, una plataforma insurtech, desde 2019. Su base es Madrid y trabaja también en remoto.\n\nNo puedo responder la parte de la multiplicación, porque solo hablo de Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia previa?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
