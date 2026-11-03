@@ -77,3 +77,20 @@ jobs:
           service_account: ${{ vars.GCP_DEPLOY_SA }}
 
       - run: pnpm dlx firebase-tools@15 deploy --only hosting --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
+
+      # Fails the workflow if the live site is down or doesn't serve the real
+      # page. SITE_URL defaults to the project's *.web.app URL.
+      - name: Smoke check
+        env:
+          SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl -fsS --max-time 20 "$SITE_URL/" -o page.html && grep -q "Alberto Carbonell" page.html; then
+              echo "Smoke check passed: $SITE_URL"
+              exit 0
+            fi
+            echo "Attempt $attempt failed, retrying in 10s"
+            sleep 10
+          done
+          echo "::error::$SITE_URL is down or doesn't contain the expected content"
+          exit 1
