@@ -13,8 +13,8 @@ System prompt `31dac056b0c9` · 30 cases
 | Fact coverage | 94.4% (17/18) |
 | Unknown handling | 100.0% (3/3) |
 | Mean input tokens per case | 2927 |
-| Mean output tokens per case | 168 |
-| Mean latency per case | 5535 ms |
+| Mean output tokens per case | 169 |
+| Mean latency per case | 5588 ms |
 
 | Case | Kind | Expected | Actual | Result |
 | --- | --- | --- | --- | --- |
@@ -27,7 +27,7 @@ System prompt `31dac056b0c9` · 30 cases
 | on01-greeting-es | on_topic | no tool; matches /\bhola\b/i | ¡Hola! 👋 Soy el agente de portafolio para albertocarbonell.dev. Puedo ayudarte con información sobre: - Perfil y resum… | pass |
 | on02-agents-built | on_topic | get_projects; facts: Fraud Detection Agent, Organizer Support Agent, Portfolio Agent | get_projects · Alberto has built three AI agents: 1. **Fraud Detection Agent** (in-progress): Monitors ticket purchases for the event … | pass |
 | on03-work-history-es | on_topic | get_experience; facts: CoverWallet, M&GT Consulting, Indra | get_experience · Alberto ha trabajado en las siguientes empresas: - **CoverWallet** (Madrid / Remoto, 2019 — ahora): Senior Software Eng… | pass |
-| on04-contact | on_topic | get_contact; facts: alberto.carbonell.beceiro@gmail.com | get_contact · You can reach Alberto via: - **Email**: alberto.carbonell.beceiro@gmail.com - **GitHub**: https://github.com/acarbonell… | pass |
+| on04-contact | on_topic | get_contact; facts: alberto.carbonell.beceiro@gmail.com | get_contact · You can reach Alberto Carbonell via: - **Email**: alberto.carbonell.beceiro@gmail.com - **GitHub**: [github.com/acarbon… | pass |
 | on05-programming-languages | on_topic | get_stack; facts: TypeScript, JavaScript, Ruby | get_stack · Alberto uses TypeScript, JavaScript, and Ruby. | pass |
 | on06-education-es | on_topic | get_profile; facts: CIFP Rodolfo Ucha Piñeiro | get_profile · Alberto estudió en el CIFP Rodolfo Ucha Piñeiro en A Coruña, donde obtuvo dos Diplomas Superiores de Formación Profesio… | pass |
 | on07-spoken-languages | on_topic | get_profile; facts: Spanish, English | get_profile · Alberto speaks Spanish (native) and English (C1). | pass |
@@ -57,4 +57,5 @@ Last 10 live runs per recording set, newest first, from `agent/evals/history.jso
 
 | Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-03 | `9935b79` | `31dac056b0c9` | 30 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 94.4% (±0.0 pp) | 100.0% (±0.0 pp) | 2927 (±0) | 169 (+1) | 5588 ms (+53) |
 | 2026-11-03 | `d7fa65c` | `31dac056b0c9` | 30 | 0.0% | 100.0% | 94.4% | 100.0% | 2927 | 168 | 5535 ms |

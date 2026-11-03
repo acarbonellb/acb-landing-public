@@ -2,17 +2,14 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type {
   AgentProject,
-  Education as EducationEntry,
   Profile,
   Role,
   SkillGroup,
-  SpokenLanguage,
 } from "@/content/profile";
 import {
   About,
   Agent,
   Contact,
-  Education,
   Experience,
   Hero,
   Projects,
@@ -93,20 +90,6 @@ const skillGroups: SkillGroup[] = [
   { key: "tools", label: "Tools", items: ["Quill"] },
 ];
 
-const education: EducationEntry[] = [
-  {
-    title: "Private tutoring in mathematics",
-    school: "Home",
-    place: "London",
-    period: { from: 1820, to: 1833 },
-  },
-];
-
-const languages: SpokenLanguage[] = [
-  { name: "English", level: "Native" },
-  { name: "French", level: "Fluent" },
-];
-
 describe("Hero", () => {
   it("shows the name as the page heading, title, location, tagline and links", () => {
     render(<Hero profile={profile} />);
@@ -183,6 +166,14 @@ describe("Experience", () => {
 });
 
 describe("Projects", () => {
+  it("is section 04, agents I've built", () => {
+    render(<Projects agents={agents} />);
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: /^04\.\s*agents I've built$/ }),
+    ).toBeInTheDocument();
+  });
+
   it("shows each agent with its context, description, status and stack", () => {
     render(<Projects agents={agents} />);
 
@@ -211,32 +202,12 @@ describe("Projects", () => {
   });
 });
 
-describe("Education", () => {
-  it("shows education entries and spoken languages", () => {
-    render(<Education education={education} languages={languages} />);
-
-    expect(
-      screen.getByRole("heading", { name: /education/ }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Private tutoring in mathematics"),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Home · London · 1820 — 1833"),
-    ).toBeInTheDocument();
-    expect(screen.getByText("English")).toBeInTheDocument();
-    expect(screen.getByText("Native")).toBeInTheDocument();
-    expect(screen.getByText("French")).toBeInTheDocument();
-    expect(screen.getByText("Fluent")).toBeInTheDocument();
-  });
-});
-
 describe("Agent", () => {
-  it("has the ask-my-agent section heading", () => {
+  it("is section 05, ask my agent", () => {
     render(<Agent />);
 
     expect(
-      screen.getByRole("heading", { name: /ask my agent/ }),
+      screen.getByRole("heading", { level: 2, name: /^05\.\s*ask my agent$/ }),
     ).toBeInTheDocument();
   });
 
@@ -262,6 +233,14 @@ describe("Agent", () => {
 });
 
 describe("Contact", () => {
+  it("is section 06, contact", () => {
+    render(<Contact profile={profile} />);
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: /^06\.\s*contact$/ }),
+    ).toBeInTheDocument();
+  });
+
   it("shows the contact note and links to the email", () => {
     render(<Contact profile={profile} />);
 

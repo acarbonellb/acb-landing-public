@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, VT323 } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/content/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
@@ -12,12 +12,6 @@ const geistSans = Geist({
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-});
-
-const vt323 = VT323({
-  variable: "--font-vt323",
-  weight: "400",
   subsets: ["latin"],
 });
 
@@ -53,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-theme="night"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${jetbrainsMono.variable} ${vt323.variable} antialiased`}
+      className={`${geistSans.variable} ${jetbrainsMono.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

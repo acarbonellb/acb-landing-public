@@ -16,7 +16,6 @@ describe("Header", () => {
       "#stack",
       "#experience",
       "#projects",
-      "#education",
       "#agent",
       "#contact",
     ]);

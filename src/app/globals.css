@@ -17,11 +17,10 @@
   --magenta: #bb9af7;
   --orange: #ff9e64;
   --yellow: #e0af68;
-  --green: #9ece6a;
+  --green: #8fa876; /* softened from #9ece6a */
   --teal: #73daca;
   --red: #f7768e;
   --scanline: rgb(0 0 0 / 0.18);
-  --glow: rgb(122 162 247 / 0.35);
   color-scheme: dark;
 }
 
@@ -44,7 +43,6 @@
   --teal: #0d6856;
   --red: #ba093c;
   --scanline: rgb(55 96 191 / 0.06);
-  --glow: rgb(46 125 233 / 0.2);
   color-scheme: light;
 }
 
@@ -66,7 +64,6 @@
   --color-red: var(--red);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-jetbrains-mono);
-  --font-pixel: var(--font-vt323);
 }
 
 html {
@@ -111,10 +108,6 @@ body::after {
 /* Hard offset shadow, retro window style */
 .retro-shadow {
   box-shadow: 6px 6px 0 0 var(--bg-dark);
-}
-
-.glow-text {
-  text-shadow: 0 0 18px var(--glow);
 }
 
 @keyframes blink {

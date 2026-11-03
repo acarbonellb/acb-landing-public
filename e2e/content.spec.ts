@@ -29,9 +29,14 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
+  const contact = page.locator("#contact");
+  await expect(contact.getByText("Drop me a line:", { exact: true })).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "alberto.carbonell.beceiro@gmail.com" }),
+    contact.getByRole("link", { name: "alberto.carbonell.beceiro@gmail.com" }),
   ).toBeVisible();
+
+  // Education is left to the CV PDF: no section on the page.
+  await expect(page.getByRole("heading", { name: /education/i })).toHaveCount(0);
 
   await expect(page.locator("body")).not.toContainText(/lorem ipsum/i);
 });

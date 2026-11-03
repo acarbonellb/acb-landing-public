@@ -1,12 +1,9 @@
 import {
   type AgentProject,
   type AgentStatus,
-  type Education as EducationEntry,
-  formatPeriod,
   type Profile,
   type Role,
   type SkillGroup,
-  type SpokenLanguage,
 } from "@/content/profile";
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
 import { AgentChat } from "./agent-chat";
@@ -22,7 +19,7 @@ export function Hero({ profile }: { profile: Profile }) {
         {"// "}
         <span>{profile.location}</span>
       </p>
-      <h1 className="glow-text font-pixel text-6xl leading-none text-fg sm:text-8xl">
+      <h1 className="font-sans text-[clamp(2.5rem,6.5vw,4.5rem)] leading-[1.05] font-semibold tracking-[-0.03em] text-fg">
         {profile.name}
       </h1>
       <p className="mt-4 text-lg text-magenta sm:text-xl">
@@ -131,7 +128,7 @@ const statusBadge: Record<AgentStatus, { label: string; className: string }> = {
 
 export function Projects({ agents }: { agents: AgentProject[] }) {
   return (
-    <Section id="projects" index="04" title="agents i've built">
+    <Section id="projects" index="04" title="agents I've built">
       <div className="grid gap-5 sm:grid-cols-2">
         {agents.map((a) => {
           const headingId = `agent-${a.slug}`;
@@ -193,46 +190,6 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
   );
 }
 
-export function Education({
-  education,
-  languages,
-}: {
-  education: EducationEntry[];
-  languages: SpokenLanguage[];
-}) {
-  return (
-    <Section id="education" index="05" title="education & languages">
-      <div className="grid gap-5 md:grid-cols-[2fr_1fr]">
-        <ul className="space-y-4">
-          {education.map((e) => (
-            <li
-              key={e.title}
-              className="rounded-md border border-border bg-bg-dark p-5"
-            >
-              <h3 className="font-sans leading-relaxed font-bold text-fg">
-                {e.title}
-              </h3>
-              <p className="mt-2 text-xs text-comment">
-                {`${e.school} · ${e.place} · ${formatPeriod(e.period)}`}
-              </p>
-            </li>
-          ))}
-        </ul>
-        <Window title="locale">
-          <dl className="space-y-2 text-sm">
-            {languages.map((l) => (
-              <div key={l.name} className="flex justify-between gap-4">
-                <dt className="text-teal">{l.name}</dt>
-                <dd className="text-green">{l.level}</dd>
-              </div>
-            ))}
-          </dl>
-        </Window>
-      </div>
-    </Section>
-  );
-}
-
 // The live chat with the agent service, or a "coming soon" note when the
 // build has no agent URL (see `agent-endpoint.ts`).
 export function Agent({
@@ -241,7 +198,7 @@ export function Agent({
   endpoints?: AgentEndpoints | null;
 }) {
   return (
-    <Section id="agent" index="06" title="ask my agent">
+    <Section id="agent" index="05" title="ask my agent">
       <Window title="agent — claude · tool use">
         {endpoints ? (
           <AgentChat chatUrl={endpoints.chat} mcpUrl={endpoints.mcp} />
@@ -261,13 +218,13 @@ export function Agent({
 
 export function Contact({ profile }: { profile: Profile }) {
   return (
-    <Section id="contact" index="07" title="contact">
+    <Section id="contact" index="06" title="contact">
       <p className="max-w-2xl font-sans text-lg leading-relaxed">
         {profile.contactNote}
       </p>
       <a
         href={`mailto:${profile.links.email}`}
-        className="glow-text mt-6 inline-block max-w-full text-lg font-bold break-all text-blue underline decoration-border underline-offset-8 transition-colors hover:decoration-blue sm:text-2xl"
+        className="mt-6 inline-block max-w-full text-lg font-bold break-all text-blue underline decoration-border underline-offset-8 transition-colors hover:decoration-blue sm:text-2xl"
       >
         {profile.links.email}
       </a>
