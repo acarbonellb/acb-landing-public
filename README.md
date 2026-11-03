@@ -32,13 +32,18 @@ Browser tests need a Chromium: run `pnpm exec playwright install chromium` once,
 
 `next build` produces a fully static site in `out/` (`output: "export"`), deployed to **Firebase Hosting** by the same workflow on every push to `main` once the checks pass. GitHub authenticates to GCP with Workload Identity Federation, so there are no service account keys.
 
-The workflow is skipped until these repository variables exist:
+The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, default URL https://acb-landing.web.app). The deploy job runs only on `main` and only once `GCP_PROJECT_ID` is set; it uses these repository variables:
 
-| Variable | Example |
+| Variable | Value |
 | --- | --- |
 | `GCP_PROJECT_ID` | `acb-landing` |
-| `GCP_WIF_PROVIDER` | `projects/123456789/locations/global/workloadIdentityPools/github/providers/github` |
+| `GCP_WIF_PROVIDER` | `projects/864363287015/locations/global/workloadIdentityPools/github/providers/github` |
 | `GCP_DEPLOY_SA` | `github-deploy@acb-landing.iam.gserviceaccount.com` |
+| `SITE_URL` (optional) | URL the smoke check hits; defaults to `https://<GCP_PROJECT_ID>.web.app` |
+
+The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds a single role, Firebase Hosting Admin. It has no keys.
+
+After deploying, a **smoke check** fetches `SITE_URL` and fails the workflow unless it answers 200 and the page contains "Alberto Carbonell" (five attempts, 10 s apart).
 
 `AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
