@@ -1,0 +1,49 @@
+/* PROTOTYPE, throwaway. Looks for the variants picked by
+   `src/components/prototype-switcher.tsx`. Variant A of each axis is the
+   current design, so it has no rules here. */
+
+/* ── title: hero name + section numbers ─────────────────────────────── */
+
+[data-proto-title="B"],
+[data-proto-title="C"],
+[data-proto-title="D"] {
+  & h1.font-pixel {
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-shadow: none;
+  }
+  & h2 .font-pixel {
+    font-size: 1em;
+  }
+  & .glow-text {
+    text-shadow: none;
+  }
+}
+
+[data-proto-title="B"] :is(h1.font-pixel, h2 .font-pixel) {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+[data-proto-title="C"] :is(h1.font-pixel, h2 .font-pixel) {
+  font-family: var(--font-plex-mono);
+  font-weight: 600;
+}
+
+[data-proto-title="D"] :is(h1.font-pixel, h2 .font-pixel) {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+/* ── green: Tokyo Night strings (dark theme only) ───────────────────── */
+
+[data-theme="night"][data-proto-green="B"] {
+  --green: #8db87a;
+}
+[data-theme="night"][data-proto-green="C"] {
+  --green: #9aa98a;
+}
+[data-theme="night"][data-proto-green="D"] {
+  --green: #7fa46a;
+}

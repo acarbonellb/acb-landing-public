@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { Header } from "@/components/header";
+import { PrototypeSwitcher } from "@/components/prototype-switcher";
 import {
   About,
   Agent,
@@ -34,6 +36,9 @@ export default function Home() {
         <Contact profile={profile} />
       </main>
       <StatusLine />
+      <Suspense>
+        <PrototypeSwitcher />
+      </Suspense>
     </>
   );
 }

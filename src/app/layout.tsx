@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, VT323 } from "next/font/google";
+import { Geist, IBM_Plex_Mono, JetBrains_Mono, VT323 } from "next/font/google";
 import { profile } from "@/content/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
+import "./prototype-variants.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +19,13 @@ const jetbrainsMono = JetBrains_Mono({
 const vt323 = VT323({
   variable: "--font-vt323",
   weight: "400",
+  subsets: ["latin"],
+});
+
+// PROTOTYPE font for the ?title=C variant.
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  weight: ["600"],
   subsets: ["latin"],
 });
 
@@ -53,7 +61,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-theme="night"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${jetbrainsMono.variable} ${vt323.variable} antialiased`}
+      className={`${geistSans.variable} ${jetbrainsMono.variable} ${vt323.variable} ${plexMono.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
