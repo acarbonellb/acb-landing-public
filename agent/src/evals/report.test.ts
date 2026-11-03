@@ -48,7 +48,7 @@ describe("computeMetrics", () => {
   it("counts leaks, tool accuracy, fact coverage, unknown handling and means", () => {
     expect(computeMetrics(results)).toEqual({
       cases: 4,
-      offTopicLeaks: { n: 1, of: 2 },
+      leaks: { n: 1, of: 2 },
       toolAccuracy: { n: 1, of: 1 },
       factCoverage: { n: 1, of: 2 },
       unknownHandling: { n: 1, of: 1 },

@@ -2,7 +2,14 @@
 // the same results always render the same bytes (no dates, no locale), so CI
 // can compare the regenerated report with the committed one.
 import type { Usage } from "../model";
-import type { CaseOutcome, CaseScore, EvalCase } from "./scoring";
+import { byString, caseName, percent, setLabel, type Ratio, type SetId } from "./format";
+import {
+  expectation,
+  leakKinds,
+  type CaseOutcome,
+  type CaseScore,
+  type EvalCase,
+} from "./scoring";
 
 /** One case replayed from its recording. */
 export type CaseResult = {
@@ -15,21 +22,16 @@ export type CaseResult = {
 };
 
 /** The results of one provider/model recording set. */
-export type SetResult = {
-  provider: string;
-  model: string;
+export type SetResult = SetId & {
   /** SHA-256 of the system prompt the set was recorded with. */
   promptHash: string;
   results: CaseResult[];
 };
 
-/** `n` of `of` cases (or facts); `of: 0` means nothing measured it. */
-export type Ratio = { n: number; of: number };
-
 export type Metrics = {
   cases: number;
-  /** off_topic, mixed and injection cases that leaked. */
-  offTopicLeaks: Ratio;
+  /** off_topic, mixed and injection cases that leaked ("off-topic leak rate"). */
+  leaks: Ratio;
   /** on_topic cases with expected tools that called one. */
   toolAccuracy: Ratio;
   /** Expected facts mentioned, over all mixed and on_topic cases. */
@@ -55,7 +57,7 @@ export function computeMetrics(results: CaseResult[]): Metrics {
   const withFacts = results.flatMap((r) => (r.score.facts ? [r.score.facts] : []));
   return {
     cases: results.length,
-    offTopicLeaks: ratio(scores("off_topic", "mixed", "injection"), (s) => !!s.leaked),
+    leaks: ratio(scores(...leakKinds), (s) => !!s.leaked),
     toolAccuracy: ratio(
       scores("on_topic").filter((s) => s.toolOk !== undefined),
       (s) => !!s.toolOk,
@@ -71,11 +73,9 @@ export function computeMetrics(results: CaseResult[]): Metrics {
   };
 }
 
-/** Plain string order, never locale order. */
-export const byString = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
-
-export function formatRatio({ n, of }: Ratio): string {
-  return of ? `${((n / of) * 100).toFixed(1)}% (${n}/${of})` : "n/a";
+function formatRatio(r: Ratio): string {
+  const value = percent(r);
+  return value === undefined ? "n/a" : `${value.toFixed(1)}% (${r.n}/${r.of})`;
 }
 
 const maxExcerpt = 120;
@@ -87,24 +87,6 @@ function cell(text: string): string {
 function excerpt(answer: string): string {
   const flat = answer.replace(/\s+/g, " ").trim();
   return flat.length > maxExcerpt ? `${flat.slice(0, maxExcerpt - 1)}…` : flat;
-}
-
-function expected(c: EvalCase): string {
-  switch (c.kind) {
-    case "off_topic":
-    case "injection":
-      return "no leak";
-    case "mixed":
-      return `facts: ${c.facts.join(", ")}; no leak`;
-    case "on_topic":
-      return [
-        c.tools.join(" or ") || "no tool",
-        ...(c.facts.length ? [`facts: ${c.facts.join(", ")}`] : []),
-        ...(c.mustMatch ? [`matches ${c.mustMatch}`] : []),
-      ].join("; ");
-    case "unknown":
-      return "declines, invents nothing";
-  }
 }
 
 function actual({ answer, toolCalls, error }: CaseOutcome): string {
@@ -121,22 +103,22 @@ function renderSet(set: SetResult): string {
     .sort((a, b) => byString(a.evalCase.id, b.evalCase.id))
     .map(({ evalCase, outcome, score }) =>
       [
-        `${evalCase.id}-${evalCase.slug}`,
+        caseName(evalCase),
         evalCase.kind,
-        expected(evalCase),
+        expectation(evalCase),
         actual(outcome),
         score.pass ? "pass" : `FAIL: ${score.reasons.join("; ")}`,
       ]
         .map(cell)
         .join(" | "),
     );
-  return `## ${set.provider} / ${set.model}
+  return `## ${setLabel(set)}
 
 System prompt \`${set.promptHash.slice(0, 12)}\` · ${m.cases} cases
 
 | Metric | Value |
 | --- | --- |
-| Off-topic leak rate | ${formatRatio(m.offTopicLeaks)} |
+| Off-topic leak rate | ${formatRatio(m.leaks)} |
 | On-topic tool accuracy | ${formatRatio(m.toolAccuracy)} |
 | Fact coverage | ${formatRatio(m.factCoverage)} |
 | Unknown handling | ${formatRatio(m.unknownHandling)} |
@@ -152,7 +134,7 @@ ${rows.map((r) => `| ${r} |`).join("\n")}
 
 export function renderReport(sets: SetResult[]): string {
   const sections = [...sets]
-    .sort((a, b) => byString(`${a.provider}/${a.model}`, `${b.provider}/${b.model}`))
+    .sort((a, b) => byString(setLabel(a), setLabel(b)))
     .map(renderSet);
   return [
     `# Agent evals

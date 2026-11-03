@@ -1,6 +1,6 @@
 // Agent evals (README, "Evals"; docs/adr/0001-agent-evals-record-replay.md).
 //
-//   tsx scripts/eval.ts record [--only ot01,on02] [--paid]
+//   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid]
 //     Live: runs every case against the configured model, records each one
 //     that completes, appends the set's metrics to history.jsonl, then
 //     regenerates the report. Defaults to LM Studio on localhost; any other
@@ -17,7 +17,8 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { cases } from "../evals/cases";
 import { createAnthropicModelClient } from "../src/anthropic";
-import { appendHistory, historyEntry, parseHistory } from "../src/evals/history";
+import { caseName, sameSet, setLabel, type SetId } from "../src/evals/format";
+import { appendLiveRun, parseHistory } from "../src/evals/history";
 import { evaluate, recordCase, type Recording, type RecordingSet } from "../src/evals/runner";
 
 const evalsDir = fileURLToPath(new URL("../evals/", import.meta.url));
@@ -33,6 +34,7 @@ const { positionals, values } = parseArgs({
     check: { type: "boolean", default: false },
     paid: { type: "boolean", default: false },
     only: { type: "string" },
+    provider: { type: "string" },
   },
 });
 
@@ -67,7 +69,7 @@ async function loadSets(): Promise<RecordingSet[]> {
 async function saveRecording(recording: Recording) {
   const dir = join(recordingsDir, recording.provider, modelSlug(recording.model));
   await mkdir(dir, { recursive: true });
-  const name = `${recording.caseId}-${recording.slug}.json`;
+  const name = `${caseName({ id: recording.caseId, slug: recording.slug })}.json`;
   const tmp = join(dir, `.${name}.tmp`);
   await writeFile(tmp, `${JSON.stringify(recording, null, 2)}\n`);
   for (const old of await readdir(dir)) {
@@ -109,7 +111,8 @@ async function record(): Promise<number> {
     );
     return 1;
   }
-  const provider = env.AGENT_EVAL_PROVIDER || (local ? "lmstudio" : "anthropic");
+  const provider =
+    values.provider || env.AGENT_EVAL_PROVIDER || (local ? "lmstudio" : "anthropic");
   const model = env.AGENT_MODEL || "qwen/qwen3.5-9b";
   const apiKey = env.ANTHROPIC_API_KEY || (local ? "lmstudio" : "");
   if (!apiKey) {
@@ -120,10 +123,10 @@ async function record(): Promise<number> {
   const only = values.only?.split(",");
   const selected = cases.filter((c) => !only || only.includes(c.id));
 
-  console.log(`Recording ${selected.length} cases with ${provider}/${model} at ${baseURL}`);
+  console.log(`Recording ${selected.length} cases with ${setLabel({ provider, model })} at ${baseURL}`);
   let failed = 0;
   for (const evalCase of selected) {
-    const name = `${evalCase.id}-${evalCase.slug}`;
+    const name = caseName(evalCase);
     try {
       const { recording, result } = await recordCase(evalCase, client, { provider, model });
       // Only now: a run that fails half-way never overwrites a good recording.
@@ -135,28 +138,24 @@ async function record(): Promise<number> {
       console.error(`  ${name}: not recorded: ${(error as Error).message}`);
     }
   }
-  if (failed < selected.length) await appendToHistory(provider, model);
+  if (failed < selected.length) await appendToHistory({ provider, model });
   const status = await replay(false);
   return failed ? 1 : status;
 }
 
-/**
- * One history line for the set just recorded, with the metrics of all its
- * recordings. Skipped while any of its cases can't be replayed (stale or
- * missing), so an entry always describes a complete set.
- */
-async function appendToHistory(provider: string, model: string) {
+/** Appends the history line of the set just recorded (see `appendLiveRun`). */
+async function appendToHistory(id: SetId) {
   const { sets } = await evaluate({ cases, sets: await loadSets() });
-  const set = sets.find((s) => s.provider === provider && s.model === model);
-  if (!set || set.results.length !== cases.length) {
-    console.error(`History not updated: some ${provider}/${model} recordings are stale or missing.`);
-    return;
-  }
   const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
   const date = new Date().toISOString().slice(0, 10);
-  const entry = historyEntry(set, { date, commit });
-  await writeFile(historyPath, appendHistory(await readHistory(), [entry]));
-  console.log(`Appended ${provider}/${model} to ${historyPath}`);
+  const set = sets.find((s) => sameSet(s, id));
+  const text = appendLiveRun(await readHistory(), set, cases.length, { date, commit });
+  if (text === undefined) {
+    console.error(`History not updated: some ${setLabel(id)} recordings are stale or missing.`);
+    return;
+  }
+  await writeFile(historyPath, text);
+  console.log(`Appended ${setLabel(id)} to ${historyPath}`);
 }
 
 const mode = positionals[0];

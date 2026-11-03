@@ -155,8 +155,10 @@ for (const theme of ["night", "light"] as const) {
     await ask(page, "What has he **built**?");
 
     const log = conversation(page);
-    await expect(log.locator("strong", { hasText: "three" })).toBeVisible();
-    await expect(log.locator("em", { hasText: "Fraud Detection Agent" })).toBeVisible();
+    await expect(log.getByRole("strong").filter({ hasText: "three" })).toBeVisible();
+    await expect(
+      log.getByRole("emphasis").filter({ hasText: "Fraud Detection Agent" }),
+    ).toBeVisible();
     await expect(log.getByRole("listitem")).toHaveCount(2);
     await expect(log.getByText("What has he **built**?")).toBeVisible();
     const github = log.getByRole("link", { name: "GitHub" });
@@ -164,7 +166,7 @@ for (const theme of ["night", "light"] as const) {
     await expect(github).toHaveAttribute("target", "_blank");
     await expect(github).toHaveAttribute("rel", "noopener noreferrer");
     await expect(log.getByRole("link")).toHaveCount(1);
-    await expect(log.locator("img")).toHaveCount(0);
+    await expect(log.getByRole("img")).toHaveCount(0);
     await expect(log.getByText('<img src=x onerror="alert(1)">')).toBeVisible();
 
     const overflow = await page.evaluate(

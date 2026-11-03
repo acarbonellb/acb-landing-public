@@ -11,22 +11,28 @@ const numbered = /^\s*\d+[.)](?:\s+(.*)|$)/;
 
 function blocks(text: string): Block[] {
   const out: Block[] = [];
+  // A blank line ends a paragraph, but not a list: models often space out
+  // the items of one list, which would otherwise restart its numbering.
+  let afterBlank = false;
   for (const line of text.split("\n")) {
     const last = out.at(-1);
     const item = bullet.exec(line) ?? numbered.exec(line);
     if (!line.trim()) {
-      out.push({ kind: "paragraph", lines: [] });
-    } else if (item) {
+      afterBlank = true;
+      continue;
+    }
+    if (item) {
       const ordered = !bullet.test(line);
       if (last?.kind === "list" && last.ordered === ordered) last.items.push(item[1] ?? "");
       else out.push({ kind: "list", ordered, items: [item[1] ?? ""] });
-    } else if (last?.kind === "paragraph") {
+    } else if (last?.kind === "paragraph" && !afterBlank) {
       last.lines.push(line.trim());
     } else {
       out.push({ kind: "paragraph", lines: [line.trim()] });
     }
+    afterBlank = false;
   }
-  return out.filter((b) => b.kind === "list" || b.lines.length > 0);
+  return out;
 }
 
 // Inline spans, earliest match first; code comes first so its contents stay

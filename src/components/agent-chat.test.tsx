@@ -139,7 +139,7 @@ describe("AgentChat", () => {
 
     await ask(user, "Is he **good**?");
 
-    expect(await within(log()).findByText("three")).toHaveProperty("tagName", "STRONG");
+    expect(await within(log()).findByRole("strong")).toHaveTextContent("three");
     expect(within(log()).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
       "Fraud",
       "Portfolio",

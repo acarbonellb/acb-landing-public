@@ -3,18 +3,29 @@
 // Only live runs append; replay only reads it. Pure functions; the script does
 // the file I/O.
 import * as z from "zod";
-import { byString, computeMetrics, type Metrics, type Ratio, type SetResult } from "./report";
+import {
+  byString,
+  percent,
+  sameSet,
+  setLabel,
+  type Ratio,
+  type SetId,
+} from "./format";
+import { computeMetrics, type Metrics, type SetResult } from "./report";
 
-export type HistoryEntry = {
+/** When and from where a live run was made. */
+export type LiveRun = {
   /** UTC day of the live run, YYYY-MM-DD. */
   date: string;
   /** Short hash of the commit the live run started from. */
   commit: string;
-  provider: string;
-  model: string;
-  promptHash: string;
-  metrics: Metrics;
 };
+
+export type HistoryEntry = LiveRun &
+  SetId & {
+    promptHash: string;
+    metrics: Metrics;
+  };
 
 const ratio = z.object({ n: z.number().int(), of: z.number().int() }).strict();
 
@@ -28,7 +39,7 @@ const entrySchema: z.ZodType<HistoryEntry> = z
     metrics: z
       .object({
         cases: z.number().int(),
-        offTopicLeaks: ratio,
+        leaks: ratio,
         toolAccuracy: ratio,
         factCoverage: ratio,
         unknownHandling: ratio,
@@ -40,10 +51,7 @@ const entrySchema: z.ZodType<HistoryEntry> = z
   })
   .strict();
 
-export function historyEntry(
-  set: SetResult,
-  run: { date: string; commit: string },
-): HistoryEntry {
+export function historyEntry(set: SetResult, run: LiveRun): HistoryEntry {
   return {
     ...run,
     provider: set.provider,
@@ -69,15 +77,28 @@ export function parseHistory(text: string): HistoryEntry[] {
   });
 }
 
+/**
+ * What a live run does to the history: one line for the set it recorded, with
+ * the metrics of all its recordings. `undefined` (append nothing) while any of
+ * the set's cases can't be replayed, so an entry always describes a complete
+ * set. Replay never calls this.
+ */
+export function appendLiveRun(
+  text: string,
+  set: SetResult | undefined,
+  caseCount: number,
+  run: LiveRun,
+): string | undefined {
+  if (!set || set.results.length !== caseCount) return undefined;
+  return appendHistory(text, [historyEntry(set, run)]);
+}
+
 /** `text` with one JSON line per entry appended. */
 export function appendHistory(text: string, entries: HistoryEntry[]): string {
   if (!entries.length) return text;
   const base = text && !text.endsWith("\n") ? `${text}\n` : text;
   return base + entries.map((e) => `${JSON.stringify(e)}\n`).join("");
 }
-
-const sameSet = (a: { provider: string; model: string }, b: typeof a) =>
-  a.provider === b.provider && a.model === b.model;
 
 /**
  * What fails CI: a recording set whose latest history entry is missing or
@@ -87,7 +108,7 @@ const sameSet = (a: { provider: string; model: string }, b: typeof a) =>
 export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string[] {
   const rerecord = "re-record with `pnpm agent:eval`";
   return sets.flatMap((set) => {
-    const label = `${set.provider}/${set.model}`;
+    const label = setLabel(set);
     const latest = entries.findLast((e) => sameSet(e, set));
     if (!latest) return [`${label} has no entry in agent/evals/history.jsonl: ${rerecord}`];
     const now = historyEntry(set, latest);
@@ -106,9 +127,7 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
 }
 
 /** Live runs shown per recording set. */
-export const historyRows = 10;
-
-const percentOf = ({ n, of }: Ratio) => (of ? (n / of) * 100 : undefined);
+const historyRows = 10;
 
 /** "+5.6", "-42", "±0": the sign always shown, zero as ±0. */
 function signed(delta: number, digits: number): string {
@@ -118,9 +137,9 @@ function signed(delta: number, digits: number): string {
 }
 
 function ratioCell(now: Ratio, before: Ratio | undefined): string {
-  const value = percentOf(now);
+  const value = percent(now);
   if (value === undefined) return "n/a";
-  const previous = before && percentOf(before);
+  const previous = before && percent(before);
   const delta = previous === undefined ? "" : ` (${signed(value - previous, 1)} pp)`;
   return `${value.toFixed(1)}%${delta}`;
 }
@@ -138,7 +157,7 @@ function row(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
     `\`${entry.commit}\``,
     `\`${entry.promptHash.slice(0, 12)}\``,
     String(m.cases),
-    ratioCell(m.offTopicLeaks, p?.offTopicLeaks),
+    ratioCell(m.leaks, p?.leaks),
     ratioCell(m.toolAccuracy, p?.toolAccuracy),
     ratioCell(m.factCoverage, p?.factCoverage),
     ratioCell(m.unknownHandling, p?.unknownHandling),
@@ -151,9 +170,9 @@ function row(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
 /** The report's "History" section; empty without history. Deterministic. */
 export function renderHistory(entries: HistoryEntry[]): string {
   if (!entries.length) return "";
-  const labels = [...new Set(entries.map((e) => `${e.provider} / ${e.model}`))].sort(byString);
+  const labels = [...new Set(entries.map(setLabel))].sort(byString);
   const sections = labels.map((label) => {
-    const runs = entries.filter((e) => `${e.provider} / ${e.model}` === label);
+    const runs = entries.filter((e) => setLabel(e) === label);
     const rows = runs
       .map((entry, i) => row(entry, runs[i - 1]))
       .slice(-historyRows)

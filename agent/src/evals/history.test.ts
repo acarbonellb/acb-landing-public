@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   appendHistory,
+  appendLiveRun,
   checkHistory,
   historyEntry,
   parseHistory,
@@ -39,7 +40,7 @@ function setWith(answer: string, overrides: Partial<SetResult> = {}): SetResult 
 
 const cleanMetrics: Metrics = {
   cases: 1,
-  offTopicLeaks: { n: 0, of: 1 },
+  leaks: { n: 0, of: 1 },
   toolAccuracy: { n: 0, of: 0 },
   factCoverage: { n: 0, of: 0 },
   unknownHandling: { n: 0, of: 0 },
@@ -99,6 +100,23 @@ describe("appendHistory and parseHistory", () => {
   });
 });
 
+describe("appendLiveRun", () => {
+  const complete = setWith("Only about Alberto.");
+
+  it("appends exactly one entry for the recorded set", () => {
+    const earlier = appendHistory("", [historyEntry(complete, { date: "2026-11-01", commit: "0000000" })]);
+
+    const text = appendLiveRun(earlier, complete, 1, run);
+
+    expect(parseHistory(text!)).toEqual([...parseHistory(earlier), historyEntry(complete, run)]);
+  });
+
+  it("appends nothing while some of the set's cases can't be replayed", () => {
+    expect(appendLiveRun("", complete, 2, run)).toBeUndefined();
+    expect(appendLiveRun("", undefined, 1, run)).toBeUndefined();
+  });
+});
+
 describe("checkHistory", () => {
   const clean = setWith("Only about Alberto.");
   const entry = historyEntry(clean, run);
@@ -117,7 +135,7 @@ describe("checkHistory", () => {
 
   it("fails when a recording set has no history entry", () => {
     expect(checkHistory([], [clean])).toEqual([
-      "lmstudio/qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: re-record with `pnpm agent:eval`",
     ]);
   });
 
@@ -125,7 +143,7 @@ describe("checkHistory", () => {
     const problems = checkHistory([{ ...entry, promptHash: "b".repeat(64) }], [clean]);
 
     expect(problems).toEqual([
-      "lmstudio/qwen/qwen3.5-9b: latest history entry doesn't match the recordings (promptHash): re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (promptHash): re-record with `pnpm agent:eval`",
     ]);
   });
 
@@ -133,7 +151,7 @@ describe("checkHistory", () => {
     const leaky = setWith("Madrid.");
 
     expect(checkHistory([entry], [leaky])).toEqual([
-      "lmstudio/qwen/qwen3.5-9b: latest history entry doesn't match the recordings (offTopicLeaks): re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (leaks): re-record with `pnpm agent:eval`",
     ]);
   });
 });
@@ -148,7 +166,7 @@ describe("renderHistory", () => {
       promptHash: "a".repeat(64),
       metrics: {
         cases: 30,
-        offTopicLeaks: { n: 1, of: 17 },
+        leaks: { n: 1, of: 17 },
         toolAccuracy: { n: 9, of: 9 },
         factCoverage: { n: 16, of: 18 },
         unknownHandling: { n: 0, of: 0 },
@@ -168,7 +186,7 @@ describe("renderHistory", () => {
       entry(
         "2026-11-04",
         {
-          offTopicLeaks: { n: 0, of: 17 },
+          leaks: { n: 0, of: 17 },
           factCoverage: { n: 17, of: 18 },
           meanInputTokens: 2958,
           meanOutputTokens: 170,

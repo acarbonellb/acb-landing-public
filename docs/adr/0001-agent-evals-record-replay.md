@@ -1,6 +1,6 @@
 # Agent evals: record locally, replay in CI
 
-The chat's unit tests use a scripted fake model. They prove the loop, tools and caps work, but not that a real model follows the system prompt, and the system prompt is the only defence against off-topic answers. Running a real model in CI would cost money and be nondeterministic. So evals run against a real model only on the developer's machine (`pnpm agent:eval`, local LM Studio by default, free). That live run records every model call at the `ModelClient` seam: a SHA-256 of each request and the response events. CI replays those recordings through the real loop and tools (`pnpm agent:eval:replay --check`) and fails when a recording is stale, when any off-topic, mixed or injection case leaks, or when the committed report differs from the regenerated one.
+The chat's unit tests use a scripted fake model. They prove the loop, tools and caps work, but not that a real model follows the system prompt, and the system prompt is the only defence against off-topic answers. Running a real model in CI would cost money and be nondeterministic. So evals run against a real model only on the developer's machine (`pnpm agent:eval`, local LM Studio by default, free). That live run records every model call at the `ModelClient` seam: a SHA-256 of each request and the response events. CI replays those recordings through the real loop and tools (`pnpm agent:eval:replay --check`) and fails when a recording is stale, when any off-topic, mixed or injection case leaks, when a recording set's latest entry in the eval history (`history.jsonl`, appended by live runs only) doesn't match its recordings, or when the committed report differs from the regenerated one.
 
 ## Considered options
 
@@ -12,6 +12,6 @@ The chat's unit tests use a scripted fake model. They prove the loop, tools and 
 
 ## Consequences
 
-- Any change to the system prompt, a tool's description or schema, the content module (tool results) or the chat limits makes the recordings stale. A developer has to re-run `pnpm agent:eval` locally and commit the new recordings and `report.md` in the same PR.
+- Any change to the system prompt, a tool's description or schema, the content module (tool results) or the chat limits makes the recordings stale. A developer has to re-run `pnpm agent:eval` locally and commit the new recordings, `history.jsonl` and `report.md` in the same PR.
 - Everything in a model request must be deterministic: no dates, random ids or env-dependent values. Otherwise every recording is stale as soon as it's written.
-- Recordings and `report.md` are compared byte for byte, so formatters must not touch them (`.prettierignore`, `.gitattributes`).
+- Recordings, `history.jsonl` and `report.md` are compared byte for byte, so formatters must not touch them (`.prettierignore`, `.gitattributes`).

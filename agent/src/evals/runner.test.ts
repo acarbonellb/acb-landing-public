@@ -20,7 +20,7 @@ const capital: EvalCase = {
   id: "ot01",
   slug: "capital-after-greeting",
   kind: "off_topic",
-  history: [
+  priorTurns: [
     { role: "user", content: "hola" },
     { role: "assistant", content: "¡Hola! ¿Qué quieres saber de Alberto?" },
   ],
@@ -115,8 +115,8 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     });
 
     expect(problems).toEqual([
-      expect.stringMatching(/^fake\/scripted on01-contact: Stale recording \(request_changed/),
-      expect.stringMatching(/^fake\/scripted ot01-capital-after-greeting: Stale recording/),
+      expect.stringMatching(/^fake \/ scripted on01-contact: Stale recording \(request_changed/),
+      expect.stringMatching(/^fake \/ scripted ot01-capital-after-greeting: Stale recording/),
     ]);
   });
 
@@ -128,7 +128,7 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     });
 
     expect(problems).toEqual([
-      expect.stringMatching(/^fake\/scripted ot01-capital-after-greeting: Stale recording \(missing_recording/),
+      expect.stringMatching(/^fake \/ scripted ot01-capital-after-greeting: Stale recording \(missing_recording/),
     ]);
   });
 
@@ -142,7 +142,7 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     });
 
     expect(problems).toEqual([
-      "fake/scripted ot01-capital-after-greeting leaked: leaked /\\bmadrid\\b/i",
+      "fake / scripted ot01-capital-after-greeting leaked: leaked /\\bmadrid\\b/i",
     ]);
   });
 
@@ -162,7 +162,7 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     expect(matching.report).toContain("## History");
     expect(matching.report.startsWith(fresh.report)).toBe(true);
     expect(outdated.problems).toEqual([
-      expect.stringMatching(/^fake\/scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
+      expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
     ]);
   });
 });

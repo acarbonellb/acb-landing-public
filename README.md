@@ -171,7 +171,7 @@ ANTHROPIC_BASE_URL=https://api.anthropic.com ANTHROPIC_API_KEY=sk-ant-... \
   AGENT_MODEL=claude-opus-5-5 AGENT_EVAL_PROVIDER=anthropic pnpm agent:eval --paid
 ```
 
-Each provider/model gets its own recording set and report section. Run limits are the loop's defaults, never your `AGENT_MAX_*` env.
+Each provider/model gets its own recording set and report section; the provider label comes from `--provider`, then `AGENT_EVAL_PROVIDER`, then the server (`lmstudio` on localhost, `anthropic` otherwise). Run limits are the chat loop's code defaults (`chatLimits` in `agent/src/chat.ts`, plus the request limits in `src/lib/chat-contract.ts`), never your `AGENT_MAX_*` env.
 
 **When to re-record.** A recording is only valid for the exact request it answered. Changing the system prompt, a tool's description or schema, `src/content/profile.ts` (tool results) or the chat limits changes the request, so `--check` fails as **stale** ("re-run `pnpm agent:eval` and commit"). Re-run it and commit the recordings, `history.jsonl` and `report.md` together. CI never re-records.
 

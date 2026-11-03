@@ -5,23 +5,22 @@
 import { createHash } from "node:crypto";
 import { runChat, systemPrompt, type ChatMessage } from "../chat";
 import type { ModelClient } from "../model";
-import { createToolset, type Toolset } from "../tools";
+import { createToolset } from "../tools";
 import {
   createRecordingModelClient,
   createReplayModelClient,
   StaleRecordingError,
   type RecordedCall,
 } from "./recording";
+import { caseName, setLabel, type SetId } from "./format";
 import { checkHistory, renderHistory, type HistoryEntry } from "./history";
 import { renderReport, type CaseResult, type SetResult } from "./report";
 import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
-export type Recording = {
+export type Recording = SetId & {
   caseId: string;
   slug: string;
-  provider: string;
-  model: string;
   /** SHA-256 of the system prompt it was recorded with, for the report. */
   promptHash: string;
   calls: RecordedCall[];
@@ -30,7 +29,6 @@ export type Recording = {
 export type RunOptions = {
   /** Defaults to the shipped system prompt. */
   system?: string;
-  toolset?: Toolset;
 };
 
 /** The live run ended in an error: nothing may be written for it. */
@@ -41,19 +39,15 @@ export function promptHash(system: string): string {
 }
 
 function conversation(evalCase: EvalCase): ChatMessage[] {
-  return [...(evalCase.history ?? []), { role: "user", content: evalCase.question }];
+  return [...(evalCase.priorTurns ?? []), { role: "user", content: evalCase.question }];
 }
 
-async function run(
-  evalCase: EvalCase,
-  model: ModelClient,
-  { system, toolset = createToolset() }: RunOptions,
-) {
+async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: RunOptions) {
   const outcome: CaseOutcome = { answer: "", toolCalls: [] };
   const usage = { inputTokens: 0, outputTokens: 0 };
   for await (const event of runChat({
     model,
-    toolset,
+    toolset: createToolset(),
     system,
     messages: conversation(evalCase),
   })) {
@@ -69,9 +63,9 @@ async function run(
   return { outcome, usage };
 }
 
-function toResult(
+function scoredResult(
   evalCase: EvalCase,
-  { outcome, usage }: Awaited<ReturnType<typeof run>>,
+  { outcome, usage }: Awaited<ReturnType<typeof runChatCase>>,
   calls: RecordedCall[],
 ): CaseResult {
   return {
@@ -87,13 +81,15 @@ function toResult(
 export async function recordCase(
   evalCase: EvalCase,
   model: ModelClient,
-  meta: { provider: string; model: string },
+  meta: SetId,
   options: RunOptions = {},
 ): Promise<{ recording: Recording; result: CaseResult }> {
   const recorder = createRecordingModelClient(model);
-  const ran = await run(evalCase, recorder, options);
+  const ran = await runChatCase(evalCase, recorder, options);
   if (ran.outcome.error) {
-    throw new RecordingFailedError(`${evalCase.id}-${evalCase.slug}: chat ended in error "${ran.outcome.error}"`);
+    throw new RecordingFailedError(
+      `${caseName(evalCase)}: chat ended in error "${ran.outcome.error}"`,
+    );
   }
   const recording: Recording = {
     caseId: evalCase.id,
@@ -102,7 +98,7 @@ export async function recordCase(
     promptHash: promptHash(options.system ?? systemPrompt),
     calls: recorder.calls,
   };
-  return { recording, result: toResult(evalCase, ran, recorder.calls) };
+  return { recording, result: scoredResult(evalCase, ran, recorder.calls) };
 }
 
 /** Replay: the same run fed from `recording`; throws `StaleRecordingError`. */
@@ -114,16 +110,12 @@ export async function replayCase(
   // Known before running: skip the loop (and its error log) altogether.
   if (!recording) throw new StaleRecordingError("missing_recording", 1);
   const replay = createReplayModelClient(recording.calls);
-  const ran = await run(evalCase, replay, options);
+  const ran = await runChatCase(evalCase, replay, options);
   if (replay.staleError) throw replay.staleError;
-  return toResult(evalCase, ran, recording.calls);
+  return scoredResult(evalCase, ran, recording.calls);
 }
 
-export type RecordingSet = {
-  provider: string;
-  model: string;
-  recordings: Recording[];
-};
+export type RecordingSet = SetId & { recordings: Recording[] };
 
 /**
  * Replays every case of every recording set. `problems` are what fails CI:
@@ -149,11 +141,11 @@ export async function evaluate({
   const problems: string[] = [];
   const results: SetResult[] = [];
   for (const set of sets) {
-    const label = `${set.provider}/${set.model}`;
+    const label = setLabel(set);
     const byCase = new Map(set.recordings.map((r) => [r.caseId, r]));
     const setResults: CaseResult[] = [];
     for (const evalCase of cases) {
-      const name = `${label} ${evalCase.id}-${evalCase.slug}`;
+      const name = `${label} ${caseName(evalCase)}`;
       try {
         const result = await replayCase(evalCase, byCase.get(evalCase.id), options);
         setResults.push(result);

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Markdown } from "./markdown";
 
@@ -10,7 +10,7 @@ describe("Markdown", () => {
   it("renders bold text without the asterisks", () => {
     const root = renderMarkdown("He is **remote** from Spain.");
 
-    expect(screen.getByText("remote").tagName).toBe("STRONG");
+    expect(screen.getByRole("strong")).toHaveTextContent("remote");
     expect(root.textContent).toBe("He is remote from Spain.");
   });
 
@@ -19,35 +19,32 @@ describe("Markdown", () => {
       "He has built:\n\n- Fraud Detection Agent\n* Portfolio Agent\n\nSteps:\n1. Email him\n2. Wait",
     );
 
-    const paragraphs = [...root.querySelectorAll("p")].map((p) => p.textContent);
+    const paragraphs = screen.getAllByRole("paragraph").map((p) => p.textContent);
     expect(paragraphs).toEqual(["He has built:", "Steps:"]);
+    const items = (list: HTMLElement) =>
+      within(list).getAllByRole("listitem").map((li) => li.textContent);
     const [bullets, numbered] = screen.getAllByRole("list");
-    expect(bullets.tagName).toBe("UL");
-    expect([...bullets.children].map((li) => li.textContent)).toEqual([
-      "Fraud Detection Agent",
-      "Portfolio Agent",
-    ]);
-    expect(numbered.tagName).toBe("OL");
-    expect([...numbered.children].map((li) => li.textContent)).toEqual([
-      "Email him",
-      "Wait",
-    ]);
+    expect(items(bullets)).toEqual(["Fraud Detection Agent", "Portfolio Agent"]);
+    expect(items(numbered)).toEqual(["Email him", "Wait"]);
+    expect(root.textContent).not.toMatch(/^\s*[-*]|\d\./m);
   });
 
   it("renders italic and inline code, leaving code contents literal", () => {
-    const root = renderMarkdown("Uses *TypeScript*, _daily_ and `**not bold**`.");
+    renderMarkdown("Uses *TypeScript*, _daily_ and `**not bold**`.");
 
-    expect(screen.getByText("TypeScript").tagName).toBe("EM");
-    expect(screen.getByText("daily").tagName).toBe("EM");
-    expect(screen.getByText("**not bold**").tagName).toBe("CODE");
-    expect(root.querySelector("strong")).toBeNull();
+    expect(screen.getAllByRole("emphasis").map((e) => e.textContent)).toEqual([
+      "TypeScript",
+      "daily",
+    ]);
+    expect(screen.getByRole("code")).toHaveTextContent("**not bold**");
+    expect(screen.queryByRole("strong")).toBeNull();
   });
 
   it("leaves lone asterisks and snake_case words alone", () => {
     const root = renderMarkdown("5 * 3 = 15 and get_contact_info");
 
     expect(root.textContent).toBe("5 * 3 = 15 and get_contact_info");
-    expect(root.querySelector("em")).toBeNull();
+    expect(screen.queryByRole("emphasis")).toBeNull();
   });
 
   it("renders http(s) and mailto links that open safely in a new tab", () => {
@@ -73,8 +70,7 @@ describe("Markdown", () => {
     );
 
     expect(screen.queryAllByRole("link")).toEqual([]);
-    expect(root.textContent).toContain("click");
-    expect(root.innerHTML).not.toMatch(/href/i);
+    expect(root.textContent).toBe("click x d r");
   });
 
   it("shows raw HTML from the model as text, never as elements", () => {
@@ -82,7 +78,8 @@ describe("Markdown", () => {
       'Hi <img src=x onerror="alert(1)"> <script>alert(1)</script> <a href="https://x.dev">x</a>',
     );
 
-    expect(root.querySelector("img, script, a")).toBeNull();
+    expect(screen.queryAllByRole("img", { hidden: true })).toEqual([]);
+    expect(screen.queryAllByRole("link")).toEqual([]);
     expect(root.textContent).toContain('<img src=x onerror="alert(1)">');
     expect(root.textContent).toContain("<script>alert(1)</script>");
   });
@@ -96,13 +93,30 @@ describe("Markdown", () => {
     const root = renderMarkdown(text);
 
     expect(root.textContent).toBe(expected);
-    expect(root.querySelector("a, strong, code")).toBeNull();
+    for (const role of ["link", "strong", "code"]) {
+      expect(screen.queryByRole(role)).toBeNull();
+    }
+  });
+
+  it("keeps a list together when its items are separated by blank lines", () => {
+    renderMarkdown("Steps:\n\n1. Email him\n\n2. Wait\n\nThanks.");
+
+    const [list] = screen.getAllByRole("list");
+    expect(screen.getAllByRole("list")).toHaveLength(1);
+    expect(within(list).getAllByRole("listitem").map((li) => li.textContent)).toEqual([
+      "Email him",
+      "Wait",
+    ]);
+    expect(screen.getAllByRole("paragraph").map((p) => p.textContent)).toEqual([
+      "Steps:",
+      "Thanks.",
+    ]);
   });
 
   it("keeps a single line break inside a paragraph", () => {
-    const root = renderMarkdown("Line one\nline two");
+    renderMarkdown("Line one\nline two");
 
-    expect(root.querySelectorAll("p")).toHaveLength(1);
-    expect(root.querySelector("br")).not.toBeNull();
+    expect(screen.getAllByRole("paragraph")).toHaveLength(1);
+    expect(screen.getByRole("paragraph")).toHaveTextContent("Line oneline two");
   });
 });

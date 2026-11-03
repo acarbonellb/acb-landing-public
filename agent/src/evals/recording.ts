@@ -3,6 +3,7 @@
 // chat loop and the tools run for real while no model is ever called.
 import { createHash } from "node:crypto";
 import type { ModelClient, ModelRequest, ModelStreamEvent } from "../model";
+import { byString } from "./format";
 
 /** One model call as it happened: what was asked (hashed) and what came back. */
 export type RecordedCall = {
@@ -16,9 +17,7 @@ function canonicalJson(value: unknown): string {
   return JSON.stringify(value, (_, v: unknown) =>
     v && typeof v === "object" && !Array.isArray(v)
       ? Object.fromEntries(
-          Object.entries(v as Record<string, unknown>).sort(([a], [b]) =>
-            a < b ? -1 : a > b ? 1 : 0,
-          ),
+          Object.entries(v as Record<string, unknown>).sort(([a], [b]) => byString(a, b)),
         )
       : v,
   );
