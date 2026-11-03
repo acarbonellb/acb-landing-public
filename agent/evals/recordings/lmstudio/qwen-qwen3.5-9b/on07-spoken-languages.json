@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "aae822a50cec3ceacb6e65316488fe7a2256bb2ef36588679df4525bb28f6008",
-      "latencyMs": 1549,
+      "latencyMs": 1870,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "5CtANoPnHiblRVM07G5ZhDbEQ70Tpqeu",
+                "id": "kkIoYSvkZulkNN1hpbPAMx1UTJWGFWdj",
                 "name": "get_profile",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "5CtANoPnHiblRVM07G5ZhDbEQ70Tpqeu",
+                "id": "kkIoYSvkZulkNN1hpbPAMx1UTJWGFWdj",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "7ca7e3c16bcc30401ba259eae2788da5cf3c50894f354960b1ba4ce23f4bbe39",
-      "latencyMs": 646,
+      "requestHash": "db2333a76b36b29ff23c3ab63befc45dc60b078cf71f92b1317c5ed61042892f",
+      "latencyMs": 1122,
       "events": [
         {
           "type": "input_usage",
@@ -99,26 +99,22 @@
         },
         {
           "type": "text_delta",
-          "text": " level"
-        },
-        {
-          "type": "text_delta",
           "text": ")."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto speaks Spanish (native) and English (C1 level).",
+            "text": "Alberto speaks Spanish (native) and English (C1).",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2282,
-              "outputTokens": 17
+              "outputTokens": 16
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto speaks Spanish (native) and English (C1 level)."
+                "text": "Alberto speaks Spanish (native) and English (C1)."
               }
             ]
           }

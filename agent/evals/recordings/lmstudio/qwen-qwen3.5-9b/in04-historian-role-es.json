@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "219b89428dada053bc17f7a81d97fcd4ec92c0ccfabc040a36d59a71092d8f9d",
-      "latencyMs": 4174,
+      "latencyMs": 5158,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,11 @@
         },
         {
           "type": "text_delta",
-          "text": " cannot"
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
         },
         {
           "type": "text_delta",
@@ -31,23 +35,11 @@
         },
         {
           "type": "text_delta",
-          "text": " unrelated"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
+          "text": " about"
         },
         {
           "type": "text_delta",
           "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
         },
         {
           "type": "text_delta",
@@ -91,7 +83,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -103,58 +99,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " how"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I cannot answer questions unrelated to Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1991,
-              "outputTokens": 161
+              "outputTokens": 168
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I cannot answer questions unrelated to Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
               }
             ]
           }

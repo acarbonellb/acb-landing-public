@@ -12,6 +12,7 @@ import {
   StaleRecordingError,
   type RecordedCall,
 } from "./recording";
+import { checkHistory, renderHistory, type HistoryEntry } from "./history";
 import { renderReport, type CaseResult, type SetResult } from "./report";
 import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
 
@@ -126,14 +127,21 @@ export type RecordingSet = {
 
 /**
  * Replays every case of every recording set. `problems` are what fails CI:
- * stale or missing recordings, and leaks (off_topic, mixed, injection). Tool
+ * stale or missing recordings, leaks (off_topic, mixed, injection) and, given
+ * a `history`, a set whose latest entry doesn't match its recordings. Tool
  * accuracy and fact coverage are only reported.
  */
 export async function evaluate({
   cases,
   sets,
+  history,
   ...options
-}: { cases: EvalCase[]; sets: RecordingSet[] } & RunOptions): Promise<{
+}: {
+  cases: EvalCase[];
+  sets: RecordingSet[];
+  /** The parsed `history.jsonl`; checked and rendered when given. */
+  history?: HistoryEntry[];
+} & RunOptions): Promise<{
   sets: SetResult[];
   problems: string[];
   report: string;
@@ -161,5 +169,7 @@ export async function evaluate({
       results: setResults,
     });
   }
-  return { sets: results, problems, report: renderReport(results) };
+  if (history) problems.push(...checkHistory(history, results));
+  const historySection = history?.length ? `\n${renderHistory(history)}` : "";
+  return { sets: results, problems, report: renderReport(results) + historySection };
 }

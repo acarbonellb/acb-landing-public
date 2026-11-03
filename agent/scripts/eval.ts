@@ -2,23 +2,30 @@
 //
 //   tsx scripts/eval.ts record [--only ot01,on02] [--paid]
 //     Live: runs every case against the configured model, records each one
-//     that completes, then regenerates the report. Defaults to LM Studio on
-//     localhost; any other server is a paid provider and needs --paid.
+//     that completes, appends the set's metrics to history.jsonl, then
+//     regenerates the report. Defaults to LM Studio on localhost; any other
+//     server is a paid provider and needs --paid.
 //   tsx scripts/eval.ts replay [--check]
 //     Replays the committed recordings (no model, no network) and writes the
 //     report; with --check, writes nothing and fails on stale or missing
-//     recordings, leaks, or a report that differs from the committed one.
+//     recordings, leaks, a history that doesn't match the recordings, or a
+//     report that differs from the committed one. Never appends history.
+import { execFileSync } from "node:child_process";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { cases } from "../evals/cases";
 import { createAnthropicModelClient } from "../src/anthropic";
+import { appendHistory, historyEntry, parseHistory } from "../src/evals/history";
 import { evaluate, recordCase, type Recording, type RecordingSet } from "../src/evals/runner";
 
 const evalsDir = fileURLToPath(new URL("../evals/", import.meta.url));
 const recordingsDir = join(evalsDir, "recordings");
 const reportPath = join(evalsDir, "report.md");
+const historyPath = join(evalsDir, "history.jsonl");
+
+const readHistory = () => readFile(historyPath, "utf8").catch(() => "");
 
 const { positionals, values } = parseArgs({
   allowPositionals: true,
@@ -70,7 +77,8 @@ async function saveRecording(recording: Recording) {
 }
 
 async function replay(check: boolean): Promise<number> {
-  const { report, problems } = await evaluate({ cases, sets: await loadSets() });
+  const history = parseHistory(await readHistory());
+  const { report, problems } = await evaluate({ cases, sets: await loadSets(), history });
   if (!check) {
     await writeFile(reportPath, report);
     console.log(`Wrote ${reportPath}`);
@@ -127,8 +135,28 @@ async function record(): Promise<number> {
       console.error(`  ${name}: not recorded: ${(error as Error).message}`);
     }
   }
+  if (failed < selected.length) await appendToHistory(provider, model);
   const status = await replay(false);
   return failed ? 1 : status;
+}
+
+/**
+ * One history line for the set just recorded, with the metrics of all its
+ * recordings. Skipped while any of its cases can't be replayed (stale or
+ * missing), so an entry always describes a complete set.
+ */
+async function appendToHistory(provider: string, model: string) {
+  const { sets } = await evaluate({ cases, sets: await loadSets() });
+  const set = sets.find((s) => s.provider === provider && s.model === model);
+  if (!set || set.results.length !== cases.length) {
+    console.error(`History not updated: some ${provider}/${model} recordings are stale or missing.`);
+    return;
+  }
+  const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
+  const date = new Date().toISOString().slice(0, 10);
+  const entry = historyEntry(set, { date, commit });
+  await writeFile(historyPath, appendHistory(await readHistory(), [entry]));
+  console.log(`Appended ${provider}/${model} to ${historyPath}`);
 }
 
 const mode = positionals[0];

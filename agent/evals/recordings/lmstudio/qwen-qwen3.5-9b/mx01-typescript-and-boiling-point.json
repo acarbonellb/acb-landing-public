@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "9f522622e55b57c7f99813e6a34fd0e48492be361f43ae0a943c80028b4e4887",
-      "latencyMs": 2981,
+      "latencyMs": 5419,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "lBV2UmQSizduXqSVMy43bOqK1PizRzJm",
+                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -29,12 +29,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1983,
-              "outputTokens": 115
+              "outputTokens": 177
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "lBV2UmQSizduXqSVMy43bOqK1PizRzJm",
+                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,8 +46,8 @@
       ]
     },
     {
-      "requestHash": "16b01f10aa73b998770efe422418023f5952702cf1607b9aef184fcb0eb79795",
-      "latencyMs": 3418,
+      "requestHash": "a4bbe72b9561b6eec53d0f084aaabb3ec6201910f8e433206608ed4f7e1e81e5",
+      "latencyMs": 1497,
       "events": [
         {
           "type": "input_usage",
@@ -56,30 +56,6 @@
         {
           "type": "text_delta",
           "text": "Yes"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " according"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -115,7 +91,11 @@
         },
         {
           "type": "text_delta",
-          "text": " cannot"
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t"
         },
         {
           "type": "text_delta",
@@ -135,23 +115,39 @@
         },
         {
           "type": "text_delta",
-          "text": " Alberto"
+          "text": " him"
         },
         {
           "type": "text_delta",
-          "text": "'s"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " profile"
+          "text": " such"
         },
         {
           "type": "text_delta",
-          "text": " or"
+          "text": " as"
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " boiling"
+        },
+        {
+          "type": "text_delta",
+          "text": " point"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " water"
         },
         {
           "type": "text_delta",
@@ -191,11 +187,7 @@
         },
         {
           "type": "text_delta",
-          "text": " projects"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
+          "text": " work"
         },
         {
           "type": "text_delta",
@@ -203,19 +195,19 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
           "text": " or"
         },
         {
           "type": "text_delta",
-          "text": " other"
+          "text": " AI"
         },
         {
           "type": "text_delta",
-          "text": " skills"
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " instead"
         },
         {
           "type": "text_delta",
@@ -224,17 +216,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I cannot answer questions unrelated to Alberto's profile or work. Would you like to know more about his projects, experience, or other skills?",
+            "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2070,
-              "outputTokens": 131
+              "outputTokens": 43
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I cannot answer questions unrelated to Alberto's profile or work. Would you like to know more about his projects, experience, or other skills?"
+                "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?"
               }
             ]
           }
