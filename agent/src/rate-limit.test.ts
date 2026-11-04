@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createMemoryRateLimiter } from "./rate-limit";
+import { createMemoryDocumentStore } from "./document-store";
+import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
 
 function fakeClock(start = Date.UTC(2026, 10, 2, 12, 0, 0)) {
   let now = start;
@@ -63,5 +64,49 @@ describe("createMemoryRateLimiter", () => {
     clock.advance(1_000);
     await limiter.hit("late");
     expect(limiter.size()).toBe(1);
+  });
+});
+
+describe("createStoreRateLimiter", () => {
+  const options = { limit: 2, windowMs: 60_000 };
+
+  it("shares each key's count between instances on the same store, and keeps it across a restart", async () => {
+    const clock = fakeClock();
+    const store = createMemoryDocumentStore();
+    const a = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
+    const b = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
+
+    expect(await a.hit("2001:db8::1")).toEqual({ allowed: true });
+    expect(await b.hit("2001:db8::1")).toEqual({ allowed: true });
+    clock.advance(20_000);
+    // A new instance (a cold start) sees the same window.
+    const restarted = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
+    expect(await restarted.hit("2001:db8::1")).toEqual({
+      allowed: false,
+      retryAfterSeconds: 40,
+    });
+    expect(await a.hit("2001:db8::2")).toEqual({ allowed: true });
+  });
+
+  it("counts concurrent hits exactly", async () => {
+    const store = createMemoryDocumentStore();
+    const limiters = Array.from({ length: 5 }, () =>
+      createStoreRateLimiter({ store, name: "chat", ...options, now: fakeClock().now }),
+    );
+    const decisions = await Promise.all(limiters.map((limiter) => limiter.hit("a")));
+    expect(decisions.filter((d) => d.allowed)).toHaveLength(2);
+  });
+
+  it("keeps separate counts per limiter name, and allows the key again after its window", async () => {
+    const clock = fakeClock();
+    const store = createMemoryDocumentStore();
+    const chat = createStoreRateLimiter({ store, name: "chat", limit: 1, windowMs: 60_000, now: clock.now });
+    const mcp = createStoreRateLimiter({ store, name: "mcp", limit: 1, windowMs: 60_000, now: clock.now });
+
+    expect(await chat.hit("a")).toEqual({ allowed: true });
+    expect(await mcp.hit("a")).toEqual({ allowed: true });
+    expect((await chat.hit("a")).allowed).toBe(false);
+    clock.advance(60_000);
+    expect(await chat.hit("a")).toEqual({ allowed: true });
   });
 });

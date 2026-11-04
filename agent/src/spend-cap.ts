@@ -11,14 +11,14 @@
 // not spent. Actual usage is always charged in full, even past the
 // reservation (the worst-case input is an estimate).
 //
-// The default store is in memory, so the running total is PER INSTANCE and
-// is lost on restart: Cloud Run may run several instances (each allowed the
-// full budget) and scales to zero (a cold start begins again at $0). Run
-// Cloud Run with max-instances=1 and set a monthly spend limit in the
-// Anthropic Console as the hard backstop. To make the cap global and
-// durable, implement `SpendCap` over a shared store (e.g. a Firestore
-// document `spend/<YYYY-MM>` updated in a transaction, or Redis
-// `INCRBYFLOAT spend:<YYYY-MM>`) and inject it through `AppDeps`.
+// The running total lives in a `DocumentStore`, one document per UTC month
+// (`spend/<YYYY-MM>`): with Firestore it is shared by every Cloud Run
+// instance and survives cold starts; `createMemorySpendCap` keeps it in this
+// process, for local development and tests. Each hold expires after
+// `holdTtlMs`, so a request whose instance died before settling doesn't hold
+// budget for the rest of the month; what it spent stays charged.
+import { randomUUID } from "node:crypto";
+import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
 
 /** USD per million tokens. */
@@ -50,6 +50,12 @@ export type SpendCapOptions = {
   pricing: Pricing;
   /** Injectable clock (ms since epoch); defaults to `Date.now`. */
   now?: () => number;
+  /**
+   * How long a reservation holds its worst case if never settled; longer
+   * than any request may run. Defaults to 15 minutes (Cloud Run's request
+   * timeout is 5).
+   */
+  holdTtlMs?: number;
 };
 
 export function usageCostUsd(usage: Usage, pricing: Pricing): number {
@@ -68,50 +74,90 @@ const nextMonthStart = (t: number) => {
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1));
 };
 
-export function createMemorySpendCap(options: SpendCapOptions): SpendCap {
-  const { budgetUsd, pricing, now = Date.now } = options;
-  let month = monthKey(now());
-  let spentUsd = 0;
-  let heldUsd = 0;
+/** Collection of the monthly spend documents. */
+export const spendCollection = "spend";
 
-  function rollOver() {
-    const key = monthKey(now());
-    if (key !== month) {
-      month = key;
-      spentUsd = 0;
-      heldUsd = 0;
-    }
-  }
+/** A month's spend: what was charged, plus the holds of the requests running. */
+type MonthSpend = { spentUsd: number; holds: Record<string, { usd: number; expireAt: Date }> };
+
+function readMonth(doc: StoreDocument | undefined): MonthSpend {
+  return {
+    spentUsd: Number(doc?.spentUsd ?? 0),
+    holds: (doc?.holds ?? {}) as MonthSpend["holds"],
+  };
+}
+
+/** Spend cap over a shared store: every instance draws on the same monthly budget. */
+export function createStoreSpendCap(
+  options: SpendCapOptions & { store: DocumentStore },
+): SpendCap {
+  const { store, budgetUsd, pricing, now = Date.now, holdTtlMs = 15 * 60_000 } = options;
 
   return {
-    async reserve(worstCase) {
+    reserve(worstCase) {
       const t = now();
-      rollOver();
+      const path = `${spendCollection}/${monthKey(t)}`;
+      const id = randomUUID();
       const costUsd = usageCostUsd(worstCase, pricing);
-      const committed = spentUsd + heldUsd;
-      if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
-        return { exhausted: true, resetsAt: nextMonthStart(t).toISOString() };
-      }
-      heldUsd += costUsd;
-      let leftUsd = costUsd;
-      const release = (usd: number) => {
-        heldUsd = Math.max(0, heldUsd - usd);
-        leftUsd -= usd;
-      };
-      return {
-        exhausted: false,
-        reservation: {
-          async record(usage) {
-            rollOver();
-            const usd = usageCostUsd(usage, pricing);
-            spentUsd += usd;
-            release(Math.min(usd, leftUsd));
-          },
-          async settle() {
-            release(leftUsd);
-          },
-        },
-      };
+
+      return store.update(path, (doc): StoreChange<SpendCapStatus> => {
+        const month = readMonth(doc);
+        const holds = Object.fromEntries(
+          Object.entries(month.holds).filter(([, hold]) => hold.expireAt.getTime() > t),
+        );
+        const committed =
+          month.spentUsd + Object.values(holds).reduce((sum, hold) => sum + hold.usd, 0);
+        if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
+          return {
+            result: { exhausted: true, resetsAt: nextMonthStart(t).toISOString() },
+          };
+        }
+        holds[id] = { usd: costUsd, expireAt: new Date(t + holdTtlMs) };
+        return {
+          doc: { spentUsd: month.spentUsd, holds },
+          result: { exhausted: false, reservation: reservation(path, id) },
+        };
+      });
     },
   };
+
+  function reservation(path: string, id: string): SpendReservation {
+    let settled = false;
+    // Once a usage couldn't be recorded, the hold stays until it expires: it
+    // covers that call's cost, which would otherwise go uncharged.
+    let unrecorded = false;
+    return {
+      // Charged to the month the request started in.
+      async record(usage) {
+        const usd = usageCostUsd(usage, pricing);
+        try {
+          await store.update(path, (doc) => {
+            const month = readMonth(doc);
+            const hold = month.holds[id];
+            if (hold) hold.usd = Math.max(0, hold.usd - usd);
+            return { doc: { spentUsd: month.spentUsd + usd, holds: month.holds }, result: undefined };
+          });
+        } catch (error) {
+          // Not rethrown: the visitor's answer is already streaming.
+          unrecorded = true;
+          console.error(`Spend cap: could not record $${usd} of usage`, error);
+        }
+      },
+      async settle() {
+        if (settled || unrecorded) return;
+        settled = true;
+        await store.update(path, (doc) => {
+          const month = readMonth(doc);
+          if (!(id in month.holds)) return { result: undefined };
+          delete month.holds[id];
+          return { doc: month, result: undefined };
+        });
+      },
+    };
+  }
+}
+
+/** Spend cap kept in this process: per instance, and lost on restart. */
+export function createMemorySpendCap(options: SpendCapOptions): SpendCap {
+  return createStoreSpendCap({ ...options, store: createMemoryDocumentStore() });
 }

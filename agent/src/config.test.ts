@@ -88,4 +88,32 @@ describe("loadConfig", () => {
       loadConfig({ AGENT_MAX_REQUEST_TOKENS: "3000" }).chatLimits.maxRequestTokens,
     ).toBe(3000);
   });
+
+  it("keeps the guardrails' state in memory by default, with no cloud dependency", () => {
+    const config = loadConfig({});
+    expect(config.store).toEqual({ kind: "memory" });
+    expect(config.createDocumentStore()).toBeNull();
+  });
+
+  it("selects the shared Firestore store, which needs the project", () => {
+    expect(() => loadConfig({ AGENT_STORE: "firestore" })).toThrow(/FIRESTORE_PROJECT_ID/);
+    expect(() => loadConfig({ AGENT_STORE: "redis" })).toThrow(/AGENT_STORE/);
+
+    const config = loadConfig({ AGENT_STORE: "firestore", FIRESTORE_PROJECT_ID: "acb-landing" });
+    expect(config.store).toEqual({
+      kind: "firestore",
+      projectId: "acb-landing",
+      databaseId: "(default)",
+      emulatorHost: undefined,
+    });
+    expect(config.createDocumentStore()).not.toBeNull();
+    expect(
+      loadConfig({
+        AGENT_STORE: "firestore",
+        FIRESTORE_PROJECT_ID: "demo-agent",
+        FIRESTORE_DATABASE: "agent",
+        FIRESTORE_EMULATOR_HOST: "localhost:8081",
+      }).store,
+    ).toMatchObject({ databaseId: "agent", emulatorHost: "localhost:8081" });
+  });
 });
