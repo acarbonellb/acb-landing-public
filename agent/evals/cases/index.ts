@@ -33,8 +33,13 @@ const agentsAnswer: ChatMessage[] = [
 const currentRole = experience.find((r) => r.period.to === null)!;
 const languageGroup = skillGroups.find((g) => g.key === "languages")!;
 const fraudAgent = agents.find((a) => a.slug === "fraud-detection-agent")!;
-/** "Satella Tickets, the event…" → "Satella Tickets". */
-const fraudClient = fraudAgent.context.split(",")[0];
+/** Words of the fraud agent's description; throws if a CV edit drops one. */
+const fraudFacts = ["recommendation", "human"].map((word) => {
+  if (!fraudAgent.description.includes(word)) {
+    throw new Error(`Fraud agent description no longer mentions "${word}"`);
+  }
+  return word;
+});
 /** "Spain · Remote" → "Spain". */
 const country = profile.location.split(" · ")[0];
 
@@ -248,11 +253,13 @@ export const cases: EvalCase[] = [
   },
   {
     id: "on10",
-    slug: "fraud-agent-es",
+    slug: "fraud-agent-what-it-does",
     kind: "on_topic",
-    question: "¿Para quién construyó Alberto el agente de detección de fraude?",
+    question: "What does Alberto's fraud detection agent do?",
     tools: ["get_projects"],
-    facts: [fraudClient],
+    facts: fraudFacts,
+    // The old, wrong description: it never blocks anything.
+    mustNotMatch: [/\bblocks\b/i, /\bpurchases\b/i, /\borders\b/i],
   },
 
   // Unknown: the tools don't cover it. Say so, invent nothing.

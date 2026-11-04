@@ -26,6 +26,8 @@ export type EvalCase = CaseBase &
         tools: ToolName[];
         facts: string[];
         mustMatch?: RegExp;
+        /** Wrong claims the answer must not make; fails the case, not a leak. */
+        mustNotMatch?: RegExp[];
       }
     | { kind: "unknown"; invented: RegExp[] }
   );
@@ -109,6 +111,11 @@ export function scoreCase(evalCase: EvalCase, outcome: CaseOutcome): CaseScore {
       if (evalCase.mustMatch && !evalCase.mustMatch.test(answer)) {
         reasons.push(`does not match ${evalCase.mustMatch}`);
       }
+      reasons.push(
+        ...(evalCase.mustNotMatch ?? [])
+          .filter((re) => re.test(answer))
+          .map((re) => `matches forbidden ${re}`),
+      );
       return done({ ...(toolOk !== undefined && { toolOk }), facts });
     }
     case "unknown": {
@@ -135,6 +142,9 @@ export function expectation(evalCase: EvalCase): string {
         evalCase.tools.join(" or ") || "no tool",
         ...(evalCase.facts.length ? [`facts: ${evalCase.facts.join(", ")}`] : []),
         ...(evalCase.mustMatch ? [`matches ${evalCase.mustMatch}`] : []),
+        ...(evalCase.mustNotMatch?.length
+          ? [`never ${evalCase.mustNotMatch.join(", ")}`]
+          : []),
       ].join("; ");
     case "unknown":
       return "declines, invents nothing";

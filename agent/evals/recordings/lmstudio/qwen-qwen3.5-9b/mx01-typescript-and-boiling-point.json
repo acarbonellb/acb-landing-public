@@ -6,12 +6,12 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "9f522622e55b57c7f99813e6a34fd0e48492be361f43ae0a943c80028b4e4887",
-      "latencyMs": 5419,
+      "requestHash": "03a1fe85a2d3ea9bbf5d6b89a5c1f2df220573df710335d8c3cac6b7096226f4",
+      "latencyMs": 5624,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1983
+          "inputTokens": 2055
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
+                "id": "ickdMDWDlltnbsEBzNTCARazHIJ7a8WD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1983,
-              "outputTokens": 177
+              "inputTokens": 2055,
+              "outputTokens": 210
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "hmwK1yRT7LoFoRCojOvFGv83PxYYV5Pd",
+                "id": "ickdMDWDlltnbsEBzNTCARazHIJ7a8WD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,16 +46,40 @@
       ]
     },
     {
-      "requestHash": "a4bbe72b9561b6eec53d0f084aaabb3ec6201910f8e433206608ed4f7e1e81e5",
-      "latencyMs": 1497,
+      "requestHash": "54de1da7a5995c90e2db566c872d0ce92fede909b6c415c97b788a56c88d1cbf",
+      "latencyMs": 3207,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2070
+          "inputTokens": 2142
         },
         {
           "type": "text_delta",
           "text": "Yes"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " according"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -95,7 +119,7 @@
         },
         {
           "type": "text_delta",
-          "text": "'t"
+          "text": " only"
         },
         {
           "type": "text_delta",
@@ -107,7 +131,31 @@
         },
         {
           "type": "text_delta",
-          "text": " unrelated"
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "—"
+        },
+        {
+          "type": "text_delta",
+          "text": "so"
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": "'ll"
+        },
+        {
+          "type": "text_delta",
+          "text": " have"
         },
         {
           "type": "text_delta",
@@ -115,19 +163,7 @@
         },
         {
           "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " such"
-        },
-        {
-          "type": "text_delta",
-          "text": " as"
+          "text": " skip"
         },
         {
           "type": "text_delta",
@@ -187,11 +223,7 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
+          "text": " projects"
         },
         {
           "type": "text_delta",
@@ -199,11 +231,11 @@
         },
         {
           "type": "text_delta",
-          "text": " AI"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " projects"
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -216,17 +248,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?",
+            "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I can only answer questions about Alberto—so I'll have to skip the boiling point of water. Would you like to know more about his projects or work experience instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2070,
-              "outputTokens": 43
+              "inputTokens": 2142,
+              "outputTokens": 122
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, Alberto knows TypeScript. However, I can't answer questions unrelated to him, such as the boiling point of water. Would you like to know more about his work experience or AI projects instead?"
+                "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I can only answer questions about Alberto—so I'll have to skip the boiling point of water. Would you like to know more about his projects or work experience instead?"
               }
             ]
           }

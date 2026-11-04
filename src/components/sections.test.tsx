@@ -61,6 +61,24 @@ const agents: AgentProject[] = [
     description: "Weaves patterns.",
     stack: ["Jacquard"],
   },
+  {
+    slug: "gear-agent",
+    name: "Gear Agent",
+    status: "offline-evals",
+    context: "Built for a clockmaker",
+    description: "Checks gear ratios.",
+    result: "Offline evals: wrong ratios fell from 40% to 5%.",
+    resultDetail: "Mean of 3 runs.",
+    stack: ["Brass"],
+  },
+  {
+    slug: "lace-agent",
+    name: "Lace Agent",
+    status: "coming-soon",
+    context: "Built for a lace maker",
+    description: "Will design lace.",
+    stack: ["Bobbins"],
+  },
 ];
 
 const roles: Role[] = [
@@ -201,6 +219,28 @@ describe("Projects", () => {
     const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
     expect(loom.getByText("Weaves patterns.")).toBeInTheDocument();
     expect(loom.queryByText(/in progress|personal project|live/)).not.toBeInTheDocument();
+  });
+
+  it("shows the offline-evals and coming-soon badges", () => {
+    render(<Projects agents={agents} />);
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
+    const lace = within(screen.getByRole("article", { name: "./Lace Agent" }));
+    expect(lace.getByText("coming soon")).toBeInTheDocument();
+  });
+
+  it("shows a measured result and its detail only on agents that have one", () => {
+    render(<Projects agents={agents} />);
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(
+      gear.getByText("Offline evals: wrong ratios fell from 40% to 5%."),
+    ).toBeInTheDocument();
+    expect(gear.getByText("Mean of 3 runs.")).toBeInTheDocument();
+
+    const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
+    expect(loom.queryByText(/offline evals|runs/i)).not.toBeInTheDocument();
   });
 });
 

@@ -29,11 +29,37 @@ describe("content module", () => {
     });
   });
 
-  it("lists the three agents with only the statuses the CV gives them", () => {
+  it("lists the three agents, each with an accurate status", () => {
     expect(agents.map((a) => [a.name, a.status])).toEqual([
-      ["Fraud Detection Agent", "in-progress"],
-      ["Organizer Support Agent", undefined],
+      ["Fraud Detection Agent", "offline-evals"],
+      ["Organizer Support Agent", "coming-soon"],
       ["Portfolio Agent", "personal-project"],
+    ]);
+  });
+
+  it("describes the fraud agent and its measured result with the approved copy", () => {
+    const fraud = agents.find((a) => a.slug === "fraud-detection-agent");
+    expect(fraud?.description).toBe(
+      "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
+    );
+    expect(fraud?.result).toBe(
+      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+    );
+    expect(fraud?.resultDetail).toBe(
+      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
+    );
+  });
+
+  it("names no ticketing platform and claims no ownership or order blocking", () => {
+    const text = JSON.stringify(agents);
+    expect(text).not.toMatch(/found(?:ed|er)|purchases|orders/i);
+    expect(
+      agents
+        .filter((a) => a.slug !== "portfolio-agent")
+        .map((a) => a.context),
+    ).toEqual([
+      "An online event ticketing platform",
+      "An online event ticketing platform",
     ]);
   });
 
