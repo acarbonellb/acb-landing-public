@@ -105,7 +105,7 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
     spendCap = store
       ? createStoreSpendCap({ ...spendCapOptions, store })
       : createMemorySpendCap(spendCapOptions),
-    clientKey = (c: Context) => clientIp(c, config.guardrails.trustedProxyHops),
+    clientKey = clientIp,
   } = deps;
   const modelClient =
     deps.modelClient === undefined ? config.createModelClient() : deps.modelClient;

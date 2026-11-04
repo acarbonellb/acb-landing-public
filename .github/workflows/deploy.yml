@@ -93,7 +93,9 @@ jobs:
         run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS
 
   deploy-agent:
-    needs: test
+    # After the site deploy: the smoke check also calls /mcp through the
+    # site's Hosting rewrite (firebase.json).
+    needs: [test, deploy]
     # Only main deploys, and only once the agent's public URL is configured.
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != '' && vars.AGENT_URL != ''
     runs-on: ubuntu-latest
@@ -146,6 +148,7 @@ jobs:
           --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
-      # Never calls the model: health, MCP tools, CORS and validation only.
+      # Never calls the model: health, MCP tools (on the agent's URL and on the
+      # site's domain), CORS and validation only.
       - name: Smoke check
         run: scripts/agent-smoke-check.sh "${{ vars.AGENT_URL }}" "$SITE_URL"

@@ -4,6 +4,12 @@
     "cleanUrls": true,
     "trailingSlash": false,
     "ignore": ["firebase.json", "**/.*"],
+    "rewrites": [
+      {
+        "source": "/mcp",
+        "run": { "serviceId": "agent", "region": "europe-southwest1" }
+      }
+    ],
     "headers": [
       {
         "source": "/@(opengraph-image|apple-icon)",

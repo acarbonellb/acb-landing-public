@@ -42,13 +42,12 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices, one proxy hop", () => {
+  it("defaults the guardrails: per-IP limits, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
       monthlyBudgetUsd: 4,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
-      trustedProxyHops: 1,
     });
   });
 
@@ -59,14 +58,12 @@ describe("loadConfig", () => {
       MONTHLY_SPEND_CAP_USD: "0",
       AGENT_PRICE_INPUT_USD_PER_MTOK: "2",
       AGENT_PRICE_OUTPUT_USD_PER_MTOK: "10",
-      TRUSTED_PROXY_HOPS: "2",
     });
     expect(config.guardrails).toEqual({
       chatRequestsPerMinute: 5,
       mcpRequestsPerMinute: 100,
       monthlyBudgetUsd: 0,
       pricing: { inputUsdPerMTok: 2, outputUsdPerMTok: 10 },
-      trustedProxyHops: 2,
     });
     expect(() => loadConfig({ MONTHLY_SPEND_CAP_USD: "-1" })).toThrow(/MONTHLY_SPEND_CAP_USD/);
   });
@@ -74,12 +71,6 @@ describe("loadConfig", () => {
   it("rejects invalid values instead of silently ignoring them", () => {
     expect(() => loadConfig({ AGENT_MAX_TOKENS: "lots" })).toThrow(/AGENT_MAX_TOKENS/);
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);
-  });
-
-  it("rejects a TRUSTED_PROXY_HOPS below one (it would trust no proxy entry)", () => {
-    for (const hops of ["0", "-1", "abc", "1.5"]) {
-      expect(() => loadConfig({ TRUSTED_PROXY_HOPS: hops })).toThrow(/TRUSTED_PROXY_HOPS/);
-    }
   });
 
   it("reads the per-request output-token budget", () => {

@@ -27,8 +27,6 @@ const envSchema = z.object({
   // chat request); change them with AGENT_MODEL.
   AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(0.1),
   AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(0.5),
-  // At least 1: 0 or less would make `clientIpFrom` read no proxy entry.
-  TRUSTED_PROXY_HOPS: z.coerce.number().int().min(1).default(1),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -85,8 +83,6 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
         inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
         outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
       },
-      /** Proxies that append to X-Forwarded-For (Cloud Run: 1). */
-      trustedProxyHops: e.TRUSTED_PROXY_HOPS,
     },
     store,
     /** The shared store for the guardrails, or `null` to keep them in memory. */
