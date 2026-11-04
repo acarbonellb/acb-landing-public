@@ -1,4 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import type {
   AgentProject,
@@ -241,12 +243,25 @@ describe("Contact", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the contact note and links to the email", () => {
+  it("shows the contact note and links to the email once asked", async () => {
+    const user = userEvent.setup();
     render(<Contact profile={profile} />);
 
     expect(screen.getByText("Say hi.")).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: "ada@example.com" }),
-    ).toHaveAttribute("href", "mailto:ada@example.com");
+    expect(screen.queryByText("ada@example.com")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "show email" }));
+
+    const link = screen.getByRole("link", { name: "ada@example.com" });
+    expect(link).toHaveAttribute("href", "mailto:ada@example.com");
+    expect(link).toHaveFocus();
+  });
+
+  it("keeps the address out of the server-rendered HTML", () => {
+    const html = renderToString(<Contact profile={profile} />);
+
+    expect(html).toContain("show email");
+    expect(html).not.toContain("ada@example.com");
+    expect(html).not.toContain("@");
   });
 });
