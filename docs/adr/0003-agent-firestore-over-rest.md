@@ -13,3 +13,4 @@ The agent's rate limits and monthly spend cap kept their state in memory, so on 
 - The in-memory implementations stay for local development and tests; `AGENT_STORE` picks the store, `memory` by default.
 - The Firestore adapter is tested against a fake of the REST API, not the real service; the emulator works too (`FIRESTORE_EMULATOR_HOST`).
 - Spend holds expire (15 minutes), so an instance that dies mid-request can't hold budget for the rest of the month.
+- The weekly usage stats (`usage/<YYYY-Www>`, #47) use the same store and the same read-modify-write, so `DocumentStore` stays one method: reading a document is an update that writes nothing. It adds one write per chat and per MCP request, all to the week's single document, which is fine at this traffic (well under Firestore's sustained write rate per document) but would need sharded counters if it grew a lot.

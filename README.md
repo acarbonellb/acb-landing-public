@@ -50,7 +50,7 @@ After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) 
 
 The agent service (below) runs as a separate Cloud Run service that the browser calls directly at `AGENT_URL`, not through a Firebase Hosting rewrite. The rewrite buffers the stream and retries long requests: [ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md).
 
-**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` (readable only by `agent-runtime`), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`memory` when unset; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. It runs after the site's `deploy` job. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools both on the agent's URL and on the site's domain (through the Hosting rewrite), that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
+**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` (readable only by `agent-runtime`), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`memory` when unset; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. It runs after the site's `deploy` job. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools both on the agent's URL and on the site's domain (through the Hosting rewrite), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
 
 | Variable | Value |
 | --- | --- |
@@ -78,6 +78,7 @@ pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node
 | `POST /mcp` | MCP endpoint (Streamable HTTP) |
 | `POST /chat` | Chat with the agent, streamed as Server-Sent Events |
 | `GET /health` | Health check, returns `{"status":"ok"}` |
+| `GET /stats` | This and last week's usage aggregates, public JSON (see [Usage stats](#usage-stats)) |
 
 ### Configuration
 
@@ -97,7 +98,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `MONTHLY_SPEND_CAP_USD` | `4` | Estimated model spend per UTC month before the chat closes (`0` turns it off). Keep it under the provider's spend limit (see Guardrails) |
 | `AGENT_PRICE_INPUT_USD_PER_MTOK` | `0.1` | Input price used to estimate spend (Claude Haiku 5.5, prompts up to 100K tokens; cached input counts as full input) |
 | `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `0.5` | Output price used to estimate spend |
-| `AGENT_STORE` | `memory` | Where the rate limits and spend cap keep their state: `memory` (this process only, lost on restart) or `firestore` (shared, durable; see [Shared store](#shared-store)) |
+| `AGENT_STORE` | `memory` | Where the rate limits, spend cap and usage stats keep their state: `memory` (this process only, lost on restart) or `firestore` (shared, durable; see [Shared store](#shared-store)) |
 | `FIRESTORE_PROJECT_ID` | unset | GCP project of the Firestore database; required with `AGENT_STORE=firestore` |
 | `FIRESTORE_DATABASE` | `(default)` | Firestore database id |
 | `FIRESTORE_EMULATOR_HOST` | unset | `host:port` of a local Firestore emulator; set, the agent talks to it with no credentials |
@@ -163,8 +164,9 @@ With `AGENT_STORE=firestore` the rate limits and the spend cap live in Firestore
 
 - **Rate limits**: one document per limiter and client, `rateLimits/<chat|mcp>:<ip>`, holding the current one-minute window (`start`, `count`) and `expireAt`, its end.
 - **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd` and the `holds` of the requests running (their reserved worst case and `expireAt`). A hold whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
+- **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](#usage-stats)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining budget.
-- **Cost**: a chat request is about one write for its rate limit, one to reserve, one per model call and one to settle; an MCP request is one. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
+- **Cost**: a chat request is about one write for its rate limit, one to reserve, one per model call, one to settle and one for its usage stats; an MCP request is two (rate limit, usage). That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
 - **Failure**: if Firestore can't be reached, the rate-limit check or the reservation fails and the request answers `500`, so the chat never starts unbudgeted. If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's hold stays until it expires, covering that call's cost.
 
 Setting it up (once, by hand; `PROJECT=acb-landing`):
@@ -195,6 +197,51 @@ claude mcp add --transport http albertocarbonell http://localhost:8080/mcp
 ```
 
 The deployed server is `https://albertocarbonell.dev/mcp`. Any other MCP client works the same way: point its Streamable HTTP transport at `/mcp`. To poke at it by hand, `npx @modelcontextprotocol/inspector` and connect to the same URL.
+
+### Usage stats
+
+The agent keeps weekly aggregates of its own traffic (`agent/src/usage.ts`) and serves them publicly; the page reads them in the browser and shows one line under the chat, e.g. `// this week: 24 questions answered · p50 2 s · 4% errors · $0.03` (last week's figures until this week has an answer; no line at all if `/stats` fails or nothing was answered).
+
+**What is recorded.** Each chat request, once it ends, is folded into its ISO week's document: the request, its outcome, its tokens (all model calls, estimated ones included), its estimated cost (the spend cap's prices) and two latencies, from arrival to the end of the stream and to the first text, as counts in fixed histogram buckets (250 ms … 5 min, plus an unbounded one). Outcomes are the stream's `stopReason` (`end_turn`, `max_tokens`, `max_iterations`, `refusal`), `error:<code>` for a stream `error`, `aborted` when the visitor left mid-answer, and `http_429` / `http_503` for refusals before streaming (no latency for those). Malformed requests (400, 413) aren't recorded. Each MCP HTTP request served is counted, nothing more (a client's session is several: initialize, list, calls); `/stats` itself isn't counted. **No message content and no IPs** are ever recorded. Recording is best effort: a failure is logged and the request goes on.
+
+**Document**, `usage/<YYYY-Www>` (e.g. `usage/2026-W45`, ISO weeks from Monday 00:00 UTC), in the same store as the guardrails (`AGENT_STORE`; in memory it is per instance and lost on restart):
+
+```json
+{
+  "week": "2026-W45",
+  "chat": {
+    "requests": 26,
+    "outcomes": { "end_turn": 23, "max_tokens": 1, "error:unavailable": 1, "http_429": 1 },
+    "inputTokens": 120000, "outputTokens": 9000, "costUsd": 0.0165,
+    "totalMs": { "2000": 14, "3000": 8, "7500": 3 },
+    "firstTextMs": { "1000": 20, "2000": 4 }
+  },
+  "mcp": { "requests": 12 }
+}
+```
+
+Histogram keys are bucket upper bounds in ms (`inf` past the last).
+
+**`GET /stats`** answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under the `/mcp` rate limit (the same per-IP count); `503 unavailable` if the store can't be read. The types are `StatsResponse` in `src/lib/stats-contract.ts`:
+
+```json
+{
+  "current": {
+    "week": "2026-W45", "startsAt": "2026-11-02T00:00:00.000Z",
+    "chat": {
+      "requests": 26, "answered": 24, "outcomes": { "end_turn": 23, "max_tokens": 1, "error:unavailable": 1, "http_429": 1 },
+      "inputTokens": 120000, "outputTokens": 9000, "costUsd": 0.0165, "errorRate": 0.04,
+      "latency": { "p50Ms": 2000, "p95Ms": 7500 }, "firstText": { "p50Ms": 1000, "p95Ms": 2000 }
+    },
+    "mcp": { "requests": 12 }
+  },
+  "previous": { "week": "2026-W44", "...": "same shape" }
+}
+```
+
+`answered` counts the four `stopReason` outcomes. `errorRate` is `error:*` outcomes over the requests that streamed (all but `http_429` and `http_503`), `null` if none did. Percentiles are the upper bound of the bucket they fall in (an upper estimate), `null` with no samples or past the last bucket.
+
+**Cost**: one more Firestore write per chat request (also for a 429 or 503) and per MCP request, and two document reads per `/stats` call (cached by browsers for 5 minutes). Every chat and MCP request in a week writes the same document; at this site's traffic that is far below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.
 
 ### Evals
 

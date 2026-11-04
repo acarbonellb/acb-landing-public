@@ -8,6 +8,7 @@ import {
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
 import { obfuscateEmail } from "@/lib/obfuscated-email";
 import { AgentChat } from "./agent-chat";
+import { AgentStats } from "./agent-stats";
 import { ContactEmail } from "./contact-email";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
@@ -214,6 +215,11 @@ export function Agent({
           </p>
         )}
       </Window>
+      {endpoints && (
+        <div className="mt-3">
+          <AgentStats url={endpoints.stats} />
+        </div>
+      )}
     </Section>
   );
 }

@@ -1,7 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
   AgentProject,
   Profile,
@@ -205,6 +205,17 @@ describe("Projects", () => {
 });
 
 describe("Agent", () => {
+  // The usage line fetches the agent's /stats: never the network in tests.
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new TypeError("offline");
+      }),
+    );
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
   it("is section 05, ask my agent", () => {
     render(<Agent />);
 
@@ -220,6 +231,33 @@ describe("Agent", () => {
       screen.getByRole("textbox", { name: /ask the agent/i }),
     ).toBeInTheDocument();
     expect(screen.getByText("http://localhost:8080/mcp")).toBeInTheDocument();
+  });
+
+  it("shows the agent's usage this week under the chat", async () => {
+    const week = (answered: number) => ({
+      week: "2026-W45",
+      startsAt: "2026-11-02T00:00:00.000Z",
+      chat: {
+        requests: answered,
+        answered,
+        outcomes: {},
+        inputTokens: 0,
+        outputTokens: 0,
+        costUsd: 0.5,
+        errorRate: 0,
+        latency: { p50Ms: 3000, p95Ms: 5000 },
+        firstText: { p50Ms: 1000, p95Ms: 2000 },
+      },
+      mcp: { requests: 0 },
+    });
+    const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
+    vi.stubGlobal("fetch", fetch);
+    render(<Agent />);
+
+    expect(
+      await screen.findByText("this week: 7 questions answered · p50 3 s · 0% errors · $0.50"),
+    ).toBeInTheDocument();
+    expect(fetch).toHaveBeenCalledWith("http://localhost:8080/stats", expect.anything());
   });
 
   it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
