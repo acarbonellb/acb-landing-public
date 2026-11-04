@@ -222,6 +222,7 @@ test("shows the unavailable state", async ({ page }) => {
     errorReply(503, {
       code: "unavailable",
       message: "The chat is resting until next month.",
+      resetsAt: "2026-12-01T00:00:00.000Z",
     }),
   );
   await page.goto("/#agent");
@@ -231,6 +232,7 @@ test("shows the unavailable state", async ({ page }) => {
   const alert = agentSection(page).getByRole("alert");
   await expect(alert).toContainText("The agent is unavailable right now.");
   await expect(alert).toContainText("The chat is resting until next month.");
+  await expect(alert).toContainText("It's back on December 1, 2026 (UTC).");
   await expectAccessible(page);
 });
 

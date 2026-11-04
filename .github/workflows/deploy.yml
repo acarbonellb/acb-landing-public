@@ -133,7 +133,9 @@ jobs:
       # and kept across deploys; this job never changes IAM. The model and its
       # prices are the code defaults (agent/src/config.ts). The guardrails'
       # store is `memory` until the AGENT_STORE variable says `firestore`
-      # (the database must exist first). `^@^` makes `@` the separator, as
+      # (the database must exist first). The monthly spend cap is set here, in
+      # sight, and stays under the Anthropic workspace's own $5/month hard
+      # limit (README, Guardrails). `^@^` makes `@` the separator, as
       # ALLOWED_ORIGINS may hold commas.
       - name: Deploy to Cloud Run
         env:
@@ -143,7 +145,7 @@ jobs:
           --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
           --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
           --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest
-          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}"
+          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
       # Never calls the model: health, MCP tools (on the agent's URL and on the

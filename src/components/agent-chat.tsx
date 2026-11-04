@@ -28,6 +28,7 @@ type Notice = {
   kind: ChatErrorKind;
   message?: string;
   retryAfterSeconds?: number;
+  resetsAt?: string;
 };
 
 const noticeTitle: Record<ChatErrorKind, string> = {
@@ -49,6 +50,15 @@ function noticeDetail(notice: Notice): string {
   const message = notice.message ?? noticeFallback[notice.kind];
   const rest = message.startsWith(title) ? message.slice(title.length).trim() : message;
   return rest || noticeFallback[notice.kind];
+}
+
+// The budget renews at 00:00 UTC on the 1st: show that day, in UTC, so it
+// doesn't read as the last day of the month west of Greenwich.
+function renewalDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+    dateStyle: "long",
+  });
 }
 
 // The agent's Markdown in the terminal palette. Long URLs wrap anywhere so
@@ -168,6 +178,7 @@ export function AgentChat({
           kind: event.kind,
           message: event.message,
           retryAfterSeconds: event.retryAfterSeconds,
+          resetsAt: event.resetsAt,
         });
       }
     }
@@ -251,6 +262,8 @@ export function AgentChat({
             {noticeDetail(notice)}
             {notice.retryAfterSeconds !== undefined &&
               ` Try again in ${notice.retryAfterSeconds}s.`}
+            {notice.resetsAt !== undefined &&
+              ` It's back on ${renewalDate(notice.resetsAt)} (UTC).`}
           </p>
           {/* The MCP tools don't use the model, so they outlive the chat. */}
           {notice.kind === "unavailable" && (

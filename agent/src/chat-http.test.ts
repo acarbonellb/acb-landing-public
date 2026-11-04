@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { profile } from "../../src/content/profile";
+import { createAnthropicModelClient } from "./anthropic";
 import { createApp, paths, type AppDeps } from "./app";
 import type { ChatEvent } from "./chat";
 import { createFakeModel, type ScriptedTurn } from "./fake-model";
@@ -122,6 +123,32 @@ describe("POST /chat", () => {
     const res = await post(url, ask("Stack?"));
     expect(res.status).toBe(200);
     const events = (await readSse(res)).map((f) => f.data);
+    expect(events.at(-1)).toMatchObject({ type: "error", code: "unavailable" });
+  });
+
+  it("ends the stream with unavailable when the provider's spend limit is hit", async () => {
+    // The real Anthropic adapter, against a canned upstream answer.
+    const upstream = async () =>
+      new Response(
+        JSON.stringify({
+          type: "error",
+          error: {
+            type: "invalid_request_error",
+            message:
+              "You have reached your specified workspace API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.",
+          },
+        }),
+        { status: 400, headers: { "content-type": "application/json" } },
+      );
+    const modelClient = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch: upstream as typeof globalThis.fetch,
+      maxRetries: 0,
+    });
+    const url = await start({ modelClient });
+    const events = (await readSse(await post(url, ask("Stack?")))).map((f) => f.data);
     expect(events.at(-1)).toMatchObject({ type: "error", code: "unavailable" });
   });
 
