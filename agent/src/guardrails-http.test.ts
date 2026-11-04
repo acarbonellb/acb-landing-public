@@ -117,6 +117,34 @@ describe("MCP rate limit", () => {
     });
   });
 
+  it("counts the visitor through the Hosting rewrite and ignores forged X-Forwarded-For entries", async () => {
+    const url = await start({
+      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+    const listTools = (forwardedFor: string) =>
+      fetch(new URL(paths.mcp, url), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json, text/event-stream",
+          "X-Forwarded-For": forwardedFor,
+        },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+      });
+    // As measured in #36: Hosting sends `<visitor>,<its Google-owned peer>`.
+    const hosting = (visitor: string) => `${visitor},66.249.93.229`;
+
+    expect((await listTools(hosting("198.51.100.1"))).status).toBe(200);
+    // The same visitor, through another Hosting peer or straight to run.app.
+    expect((await listTools("198.51.100.1,66.249.93.199")).status).toBe(429);
+    expect((await listTools("198.51.100.1")).status).toBe(429);
+    // A direct caller forging entries is still keyed on their own IP.
+    expect((await listTools("198.51.100.9, 198.51.100.1")).status).toBe(429);
+    expect((await listTools(`${hosting("198.51.100.9")}, 198.51.100.1`)).status).toBe(429);
+    // Other visitors through the rewrite each have their own limit.
+    expect((await listTools(hosting("198.51.100.2"))).status).toBe(200);
+  });
+
   it("is counted apart from the chat limit", async () => {
     const url = await start({
       modelClient: createFakeModel([{ text: "Hi." }]),

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Post-deploy smoke check for the agent service. Never calls the model: the
 # chat checks stop at CORS and request validation, so a deploy costs nothing.
+# MCP is checked both on the agent's URL and on the site's domain, through the
+# Firebase Hosting `/mcp` rewrite.
 # Usage: scripts/agent-smoke-check.sh <agent-url> <site-origin>
 set -uo pipefail
 
@@ -26,15 +28,20 @@ check_health() {
   [[ "$body" == '{"status":"ok"}' ]] || { echo "  /health answered $body"; return 1; }
 }
 
-check_mcp_tools() {
+# mcp_lists_tools URL: URL answers MCP tools/list with the five tools.
+mcp_lists_tools() {
   local body tool
-  body=$(curl -fsS --max-time 20 "$agent/mcp" \
+  body=$(curl -fsS --max-time 20 "$1" \
     -H 'content-type: application/json' -H 'accept: application/json, text/event-stream' \
-    -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}') || { echo "  /mcp tools/list failed"; return 1; }
+    -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}') || { echo "  $1 tools/list failed"; return 1; }
   for tool in "${tools[@]}"; do
-    grep -q "\"name\":\"$tool\"" <<<"$body" || { echo "  /mcp doesn't list $tool"; return 1; }
+    grep -q "\"name\":\"$tool\"" <<<"$body" || { echo "  $1 doesn't list $tool"; return 1; }
   done
 }
+
+check_mcp_tools() { mcp_lists_tools "$agent/mcp"; }
+
+check_site_mcp_tools() { mcp_lists_tools "${origin%/}/mcp"; }
 
 check_chat_cors() {
   local allowed
@@ -52,7 +59,7 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-for check in check_health check_mcp_tools check_chat_cors check_chat_validation; do
+for check in check_health check_mcp_tools check_site_mcp_tools check_chat_cors check_chat_validation; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi
 done
 

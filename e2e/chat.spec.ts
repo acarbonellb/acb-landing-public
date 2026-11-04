@@ -243,15 +243,16 @@ test("shows an error when the agent can't be reached", async ({ page }) => {
   await expect(agentSection(page).getByRole("alert")).toContainText("Something went wrong.");
 });
 
-test("shows the MCP endpoint and a ready-to-copy command", async ({
+test("shows the MCP endpoint on the site's domain and a ready-to-copy command", async ({
   page,
   context,
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/#agent");
 
+  // The chat calls the agent's own URL; MCP goes through the /mcp rewrite.
   const command =
-    "claude mcp add --transport http albertocarbonell http://localhost:8080/mcp";
+    "claude mcp add --transport http albertocarbonell https://albertocarbonell.dev/mcp";
   await expect(page.getByText(command)).toBeVisible();
 
   await page.getByRole("button", { name: /copy/i }).click();
