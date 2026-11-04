@@ -11,10 +11,19 @@ describe("agentEndpoints", () => {
     expect(agentEndpoints("", "test")).toEqual(local);
   });
 
-  it("uses the configured base URL, with or without a trailing slash", () => {
-    expect(agentEndpoints("https://agent.example.dev/", "production")).toEqual({
+  it("chats with the configured agent URL and shows MCP on the site's own domain in production", () => {
+    const deployed = {
       chat: "https://agent.example.dev/chat",
-      mcp: "https://agent.example.dev/mcp",
+      mcp: "https://albertocarbonell.dev/mcp",
+    };
+    expect(agentEndpoints("https://agent.example.dev", "production")).toEqual(deployed);
+    expect(agentEndpoints("https://agent.example.dev/", "production")).toEqual(deployed);
+  });
+
+  it("uses the configured agent URL for both outside production builds (no rewrite there)", () => {
+    expect(agentEndpoints("http://localhost:9000/", "development")).toEqual({
+      chat: "http://localhost:9000/chat",
+      mcp: "http://localhost:9000/mcp",
     });
   });
 
