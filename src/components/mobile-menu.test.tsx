@@ -1,4 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { MobileMenu } from "./mobile-menu";
@@ -11,6 +17,22 @@ const items = [
 
 function menuButton() {
   return screen.getByRole("button", { name: "Section menu" });
+}
+
+// A tap as iOS Safari handles it: the tapped link never takes focus, and unless
+// the mousedown is cancelled, whatever had focus loses it (relatedTarget null).
+// The click comes in a later task, so React has rendered by then. Returns
+// whether the click navigates: a browser only follows a link that is still in
+// the document (jsdom follows detached ones too, so the hash can't tell).
+function safariTap(link: HTMLElement) {
+  fireEvent.pointerDown(link);
+  if (fireEvent.mouseDown(link)) {
+    act(() => (document.activeElement as HTMLElement | null)?.blur());
+  }
+  fireEvent.pointerUp(link);
+  fireEvent.mouseUp(link);
+  const connected = link.isConnected;
+  return fireEvent.click(link) && connected;
 }
 
 describe("MobileMenu", () => {
@@ -107,4 +129,21 @@ describe("MobileMenu", () => {
 
     expect(menuButton()).toHaveAttribute("aria-expanded", "false");
   });
+
+  it.each(["about", "contact"])(
+    "takes a Safari tap on the %s section to it",
+    async (section) => {
+      const user = userEvent.setup();
+      render(<MobileMenu items={items} />);
+
+      await user.click(menuButton());
+      expect(screen.getByRole("link", { name: /about/ })).toHaveFocus();
+      const navigated = safariTap(
+        screen.getByRole("link", { name: new RegExp(section) }),
+      );
+
+      expect(navigated).toBe(true);
+      expect(menuButton()).toHaveAttribute("aria-expanded", "false");
+    },
+  );
 });

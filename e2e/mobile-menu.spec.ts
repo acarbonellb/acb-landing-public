@@ -5,6 +5,7 @@ test.describe("mobile navigation menu", () => {
 
   test("replaces the inline nav and takes the visitor to a section", async ({
     page,
+    hasTouch,
   }) => {
     await page.goto("/");
 
@@ -14,14 +15,29 @@ test.describe("mobile navigation menu", () => {
 
     await menu.click();
     await expect(menu).toHaveAttribute("aria-expanded", "true");
-    await page
+    // Not the first section: that one has focus already when the menu opens.
+    const contact = page
       .getByRole("navigation", { name: "Sections" })
-      .getByRole("link", { name: /contact/ })
-      .click();
+      .getByRole("link", { name: /contact/ });
+    await (hasTouch ? contact.tap() : contact.click());
 
     await expect(menu).toHaveAttribute("aria-expanded", "false");
     await expect(page).toHaveURL(/#contact$/);
     await expect(page.locator("#contact")).toBeInViewport();
+  });
+
+  test("opens without scrolling the page", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/#experience");
+    const scrollY = await page.evaluate(() => window.scrollY);
+    expect(scrollY).toBeGreaterThan(0);
+
+    await page.getByRole("button", { name: "Section menu" }).click();
+    await expect(
+      page.getByRole("navigation", { name: "Sections" }).getByRole("link").first(),
+    ).toBeFocused();
+
+    expect(await page.evaluate(() => window.scrollY)).toBe(scrollY);
   });
 
   test("is operable from the keyboard", async ({ page }) => {

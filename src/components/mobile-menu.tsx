@@ -92,6 +92,9 @@ export function MobileMenu({ items }: { items: NavItem[] }) {
           ref={panelRef}
           id={panelId}
           aria-label="Sections"
+          // Safari never focuses a tapped link: the tap only blurs the focused
+          // one, and the blur would close the menu before the click lands.
+          onMouseDown={(event) => event.preventDefault()}
           className="absolute right-0 top-full mt-2 w-56 overflow-hidden rounded border border-border bg-bg-dark text-sm shadow-lg shadow-black/30"
         >
           <p
