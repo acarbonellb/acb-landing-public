@@ -12,11 +12,11 @@ const linkStyle =
  */
 export function ContactEmail({ obfuscated }: { obfuscated: string }) {
   const [email, setEmail] = useState<string | null>(null);
-  const link = useRef<HTMLAnchorElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
 
   // The button the visitor pressed is gone; keep keyboard focus in place.
   useEffect(() => {
-    if (email) link.current?.focus();
+    if (email) linkRef.current?.focus();
   }, [email]);
 
   if (!email) {
@@ -32,7 +32,7 @@ export function ContactEmail({ obfuscated }: { obfuscated: string }) {
   }
 
   return (
-    <a ref={link} href={`mailto:${email}`} className={linkStyle}>
+    <a ref={linkRef} href={`mailto:${email}`} className={linkStyle}>
       {email}
     </a>
   );
