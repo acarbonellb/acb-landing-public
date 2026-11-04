@@ -6,20 +6,24 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "d932a76bc93b111abda4e2fdc85a306be33e45501a479960bc6a6e71c6af6581",
-      "latencyMs": 899,
+      "requestHash": "636fb35731f92b354d0382fdcb134a8993b4a7fd5f03d61a5379304a6dd954f5",
+      "latencyMs": 946,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1406
+          "inputTokens": 1456
         },
         {
           "type": "text_delta",
-          "text": "I can only answer questions about"
+          "text": "I can only"
         },
         {
           "type": "text_delta",
-          "text": " Alberto"
+          "text": " answer questions about Alber"
+        },
+        {
+          "type": "text_delta",
+          "text": "to"
         },
         {
           "type": "text_delta",
@@ -31,30 +35,34 @@
         },
         {
           "type": "text_delta",
-          "text": " know about his AI agents,"
+          "text": " know about"
         },
         {
           "type": "text_delta",
-          "text": " his experience, or how to cont"
+          "text": " his AI agents, exper"
         },
         {
           "type": "text_delta",
-          "text": "act him?"
+          "text": "ience, or how to contact him"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?",
+            "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, experience, or how to contact him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1406,
-              "outputTokens": 47
+              "inputTokens": 1456,
+              "outputTokens": 46
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?"
+                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, experience, or how to contact him?"
               }
             ]
           }

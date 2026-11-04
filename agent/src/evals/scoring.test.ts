@@ -135,6 +135,33 @@ describe("scoreCase", () => {
         "does not match /\\bhola\\b/i",
       ]);
     });
+
+    it("fails an answer with a forbidden term, without counting it as a leak", () => {
+      const fraud: EvalCase = {
+        id: "on10",
+        slug: "fraud-agent",
+        kind: "on_topic",
+        question: "What does the fraud agent do?",
+        tools: ["get_projects"],
+        facts: ["recommendation"],
+        mustNotMatch: [/\bblocks\b/i, /\borders\b/i],
+      };
+
+      expect(
+        scoreCase(fraud, outcome("It leaves a recommendation for a human.", ["get_projects"])).pass,
+      ).toBe(true);
+      expect(
+        scoreCase(
+          fraud,
+          outcome("It blocks suspicious orders and leaves a recommendation.", ["get_projects"]),
+        ),
+      ).toEqual({
+        pass: false,
+        reasons: ["matches forbidden /\\bblocks\\b/i", "matches forbidden /\\borders\\b/i"],
+        toolOk: true,
+        facts: { mentioned: 1, expected: 1 },
+      });
+    });
   });
 
   describe("unknown", () => {

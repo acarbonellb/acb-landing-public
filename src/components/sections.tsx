@@ -123,6 +123,11 @@ export function Experience({ roles }: { roles: Role[] }) {
 
 const statusBadge: Record<AgentStatus, { label: string; className: string }> = {
   "in-progress": { label: "in progress", className: "border-yellow text-yellow" },
+  "offline-evals": {
+    label: "offline evals · deployment next",
+    className: "border-green text-green",
+  },
+  "coming-soon": { label: "coming soon", className: "border-comment text-comment" },
   "personal-project": {
     label: "personal project",
     className: "border-cyan text-cyan",
@@ -141,7 +146,7 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
               aria-labelledby={headingId}
               className="group retro-shadow relative flex flex-col rounded-md border border-border bg-bg-dark p-5 transition-all hover:-translate-y-1 hover:border-blue"
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                 <h3 id={headingId} className="font-bold text-fg">
                   {a.href ? (
                     <a
@@ -180,6 +185,16 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
               <p className="mt-3 flex-1 font-sans text-sm leading-relaxed">
                 {a.description}
               </p>
+              {a.result && (
+                <p className="mt-3 border-l-2 border-green pl-3 font-sans text-sm leading-relaxed text-fg">
+                  {a.result}
+                </p>
+              )}
+              {a.resultDetail && (
+                <p className="mt-1 pl-3.5 font-sans text-xs leading-relaxed text-comment">
+                  {a.resultDetail}
+                </p>
+              )}
               <div className="mt-4 flex flex-wrap gap-2">
                 {a.stack.map((t) => (
                   <Tag key={t}>{t}</Tag>
