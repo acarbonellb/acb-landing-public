@@ -67,8 +67,16 @@
 }
 
 html {
+  --header-offset: 5rem;
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: var(--header-offset);
+}
+
+/* The padding keeps sections and focused elements clear of the sticky header,
+   but the header's own elements sit inside it, so focusing one would scroll
+   the page to "reveal" it. Cancel the padding there. */
+header * {
+  scroll-margin-top: calc(-1 * var(--header-offset));
 }
 
 body {

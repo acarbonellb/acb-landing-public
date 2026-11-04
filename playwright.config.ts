@@ -23,11 +23,21 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
-  use: {
-    baseURL: `http://localhost:${PORT}`,
-    launchOptions: { executablePath },
-  },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  use: { baseURL: `http://localhost:${PORT}` },
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"], launchOptions: { executablePath } },
+    },
+    // Safari handles taps and focus differently from Chromium (#35), so the
+    // mobile menu also runs on WebKit with a touch screen. Linux WebKit still
+    // focuses a tapped link, unlike iOS: the unit tests cover that case.
+    {
+      name: "webkit",
+      testMatch: "mobile-menu.spec.ts",
+      use: { ...devices["iPhone XS"] },
+    },
+  ],
   webServer: {
     command: `serve out --listen ${PORT} --no-clipboard`,
     // Probe over IPv6 loopback: under WSL a closed IPv4 port times out (~2 min)
