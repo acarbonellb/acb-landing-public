@@ -94,7 +94,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
 | `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
 | `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |
-| `MONTHLY_SPEND_CAP_USD` | `20` | Estimated model spend per UTC month before the chat closes (`0` turns it off) |
+| `MONTHLY_SPEND_CAP_USD` | `4` | Estimated model spend per UTC month before the chat closes (`0` turns it off). Keep it under the provider's spend limit (see Guardrails) |
 | `AGENT_PRICE_INPUT_USD_PER_MTOK` | `0.1` | Input price used to estimate spend (Claude Haiku 5.5, prompts up to 100K tokens; cached input counts as full input) |
 | `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `0.5` | Output price used to estimate spend |
 | `TRUSTED_PROXY_HOPS` | `1` | Proxies that append to `X-Forwarded-For`; the client IP is the entry this many from the end (Cloud Run: 1). Must be at least 1 |
@@ -147,13 +147,14 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `done` | `stopReason`, `usage` | Last event of a successful turn; `usage` is the turn total |
 | `error` | `code`, `message` | Last event of a failed turn; `message` is safe to show |
 
-`stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream or unreachable: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
+`stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream, unreachable, or the provider's spend or billing limit reached: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
 
 ### Guardrails
 
 - **Per-IP rate limits** on `/chat` and `/mcp`, counted separately (`agent/src/rate-limit.ts`, fixed one-minute window). Over the limit, `/chat` answers the `429 rate_limited` JSON above and `/mcp` answers `429` with `Retry-After` and a JSON-RPC error `{"code":-32000,"data":{"code":"rate_limited","retryAfterSeconds"}}`.
 - **Per-request token cap**: one output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model calls of a request; when it runs out the turn ends with `stopReason: "max_tokens"`.
-- **Monthly spend cap** (`agent/src/spend-cap.ts`): before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. MCP tools cost nothing and keep working.
+- **Monthly spend cap** (`agent/src/spend-cap.ts`): before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
+- **Provider spend limit**: the Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices, cached input counted as full input) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. The provider limit is the backstop if the estimate is ever off; if it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage and the stream ends with `unavailable`, not `internal`. Raise both together, keeping the code cap under the provider's.
 - Both sit behind interfaces injected through `AppDeps` (`RateLimiter`, `SpendCap`, with an injectable clock), each with two implementations: in memory (local development and tests) and over a shared document store (production). `AGENT_STORE` picks one.
 
 #### Shared store

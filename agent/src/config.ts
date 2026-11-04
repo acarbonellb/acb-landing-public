@@ -20,7 +20,9 @@ const envSchema = z.object({
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
-  MONTHLY_SPEND_CAP_USD: usdFromEnv.default(20),
+  // Under the $5/month hard limit set on the Anthropic workspace, so this
+  // cap (and its "budget reached" message) is what the visitor meets first.
+  MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
   // Claude Haiku 5.5 list prices (prompts up to 100K tokens, far above a
   // chat request); change them with AGENT_MODEL.
   AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(0.1),

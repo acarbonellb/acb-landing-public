@@ -42,11 +42,11 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, a $20 monthly cap, Haiku 5.5 prices, one proxy hop", () => {
+  it("defaults the guardrails: per-IP limits, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices, one proxy hop", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
-      monthlyBudgetUsd: 20,
+      monthlyBudgetUsd: 4,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
       trustedProxyHops: 1,
     });
