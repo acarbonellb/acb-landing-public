@@ -6,12 +6,12 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "a0cc37a83bc298179f34f8f84e535601208835951db0ca10a0161950c5ce2087",
-      "latencyMs": 4695,
+      "requestHash": "e24cb315d922eca416df5007820b8d4565cde95869284a024919548ae42bc50a",
+      "latencyMs": 2473,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1974
+          "inputTokens": 2046
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "peudQk2ATfYPpJLgYRyyQ5uQXhEgmm9m",
+                "id": "TKmeUkNpRAAfK5Gbce8idfKCsL3X3CQE",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1974,
-              "outputTokens": 150
+              "inputTokens": 2046,
+              "outputTokens": 93
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "peudQk2ATfYPpJLgYRyyQ5uQXhEgmm9m",
+                "id": "TKmeUkNpRAAfK5Gbce8idfKCsL3X3CQE",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "f7ba9c1c9e28ef788df7f35ec1cb193f05b3232ba9f373f7d660465d682e73fe",
-      "latencyMs": 6169,
+      "requestHash": "38378d605c0df8a50182983badc1a25a1f6d13774421b582bed73ad2a95543ca",
+      "latencyMs": 1857,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2286
+          "inputTokens": 2358
         },
         {
           "type": "text_delta",
@@ -159,7 +159,19 @@
         },
         {
           "type": "text_delta",
-          "text": " profesional"
+          "text": " como"
+        },
+        {
+          "type": "text_delta",
+          "text": " ingen"
+        },
+        {
+          "type": "text_delta",
+          "text": "iero"
+        },
+        {
+          "type": "text_delta",
+          "text": " senior"
         },
         {
           "type": "text_delta",
@@ -171,11 +183,7 @@
         },
         {
           "type": "text_delta",
-          "text": " se"
-        },
-        {
-          "type": "text_delta",
-          "text": " gradu"
+          "text": " estudi"
         },
         {
           "type": "text_delta",
@@ -235,7 +243,15 @@
         },
         {
           "type": "text_delta",
-          "text": " Para"
+          "text": " ¿"
+        },
+        {
+          "type": "text_delta",
+          "text": "Te"
+        },
+        {
+          "type": "text_delta",
+          "text": " gustaría"
         },
         {
           "type": "text_delta",
@@ -243,11 +259,23 @@
         },
         {
           "type": "text_delta",
+          "text": " algo"
+        },
+        {
+          "type": "text_delta",
+          "text": " más"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
           "text": " su"
         },
         {
           "type": "text_delta",
-          "text": " edad"
+          "text": " perfil"
         },
         {
           "type": "text_delta",
@@ -255,55 +283,7 @@
         },
         {
           "type": "text_delta",
-          "text": " lo"
-        },
-        {
-          "type": "text_delta",
-          "text": " mejor"
-        },
-        {
-          "type": "text_delta",
-          "text": " sería"
-        },
-        {
-          "type": "text_delta",
-          "text": " contactar"
-        },
-        {
-          "type": "text_delta",
-          "text": " directamente"
-        },
-        {
-          "type": "text_delta",
-          "text": " con"
-        },
-        {
-          "type": "text_delta",
-          "text": " él"
-        },
-        {
-          "type": "text_delta",
-          "text": " a"
-        },
-        {
-          "type": "text_delta",
-          "text": " través"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " su"
-        },
-        {
-          "type": "text_delta",
-          "text": " correo"
-        },
-        {
-          "type": "text_delta",
-          "text": " electrónico"
+          "text": " experiencia"
         },
         {
           "type": "text_delta",
@@ -311,26 +291,26 @@
         },
         {
           "type": "text_delta",
-          "text": " LinkedIn"
+          "text": " proyectos"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "No tengo información sobre la edad exacta de Alberto en los datos disponibles. Solo sé que tiene más de 10 años de experiencia profesional y que se graduó entre 2010 y 2015. Para saber su edad, lo mejor sería contactar directamente con él a través de su correo electrónico o LinkedIn.",
+            "text": "No tengo información sobre la edad exacta de Alberto en los datos disponibles. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. ¿Te gustaría saber algo más sobre su perfil, experiencia o proyectos?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2286,
-              "outputTokens": 169
+              "inputTokens": 2358,
+              "outputTokens": 65
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre la edad exacta de Alberto en los datos disponibles. Solo sé que tiene más de 10 años de experiencia profesional y que se graduó entre 2010 y 2015. Para saber su edad, lo mejor sería contactar directamente con él a través de su correo electrónico o LinkedIn."
+                "text": "No tengo información sobre la edad exacta de Alberto en los datos disponibles. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. ¿Te gustaría saber algo más sobre su perfil, experiencia o proyectos?"
               }
             ]
           }

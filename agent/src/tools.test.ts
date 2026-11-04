@@ -29,9 +29,11 @@ const fixture: Content = {
     {
       slug: "loom",
       name: "Loom Agent",
-      status: "in-progress",
+      status: "offline-evals",
       context: "Side business",
       description: "Weaves patterns.",
+      result: "Offline evals: wrong patterns fell from 40% to 5%.",
+      resultDetail: "Mean of 3 runs.",
       stack: ["Jacquard"],
     },
   ],
@@ -175,9 +177,11 @@ describe("get_projects", () => {
         },
         {
           name: "Loom Agent",
-          status: "in-progress",
+          status: "offline-evals",
           context: "Side business",
           description: "Weaves patterns.",
+          result: "Offline evals: wrong patterns fell from 40% to 5%.",
+          resultDetail: "Mean of 3 runs.",
           stack: ["Jacquard"],
         },
       ],
@@ -185,8 +189,15 @@ describe("get_projects", () => {
   });
 
   it("filters by status", () => {
-    const result = tools.call("get_projects", { status: "in-progress" });
+    const result = tools.call("get_projects", { status: "offline-evals" });
     expect(result.projects.map((p) => p.name)).toEqual(["Loom Agent"]);
+  });
+
+  it("lists every status in its description", () => {
+    const tool = tools.list().find((t) => t.name === "get_projects")!;
+    for (const label of ["in progress", "offline evals", "coming soon", "personal project"]) {
+      expect(tool.description).toContain(label);
+    }
   });
 
   it("rejects an unknown status", () => {

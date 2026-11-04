@@ -6,12 +6,12 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "e28bc49d6566eda77ae62872cb1f6349239a0c739dbbf5971125f1607437dd7c",
-      "latencyMs": 1327,
+      "requestHash": "3720a3df59acb629aa1fa3aeed09f657a93fe87fa4dacf8f53f5bb920ee56f64",
+      "latencyMs": 1044,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1401
+          "inputTokens": 1451
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01KLoydrSXbueckf3SRpmTeA",
+                "id": "toolu_01ADZabKYTpdsbsr4DVXsyaT",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1401,
+              "inputTokens": 1451,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01KLoydrSXbueckf3SRpmTeA",
+                "id": "toolu_01ADZabKYTpdsbsr4DVXsyaT",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "2cd22c7920a9e8e73de98bb751c5969b31c366069459768e0be8ae737e404976",
-      "latencyMs": 843,
+      "requestHash": "87ba55bb9410e9bb3bd7faa296e1e219008c6cdef8f20df7df5a6fa03cba6328",
+      "latencyMs": 938,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1538
+          "inputTokens": 1588
         },
         {
           "type": "text_delta",
@@ -111,7 +111,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1538,
+              "inputTokens": 1588,
               "outputTokens": 105
             },
             "providerContent": [

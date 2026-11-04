@@ -6,12 +6,51 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "88edacef1b59d0f5593d2a54f0e06db78699b277341c65c5a7d769e2ec727d53",
-      "latencyMs": 1111,
+      "requestHash": "730a79fd210cde7e27bfedd7c6c594f92ce12075dd7ec53dbd55a4dc66e24730",
+      "latencyMs": 789,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1396
+          "inputTokens": 1446
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01WUkw15mdgzwoJoCMdrHmpD",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1446,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01WUkw15mdgzwoJoCMdrHmpD",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "75111a6ed8897bea673613cf5e01742f3a89220cd9986ff994b066feeeb9fd81",
+      "latencyMs": 1153,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1919
         },
         {
           "type": "text_delta",
@@ -19,63 +58,107 @@
         },
         {
           "type": "text_delta",
-          "text": "y el ag"
+          "text": "y el"
         },
         {
           "type": "text_delta",
-          "text": "ente de portf"
+          "text": " as"
         },
         {
           "type": "text_delta",
-          "text": "olio de Alberto"
+          "text": "istente de"
         },
         {
           "type": "text_delta",
-          "text": " Carbonell."
+          "text": " Alberto Carbonell"
         },
         {
           "type": "text_delta",
-          "text": " Puedo cont"
+          "text": ". Es"
         },
         {
           "type": "text_delta",
-          "text": "arte s"
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": "obre su per"
+          "text": "ingeniero de"
         },
         {
           "type": "text_delta",
-          "text": "fil, exper"
+          "text": " software senior (TypeSc"
         },
         {
           "type": "text_delta",
-          "text": "iencia la"
+          "text": "ript, Node.js y P"
         },
         {
           "type": "text_delta",
-          "text": "boral, pro"
+          "text": "ostgreSQL) espec"
         },
         {
           "type": "text_delta",
-          "text": "yectos de agentes de"
+          "text": "ializado en ag"
         },
         {
           "type": "text_delta",
-          "text": " IA, st"
+          "text": "entes de"
         },
         {
           "type": "text_delta",
-          "text": "ack tecnológico,"
+          "text": " IA que"
         },
         {
           "type": "text_delta",
-          "text": " id"
+          "text": " real"
         },
         {
           "type": "text_delta",
-          "text": "iomas o c"
+          "text": "izan trabajo real de"
+        },
+        {
+          "type": "text_delta",
+          "text": " princip"
+        },
+        {
+          "type": "text_delta",
+          "text": "io a fin. "
+        },
+        {
+          "type": "text_delta",
+          "text": "¿Te"
+        },
+        {
+          "type": "text_delta",
+          "text": " inter"
+        },
+        {
+          "type": "text_delta",
+          "text": "esa saber s"
+        },
+        {
+          "type": "text_delta",
+          "text": "obre su experiencia la"
+        },
+        {
+          "type": "text_delta",
+          "text": "boral, sus proyect"
+        },
+        {
+          "type": "text_delta",
+          "text": "os de agentes,"
+        },
+        {
+          "type": "text_delta",
+          "text": " su st"
+        },
+        {
+          "type": "text_delta",
+          "text": "ack t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ecnológico o c"
         },
         {
           "type": "text_delta",
@@ -83,26 +166,22 @@
         },
         {
           "type": "text_delta",
-          "text": ". ¿Qué te"
-        },
-        {
-          "type": "text_delta",
-          "text": " gustaría saber?"
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, idiomas o cómo contactarle. ¿Qué te gustaría saber?",
+            "text": "¡Hola! Soy el asistente de Alberto Carbonell. Es ingeniero de software senior (TypeScript, Node.js y PostgreSQL) especializado en agentes de IA que realizan trabajo real de principio a fin. ¿Te interesa saber sobre su experiencia laboral, sus proyectos de agentes, su stack tecnológico o cómo contactarle?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1396,
-              "outputTokens": 100
+              "inputTokens": 1919,
+              "outputTokens": 133
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, idiomas o cómo contactarle. ¿Qué te gustaría saber?"
+                "text": "¡Hola! Soy el asistente de Alberto Carbonell. Es ingeniero de software senior (TypeScript, Node.js y PostgreSQL) especializado en agentes de IA que realizan trabajo real de principio a fin. ¿Te interesa saber sobre su experiencia laboral, sus proyectos de agentes, su stack tecnológico o cómo contactarle?"
               }
             ]
           }

@@ -19,7 +19,12 @@ export type Profile = {
 };
 
 /** Statuses the CV states; a project without one makes no status claim. */
-export const agentStatuses = ["in-progress", "personal-project"] as const;
+export const agentStatuses = [
+  "in-progress",
+  "offline-evals",
+  "coming-soon",
+  "personal-project",
+] as const;
 export type AgentStatus = (typeof agentStatuses)[number];
 
 export type AgentProject = {
@@ -29,6 +34,10 @@ export type AgentProject = {
   /** Who it was built for. */
   context: string;
   description: string;
+  /** Measured result, one line: what the evals showed. */
+  result?: string;
+  /** Secondary line under the result: caveats, cost, run counts. */
+  resultDetail?: string;
   stack: string[];
   href?: string;
 };
@@ -83,23 +92,27 @@ export const profile: Profile = {
   },
 };
 
-const satella =
-  "Satella Tickets, the event ticketing platform I co-founded and run as a side business";
+const ticketing = "An online event ticketing platform";
 
 export const agents: AgentProject[] = [
   {
     slug: "fraud-detection-agent",
     name: "Fraud Detection Agent",
-    status: "in-progress",
-    context: satella,
+    status: "offline-evals",
+    context: ticketing,
     description:
-      "Monitors ticket purchases and flags or blocks suspicious orders (e.g. card testing, bulk resale patterns) without manual review. Escalates to a human below a confidence threshold.",
+      "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
+    result:
+      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+    resultDetail:
+      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
     stack: ["TypeScript", "PostgreSQL", "GCP"],
   },
   {
     slug: "organizer-support-agent",
     name: "Organizer Support Agent",
-    context: satella,
+    status: "coming-soon",
+    context: ticketing,
     description:
       "Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API.",
     stack: ["TypeScript", "Tool calling", "MCP", "PostgreSQL"],

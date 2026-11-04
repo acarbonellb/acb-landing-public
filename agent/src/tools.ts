@@ -150,7 +150,7 @@ function buildTools(content: Content) {
       name: "get_projects",
       title: "Agent projects",
       description:
-        "AI agents Alberto has built: what each does, who it was built for, its status (only when there is one: in progress or personal project) and stack. Optionally filter by status.",
+        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, offline evals with deployment next, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one) and stack. Optionally filter by status.",
       inputSchema: z
         .object({
           status: z
@@ -166,6 +166,8 @@ function buildTools(content: Content) {
             status: z.enum(shared.agentStatuses).optional(),
             context: z.string(),
             description: z.string(),
+            result: z.string().optional(),
+            resultDetail: z.string().optional(),
             stack: z.array(z.string()),
           }),
         ),
@@ -178,6 +180,8 @@ function buildTools(content: Content) {
             status: a.status,
             context: a.context,
             description: a.description,
+            ...(a.result ? { result: a.result } : {}),
+            ...(a.resultDetail ? { resultDetail: a.resultDetail } : {}),
             stack: a.stack,
           })),
       }),

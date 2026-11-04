@@ -6,12 +6,12 @@
   "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
   "calls": [
     {
-      "requestHash": "e28bc49d6566eda77ae62872cb1f6349239a0c739dbbf5971125f1607437dd7c",
-      "latencyMs": 2660,
+      "requestHash": "3720a3df59acb629aa1fa3aeed09f657a93fe87fa4dacf8f53f5bb920ee56f64",
+      "latencyMs": 1403,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1972
+          "inputTokens": 2044
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "AgCza9F4A9YQO5VMFDFm9HCutOkNSvPp",
+                "id": "MFHBv6GqSGFu2m3uUsF9l4Hw1hGSAb5N",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1972,
-              "outputTokens": 57
+              "inputTokens": 2044,
+              "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "AgCza9F4A9YQO5VMFDFm9HCutOkNSvPp",
+                "id": "MFHBv6GqSGFu2m3uUsF9l4Hw1hGSAb5N",
                 "name": "get_contact",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "13a444fe8d532d721713f43735a86abf4ce7c4e24649554c0a506b97748f32cb",
-      "latencyMs": 2762,
+      "requestHash": "5c3b6f5ba8143524e9436b6bd545c836b2a3fe912148b05e9fba63433275c990",
+      "latencyMs": 2048,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2076
+          "inputTokens": 2148
         },
         {
           "type": "text_delta",
@@ -83,7 +83,7 @@
         },
         {
           "type": "text_delta",
-          "text": "\n\n-"
+          "text": "\n-"
         },
         {
           "type": "text_delta",
@@ -139,10 +139,6 @@
         },
         {
           "type": "text_delta",
-          "text": "  "
-        },
-        {
-          "type": "text_delta",
           "text": "\n-"
         },
         {
@@ -159,39 +155,7 @@
         },
         {
           "type": "text_delta",
-          "text": " ["
-        },
-        {
-          "type": "text_delta",
-          "text": "github"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/ac"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": "b"
-        },
-        {
-          "type": "text_delta",
-          "text": "]("
-        },
-        {
-          "type": "text_delta",
-          "text": "https"
+          "text": " https"
         },
         {
           "type": "text_delta",
@@ -223,14 +187,6 @@
         },
         {
           "type": "text_delta",
-          "text": ")"
-        },
-        {
-          "type": "text_delta",
-          "text": "  "
-        },
-        {
-          "type": "text_delta",
           "text": "\n-"
         },
         {
@@ -247,51 +203,7 @@
         },
         {
           "type": "text_delta",
-          "text": " ["
-        },
-        {
-          "type": "text_delta",
-          "text": "linkedin"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/in"
-        },
-        {
-          "type": "text_delta",
-          "text": "/al"
-        },
-        {
-          "type": "text_delta",
-          "text": "bert"
-        },
-        {
-          "type": "text_delta",
-          "text": "oc"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": "/"
-        },
-        {
-          "type": "text_delta",
-          "text": "]("
-        },
-        {
-          "type": "text_delta",
-          "text": "https"
+          "text": " https"
         },
         {
           "type": "text_delta",
@@ -335,11 +247,7 @@
         },
         {
           "type": "text_delta",
-          "text": "/)"
-        },
-        {
-          "type": "text_delta",
-          "text": "  "
+          "text": "/"
         },
         {
           "type": "text_delta",
@@ -380,17 +288,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "You can reach Alberto Carbonell via:\n\n- **Email**: alberto.carbonell.beceiro@gmail.com  \n- **GitHub**: [github.com/acarbonellb](https://github.com/acarbonellb)  \n- **LinkedIn**: [linkedin.com/in/albertocarbonell/](https://www.linkedin.com/in/albertocarbonell/)  \n\nHe is based in Spain and works remotely.",
+            "text": "You can reach Alberto Carbonell via:\n- **Email**: alberto.carbonell.beceiro@gmail.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2076,
-              "outputTokens": 86
+              "inputTokens": 2148,
+              "outputTokens": 66
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto Carbonell via:\n\n- **Email**: alberto.carbonell.beceiro@gmail.com  \n- **GitHub**: [github.com/acarbonellb](https://github.com/acarbonellb)  \n- **LinkedIn**: [linkedin.com/in/albertocarbonell/](https://www.linkedin.com/in/albertocarbonell/)  \n\nHe is based in Spain and works remotely."
+                "text": "You can reach Alberto Carbonell via:\n- **Email**: alberto.carbonell.beceiro@gmail.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely."
               }
             ]
           }
