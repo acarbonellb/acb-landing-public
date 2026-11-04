@@ -30,7 +30,8 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], launchOptions: { executablePath } },
     },
     // Safari handles taps and focus differently from Chromium (#35), so the
-    // mobile menu also runs on WebKit with a touch screen.
+    // mobile menu also runs on WebKit with a touch screen. Linux WebKit still
+    // focuses a tapped link, unlike iOS: the unit tests cover that case.
     {
       name: "webkit",
       testMatch: "mobile-menu.spec.ts",

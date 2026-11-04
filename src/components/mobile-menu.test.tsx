@@ -24,7 +24,7 @@ function menuButton() {
 // The click comes in a later task, so React has rendered by then. Returns
 // whether the click navigates: a browser only follows a link that is still in
 // the document (jsdom follows detached ones too, so the hash can't tell).
-function safariTap(link: HTMLElement) {
+function safariTapNavigates(link: HTMLElement) {
   fireEvent.pointerDown(link);
   if (fireEvent.mouseDown(link)) {
     act(() => (document.activeElement as HTMLElement | null)?.blur());
@@ -131,14 +131,14 @@ describe("MobileMenu", () => {
   });
 
   it.each(["about", "contact"])(
-    "takes a Safari tap on the %s section to it",
+    "follows a Safari tap on the %s section",
     async (section) => {
       const user = userEvent.setup();
       render(<MobileMenu items={items} />);
 
       await user.click(menuButton());
       expect(screen.getByRole("link", { name: /about/ })).toHaveFocus();
-      const navigated = safariTap(
+      const navigated = safariTapNavigates(
         screen.getByRole("link", { name: new RegExp(section) }),
       );
 

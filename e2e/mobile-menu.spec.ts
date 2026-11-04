@@ -26,13 +26,14 @@ test.describe("mobile navigation menu", () => {
     await expect(page.locator("#contact")).toBeInViewport();
   });
 
-  test("opens without scrolling the page", async ({ page }) => {
+  test("opens without scrolling the page", async ({ page, hasTouch }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/#experience");
     const scrollY = await page.evaluate(() => window.scrollY);
     expect(scrollY).toBeGreaterThan(0);
 
-    await page.getByRole("button", { name: "Section menu" }).click();
+    const menu = page.getByRole("button", { name: "Section menu" });
+    await (hasTouch ? menu.tap() : menu.click());
     await expect(
       page.getByRole("navigation", { name: "Sections" }).getByRole("link").first(),
     ).toBeFocused();
@@ -71,6 +72,7 @@ test.describe("mobile navigation menu", () => {
 
 test.describe("at desktop width", () => {
   test.use({ viewport: { width: 1280, height: 800 } });
+  test.skip(({ isMobile }) => isMobile, "a phone profile has no desktop width");
 
   test("shows the inline nav and no menu button", async ({ page }) => {
     await page.goto("/");
