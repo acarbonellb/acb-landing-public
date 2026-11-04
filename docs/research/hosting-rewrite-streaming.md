@@ -7,7 +7,7 @@ Desk research for #36 (Part 1). Sources accessed 2026-11-04. Labels: **documente
 - No Firebase doc says rewrites stream. The docs don't mention streaming at all. The only statement found is from Michael Bleigh (Firebase), 2022: Hosting "does not currently support streaming responses" and "the entire response is buffered and cached in the CDN layer". That matches #12.
 - No documented or reported header, padding size, protocol or method makes it stream. The 60 s limit is documented as fixed for every rewrite. It isn't configurable, and with buffering it effectively covers the whole response.
 - Upstream retries aren't documented anywhere, and Hosting has no setting to turn them off. A rewrite is only safe for idempotent, short requests. `/mcp` fits that; `/chat` doesn't.
-- No Firebase doc covers client IP through the rewrite. Hosting can't add a secret request header, so the backend can't prove a request came through Hosting. Key on the right-most `X-Forwarded-For` entries, and trust one more hop only when the peer is a known CDN egress IP.
+- No Firebase doc covers client IP through the rewrite. Measured (see **Measurements** below): Hosting reaches Cloud Run from Google-owned IPs (not Fastly's), sends `X-Forwarded-For: <visitor>, <Google peer>` and drops forged `X-Forwarded-For` / `Fastly-Client-IP` values. So: key on the right-most entry, and trust one more hop only when that peer is in Google's own ranges.
 - To stream on the site's own domain, use the global external Application Load Balancer with a serverless NEG: about $18.25/month for the forwarding rule, plus $0.008/GiB. Domain mappings don't exist in `europe-southwest1`. App Hosting isn't offered in `europe-southwest1` and doesn't fit a static export.
 
 ## 1. Is streaming through a rewrite supported? Does the CDN buffer?
@@ -48,8 +48,8 @@ None found. Item by item:
   - Any header Hosting adds can be forged by a client that calls `run.app` directly.
   - Hosting can't add a secret request header (`headers` sets response headers only), so the backend can't authenticate "came through Hosting".
   - The only value an attacker can't forge is the entry Google's frontend appends to `X-Forwarded-For`: the right-most entry, which is the peer that connected to Cloud Run. That's what `TRUSTED_PROXY_HOPS=1` already uses.
-  - So: take the right-most entry. If it's in Fastly's published egress ranges (`https://api.fastly.com/public-ip-list`), trust one more hop to the left; otherwise use the right-most entry.
-  - Residual risk: someone running their own Fastly service in front of `run.app`. That's acceptable for a per-IP limit.
+  - So: take the right-most entry. If it's a Hosting peer, trust one more hop to the left; otherwise use the right-most entry.
+  - The desk-research guess was that the peer would be a Fastly egress IP. **The measurement disproved it**: the peer is a Google IP (see **Measurements**).
   - Never trust `Fastly-Client-IP` alone.
 
 ## 6. Alternatives that keep the domain
@@ -65,12 +65,34 @@ None found. Item by item:
   - Hosting adds `Cookie`/`Authorization` to `Vary` and strips every cookie except `__session` ([manage-cache](https://firebase.google.com/docs/hosting/manage-cache)). That's harmless for `/mcp`, but cookie-based auth through the rewrite won't work.
   - The Cloud Functions page suggests "App Engine flexible environment" for work over 60 s ([functions](https://firebase.google.com/docs/hosting/functions)). That isn't relevant here.
 
+## Measurements (2026-11-04)
+
+Throwaway probe: a Cloud Run service `ip-probe` (europe-southwest1, `node:22-alpine`, max 1 instance) that echoed request headers and counted requests per nonce, behind a Hosting preview channel with `/api/** → ip-probe`. Both were deleted afterwards. `<visitor>` is the test client's public IPv4.
+
+| Path | Sent | `X-Forwarded-For` at Cloud Run | `Fastly-Client-IP` |
+| --- | --- | --- | --- |
+| direct `run.app` | nothing | `<visitor>` | none |
+| direct `run.app` | `XFF: 1.2.3.4`, `Fastly-Client-IP: 5.6.7.8` | `1.2.3.4,<visitor>` | `5.6.7.8` |
+| Hosting rewrite | nothing | `<visitor>,66.249.93.229` | `<visitor>` |
+| Hosting rewrite | `XFF: 1.2.3.4`, `Fastly-Client-IP: 5.6.7.8` | `<visitor>,66.249.93.199` | `<visitor>` |
+
+- **Hosting overwrites both headers.** Forged values don't survive the rewrite. Directly on `run.app` they pass through as-is, as expected.
+- **The peer is Google, not Fastly.** `66.249.93.229` and `66.249.93.199` are in [`goog.json`](https://www.gstatic.com/ipranges/goog.json) (`66.249.64.0/19`) and in Google's [`user-triggered-fetchers-google.json`](https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json) (`66.249.93.192/27`, `66.249.93.224/27`). They are not in [`cloud.json`](https://www.gstatic.com/ipranges/cloud.json) (Google Cloud customer ranges) or in Fastly's list.
+- **Rule for the rate limiter.** Take the right-most `X-Forwarded-For` entry (Google's frontend appends it, so it can't be forged). If it's in Google's own ranges (in `goog.json`, not in `cloud.json`), the request came through Hosting, so use the entry to its left. Otherwise use the right-most entry.
+  - A direct caller can't fake this: their own IP is always the right-most entry.
+  - Residual risk: a Google-operated fetcher calling `run.app` directly. That's acceptable for a per-IP limit.
+  - The peer range isn't documented as Hosting's and may change, so read the published lists rather than hard-coding a /27.
+- **Retries (one client request each, three runs):**
+  - `GET` that got a `503`: 2 upstream requests, so Hosting retries a failed GET once.
+  - `POST` that got a `503`: 1. `POST` `200`: 1. `GET` `200`: 1.
+  - So POST isn't retried. MCP Streamable HTTP sends its calls as `POST`, so `/mcp` runs once per call.
+- **Caching:** a repeated `GET` on the same URL reached the service again; dynamic responses aren't cached, as documented.
+
 ## Experiments still worth running (from #36)
 
 Still open:
 
-- **Client IP through the rewrite** (Part 2, needed anyway): log `X-Forwarded-For`, `Fastly-Client-IP` and the peer, with and without forged values, both via Hosting and direct to `run.app`. Check whether the hop is in Fastly's IP list.
-- **Retry conditions for a short `/mcp` call**: confirm one upstream request per client request, including POST and a forced 5xx from the service. The retry behaviour isn't documented, so only a measurement settles it.
+- ~~Client IP through the rewrite~~ and ~~retry conditions for a short `/mcp` call~~: done, see **Measurements**.
 - **Load balancer streaming**, only if the fixed cost becomes acceptable: the docs don't confirm it streams SSE.
 
 Made pointless (or low value) by the sources:
