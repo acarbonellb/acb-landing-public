@@ -6,7 +6,9 @@ import {
   type SkillGroup,
 } from "@/content/profile";
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
+import { obfuscateEmail } from "@/lib/obfuscated-email";
 import { AgentChat } from "./agent-chat";
+import { ContactEmail } from "./contact-email";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
 import { TypewriterTerminal } from "./typewriter-terminal";
@@ -222,12 +224,7 @@ export function Contact({ profile }: { profile: Profile }) {
       <p className="max-w-2xl font-sans text-lg leading-relaxed">
         {profile.contactNote}
       </p>
-      <a
-        href={`mailto:${profile.links.email}`}
-        className="mt-6 inline-block max-w-full text-lg font-bold break-all text-blue underline decoration-border underline-offset-8 transition-colors hover:decoration-blue sm:text-2xl"
-      >
-        {profile.links.email}
-      </a>
+      <ContactEmail obfuscated={obfuscateEmail(profile.links.email)} />
     </Section>
   );
 }
