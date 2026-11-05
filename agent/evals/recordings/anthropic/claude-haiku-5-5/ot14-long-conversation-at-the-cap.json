@@ -1,0 +1,74 @@
+{
+  "caseId": "ot14",
+  "slug": "long-conversation-at-the-cap",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "a6ae373b62b46522e572a4974caaed121183db8ae8f6e3c00b810ed847abda5a",
+      "latencyMs": 844,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2933,
+          "cacheWriteInputTokens": 2929
+        },
+        {
+          "type": "text_delta",
+          "text": "I can only answer questions about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would you like to know about his"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI agents, his work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience, or how to get"
+        },
+        {
+          "type": "text_delta",
+          "text": " in touch with him?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, his work experience, or how to get in touch with him?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2933,
+              "cacheWriteInputTokens": 2929,
+              "outputTokens": 43
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, his work experience, or how to get in touch with him?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

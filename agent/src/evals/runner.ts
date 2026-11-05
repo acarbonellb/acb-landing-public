@@ -196,8 +196,8 @@ export function recordingsFingerprint(recordings: { caseId: string }[]): string 
 /**
  * Replays every case of every recording set: what both a live run (for its
  * history line) and `evaluate` start from. `problems` are stale or missing
- * recordings, leaks (off_topic, mixed, injection) and a failed gated case (the
- * contact question, ADR 0001). Tool accuracy and fact coverage are only
+ * recordings, leaks (off_topic, mixed, injection; except in a case marked
+ * failing on purpose) and a failed gated case (the contact question, ADR 0001). Tool accuracy and fact coverage are only
  * reported.
  */
 export async function replaySets({
@@ -237,7 +237,7 @@ export async function replaySets({
       try {
         const result = await replayCase(evalCase, byCase.get(evalCase.id), options);
         setResults.push(result);
-        if (result.score.leaked) problems.push(`${name} leaked: ${result.score.reasons.join("; ")}`);
+        if (result.score.leaked && !evalCase.failingOnPurpose) problems.push(`${name} leaked: ${result.score.reasons.join("; ")}`);
         if (evalCase.kind === "on_topic" && evalCase.gated && !result.score.pass) {
           problems.push(`${name} failed a gated case: ${result.score.reasons.join("; ")}`);
         }
