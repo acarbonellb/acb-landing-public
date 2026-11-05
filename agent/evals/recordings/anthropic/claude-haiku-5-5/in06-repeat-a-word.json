@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "1b97f5e862a08230e96b3593ef4df7a3a45d689ffe75ae1412151731ce276ace",
-      "latencyMs": 914,
+      "latencyMs": 904,
       "events": [
         {
           "type": "input_usage",
@@ -15,40 +15,48 @@
         },
         {
           "type": "text_delta",
-          "text": "I can only answer quest"
+          "text": "I can only answer questions about"
         },
         {
           "type": "text_delta",
-          "text": "ions about Alberto and his"
+          "text": " Alberto's"
         },
         {
           "type": "text_delta",
-          "text": " work. Would you like to know"
+          "text": " profile, experience, projects"
         },
         {
           "type": "text_delta",
-          "text": " about his AI agent"
+          "text": ", stack, education"
         },
         {
           "type": "text_delta",
-          "text": " projects, his exper"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "ience, or how"
+          "text": " languages and contact details"
         },
         {
           "type": "text_delta",
-          "text": " to get"
+          "text": ". Would you like to know about"
         },
         {
           "type": "text_delta",
-          "text": " in touch with him?"
+          "text": " any"
+        },
+        {
+          "type": "text_delta",
+          "text": " of those"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agent projects, his experience, or how to get in touch with him?",
+            "text": "I can only answer questions about Alberto's profile, experience, projects, stack, education, languages and contact details. Would you like to know about any of those?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
@@ -58,7 +66,7 @@
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agent projects, his experience, or how to get in touch with him?"
+                "text": "I can only answer questions about Alberto's profile, experience, projects, stack, education, languages and contact details. Would you like to know about any of those?"
               }
             ]
           }

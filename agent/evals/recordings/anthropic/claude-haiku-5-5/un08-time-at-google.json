@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
-      "latencyMs": 761,
+      "latencyMs": 789,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_0199yzFLRXrc8obPzqLkv3ps",
+                "id": "toolu_015ijBAhFT18mGLmsW5DTgK9",
                 "name": "get_experience",
                 "input": {
                   "company": "google"
@@ -34,7 +34,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_0199yzFLRXrc8obPzqLkv3ps",
+                "id": "toolu_015ijBAhFT18mGLmsW5DTgK9",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -49,8 +49,8 @@
       ]
     },
     {
-      "requestHash": "7e655cafe6c33ce2d65c0638af1e485540209f02341ecc4de0930306ea155e9b",
-      "latencyMs": 1072,
+      "requestHash": "b9535553d1e25ee63597472d876be8acf0a6639401ecfa97f711a5f9bf11ca86",
+      "latencyMs": 1044,
       "events": [
         {
           "type": "input_usage",
@@ -66,15 +66,7 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " exper"
-        },
-        {
-          "type": "text_delta",
-          "text": "ience at Google,"
+          "text": " work at Google,"
         },
         {
           "type": "text_delta",
@@ -82,35 +74,19 @@
         },
         {
           "type": "text_delta",
-          "text": "'t tell you about a"
+          "text": "'t share"
         },
         {
           "type": "text_delta",
-          "text": " role"
+          "text": " details about that"
         },
         {
           "type": "text_delta",
-          "text": " there"
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": ". If you'd like,"
-        },
-        {
-          "type": "text_delta",
-          "text": " I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can share"
-        },
-        {
-          "type": "text_delta",
-          "text": " his other"
-        },
-        {
-          "type": "text_delta",
-          "text": " work"
+          "text": " His"
         },
         {
           "type": "text_delta",
@@ -118,54 +94,66 @@
         },
         {
           "type": "text_delta",
-          "text": "ience or"
+          "text": "ience on"
         },
         {
           "type": "text_delta",
-          "text": " the"
+          "text": " record"
         },
         {
           "type": "text_delta",
-          "text": " AI agents he has"
+          "text": " is available if"
         },
         {
           "type": "text_delta",
-          "text": " built. You could"
+          "text": " you'"
         },
         {
           "type": "text_delta",
-          "text": " also cont"
+          "text": "d like to expl"
         },
         {
           "type": "text_delta",
-          "text": "act him directly through"
+          "text": "ore it"
         },
         {
           "type": "text_delta",
-          "text": " alb"
+          "text": ", or you"
         },
         {
           "type": "text_delta",
-          "text": "ertocarbonell.d"
+          "text": " can reach out"
         },
         {
           "type": "text_delta",
-          "text": "ev."
+          "text": " to him directly through the"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on his site"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you about a role there. If you'd like, I can share his other work experience or the AI agents he has built. You could also contact him directly through albertocarbonell.dev.",
+            "text": "Alberto's profile doesn't list any work at Google, so I can't share details about that. His experience on record is available if you'd like to explore it, or you can reach out to him directly through the contact details on his site.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1668,
-              "outputTokens": 78
+              "outputTokens": 65
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you about a role there. If you'd like, I can share his other work experience or the AI agents he has built. You could also contact him directly through albertocarbonell.dev."
+                "text": "Alberto's profile doesn't list any work at Google, so I can't share details about that. His experience on record is available if you'd like to explore it, or you can reach out to him directly through the contact details on his site."
               }
             ]
           }

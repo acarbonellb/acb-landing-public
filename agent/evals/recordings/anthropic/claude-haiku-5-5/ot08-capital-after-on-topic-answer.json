@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "5a424cd3d2de82f281d1896106d8067bd03e14d8c7d64d24e2ed3a1a1e0b3f79",
-      "latencyMs": 793,
+      "latencyMs": 989,
       "events": [
         {
           "type": "input_usage",
@@ -15,46 +15,42 @@
         },
         {
           "type": "text_delta",
-          "text": "I can only answer quest"
+          "text": "I can only answer questions about"
         },
         {
           "type": "text_delta",
-          "text": "ions about Alberto."
+          "text": " Alberto. Would you"
         },
         {
           "type": "text_delta",
-          "text": " Would you like to know more"
+          "text": " like to know more"
         },
         {
           "type": "text_delta",
-          "text": " about his AI ag"
+          "text": " about his AI agents, his"
         },
         {
           "type": "text_delta",
-          "text": "ents, his work experience, or"
+          "text": " experience, or his st"
         },
         {
           "type": "text_delta",
-          "text": " how"
-        },
-        {
-          "type": "text_delta",
-          "text": " to contact him?"
+          "text": "ack?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, his work experience, or how to contact him?",
+            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, his experience, or his stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1668,
-              "outputTokens": 41
+              "outputTokens": 38
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, his work experience, or how to contact him?"
+                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, his experience, or his stack?"
               }
             ]
           }

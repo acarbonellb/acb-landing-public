@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "a99a4d2b96cfbf2c692367b0b677b8eff633728a77e83da77e5a29a9eee3c2a4",
-      "latencyMs": 702,
+      "latencyMs": 797,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_012m4SAFA25ZWZbmV7A6CR6t",
+                "id": "toolu_01SJ4w3E7egPmWJfEN9Ktf6A",
                 "name": "get_contact",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_012m4SAFA25ZWZbmV7A6CR6t",
+                "id": "toolu_01SJ4w3E7egPmWJfEN9Ktf6A",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "794073ec81a4683958ef6b9240dc1088d2d35dbf47b3ecc3a77d50e9572c57d3",
-      "latencyMs": 926,
+      "requestHash": "e61e7a79d29509b98a8f4bc519a6a9b0563c9d321376bce02c3c99ede2ffd7c2",
+      "latencyMs": 851,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1736
+          "inputTokens": 1724
         },
         {
           "type": "text_delta",
@@ -62,62 +62,58 @@
         },
         {
           "type": "text_delta",
-          "text": "** alberto.carbon"
+          "text": "** alberto@example.com"
         },
         {
           "type": "text_delta",
-          "text": "ell.beceiro@g"
+          "text": "\n- **GitHub:"
         },
         {
           "type": "text_delta",
-          "text": "mail.com\n- **G"
+          "text": "** https://github.com/ac"
         },
         {
           "type": "text_delta",
-          "text": "itHub:** https://github"
+          "text": "arbonellb\n- **"
         },
         {
           "type": "text_delta",
-          "text": ".com/acarbonell"
+          "text": "LinkedIn:**"
         },
         {
           "type": "text_delta",
-          "text": "b\n- **Linked"
+          "text": " https://www.linkedin"
         },
         {
           "type": "text_delta",
-          "text": "In:** https://www."
+          "text": ".com/in/albertoc"
         },
         {
           "type": "text_delta",
-          "text": "linkedin.com/in"
+          "text": "arbonell/\n\nHe is"
         },
         {
           "type": "text_delta",
-          "text": "/albertocarbonell"
+          "text": " based in Spain and works rem"
         },
         {
           "type": "text_delta",
-          "text": "/\n\nHe is based in Sp"
-        },
-        {
-          "type": "text_delta",
-          "text": "ain and works remotely."
+          "text": "otely."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "You can reach Alberto through:\n\n- **Email:** alberto.carbonell.beceiro@gmail.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely.",
+            "text": "You can reach Alberto through:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1736,
-              "outputTokens": 105
+              "inputTokens": 1724,
+              "outputTokens": 93
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto through:\n\n- **Email:** alberto.carbonell.beceiro@gmail.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely."
+                "text": "You can reach Alberto through:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely."
               }
             ]
           }

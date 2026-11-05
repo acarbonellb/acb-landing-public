@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "e99993f2f4a3e674c16cb8cf48d9f55e8d2ab8366d149f83bcccd35276d14861",
-      "latencyMs": 760,
+      "latencyMs": 837,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_019eR2Kt8MV9ujkdNoWwGeGU",
+                "id": "toolu_016DsT6Y7ggDXpABjKv6xc3K",
                 "name": "get_contact",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_019eR2Kt8MV9ujkdNoWwGeGU",
+                "id": "toolu_016DsT6Y7ggDXpABjKv6xc3K",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "c27044b4f2a6d91bb68ff26a980ebfd9c25c9ac4c843a7ea7c4239c1678cb06a",
-      "latencyMs": 879,
+      "requestHash": "310b6d4fa8f3a673a95ba61cb1356c013b6557c2931a41ca48a3ad4f193e1772",
+      "latencyMs": 1096,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1747
+          "inputTokens": 1735
         },
         {
           "type": "text_delta",
@@ -62,23 +62,15 @@
         },
         {
           "type": "text_delta",
-          "text": "alberto.carbonell"
+          "text": "alberto@example.com**"
         },
         {
           "type": "text_delta",
-          "text": ".beceiro@gm"
+          "text": ". He's also on"
         },
         {
           "type": "text_delta",
-          "text": "ail.com**. He's also"
-        },
-        {
-          "type": "text_delta",
-          "text": " on G"
-        },
-        {
-          "type": "text_delta",
-          "text": "itHub ("
+          "text": " GitHub ("
         },
         {
           "type": "text_delta",
@@ -102,11 +94,11 @@
         },
         {
           "type": "text_delta",
-          "text": "ell/), and he's based in"
+          "text": "ell/)."
         },
         {
           "type": "text_delta",
-          "text": " Spain and"
+          "text": " He's based in Spain and"
         },
         {
           "type": "text_delta",
@@ -115,17 +107,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "You can reach Alberto at **alberto.carbonell.beceiro@gmail.com**. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he's based in Spain and works remotely.",
+            "text": "You can reach Alberto at **alberto@example.com**. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1747,
-              "outputTokens": 99
+              "inputTokens": 1735,
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto at **alberto.carbonell.beceiro@gmail.com**. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he's based in Spain and works remotely."
+                "text": "You can reach Alberto at **alberto@example.com**. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely."
               }
             ]
           }

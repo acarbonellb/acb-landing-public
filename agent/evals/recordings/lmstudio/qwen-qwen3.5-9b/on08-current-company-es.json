@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
-      "latencyMs": 1475,
+      "latencyMs": 1601,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "iLeuuqOAelZdPWmUaa2cJIW1jB4hNshG",
+                "id": "plGTOi0fvJfzPMUcfhd5kUrcLtFoJOqK",
                 "name": "get_experience",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2252,
-              "outputTokens": 55
+              "outputTokens": 57
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "iLeuuqOAelZdPWmUaa2cJIW1jB4hNshG",
+                "id": "plGTOi0fvJfzPMUcfhd5kUrcLtFoJOqK",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "64dfa2e735a27e0e5fe3f0b5c2c99729fe81462724ce9e17a1d583e90ae185b8",
-      "latencyMs": 577,
+      "requestHash": "0e402a0a691cf9843da79d69bb62c559c0a94a50a7a657424b2749f021f62e26",
+      "latencyMs": 611,
       "events": [
         {
           "type": "input_usage",
@@ -67,18 +67,6 @@
         },
         {
           "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " Cover"
-        },
-        {
-          "type": "text_delta",
-          "text": "Wallet"
-        },
-        {
-          "type": "text_delta",
           "text": " como"
         },
         {
@@ -95,12 +83,24 @@
         },
         {
           "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cover"
+        },
+        {
+          "type": "text_delta",
+          "text": "Wallet"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto actualmente trabaja en CoverWallet como Senior Software Engineer.",
+            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
@@ -110,7 +110,7 @@
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja en CoverWallet como Senior Software Engineer."
+                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet."
               }
             ]
           }

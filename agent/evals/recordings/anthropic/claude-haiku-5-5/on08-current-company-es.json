@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
-      "latencyMs": 777,
+      "latencyMs": 852,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01BYuh3Xz8D9mebvuVXb66ZJ",
+                "id": "toolu_01AAzBMsW6L85STLc2SD7pKh",
                 "name": "get_experience",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01BYuh3Xz8D9mebvuVXb66ZJ",
+                "id": "toolu_01AAzBMsW6L85STLc2SD7pKh",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -45,8 +45,8 @@
       ]
     },
     {
-      "requestHash": "2c327d3a90960faf5032c87bc162aa52a1030b47eecadba0944071237e9d46da",
-      "latencyMs": 875,
+      "requestHash": "a59cc9def1d286a0f9971db3983191078a2d25891712c0aa01173883d71132d1",
+      "latencyMs": 1015,
       "events": [
         {
           "type": "input_usage",
@@ -58,47 +58,43 @@
         },
         {
           "type": "text_delta",
-          "text": "abaja actualmente como"
+          "text": "abaja act"
         },
         {
           "type": "text_delta",
-          "text": " **"
+          "text": "ualmente como"
         },
         {
           "type": "text_delta",
-          "text": "Senior Software Engine"
+          "text": " Senior Software Engine"
         },
         {
           "type": "text_delta",
-          "text": "er en CoverWallet"
+          "text": "er en **"
         },
         {
           "type": "text_delta",
-          "text": "**"
+          "text": "CoverWallet** ("
         },
         {
           "type": "text_delta",
-          "text": " (Madrid / rem"
+          "text": "des"
         },
         {
           "type": "text_delta",
-          "text": "oto), desde 2019"
+          "text": "de 2019),"
         },
         {
           "type": "text_delta",
-          "text": ". C"
+          "text": " una"
         },
         {
           "type": "text_delta",
-          "text": "overWallet es una pl"
+          "text": " plataforma insurtech"
         },
         {
           "type": "text_delta",
-          "text": "ataforma ins"
-        },
-        {
-          "type": "text_delta",
-          "text": "urtech que integra a"
+          "text": " que integra a"
         },
         {
           "type": "text_delta",
@@ -110,26 +106,46 @@
         },
         {
           "type": "text_delta",
-          "text": " único flujo de comp"
+          "text": " único"
         },
         {
           "type": "text_delta",
-          "text": "ra."
+          "text": " flujo de compra."
+        },
+        {
+          "type": "text_delta",
+          "text": " Su base es"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid,"
+        },
+        {
+          "type": "text_delta",
+          "text": " con"
+        },
+        {
+          "type": "text_delta",
+          "text": " mod"
+        },
+        {
+          "type": "text_delta",
+          "text": "alidad remota."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (Madrid / remoto), desde 2019. CoverWallet es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.",
+            "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (desde 2019), una plataforma insurtech que integra aseguradoras externas en un único flujo de compra. Su base es Madrid, con modalidad remota.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2175,
-              "outputTokens": 86
+              "outputTokens": 87
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (Madrid / remoto), desde 2019. CoverWallet es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra."
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (desde 2019), una plataforma insurtech que integra aseguradoras externas en un único flujo de compra. Su base es Madrid, con modalidad remota."
               }
             ]
           }

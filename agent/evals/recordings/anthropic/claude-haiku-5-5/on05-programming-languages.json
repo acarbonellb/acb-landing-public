@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "a09e076b7bcf0ad41f73be21cd6dc71c8cfca7eafc37a323ff64b3b875e0f329",
-      "latencyMs": 1088,
+      "latencyMs": 1077,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_0174SCxQrvdKphMPwUt2VFWE",
+                "id": "toolu_01J88ZS8rwjyhHud9S9zcBge",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -34,7 +34,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_0174SCxQrvdKphMPwUt2VFWE",
+                "id": "toolu_01J88ZS8rwjyhHud9S9zcBge",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -49,8 +49,8 @@
       ]
     },
     {
-      "requestHash": "49a85bf8e111560c99f8266bbd8109230324bec58c3030144922ac12d07edab6",
-      "latencyMs": 644,
+      "requestHash": "67e1c79dbe3c3b67bcd7008320602c872ae4c738221511b35d838bb96a84a76b",
+      "latencyMs": 782,
       "events": [
         {
           "type": "input_usage",
@@ -58,11 +58,11 @@
         },
         {
           "type": "text_delta",
-          "text": "Alberto uses three"
+          "text": "Alberto's"
         },
         {
           "type": "text_delta",
-          "text": " programming languages: Type"
+          "text": " programming languages are Type"
         },
         {
           "type": "text_delta",
@@ -75,17 +75,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto uses three programming languages: TypeScript, JavaScript and Ruby.",
+            "text": "Alberto's programming languages are TypeScript, JavaScript and Ruby.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1704,
-              "outputTokens": 31
+              "outputTokens": 29
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses three programming languages: TypeScript, JavaScript and Ruby."
+                "text": "Alberto's programming languages are TypeScript, JavaScript and Ruby."
               }
             ]
           }

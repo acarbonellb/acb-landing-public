@@ -7,47 +7,11 @@
   "calls": [
     {
       "requestHash": "e62179aea0206d2c5367b5db156f1745338364f0554833d72973ff537550402b",
-      "latencyMs": 3787,
+      "latencyMs": 5982,
       "events": [
         {
           "type": "input_usage",
           "inputTokens": 2258
-        },
-        {
-          "type": "turn_end",
-          "turn": {
-            "text": "",
-            "toolCalls": [
-              {
-                "id": "yhC7XSpVZX453cPe7mdGLr1H2rsWaXJy",
-                "name": "get_profile",
-                "input": {}
-              }
-            ],
-            "stopReason": "tool_use",
-            "usage": {
-              "inputTokens": 2258,
-              "outputTokens": 149
-            },
-            "providerContent": [
-              {
-                "type": "tool_use",
-                "id": "yhC7XSpVZX453cPe7mdGLr1H2rsWaXJy",
-                "name": "get_profile",
-                "input": {}
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "requestHash": "5ecc918fb6cd223120a5d1f27cfacb6b08762f46d8c28006c124502db9810c15",
-      "latencyMs": 1701,
-      "events": [
-        {
-          "type": "input_usage",
-          "inputTokens": 2576
         },
         {
           "type": "text_delta",
@@ -55,19 +19,19 @@
         },
         {
           "type": "text_delta",
-          "text": " don"
+          "text": " can"
         },
         {
           "type": "text_delta",
-          "text": "'t"
+          "text": " only"
         },
         {
           "type": "text_delta",
-          "text": " have"
+          "text": " answer"
         },
         {
           "type": "text_delta",
-          "text": " information"
+          "text": " questions"
         },
         {
           "type": "text_delta",
@@ -83,43 +47,79 @@
         },
         {
           "type": "text_delta",
-          "text": " notice"
+          "text": " profile"
         },
         {
           "type": "text_delta",
-          "text": " period"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " or"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " when"
+          "text": " experience"
         },
         {
           "type": "text_delta",
-          "text": " he"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " could"
+          "text": " agent"
         },
         {
           "type": "text_delta",
-          "text": " start"
+          "text": " projects"
         },
         {
           "type": "text_delta",
-          "text": " a"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " new"
+          "text": " tech"
         },
         {
           "type": "text_delta",
-          "text": " job"
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " education"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
         },
         {
           "type": "text_delta",
@@ -131,27 +131,7 @@
         },
         {
           "type": "text_delta",
-          "text": " profile"
-        },
-        {
-          "type": "text_delta",
-          "text": " doesn"
-        },
-        {
-          "type": "text_delta",
-          "text": "'t"
-        },
-        {
-          "type": "text_delta",
-          "text": " include"
-        },
-        {
-          "type": "text_delta",
-          "text": " these"
-        },
-        {
-          "type": "text_delta",
-          "text": " details"
+          "text": " availability"
         },
         {
           "type": "text_delta",
@@ -159,23 +139,99 @@
         },
         {
           "type": "text_delta",
-          "text": " so"
+          "text": " notice"
         },
         {
           "type": "text_delta",
-          "text": " you"
+          "text": " period"
         },
         {
           "type": "text_delta",
-          "text": " would"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " need"
+          "text": " start"
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": " date"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " pay"
+        },
+        {
+          "type": "text_delta",
+          "text": " expectations"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " whether"
+        },
+        {
+          "type": "text_delta",
+          "text": " he"
+        },
+        {
+          "type": "text_delta",
+          "text": "'d"
+        },
+        {
+          "type": "text_delta",
+          "text": " accept"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " offer"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " relocate"
+        },
+        {
+          "type": "text_delta",
+          "text": " are"
+        },
+        {
+          "type": "text_delta",
+          "text": " not"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " please"
         },
         {
           "type": "text_delta",
@@ -206,95 +262,19 @@
           "text": "."
         },
         {
-          "type": "text_delta",
-          "text": " Would"
-        },
-        {
-          "type": "text_delta",
-          "text": " you"
-        },
-        {
-          "type": "text_delta",
-          "text": " like"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " know"
-        },
-        {
-          "type": "text_delta",
-          "text": " more"
-        },
-        {
-          "type": "text_delta",
-          "text": " about"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " AI"
-        },
-        {
-          "type": "text_delta",
-          "text": " agents"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
-          "text": " instead"
-        },
-        {
-          "type": "text_delta",
-          "text": "?"
-        },
-        {
           "type": "turn_end",
           "turn": {
-            "text": "I don't have information about Alberto's notice period or when he could start a new job. His profile doesn't include these details, so you would need to contact him directly for that information. Would you like to know more about his work experience, AI agents, or tech stack instead?",
+            "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages and how to contact him. His availability, notice period, start date, pay expectations, whether he'd accept an offer or relocate are not in his profile: please contact him directly for that information.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2576,
-              "outputTokens": 61
+              "inputTokens": 2258,
+              "outputTokens": 222
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have information about Alberto's notice period or when he could start a new job. His profile doesn't include these details, so you would need to contact him directly for that information. Would you like to know more about his work experience, AI agents, or tech stack instead?"
+                "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages and how to contact him. His availability, notice period, start date, pay expectations, whether he'd accept an offer or relocate are not in his profile: please contact him directly for that information."
               }
             ]
           }

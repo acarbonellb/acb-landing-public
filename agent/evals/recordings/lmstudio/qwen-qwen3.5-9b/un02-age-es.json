@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "a305301bd4280cb08e423fd075a69de1d5a9e2a9b48eb00de064a337e68291ec",
-      "latencyMs": 1492,
+      "latencyMs": 4199,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "RmRpMU09l88XyWhwPxQcFjYpd66DCwFL",
+                "id": "5KmYZAiQQKLaP80U1VIDN932kzPuTNw9",
                 "name": "get_profile",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2252,
-              "outputTokens": 56
+              "outputTokens": 157
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "RmRpMU09l88XyWhwPxQcFjYpd66DCwFL",
+                "id": "5KmYZAiQQKLaP80U1VIDN932kzPuTNw9",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "11f3cda1964538a1ba7f4b8df5456405d5aa24d1425e16105b8b2c61048002c8",
-      "latencyMs": 1761,
+      "requestHash": "84f55b2d918ace861a6829b15aed7f1e7ef978b4695189363c3f1c4c5ecbf1d3",
+      "latencyMs": 1847,
       "events": [
         {
           "type": "input_usage",
@@ -235,15 +235,7 @@
         },
         {
           "type": "text_delta",
-          "text": " detalles"
-        },
-        {
-          "type": "text_delta",
-          "text": " personales"
-        },
-        {
-          "type": "text_delta",
-          "text": " como"
+          "text": " saber"
         },
         {
           "type": "text_delta",
@@ -255,27 +247,27 @@
         },
         {
           "type": "text_delta",
+          "text": " exact"
+        },
+        {
+          "type": "text_delta",
+          "text": "a"
+        },
+        {
+          "type": "text_delta",
           "text": ","
         },
         {
           "type": "text_delta",
-          "text": " te"
+          "text": " necesitar"
         },
         {
           "type": "text_delta",
-          "text": " sug"
-        },
-        {
-          "type": "text_delta",
-          "text": "iero"
+          "text": "ía"
         },
         {
           "type": "text_delta",
           "text": " contactar"
-        },
-        {
-          "type": "text_delta",
-          "text": " directamente"
         },
         {
           "type": "text_delta",
@@ -287,22 +279,26 @@
         },
         {
           "type": "text_delta",
+          "text": " directamente"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él.",
+            "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, necesitaría contactar con él directamente.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2564,
-              "outputTokens": 63
+              "outputTokens": 62
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él."
+                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, necesitaría contactar con él directamente."
               }
             ]
           }

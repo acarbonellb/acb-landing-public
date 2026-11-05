@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "17d35b32397d171cd93af67abe7452ddcf647180bb0cfa5f47b9b355a10d44a3",
-      "latencyMs": 2587,
+      "latencyMs": 2766,
       "events": [
         {
           "type": "input_usage",
@@ -99,10 +99,6 @@
         },
         {
           "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
           "text": " tech"
         },
         {
@@ -111,22 +107,46 @@
         },
         {
           "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
+        },
+        {
+          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or tech stack?",
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2251,
-              "outputTokens": 99
+              "outputTokens": 104
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or tech stack?"
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
               }
             ]
           }
