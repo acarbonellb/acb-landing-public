@@ -54,6 +54,20 @@ The agent service (below) runs as a separate Cloud Run service that the browser 
 
 **Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` and `CONTACT_EMAIL` from the secret `contact-email` (both readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. It runs after the site's `deploy` job. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools both on the agent's URL and on the site's domain (through the Hosting rewrite), that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
 
+**`/mcp` rate-limit check** (`scripts/mcp-rate-limit-check.sh`, by hand, never in CI: it uses up your own one-minute `/mcp` window for a minute). Run it once after a deploy that changes the rate limits, the client-IP rule or the Hosting rewrite, from your own machine, and paste its output into the issue; it prints only counts and status codes, never a URL or an address:
+
+```bash
+scripts/mcp-rate-limit-check.sh https://albertocarbonell.dev "$AGENT_URL" [per-ip-limit]
+```
+
+The limit defaults to `RATE_LIMIT_MCP_PER_MINUTE`, else the code default; pass it if the service is configured otherwise. After waking the service on `/health`, it runs three phases, each `ok` or `FAIL` (exit code 1 if any fails):
+
+1. **Through the site**: MCP `tools/list` calls to the site's `/mcp` until one is refused with `429`. Proves the rewrite's traffic is limited per visitor: if Hosting's peer weren't recognised, every visitor would share one key and the count would still stop, but phase 2 would then be allowed. Fewer allowed than the limit just means part of the window was already used. If the refusal comes in a window's last 10 s, it waits for the next window and starts again.
+2. **Direct to the agent**: one call to `$AGENT_URL/mcp`, which must be refused: the same visitor gets the same key through the rewrite and directly ([Guardrails](#guardrails), Client IP).
+3. **Forged `X-Forwarded-For`**: five calls to each URL with made-up addresses (IPv4, IPv6 in a fresh `/64`, a two-entry chain), which must all be refused: forging the header doesn't buy a fresh window, because the key is the entry Cloud Run appends (#36's criterion, measured live).
+
+Against a local agent (`PORT=8090 pnpm agent:dev`, memory store) phases 1 and 2 pass but phase 3 fails: with no Cloud Run front end appending the real address, the agent takes the forged value as the caller. `agent/src/mcp-rate-limit-check.test.ts` runs the script against a local agent behind a stand-in front end, in the agent tests.
+
 | Variable | Value |
 | --- | --- |
 | `AGENT_URL` | The service's URL; also inlined into the site as `NEXT_PUBLIC_AGENT_URL` |
