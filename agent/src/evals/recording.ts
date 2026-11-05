@@ -13,7 +13,7 @@ export type RecordedCall = {
 };
 
 /** JSON with object keys sorted at every level, so key order never matters. */
-function canonicalJson(value: unknown): string {
+export function canonicalJson(value: unknown): string {
   return JSON.stringify(value, (_, v: unknown) =>
     v && typeof v === "object" && !Array.isArray(v)
       ? Object.fromEntries(

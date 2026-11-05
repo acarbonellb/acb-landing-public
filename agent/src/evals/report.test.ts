@@ -88,6 +88,7 @@ describe("renderReport", () => {
     provider: "lmstudio",
     model: "qwen/qwen3.5-9b",
     promptHash: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    fingerprint: "f".repeat(64),
     results,
   };
 

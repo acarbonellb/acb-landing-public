@@ -4,7 +4,15 @@ import { createFakeModel } from "../fake-model";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
 import { evalContactEmail } from "./content";
-import { evaluate, recordCase, replayCase, replaySets, RecordingFailedError } from "./runner";
+import {
+  evaluate,
+  recordCase,
+  replayCase,
+  replaySets,
+  rescore,
+  RecordingFailedError,
+  type Recording,
+} from "./runner";
 import type { EvalCase } from "./scoring";
 
 const contact: EvalCase = {
@@ -172,21 +180,57 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
   it("adds the history to the report and fails when its latest entry disagrees", async () => {
     const set = await setOf();
     const fresh = await evaluate({ cases: [contact, capital], sets: [set] });
-    const entry = historyEntry(fresh.sets[0], { date: "2026-11-03", commit: "abc1234" });
+    const entry = historyEntry(fresh.sets[0], { date: "2026-11-03", commit: "abc1234" }, "live");
 
     const matching = await evaluate({ cases: [contact, capital], sets: [set], history: [entry] });
     const outdated = await evaluate({
       cases: [contact, capital],
       sets: [set],
-      history: [{ ...entry, metrics: { ...entry.metrics, meanLatencyMs: 1 } }],
+      history: [{ ...entry, fingerprint: "0".repeat(64) }],
     });
 
     expect(matching.problems).toEqual([]);
     expect(matching.report).toContain("## History");
     expect(matching.report.startsWith(fresh.report)).toBe(true);
     expect(outdated.problems).toEqual([
-      expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
+      expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(fingerprint\)/),
     ]);
+  });
+});
+
+describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
+  it("makes the check pass again after a scoring change, with no model call", async () => {
+    const { a, b, model } = await recordBoth();
+    const sets = [{ ...meta, recordings: [a.recording, b.recording] }];
+    const recorded = await evaluate({ cases: [contact, capital], sets });
+    const history = [historyEntry(recorded.sets[0], { date: "2026-11-03", commit: "abc1234" }, "live")];
+    const callsBefore = model.requests.length;
+    // A case-scoring change: the same answer must now also mention LinkedIn.
+    const stricter: EvalCase = { ...contact, facts: [evalContactEmail, "LinkedIn"] };
+
+    const changed = await evaluate({ cases: [stricter, capital], sets, history });
+    const rescored = await rescore({
+      cases: [stricter, capital],
+      sets,
+      history,
+      run: { date: "2026-11-04", commit: "e1f2a3b" },
+    });
+    const after = await evaluate({ cases: [stricter, capital], sets, history: [...history, ...rescored.entries] });
+
+    expect(changed.problems).toEqual([
+      "fake / scripted: latest history entry was scored differently (factCoverage): re-score with `pnpm agent:eval:rescore`",
+    ]);
+    expect(rescored.problems).toEqual([]);
+    expect(rescored.entries).toEqual([
+      expect.objectContaining({
+        kind: "rescored",
+        commit: "e1f2a3b",
+        fingerprint: history[0].fingerprint,
+        metrics: expect.objectContaining({ factCoverage: { n: 1, of: 2 } }),
+      }),
+    ]);
+    expect(after.problems).toEqual([]);
+    expect(model.requests).toHaveLength(callsBefore);
   });
 });
 
@@ -200,5 +244,30 @@ describe("replaySets (what a live run's history line is computed from)", () => {
 
     expect(replayed).toEqual(evaluated);
     expect(report).toContain("## fake / scripted");
+  });
+});
+
+describe("the recordings fingerprint", () => {
+  async function fingerprintOf(recordings: Recording[]) {
+    const { sets } = await replaySets({ cases: [contact, capital], sets: [{ ...meta, recordings }] });
+    return sets[0].fingerprint;
+  }
+
+  it("is a hash of the set's recordings, whatever order they're listed in", async () => {
+    const { a, b } = await recordBoth();
+
+    const fingerprint = await fingerprintOf([a.recording, b.recording]);
+
+    expect(fingerprint).toMatch(/^[0-9a-f]{64}$/);
+    expect(await fingerprintOf([b.recording, a.recording])).toBe(fingerprint);
+  });
+
+  it("changes when any recording changes", async () => {
+    const { a, b } = await recordBoth();
+    const edited = { ...b.recording, calls: b.recording.calls.map((c) => ({ ...c, latencyMs: c.latencyMs + 1 })) };
+
+    expect(await fingerprintOf([a.recording, edited])).not.toBe(
+      await fingerprintOf([a.recording, b.recording]),
+    );
   });
 });

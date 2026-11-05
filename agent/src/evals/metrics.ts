@@ -19,6 +19,8 @@ export type CaseResult = {
 export type SetResult = SetId & {
   /** SHA-256 of the system prompt the set was recorded with. */
   promptHash: string;
+  /** Hash of the set's recordings (`recordingsFingerprint`). */
+  fingerprint: string;
   results: CaseResult[];
 };
 
