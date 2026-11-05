@@ -11,6 +11,7 @@ import {
   replayCase,
   replaySets,
   rescore,
+  staleFiles,
   RecordingFailedError,
   type Recording,
 } from "./runner";
@@ -289,6 +290,80 @@ describe("the recorded model settings", () => {
   });
 });
 
+describe("the eval summary (agent/evals/summary.json)", () => {
+  it("has each set's model, provider, cases by kind, leaks and cost per case, as JSON", async () => {
+    const { a, b } = await recordBoth();
+    const priced = { provider: "anthropic", model: "claude-haiku-5-5" };
+    const sets = [
+      { ...meta, recordings: [a.recording, b.recording] },
+      { ...priced, recordings: [a.recording, b.recording].map((r) => ({ ...r, ...priced })) },
+    ];
+
+    const { summary } = await evaluate({ cases: [contact, capital], sets });
+
+    expect(JSON.parse(summary)).toEqual({
+      sets: [
+        {
+          provider: "anthropic",
+          model: "claude-haiku-5-5",
+          cases: 2,
+          kinds: { off_topic: 1, on_topic: 1 },
+          leaks: { n: 0, of: 1 },
+          meanCostUsd: expect.any(Number),
+        },
+        // No known price: no cost.
+        {
+          provider: "fake",
+          model: "scripted",
+          cases: 2,
+          kinds: { off_topic: 1, on_topic: 1 },
+          leaks: { n: 0, of: 1 },
+        },
+      ],
+    });
+    expect(summary.endsWith("}\n")).toBe(true);
+  });
+
+  it("is the same bytes whatever order the sets and recordings come in", async () => {
+    const { a, b } = await recordBoth();
+    const other = { provider: "lmstudio", model: "qwen" };
+    const one = { ...meta, recordings: [a.recording, b.recording] };
+    const two = { ...other, recordings: [b.recording, a.recording].map((r) => ({ ...r, ...other })) };
+
+    const first = await evaluate({ cases: [contact, capital], sets: [one, two] });
+    const second = await evaluate({ cases: [capital, contact], sets: [two, one] });
+
+    expect(second.summary).toBe(first.summary);
+  });
+
+  it("counts a leak", async () => {
+    const leaky = createFakeModel([{ text: "Madrid. Pero solo hablo de Alberto." }]);
+    const { recording } = await recordCase(capital, leaky, meta);
+
+    const { summary } = await evaluate({ cases: [capital], sets: [{ ...meta, recordings: [recording] }] });
+
+    expect(JSON.parse(summary).sets[0].leaks).toEqual({ n: 1, of: 1 });
+  });
+});
+
+describe("staleFiles (the committed report and summary against the regenerated ones)", () => {
+  const generated = { report: "# Agent evals\n", summary: '{\n  "sets": []\n}\n' };
+
+  it("passes when both committed files match", () => {
+    expect(staleFiles(generated, { ...generated })).toEqual([]);
+  });
+
+  it("fails on a stale or missing summary, and on a stale report", () => {
+    expect(staleFiles(generated, { ...generated, summary: '{"sets":[]}' })).toEqual([
+      "agent/evals/summary.json differs from the recordings: run `pnpm agent:eval:replay` and commit it",
+    ]);
+    expect(staleFiles(generated, { report: "old", summary: undefined })).toEqual([
+      "agent/evals/report.md differs from the recordings: run `pnpm agent:eval:replay` and commit it",
+      "agent/evals/summary.json differs from the recordings: run `pnpm agent:eval:replay` and commit it",
+    ]);
+  });
+});
+
 describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
   it("makes the check pass again after a scoring change, with no model call", async () => {
     const { a, b, model } = await recordBoth();
@@ -326,15 +401,16 @@ describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
 });
 
 describe("replaySets (what a live run's history line is computed from)", () => {
-  it("gives the same sets and problems as evaluate, with no report or history", async () => {
+  it("gives the same sets and problems as evaluate, with no report, summary or history", async () => {
     const { a, b } = await recordBoth();
     const input = { cases: [contact, capital], sets: [{ ...meta, recordings: [a.recording, b.recording] }] };
 
     const replayed = await replaySets(input);
-    const { report, ...evaluated } = await evaluate(input);
+    const { report, summary, ...evaluated } = await evaluate(input);
 
     expect(replayed).toEqual(evaluated);
     expect(report).toContain("## fake / scripted");
+    expect(summary).toContain(`"model": "scripted"`);
   });
 });
 

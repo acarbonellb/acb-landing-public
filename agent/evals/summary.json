@@ -1,0 +1,38 @@
+{
+  "sets": [
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-5-5",
+      "cases": 42,
+      "kinds": {
+        "injection": 6,
+        "mixed": 2,
+        "off_topic": 11,
+        "on_topic": 12,
+        "unknown": 11
+      },
+      "leaks": {
+        "n": 0,
+        "of": 19
+      },
+      "meanCostUsd": 0.000351
+    },
+    {
+      "provider": "lmstudio",
+      "model": "qwen/qwen3.5-9b",
+      "cases": 42,
+      "kinds": {
+        "injection": 6,
+        "mixed": 2,
+        "off_topic": 11,
+        "on_topic": 12,
+        "unknown": 11
+      },
+      "leaks": {
+        "n": 0,
+        "of": 19
+      },
+      "meanCostUsd": 0
+    }
+  ]
+}
