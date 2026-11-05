@@ -1,12 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { createAnswerSigner } from "./answer-signing";
 import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
 import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
 import { createMemoryDocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap } from "./spend-cap";
-import { testAppDeps, testSigningKey } from "./test-deps";
+import { signedConversation, testAppDeps } from "./test-deps";
 
 let servers: RunningServer[] = [];
 
@@ -90,12 +89,9 @@ describe("daily spend quota", () => {
       chatLimits,
       dailyQuota: createMemoryDailyQuota({ quotaUsd: 0.04, pricing: inputOnly }),
     });
-    const signer = createAnswerSigner(testSigningKey);
     const content = "x".repeat(2000);
-    const long: unknown[] = Array.from({ length: 18 }, (_, i) =>
-      i % 2 === 0
-        ? { role: "user", content }
-        : { role: "assistant", content, signature: signer.sign(content) },
+    const long: unknown[] = signedConversation(
+      Array.from({ length: 18 }, (_, i) => ({ role: i % 2 === 0 ? "user" : "assistant", content })),
     );
     long.push({ role: "user", content: "y".repeat(2000) });
 

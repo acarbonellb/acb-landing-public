@@ -6,8 +6,8 @@ import { cors } from "hono/cors";
 import { createMiddleware } from "hono/factory";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { ChatMessage, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
-import type { AnswerSigner } from "./answer-signing";
+import type { HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import type { AnswerSigner, VerifiedConversation } from "./answer-signing";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { describeError, logEvent, logStoreError, withRequestId } from "./log";
 import type { DailyQuota } from "./daily-quota";
@@ -172,13 +172,14 @@ function logUnrecordedChat(status: 400 | 413 | 503) {
 }
 
 /**
- * The conversation in the body, as the chat agent reads it, or the `400` that
- * refuses it: malformed, or an earlier answer unsigned or changed.
+ * The conversation in the body, as the chat agent reads it and with its
+ * answer's place, or the `400` that refuses it: malformed, or an earlier
+ * answer unsigned, changed or out of its place.
  */
 async function parseChatRequest(
   c: Context,
   answerSigner: AnswerSigner,
-): Promise<ChatMessage[] | Response> {
+): Promise<VerifiedConversation | Response> {
   let body: unknown;
   try {
     body = await c.req.json();
@@ -189,11 +190,11 @@ async function parseChatRequest(
   if (!parsed.success) {
     return jsonError(c, 400, { code: "invalid_request", message: z.prettifyError(parsed.error) });
   }
-  const messages = answerSigner.verify(parsed.data.messages);
-  if (!messages) {
+  const conversation = answerSigner.verify(parsed.data.messages);
+  if (!conversation) {
     return jsonError(c, 400, { code: "invalid_request", message: httpErrorMessages.unsignedAnswer });
   }
-  return messages;
+  return conversation;
 }
 
 export function createApp(deps: AppDeps): Hono {
@@ -342,11 +343,12 @@ export function createApp(deps: AppDeps): Hono {
       },
     }),
     async (c) => {
-      const messages = await parseChatRequest(c, answerSigner);
-      if (messages instanceof Response) {
+      const conversation = await parseChatRequest(c, answerSigner);
+      if (conversation instanceof Response) {
         logUnrecordedChat(400);
-        return messages;
+        return conversation;
       }
+      const { messages } = conversation;
       if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
@@ -385,7 +387,7 @@ export function createApp(deps: AppDeps): Hono {
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
       // The answer is signed as it ends, so it can come back in the next
       // chat request (answer-signing.ts).
-      const events = answerSigner.signEvents(meteredChat(messages, {
+      const events = answerSigner.signEvents(conversation.next, meteredChat(messages, {
         agent: chatAgent,
         reservation: combineReservations(quota.reservation, spend.reservation),
         usage,

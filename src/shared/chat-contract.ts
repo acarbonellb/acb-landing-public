@@ -21,7 +21,7 @@ export type ChatMessage = { role: ChatRole; content: string };
 /**
  * An earlier answer sent back with the conversation, with the `signature` its
  * `done` event carried. The agent refuses a chat request whose earlier answers
- * are unsigned or were changed (README, "Signed answers").
+ * are unsigned, were changed or were moved (README, "Signed answers").
  */
 export type SignedAnswer = { role: "assistant"; content: string; signature: string };
 

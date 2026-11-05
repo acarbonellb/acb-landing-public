@@ -19,7 +19,7 @@ What the chat sends the agent to answer one turn: the new question with the conv
 _Avoid_: chat call, query, turn
 
 **Answer signature**:
-The agent's HMAC of an answer, sent with the answer's `done` event and sent back with the answer in later chat requests, so the agent only reads earlier answers it gave itself.
+The agent's HMAC of an answer and its place (the conversation, its position there and the question it answered), sent with the answer's `done` event and sent back with the answer in later chat requests, so the agent only reads earlier answers it gave itself, where it gave them.
 _Avoid_: turn signature, token, hash
 
 **Model call**:
