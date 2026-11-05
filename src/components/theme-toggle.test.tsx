@@ -5,7 +5,7 @@ import { ThemeToggle } from "./theme-toggle";
 
 const theme = () => document.documentElement.getAttribute("data-theme");
 const toggle = () =>
-  userEvent.click(screen.getByRole("button", { name: "Toggle colour scheme" }));
+  userEvent.click(screen.getByRole("button", { name: /^Toggle colour scheme/ }));
 
 describe("ThemeToggle", () => {
   beforeEach(() => {
