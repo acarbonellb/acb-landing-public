@@ -50,12 +50,12 @@ After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) 
 
 The agent service (below) runs as a separate Cloud Run service that the browser calls directly at `AGENT_URL`, not through a Firebase Hosting rewrite. The rewrite buffers the stream and retries long requests: [ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md).
 
-**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` and `CONTACT_EMAIL` from the secret `contact-email` (both readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`memory` when unset; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. It runs after the site's `deploy` job. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools both on the agent's URL and on the site's domain (through the Hosting rewrite), that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
+**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It bundles the agent (`pnpm agent:build`), builds `agent/Dockerfile` (just the bundle on `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` and `CONTACT_EMAIL` from the secret `contact-email` (both readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository. It runs after the site's `deploy` job. Then `scripts/agent-smoke-check.sh` checks `/health`, that `/mcp` lists the five tools both on the agent's URL and on the site's domain (through the Hosting rewrite), that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing.
 
 | Variable | Value |
 | --- | --- |
 | `AGENT_URL` | The service's URL; also inlined into the site as `NEXT_PUBLIC_AGENT_URL` |
-| `AGENT_STORE` | Optional: `firestore` once the database exists ([Shared store](#shared-store)); unset deploys `memory` |
+| `AGENT_STORE` | Optional: unset deploys `firestore`, whose database must exist ([Shared store](#shared-store)). `memory` is refused in production (the service fails to start) |
 
 ## Agent service
 
@@ -101,7 +101,8 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `MONTHLY_SPEND_CAP_USD` | `4` | Estimated model spend per UTC month before the chat closes (`0` turns it off). Keep it under the provider's spend limit (see Guardrails) |
 | `AGENT_PRICE_INPUT_USD_PER_MTOK` | `AGENT_MODEL`'s list price | Input price used to estimate spend. Unset, it comes from `listPrices` in `agent/src/pricing.ts` (Claude Haiku 5.5: `0.1`, prompts up to 100K tokens); required for a model missing there, or the agent won't start. Cache writes are charged at 1.25x the input price and cache reads at the model's cache-hit price |
 | `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `AGENT_MODEL`'s list price | Output price used to estimate spend (Claude Haiku 5.5: `0.5`); same rules as the input price |
-| `AGENT_STORE` | `memory` | Where the rate limits, spend cap and usage stats keep their state: `memory` (this process only, lost on restart) or `firestore` (shared, durable; see [Shared store](#shared-store)) |
+| `AGENT_STORE` | `memory` | Where the rate limits, spend cap and usage stats keep their state: `memory` (this process only, lost on restart) or `firestore` (shared, durable; see [Shared store](#shared-store)). With `NODE_ENV=production` (set in `agent/Dockerfile`), `memory` refuses to start unless `AGENT_ALLOW_MEMORY_STORE=true` |
+| `AGENT_ALLOW_MEMORY_STORE` | `false` | `true` lets the agent start in production with the memory store anyway, accepting that the spend cap resets on every cold start |
 | `FIRESTORE_PROJECT_ID` | unset | GCP project of the Firestore database; required with `AGENT_STORE=firestore` |
 | `FIRESTORE_DATABASE` | `(default)` | Firestore database id |
 | `FIRESTORE_EMULATOR_HOST` | unset | `host:port` of a local Firestore emulator; set, the agent talks to it with no credentials |
@@ -184,14 +185,14 @@ gcloud projects add-iam-policy-binding "$PROJECT" --role roles/datastore.user \
 gcloud firestore fields ttls update expireAt --collection-group rateLimits --enable-ttl --project "$PROJECT"
 ```
 
-Then set the repository variable `AGENT_STORE=firestore`; the next deploy uses it. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
+The deploy uses `firestore` unless the repository variable `AGENT_STORE` says otherwise, so the database must exist before the agent's first deploy; until then the new revision can't reach its store and requests answer `500`. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
 
 **Backstops**, whichever the store:
 
 - **Set a monthly spend limit in the Anthropic Console** for the API key's workspace: the cap counts estimated spend, so that is the hard limit.
-- In memory, the cap is per instance and resets on every cold start, which is why the agent is deployed with Cloud Run `--max-instances=1`.
+- In memory, the cap is per instance and resets on every cold start. So in production (`NODE_ENV=production`, set in `agent/Dockerfile`) the agent refuses to start with `AGENT_STORE=memory` and says why, unless `AGENT_ALLOW_MEMORY_STORE=true` accepts it explicitly; the deploy never sets that. The agent is also deployed with Cloud Run `--max-instances=1`.
 
-Locally, `pnpm agent:dev` uses memory and needs no cloud. To try the shared store, run the Firestore emulator (`gcloud emulators firestore start --host-port=localhost:8081`) and start the agent with `AGENT_STORE=firestore FIRESTORE_PROJECT_ID=demo-agent FIRESTORE_EMULATOR_HOST=localhost:8081`.
+Locally, `pnpm agent:dev` and the tests use memory (`NODE_ENV` is not `production`) and need no cloud; running the Docker image locally needs `AGENT_STORE=firestore` or `AGENT_ALLOW_MEMORY_STORE=true`. To try the shared store, run the Firestore emulator (`gcloud emulators firestore start --host-port=localhost:8081`) and start the agent with `AGENT_STORE=firestore FIRESTORE_PROJECT_ID=demo-agent FIRESTORE_EMULATOR_HOST=localhost:8081`.
 
 Connect Claude Code to the local server:
 

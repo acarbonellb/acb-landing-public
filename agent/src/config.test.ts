@@ -129,6 +129,39 @@ describe("loadConfig", () => {
     expect(loadConfig({}).store).toEqual({ kind: "memory" });
   });
 
+  it("refuses the memory store in production, where every cold start would reset the spend cap", () => {
+    expect(() => loadConfig({ NODE_ENV: "production" })).toThrow(
+      /AGENT_STORE.*memory.*production.*cold start.*AGENT_STORE=firestore.*AGENT_ALLOW_MEMORY_STORE=true/s,
+    );
+    expect(() => loadConfig({ NODE_ENV: "production", AGENT_STORE: "memory" })).toThrow(
+      /AGENT_STORE/,
+    );
+    expect(() =>
+      loadConfig({ NODE_ENV: "production", AGENT_ALLOW_MEMORY_STORE: "false" }),
+    ).toThrow(/AGENT_STORE/);
+  });
+
+  it("starts in production with the Firestore store, or with memory when explicitly allowed", () => {
+    expect(
+      loadConfig({
+        NODE_ENV: "production",
+        AGENT_STORE: "firestore",
+        FIRESTORE_PROJECT_ID: "acb-landing",
+      }).store.kind,
+    ).toBe("firestore");
+    expect(
+      loadConfig({ NODE_ENV: "production", AGENT_ALLOW_MEMORY_STORE: "true" }).store,
+    ).toEqual({ kind: "memory" });
+    expect(() =>
+      loadConfig({ NODE_ENV: "production", AGENT_ALLOW_MEMORY_STORE: "yes" }),
+    ).toThrow(/AGENT_ALLOW_MEMORY_STORE/);
+  });
+
+  it("keeps defaulting to memory outside production (local development, tests)", () => {
+    expect(loadConfig({ NODE_ENV: "development" }).store).toEqual({ kind: "memory" });
+    expect(loadConfig({ NODE_ENV: "test" }).store).toEqual({ kind: "memory" });
+  });
+
   it("selects the shared Firestore store, which needs the project", () => {
     expect(() => loadConfig({ AGENT_STORE: "firestore" })).toThrow(/FIRESTORE_PROJECT_ID/);
     expect(() => loadConfig({ AGENT_STORE: "redis" })).toThrow(/AGENT_STORE/);
