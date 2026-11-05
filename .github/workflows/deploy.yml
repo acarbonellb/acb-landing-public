@@ -12,16 +12,25 @@ env:
   # The live site: the smoke checks hit it and the agent allows its origin.
   # Defaults to the project's *.web.app URL.
   SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
+  REGION: europe-southwest1
 
+# Deploy what was tested (#94): `test` builds the site and the agent bundle
+# once, with production settings, and tests that build; the deploy jobs ship
+# those same artifacts, checked by hash. Actions are pinned by commit SHA,
+# firebase-tools by deploy/firebase-tools/package-lock.json and the agent's
+# base image by version and digest (agent/Dockerfile).
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      site-hash: ${{ steps.hash.outputs.site }}
+      agent-hash: ${{ steps.hash.outputs.agent }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: pnpm
@@ -36,100 +45,152 @@ jobs:
       - run: pnpm agent:build
       - run: pnpm build
         env:
-          # The browser tests stub this agent; never deployed from this job.
-          NEXT_PUBLIC_AGENT_URL: http://localhost:8080
+          # The production agent URL, so this is the build that deploys. The
+          # browser tests never reach it: e2e/fixtures.ts stubs the agent and
+          # refuses every request off the local server. Without AGENT_URL
+          # nothing deploys and the tests use the local default.
+          NEXT_PUBLIC_AGENT_URL: ${{ vars.AGENT_URL || 'http://localhost:8080' }}
+
+      - name: Hash the artifacts
+        id: hash
+        run: |
+          echo "site=$(scripts/artifact-hash.sh out)" >> "$GITHUB_OUTPUT"
+          echo "agent=$(scripts/artifact-hash.sh agent/dist/main.js)" >> "$GITHUB_OUTPUT"
+
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm test:e2e
 
-      - uses: actions/upload-artifact@v5
+      # The browser tests ran against these bytes, not a copy they changed.
+      - name: Check the tested artifacts are unchanged
+        env:
+          SITE_HASH: ${{ steps.hash.outputs.site }}
+          AGENT_HASH: ${{ steps.hash.outputs.agent }}
+        run: |
+          [[ "$(scripts/artifact-hash.sh out)" == "$SITE_HASH" ]]
+          [[ "$(scripts/artifact-hash.sh agent/dist/main.js)" == "$AGENT_HASH" ]]
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: out/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: agent-bundle
+          path: agent/dist/main.js
+          if-no-files-found: error
+          retention-days: 7
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: failure()
         with:
           name: playwright-report
           path: test-results/
           retention-days: 7
 
-  deploy:
+  # Pull requests run everything a deploy does short of touching GCP: the
+  # artifacts round-trip and match by hash, the agent image builds on the
+  # pinned base and holds the tested bundle, and the pinned firebase-tools
+  # installs from its lockfile.
+  rehearse-deploy:
     needs: test
-    # Only main deploys, and only once the GCP project is configured as
-    # repository variables.
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != ''
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # needed for Workload Identity Federation
-    concurrency:
-      group: deploy
-      cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@v6
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: out
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: agent-bundle
+          path: agent/dist
 
-      - uses: actions/setup-node@v7
+      - name: Check the artifacts are the tested ones
+        env:
+          SITE_HASH: ${{ needs.test.outputs.site-hash }}
+          AGENT_HASH: ${{ needs.test.outputs.agent-hash }}
+        run: |
+          [[ "$(scripts/artifact-hash.sh out)" == "$SITE_HASH" ]]
+          [[ "$(scripts/artifact-hash.sh agent/dist/main.js)" == "$AGENT_HASH" ]]
+
+      - name: Build the agent image and check it holds the tested bundle
+        env:
+          AGENT_HASH: ${{ needs.test.outputs.agent-hash }}
+        run: |
+          docker build -t agent:rehearsal agent
+          [[ "$(scripts/image-bundle-hash.sh agent:rehearsal)" == "$AGENT_HASH" ]]
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
-          cache: pnpm
+      - run: npm ci --ignore-scripts --no-audit --no-fund --prefix deploy/firebase-tools
+      - run: deploy/firebase-tools/node_modules/.bin/firebase --version
+      # The Hosting config the deploy ships: `pnpm build` writes it into the
+      # export, with the CSP for this build (#93).
+      - run: jq -e '.hosting.public == "." and (.hosting.headers | length > 0)' out/firebase.json
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-        env:
-          # Public agent service base URL, inlined into the static export.
-          NEXT_PUBLIC_AGENT_URL: ${{ vars.AGENT_URL }}
-
-      - uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
-          service_account: ${{ vars.GCP_DEPLOY_SA }}
-
-      # `pnpm build` writes out/firebase.json: the committed config plus the
-      # CSP for this build's inline scripts and agent URL (#93).
-      - run: pnpm dlx firebase-tools@15 deploy --only hosting --config out/firebase.json --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
-
-      # Fails the workflow if the live site is down or doesn't serve the real
-      # page, or if a redirect host doesn't 301 to it. REDIRECT_HOSTS is
-      # space-separated, optional.
-      - name: Smoke check
-        env:
-          REDIRECT_HOSTS: ${{ vars.REDIRECT_HOSTS }}
-        # REDIRECT_HOSTS is split into one argument per host on purpose.
-        run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS
-
+  # The agent goes first, with no traffic: the new revision gets a `candidate`
+  # tag URL, the smoke check runs there, and only then does traffic move to it.
+  # A failing check leaves the previous revision serving; a failing check after
+  # the move puts traffic back on it.
   deploy-agent:
-    # After the site deploy: the smoke check also calls /mcp through the
-    # site's Hosting rewrite (firebase.json).
-    needs: [test, deploy]
-    # Only main deploys, and only once the agent's public URL is configured.
+    needs: test
+    # Only main deploys, and only once the GCP project and the agent's public
+    # URL are configured.
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != '' && vars.AGENT_URL != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write # needed for Workload Identity Federation
+    # A newer run waits for this one; a started deploy is never cancelled.
     concurrency:
       group: deploy-agent
-      cancel-in-progress: true
+      cancel-in-progress: false
     env:
-      REGION: europe-southwest1
+      PROJECT: ${{ vars.GCP_PROJECT_ID }}
       IMAGE: europe-southwest1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/agent/agent:${{ github.sha }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@v6
-
-      - uses: actions/setup-node@v7
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          node-version: 24
-          cache: pnpm
+          name: agent-bundle
+          path: agent/dist
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm agent:build
+      - name: Check the bundle is the tested one
+        env:
+          AGENT_HASH: ${{ needs.test.outputs.agent-hash }}
+        run: '[[ "$(scripts/artifact-hash.sh agent/dist/main.js)" == "$AGENT_HASH" ]]'
 
-      - uses: google-github-actions/auth@v3
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
         with:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_DEPLOY_SA }}
 
       - run: gcloud auth configure-docker "$REGION-docker.pkg.dev" --quiet
-      - run: docker build -t "$IMAGE" agent && docker push "$IMAGE"
+
+      # Cloud Run gets the pushed image by digest, so it runs exactly the
+      # image checked here.
+      - name: Build, check and push the image
+        env:
+          AGENT_HASH: ${{ needs.test.outputs.agent-hash }}
+        run: |
+          docker build -t "$IMAGE" agent
+          [[ "$(scripts/image-bundle-hash.sh "$IMAGE")" == "$AGENT_HASH" ]]
+          docker push "$IMAGE"
+          echo "IMAGE_DIGEST=$(docker inspect --format '{{index .RepoDigests 0}}' "$IMAGE")" >> "$GITHUB_ENV"
+
+      - name: Record the serving revision
+        run: |
+          previous=$(gcloud run services describe agent --project "$PROJECT" --region "$REGION" --format=json |
+            jq -er '[.status.traffic[] | select(.percent == 100)][0].revisionName')
+          echo "PREVIOUS_REVISION=$previous" >> "$GITHUB_ENV"
 
       # The service's public (allUsers) invoker binding is set once by hand
       # and kept across deploys; this job never changes IAM. The model and its
@@ -141,20 +202,114 @@ jobs:
       # sight, and stays under the Anthropic workspace's own $5/month hard
       # limit (README, Guardrails). The contact email is a secret too, so the
       # address never passes through GitHub: the repo and its logs are public.
-      # `^@^` makes `@` the separator, as
-      # ALLOWED_ORIGINS may hold commas.
-      - name: Deploy to Cloud Run
+      # `^@^` makes `@` the separator, as ALLOWED_ORIGINS may hold commas.
+      # `--no-traffic` keeps every request on the serving revision.
+      - name: Deploy to Cloud Run with no traffic
+        id: deploy
         env:
           AGENT_STORE: ${{ vars.AGENT_STORE || 'firestore' }}
         run: >-
-          gcloud run deploy agent --quiet
-          --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
-          --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
+          gcloud run deploy agent --quiet --no-traffic --tag candidate
+          --project "$PROJECT" --region "$REGION" --image "$IMAGE_DIGEST"
+          --service-account "agent-runtime@$PROJECT.iam.gserviceaccount.com"
           --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,CONTACT_EMAIL=contact-email:latest
-          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}@MONTHLY_SPEND_CAP_USD=4"
+          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=$PROJECT@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
-      # Never calls the model: health, MCP tools (on the agent's URL and on the
-      # site's domain), the usage stats, CORS and validation only.
-      - name: Smoke check
+      - name: Find the candidate revision
+        run: |
+          candidate=$(gcloud run services describe agent --project "$PROJECT" --region "$REGION" --format=json |
+            jq -ec '.status.traffic[] | select(.tag == "candidate")')
+          echo "CANDIDATE_REVISION=$(jq -er .revisionName <<<"$candidate")" >> "$GITHUB_ENV"
+          echo "CANDIDATE_URL=$(jq -er .url <<<"$candidate")" >> "$GITHUB_ENV"
+
+      # Never calls the model: health, MCP tools, the usage stats, CORS and
+      # validation only. The site's /mcp rewrite still reaches the serving
+      # revision, so it's checked after the move.
+      - name: Smoke check the candidate
+        run: scripts/agent-smoke-check.sh --agent-only "$CANDIDATE_URL" "$SITE_URL"
+
+      - name: Move traffic to the candidate
+        id: migrate
+        run: >-
+          gcloud run services update-traffic agent --quiet
+          --project "$PROJECT" --region "$REGION" --to-revisions "$CANDIDATE_REVISION=100"
+
+      - name: Smoke check the live agent
         run: scripts/agent-smoke-check.sh "${{ vars.AGENT_URL }}" "$SITE_URL"
+
+      - name: Roll traffic back to the previous revision
+        if: failure() && steps.migrate.outcome == 'success'
+        run: >-
+          gcloud run services update-traffic agent --quiet
+          --project "$PROJECT" --region "$REGION" --to-revisions "$PREVIOUS_REVISION=100"
+
+      # The tag URL is public; it lives only while this job checks it.
+      - name: Remove the candidate tag
+        if: always() && steps.deploy.outcome != 'skipped'
+        run: >-
+          gcloud run services update-traffic agent --quiet
+          --project "$PROJECT" --region "$REGION" --remove-tags candidate ||
+          echo "::warning::couldn't remove the candidate tag"
+
+  # The site goes once the agent it calls is live.
+  deploy-site:
+    needs: [test, deploy-agent]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != '' && vars.AGENT_URL != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # needed for Workload Identity Federation
+    # A newer run waits for this one; a started deploy is never cancelled.
+    concurrency:
+      group: deploy-site
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: out
+
+      - name: Check the site is the tested one
+        env:
+          SITE_HASH: ${{ needs.test.outputs.site-hash }}
+        run: '[[ "$(scripts/artifact-hash.sh out)" == "$SITE_HASH" ]]'
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      # Every package at the version and integrity in its lockfile.
+      - run: npm ci --ignore-scripts --no-audit --no-fund --prefix deploy/firebase-tools
+
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      # `pnpm build` wrote out/firebase.json into the tested export: the
+      # committed config plus the CSP for this build's inline scripts and
+      # agent URL (#93), so it ships with the artifact and is hashed with it.
+      - run: deploy/firebase-tools/node_modules/.bin/firebase deploy --only hosting --config out/firebase.json --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
+
+      # The page the site now serves is the tested one, byte for byte.
+      - name: Check the live page is the tested build
+        run: |
+          expected=$(sha256sum < out/index.html | cut -d' ' -f1)
+          for _ in 1 2 3 4 5; do
+            live=$(curl -fsS --compressed --max-time 20 "$SITE_URL/" | sha256sum | cut -d' ' -f1) || live=
+            [[ "$live" == "$expected" ]] && exit 0
+            sleep 10
+          done
+          echo "::error::$SITE_URL/ doesn't serve the tested out/index.html"
+          exit 1
+
+      # Fails the workflow if the live site is down or doesn't serve the real
+      # page, or if a redirect host doesn't 301 to it. REDIRECT_HOSTS is
+      # space-separated, optional.
+      - name: Smoke check
+        env:
+          REDIRECT_HOSTS: ${{ vars.REDIRECT_HOSTS }}
+        # REDIRECT_HOSTS is split into one argument per host on purpose.
+        run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS

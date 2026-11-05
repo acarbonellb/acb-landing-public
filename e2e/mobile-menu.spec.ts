@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test.describe("mobile navigation menu", () => {
   test.use({ viewport: { width: 375, height: 812 } });
