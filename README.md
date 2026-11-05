@@ -146,8 +146,8 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `text` | `delta` | A piece of the answer; append it |
 | `tool_call` | `id`, `name`, `input` | The agent calls a tool, e.g. `get_projects({"status":"in-progress"})` |
 | `tool_result` | `id`, `name`, `isError`, `output` | That tool's result (`output` is the tool's JSON, or `{error}`) |
-| `usage` | `iteration`, `inputTokens`, `outputTokens`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap) |
-| `done` | `stopReason`, `usage` | Last event of a chat request that answered; `usage` is the request's total |
+| `usage` | `iteration`, `inputTokens`, `outputTokens`, `cacheWriteInputTokens?`, `cacheReadInputTokens?`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap). `inputTokens` counts all input; the optional cache fields say how many of those were written to or read from the prompt cache (absent: none) |
+| `done` | `stopReason`, `usage` | Last event of a chat request that answered; `usage` is the request's total, with the same token fields (cache fields included) as a `usage` event |
 | `error` | `code`, `message` | Last event of a chat request that failed; `message` is safe to show |
 
 `stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream, unreachable, or the provider's spend or billing limit reached: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
