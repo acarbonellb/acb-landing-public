@@ -39,7 +39,7 @@ How one chat request ended, as the usage stats count it: answered, cut off by a 
 _Avoid_: status, result
 
 **Rate-limit key**:
-Who a rate limit counts requests for: the visitor's IP address.
+Who a rate limit counts requests for: the visitor's IP address, or its /64 prefix for IPv6.
 _Avoid_: client id, user, session
 
 ### Agent evals

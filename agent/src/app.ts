@@ -57,9 +57,9 @@ export type AppDeps = {
   spendCap: SpendCap;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
-  /** Key for the `/chat` and `/stats` rate limits: the client IP in production. */
+  /** Key for the `/chat` and `/stats` rate limits: the client IP, or its `/64` for IPv6, in production. */
   rateLimitKey: (c: Context) => string;
-  /** Key for the `/mcp` rate limit: the client IP, through the Hosting rewrite too. */
+  /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
   mcpRateLimitKey: (c: Context) => string;
 };
 

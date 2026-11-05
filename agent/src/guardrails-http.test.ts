@@ -91,6 +91,31 @@ describe("chat rate limit", () => {
     expect((await chat(url, "198.51.100.1, 66.249.93.229")).status).toBe(200);
     expect((await chat(url, "198.51.100.2, 66.249.93.229")).status).toBe(429);
   });
+
+  it("keys an IPv6 client on its /64: addresses in one /64 share a window, other /64s don't", async () => {
+    const url = await start({
+      modelClient: createFakeModel([{ text: "a" }, { text: "b" }]),
+      chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+
+    expect((await chat(url, "2001:db8:0:1::1")).status).toBe(200);
+    // Same /64, written differently.
+    expect((await chat(url, "2001:0DB8:0000:0001:ffff:0:0:2")).status).toBe(429);
+    // The neighbouring /64.
+    expect((await chat(url, "2001:db8:0:2::1")).status).toBe(200);
+  });
+
+  it("keys each IPv4 address on its own, IPv4-mapped forms included", async () => {
+    const url = await start({
+      modelClient: createFakeModel([{ text: "a" }, { text: "b" }]),
+      chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+
+    expect((await chat(url, "::ffff:198.51.100.1")).status).toBe(200);
+    // Mapped IPv4 addresses all sit in ::/64, but aren't one client.
+    expect((await chat(url, "::ffff:198.51.100.2")).status).toBe(200);
+    expect((await chat(url, "198.51.100.3")).status).toBe(200);
+  });
 });
 
 describe("MCP rate limit", () => {
@@ -174,6 +199,30 @@ describe("MCP rate limit", () => {
     // forging the entry to its left: keyed on its own IP, so no fresh limit.
     expect((await listTools("198.51.100.1, 66.249.64.1")).status).toBe(200);
     expect((await listTools("198.51.100.2, 66.249.64.1")).status).toBe(429);
+  });
+
+  it("keys an IPv6 visitor on its /64, direct and through the Hosting rewrite", async () => {
+    const url = await start({
+      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+    const listTools = (forwardedFor: string) =>
+      fetch(new URL(paths.mcp, url), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json, text/event-stream",
+          "X-Forwarded-For": forwardedFor,
+        },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+      });
+
+    expect((await listTools("2001:db8:0:1::1,66.249.93.229")).status).toBe(200);
+    // Another address in that /64, through the rewrite and straight to run.app.
+    expect((await listTools("2001:db8:0:1:abcd::7,66.249.93.199")).status).toBe(429);
+    expect((await listTools("2001:db8:0:1::99")).status).toBe(429);
+    // Other /64s, either way.
+    expect((await listTools("2001:db8:0:2::1,66.249.93.229")).status).toBe(200);
+    expect((await listTools("2001:db8:0:3::1")).status).toBe(200);
   });
 
   it("is counted apart from the chat limit", async () => {

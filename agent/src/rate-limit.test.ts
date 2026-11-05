@@ -76,16 +76,16 @@ describe("createStoreRateLimiter", () => {
     const a = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
     const b = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
 
-    expect(await a.hit("2001:db8::1")).toEqual({ allowed: true });
-    expect(await b.hit("2001:db8::1")).toEqual({ allowed: true });
+    expect(await a.hit("2001:db8:0:1::/64")).toEqual({ allowed: true });
+    expect(await b.hit("2001:db8:0:1::/64")).toEqual({ allowed: true });
     clock.advance(20_000);
     // A new instance (a cold start) sees the same window.
     const restarted = createStoreRateLimiter({ store, name: "chat", ...options, now: clock.now });
-    expect(await restarted.hit("2001:db8::1")).toEqual({
+    expect(await restarted.hit("2001:db8:0:1::/64")).toEqual({
       allowed: false,
       retryAfterSeconds: 40,
     });
-    expect(await a.hit("2001:db8::2")).toEqual({ allowed: true });
+    expect(await a.hit("2001:db8:0:2::/64")).toEqual({ allowed: true });
   });
 
   it("counts concurrent hits exactly", async () => {
