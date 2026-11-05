@@ -288,6 +288,55 @@ describe("Anthropic model client", () => {
     expect(error).not.toBeInstanceOf(ModelUnavailableError);
   });
 
+  // After a 200 the provider reports trouble as an SSE `error` event; the SDK
+  // raises a plain APIError with no status, so only the body's type tells.
+  function midStreamError(type: string) {
+    const [start] = toolTurn.split("\n\n");
+    const error = { type: "error", error: { type, message: "Try again." } };
+    return `${start}\n\nevent: error\ndata: ${JSON.stringify(error)}\n\n`;
+  }
+
+  it.each(["overloaded_error", "rate_limit_error"])(
+    "turns a mid-stream %s into ModelUnavailableError",
+    async (type) => {
+      const { fetch } = fakeFetch(
+        () =>
+          new Response(midStreamError(type), {
+            headers: { "content-type": "text/event-stream" },
+          }),
+      );
+      const client = createAnthropicModelClient({
+        apiKey: "k",
+        model: "claude-opus-5-5",
+        effort: "low",
+        fetch,
+        maxRetries: 0,
+      });
+      await expect(collect(client.stream(request))).rejects.toBeInstanceOf(
+        ModelUnavailableError,
+      );
+    },
+  );
+
+  it("keeps any other mid-stream error an internal error", async () => {
+    const { fetch } = fakeFetch(
+      () =>
+        new Response(midStreamError("api_error"), {
+          headers: { "content-type": "text/event-stream" },
+        }),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+      maxRetries: 0,
+    });
+    const error = await collect(client.stream(request)).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(Error);
+    expect(error).not.toBeInstanceOf(ModelUnavailableError);
+  });
+
   it("lets other API errors (e.g. a bad key) through as internal errors", async () => {
     const { fetch } = fakeFetch(
       () =>
