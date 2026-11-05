@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
-import { THEME_STORAGE_KEY, type Theme } from "../src/lib/theme";
+import { THEME_STORAGE_KEY, THEMES, type Theme } from "../src/lib/theme";
 
 // Automated accessibility basics (#49): axe over the whole page in both themes
 // (contrast, names, labels, landmarks), plus the keyboard path through the
@@ -56,7 +56,7 @@ async function scan(page: Page, include?: string) {
   return { violations: summarize(violations), undecided };
 }
 
-for (const theme of ["night", "light"] as const) {
+for (const theme of THEMES) {
   test.describe(`in the ${theme} theme`, () => {
     test("the full page has no WCAG A/AA violations", async ({ page }) => {
       await openIn(page, theme);

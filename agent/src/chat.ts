@@ -9,6 +9,7 @@ import {
   type ChatErrorCode,
   type ChatEvent,
   type ChatMessage,
+  type ChatRequest,
   type ChatStopReason,
 } from "../../src/shared/chat-contract";
 import {
@@ -42,7 +43,7 @@ export const chatLimits = {
 };
 
 /** What the browser sends: the visible conversation, ending with the new question. */
-export const chatRequestSchema: z.ZodType<{ messages: ChatMessage[] }> = z
+export const chatRequestSchema: z.ZodType<ChatRequest> = z
   .object({
     messages: z
       .array(

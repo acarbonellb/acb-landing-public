@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TerminalButton } from "./ui";
 
 /** How to connect your own agent to the MCP server, with a command to copy. */
@@ -8,11 +8,17 @@ export function McpConnect({ mcpUrl }: { mcpUrl: string }) {
   const [copied, setCopied] = useState(false);
   const command = `claude mcp add --transport http albertocarbonell ${mcpUrl}`;
 
+  // "copied" reverts after a moment; unmounting first cancels the timer.
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
+
   async function copyCommand() {
     try {
       await navigator.clipboard.writeText(command);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch {
       // Clipboard blocked: the command stays visible to select by hand.
     }

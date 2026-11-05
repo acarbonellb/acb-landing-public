@@ -20,6 +20,14 @@ test("toggles to Tokyo Light and back", async ({ page }) => {
   await expect(html(page)).toHaveAttribute("data-theme", "night");
 });
 
+test("the toggle's name says which theme it switches to", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(toggle(page)).toHaveAccessibleName(/switch to Tokyo Light$/);
+  await toggle(page).click();
+  await expect(toggle(page)).toHaveAccessibleName(/switch to Tokyo Night$/);
+});
+
 test("remembers the chosen theme across reloads", async ({ page }) => {
   await page.goto("/");
   await toggle(page).click();

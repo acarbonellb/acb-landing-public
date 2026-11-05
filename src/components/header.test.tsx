@@ -44,7 +44,7 @@ describe("Header", () => {
     render(<Header />);
 
     expect(
-      screen.getByRole("button", { name: "Toggle colour scheme" }),
+      screen.getByRole("button", { name: /^Toggle colour scheme/ }),
     ).toBeInTheDocument();
   });
 });

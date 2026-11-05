@@ -7,9 +7,19 @@ import type { StatsResponse, WeekStats } from "@/shared/stats-contract";
 // in the browser (the static page can't know it at build time). Anything
 // short of a valid answer with at least one question answered shows nothing.
 
+const isNumber = (value: unknown): value is number => typeof value === "number";
+const isNumberOrNull = (value: unknown) => value === null || isNumber(value);
+
+// Checks every field `statsLine` reads, so a malformed body hides the line
+// instead of rendering "NaN".
 function isWeek(value: unknown): value is WeekStats {
-  const week = value as WeekStats | undefined;
-  return typeof week?.chat?.answered === "number" && typeof week.chat.costUsd === "number";
+  const chat = (value as WeekStats | undefined)?.chat;
+  return (
+    isNumber(chat?.answered) &&
+    isNumber(chat.costUsd) &&
+    isNumberOrNull(chat.errorRate) &&
+    isNumberOrNull(chat.latency?.p50Ms)
+  );
 }
 
 function isStats(value: unknown): value is StatsResponse {

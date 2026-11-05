@@ -103,4 +103,25 @@ describe("AgentStats", () => {
     await new Promise((resolve) => setTimeout(resolve, 10));
     expect(container).toBeEmptyDOMElement();
   });
+
+  // Every field the line reads must be checked, not only the ones that exist
+  // today: a malformed week hides the line rather than showing "NaN".
+  it.each([
+    ["the error rate", (w: WeekStats) => ({ ...w, chat: { ...w.chat, errorRate: undefined } })],
+    ["a numeric error rate", (w: WeekStats) => ({ ...w, chat: { ...w.chat, errorRate: "4%" } })],
+    ["the latency", (w: WeekStats) => ({ ...w, chat: { ...w.chat, latency: undefined } })],
+    [
+      "the p50 latency",
+      (w: WeekStats) => ({ ...w, chat: { ...w.chat, latency: { p95Ms: 7500 } } }),
+    ],
+    ["the questions answered", (w: WeekStats) => ({ ...w, chat: { ...w.chat, answered: "24" } })],
+    ["the cost", (w: WeekStats) => ({ ...w, chat: { ...w.chat, costUsd: undefined } })],
+  ])("shows nothing when a week lacks %s", async (_, malform) => {
+    const { fetch, urls } = serving({ current: malform(busyWeek), previous: week("2026-W44") });
+    const { container } = render(<AgentStats url={STATS_URL} fetch={fetch} />);
+
+    await waitFor(() => expect(urls).toHaveLength(1));
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(container).toBeEmptyDOMElement();
+  });
 });

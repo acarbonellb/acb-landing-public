@@ -37,8 +37,16 @@ export default async function Home() {
   };
   return (
     <>
+      {/* First Tab stop: jumps past the sticky header. `main` takes focus
+          (tabIndex -1), so the next Tab continues inside the content. */}
+      <a
+        href="#main"
+        className="sr-only rounded bg-blue px-3 py-1 text-sm font-bold text-bg focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60]"
+      >
+        Skip to content
+      </a>
       <Header />
-      <main className="mx-auto max-w-5xl px-4 sm:px-6">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-5xl px-4 outline-none sm:px-6">
         <Hero profile={profile} />
         {sections.map((s) => (
           <Fragment key={s.id}>{content[s.id]}</Fragment>
