@@ -6,7 +6,7 @@ import {
   type Profile,
   type Role,
   type SkillGroup,
-} from "@/content/profile";
+} from "@/shared/profile";
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
 import { AgentChat } from "./agent-chat";
 import { AgentStats } from "./agent-stats";

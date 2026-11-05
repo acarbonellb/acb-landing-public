@@ -17,7 +17,7 @@ import {
   experience,
   profile,
   skillGroups,
-} from "@/content/profile";
+} from "@/shared/profile";
 import { withEvalResults } from "@/lib/eval-results";
 
 export default async function Home() {

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
 import { THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";

@@ -4,7 +4,7 @@ import { bodyLimit } from "hono/body-limit";
 import { cors } from "hono/cors";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/lib/chat-contract";
+import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/shared/chat-contract";
 import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
 import { clientIp, mcpClientIp } from "./client-ip";
 import { loadConfig } from "./config";
