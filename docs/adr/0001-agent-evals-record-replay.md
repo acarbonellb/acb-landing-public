@@ -44,3 +44,14 @@ Now:
 - **Model settings.** Each recording states the effort and the parameters the model client adds to every request (`anthropicRequestParams`, the same function the adapter sends them from). They sit below the `ModelClient` seam, so the request hash can't see them; replay fails when a recording's settings differ from the agent's (its config schema's default effort), and the report shows each set's settings.
 - **Config schema.** A live run reads the model, effort and key through `loadConfig`, the agent's own schema, so an invalid setting fails the same way and an eval can't run with settings production would read differently. Only the defaults differ (LM Studio's model and key on localhost).
 - **Migration.** `scripts/migrate-request-identity.ts` rewrote the stored recordings with their request identity and settings and appended one `migrated` history entry per set, with no model call. It only accepts recordings that match their latest entry's fingerprint and still replay to the same scores: then the request identity is the current one by construction, and the settings are those every live run had used (effort `low`, the adapter's parameters unchanged since the recordings were made). `migrated` entries don't count as live runs for the re-run guard.
+
+## Amendment (#99): the rule for changing a scorer
+
+Two scorer changes so far accepted answers that had just failed ("recommend" for "recommendation", and "not included in his profile"). Each was reasonable, but made right after the miss and without a rule, it reads as moving the goalposts. And the unknown scorer counted any answer that said "contact" as a decline, while the system prompt asks every decline to suggest contacting him, so it passed almost by construction. It now needs an explicit decline ("isn't in his profile", "isn't listed", "I don't know", "I can't answer", and the Spanish equivalents); suggesting contact is a secondary signal, never enough on its own. The invented-claim checks stay.
+
+**The rule.** A scorer, or what a case expects, changes in one of two ways:
+
+- **Before the run it applies to**: commit the change, then make the live run. The run's entry is scored by it from the start.
+- **Applied to every stored recording**: `pnpm agent:eval:rescore --note "what changed"` re-scores every set and appends a `rescored` entry per set carrying the note, also for sets whose numbers didn't move, and the report lists the note under the set's history. The re-score refuses changed scores without a note.
+
+Never loosen a scorer right after a miss without that note: the history then shows the miss, the change and the new numbers side by side. This amendment's own change was applied the second way.

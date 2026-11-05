@@ -128,6 +128,11 @@ describe("appendHistory and parseHistory", () => {
     );
   });
 
+  it("parses a re-scored entry's note", () => {
+    const noted = { ...historyEntry(setWith("Only about Alberto."), run, "rescored"), note: "stricter decline" };
+    expect(parseHistory(appendHistory("", [noted]))).toEqual([noted]);
+  });
+
   it("rejects an unknown kind", () => {
     expect(() => parseHistory(`${JSON.stringify({ ...first, kind: "replay" })}\n`)).toThrow(
       /history\.jsonl line 1/,
@@ -302,12 +307,35 @@ describe("rescoreHistory", () => {
     return { ...r, evalCase, score: scoreCase(evalCase, r.response) };
   });
 
-  it("appends a re-scored entry with the current scores of the same recordings", () => {
-    expect(rescoreHistory([live], [stricter], 1, today)).toEqual({
-      entries: [historyEntry(stricter, today, "rescored")],
+  const note = "stricter leak check";
+
+  it("appends a re-scored entry with the current scores of the same recordings, and the note on the change", () => {
+    const rescored = { ...historyEntry(stricter, today, "rescored"), note };
+
+    expect(rescoreHistory([live], [stricter], 1, today, note)).toEqual({
+      entries: [rescored],
       problems: [],
     });
-    expect(checkHistory([live, historyEntry(stricter, today, "rescored")], [stricter])).toEqual([]);
+    expect(checkHistory([live, rescored], [stricter])).toEqual([]);
+  });
+
+  it("refuses scores that changed without a note on the scoring change", () => {
+    expect(rescoreHistory([live], [stricter], 1, today)).toEqual({
+      entries: [],
+      problems: [
+        'lmstudio / qwen/qwen3.5-9b: scores changed with the same recordings: say what the scoring change is with `pnpm agent:eval:rescore --note "..."`',
+      ],
+    });
+  });
+
+  it("with a note, appends an entry for every set, also one whose scores didn't change", () => {
+    const other = setWith("Only about Alberto.", { provider: "anthropic", model: "claude-haiku-5-5" });
+    const otherLive = historyEntry(other, run, "live");
+
+    expect(rescoreHistory([live, otherLive], [stricter, other], 1, today, note).entries).toEqual([
+      { ...historyEntry(stricter, today, "rescored"), note },
+      { ...historyEntry(other, today, "rescored"), note },
+    ]);
   });
 
   it("adds the fingerprint to an entry from before fingerprints, while it still matches its recordings", () => {
@@ -393,11 +421,16 @@ describe("renderHistory", () => {
         },
         { commit: "e1f2a3b", requestIdentity: "b".repeat(64), kind: "rerun" },
       ),
+      entry(
+        "2026-11-05",
+        { meanCostUsd: 0 },
+        { commit: "f4e5d6c", kind: "rescored", note: "stricter decline scorer (#99)" },
+      ),
     ];
 
     expect(renderHistory(history)).toBe(`## History
 
-Last 10 entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
+Last 10 entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, with a note on the scoring change, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
 
 ### anthropic / claude-opus-5-5
 
@@ -409,8 +442,13 @@ Last 10 entries per recording set, newest first, from \`agent/evals/history.json
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-05 | \`f4e5d6c\` | rescored | \`aaaaaaaaaaaa\` | 30 | 5.9% (+5.9 pp) | 100.0% (±0.0 pp) | 88.9% (-5.6 pp) | n/a | 3000 (+42) | 170 (±0) | 4500 ms (+51) | $0 |
 | 2026-11-04 | \`e1f2a3b\` | rerun | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
 | 2026-11-03 | \`abc1234\` | live | \`cccccccccccc\` (prompt only) | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
+
+Notes:
+
+- 2026-11-05 \`f4e5d6c\` rescored: stricter decline scorer (#99)
 `);
   });
 

@@ -380,6 +380,7 @@ describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
       sets,
       history,
       run: { date: "2026-11-04", commit: "e1f2a3b" },
+      note: "on04 also needs LinkedIn",
     });
     const after = await evaluate({ cases: [stricter, capital], sets, history: [...history, ...rescored.entries] });
 
@@ -391,6 +392,7 @@ describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
       expect.objectContaining({
         kind: "rescored",
         commit: "e1f2a3b",
+        note: "on04 also needs LinkedIn",
         fingerprint: history[0].fingerprint,
         metrics: expect.objectContaining({ factCoverage: { n: 1, of: 2 } }),
       }),

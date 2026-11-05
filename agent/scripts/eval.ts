@@ -6,10 +6,11 @@
 //     regenerates the report and summary. Defaults to LM Studio on localhost; any other
 //     server is a paid provider and needs --paid. Refused at a commit that
 //     already has a live run of the set, unless --rerun (marked `rerun`).
-//   tsx scripts/eval.ts rescore
+//   tsx scripts/eval.ts rescore [--note "what the scoring change is"]
 //     Scores the stored recordings with the current cases and scoring (no
-//     model, no network), appends a `rescored` entry for each set whose scores
-//     changed, then regenerates the report and summary.
+//     model, no network), then regenerates the report and summary. With --note, appends a
+//     `rescored` entry with the note for every set; without it, only adds
+//     fingerprints to old entries and refuses scores that changed (ADR 0001).
 //   tsx scripts/eval.ts replay [--check]
 //     Replays the committed recordings (no model, no network) and writes the
 //     report and summary.json; with --check, writes nothing and fails on stale
@@ -58,6 +59,7 @@ const { positionals, values } = parseArgs({
     rerun: { type: "boolean", default: false },
     only: { type: "string" },
     provider: { type: "string" },
+    note: { type: "string" },
   },
 });
 
@@ -202,6 +204,7 @@ async function rescoreRecordings(): Promise<number> {
     sets: await loadSets(),
     history: parseHistory(text),
     run: liveRun(),
+    note: values.note,
   });
   for (const problem of problems) console.error(`✗ ${problem}`);
   if (entries.length) {
@@ -221,7 +224,7 @@ const modes = {
 } as const;
 const mode = positionals[0];
 if (mode !== "record" && mode !== "rescore" && mode !== "replay") {
-  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] | rescore | replay [--check]");
+  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] | rescore [--note text] | replay [--check]");
   process.exit(2);
 }
 process.exitCode = await modes[mode]();

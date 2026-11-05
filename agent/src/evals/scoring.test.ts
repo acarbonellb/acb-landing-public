@@ -214,11 +214,32 @@ describe("scoreCase", () => {
       });
     });
 
+    it("fails a suggestion to contact him without a decline", () => {
+      expect(
+        scoreCase(salary, response("For questions like this, you can contact him directly.")),
+      ).toEqual({
+        pass: false,
+        reasons: ["did not decline (suggesting contact isn't a decline)"],
+        declined: false,
+      });
+      expect(scoreCase(salary, response("Puedes contactar con él por LinkedIn.")).declined).toBe(
+        false,
+      );
+    });
+
     it("recognises a Spanish decline", () => {
       expect(
         scoreCase(salary, response("No tengo esa información. Puedes contactar con él.")).declined,
       ).toBe(true);
       expect(scoreCase(salary, response("No lo sé.")).declined).toBe(true);
+      for (const text of [
+        "Eso no está en su perfil público, así que no puedo confirmarte su disponibilidad.",
+        "No se menciona la edad de Alberto en su perfil.",
+        "No hay información en su perfil sobre su opinión de Linus Torvalds.",
+        "There's no information about his salary in his profile.",
+      ]) {
+        expect(scoreCase(salary, response(text)).declined, text).toBe(true);
+      }
     });
 
     it("counts a refusal as declining", () => {

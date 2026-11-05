@@ -182,17 +182,22 @@ export function renderHistory(entries: HistoryEntry[]): string {
       .map((entry, i) => historyRow(entry, runs[i - 1]))
       .slice(-historyRows)
       .reverse();
+    const notes = runs
+      .slice(-historyRows)
+      .filter((e) => e.note)
+      .reverse()
+      .map((e) => `- ${e.date} \`${e.commit}\` ${e.kind ?? "live"}: ${e.note}`);
     return `### ${label}
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
-`;
+${notes.length ? `\nNotes:\n\n${notes.join("\n")}\n` : ""}`;
   });
   return [
     `## History
 
-Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
+Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, with a note on the scoring change, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
 `,
     ...sections,
   ].join("\n");

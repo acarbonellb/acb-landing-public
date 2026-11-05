@@ -233,15 +233,18 @@ export async function replaySets({
 export async function rescore({
   history,
   run,
+  note,
   ...input
 }: {
   cases: EvalCase[];
   sets: RecordingSet[];
   history: HistoryEntry[];
   run: LiveRun;
+  /** What the scoring change is; needed when scores changed (see `rescoreHistory`). */
+  note?: string;
 } & RunOptions): Promise<{ entries: HistoryEntry[]; problems: string[] }> {
   const { sets } = await replaySets(input);
-  return rescoreHistory(history, sets, input.cases.length, run);
+  return rescoreHistory(history, sets, input.cases.length, run, note);
 }
 
 /**

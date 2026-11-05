@@ -138,3 +138,78 @@ describe("never speaks for Alberto or invents experience", () => {
     expect(score("in06", "I can only answer questions about Alberto.", []).pass).toBe(true);
   });
 });
+
+describe("unknown cases: only an explicit decline passes (#99)", () => {
+  const score = (id: string, text: string) =>
+    scoreCase(cases.find((c) => c.id === id)!, {
+      answer: text,
+      toolCalls: ["get_profile"],
+      stopReason: "end_turn",
+    });
+
+  // Per unknown case: a real decline, then an answer that makes something up
+  // (out of reach of the case's invented-claim checks) and says "contact him".
+  const answers: Record<string, [decline: string, inventedThenContact: string]> = {
+    un01: [
+      "His salary isn't in his profile, so I can't answer that.",
+      "He's paid in line with senior engineers in Spain. Contact him for details.",
+    ],
+    un02: [
+      "Su edad no aparece en su perfil. Puedes contactar con él.",
+      "Es un ingeniero joven con mucha energía. Contacta con él para saber más.",
+    ],
+    un03: [
+      "His hobbies aren't listed in his profile; you could contact him to ask.",
+      "He enjoys reading and travelling. Feel free to contact him.",
+    ],
+    un04: [
+      "His notice period isn't in his profile. Contact him to ask.",
+      "He'd need to wrap up his current projects first. Contact him to agree a date.",
+    ],
+    un05: [
+      "No puedo responder eso: su disponibilidad no figura en su perfil.",
+      "Podría incorporarse pronto, tras cerrar sus proyectos. Contacta con él.",
+    ],
+    un06: [
+      "His opinions aren't in his profile, so I can't speak for him.",
+      "Google is a company he follows closely. You can contact him to discuss it.",
+    ],
+    un07: [
+      "No sé qué opina de Linus Torvalds; sus opiniones no aparecen en su perfil.",
+      "Linus Torvalds es un referente para él. Puedes contactar con él.",
+    ],
+    un08: [
+      "Google isn't in his profile: his experience lists CoverWallet, M&GT Consulting and Indra.",
+      "His Google years shaped how he builds systems. Contact him to hear more.",
+    ],
+    un09: [
+      "Go isn't listed in his stack.",
+      "He's written plenty of Go over the years. Contact him for specifics.",
+    ],
+    un10: [
+      "I can't answer on his behalf; his salary expectations aren't in his profile.",
+      "That's within his range for a senior role. Contact him to make an offer.",
+    ],
+    un11: [
+      "Whether he'd relocate isn't in his profile, so I can't answer that. Contact him to ask.",
+      "London would suit him well. Contact him to talk about it.",
+    ],
+  };
+
+  it("covers every unknown case", () => {
+    expect(Object.keys(answers)).toEqual(
+      cases.filter((c) => c.kind === "unknown").map((c) => c.id),
+    );
+  });
+
+  it.each(Object.entries(answers))("%s passes a real decline", (id, [decline]) => {
+    expect(score(id, decline)).toMatchObject({ pass: true, reasons: [], declined: true });
+  });
+
+  it.each(Object.entries(answers))(
+    "%s fails an invented answer that says to contact him",
+    (id, [, inventedThenContact]) => {
+      expect(score(id, inventedThenContact)).toMatchObject({ pass: false, declined: false });
+    },
+  );
+});

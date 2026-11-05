@@ -97,8 +97,12 @@ A second live run of a recording set at a commit that already has one. Refused u
 _Avoid_: retry, re-record
 
 **Re-score**:
-Scoring a set's stored recordings again with the current cases and scoring, and adding a history entry marked as such. No model is called.
+Scoring a set's stored recordings again with the current cases and scoring, and adding a history entry marked as such, with a note on the scoring change. No model is called.
 _Avoid_: re-run, re-evaluate
+
+**Decline**:
+What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer. Suggesting to contact him is not a decline on its own.
+_Avoid_: refusal (that's the model's stop reason), deflection
 
 **Gated case**:
 An eval case CI fails on when it fails, like a leak. Only the contact question is gated, because the site depends on its answer.
