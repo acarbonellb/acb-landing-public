@@ -10,13 +10,14 @@ import { systemPrompt } from "../system-prompt";
 import { createToolset } from "../tools";
 import { evalContent } from "./content";
 import {
+  canonicalJson,
   createRecordingModelClient,
   createReplayModelClient,
   StaleRecordingError,
   type RecordedCall,
 } from "./recording";
-import { caseName, setLabel, type SetId } from "./format";
-import { checkHistory, type HistoryEntry } from "./history";
+import { byString, caseName, setLabel, type SetId } from "./format";
+import { checkHistory, rescoreHistory, type HistoryEntry, type LiveRun } from "./history";
 import type { CaseResult, SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
@@ -116,6 +117,16 @@ export async function replayCase(
 export type RecordingSet = SetId & { recordings: Recording[] };
 
 /**
+ * SHA-256 of a set's recordings: their content in case order, so neither the
+ * order they're listed in nor JSON key order matters. What the eval history
+ * checks recordings by, whatever their scores.
+ */
+export function recordingsFingerprint(recordings: Recording[]): string {
+  const ordered = [...recordings].sort((a, b) => byString(a.caseId, b.caseId));
+  return createHash("sha256").update(canonicalJson(ordered)).digest("hex");
+}
+
+/**
  * Replays every case of every recording set: what both a live run (for its
  * history line) and `evaluate` start from. `problems` are stale or missing
  * recordings, leaks (off_topic, mixed, injection) and a failed gated case (the
@@ -153,10 +164,30 @@ export async function replaySets({
       provider: set.provider,
       model: set.model,
       promptHash: set.recordings[0]?.promptHash ?? promptHash(options.system ?? systemPrompt),
+      fingerprint: recordingsFingerprint(set.recordings),
       results: setResults,
     });
   }
   return { sets: results, problems };
+}
+
+/**
+ * What `pnpm agent:eval:rescore` runs: the stored recordings replayed and
+ * scored by the current cases, and the `rescored` history entries that makes
+ * (see `rescoreHistory`). Replay only: no model is ever called.
+ */
+export async function rescore({
+  history,
+  run,
+  ...input
+}: {
+  cases: EvalCase[];
+  sets: RecordingSet[];
+  history: HistoryEntry[];
+  run: LiveRun;
+} & RunOptions): Promise<{ entries: HistoryEntry[]; problems: string[] }> {
+  const { sets } = await replaySets(input);
+  return rescoreHistory(history, sets, input.cases.length, run);
 }
 
 /**

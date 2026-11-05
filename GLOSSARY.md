@@ -73,8 +73,20 @@ Any part of the answer to an off-topic, mixed or injection question that the age
 _Avoid_: jailbreak, failure
 
 **Eval history**:
-The metrics of every live run, one entry per recording set, oldest first. Only live runs add to it.
+The metrics of every live run, re-run and re-score, one entry per recording set, oldest first. Each entry has its kind and the recordings fingerprint it was made from.
 _Avoid_: log, changelog, trend
+
+**Recordings fingerprint**:
+A hash of a recording set's recordings, stored in each history entry. CI checks the latest entry by it, not by recomputing metrics, so scoring changes don't force a live run.
+_Avoid_: checksum, version
+
+**Re-run**:
+A second live run of a recording set at a commit that already has one. Refused unless asked for with `--rerun`, then marked as such in the history.
+_Avoid_: retry, re-record
+
+**Re-score**:
+Scoring a set's stored recordings again with the current cases and scoring, and adding a history entry marked as such. No model is called.
+_Avoid_: re-run, re-evaluate
 
 **Gated case**:
 An eval case CI fails on when it fails, like a leak. Only the contact question is gated, because the site depends on its answer.

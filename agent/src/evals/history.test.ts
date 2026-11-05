@@ -4,7 +4,9 @@ import {
   appendLiveRun,
   checkHistory,
   historyEntry,
+  liveRunKind,
   parseHistory,
+  rescoreHistory,
   type HistoryEntry,
 } from "./history";
 import type { Metrics, SetResult } from "./metrics";
@@ -25,6 +27,7 @@ function setWith(answer: string, overrides: Partial<SetResult> = {}): SetResult 
     provider: "lmstudio",
     model: "qwen/qwen3.5-9b",
     promptHash: "a".repeat(64),
+    fingerprint: "f".repeat(64),
     results: [
       {
         evalCase: capital,
@@ -59,22 +62,31 @@ function withoutCost(metrics: Metrics): Metrics {
   return copy;
 }
 
+/** An entry as one made before `keys` were recorded holds it. */
+function without(entry: HistoryEntry, ...keys: ("kind" | "fingerprint")[]): HistoryEntry {
+  const copy = { ...entry };
+  for (const key of keys) delete copy[key];
+  return copy;
+}
+
 describe("historyEntry", () => {
-  it("captures the set's identity, prompt hash and report metrics", () => {
-    expect(historyEntry(setWith("Only about Alberto."), run)).toEqual({
+  it("captures the set's identity, prompt hash, recordings fingerprint, kind and report metrics", () => {
+    expect(historyEntry(setWith("Only about Alberto."), run, "live")).toEqual({
       date: "2026-11-03",
       commit: "d7fa65c",
+      kind: "live",
       provider: "lmstudio",
       model: "qwen/qwen3.5-9b",
       promptHash: "a".repeat(64),
+      fingerprint: "f".repeat(64),
       metrics: cleanMetrics,
     });
   });
 });
 
 describe("appendHistory and parseHistory", () => {
-  const first = historyEntry(setWith("Only about Alberto."), run);
-  const second = historyEntry(setWith("Madrid."), { date: "2026-11-04", commit: "e1f2a3b" });
+  const first = historyEntry(setWith("Only about Alberto."), run, "live");
+  const second = historyEntry(setWith("Madrid."), { date: "2026-11-04", commit: "e1f2a3b" }, "rescored");
 
   it("appends one JSON line per entry, and parses them back in order", () => {
     const once = appendHistory("", [first]);
@@ -93,6 +105,18 @@ describe("appendHistory and parseHistory", () => {
 
   it("appends nothing for no entries", () => {
     expect(appendHistory("", [])).toBe("");
+  });
+
+  it("parses an entry from before kinds and fingerprints were recorded", () => {
+    const older = without(first, "kind", "fingerprint");
+
+    expect(parseHistory(`${JSON.stringify(older)}\n`)).toEqual([older]);
+  });
+
+  it("rejects an unknown kind", () => {
+    expect(() => parseHistory(`${JSON.stringify({ ...first, kind: "replay" })}\n`)).toThrow(
+      /history\.jsonl line 1/,
+    );
   });
 
   it("parses an entry from before costs were recorded", () => {
@@ -119,38 +143,103 @@ describe("appendLiveRun", () => {
   const complete = setWith("Only about Alberto.");
 
   it("appends exactly one entry for the recorded set", () => {
-    const earlier = appendHistory("", [historyEntry(complete, { date: "2026-11-01", commit: "0000000" })]);
+    const earlier = appendHistory("", [
+      historyEntry(complete, { date: "2026-11-01", commit: "0000000" }, "live"),
+    ]);
 
-    const text = appendLiveRun(earlier, complete, 1, run);
+    const text = appendLiveRun(earlier, complete, 1, run, "live");
 
-    expect(parseHistory(text!)).toEqual([...parseHistory(earlier), historyEntry(complete, run)]);
+    expect(parseHistory(text!)).toEqual([...parseHistory(earlier), historyEntry(complete, run, "live")]);
   });
 
   it("appends nothing while some of the set's cases can't be replayed", () => {
-    expect(appendLiveRun("", complete, 2, run)).toBeUndefined();
-    expect(appendLiveRun("", undefined, 1, run)).toBeUndefined();
+    expect(appendLiveRun("", complete, 2, run, "live")).toBeUndefined();
+    expect(appendLiveRun("", undefined, 1, run, "live")).toBeUndefined();
+  });
+});
+
+describe("liveRunKind (the re-run guard)", () => {
+  const set = setWith("Only about Alberto.");
+  const at = (commit: string, kind?: HistoryEntry["kind"]) => {
+    const entry = historyEntry(set, { date: "2026-11-03", commit }, kind ?? "live");
+    if (!kind) delete entry.kind;
+    return entry;
+  };
+  const refused = {
+    refused:
+      "lmstudio / qwen/qwen3.5-9b already has a live run at commit d7fa65c: commit a change first, or pass --rerun to record a re-run",
+  };
+
+  it("is a live run at a commit with no live run of the set", () => {
+    expect(liveRunKind([at("0000000")], set, "d7fa65c", false)).toEqual({ kind: "live" });
+  });
+
+  it("refuses a second live run at the same commit without --rerun", () => {
+    expect(liveRunKind([at("d7fa65c", "live")], set, "d7fa65c", false)).toEqual(refused);
+  });
+
+  it("marks it a re-run with --rerun", () => {
+    expect(liveRunKind([at("d7fa65c", "live")], set, "d7fa65c", true)).toEqual({ kind: "rerun" });
+  });
+
+  it("counts re-runs and entries from before kinds were recorded as live runs", () => {
+    expect(liveRunKind([at("d7fa65c", "rerun")], set, "d7fa65c", false)).toEqual(refused);
+    expect(liveRunKind([at("d7fa65c")], set, "d7fa65c", false)).toEqual(refused);
+  });
+
+  it("doesn't count a re-score or another set's live run", () => {
+    const other = { ...at("d7fa65c", "live"), provider: "anthropic", model: "claude-haiku-5-5" };
+
+    expect(liveRunKind([at("d7fa65c", "rescored"), other], set, "d7fa65c", false)).toEqual({
+      kind: "live",
+    });
+  });
+
+  it("is still a live run with --rerun when there is nothing to re-run", () => {
+    expect(liveRunKind([], set, "d7fa65c", true)).toEqual({ kind: "live" });
   });
 });
 
 describe("checkHistory", () => {
   const clean = setWith("Only about Alberto.");
-  const entry = historyEntry(clean, run);
+  const entry = historyEntry(clean, run, "live");
+  const rerecord = "re-record with `pnpm agent:eval`";
+  const rescore = "re-score with `pnpm agent:eval:rescore`";
 
   it("passes when each set's latest entry matches its recordings", () => {
-    const older = historyEntry(setWith("Madrid."), { date: "2026-11-01", commit: "0000000" });
+    const older = historyEntry(setWith("Madrid.", { fingerprint: "0".repeat(64) }), {
+      date: "2026-11-01",
+      commit: "0000000",
+    }, "live");
 
     expect(checkHistory([older, entry], [clean])).toEqual([]);
   });
 
   it("only compares entries of the same provider and model", () => {
-    const other = { ...entry, provider: "anthropic", model: "claude-opus-5-5", promptHash: "b" };
+    const other = { ...entry, provider: "anthropic", model: "claude-opus-5-5", fingerprint: "b" };
 
     expect(checkHistory([entry, other], [clean])).toEqual([]);
   });
 
   it("fails when a recording set has no history entry", () => {
     expect(checkHistory([], [clean])).toEqual([
-      "lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: re-record with `pnpm agent:eval`",
+      `lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: ${rerecord}`,
+    ]);
+  });
+
+  it("fails when recordings are committed without their history line", () => {
+    const rerecorded = setWith("Only about Alberto.", { fingerprint: "c".repeat(64) });
+
+    expect(checkHistory([entry], [rerecorded])).toEqual([
+      `lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (fingerprint): ${rerecord}`,
+    ]);
+  });
+
+  it("fails when a history line is committed without its recordings", () => {
+    const newer = { ...entry, commit: "e1f2a3b", fingerprint: "c".repeat(64) };
+
+    expect(checkHistory([entry, newer], [clean])).toEqual([
+      `lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (fingerprint): ${rerecord}`,
     ]);
   });
 
@@ -158,23 +247,80 @@ describe("checkHistory", () => {
     const problems = checkHistory([{ ...entry, promptHash: "b".repeat(64) }], [clean]);
 
     expect(problems).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (promptHash): re-record with `pnpm agent:eval`",
+      `lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (promptHash): ${rerecord}`,
     ]);
   });
 
-  it("fails when the latest entry has no cost, from before costs were recorded", () => {
-    const uncosted = withoutCost(entry.metrics);
+  it("asks for a re-score, not a live run, when the same recordings now score differently", () => {
+    const rescored = setWith("Madrid.");
 
-    expect(checkHistory([{ ...entry, metrics: uncosted }], [clean])).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (meanCostUsd): re-record with `pnpm agent:eval`",
+    expect(checkHistory([entry], [rescored])).toEqual([
+      `lmstudio / qwen/qwen3.5-9b: latest history entry was scored differently (leaks): ${rescore}`,
     ]);
   });
 
-  it("fails when the recordings changed without a new history line", () => {
-    const leaky = setWith("Madrid.");
+  it("asks for a re-score when the latest entry has no fingerprint, from before fingerprints were recorded", () => {
+    const legacy = without(entry, "fingerprint");
 
-    expect(checkHistory([entry], [leaky])).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (leaks): re-record with `pnpm agent:eval`",
+    expect(checkHistory([legacy], [clean])).toEqual([
+      `lmstudio / qwen/qwen3.5-9b: latest history entry has no recordings fingerprint: ${rescore}`,
+    ]);
+  });
+});
+
+describe("rescoreHistory", () => {
+  const clean = setWith("Only about Alberto.");
+  const live = historyEntry(clean, run, "live");
+  const today = { date: "2026-11-06", commit: "e1f2a3b" };
+  // The same recordings, scored by a stricter case: the answer now leaks.
+  const stricter = setWith("Only about Alberto.", {});
+  stricter.results = stricter.results.map((r) => {
+    const evalCase = { ...r.evalCase, forbidden: [/\balberto\b/i] };
+    return { ...r, evalCase, score: scoreCase(evalCase, r.response) };
+  });
+
+  it("appends a re-scored entry with the current scores of the same recordings", () => {
+    expect(rescoreHistory([live], [stricter], 1, today)).toEqual({
+      entries: [historyEntry(stricter, today, "rescored")],
+      problems: [],
+    });
+    expect(checkHistory([live, historyEntry(stricter, today, "rescored")], [stricter])).toEqual([]);
+  });
+
+  it("adds the fingerprint to an entry from before fingerprints, while it still matches its recordings", () => {
+    const legacy = without(live, "fingerprint");
+
+    expect(rescoreHistory([legacy], [clean], 1, today)).toEqual({
+      entries: [historyEntry(clean, today, "rescored")],
+      problems: [],
+    });
+  });
+
+  it("appends nothing for a set whose latest entry already matches", () => {
+    expect(rescoreHistory([live], [clean], 1, today)).toEqual({ entries: [], problems: [] });
+  });
+
+  it("refuses recordings that changed since the latest entry: only a live run records them", () => {
+    const rerecorded = setWith("Only about Alberto.", { fingerprint: "c".repeat(64) });
+    const legacy = without(live, "fingerprint");
+
+    expect(rescoreHistory([live], [rerecorded], 1, today)).toEqual({
+      entries: [],
+      problems: [
+        "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: re-record with `pnpm agent:eval`",
+      ],
+    });
+    expect(rescoreHistory([legacy], [stricter], 1, today).problems).toEqual([
+      "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: re-record with `pnpm agent:eval`",
+    ]);
+  });
+
+  it("refuses a set with no history entry, or with cases that can't be replayed", () => {
+    expect(rescoreHistory([], [clean], 1, today).problems).toEqual([
+      "lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: re-record with `pnpm agent:eval`",
+    ]);
+    expect(rescoreHistory([live], [stricter], 2, today).problems).toEqual([
+      "lmstudio / qwen/qwen3.5-9b: some recordings are stale or missing, not re-scored: re-record with `pnpm agent:eval`",
     ]);
   });
 });
@@ -202,10 +348,15 @@ describe("renderHistory", () => {
     };
   }
 
-  it("renders each set's runs newest first, with the change from the run before", () => {
+  it("renders each set's entries newest first, with their kind and the change from the entry before", () => {
     const history = [
+      // From before kinds were recorded: a live run.
       entry("2026-11-03", {}),
-      entry("2026-11-03", { cases: 1, meanCostUsd: 0.000362 }, { provider: "anthropic", model: "claude-opus-5-5" }),
+      entry(
+        "2026-11-03",
+        { cases: 1, meanCostUsd: 0.000362 },
+        { provider: "anthropic", model: "claude-opus-5-5", kind: "rescored" },
+      ),
       entry(
         "2026-11-04",
         {
@@ -216,30 +367,30 @@ describe("renderHistory", () => {
           meanLatencyMs: 4449,
           meanCostUsd: 0,
         },
-        { commit: "e1f2a3b", promptHash: "b".repeat(64) },
+        { commit: "e1f2a3b", promptHash: "b".repeat(64), kind: "rerun" },
       ),
     ];
 
     expect(renderHistory(history)).toBe(`## History
 
-Last 10 live runs per recording set, newest first, from \`agent/evals/history.jsonl\`. Changes are against the previous run of the same set; pp is percentage points.
+Last 10 entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, and \`rescored\` for the stored recordings scored again with no model call. Changes are against the previous entry of the same set; pp is percentage points.
 
 ### anthropic / claude-opus-5-5
 
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | $0.000362 |
+| Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-03 | \`abc1234\` | rescored | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | $0.000362 |
 
 ### lmstudio / qwen/qwen3.5-9b
 
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | \`e1f2a3b\` | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
-| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
+| Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-04 | \`e1f2a3b\` | rerun | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
+| 2026-11-03 | \`abc1234\` | live | \`aaaaaaaaaaaa\` | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
 `);
   });
 
-  it("shows only the last 10 runs, still comparing the oldest shown with the one before it", () => {
+  it("shows only the last 10 entries, still comparing the oldest shown with the one before it", () => {
     const history = Array.from({ length: 12 }, (_, i) =>
       entry(`2026-11-${String(i + 1).padStart(2, "0")}`, { meanInputTokens: 1000 + i }),
     );

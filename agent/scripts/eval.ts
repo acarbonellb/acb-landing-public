@@ -1,10 +1,15 @@
 // Agent evals (README, "Evals"; docs/adr/0001-agent-evals-record-replay.md).
 //
-//   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid]
+//   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun]
 //     Live: runs every case against the configured model, records each one
 //     that completes, appends the set's metrics to history.jsonl, then
 //     regenerates the report. Defaults to LM Studio on localhost; any other
-//     server is a paid provider and needs --paid.
+//     server is a paid provider and needs --paid. Refused at a commit that
+//     already has a live run of the set, unless --rerun (marked `rerun`).
+//   tsx scripts/eval.ts rescore
+//     Scores the stored recordings with the current cases and scoring (no
+//     model, no network), appends a `rescored` entry for each set whose scores
+//     changed, then regenerates the report.
 //   tsx scripts/eval.ts replay [--check]
 //     Replays the committed recordings (no model, no network) and writes the
 //     report; with --check, writes nothing and fails on stale or missing
@@ -18,11 +23,18 @@ import { parseArgs } from "node:util";
 import { cases } from "../evals/cases";
 import { createAnthropicModelClient } from "../src/anthropic";
 import { caseName, sameSet, setLabel, type SetId } from "../src/evals/format";
-import { appendLiveRun, parseHistory } from "../src/evals/history";
+import {
+  appendHistory,
+  appendLiveRun,
+  liveRunKind,
+  parseHistory,
+  type LiveRun,
+} from "../src/evals/history";
 import {
   evaluate,
   recordCase,
   replaySets,
+  rescore,
   type Recording,
   type RecordingSet,
 } from "../src/evals/runner";
@@ -39,6 +51,7 @@ const { positionals, values } = parseArgs({
   options: {
     check: { type: "boolean", default: false },
     paid: { type: "boolean", default: false },
+    rerun: { type: "boolean", default: false },
     only: { type: "string" },
     provider: { type: "string" },
   },
@@ -125,6 +138,13 @@ async function record(): Promise<number> {
     console.error("ANTHROPIC_API_KEY is not set.");
     return 1;
   }
+  // Before any model call: a refused re-run costs nothing.
+  const run = liveRun();
+  const guard = liveRunKind(parseHistory(await readHistory()), { provider, model }, run.commit, values.rerun);
+  if ("refused" in guard) {
+    console.error(guard.refused);
+    return 1;
+  }
   const client = createAnthropicModelClient({ apiKey, model, effort: "low", baseURL });
   const only = values.only?.split(",");
   const selected = cases.filter((c) => !only || only.includes(c.id));
@@ -144,18 +164,22 @@ async function record(): Promise<number> {
       console.error(`  ${name}: not recorded: ${(error as Error).message}`);
     }
   }
-  if (failed < selected.length) await appendToHistory({ provider, model });
+  if (failed < selected.length) await appendToHistory({ provider, model }, run, guard.kind);
   const status = await replay(false);
   return failed ? 1 : status;
 }
 
-/** Appends the history line of the set just recorded (see `appendLiveRun`). */
-async function appendToHistory(id: SetId) {
-  const { sets } = await replaySets({ cases, sets: await loadSets() });
+/** Today (UTC) and the commit the run starts from. */
+function liveRun(): LiveRun {
   const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
-  const date = new Date().toISOString().slice(0, 10);
+  return { date: new Date().toISOString().slice(0, 10), commit };
+}
+
+/** Appends the history line of the set just recorded (see `appendLiveRun`). */
+async function appendToHistory(id: SetId, run: LiveRun, kind: "live" | "rerun") {
+  const { sets } = await replaySets({ cases, sets: await loadSets() });
   const set = sets.find((s) => sameSet(s, id));
-  const text = appendLiveRun(await readHistory(), set, cases.length, { date, commit });
+  const text = appendLiveRun(await readHistory(), set, cases.length, run, kind);
   if (text === undefined) {
     console.error(`History not updated: some ${setLabel(id)} recordings are stale or missing.`);
     return;
@@ -164,9 +188,34 @@ async function appendToHistory(id: SetId) {
   console.log(`Appended ${setLabel(id)} to ${historyPath}`);
 }
 
+/** Re-scores the stored recordings (see `rescore`): never calls a model. */
+async function rescoreRecordings(): Promise<number> {
+  const text = await readHistory();
+  const { entries, problems } = await rescore({
+    cases,
+    sets: await loadSets(),
+    history: parseHistory(text),
+    run: liveRun(),
+  });
+  for (const problem of problems) console.error(`✗ ${problem}`);
+  if (entries.length) {
+    await writeFile(historyPath, appendHistory(text, entries));
+    for (const entry of entries) console.log(`Appended a re-scored ${setLabel(entry)} to ${historyPath}`);
+  } else if (!problems.length) {
+    console.log("Nothing to re-score: every set's latest entry matches its scores");
+  }
+  const status = await replay(false);
+  return problems.length ? 1 : status;
+}
+
+const modes = {
+  record,
+  rescore: rescoreRecordings,
+  replay: () => replay(values.check),
+} as const;
 const mode = positionals[0];
-if (mode !== "record" && mode !== "replay") {
-  console.error("Usage: eval.ts record [--only ids] [--paid] | replay [--check]");
+if (mode !== "record" && mode !== "rescore" && mode !== "replay") {
+  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] | rescore | replay [--check]");
   process.exit(2);
 }
-process.exitCode = mode === "record" ? await record() : await replay(values.check);
+process.exitCode = await modes[mode]();
