@@ -3,7 +3,7 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createApp, paths, type AppDeps } from "./app";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap } from "./spend-cap";
@@ -20,7 +20,7 @@ afterEach(async () => {
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
 const origin = "https://albertocarbonell.dev";
 
-async function start(script: ScriptedTurn[], deps: Partial<AppDeps> = {}) {
+async function start(script: ScriptedResponse[], deps: Partial<AppDeps> = {}) {
   const store = createMemoryDocumentStore();
   const usage = createUsageRecorder({ store, pricing });
   server = await listen(

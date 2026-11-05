@@ -49,14 +49,14 @@ export function inputOf(usage: InputUsage): InputUsage {
 export type ModelStopReason = "end_turn" | "tool_use" | "max_tokens" | "refusal";
 
 /** One completed model call. */
-export type ModelTurn = {
+export type ModelResponse = {
   text: string;
   toolCalls: ToolCall[];
   stopReason: ModelStopReason;
   usage: Usage;
   /**
    * The provider's raw assistant content, replayed verbatim on the next call
-   * of the same turn (e.g. thinking blocks). Opaque to the loop.
+   * that answers the same turn (e.g. thinking blocks). Opaque to the loop.
    */
   providerContent?: unknown;
 };
@@ -87,12 +87,12 @@ export type ModelStreamEvent =
    */
   | ({ type: "input_usage" } & InputUsage)
   | { type: "text_delta"; text: string }
-  | { type: "turn_end"; turn: ModelTurn };
+  | { type: "response_end"; response: ModelResponse };
 
 export interface ModelClient {
   /**
    * Streams one model call: an optional `input_usage`, text deltas, then
-   * exactly one `turn_end`.
+   * exactly one `response_end`.
    */
   stream(request: ModelRequest): AsyncIterable<ModelStreamEvent>;
 }

@@ -41,8 +41,8 @@ for await (const event of client.stream({
   messages: [{ role: "user", text: "What does Alberto work on?" }],
   maxTokens: Math.min(maxTokens, maxRequestTokens),
 })) {
-  if (event.type !== "turn_end") continue;
-  const { usage } = event.turn;
+  if (event.type !== "response_end") continue;
+  const { usage } = event.response;
   const written = usage.cacheWriteInputTokens ?? 0;
   const read = usage.cacheReadInputTokens ?? 0;
   console.log(`model: ${config.model}`);

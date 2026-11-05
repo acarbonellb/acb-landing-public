@@ -169,7 +169,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
 
   try {
     for (let iteration = 1; ; iteration++) {
-      let turn;
+      let response;
       let streamed = false;
       const call = {
         iteration,
@@ -189,38 +189,38 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
           streamed = true;
           yield { type: "text", delta: event.text };
         } else {
-          turn = event.turn;
+          response = event.response;
         }
       }
       inFlight = undefined;
-      if (!turn) throw new Error("Model stream ended without a turn");
+      if (!response) throw new Error("Model stream ended without a response");
 
-      lastInputTokens = turn.usage.inputTokens;
-      addUsage(total, turn.usage);
+      lastInputTokens = response.usage.inputTokens;
+      addUsage(total, response.usage);
       // Tool events of this call come before its usage, so the browser sees
       // them as soon as they run.
-      const wantsTools = turn.stopReason === "tool_use" && turn.toolCalls.length > 0;
+      const wantsTools = response.stopReason === "tool_use" && response.toolCalls.length > 0;
       // Running tools needs another model call to read their results.
       const budgetLeft = total.outputTokens < maxRequestTokens;
       const canRunTools = wantsTools && iteration < maxIterations && budgetLeft;
 
       const results: ToolResult[] = [];
       if (canRunTools) {
-        for (const call of turn.toolCalls) {
+        for (const call of response.toolCalls) {
           yield { type: "tool_call", ...call };
           const { result, event } = runTool(toolset, call);
           results.push(result);
           yield event;
         }
       }
-      yield { type: "usage", iteration, ...turn.usage };
+      yield { type: "usage", iteration, ...response.usage };
 
       if (!wantsTools) {
-        if (turn.stopReason === "refusal" && !streamed) {
+        if (response.stopReason === "refusal" && !streamed) {
           yield { type: "text", delta: refusalText };
         }
         const stopReason: ChatStopReason =
-          turn.stopReason === "tool_use" ? "end_turn" : turn.stopReason;
+          response.stopReason === "tool_use" ? "end_turn" : response.stopReason;
         yield { type: "done", stopReason, usage: total };
         return;
       }
@@ -233,9 +233,9 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
       messages.push(
         {
           role: "assistant",
-          text: turn.text,
-          toolCalls: turn.toolCalls,
-          providerContent: turn.providerContent,
+          text: response.text,
+          toolCalls: response.toolCalls,
+          providerContent: response.providerContent,
         },
         { role: "tool_results", results },
       );

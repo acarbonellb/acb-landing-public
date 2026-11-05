@@ -14,8 +14,8 @@
           "inputTokens": 1664
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -329,8 +329,8 @@
           "text": " on any of these."
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, nearing deployment): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On 31 eval cases, Claude Haiku 5.5 (chosen for deployment) reached 86% accuracy and approved 1% of fraud, at about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not built yet): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API. Planned stack: TypeScript, tool calling, MCP.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about Alberto. It is also exposed as an MCP server. Source and eval report are public on GitHub.\n\nHe also follows practices such as offline evals before shipping, a human in the loop, tracked cost and limits, and measuring changes run over run. Ask if you want details on any of these.",
             "toolCalls": [],
             "stopReason": "end_turn",

@@ -14,8 +14,8 @@
           "inputTokens": 2342
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -1034,8 +1034,8 @@
           "text": "."
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "Alberto builds agents with a focus on **offline evals**, **graded autonomy** (human-in-the-loop), and **measuring changes run over run**. Here’s how he does it:\n\n- **Offline evals before shipping**: Agents record their evaluation cases against a real model and replay them in CI, without needing a live model or network. A stale recording or an off-topic leak fails the build.\n- **Graded autonomy with human oversight**: For example, the Fraud Detection Agent recommends actions (approve/reject/request-info) but only auto-approves on evidence verified in code; a human admin makes the final decision.\n- **Cost and limits tracked**: Every agent has token budgets per request, per-IP rate limits, and monthly spend caps. Eval reports show mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Each eval run appends its metrics to a history, so any change in prompts, tools, or content that moves the numbers is immediately visible next to the previous run.\n\nHe also uses **MCP (Model Context Protocol)** for external agents to query his portfolio site and leverages **TypeScript**, **Claude**, and **PostgreSQL** across his projects.",
             "toolCalls": [],
             "stopReason": "end_turn",

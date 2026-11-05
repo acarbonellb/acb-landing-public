@@ -8,13 +8,13 @@ import {
   type ChatEvent,
   type ChatLimits,
 } from "./chat";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { ModelUnavailableError } from "./model";
 import { systemPrompt } from "./system-prompt";
 import { createToolset } from "./tools";
 
 async function collect(
-  script: ScriptedTurn[],
+  script: ScriptedResponse[],
   limits: Partial<ChatLimits> = {},
   question = "Where does Alberto work from?",
 ) {
@@ -101,7 +101,7 @@ describe("runChat", () => {
   });
 
   it("stops at the iteration cap without running more tools", async () => {
-    const loop: ScriptedTurn = {
+    const loop: ScriptedResponse = {
       toolCalls: [{ id: "call", name: "get_profile", input: {} }],
     };
     const { events, model } = await collect([loop, loop, loop, loop], {
@@ -125,7 +125,7 @@ describe("runChat", () => {
   });
 
   it("shares one output-token budget across every model call of a request", async () => {
-    const tool = (id: string): ScriptedTurn => ({
+    const tool = (id: string): ScriptedResponse => ({
       toolCalls: [{ id, name: "get_stack", input: {} }],
       usage: { inputTokens: 100, outputTokens: 400 },
     });
@@ -139,7 +139,7 @@ describe("runChat", () => {
   });
 
   it("stops gracefully, without another model call, once the request's token budget is spent", async () => {
-    const tool = (id: string): ScriptedTurn => ({
+    const tool = (id: string): ScriptedResponse => ({
       toolCalls: [{ id, name: "get_stack", input: {} }],
       usage: { inputTokens: 100, outputTokens: 500 },
     });
@@ -148,7 +148,7 @@ describe("runChat", () => {
       maxRequestTokens: 1000,
     });
     expect(model.requests).toHaveLength(2);
-    // The second turn's tools are not run: no call is left to read their results.
+    // The second call's tools are not run: no call is left to read their results.
     expect(events.filter((e) => e.type === "tool_result")).toHaveLength(1);
     expect(events.at(-1)).toMatchObject({ type: "done", stopReason: "max_tokens" });
   });
@@ -172,7 +172,7 @@ describe("runChat", () => {
     expect(events.some((e) => e.type === "error" || e.type === "done")).toBe(false);
   });
 
-  it("does not run tools from a turn cut off by the token cap", async () => {
+  it("does not run tools from a model call cut off by the token cap", async () => {
     const { events, model } = await collect([
       {
         toolCalls: [{ id: "c", name: "get_stack", input: {} }],
