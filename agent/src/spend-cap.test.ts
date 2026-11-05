@@ -143,7 +143,7 @@ describe("createStoreSpendCap", () => {
   it("drops a hold its instance never settled once it expires, but keeps what it spent", async () => {
     const clock = fakeClock("2026-11-02T12:00:00Z");
     const store = createMemoryDocumentStore();
-    const options = { store, budgetUsd: 10, pricing, holdTtlMs: 600_000, now: clock.now };
+    const options = { store, budgetUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now };
     const crashed = createStoreSpendCap(options);
     const status = await crashed.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");
@@ -194,7 +194,7 @@ describe("createStoreSpendCap", () => {
       budgetUsd: 10,
       pricing,
       now: clock.now,
-      holdTtlMs: 15 * 60_000,
+      reservationTtlMs: 15 * 60_000,
     });
     const status = await cap.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");

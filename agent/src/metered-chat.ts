@@ -10,7 +10,7 @@ import type { ChatOutcome, UsageRecorder } from "./usage";
 
 export type MeteredChatOptions = {
   agent: ChatAgent;
-  /** What the spend cap holds for this request. */
+  /** This request's reservation against the spend cap. */
   reservation: SpendReservation;
   usage: UsageRecorder;
   /** When the request arrived (`performance.now()`), for its latency. */
