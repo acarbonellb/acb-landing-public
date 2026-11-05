@@ -43,6 +43,18 @@ check_mcp_tools() { mcp_lists_tools "$agent/mcp"; }
 
 check_site_mcp_tools() { mcp_lists_tools "${origin%/}/mcp"; }
 
+# get_contact gives out the address from the CONTACT_EMAIL secret. Checks it's
+# there and address-shaped, and never prints it: Actions logs are public.
+check_contact_email() {
+  local body
+  body=$(curl -fsS --max-time 20 "$agent/mcp" \
+    -H 'content-type: application/json' -H 'accept: application/json, text/event-stream' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"get_contact","arguments":{}}}') ||
+    { echo "  get_contact call failed"; return 1; }
+  grep -qE '"structuredContent":\{[^}]*"email":"[^"@[:space:]]+@[^"@[:space:]]+\.[^"@[:space:]]+"' <<<"$body" ||
+    { echo "  get_contact returns no email (is the CONTACT_EMAIL secret set?)"; return 1; }
+}
+
 check_chat_cors() {
   local allowed
   allowed=$(curl -sS --max-time 20 -o /dev/null -D - -X OPTIONS "$agent/chat" \
@@ -71,7 +83,7 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-for check in check_health check_mcp_tools check_site_mcp_tools check_stats check_chat_cors check_chat_validation; do
+for check in check_health check_mcp_tools check_site_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi
 done
 

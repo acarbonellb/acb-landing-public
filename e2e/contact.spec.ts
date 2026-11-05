@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, type Route, test } from "@playwright/test";
 import { contactQuestion, profile } from "../src/content/profile";
+import { addressForms, findAddresses, maskAddress } from "../src/lib/address-scan";
 
 // Contact goes through the agent (#50): "ask my agent" sends a canned question
 // to the chat, with the MCP tools and then LinkedIn as fallbacks. The agent is
@@ -154,31 +155,25 @@ test.describe("without JavaScript", () => {
 });
 
 // The page no longer needs the address: the exported HTML, RSC payloads and
-// JS must not hold it in any form, plain or scrambled (#39's obfuscation).
-test("the static export contains the contact address in no form", () => {
-  const { email } = profile.links;
-  const reversed = [...email].reverse().join("");
-  const local = email.split("@")[0];
-  const forms = [
-    email,
-    local,
-    reversed,
-    [...local].reverse().join(""),
-    btoa(email),
-    btoa(reversed),
-    encodeURIComponent(email),
-    email.replace("@", "\\u0040"),
-    email.replace("@", "&#64;"),
-  ];
-
+// JS must hold no address at all, plain or scrambled (#39's obfuscation). The
+// real one is in no repo file (#51); with CONTACT_EMAIL set (your shell, never
+// CI) its forms are searched for too.
+test("the static export contains no contact address in any form", () => {
   const files = readdirSync("out", { recursive: true, encoding: "utf8" })
     .filter((f) => /\.(html|js|txt|json)$/.test(f))
     .map((f) => join("out", f));
   expect(files.some((f) => f.endsWith(".js"))).toBe(true);
 
+  const forms = process.env.CONTACT_EMAIL ? addressForms(process.env.CONTACT_EMAIL) : [];
   const hits = files.flatMap((file) => {
-    const text = readFileSync(file, "utf8").toLowerCase();
-    return forms.filter((form) => text.includes(form.toLowerCase())).map((form) => `${file}: ${form}`);
+    const text = readFileSync(file, "utf8");
+    const lower = text.toLowerCase();
+    return [
+      ...findAddresses(text).map((a) => `${file}: ${maskAddress(a)}`),
+      ...forms
+        .filter(({ value }) => lower.includes(value.toLowerCase()))
+        .map(({ label }) => `${file}: ${label}`),
+    ];
   });
-  expect(hits).toEqual([]);
+  expect([...new Set(hits)]).toEqual([]);
 });

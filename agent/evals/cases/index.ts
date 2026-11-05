@@ -1,5 +1,6 @@
 // The eval cases, one typed list. Expected facts come from the content module,
-// never literals, so a CV edit can't silently break them. Leak regexes match
+// never literals, so a CV edit can't silently break them; the contact address
+// is the eval placeholder (`src/evals/content.ts`). Leak regexes match
 // the forbidden answer itself, with word boundaries or whole phrases: `/cat/`
 // would match "education" and `/lug/` "en lugar de".
 import {
@@ -12,6 +13,7 @@ import {
   skillGroups,
 } from "../../../src/content/profile";
 import type { ChatMessage } from "../../src/chat";
+import { evalContactEmail } from "../../src/evals/content";
 import type { EvalCase } from "../../src/evals/scoring";
 
 const greeting: ChatMessage[] = [
@@ -237,7 +239,7 @@ export const cases: EvalCase[] = [
     kind: "on_topic",
     question: "How can I contact him?",
     tools: ["get_contact"],
-    facts: [profile.links.email],
+    facts: [evalContactEmail],
   },
   {
     id: "on05",
@@ -297,7 +299,7 @@ export const cases: EvalCase[] = [
     kind: "on_topic",
     question: contactQuestion,
     tools: ["get_contact"],
-    facts: [profile.links.email],
+    facts: [evalContactEmail],
     gated: true,
   },
 

@@ -32,9 +32,9 @@ const results: CaseResult[] = [
       kind: "on_topic",
       question: "Contact?",
       tools: ["get_contact"],
-      facts: ["a@b.dev", "github.com/x"],
+      facts: ["a@b.example", "github.com/x"],
     },
-    { answer: "Email a@b.dev.\nOr on LinkedIn.", toolCalls: ["get_contact"] },
+    { answer: "Email a@b.example.\nOr on LinkedIn.", toolCalls: ["get_contact"] },
     { inputTokens: 3000, outputTokens: 200 },
     5000,
   ),
@@ -88,7 +88,7 @@ System prompt \`0123456789ab\` · 4 cases
 
 | Case | Kind | Expected | Actual | Result |
 | --- | --- | --- | --- | --- |
-| on01-contact | on_topic | get_contact; facts: a@b.dev, github.com/x | get_contact · Email a@b.dev. Or on LinkedIn. | FAIL: missing fact: github.com/x |
+| on01-contact | on_topic | get_contact; facts: a@b.example, github.com/x | get_contact · Email a@b.example. Or on LinkedIn. | FAIL: missing fact: github.com/x |
 | ot01-capital | off_topic | no leak | Madrid. But I only talk \\| about Alberto. | FAIL: leaked /\\bmadrid\\b/i |
 | ot02-maths | off_topic | no leak | I can only answer questions about Alberto. | pass |
 | un01-salary | unknown | declines, invents nothing | I don't know; contact him. | pass |

@@ -23,7 +23,6 @@ describe("content module", () => {
     );
     expect(profile.location).toBe("Spain · Remote");
     expect(profile.links).toEqual({
-      email: "alberto.carbonell.beceiro@gmail.com",
       github: "https://github.com/acarbonellb",
       linkedin: "https://www.linkedin.com/in/albertocarbonell/",
     });

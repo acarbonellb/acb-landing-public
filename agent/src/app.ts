@@ -17,7 +17,7 @@ import {
   type RateLimiter,
 } from "./rate-limit";
 import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
-import { createToolset, type Toolset } from "./tools";
+import { createToolset, siteContent, type Toolset } from "./tools";
 import { createUsageRecorder, type ChatOutcome, type UsageRecorder } from "./usage";
 
 export type { HttpErrorBody, HttpErrorCode };
@@ -102,7 +102,7 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
     pricing: config.guardrails.pricing,
   };
   const {
-    toolset = createToolset(),
+    toolset = createToolset({ ...siteContent, contactEmail: config.contactEmail }),
     allowedOrigins = config.allowedOrigins,
     chatLimits = config.chatLimits,
     chatRateLimiter = rateLimiter("chat", config.guardrails.chatRequestsPerMinute),

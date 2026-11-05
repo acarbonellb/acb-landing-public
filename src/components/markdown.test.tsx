@@ -49,12 +49,12 @@ describe("Markdown", () => {
 
   it("renders http(s) and mailto links that open safely in a new tab", () => {
     renderMarkdown(
-      "See [GitHub](https://github.com/acarbonellb), [**mail**](mailto:a@b.dev) or [old](http://example.com).",
+      "See [GitHub](https://github.com/acarbonellb), [**mail**](mailto:a@b.example) or [old](http://example.com).",
     );
 
     for (const [name, href] of [
       ["GitHub", "https://github.com/acarbonellb"],
-      ["mail", "mailto:a@b.dev"],
+      ["mail", "mailto:a@b.example"],
       ["old", "http://example.com"],
     ]) {
       const link = screen.getByRole("link", { name });
@@ -66,20 +66,20 @@ describe("Markdown", () => {
 
   it("links a bare email address to mailto:, keeping the sentence's punctuation out", () => {
     const root = renderMarkdown(
-      "Email him at **ada.l+cv@example.co.uk**. Or `not@linked.dev` in code.",
+      "Email him at **ada.l+cv@mail.example.org**. Or `not@linked.example` in code.",
     );
 
-    const link = screen.getByRole("link", { name: "ada.l+cv@example.co.uk" });
-    expect(link).toHaveAttribute("href", "mailto:ada.l+cv@example.co.uk");
+    const link = screen.getByRole("link", { name: "ada.l+cv@mail.example.org" });
+    expect(link).toHaveAttribute("href", "mailto:ada.l+cv@mail.example.org");
     expect(screen.getAllByRole("link")).toHaveLength(1);
-    expect(root.textContent).toBe("Email him at ada.l+cv@example.co.uk. Or not@linked.dev in code.");
+    expect(root.textContent).toBe("Email him at ada.l+cv@mail.example.org. Or not@linked.example in code.");
   });
 
   it("does not link an address twice inside a mailto link's label", () => {
-    renderMarkdown("Write to [a@b.dev](mailto:a@b.dev).");
+    renderMarkdown("Write to [a@b.example](mailto:a@b.example).");
 
     expect(screen.getAllByRole("link")).toHaveLength(1);
-    expect(screen.getByRole("link")).toHaveAttribute("href", "mailto:a@b.dev");
+    expect(screen.getByRole("link")).toHaveAttribute("href", "mailto:a@b.example");
   });
 
   it("does not turn javascript:, data: or relative URLs into links", () => {

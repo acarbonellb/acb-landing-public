@@ -15,7 +15,8 @@ export type Profile = {
   summary: string[];
   /** Short call to action above the contact email. */
   contactNote: string;
-  links: { email: string; github: string; linkedin: string };
+  /** No email: the repo is public. The agent reads it from its environment (#51). */
+  links: { github: string; linkedin: string };
 };
 
 /** Statuses the CV states; a project without one makes no status claim. */
@@ -86,7 +87,6 @@ export const profile: Profile = {
   ],
   contactNote: "Drop me a line:",
   links: {
-    email: "alberto.carbonell.beceiro@gmail.com",
     github: "https://github.com/acarbonellb",
     linkedin: "https://www.linkedin.com/in/albertocarbonell/",
   },

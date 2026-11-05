@@ -135,7 +135,9 @@ jobs:
       # store is `memory` until the AGENT_STORE variable says `firestore`
       # (the database must exist first). The monthly spend cap is set here, in
       # sight, and stays under the Anthropic workspace's own $5/month hard
-      # limit (README, Guardrails). `^@^` makes `@` the separator, as
+      # limit (README, Guardrails). The contact email is a secret too, so the
+      # address never passes through GitHub: the repo and its logs are public.
+      # `^@^` makes `@` the separator, as
       # ALLOWED_ORIGINS may hold commas.
       - name: Deploy to Cloud Run
         env:
@@ -144,7 +146,7 @@ jobs:
           gcloud run deploy agent --quiet
           --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
           --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
-          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest
+          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,CONTACT_EMAIL=contact-email:latest
           --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 

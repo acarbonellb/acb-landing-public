@@ -1,6 +1,6 @@
 // Runtime configuration, read from environment variables. No secrets live in
-// the repo: the API key comes from the environment (Secret Manager in
-// production, your shell locally).
+// the repo: the API key and the contact email come from the environment
+// (Secret Manager in production, your shell locally).
 import * as z from "zod";
 import { createAnthropicModelClient, efforts } from "./anthropic";
 import { chatLimits } from "./chat";
@@ -13,6 +13,9 @@ const usdFromEnv = z.coerce.number().nonnegative();
 
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
+  // The address get_contact gives out. Secret Manager in production, never
+  // the repo; unset, the tools offer LinkedIn and GitHub only.
+  CONTACT_EMAIL: z.email().optional(),
   AGENT_MODEL: z.string().min(1).default("claude-haiku-5-5"),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
@@ -68,6 +71,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       : { kind: "memory" as const };
   return {
     model: e.AGENT_MODEL,
+    contactEmail: e.CONTACT_EMAIL,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {

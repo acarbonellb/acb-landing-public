@@ -17,6 +17,17 @@ describe("loadConfig", () => {
     });
   });
 
+  it("reads the contact email from CONTACT_EMAIL, and has none without it", () => {
+    expect(loadConfig({ CONTACT_EMAIL: "ada@example.com" }).contactEmail).toBe("ada@example.com");
+    expect(loadConfig({}).contactEmail).toBeUndefined();
+    expect(loadConfig({ CONTACT_EMAIL: "" }).contactEmail).toBeUndefined();
+  });
+
+  it("rejects a CONTACT_EMAIL that isn't an address, without echoing it", () => {
+    expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).toThrow(/CONTACT_EMAIL/);
+    expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).not.toThrow(/not-an-address/);
+  });
+
   it("has no model client without an API key", () => {
     expect(loadConfig({}).createModelClient()).toBeNull();
   });

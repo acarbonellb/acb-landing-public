@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { contactQuestion, profile } from "../../../src/content/profile";
+import { contactQuestion } from "../../../src/content/profile";
 import { cases } from "../../evals/cases";
+import { evalContactEmail } from "./content";
 import { scoreCase } from "./scoring";
+
+describe("on04: how to contact him", () => {
+  it("expects the placeholder address the eval tools give out", () => {
+    expect(cases.find((c) => c.id === "on04")).toMatchObject({
+      tools: ["get_contact"],
+      facts: ["alberto@example.com"],
+    });
+  });
+});
 
 describe("on11: the site's contact question", () => {
   const on11 = cases.find((c) => c.id === "on11")!;
@@ -10,10 +20,11 @@ describe("on11: the site's contact question", () => {
     expect(on11).toMatchObject({ question: contactQuestion, gated: true });
   });
 
-  it("needs the address in the answer", () => {
+  it("needs the placeholder address in the answer (the real one is never in the repo)", () => {
+    expect(on11).toMatchObject({ facts: ["alberto@example.com"] });
     const score = (text: string) =>
       scoreCase(on11, { answer: text, toolCalls: ["get_contact"], stopReason: "end_turn" });
-    expect(score(`You can email Alberto at ${profile.links.email}.`).pass).toBe(true);
+    expect(score(`You can email Alberto at ${evalContactEmail}.`).pass).toBe(true);
     expect(score("You can reach Alberto on LinkedIn.").pass).toBe(false);
   });
 });
