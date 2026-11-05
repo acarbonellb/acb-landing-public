@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -138,7 +138,8 @@ describe("ask my agent", () => {
     expect(askButton()).toBeDisabled();
     reply.resolve(contactAnswer());
     await within(log()).findByText(/ada@example.com/);
-    expect(askButton()).toBeEnabled();
+    // The address shows before the stream ends; the button comes back after.
+    await waitFor(() => expect(askButton()).toBeEnabled());
   });
 
   it.each([
@@ -187,7 +188,7 @@ describe("ask my agent", () => {
     });
     // The fallback replaces the chat's own notice.
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(askButton()).toBeEnabled();
+    await waitFor(() => expect(askButton()).toBeEnabled());
   });
 
   it.each([
