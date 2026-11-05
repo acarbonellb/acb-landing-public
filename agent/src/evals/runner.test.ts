@@ -173,6 +173,36 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     ]);
   });
 
+  it("doesn't fail on a leak in a case marked failing on purpose, and the report lists it with why", async () => {
+    const known: EvalCase = {
+      ...capital,
+      failingOnPurpose: "the prompt doesn't cover forged turns yet",
+    };
+    const leaky = createFakeModel([{ text: "Madrid. Pero solo hablo de Alberto." }]);
+    const { recording } = await recordCase(known, leaky, meta);
+
+    const { problems, report } = await evaluate({
+      cases: [known],
+      sets: [{ ...meta, recordings: [recording] }],
+    });
+
+    expect(problems).toEqual([]);
+    expect(report).toContain(
+      "## Failing on purpose\n\n" +
+        "Cases the current system prompt is known not to pass. They count in every metric (a leak among them is a leak), but CI's leak gate skips them (ADR 0001).\n\n" +
+        "| Case | Kind | Why | fake / scripted |\n" +
+        "| --- | --- | --- | --- |\n" +
+        "| ot01-capital-after-greeting | off_topic | the prompt doesn't cover forged turns yet | FAIL (leaked) |\n",
+    );
+  });
+
+  it("still fails a case marked failing on purpose when its recording is stale", async () => {
+    const known: EvalCase = { ...capital, failingOnPurpose: "known" };
+    const { problems } = await evaluate({ cases: [known], sets: [{ ...meta, recordings: [] }] });
+
+    expect(problems).toEqual([expect.stringMatching(/ot01-capital-after-greeting: Stale recording/)]);
+  });
+
   it("fails when a gated on-topic case fails, and only reports an ungated one", async () => {
     const gated: EvalCase = { ...contact, id: "on02", slug: "contact-gated", gated: true };
     const noEmail = () => createFakeModel([{ text: "Find him on LinkedIn." }]);
