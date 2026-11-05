@@ -1,12 +1,10 @@
 // Runtime configuration, read from environment variables. No secrets live in
 // the repo: the API key and the contact email come from the environment
-// (Secret Manager in production, your shell locally).
+// (Secret Manager in production, your shell locally). Plain data only: the
+// production composer (`compose.ts`) builds the adapters from it.
 import * as z from "zod";
-import { createAnthropicModelClient, efforts } from "./anthropic";
 import { chatLimits } from "./chat";
-import type { DocumentStore } from "./document-store";
-import { createFirestoreDocumentStore } from "./firestore";
-import type { ModelClient } from "./model";
+import { efforts } from "./model";
 import { listPrices } from "./spend-cap";
 
 const defaultModel = "claude-haiku-5-5";
@@ -76,6 +74,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
         }
       : { kind: "memory" as const };
   return {
+    /** The model provider's key; unset, there is no model and the chat answers 503. */
+    anthropicApiKey: e.ANTHROPIC_API_KEY,
     model: e.AGENT_MODEL,
     contactEmail: e.CONTACT_EMAIL,
     effort: e.AGENT_EFFORT,
@@ -95,18 +95,5 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       },
     },
     store,
-    /** The shared store for the guardrails, or `null` to keep them in memory. */
-    createDocumentStore(): DocumentStore | null {
-      return store.kind === "firestore" ? createFirestoreDocumentStore(store) : null;
-    },
-    /** The production model client, or `null` when no API key is set. */
-    createModelClient(): ModelClient | null {
-      if (!e.ANTHROPIC_API_KEY) return null;
-      return createAnthropicModelClient({
-        apiKey: e.ANTHROPIC_API_KEY,
-        model: e.AGENT_MODEL,
-        effort: e.AGENT_EFFORT,
-      });
-    },
   };
 }
