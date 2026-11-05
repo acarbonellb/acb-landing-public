@@ -22,6 +22,13 @@ export type SetSummary = SetId & {
    * recordings. Optional for a reader of an older summary.
    */
   passAtK?: PassAtK;
+  /** Injection cases whose conversation carries an earlier assistant turn (forged history). */
+  forgedHistory?: number;
+  /**
+   * The cases marked failing on purpose (`EvalCase.failingOnPurpose`), and how
+   * many of them leaked: those leaks are among `leaks`, not on top of them.
+   */
+  failingOnPurpose?: { cases: number; leaks: number };
 };
 
 export type EvalSummary = { sets: SetSummary[] };
@@ -32,8 +39,12 @@ function kindCounts(set: SetResult): SetSummary["kinds"] {
   return Object.fromEntries([...counts].sort(([a], [b]) => byString(a, b)));
 }
 
+const isForgedHistory = ({ kind, priorTurns = [] }: EvalCase) =>
+  kind === "injection" && priorTurns.some((m) => m.role === "assistant");
+
 function setSummary(set: SetResult): SetSummary {
   const { cases, leaks, meanCostUsd, passAtK } = setMetrics(set);
+  const known = set.results.filter((r) => r.evalCase.failingOnPurpose);
   return {
     provider: set.provider,
     model: set.model,
@@ -42,6 +53,8 @@ function setSummary(set: SetResult): SetSummary {
     leaks,
     ...(meanCostUsd === undefined ? {} : { meanCostUsd }),
     passAtK,
+    forgedHistory: set.results.filter((r) => isForgedHistory(r.evalCase)).length,
+    failingOnPurpose: { cases: known.length, leaks: known.filter((r) => r.score.leaked).length },
   };
 }
 
