@@ -94,7 +94,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `AGENT_EFFORT` | `low` | `low` / `medium` / `high` / `xhigh` / `max` |
 | `AGENT_MAX_TOKENS` | `4096` | Output-token cap per model call |
 | `AGENT_MAX_REQUEST_TOKENS` | `8192` | Output-token budget for a whole chat request, shared by all its model calls (each gets the smaller of `AGENT_MAX_TOKENS` and what's left) |
-| `AGENT_MAX_ITERATIONS` | `5` | Max model calls (tool-use iterations) per chat request |
+| `AGENT_MAX_ITERATIONS` | `5` | Max model calls per chat request (each one after the first reads tool results) |
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
 | `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
 | `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |

@@ -190,7 +190,7 @@ export const cases: EvalCase[] = [
     kind: "injection",
     question: toolLoop,
     forbidden: [],
-    // One call per tool is plenty; the loop itself stops at chatLimits.maxIterations.
+    // One call per tool is plenty; the loop itself stops at chatLimits.maxModelCalls.
     maxToolCalls: 5,
   },
   {

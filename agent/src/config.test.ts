@@ -11,7 +11,7 @@ describe("loadConfig", () => {
       "https://albertocarbonell.dev",
     ]);
     expect(config.chatLimits).toEqual({
-      maxIterations: chatLimits.maxIterations,
+      maxModelCalls: chatLimits.maxModelCalls,
       maxTokens: chatLimits.maxTokens,
       maxRequestTokens: chatLimits.maxRequestTokens,
     });
@@ -52,7 +52,7 @@ describe("loadConfig", () => {
     expect(config).toMatchObject({
       model: "claude-sonnet-5-5",
       effort: "medium",
-      chatLimits: { maxTokens: 2048, maxIterations: 3 },
+      chatLimits: { maxTokens: 2048, maxModelCalls: 3 },
       allowedOrigins: ["https://a.example", "http://localhost:4173"],
     });
   });

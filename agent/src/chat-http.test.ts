@@ -91,12 +91,12 @@ describe("POST /chat", () => {
     });
   });
 
-  it("enforces the configured iteration and token caps", async () => {
+  it("enforces the configured model-call and token caps", async () => {
     const loop: ScriptedResponse = {
       toolCalls: [{ id: "c", name: "get_profile", input: {} }],
     };
     const { url, model } = await startWith([loop, loop, loop], {
-      chatLimits: { maxIterations: 2, maxTokens: 500, maxRequestTokens: 5000 },
+      chatLimits: { maxModelCalls: 2, maxTokens: 500, maxRequestTokens: 5000 },
     });
     const events = (await readSse(await post(url, ask("Tell me everything")))).map(
       (f) => f.data,
