@@ -22,7 +22,8 @@ import { withEvalResults } from "@/lib/eval-results";
 
 export default async function Home() {
   // Read at build time: the Portfolio Agent card shows its latest eval results.
-  const history = await readFile(join(process.cwd(), "agent/evals/history.jsonl"), "utf8");
+  const evalFile = (name: string) => readFile(join(process.cwd(), "agent/evals", name), "utf8");
+  const [history, report] = await Promise.all([evalFile("history.jsonl"), evalFile("report.md")]);
   return (
     <>
       <Header />
@@ -31,7 +32,7 @@ export default async function Home() {
         <About summary={profile.summary} />
         <Stack skillGroups={skillGroups} />
         <Experience roles={experience} />
-        <Projects agents={withEvalResults(agents, history)} practices={agentPractices} />
+        <Projects agents={withEvalResults(agents, { history, report })} practices={agentPractices} />
         <Agent linkedin={profile.links.linkedin} />
         <Contact profile={profile} />
       </main>
