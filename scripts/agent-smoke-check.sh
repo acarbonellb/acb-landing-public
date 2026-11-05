@@ -2,13 +2,16 @@
 # Post-deploy smoke check for the agent service. Never calls the model: the
 # chat checks stop at CORS and request validation, so a deploy costs nothing.
 # MCP is checked both on the agent's URL and on the site's domain, through the
-# Firebase Hosting `/mcp` rewrite.
-# Usage: scripts/agent-smoke-check.sh <agent-url> <site-origin>
+# Firebase Hosting `/mcp` rewrite, unless `--agent-only`: a revision deployed
+# with no traffic (its tag URL) isn't what the rewrite reaches yet.
+# Usage: scripts/agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>
 set -uo pipefail
 
-agent="${1:?usage: agent-smoke-check.sh <agent-url> <site-origin>}"
+site_mcp=true
+if [[ "${1:-}" == --agent-only ]]; then site_mcp=false; shift; fi
+agent="${1:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
 agent="${agent%/}"
-origin="${2:?usage: agent-smoke-check.sh <agent-url> <site-origin>}"
+origin="${2:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
 tools=(get_profile get_experience get_projects get_stack get_contact)
 failures=0
 
@@ -83,7 +86,10 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-for check in check_health check_mcp_tools check_site_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation; do
+checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation)
+$site_mcp && checks+=(check_site_mcp_tools)
+
+for check in "${checks[@]}"; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi
 done
 

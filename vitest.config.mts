@@ -9,7 +9,7 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
-    include: ["src/**/*.test.{ts,tsx}", "repo-hygiene/**/*.test.ts"],
+    include: ["src/**/*.test.{ts,tsx}", "repo-hygiene/**/*.test.ts", "scripts/**/*.test.ts"],
     setupFiles: ["./vitest.setup.ts"],
   },
 });

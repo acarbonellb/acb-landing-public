@@ -79,6 +79,27 @@ const eslintConfig = defineConfig([
       ],
     },
   },
+  // Browser specs take `test` from e2e/fixtures.ts, which keeps the page off
+  // every server but the local one: CI tests a build that holds the
+  // production agent URL (#94).
+  {
+    files: ["e2e/**/*.spec.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@playwright/test",
+              importNames: ["test", "expect"],
+              message:
+                "Import test and expect from ./fixtures: it keeps the page off the production agent.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

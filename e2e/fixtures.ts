@@ -83,7 +83,22 @@ export async function cspViolations(page: Page): Promise<string[]> {
   return [...(violations.get(page) ?? [])];
 }
 
-export const test = base.extend<{ agent: AgentStub }>({
+export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
+  // CI builds the page with the production agent URL (the build it deploys,
+  // #94), so every request off the local server is refused: an endpoint a
+  // test doesn't stub fails as if the agent were down, and never reaches it.
+  // The `agent` stubs are page routes, which take precedence over this one.
+  localOnly: [
+    async ({ context, baseURL }, provide) => {
+      const site = new URL(baseURL!).origin;
+      await context.route(
+        (url) => url.origin !== site,
+        (route) => route.abort("connectionrefused"),
+      );
+      await provide();
+    },
+    { auto: true },
+  ],
   // Pages are served with the Hosting headers, CSP included (`serve` sends
   // none), and a test fails if the page reports a CSP violation.
   page: async ({ page, baseURL }, provide) => {

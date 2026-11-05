@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { profile } from "../src/shared/profile";
 
 const SITE = "https://albertocarbonell.dev";
