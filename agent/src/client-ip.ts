@@ -1,7 +1,7 @@
 // Which IP a request comes from, for per-IP rate limiting.
 import { getConnInfo } from "@hono/node-server/conninfo";
 import type { Context } from "hono";
-import { isUserTriggeredFetcher } from "./google-ranges";
+import { isUnknownGoogleAddress, isUserTriggeredFetcher } from "./google-ranges";
 
 const forwardedEntries = (forwardedFor: string | undefined) =>
   (forwardedFor ?? "")
@@ -56,4 +56,13 @@ export function clientIp(c: Context): string {
 
 export function mcpClientIp(c: Context): string {
   return mcpClientIpFrom(c.req.header("x-forwarded-for"), remoteAddress(c));
+}
+
+/**
+ * Whether a `/mcp` request's right-most hop is a Google address outside the
+ * user-triggered fetchers ranges, where Hosting's peer would show up if it
+ * moved. For counting only, never for keying.
+ */
+export function mcpUnknownGoogleHop(c: Context): boolean {
+  return isUnknownGoogleAddress(clientIp(c));
 }
