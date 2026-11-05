@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { fakeFetch, json, stats, weekStats } from "@/testing/agent-fakes";
 import type { WeekStats } from "@/shared/stats-contract";
-import { AgentStats } from "./agent-stats";
+import { UsageLine } from "./usage-line";
 
 const STATS_URL = "http://agent.test/stats";
 
@@ -16,10 +16,10 @@ const busyWeek = week("2026-W45", {
   latency: { p50Ms: 2000, p95Ms: 7500 },
 });
 
-describe("AgentStats", () => {
+describe("UsageLine", () => {
   it("shows this week's questions answered, p50 latency, error rate and cost", async () => {
     const { fetch, requests } = fakeFetch(stats({ current: busyWeek, previous: week("2026-W44") }));
-    render(<AgentStats url={STATS_URL} fetch={fetch} />);
+    render(<UsageLine url={STATS_URL} fetch={fetch} />);
 
     expect(
       await screen.findByText("this week: 24 questions answered · p50 2 s · 4% errors · $0.03"),
@@ -36,7 +36,7 @@ describe("AgentStats", () => {
       latency: { p50Ms: 500, p95Ms: 500 },
     });
     const { fetch } = fakeFetch(stats({ current: week("2026-W45", { requests: 1 }), previous: quiet }));
-    render(<AgentStats url={STATS_URL} fetch={fetch} />);
+    render(<UsageLine url={STATS_URL} fetch={fetch} />);
 
     expect(
       await screen.findByText("last week: 1 question answered · p50 0.5 s · 0% errors · <$0.01"),
@@ -46,7 +46,7 @@ describe("AgentStats", () => {
   it("leaves out figures it has no value for", async () => {
     const partial = week("2026-W45", { answered: 3, requests: 3, costUsd: 0.12 });
     const { fetch } = fakeFetch(stats({ current: partial, previous: week("2026-W44") }));
-    render(<AgentStats url={STATS_URL} fetch={fetch} />);
+    render(<UsageLine url={STATS_URL} fetch={fetch} />);
 
     expect(await screen.findByText("this week: 3 questions answered · $0.12")).toBeInTheDocument();
   });
@@ -70,7 +70,7 @@ describe("AgentStats", () => {
       called = true;
       return fetch(...args);
     }) as typeof globalThis.fetch;
-    const { container } = render(<AgentStats url={STATS_URL} fetch={watched} />);
+    const { container } = render(<UsageLine url={STATS_URL} fetch={watched} />);
 
     await waitFor(() => expect(called).toBe(true));
     // Give the response a turn to land, then check nothing rendered.
@@ -95,7 +95,7 @@ describe("AgentStats", () => {
     const { fetch, requests } = fakeFetch(
       json(200, { current: malform(busyWeek), previous: week("2026-W44") }),
     );
-    const { container } = render(<AgentStats url={STATS_URL} fetch={fetch} />);
+    const { container } = render(<UsageLine url={STATS_URL} fetch={fetch} />);
 
     await waitFor(() => expect(requests).toHaveLength(1));
     await new Promise((resolve) => setTimeout(resolve, 10));
