@@ -12,7 +12,7 @@
 import type { DocumentStore } from "./document-store";
 import { describeError, logEvent } from "./log";
 import { ModelUnavailableError, type ModelClient } from "./model";
-import { readMonth, spendPath } from "./spend-cap";
+import { spendPath } from "./spend-cap";
 
 export interface ProviderLimitWatch {
   /** A model call was refused by the provider's limit. Never throws. */
@@ -42,9 +42,10 @@ export function createProviderLimitWatch({
     const path = spendPath(now());
     try {
       const changed = await store.update(path, (doc) => {
-        const month = readMonth(doc);
-        if (Boolean(month.alerted[flag]) === to) return { result: false };
-        return { doc: { ...month, alerted: { ...month.alerted, [flag]: to } }, result: true };
+        // The rest of the month's document is the spend cap's, kept as it is.
+        const alerted = { ...(doc?.alerted as Record<string, boolean> | undefined) };
+        if (Boolean(alerted[flag]) === to) return { result: false };
+        return { doc: { ...doc, alerted: { ...alerted, [flag]: to } }, result: true };
       });
       limited = to;
       return { changed, month: path.split("/")[1] };

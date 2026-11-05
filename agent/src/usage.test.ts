@@ -72,7 +72,7 @@ describe("createUsageRecorder", () => {
         latency: { p50Ms: 1000, p95Ms: 2000 },
         firstText: { p50Ms: 500, p95Ms: 500 },
       },
-      mcp: { requests: 2 },
+      mcp: { requests: 2, unknownGoogleHops: 0 },
     });
     expect(previous).toEqual({
       week: "2026-W44",
@@ -88,7 +88,7 @@ describe("createUsageRecorder", () => {
         latency: { p50Ms: null, p95Ms: null },
         firstText: { p50Ms: null, p95Ms: null },
       },
-      mcp: { requests: 0 },
+      mcp: { requests: 0, unknownGoogleHops: 0 },
     });
   });
 
@@ -142,7 +142,7 @@ describe("createUsageRecorder", () => {
         totalMs: { "2000": 1 },
         firstTextMs: { "500": 1 },
       },
-      mcp: { requests: 1 },
+      mcp: { requests: 1, unknownGoogleHops: 0 },
       // The error-rate alert's window: this 10-minute bucket, keyed by its start.
       errorWindow: { [String(Date.parse("2026-11-04T10:00:00Z"))]: { streamed: 1, errors: 0 } },
       alerted: {},
@@ -203,5 +203,48 @@ describe("createUsageRecorder", () => {
       latency: { p50Ms: 250, p95Ms: 2000 },
     });
     expect(current.mcp.requests).toBe(1);
+  });
+});
+
+describe("the batched counts: refusals and unknown Google hops", () => {
+  // Another instance (or the next one, after a restart) reading the same store.
+  const reader = (store: DocumentStore, now?: () => number) =>
+    createUsageRecorder({ store, pricing, now });
+
+  it("are written on shutdown", async () => {
+    const store = createMemoryDocumentStore();
+    const usage = createUsageRecorder({ store, pricing });
+    await usage.recordChat({ outcome: "http_429" });
+    await usage.recordChat({ outcome: "http_503" });
+    usage.countUnknownGoogleHop();
+    await usage.close();
+
+    const { current } = await reader(store).stats();
+    expect(current.chat).toMatchObject({ requests: 2, outcomes: { http_429: 1, http_503: 1 } });
+    expect(current.mcp.unknownGoogleHops).toBe(1);
+  });
+
+  it("are written on a timer", async () => {
+    const store = createMemoryDocumentStore();
+    const usage = createUsageRecorder({ store, pricing, flushEveryMs: 20 });
+    await usage.recordChat({ outcome: "http_429" });
+
+    await vi.waitFor(async () =>
+      expect((await reader(store).stats()).current.chat.outcomes).toEqual({ http_429: 1 }),
+    );
+    await usage.close();
+  });
+
+  it("land in the week they were counted in", async () => {
+    const store = createMemoryDocumentStore();
+    const clock = fakeClock("2026-11-08T23:59:00Z");
+    const usage = createUsageRecorder({ store, pricing, now: clock.now });
+    await usage.recordChat({ outcome: "http_429" });
+    clock.set("2026-11-09T00:01:00Z");
+    await usage.close();
+
+    const { current, previous } = await reader(store, clock.now).stats();
+    expect([current.week, current.chat.requests]).toEqual(["2026-W46", 0]);
+    expect([previous.week, previous.chat.requests]).toEqual(["2026-W45", 1]);
   });
 });

@@ -176,7 +176,7 @@ describe("store failure events", () => {
     store.down = true;
     await stats();
     await stats();
-    await chat(url);
+    const closed = await chat(url);
     store.down = false;
     await stats();
     await stats();
@@ -194,6 +194,11 @@ describe("store failure events", () => {
       collection: "rateLimits",
       error: "Error: store unreachable",
     });
+    // The chat failed closed, and still logged its request line.
+    expect(closed.status).toBe(503);
+    expect(loggedEvents("chat_request")).toEqual([
+      expect.objectContaining({ requestId: closed.requestId, outcome: "http_503", modelCalls: 0 }),
+    ]);
     // Each failure is still logged on its own, tagged with its request.
     expect(events.filter((e) => e.event === "store_error").length).toBeGreaterThanOrEqual(4);
     expect(events.filter((e) => e.event === "store_error").every((e) => typeof e.requestId === "string")).toBe(true);

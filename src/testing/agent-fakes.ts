@@ -79,7 +79,7 @@ export function weekStats(week: string, chat: Partial<WeekStats["chat"]> = {}): 
       firstText: { p50Ms: null, p95Ms: null },
       ...chat,
     },
-    mcp: { requests: 0 },
+    mcp: { requests: 0, unknownGoogleHops: 0 },
   };
 }
 

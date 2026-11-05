@@ -9,12 +9,14 @@ import * as z from "zod";
 import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { describeError, logEvent, withRequestId } from "./log";
+import type { DailyQuota } from "./daily-quota";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
 import type { RateLimitDecision, RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
+import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
 import type { UsageRecorder } from "./usage";
 
@@ -34,6 +36,8 @@ export const maxChatBodyBytes = 64 * 1024;
 /** User-facing messages of the HTTP-layer refusals, safe to show as-is. */
 export const httpErrorMessages = {
   rateLimited: "Too many requests. Please wait a moment and try again.",
+  dailyQuota:
+    "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
   statsUnavailable: "Usage stats are unavailable.",
   spendCap:
     "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
@@ -59,6 +63,8 @@ export type AppDeps = {
   mcpRateLimiter: RateLimiter;
   /** Monthly model budget; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
+  /** Per-key daily spend quota on `/chat`; shared or in memory like the limits (`daily-quota.ts`). */
+  dailyQuota: DailyQuota;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
   /** Notes the provider's own spend limit, for its alert event; in the same store (`provider-limit.ts`). */
@@ -67,6 +73,11 @@ export type AppDeps = {
   rateLimitKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
   mcpRateLimitKey: (c: Context) => string;
+  /**
+   * Whether a `/mcp` request's right-most hop is a Google address outside the
+   * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
+   */
+  isUnknownGoogleHop: (c: Context) => boolean;
 };
 
 const jsonError = (
@@ -119,10 +130,11 @@ const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>
 });
 
 /**
- * Logs a chat request refused as invalid (`400`, `413`), which isn't recorded
- * in the usage stats: every other one is logged as it's recorded (`usage.ts`).
+ * Logs a chat request the usage stats don't record: refused as invalid
+ * (`400`, `413`), or failed closed on a store error (`503`). Every other one
+ * is logged as it's recorded (`usage.ts`).
  */
-function logInvalidChat(status: number) {
+function logUnrecordedChat(status: 400 | 413 | 503) {
   logEvent("INFO", "chat_request", `Chat request: http_${status}`, {
     outcome: `http_${status}`,
     inputTokens: 0,
@@ -158,10 +170,12 @@ export function createApp(deps: AppDeps): Hono {
     chatRateLimiter,
     mcpRateLimiter,
     spendCap,
+    dailyQuota,
     usage,
     providerLimit,
     rateLimitKey,
     mcpRateLimitKey,
+    isUnknownGoogleHop,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -226,6 +240,13 @@ export function createApp(deps: AppDeps): Hono {
     }),
   );
 
+  // Counted before the limit: if Hosting's peer has left the fetchers ranges,
+  // its visitors share one key, so most of them are refused. Only the count.
+  app.use(paths.mcp, async (c, next) => {
+    if (isUnknownGoogleHop(c)) usage.countUnknownGoogleHop();
+    await next();
+  });
+
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
@@ -255,8 +276,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    const [response] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
-    return response;
+    // Not awaited: the answer doesn't wait on the weekly document, which every
+    // request writes. The recorder never throws.
+    void usage.recordMcp();
+    return transport.handleRequest(c.req.raw);
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -288,14 +311,14 @@ export function createApp(deps: AppDeps): Hono {
     bodyLimit({
       maxSize: maxChatBodyBytes,
       onError: (c) => {
-        logInvalidChat(413);
+        logUnrecordedChat(413);
         return jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." });
       },
     }),
     async (c) => {
       const request = await parseChatRequest(c);
       if (request instanceof Response) {
-        logInvalidChat(request.status);
+        logUnrecordedChat(400);
         return request;
       }
       if (!chatAgent) {
@@ -303,9 +326,25 @@ export function createApp(deps: AppDeps): Hono {
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
       const { messages } = request;
-      // Reserve the most this request can cost while it runs (see spend-cap.ts).
-      const spend = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
+      // Reserve the most this request can cost while it runs, against the
+      // key's daily quota and then the month's spend cap (see spend-holds.ts).
+      // The quota first: its document is the key's own, so a key over it
+      // never touches the month's shared one.
+      const worstCase = chatAgent.worstCaseUsage(messages);
+      const quota = await dailyQuota.reserve(rateLimitKey(c), worstCase);
+      if (quota.exceeded) {
+        await usage.recordChat({ outcome: "http_429" });
+        c.header("Retry-After", String(quota.retryAfterSeconds));
+        return jsonError(c, 429, {
+          code: "rate_limited",
+          message: httpErrorMessages.dailyQuota,
+          retryAfterSeconds: quota.retryAfterSeconds,
+          resetsAt: quota.resetsAt,
+        });
+      }
+      const spend = await spendCap.reserve(worstCase);
       if (spend.exhausted) {
+        await quota.reservation.settle();
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
@@ -321,7 +360,7 @@ export function createApp(deps: AppDeps): Hono {
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
       const events = meteredChat(messages, {
         agent: chatAgent,
-        reservation: spend.reservation,
+        reservation: combineReservations(quota.reservation, spend.reservation),
         usage,
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
@@ -352,6 +391,7 @@ export function createApp(deps: AppDeps): Hono {
       error: describeError(error),
       stack: error.stack,
     });
+    if (c.req.path === paths.chat) logUnrecordedChat(503);
     if (c.req.path === paths.mcp) {
       return c.json(
         {
