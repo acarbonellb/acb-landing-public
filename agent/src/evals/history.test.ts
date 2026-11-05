@@ -51,6 +51,8 @@ const cleanMetrics: Metrics = {
   meanOutputTokens: 100,
   meanLatencyMs: 2000,
   meanCostUsd: 0,
+  passAtK: { k: 1, n: 1, of: 1 },
+  flaky: { n: 0, of: 1 },
 };
 
 const run = { date: "2026-11-03", commit: "d7fa65c" };
@@ -283,7 +285,7 @@ describe("checkHistory", () => {
     const rescored = setWith("Madrid.");
 
     expect(checkHistory([entry], [rescored])).toEqual([
-      `lmstudio / qwen/qwen3.5-9b: latest history entry was scored differently (leaks): ${rescore}`,
+      `lmstudio / qwen/qwen3.5-9b: latest history entry was scored differently (leaks, passAtK): ${rescore}`,
     ]);
   });
 
@@ -423,7 +425,7 @@ describe("renderHistory", () => {
       ),
       entry(
         "2026-11-05",
-        { meanCostUsd: 0 },
+        { meanCostUsd: 0, passAtK: { k: 1, n: 28, of: 30 }, flaky: { n: 0, of: 30 } },
         { commit: "f4e5d6c", kind: "rescored", note: "stricter decline scorer (#99)" },
       ),
     ];
@@ -434,22 +436,37 @@ Last 10 entries per recording set, newest first, from \`agent/evals/history.json
 
 ### anthropic / claude-opus-5-5
 
-| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-03 | \`abc1234\` | rescored | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | $0.000362 |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-03 | \`abc1234\` | rescored | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | n/a | n/a | 3000 | 170 | 4500 ms | $0.000362 |
 
 ### lmstudio / qwen/qwen3.5-9b
 
-| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-05 | \`f4e5d6c\` | rescored | \`aaaaaaaaaaaa\` | 30 | 5.9% (+5.9 pp) | 100.0% (±0.0 pp) | 88.9% (-5.6 pp) | n/a | 3000 (+42) | 170 (±0) | 4500 ms (+51) | $0 |
-| 2026-11-04 | \`e1f2a3b\` | rerun | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
-| 2026-11-03 | \`abc1234\` | live | \`cccccccccccc\` (prompt only) | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-05 | \`f4e5d6c\` | rescored | \`aaaaaaaaaaaa\` | 30 | 5.9% (+5.9 pp) | 100.0% (±0.0 pp) | 88.9% (-5.6 pp) | n/a | pass@1 93.3% | 0 | 3000 (+42) | 170 (±0) | 4500 ms (+51) | $0 |
+| 2026-11-04 | \`e1f2a3b\` | rerun | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | n/a | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
+| 2026-11-03 | \`abc1234\` | live | \`cccccccccccc\` (prompt only) | 30 | 5.9% | 100.0% | 88.9% | n/a | n/a | n/a | 3000 | 170 | 4500 ms | n/a |
 
 Notes:
 
 - 2026-11-05 \`f4e5d6c\` rescored: stricter decline scorer (#99)
 `);
+  });
+
+  it("compares pass@k only with an entry of the same k, and counts flaky cases", () => {
+    const history = [
+      entry("2026-11-05", { passAtK: { k: 1, n: 30, of: 30 }, flaky: { n: 0, of: 30 } }),
+      entry("2026-11-06", { passAtK: { k: 3, n: 27, of: 30 }, flaky: { n: 2, of: 30 } }, { commit: "f4e5d6c" }),
+      entry("2026-11-07", { passAtK: { k: 3, n: 28, of: 30 }, flaky: { n: 1, of: 30 } }, { commit: "a1b2c3d" }),
+    ];
+
+    const rows = renderHistory(history)
+      .split("\n")
+      .filter((l) => l.startsWith("| 2026"));
+
+    expect(rows[0]).toContain("| n/a | pass@3 93.3% (+3.3 pp) | 1 (-1) |");
+    expect(rows[1]).toContain("| n/a | pass@3 90.0% | 2 (+2) |");
   });
 
   it("shows only the last 10 entries, still comparing the oldest shown with the one before it", () => {

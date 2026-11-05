@@ -55,3 +55,14 @@ Two scorer changes so far accepted answers that had just failed ("recommend" for
 - **Applied to every stored recording**: `pnpm agent:eval:rescore --note "what changed"` re-scores every set and appends a `rescored` entry per set carrying the note, also for sets whose numbers didn't move, and the report lists the note under the set's history. The re-score refuses changed scores without a note.
 
 Never loosen a scorer right after a miss without that note: the history then shows the miss, the change and the new numbers side by side. This amendment's own change was applied the second way.
+
+## Amendment (#100): pass@k
+
+Each case ran once per live run, so a 100% said nothing about variance, while small differences between runs were already called noise.
+
+Now a live run runs each case k times (`--runs`, default 3, the owner-approved budget) and its recording keeps every run: the first in `calls`, as before, the others in `moreRuns`. A case is recorded only when all k runs complete.
+
+- **CI gates on the first run.** Replay checks leaks and the gated case on the first run only, and every other metric is the first run's, so CI's behaviour and cost don't change with k. The later runs are replayed (no model call) only to be scored, and fail as stale like the first if they no longer replay. A leak in a later run isn't gated; it shows as a flaky case.
+- **pass@k is strict.** It counts the cases that passed every one of their first k runs (what is sometimes written pass^k), so a 100% means k out of k, where the "at least one of k" reading would hide exactly the variance this measures. k is the fewest runs any case of the set has, so a partly re-recorded set (`--only` with another `--runs`) is never credited with more runs than every case has. **Flaky** cases passed some of their runs but not all.
+- **Where it lands.** Both are part of the metrics: in each history entry (`passAtK` with its `k`, and `flaky`), in the report (per set, the summary row, the history table, and per case "pass · 2/3 runs") and pass@k in the summary. The history table compares pass@k only with an earlier entry of the same k.
+- **Old recordings.** A recording without `moreRuns` is one run: it replays unchanged, with the same fingerprint, and reports as k = 1. Adding the two metrics changed every set's metrics without changing a recording, so it was applied as a noted re-score (the #99 rule), with no model call.

@@ -5,7 +5,7 @@
 // (all optional for a reader); none is renamed or removed without updating
 // `src/lib/eval-results.ts`.
 import { byString, setLabel, type Ratio, type SetId } from "./format";
-import { setMetrics, type SetResult } from "./metrics";
+import { setMetrics, type PassAtK, type SetResult } from "./metrics";
 import type { EvalCase } from "./scoring";
 
 /** One recording set in the summary. */
@@ -17,6 +17,11 @@ export type SetSummary = SetId & {
   leaks: Ratio;
   /** Mean cost of a case in USD; absent for a model without a known price. */
   meanCostUsd?: number;
+  /**
+   * The cases that passed every one of k runs (`PassAtK`); k is 1 for one-run
+   * recordings. Optional for a reader of an older summary.
+   */
+  passAtK?: PassAtK;
 };
 
 export type EvalSummary = { sets: SetSummary[] };
@@ -28,7 +33,7 @@ function kindCounts(set: SetResult): SetSummary["kinds"] {
 }
 
 function setSummary(set: SetResult): SetSummary {
-  const { cases, leaks, meanCostUsd } = setMetrics(set);
+  const { cases, leaks, meanCostUsd, passAtK } = setMetrics(set);
   return {
     provider: set.provider,
     model: set.model,
@@ -36,6 +41,7 @@ function setSummary(set: SetResult): SetSummary {
     kinds: kindCounts(set),
     leaks,
     ...(meanCostUsd === undefined ? {} : { meanCostUsd }),
+    passAtK,
   };
 }
 

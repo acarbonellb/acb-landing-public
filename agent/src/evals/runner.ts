@@ -34,7 +34,13 @@ export type Recording = SetId & {
   requestIdentity: string;
   /** The model settings it was recorded with (`modelSettings`). */
   settings: ModelSettings;
+  /** The first run's model calls: what CI replays and gates on. */
   calls: RecordedCall[];
+  /**
+   * The runs after the first, of a live run with k > 1 (pass@k): replayed only
+   * to score them. Absent from a one-run recording (k = 1).
+   */
+  moreRuns?: { calls: RecordedCall[] }[];
 };
 
 export type RunOptions = {
@@ -104,32 +110,56 @@ function scoredResult(
   };
 }
 
-/** Live: runs the case against `model` and returns its recording. */
+/**
+ * Live: runs the case `runs` times (k, for pass@k; 1 by default) against
+ * `model` and returns its recording of every run. Any run ending in an error
+ * fails the whole case: no recording.
+ */
 export async function recordCase(
   evalCase: EvalCase,
   model: ModelClient,
   meta: SetId,
-  options: RunOptions = {},
+  { runs = 1, ...options }: RunOptions & { runs?: number } = {},
 ): Promise<{ recording: Recording; result: CaseResult }> {
-  const recorder = createRecordingModelClient(model);
-  const ran = await runChatCase(evalCase, recorder, options);
-  if (ran.response.error) {
-    throw new RecordingFailedError(
-      `${caseName(evalCase)}: chat ended in error "${ran.response.error}"`,
-    );
+  const recorded: { calls: RecordedCall[]; result: CaseResult }[] = [];
+  for (let run = 1; run <= runs; run++) {
+    const recorder = createRecordingModelClient(model);
+    const ran = await runChatCase(evalCase, recorder, options);
+    if (ran.response.error) {
+      const which = runs > 1 ? ` (run ${run} of ${runs})` : "";
+      throw new RecordingFailedError(
+        `${caseName(evalCase)}: chat ended in error "${ran.response.error}"${which}`,
+      );
+    }
+    recorded.push({ calls: recorder.calls, result: scoredResult(evalCase, ran, recorder.calls) });
   }
+  const [first, ...more] = recorded;
   const recording: Recording = {
     caseId: evalCase.id,
     slug: evalCase.slug,
     ...meta,
     requestIdentity: currentRequestIdentity(options),
     settings: modelSettings(meta.model, agentEffort(options)),
-    calls: recorder.calls,
+    calls: first.calls,
+    ...(more.length ? { moreRuns: more.map(({ calls }) => ({ calls })) } : {}),
   };
-  return { recording, result: scoredResult(evalCase, ran, recorder.calls) };
+  return { recording, result: withMoreRuns(first.result, more.map((r) => r.result.score)) };
 }
 
-/** Replay: the same run fed from `recording`; throws `StaleRecordingError`. */
+const withMoreRuns = (result: CaseResult, scores: CaseResult["score"][]): CaseResult =>
+  scores.length ? { ...result, moreRuns: scores } : result;
+
+async function replayRun(evalCase: EvalCase, calls: RecordedCall[], run: number, options: RunOptions) {
+  const replay = createReplayModelClient(calls, run);
+  const ran = await runChatCase(evalCase, replay, options);
+  if (replay.staleError) throw replay.staleError;
+  return scoredResult(evalCase, ran, calls);
+}
+
+/**
+ * Replay: the same run fed from `recording`, its first run's result, with the
+ * scores of the runs after it; throws `StaleRecordingError` if any run is stale.
+ */
 export async function replayCase(
   evalCase: EvalCase,
   recording: Recording | undefined,
@@ -137,10 +167,12 @@ export async function replayCase(
 ): Promise<CaseResult> {
   // Known before running: skip the loop (and its error log) altogether.
   if (!recording) throw new StaleRecordingError("missing_recording", 1);
-  const replay = createReplayModelClient(recording.calls);
-  const ran = await runChatCase(evalCase, replay, options);
-  if (replay.staleError) throw replay.staleError;
-  return scoredResult(evalCase, ran, recording.calls);
+  const first = await replayRun(evalCase, recording.calls, 1, options);
+  const more: CaseResult["score"][] = [];
+  for (const [i, { calls }] of (recording.moreRuns ?? []).entries()) {
+    more.push((await replayRun(evalCase, calls, i + 2, options)).score);
+  }
+  return withMoreRuns(first, more);
 }
 
 export type RecordingSet = SetId & { recordings: Recording[] };

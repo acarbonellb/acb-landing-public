@@ -53,8 +53,20 @@ Running the eval cases against a real model on the developer's machine, which ma
 _Avoid_: eval run, benchmark
 
 **Recording**:
-Every model call one eval case made during a live run: a hash of each request and the response events it got back.
+Every model call one eval case made during a live run, in each of its runs: a hash of each request and the response events it got back.
 _Avoid_: fixture, snapshot, cassette
+
+**Run** (of an eval case):
+One go at an eval case during a live run. A live run makes k runs of every case, and its recording keeps them all; CI replays and gates on the first.
+_Avoid_: attempt, sample, trial
+
+**pass@k**:
+The share of a recording set's cases that passed every one of k runs, so 100% means k out of k. Recordings made before pass@k have one run (k = 1).
+_Avoid_: pass rate, success rate
+
+**Flaky case**:
+An eval case that passed some of its runs but not all.
+_Avoid_: unstable, intermittent
 
 **Recording set**:
 The recordings of all eval cases for one provider and model.
@@ -77,7 +89,7 @@ The metrics of every live run, re-run and re-score, one entry per recording set,
 _Avoid_: log, changelog, trend
 
 **Eval summary**:
-The machine-readable eval results (`summary.json`), one entry per recording set: cases, case kinds, leaks and cost per case. Regenerated with the report from the replayed recordings; the results line reads it.
+The machine-readable eval results (`summary.json`), one entry per recording set: cases, case kinds, leaks, cost per case and pass@k. Regenerated with the report from the replayed recordings; the results line reads it.
 _Avoid_: scorecard, stats
 
 **Recordings fingerprint**:

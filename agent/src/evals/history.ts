@@ -67,6 +67,9 @@ const entrySchema = z
         meanLatencyMs: z.number(),
         // Absent from entries made before costs were recorded.
         meanCostUsd: z.number().optional(),
+        // Absent from entries made before pass@k was recorded.
+        passAtK: ratio.extend({ k: z.number().int().positive() }).strict().optional(),
+        flaky: ratio.optional(),
       })
       .strict(),
   })

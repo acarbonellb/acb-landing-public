@@ -78,11 +78,14 @@ const staleDetail: Record<StaleReason, string> = {
 export class StaleRecordingError extends Error {
   constructor(
     readonly reason: StaleReason,
-    /** 1-based model call within the case. */
+    /** 1-based model call within the run. */
     readonly call: number,
+    /** 1-based run of the case (pass@k); only named after the first. */
+    readonly run = 1,
   ) {
+    const where = run > 1 ? `call ${call} of run ${run}` : `call ${call}`;
     super(
-      `Stale recording (${reason}: ${staleDetail[reason]} at call ${call}): re-run \`pnpm agent:eval\` and commit`,
+      `Stale recording (${reason}: ${staleDetail[reason]} at ${where}): re-run \`pnpm agent:eval\` and commit`,
     );
     this.name = "StaleRecordingError";
   }
@@ -99,6 +102,8 @@ export type ReplayModelClient = ModelClient & {
 /** Plays `calls` back in order; `undefined` means the recording file is missing. */
 export function createReplayModelClient(
   calls: RecordedCall[] | undefined,
+  /** Which run of the case these calls are, for the stale error. */
+  run = 1,
 ): ReplayModelClient {
   let next = 0;
   const client: ReplayModelClient = {
@@ -112,7 +117,7 @@ export function createReplayModelClient(
           : recorded.requestHash !== requestHash(request)
             ? "request_changed"
             : undefined;
-      if (reason) throw (client.staleError = new StaleRecordingError(reason, call));
+      if (reason) throw (client.staleError = new StaleRecordingError(reason, call, run));
       yield* recorded!.events;
     },
   };
