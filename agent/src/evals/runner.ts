@@ -1,10 +1,11 @@
-// Runs eval cases through the real chat loop and toolset. Only the model is
+// Runs eval cases through the real chat agent and toolset. Only the model is
 // swapped: a recording client around the real one (live), or a replay client
 // over the committed recording (CI). Nothing in the agent knows it's an eval.
 // Run limits are the loop's defaults, never the machine's env.
 import { createHash } from "node:crypto";
-import { runChat, systemPrompt, type ChatMessage } from "../chat";
+import { createChatAgent, type ChatMessage } from "../chat";
 import type { ModelClient } from "../model";
+import { systemPrompt } from "../system-prompt";
 import { createToolset } from "../tools";
 import { evalContent } from "./content";
 import {
@@ -47,12 +48,8 @@ function conversation(evalCase: EvalCase): ChatMessage[] {
 async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: RunOptions) {
   const outcome: CaseOutcome = { answer: "", toolCalls: [] };
   const usage = { inputTokens: 0, outputTokens: 0 };
-  for await (const event of runChat({
-    model,
-    toolset: createToolset(evalContent),
-    system,
-    messages: conversation(evalCase),
-  })) {
+  const agent = createChatAgent({ model, toolset: createToolset(evalContent), system });
+  for await (const event of agent.run(conversation(evalCase))) {
     if (event.type === "text") outcome.answer += event.delta;
     else if (event.type === "tool_call") outcome.toolCalls.push(event.name);
     else if (event.type === "usage") {
