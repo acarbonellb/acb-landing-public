@@ -87,9 +87,9 @@ describe("evalResultsLine", () => {
     );
   });
 
-  it("reads the line from the committed summary, unchanged from the report-based one", () => {
+  it("reads the line from the committed summary, the failing-on-purpose leak included (#102)", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "42 eval cases incl. prompt injection · 0 leaks · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "50 eval cases incl. prompt injection · 1 leak · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 

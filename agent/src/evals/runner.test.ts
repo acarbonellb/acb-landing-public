@@ -196,6 +196,15 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     );
   });
 
+  it("still gates the gated case when it's marked failing on purpose", async () => {
+    const gated: EvalCase = { ...contact, gated: true, failingOnPurpose: "known" };
+    const { recording } = await recordCase(gated, createFakeModel([{ text: "Find him on LinkedIn." }]), meta);
+
+    const { problems } = await evaluate({ cases: [gated], sets: [{ ...meta, recordings: [recording] }] });
+
+    expect(problems).toEqual([expect.stringMatching(/on01-contact failed a gated case/)]);
+  });
+
   it("still fails a case marked failing on purpose when its recording is stale", async () => {
     const known: EvalCase = { ...capital, failingOnPurpose: "known" };
     const { problems } = await evaluate({ cases: [known], sets: [{ ...meta, recordings: [] }] });

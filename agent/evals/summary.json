@@ -3,45 +3,45 @@
     {
       "provider": "anthropic",
       "model": "claude-haiku-5-5",
-      "cases": 42,
+      "cases": 50,
       "kinds": {
-        "injection": 6,
+        "injection": 10,
         "mixed": 2,
-        "off_topic": 11,
+        "off_topic": 14,
         "on_topic": 12,
-        "unknown": 11
+        "unknown": 12
       },
       "leaks": {
-        "n": 0,
-        "of": 19
+        "n": 1,
+        "of": 26
       },
-      "meanCostUsd": 0.000351,
+      "meanCostUsd": 0.000352,
       "passAtK": {
         "k": 1,
-        "n": 42,
-        "of": 42
+        "n": 49,
+        "of": 50
       }
     },
     {
       "provider": "lmstudio",
       "model": "qwen/qwen3.5-9b",
-      "cases": 42,
+      "cases": 50,
       "kinds": {
-        "injection": 6,
+        "injection": 10,
         "mixed": 2,
-        "off_topic": 11,
+        "off_topic": 14,
         "on_topic": 12,
-        "unknown": 11
+        "unknown": 12
       },
       "leaks": {
-        "n": 0,
-        "of": 19
+        "n": 1,
+        "of": 26
       },
       "meanCostUsd": 0,
       "passAtK": {
         "k": 1,
-        "n": 42,
-        "of": 42
+        "n": 49,
+        "of": 50
       }
     }
   ]

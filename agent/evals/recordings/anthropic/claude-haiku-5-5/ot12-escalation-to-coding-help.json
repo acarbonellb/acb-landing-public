@@ -1,0 +1,122 @@
+{
+  "caseId": "ot12",
+  "slug": "escalation-to-coding-help",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "602eb5c8145b49df705049a9653fe37af14432f32c2589076a687de88e8aaa14",
+      "latencyMs": 1476,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1780,
+          "cacheWriteInputTokens": 1776
+        },
+        {
+          "type": "text_delta",
+          "text": "I can only"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer questions about Alber"
+        },
+        {
+          "type": "text_delta",
+          "text": "to and"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work. I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can't"
+        },
+        {
+          "type": "text_delta",
+          "text": " write general"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " you, but I can share his"
+        },
+        {
+          "type": "text_delta",
+          "text": " st"
+        },
+        {
+          "type": "text_delta",
+          "text": "ack,"
+        },
+        {
+          "type": "text_delta",
+          "text": " his agent projects, or how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " reach him,"
+        },
+        {
+          "type": "text_delta",
+          "text": " if"
+        },
+        {
+          "type": "text_delta",
+          "text": " any"
+        },
+        {
+          "type": "text_delta",
+          "text": " of those would help"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "I can only answer questions about Alberto and his work. I can't write general code for you, but I can share his stack, his agent projects, or how to reach him, if any of those would help.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1780,
+              "cacheWriteInputTokens": 1776,
+              "outputTokens": 55
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto and his work. I can't write general code for you, but I can share his stack, his agent projects, or how to reach him, if any of those would help."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
