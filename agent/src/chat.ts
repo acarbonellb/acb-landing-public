@@ -12,13 +12,16 @@ import {
   type ChatStopReason,
 } from "../../src/shared/chat-contract";
 import {
+  inputOf,
   ModelUnavailableError,
+  type InputUsage,
   type ModelClient,
   type ModelMessage,
   type ModelTool,
   type ToolResult,
   type Usage,
 } from "./model";
+import { addUsage } from "./pricing";
 import { systemPrompt } from "./system-prompt";
 import { ToolInputError, type Toolset } from "./tools";
 
@@ -129,7 +132,8 @@ export const errorMessages: Record<ChatErrorCode, string> = {
   internal: "Something went wrong on my side. Please try again.",
 };
 
-function modelTools(toolset: Toolset): ModelTool[] {
+/** The tools as the model sees them. */
+export function modelTools(toolset: Toolset): ModelTool[] {
   return toolset.list().map((tool) => {
     const inputSchema: Record<string, unknown> = z.toJSONSchema(tool.inputSchema);
     delete inputSchema.$schema;
@@ -158,7 +162,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
   const total: Usage = { inputTokens: 0, outputTokens: 0 };
   // The model call in progress, to price it if it never reports its usage.
   let inFlight:
-    | { iteration: number; maxTokens: number; inputTokens?: number }
+    | { iteration: number; maxTokens: number; input?: InputUsage }
     | undefined;
   let lastInputTokens = 0;
 
@@ -179,7 +183,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
         signal,
       })) {
         if (event.type === "input_usage") {
-          inFlight.inputTokens = event.inputTokens;
+          inFlight.input = inputOf(event);
         } else if (event.type === "text_delta") {
           streamed = true;
           yield { type: "text", delta: event.text };
@@ -191,8 +195,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
       if (!turn) throw new Error("Model stream ended without a turn");
 
       lastInputTokens = turn.usage.inputTokens;
-      total.inputTokens += turn.usage.inputTokens;
-      total.outputTokens += turn.usage.outputTokens;
+      addUsage(total, turn.usage);
       // Tool events of this call come before its usage, so the browser sees
       // them as soon as they run.
       const wantsTools = turn.stopReason === "tool_use" && turn.toolCalls.length > 0;
@@ -241,12 +244,12 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
     // it is still billed, but its usage never arrives: charge it
     // conservatively as its whole output cap plus the input it reported (or,
     // if it reported none, the previous call's input, which it includes).
-    const billed = inFlight && (signal?.aborted || inFlight.inputTokens !== undefined);
+    const billed = inFlight && (signal?.aborted || inFlight.input !== undefined);
     if (inFlight && billed) {
       yield {
         type: "usage",
         iteration: inFlight.iteration,
-        inputTokens: inFlight.inputTokens ?? lastInputTokens,
+        ...(inFlight.input ?? { inputTokens: lastInputTokens }),
         outputTokens: inFlight.maxTokens,
         estimated: true,
       };

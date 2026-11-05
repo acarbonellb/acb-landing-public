@@ -17,8 +17,29 @@ export type ToolCall = { id: string; name: string; input: unknown };
 
 export type ToolResult = { callId: string; output: string; isError: boolean };
 
+/**
+ * A call's input tokens. `inputTokens` is all of them; the cache fields say
+ * how many of those were written to or read from the prompt cache, which are
+ * priced differently (`pricing.ts`). Absent means none.
+ */
+export type InputUsage = {
+  inputTokens: number;
+  cacheWriteInputTokens?: number;
+  cacheReadInputTokens?: number;
+};
+
 /** Tokens spent by one model call. */
-export type Usage = { inputTokens: number; outputTokens: number };
+export type Usage = InputUsage & { outputTokens: number };
+
+/** Just the input part of `usage` (or of an `input_usage` event). */
+export function inputOf(usage: InputUsage): InputUsage {
+  const { inputTokens, cacheWriteInputTokens, cacheReadInputTokens } = usage;
+  return {
+    inputTokens,
+    ...(cacheWriteInputTokens !== undefined && { cacheWriteInputTokens }),
+    ...(cacheReadInputTokens !== undefined && { cacheReadInputTokens }),
+  };
+}
 
 /**
  * Why the model stopped: it finished (`end_turn`), wants tools run
@@ -64,7 +85,7 @@ export type ModelStreamEvent =
    * Optional, before anything else: the call's input tokens as soon as the
    * provider reports them, so a call that never finishes can still be priced.
    */
-  | { type: "input_usage"; inputTokens: number }
+  | ({ type: "input_usage" } & InputUsage)
   | { type: "text_delta"; text: string }
   | { type: "turn_end"; turn: ModelTurn };
 

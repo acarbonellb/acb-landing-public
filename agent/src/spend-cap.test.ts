@@ -1,11 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
-import {
-  createMemorySpendCap,
-  createStoreSpendCap,
-  usageCostUsd,
-  type SpendCap,
-} from "./spend-cap";
+import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
 
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
 const none = { inputTokens: 0, outputTokens: 0 };
@@ -27,13 +22,6 @@ async function spend(cap: SpendCap, usage: { inputTokens: number; outputTokens: 
   await status.reservation.record(usage);
   await status.reservation.settle();
 }
-
-describe("usageCostUsd", () => {
-  it("prices input and output tokens per million", () => {
-    expect(usageCostUsd({ inputTokens: 1_000_000, outputTokens: 0 }, pricing)).toBe(4);
-    expect(usageCostUsd({ inputTokens: 500_000, outputTokens: 100_000 }, pricing)).toBe(4);
-  });
-});
 
 describe("createMemorySpendCap", () => {
   it("is open until the month's spend reaches the budget", async () => {

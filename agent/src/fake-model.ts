@@ -1,11 +1,12 @@
 // A deterministic, scripted model client for tests. Never calls a real API.
-import type {
-  ModelClient,
-  ModelRequest,
-  ModelStopReason,
-  ModelStreamEvent,
-  ToolCall,
-  Usage,
+import {
+  inputOf,
+  type ModelClient,
+  type ModelRequest,
+  type ModelStopReason,
+  type ModelStreamEvent,
+  type ToolCall,
+  type Usage,
 } from "./model";
 
 export type ScriptedTurn = {
@@ -53,7 +54,7 @@ export function createFakeModel(
       const turn = typeof entry === "function" ? entry(request) : entry;
       const text = turn.text ?? "";
       const usage = turn.usage ?? { inputTokens: 100, outputTokens: 10 };
-      yield { type: "input_usage", inputTokens: usage.inputTokens };
+      yield { type: "input_usage", ...inputOf(usage) };
       for (const word of text.match(/\S+\s*/g) ?? []) {
         yield { type: "text_delta", text: word };
       }
