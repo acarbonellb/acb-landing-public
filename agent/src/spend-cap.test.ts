@@ -52,6 +52,21 @@ describe("createMemorySpendCap", () => {
     expect((await cap.reserve(worstCase)).exhausted).toBe(false);
   });
 
+  it("holds a worst case's input at the cache-write price, the most recording can charge for it", async () => {
+    const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
+    // 2M input tokens: $8 at the input price, $10 if all are written to the cache.
+    const worstCase = { inputTokens: 2_000_000, outputTokens: 0 };
+
+    const status = await cap.reserve(worstCase);
+    if (status.exhausted) throw new Error("expected room");
+    // The whole $10 is held: not even $0.50 more fits.
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 25_000 })).exhausted).toBe(true);
+
+    // Spending it as cache writes uses up exactly what was held.
+    await status.reservation.record({ ...worstCase, cacheWriteInputTokens: 2_000_000 });
+    expect((await cap.reserve(none)).exhausted).toBe(true);
+  });
+
   it("charges what a request actually spent, even beyond its reservation", async () => {
     const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
     const status = await cap.reserve({ inputTokens: 0, outputTokens: 50_000 }); // $1

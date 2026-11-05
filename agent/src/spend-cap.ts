@@ -20,7 +20,7 @@
 import { randomUUID } from "node:crypto";
 import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
-import { usageCostUsd, type Pricing } from "./pricing";
+import { usageCostUsd, worstCaseCostUsd, type Pricing } from "./pricing";
 
 /**
  * Spend held for one running request. Both methods are best effort: a store
@@ -92,7 +92,7 @@ export function createStoreSpendCap(
       const t = now();
       const path = `${spendCollection}/${monthKey(t)}`;
       const id = randomUUID();
-      const costUsd = usageCostUsd(worstCase, pricing);
+      const costUsd = worstCaseCostUsd(worstCase, pricing);
 
       return store.update(path, (doc): StoreChange<SpendCapStatus> => {
         const month = readMonth(doc);

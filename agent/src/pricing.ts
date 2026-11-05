@@ -91,6 +91,22 @@ export function usageCostUsd(usage: Usage, pricing: Pricing): number {
   );
 }
 
+/**
+ * The most `usage` can cost once recorded: a worst case doesn't know which of
+ * its input tokens the model will write to or read from the prompt cache, so
+ * each one is priced at the highest of the input, cache-write and cache-read
+ * rates. What the spend cap reserves for a request.
+ */
+export function worstCaseCostUsd(usage: Usage, pricing: Pricing): number {
+  const input = pricing.inputUsdPerMTok;
+  const inputRate = Math.max(
+    input,
+    input * cacheWriteMultiplier,
+    pricing.cacheReadUsdPerMTok ?? input * cacheReadMultiplier,
+  );
+  return (usage.inputTokens * inputRate + usage.outputTokens * pricing.outputUsdPerMTok) / 1_000_000;
+}
+
 /** Adds `usage` to `total` in place, cache fields only when there are any. */
 export function addUsage(total: Usage, usage: Usage): void {
   total.inputTokens += usage.inputTokens;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { listPrices, resolvePricing, usageCostUsd } from "./pricing";
+import { listPrices, resolvePricing, usageCostUsd, worstCaseCostUsd } from "./pricing";
 
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
 
@@ -21,6 +21,24 @@ describe("usageCostUsd", () => {
     const read = { inputTokens: 1_000_000, outputTokens: 0, cacheReadInputTokens: 1_000_000 };
     expect(usageCostUsd(read, pricing)).toBeCloseTo(0.4, 12);
     expect(usageCostUsd(read, { ...pricing, cacheReadUsdPerMTok: 0.2 })).toBeCloseTo(0.2, 12);
+  });
+});
+
+describe("worstCaseCostUsd", () => {
+  it("prices every input token at the highest rate recording may charge it at", () => {
+    const usage = { inputTokens: 1_000_000, outputTokens: 100_000 };
+    // Cache writes ($5) cost more than plain input ($4) or cache reads.
+    expect(worstCaseCostUsd(usage, pricing)).toBe(7);
+    for (const split of [
+      {},
+      { cacheWriteInputTokens: 1_000_000 },
+      { cacheReadInputTokens: 1_000_000 },
+      { cacheWriteInputTokens: 400_000, cacheReadInputTokens: 600_000 },
+    ]) {
+      expect(usageCostUsd({ ...usage, ...split }, pricing)).toBeLessThanOrEqual(
+        worstCaseCostUsd(usage, pricing),
+      );
+    }
   });
 });
 
