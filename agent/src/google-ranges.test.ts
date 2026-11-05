@@ -4,6 +4,7 @@ import {
   isUnknownGoogleAddress,
   isUserTriggeredFetcher,
   parseGoogleRanges,
+  refreshGoogleRanges,
   unknownGoogleCheck,
 } from "./google-ranges";
 
@@ -90,5 +91,77 @@ describe("parseGoogleRanges", () => {
       google: ["66.249.93.0/24"],
       cloud: ["66.249.93.0/24"],
     });
+  });
+});
+
+describe("refreshGoogleRanges", () => {
+  const published = (creationTime: string, prefixes: string[]) => ({
+    creationTime,
+    prefixes: prefixes.map((p) => (p.includes(":") ? { ipv6Prefix: p } : { ipv4Prefix: p })),
+  });
+  const previous = parseGoogleRanges({
+    fetchers: published("2026-10-01T00:00:00", ["192.0.2.0/25", "192.0.2.128/25"]),
+    google: published("2026-10-01T00:00:00", ["198.51.100.0/24", "2001:db8::/32"]),
+    cloud: published("2026-10-01T00:00:00", ["203.0.113.0/24"]),
+  });
+  const later = "2026-11-05T00:00:00";
+
+  it("reports no change when only the publication times or the order moved", () => {
+    const refresh = refreshGoogleRanges(previous, {
+      fetchers: published(later, ["192.0.2.128/25", "192.0.2.0/25"]),
+      google: published(later, ["2001:db8::/32", "198.51.100.0/24"]),
+      cloud: published(later, ["203.0.113.0/24"]),
+    });
+    expect(refresh.changed).toBe(false);
+  });
+
+  it("reports a change, with the new snapshot, when any list's prefixes changed", () => {
+    const refresh = refreshGoogleRanges(previous, {
+      fetchers: published(later, ["192.0.2.0/25", "192.0.2.128/25"]),
+      google: published(later, ["198.51.100.0/24", "2001:db8::/32"]),
+      cloud: published(later, ["203.0.113.0/25", "203.0.113.128/25"]),
+    });
+    expect(refresh.changed).toBe(true);
+    expect(refresh.ranges.cloud).toEqual(["203.0.113.0/25", "203.0.113.128/25"]);
+    expect(refresh.ranges.createdAt.cloud).toBe(later);
+  });
+
+  it("fails on a download that has lost more than half of a list's prefixes", () => {
+    const bigger = parseGoogleRanges({
+      fetchers: published("2026-10-01T00:00:00", [
+        "192.0.2.0/26",
+        "192.0.2.64/26",
+        "192.0.2.128/26",
+        "192.0.2.192/26",
+        "2001:db8:1::/48",
+      ]),
+      google: published("2026-10-01T00:00:00", previous.google),
+      cloud: published("2026-10-01T00:00:00", previous.cloud),
+    });
+    const downloads = {
+      fetchers: published(later, ["192.0.2.0/26", "192.0.2.64/26"]),
+      google: published(later, previous.google),
+      cloud: published(later, previous.cloud),
+    };
+    expect(() => refreshGoogleRanges(bigger, downloads)).toThrow(
+      "fetchers: 2 prefixes, down from 5",
+    );
+    // Half of the list is still a plausible refresh.
+    expect(
+      refreshGoogleRanges(bigger, {
+        ...downloads,
+        fetchers: published(later, ["192.0.2.0/26", "192.0.2.64/26", "192.0.2.128/26"]),
+      }).changed,
+    ).toBe(true);
+  });
+
+  it("fails on a download that isn't a list of prefixes", () => {
+    expect(() =>
+      refreshGoogleRanges(previous, {
+        fetchers: published(later, previous.fetchers),
+        google: "<html>",
+        cloud: published(later, previous.cloud),
+      }),
+    ).toThrow();
   });
 });
