@@ -2,6 +2,10 @@
 // a vendor SDK, so another provider (or a deterministic fake in tests) can be
 // dropped in without touching the loop or the tools.
 
+/** How hard the model thinks (and how many tokens it spends) per answer. */
+export const efforts = ["low", "medium", "high", "xhigh", "max"] as const;
+export type Effort = (typeof efforts)[number];
+
 /** A tool as the model sees it: name, description and a JSON Schema. */
 export type ModelTool = {
   name: string;
