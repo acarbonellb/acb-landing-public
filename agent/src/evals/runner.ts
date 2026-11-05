@@ -4,7 +4,8 @@
 // Run limits are the loop's defaults, never the machine's env.
 import { createHash } from "node:crypto";
 import { runChat, systemPrompt, type ChatMessage } from "../chat";
-import type { ModelClient } from "../model";
+import type { ModelClient, Usage } from "../model";
+import { addUsage } from "../pricing";
 import { createToolset } from "../tools";
 import { evalContent } from "./content";
 import {
@@ -46,7 +47,7 @@ function conversation(evalCase: EvalCase): ChatMessage[] {
 
 async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: RunOptions) {
   const outcome: CaseOutcome = { answer: "", toolCalls: [] };
-  const usage = { inputTokens: 0, outputTokens: 0 };
+  const usage: Usage = { inputTokens: 0, outputTokens: 0 };
   for await (const event of runChat({
     model,
     toolset: createToolset(evalContent),
@@ -55,10 +56,8 @@ async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: R
   })) {
     if (event.type === "text") outcome.answer += event.delta;
     else if (event.type === "tool_call") outcome.toolCalls.push(event.name);
-    else if (event.type === "usage") {
-      usage.inputTokens += event.inputTokens;
-      usage.outputTokens += event.outputTokens;
-    } else if (event.type === "done") outcome.stopReason = event.stopReason;
+    else if (event.type === "usage") addUsage(usage, event);
+    else if (event.type === "done") outcome.stopReason = event.stopReason;
     else if (event.type === "error") outcome.error = event.code;
   }
   outcome.answer = outcome.answer.trim();

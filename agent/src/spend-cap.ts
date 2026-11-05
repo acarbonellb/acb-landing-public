@@ -20,18 +20,7 @@
 import { randomUUID } from "node:crypto";
 import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
-
-/** USD per million tokens. */
-export type Pricing = { inputUsdPerMTok: number; outputUsdPerMTok: number };
-
-/**
- * List prices of the Claude models the agent runs on: the spend cap's default
- * prices (config.ts) and the eval report's cost per case. Prompts up to 100K
- * tokens, far above a chat request.
- */
-export const listPrices: Readonly<Record<string, Pricing>> = {
-  "claude-haiku-5-5": { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
-};
+import { usageCostUsd, type Pricing } from "./pricing";
 
 /** Spend held for one running request. */
 export interface SpendReservation {
@@ -66,14 +55,6 @@ export type SpendCapOptions = {
    */
   holdTtlMs?: number;
 };
-
-export function usageCostUsd(usage: Usage, pricing: Pricing): number {
-  return (
-    (usage.inputTokens * pricing.inputUsdPerMTok +
-      usage.outputTokens * pricing.outputUsdPerMTok) /
-    1_000_000
-  );
-}
 
 /** `YYYY-MM` of the UTC month containing `t`. */
 const monthKey = (t: number) => new Date(t).toISOString().slice(0, 7);

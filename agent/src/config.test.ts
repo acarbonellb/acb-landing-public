@@ -83,6 +83,27 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ MONTHLY_SPEND_CAP_USD: "-1" })).toThrow(/MONTHLY_SPEND_CAP_USD/);
   });
 
+  it("defaults the prices to the configured model's list prices", () => {
+    expect(loadConfig({ AGENT_MODEL: "claude-sonnet-5-5" }).guardrails.pricing).toEqual({
+      inputUsdPerMTok: 2,
+      outputUsdPerMTok: 10,
+      cacheReadUsdPerMTok: 0.1,
+    });
+  });
+
+  it("fails for a model with no list price unless both prices are explicit", () => {
+    expect(() => loadConfig({ AGENT_MODEL: "claude-future-9" })).toThrow(/claude-future-9/);
+    expect(() =>
+      loadConfig({ AGENT_MODEL: "claude-future-9", AGENT_PRICE_INPUT_USD_PER_MTOK: "1" }),
+    ).toThrow(/AGENT_PRICE_OUTPUT_USD_PER_MTOK/);
+    const config = loadConfig({
+      AGENT_MODEL: "claude-future-9",
+      AGENT_PRICE_INPUT_USD_PER_MTOK: "1",
+      AGENT_PRICE_OUTPUT_USD_PER_MTOK: "5",
+    });
+    expect(config.guardrails.pricing).toEqual({ inputUsdPerMTok: 1, outputUsdPerMTok: 5 });
+  });
+
   it("rejects invalid values instead of silently ignoring them", () => {
     expect(() => loadConfig({ AGENT_MAX_TOKENS: "lots" })).toThrow(/AGENT_MAX_TOKENS/);
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);

@@ -4,19 +4,14 @@ import Anthropic from "@anthropic-ai/sdk";
 import {
   ModelUnavailableError,
   type Effort,
+  type InputUsage,
   type ModelClient,
   type ModelMessage,
   type ModelStopReason,
   type ModelTurn,
 } from "./model";
+import { serverSideFallbackModels } from "./pricing";
 
-/** Models that accept server-side refusal fallbacks (`fallbacks: "default"`). */
-const fallbackModels = new Set([
-  "claude-opus-5-5",
-  "claude-opus-5",
-  "claude-fable-5-1",
-  "claude-sonnet-5-5",
-]);
 
 export type AnthropicModelOptions = {
   apiKey: string;
@@ -88,13 +83,18 @@ function stopReason(reason: Anthropic.Beta.BetaStopReason | null): ModelStopReas
   }
 }
 
-/** Cached input is counted as input: an upper bound for spend tracking. */
-function inputTokens(usage: Anthropic.Beta.BetaUsage): number {
-  return (
-    usage.input_tokens +
-    (usage.cache_creation_input_tokens ?? 0) +
-    (usage.cache_read_input_tokens ?? 0)
-  );
+/**
+ * All input tokens, cached ones included, with the cache writes and reads
+ * among them reported apart: they are priced differently (`pricing.ts`).
+ */
+function inputUsage(usage: Anthropic.Beta.BetaUsage): InputUsage {
+  const written = usage.cache_creation_input_tokens ?? 0;
+  const read = usage.cache_read_input_tokens ?? 0;
+  return {
+    inputTokens: usage.input_tokens + written + read,
+    ...(written > 0 && { cacheWriteInputTokens: written }),
+    ...(read > 0 && { cacheReadInputTokens: read }),
+  };
 }
 
 function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
@@ -105,7 +105,7 @@ function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
       b.type === "tool_use" ? [{ id: b.id, name: b.name, input: b.input }] : [],
     ),
     stopReason: stopReason(message.stop_reason),
-    usage: { inputTokens: inputTokens(usage), outputTokens: usage.output_tokens },
+    usage: { ...inputUsage(usage), outputTokens: usage.output_tokens },
     providerContent: message.content,
   };
 }
@@ -153,7 +153,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
     fetch: options.fetch,
     maxRetries: options.maxRetries,
   });
-  const fallbacks = fallbackModels.has(options.model);
+  const fallbacks = serverSideFallbackModels.has(options.model);
 
   return {
     async *stream(request) {
@@ -182,7 +182,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
         const stream = client.beta.messages.stream(params, { signal: request.signal });
         for await (const event of stream) {
           if (event.type === "message_start") {
-            yield { type: "input_usage", inputTokens: inputTokens(event.message.usage) };
+            yield { type: "input_usage", ...inputUsage(event.message.usage) };
           } else if (
             event.type === "content_block_delta" &&
             event.delta.type === "text_delta"

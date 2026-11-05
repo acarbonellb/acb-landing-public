@@ -8,6 +8,7 @@ import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/shared/
 import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
 import { createMcpServer } from "./mcp";
 import type { ModelClient } from "./model";
+import { addUsage } from "./pricing";
 import type { RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
 import type { Toolset } from "./tools";
@@ -266,8 +267,7 @@ export function createApp(deps: AppDeps): Hono {
             // (estimated) usage.
             if (event.type === "usage") {
               await reservation.record(event);
-              spent.inputTokens += event.inputTokens;
-              spent.outputTokens += event.outputTokens;
+              addUsage(spent, event);
             }
             if (event.type === "text") firstTextMs ??= elapsed();
             if (event.type === "done") outcome = event.stopReason;
