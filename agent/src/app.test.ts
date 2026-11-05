@@ -1,6 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   agents,
   experience,
@@ -9,7 +9,10 @@ import {
 } from "../../src/content/profile";
 import { fetchContactEmail } from "../../src/lib/mcp-contact";
 import { createApp } from "./app";
+import { composeAppDeps } from "./compose";
+import { loadConfig } from "./config";
 import { listen, type RunningServer } from "./server";
+import { testAppDeps } from "./test-deps";
 import { createToolset, siteContent } from "./tools";
 
 // A placeholder: the real address is never in the repo (#51).
@@ -28,14 +31,12 @@ describe("agent service over HTTP", () => {
   let client: Client;
 
   beforeAll(async () => {
-    // Production config: the address comes from the environment.
-    vi.stubEnv("CONTACT_EMAIL", contactEmail);
-    server = await listen(createApp(), 0);
+    // Production wiring: the address comes from the CONTACT_EMAIL variable.
+    server = await listen(createApp(composeAppDeps(loadConfig({ CONTACT_EMAIL: contactEmail }))), 0);
     client = await connectClient(server.url);
   });
 
   afterAll(async () => {
-    vi.unstubAllEnvs();
     await client.close();
     await server.close();
   });
@@ -185,8 +186,7 @@ describe("agent service over HTTP", () => {
 
 describe("without CONTACT_EMAIL (local development)", () => {
   it("get_contact gives no email, and the site's lookup falls back", async () => {
-    vi.stubEnv("CONTACT_EMAIL", "");
-    const server = await listen(createApp(), 0);
+    const server = await listen(createApp(composeAppDeps(loadConfig({}))), 0);
     const client = await connectClient(server.url);
     try {
       const result = await client.callTool({ name: "get_contact" });
@@ -194,7 +194,6 @@ describe("without CONTACT_EMAIL (local development)", () => {
       expect(result.structuredContent).toMatchObject({ linkedin: profile.links.linkedin });
       expect(await fetchContactEmail(new URL("/mcp", server.url).href)).toBeNull();
     } finally {
-      vi.unstubAllEnvs();
       await client.close();
       await server.close();
     }
@@ -207,7 +206,7 @@ describe("dependencies are injectable", () => {
       ...siteContent,
       profile: { ...siteContent.profile, name: "Test Person" },
     });
-    const server = await listen(createApp({ toolset }), 0);
+    const server = await listen(createApp(testAppDeps({ toolset })), 0);
     const client = await connectClient(server.url);
     try {
       const result = await client.callTool({ name: "get_contact" });
