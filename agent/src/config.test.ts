@@ -121,6 +121,17 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);
   });
 
+  it("defaults the chat error-rate alert to above 20% of at least 5 streamed requests in the hour", () => {
+    expect(loadConfig({}).alerts).toEqual({ chatErrorRate: { threshold: 0.2, minRequests: 5 } });
+    expect(
+      loadConfig({ ALERT_CHAT_ERROR_RATE: "0.5", ALERT_CHAT_ERROR_MIN_REQUESTS: "20" }).alerts,
+    ).toEqual({ chatErrorRate: { threshold: 0.5, minRequests: 20 } });
+  });
+
+  it("rejects an error-rate threshold outside 0 to 1", () => {
+    expect(() => loadConfig({ ALERT_CHAT_ERROR_RATE: "1.5" })).toThrow(/ALERT_CHAT_ERROR_RATE/);
+  });
+
   it("reads the per-request output-token budget", () => {
     expect(loadConfig({}).chatLimits.maxRequestTokens).toBe(chatLimits.maxRequestTokens);
     expect(

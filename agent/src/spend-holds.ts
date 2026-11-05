@@ -10,8 +10,15 @@
 // an estimate). Each reservation expires after its TTL, so a request whose
 // instance died before settling doesn't keep its worst case reserved; what it
 // spent stays charged.
+//
+// A budget can also have alert events (`SpendAlerts`; the spend cap's, README,
+// "Logs and alert events"): a share of the budget first reached, and its first
+// refusal. Each fires once per document (so per period): it is noted under
+// `alerted`, in the same atomic update that crossed it, so it holds across
+// instances and cold starts.
 import { randomUUID } from "node:crypto";
 import type { DocumentStore, StoreChange, StoreDocument } from "./document-store";
+import { describeError, logEvent } from "./log";
 import type { Usage } from "./model";
 import { usageCostUsd, type Pricing } from "./pricing";
 
@@ -30,14 +37,36 @@ export interface SpendReservation {
 /** Default reservation TTL: longer than any request may run (Cloud Run's request timeout is 5 minutes). */
 export const defaultReservationTtlMs = 15 * 60_000;
 
-type Spend = { spentUsd: number; holds: Record<string, { usd: number; expireAt: Date }> };
+type Spend = {
+  spentUsd: number;
+  holds: Record<string, { usd: number; expireAt: Date }>;
+  /** Alert events already fired for this document (`SpendAlerts`). */
+  alerted: Record<string, boolean>;
+};
 
 function readSpend(doc: StoreDocument | undefined): Spend {
   return {
     spentUsd: Number(doc?.spentUsd ?? 0),
     holds: (doc?.holds ?? {}) as Spend["holds"],
+    alerted: { ...(doc?.alerted as Spend["alerted"] | undefined) },
   };
 }
+
+/**
+ * Alert events of a budget, each logged once per document. Noted under
+ * `alerted` as `threshold_<percent>` and `refused`.
+ */
+export type SpendAlerts = {
+  /** Shares of the budget, in percent, whose first crossing calls `onThreshold`. */
+  thresholdsPercent: readonly number[];
+  /** Called once the update that crossed `percent` is written. */
+  onThreshold(percent: number, spentUsd: number): void;
+  /** Called once the first refusal is noted. */
+  onFirstRefusal(spentUsd: number): void;
+};
+
+/** Sums of small floats, without the binary noise. */
+export const roundUsd = (usd: number) => Math.round(usd * 1e6) / 1e6;
 
 export type ReserveOptions = {
   store: DocumentStore;
@@ -54,32 +83,52 @@ export type ReserveOptions = {
   expireAt?: Date;
   /** Names the budget in log lines. */
   label: string;
+  alerts?: SpendAlerts;
 };
 
 /**
  * Reserves `costUsd` if it fits in what's left of `budgetUsd` (what was spent
  * plus the live holds); `null` if it doesn't.
  */
-export function reserveSpend(options: ReserveOptions): Promise<SpendReservation | null> {
-  const { store, path, budgetUsd, costUsd, t, reservationTtlMs, expireAt } = options;
+export async function reserveSpend(options: ReserveOptions): Promise<SpendReservation | null> {
+  const { store, path, budgetUsd, costUsd, t, reservationTtlMs, expireAt, alerts } = options;
   const id = randomUUID();
-  return store.update(path, (doc): StoreChange<SpendReservation | null> => {
+  type Reserved = { reservation: SpendReservation | null; firstRefusal?: { spentUsd: number } };
+  const reserved = await store.update(path, (doc): StoreChange<Reserved> => {
     const spend = readSpend(doc);
     const holds = Object.fromEntries(
       Object.entries(spend.holds).filter(([, hold]) => hold.expireAt.getTime() > t),
     );
     const committed = spend.spentUsd + Object.values(holds).reduce((sum, hold) => sum + hold.usd, 0);
-    if (committed >= budgetUsd || committed + costUsd > budgetUsd) return { result: null };
+    if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
+      // Only the first refusal writes: to note its alert.
+      if (!alerts || spend.alerted.refused) return { result: { reservation: null } };
+      return {
+        doc: { ...doc, alerted: { ...spend.alerted, refused: true } },
+        result: { reservation: null, firstRefusal: { spentUsd: spend.spentUsd } },
+      };
+    }
     holds[id] = { usd: costUsd, expireAt: new Date(t + reservationTtlMs) };
     return {
-      doc: { spentUsd: spend.spentUsd, holds, ...(expireAt && { expireAt }) },
-      result: reservation(options, id),
+      doc: { ...doc, spentUsd: spend.spentUsd, holds, ...(expireAt && { expireAt }) },
+      result: { reservation: reservation(options, id) },
     };
   });
+  if (reserved.firstRefusal) alerts?.onFirstRefusal(roundUsd(reserved.firstRefusal.spentUsd));
+  return reserved.reservation;
+}
+
+/** The shares of `budgetUsd` that `spentUsd` reaches and `alerted` doesn't note yet. */
+function crossedThresholds(spend: Spend, budgetUsd: number, alerts: SpendAlerts | undefined): number[] {
+  if (!alerts || budgetUsd <= 0) return [];
+  return alerts.thresholdsPercent.filter(
+    (percent) =>
+      spend.spentUsd >= (budgetUsd * percent) / 100 && !spend.alerted[`threshold_${percent}`],
+  );
 }
 
 function reservation(
-  { store, path, pricing, label }: ReserveOptions,
+  { store, path, pricing, label, budgetUsd, alerts }: ReserveOptions,
   id: string,
 ): SpendReservation {
   let settled = false;
@@ -91,16 +140,33 @@ function reservation(
     async record(usage) {
       const usd = usageCostUsd(usage, pricing);
       try {
-        await store.update(path, (doc) => {
+        const charged = await store.update(path, (doc) => {
           const spend = readSpend(doc);
           const hold = spend.holds[id];
           if (hold) hold.usd = Math.max(0, hold.usd - usd);
-          return { doc: { ...doc, spentUsd: spend.spentUsd + usd, holds: spend.holds }, result: undefined };
+          spend.spentUsd += usd;
+          const crossed = crossedThresholds(spend, budgetUsd, alerts);
+          for (const percent of crossed) spend.alerted[`threshold_${percent}`] = true;
+          return {
+            doc: {
+              ...doc,
+              spentUsd: spend.spentUsd,
+              holds: spend.holds,
+              ...(crossed.length && { alerted: spend.alerted }),
+            },
+            result: { crossed, spentUsd: spend.spentUsd },
+          };
         });
+        for (const percent of charged.crossed) alerts?.onThreshold(percent, roundUsd(charged.spentUsd));
       } catch (error) {
         // Not rethrown: the visitor's answer is already streaming.
         unrecorded = true;
-        console.error(`${label}: could not record $${usd} of usage`, error);
+        logEvent("ERROR", "store_error", `${label}: could not record $${usd} of usage`, {
+          operation: "spend_record",
+          budget: label,
+          costUsd: usd,
+          error: describeError(error),
+        });
       }
     },
     async settle() {
@@ -115,7 +181,11 @@ function reservation(
         });
       } catch (error) {
         // Not rethrown, like `record`: the reservation is released when it expires.
-        console.error(`${label}: could not settle a reservation`, error);
+        logEvent("ERROR", "store_error", `${label}: could not settle a reservation`, {
+          operation: "spend_settle",
+          budget: label,
+          error: describeError(error),
+        });
       }
     },
   };

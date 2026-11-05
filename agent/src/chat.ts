@@ -22,6 +22,7 @@ import {
   type ToolResult,
   type Usage,
 } from "./model";
+import { describeError, logEvent } from "./log";
 import { addUsage } from "./pricing";
 import { systemPrompt } from "./system-prompt";
 import { ToolInputError, type Toolset } from "./tools";
@@ -283,7 +284,12 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatRunEvent> {
     if (signal?.aborted) return;
     const code: ChatErrorCode =
       error instanceof ModelUnavailableError ? "unavailable" : "internal";
-    if (code === "internal") console.error("Chat failed:", error);
+    if (code === "internal") {
+      logEvent("ERROR", "chat_failed", "Chat failed", {
+        error: describeError(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
     yield { type: "error", code, message: errorMessages[code] };
   }
 }
