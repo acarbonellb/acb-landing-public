@@ -137,12 +137,13 @@ Request identity (system prompt and tools) `34fdc20db57f` · 42 cases
 
 ## History
 
-Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl`. Kind is `live` for a live run, `rerun` for a second live run at the same commit, `rescored` for the stored recordings scored again with no model call, and `migrated` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
+Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl`. Kind is `live` for a live run, `rerun` for a second live run at the same commit, `rescored` for the stored recordings scored again with no model call, with a note on the scoring change, and `migrated` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
 
 ### anthropic / claude-haiku-5-5
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-05 | `c682898` | rescored | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2717 (±0) | 158 (±0) | 1700 ms (±0) | $0.000351 |
 | 2026-11-05 | `aa0512e` | migrated | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2717 (±0) | 158 (±0) | 1700 ms (±0) | $0.000351 |
 | 2026-11-05 | `509c11f` | rescored | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2717 (±0) | 158 (±0) | 1700 ms (±0) | $0.000351 |
 | 2026-11-05 | `b860325` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2717 (-71) | 158 (-8) | 1700 ms (+49) | $0.000351 |
@@ -152,12 +153,16 @@ Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl
 | 2026-11-05 | `295500f` | live | `8d9a258cf70a` (prompt only) | 41 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (+5.0 pp) | 100.0% (±0.0 pp) | 2647 (±0) | 150 (-1) | 1603 ms (+7) | n/a |
 | 2026-11-05 | `295500f` | live | `8d9a258cf70a` (prompt only) | 41 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 95.0% (-5.0 pp) | 100.0% (±0.0 pp) | 2647 (+73) | 151 (+12) | 1596 ms (+73) | n/a |
 | 2026-11-05 | `cbd305d` | live | `8d9a258cf70a` (prompt only) | 40 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2574 (+149) | 139 (+13) | 1523 ms (+40) | n/a |
-| 2026-11-04 | `3dc9f33` | live | `31dac056b0c9` (prompt only) | 30 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 2425 (+163) | 126 (+11) | 1483 ms (-29) | n/a |
+
+Notes:
+
+- 2026-11-05 `c682898` rescored: stricter decline scorer (#99): unknown cases need an explicit decline; suggesting contact alone no longer counts
 
 ### lmstudio / qwen/qwen3.5-9b
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-05 | `c682898` | rescored | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 3766 (±0) | 204 (±0) | 5475 ms (±0) | $0 |
 | 2026-11-05 | `aa0512e` | migrated | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 3766 (±0) | 204 (±0) | 5475 ms (±0) | $0 |
 | 2026-11-05 | `509c11f` | rescored | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 3766 (±0) | 204 (±0) | 5475 ms (±0) | $0 |
 | 2026-11-05 | `b860325` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 3766 (+102) | 204 (-3) | 5475 ms (+15) | $0 |
@@ -167,4 +172,7 @@ Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl
 | 2026-11-05 | `295500f` | live | `8d9a258cf70a` (prompt only) | 41 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 95.0% (+0.3 pp) | 100.0% (±0.0 pp) | 3517 (-15) | 187 (-6) | 4878 ms (-170) | n/a |
 | 2026-11-05 | `cbd305d` | live | `8d9a258cf70a` (prompt only) | 40 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 94.7% (-5.3 pp) | 100.0% (+9.1 pp) | 3532 (-17) | 193 (-9) | 5048 ms (-336) | n/a |
 | 2026-11-05 | `cbd305d` | live | `8d9a258cf70a` (prompt only) | 40 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (+5.3 pp) | 90.9% (±0.0 pp) | 3549 (-522) | 202 (-6) | 5384 ms (-208) | n/a |
-| 2026-11-05 | `cbd305d` | live | `4c37f480825e` (prompt only) | 40 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 94.7% (±0.0 pp) | 90.9% (±0.0 pp) | 4071 (+806) | 208 (+17) | 5592 ms (+505) | n/a |
+
+Notes:
+
+- 2026-11-05 `c682898` rescored: stricter decline scorer (#99): unknown cases need an explicit decline; suggesting contact alone no longer counts
