@@ -1,4 +1,4 @@
-// Rate limiting per rate-limit key (the client IP) for the chat and MCP endpoints.
+// Rate limiting per rate-limit key (the client IP, or its /64 for IPv6) for the chat and MCP endpoints.
 //
 // Two implementations of `RateLimiter`: `createStoreRateLimiter` keeps the
 // counts in a shared `DocumentStore` (Firestore in production), so they hold
@@ -75,6 +75,67 @@ export function createMemoryRateLimiter(
       return decision;
     },
     size: () => windows.size,
+  };
+}
+
+/** The one key a global ceiling counts every request under. */
+export const globalKey = "*";
+
+/**
+ * A per-key limiter under a global ceiling: a request the per-key limiter
+ * allows is then counted against `ceiling` under one fixed key, so rotating
+ * keys can't multiply what one source gets. Requests refused per key don't
+ * count toward the ceiling. Either refusal reads the same to the caller.
+ */
+export function withGlobalCeiling(perKey: RateLimiter, ceiling: RateLimiter): RateLimiter {
+  return {
+    async hit(key) {
+      const decision = await perKey.hit(key);
+      return decision.allowed ? ceiling.hit(globalKey) : decision;
+    },
+  };
+}
+
+/**
+ * Remembers the keys `limiter` refused until their wait ends, and refuses
+ * them again locally, without asking `limiter` (so with no store read). A
+ * fixed window that refused stays full until it ends, and the wait is rounded
+ * up to whole seconds, so this never allows what `limiter` would refuse. With
+ * several instances each keeps its own memory, which only refuses sooner.
+ * At most `maxKeys` refusals are kept: expired ones are dropped first, then
+ * the oldest; a forgotten key is simply asked about again.
+ */
+export function withRefusalCache(
+  limiter: RateLimiter,
+  { maxKeys = 10_000, now = Date.now }: { maxKeys?: number; now?: () => number } = {},
+): RateLimiter {
+  /** Key to the time (ms since epoch) its refusal ends. */
+  const refusedUntil = new Map<string, number>();
+
+  function remember(key: string, until: number, t: number) {
+    if (refusedUntil.size >= maxKeys) {
+      for (const [k, end] of refusedUntil) if (end <= t) refusedUntil.delete(k);
+    }
+    while (refusedUntil.size >= maxKeys) {
+      refusedUntil.delete(refusedUntil.keys().next().value!);
+    }
+    refusedUntil.set(key, until);
+  }
+
+  return {
+    async hit(key) {
+      const t = now();
+      const until = refusedUntil.get(key);
+      if (until !== undefined) {
+        if (t < until) {
+          return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil((until - t) / 1000)) };
+        }
+        refusedUntil.delete(key);
+      }
+      const decision = await limiter.hit(key);
+      if (!decision.allowed) remember(key, t + decision.retryAfterSeconds * 1000, t);
+      return decision;
+    },
   };
 }
 

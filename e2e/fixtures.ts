@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { expect, type Page, type Route, test as base } from "@playwright/test";
 import type { FakeReply } from "../src/testing/agent-fakes";
 
@@ -59,6 +60,29 @@ async function stub(
   return { requests, release };
 }
 
+type HostingConfig = {
+  hosting: { headers: { source: string; headers: { key: string; value: string }[] }[] };
+};
+
+/**
+ * The headers Hosting sends with every page (the `**` rule), from the config
+ * `pnpm build` writes next to the export and the deploy ships (#93).
+ */
+export function hostingPageHeaders(): Record<string, string> {
+  const config: HostingConfig = JSON.parse(readFileSync("out/firebase.json", "utf8"));
+  const rule = config.hosting.headers.find((h) => h.source === "**");
+  return Object.fromEntries((rule?.headers ?? []).map((h) => [h.key, h.value]));
+}
+
+const violations = new WeakMap<Page, string[]>();
+
+/** The CSP violations the page has reported so far, as "<directive> <blocked URI>". */
+export async function cspViolations(page: Page): Promise<string[]> {
+  // Violation events are dispatched asynchronously: let pending ones land.
+  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 100)));
+  return [...(violations.get(page) ?? [])];
+}
+
 export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
   // CI builds the page with the production agent URL (the build it deploys,
   // #94), so every request off the local server is refused: an endpoint a
@@ -75,6 +99,32 @@ export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
     },
     { auto: true },
   ],
+  // Pages are served with the Hosting headers, CSP included (`serve` sends
+  // none), and a test fails if the page reports a CSP violation.
+  page: async ({ page, baseURL }, provide) => {
+    const reported: string[] = [];
+    violations.set(page, reported);
+    await page.exposeFunction("__cspViolation", (v: string) => reported.push(v));
+    await page.addInitScript(() =>
+      document.addEventListener("securitypolicyviolation", (e) =>
+        (window as unknown as { __cspViolation: (v: string) => void }).__cspViolation(
+          `${e.effectiveDirective} ${e.blockedURI}`,
+        ),
+      ),
+    );
+    const site = new URL(baseURL!).origin;
+    const headers = hostingPageHeaders();
+    await page.route(
+      (url) => url.origin === site,
+      async (route) => {
+        if (route.request().resourceType() !== "document") return route.fallback();
+        const response = await route.fetch();
+        await route.fulfill({ response, headers: { ...response.headers(), ...headers } });
+      },
+    );
+    await provide(page);
+    expect(reported, "CSP violations").toEqual([]);
+  },
   agent: async ({ page }, provide) => {
     await provide({
       chat: (replies, options) => stub(page, "chat", replies, options),

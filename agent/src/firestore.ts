@@ -21,7 +21,12 @@ export type FirestoreOptions = {
   now?: () => number;
   /** Tries per update before giving up on conflicts. */
   maxAttempts?: number;
+  /** How long one REST call (or token request) may take before it fails. */
+  timeoutMs?: number;
 };
+
+/** Default `timeoutMs`: a few seconds, well under any request's patience. */
+export const defaultFirestoreTimeoutMs = 3000;
 
 type FirestoreValue =
   | { nullValue: null }
@@ -81,6 +86,7 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
     fetch: fetchImpl = fetch,
     now = Date.now,
     maxAttempts = 10,
+    timeoutMs = defaultFirestoreTimeoutMs,
   } = options;
   const documents = `projects/${projectId}/databases/${databaseId}/documents`;
   const base = emulatorHost
@@ -90,11 +96,27 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
 
   let token: { value: string; expiresAt: number } | undefined;
 
+  /** `fetch` that fails with "timed out" once `timeoutMs` pass without an answer. */
+  async function timedFetch(url: string, init: RequestInit, what: string): Promise<Response> {
+    try {
+      return await fetchImpl(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "TimeoutError") {
+        throw new Error(`Firestore ${what} timed out after ${timeoutMs} ms`);
+      }
+      throw error;
+    }
+  }
+
   async function authorization(): Promise<string> {
     // The emulator accepts any token; "owner" bypasses its security rules.
     if (emulatorHost) return "Bearer owner";
     if (!token || now() >= token.expiresAt) {
-      const res = await fetchImpl(metadataTokenUrl, { headers: { "Metadata-Flavor": "Google" } });
+      const res = await timedFetch(
+        metadataTokenUrl,
+        { headers: { "Metadata-Flavor": "Google" } },
+        "token request",
+      );
       if (!res.ok) throw new Error(`Metadata server token request failed: ${res.status}`);
       const body = (await res.json()) as { access_token: string; expires_in: number };
       // Refreshed a minute early, so a token never expires mid-request.
@@ -103,16 +125,18 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
     return `Bearer ${token.value}`;
   }
 
-  async function call(url: string, init: RequestInit = {}) {
-    return fetchImpl(url, {
-      ...init,
-      headers: { Authorization: await authorization(), "Content-Type": "application/json" },
-    });
+  async function call(url: string, what: string, init: RequestInit = {}) {
+    const headers = { Authorization: await authorization(), "Content-Type": "application/json" };
+    return timedFetch(url, { ...init, headers }, what);
   }
 
+  /**
+   * The error for a failed call: its HTTP and Firestore status, not its body,
+   * which can echo the document name (and so a client IP).
+   */
   async function failure(res: Response, what: string): Promise<Error> {
-    const text = await res.text();
-    return new Error(`Firestore ${what} failed: ${res.status} ${text}`.trim());
+    const status = await errorStatus(res);
+    return new Error(`Firestore ${what} failed: ${res.status} ${status ?? ""}`.trim());
   }
 
   async function errorStatus(res: Response): Promise<string | undefined> {
@@ -126,9 +150,11 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
   return {
     async update(path, change) {
       const url = `${documentsUrl}/${urlPath(path)}`;
+      // Errors name the collection only: a document id can hold a client IP.
+      const [collection] = path.split("/");
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-        const res = await call(url);
-        if (!res.ok && res.status !== 404) throw await failure(res, `read of ${path}`);
+        const res = await call(url, `read in ${collection}`);
+        if (!res.ok && res.status !== 404) throw await failure(res, `read in ${collection}`);
         const current =
           res.status === 404
             ? undefined
@@ -137,7 +163,7 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
         const { doc, result } = change(current && decodeFields(current.fields ?? {}));
         if (!doc) return result;
 
-        const commit = await call(`${documentsUrl}:commit`, {
+        const commit = await call(`${documentsUrl}:commit`, `commit in ${collection}`, {
           method: "POST",
           body: JSON.stringify({
             writes: [
@@ -150,10 +176,10 @@ export function createFirestoreDocumentStore(options: FirestoreOptions): Documen
         });
         if (commit.ok) return result;
         const status = await errorStatus(commit);
-        if (!status || !conflictStatuses.has(status)) throw await failure(commit, `commit of ${path}`);
+        if (!status || !conflictStatuses.has(status)) throw await failure(commit, `commit in ${collection}`);
         if (attempt < maxAttempts) await backoff(attempt);
       }
-      throw new Error(`Firestore update of ${path} gave up after ${maxAttempts} conflicts`);
+      throw new Error(`Firestore update in ${collection} gave up after ${maxAttempts} conflicts`);
     },
   };
 }

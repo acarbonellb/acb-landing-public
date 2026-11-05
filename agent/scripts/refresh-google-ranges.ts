@@ -1,14 +1,26 @@
-// Refreshes the committed snapshot of Google's user-triggered fetchers ranges
-// (`src/google-ranges.json`), which the `/mcp` rate limit uses to recognise
-// the Firebase Hosting hop. Usage: pnpm agent:ranges
+// Refreshes the committed snapshot of Google's published IP ranges
+// (`src/google-ranges.json`): the user-triggered fetchers ranges, which the
+// `/mcp` rate limit uses to recognise the Firebase Hosting hop, and Google's
+// own and Google Cloud ranges, which the hop-drift counter uses to notice
+// when that hop has moved outside the fetchers. Usage: pnpm agent:ranges
 import { writeFile } from "node:fs/promises";
-import { parseFetcherRanges, rangeSource } from "../src/google-ranges";
+import { parseGoogleRanges, rangeSources } from "../src/google-ranges";
 
-const res = await fetch(rangeSource);
-if (!res.ok) throw new Error(`${rangeSource} answered ${res.status}`);
-const ranges = parseFetcherRanges(await res.json());
+async function download(url: string): Promise<unknown> {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url} answered ${res.status}`);
+  return res.json();
+}
+
+const ranges = parseGoogleRanges({
+  fetchers: await download(rangeSources.fetchers),
+  google: await download(rangeSources.google),
+  cloud: await download(rangeSources.cloud),
+});
 const out = new URL("../src/google-ranges.json", import.meta.url);
 await writeFile(out, `${JSON.stringify(ranges, null, 2)}\n`);
 console.log(
-  `google-ranges.json: ${ranges.prefixes.length} user-triggered fetcher prefixes (${ranges.createdAt})`,
+  `google-ranges.json: ${ranges.fetchers.length} user-triggered fetcher prefixes (${ranges.createdAt.fetchers}), ` +
+    `${ranges.google.length} Google (${ranges.createdAt.google}), ` +
+    `${ranges.cloud.length} Google Cloud (${ranges.createdAt.cloud})`,
 );
