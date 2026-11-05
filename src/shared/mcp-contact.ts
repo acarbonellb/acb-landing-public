@@ -5,6 +5,13 @@
 // `tools/call` needs no `initialize` or session. Shared with the agent's tests,
 // which run it against the real server.
 
+/** The JSON-RPC answer to the `tools/call` of `get_contact`, as far as it is read. */
+export type GetContactResponse = {
+  jsonrpc: "2.0";
+  id: number;
+  result?: { isError?: boolean; structuredContent?: { email?: unknown } };
+};
+
 /** The contact email from `get_contact`, or `null` when the call fails. */
 export async function fetchContactEmail(
   url: string,
@@ -28,9 +35,7 @@ export async function fetchContactEmail(
       signal: options.signal,
     });
     if (!res.ok) return null;
-    const body = (await res.json()) as {
-      result?: { isError?: boolean; structuredContent?: { email?: unknown } };
-    };
+    const body = (await res.json()) as Partial<GetContactResponse>;
     const email = body.result?.isError ? undefined : body.result?.structuredContent?.email;
     return typeof email === "string" && email.includes("@") ? email : null;
   } catch {

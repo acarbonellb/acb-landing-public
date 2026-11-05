@@ -5,11 +5,11 @@ import {
   checkHistory,
   historyEntry,
   parseHistory,
-  renderHistory,
   type HistoryEntry,
 } from "./history";
-import type { Metrics, SetResult } from "./report";
-import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
+import type { Metrics, SetResult } from "./metrics";
+import { renderHistory } from "./report";
+import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
 
 const capital: EvalCase = {
   id: "ot01",
@@ -20,7 +20,7 @@ const capital: EvalCase = {
 };
 
 function setWith(answer: string, overrides: Partial<SetResult> = {}): SetResult {
-  const outcome: CaseOutcome = { answer, toolCalls: [], stopReason: "end_turn" };
+  const response: CaseResponse = { answer, toolCalls: [], stopReason: "end_turn" };
   return {
     provider: "lmstudio",
     model: "qwen/qwen3.5-9b",
@@ -28,8 +28,8 @@ function setWith(answer: string, overrides: Partial<SetResult> = {}): SetResult 
     results: [
       {
         evalCase: capital,
-        outcome,
-        score: scoreCase(capital, outcome),
+        response,
+        score: scoreCase(capital, response),
         usage: { inputTokens: 1000, outputTokens: 100 },
         latencyMs: 2000,
       },

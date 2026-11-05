@@ -1,10 +1,12 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
+import { nightPalette } from "@/lib/palette";
 import { SITE_URL } from "@/lib/site";
 
-// Link preview in the site's retro terminal look (Tokyo Night palette, VT323).
+// Link preview in the site's retro terminal look (Tokyo Night palette from
+// globals.css via palette.ts, VT323).
 // Generated at build time into the static export.
 
 export const dynamic = "force-static";
@@ -12,18 +14,7 @@ export const alt = `${profile.name} — ${profile.title}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const c = {
-  bg: "#1a1b26",
-  bgDark: "#16161e",
-  border: "#2f3549",
-  fg: "#c0caf5",
-  comment: "#565f89",
-  blue: "#7aa2f7",
-  green: "#9ece6a",
-  magenta: "#bb9af7",
-  red: "#f7768e",
-  yellow: "#e0af68",
-};
+const c = nightPalette;
 
 export default async function Image() {
   const vt323 = await readFile(join(process.cwd(), "assets/VT323-Regular.ttf"));
@@ -52,7 +43,7 @@ export default async function Image() {
             background: c.bg,
             border: `2px solid ${c.border}`,
             borderRadius: 12,
-            boxShadow: `0 0 60px rgba(122,162,247,0.35)`,
+            boxShadow: `0 0 60px ${c.blue}59`, // blue at 35% opacity
           }}
         >
           <div

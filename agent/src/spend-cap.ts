@@ -4,51 +4,45 @@
 //
 // Check and record race: a chat request streams for seconds, and its cost is
 // only known at the end. So each request first RESERVES its worst-case cost
-// (`reserve`): it is refused if that doesn't fit in what's left, and the
-// amount stays held while it runs, so concurrent requests can't all slip in
-// under the same remaining budget. Its model calls then RECORD their actual
-// usage against the reservation, and `settle` releases whatever was held but
-// not spent. Actual usage is always charged in full, even past the
+// (`reserve`): it is refused if that doesn't fit in what's left under the
+// spend cap, and the reservation stays while it runs, so concurrent requests
+// can't all slip in under the same remaining room. Its model calls then
+// RECORD their actual usage against the reservation, and `settle` releases
+// whatever was reserved but not spent. Actual usage is always charged in full, even past the
 // reservation (the worst-case input is an estimate).
 //
 // The running total lives in a `DocumentStore`, one document per UTC month
 // (`spend/<YYYY-MM>`): with Firestore it is shared by every Cloud Run
 // instance and survives cold starts; `createMemorySpendCap` keeps it in this
-// process, for local development and tests. Each hold expires after
-// `holdTtlMs`, so a request whose instance died before settling doesn't hold
-// budget for the rest of the month; what it spent stays charged.
+// process, for local development and tests. Each reservation expires after
+// `reservationTtlMs`, so a request whose instance died before settling doesn't
+// keep its worst case reserved for the rest of the month; what it spent stays
+// charged. (The store keeps the reservations under `holds`.)
 import { randomUUID } from "node:crypto";
 import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
-
-/** USD per million tokens. */
-export type Pricing = { inputUsdPerMTok: number; outputUsdPerMTok: number };
+import { usageCostUsd, worstCaseCostUsd, type Pricing } from "./pricing";
 
 /**
- * List prices of the Claude models the agent runs on: the spend cap's default
- * prices (config.ts) and the eval report's cost per case. Prompts up to 100K
- * tokens, far above a chat request.
+ * Spend held for one running request. Both methods are best effort: a store
+ * failure is logged, never thrown, as the visitor's answer is already
+ * streaming. What can't be settled is released when the reservation expires.
  */
-export const listPrices: Readonly<Record<string, Pricing>> = {
-  "claude-haiku-5-5": { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
-};
-
-/** Spend held for one running request. */
 export interface SpendReservation {
-  /** Charges the actual usage of one model call. */
+  /** Charges the actual usage of one model call. Never throws. */
   record(usage: Usage): Promise<void>;
-  /** Ends the request: releases what was held and not spent. Idempotent. */
+  /** Ends the request: releases what was reserved and not spent. Idempotent. Never throws. */
   settle(): Promise<void>;
 }
 
 export type SpendCapStatus =
   | { exhausted: false; reservation: SpendReservation }
-  | { exhausted: true; /** ISO time the budget renews (next UTC month). */ resetsAt: string };
+  | { exhausted: true; /** ISO time the spend cap resets (next UTC month). */ resetsAt: string };
 
 export interface SpendCap {
   /**
-   * Holds `worstCase` (the most a request may spend) if this month's budget
-   * has room for it; otherwise reports the budget as exhausted.
+   * Reserves `worstCase` (the most a request may spend) if the spend cap has
+   * room for it this month; otherwise reports the spend cap as reached.
    */
   reserve(worstCase: Usage): Promise<SpendCapStatus>;
 }
@@ -60,20 +54,11 @@ export type SpendCapOptions = {
   /** Injectable clock (ms since epoch); defaults to `Date.now`. */
   now?: () => number;
   /**
-   * How long a reservation holds its worst case if never settled; longer
-   * than any request may run. Defaults to 15 minutes (Cloud Run's request
-   * timeout is 5).
+   * How long a reservation lasts if never settled; longer than any request
+   * may run. Defaults to 15 minutes (Cloud Run's request timeout is 5).
    */
-  holdTtlMs?: number;
+  reservationTtlMs?: number;
 };
-
-export function usageCostUsd(usage: Usage, pricing: Pricing): number {
-  return (
-    (usage.inputTokens * pricing.inputUsdPerMTok +
-      usage.outputTokens * pricing.outputUsdPerMTok) /
-    1_000_000
-  );
-}
 
 /** `YYYY-MM` of the UTC month containing `t`. */
 const monthKey = (t: number) => new Date(t).toISOString().slice(0, 7);
@@ -86,7 +71,7 @@ const nextMonthStart = (t: number) => {
 /** Collection of the monthly spend documents. */
 export const spendCollection = "spend";
 
-/** A month's spend: what was charged, plus the holds of the requests running. */
+/** A month's spend: what was charged, plus the reservations of the requests running (`holds`). */
 type MonthSpend = { spentUsd: number; holds: Record<string, { usd: number; expireAt: Date }> };
 
 function readMonth(doc: StoreDocument | undefined): MonthSpend {
@@ -100,14 +85,14 @@ function readMonth(doc: StoreDocument | undefined): MonthSpend {
 export function createStoreSpendCap(
   options: SpendCapOptions & { store: DocumentStore },
 ): SpendCap {
-  const { store, budgetUsd, pricing, now = Date.now, holdTtlMs = 15 * 60_000 } = options;
+  const { store, budgetUsd, pricing, now = Date.now, reservationTtlMs = 15 * 60_000 } = options;
 
   return {
     reserve(worstCase) {
       const t = now();
       const path = `${spendCollection}/${monthKey(t)}`;
       const id = randomUUID();
-      const costUsd = usageCostUsd(worstCase, pricing);
+      const costUsd = worstCaseCostUsd(worstCase, pricing);
 
       return store.update(path, (doc): StoreChange<SpendCapStatus> => {
         const month = readMonth(doc);
@@ -121,7 +106,7 @@ export function createStoreSpendCap(
             result: { exhausted: true, resetsAt: nextMonthStart(t).toISOString() },
           };
         }
-        holds[id] = { usd: costUsd, expireAt: new Date(t + holdTtlMs) };
+        holds[id] = { usd: costUsd, expireAt: new Date(t + reservationTtlMs) };
         return {
           doc: { spentUsd: month.spentUsd, holds },
           result: { exhausted: false, reservation: reservation(path, id) },
@@ -132,8 +117,8 @@ export function createStoreSpendCap(
 
   function reservation(path: string, id: string): SpendReservation {
     let settled = false;
-    // Once a usage couldn't be recorded, the hold stays until it expires: it
-    // covers that call's cost, which would otherwise go uncharged.
+    // Once a usage couldn't be recorded, the reservation stays until it
+    // expires: it covers that call's cost, which would otherwise go uncharged.
     let unrecorded = false;
     return {
       // Charged to the month the request started in.
@@ -155,12 +140,17 @@ export function createStoreSpendCap(
       async settle() {
         if (settled || unrecorded) return;
         settled = true;
-        await store.update(path, (doc) => {
-          const month = readMonth(doc);
-          if (!(id in month.holds)) return { result: undefined };
-          delete month.holds[id];
-          return { doc: month, result: undefined };
-        });
+        try {
+          await store.update(path, (doc) => {
+            const month = readMonth(doc);
+            if (!(id in month.holds)) return { result: undefined };
+            delete month.holds[id];
+            return { doc: month, result: undefined };
+          });
+        } catch (error) {
+          // Not rethrown, like `record`: the reservation is released when it expires.
+          console.error("Spend cap: could not settle a reservation", error);
+        }
       },
     };
   }

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { profile } from "../src/content/profile";
+import { profile } from "../src/shared/profile";
 
 const SITE = "https://albertocarbonell.dev";
 

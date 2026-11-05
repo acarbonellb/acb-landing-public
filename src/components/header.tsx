@@ -1,15 +1,9 @@
-import { profile } from "@/content/profile";
+import { sections } from "@/lib/sections";
+import { profile } from "@/shared/profile";
 import { MobileMenu, type NavItem } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
 
-const nav: NavItem[] = [
-  { href: "#about", label: "about" },
-  { href: "#stack", label: "stack" },
-  { href: "#experience", label: "experience" },
-  { href: "#projects", label: "projects" },
-  { href: "#agent", label: "agent" },
-  { href: "#contact", label: "contact" },
-];
+const nav: NavItem[] = sections.map((s) => ({ href: `#${s.id}`, label: s.nav }));
 
 // Styled like a tmux status bar: session name on the left, windows as tabs.
 export function Header() {

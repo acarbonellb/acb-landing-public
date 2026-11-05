@@ -1,7 +1,7 @@
 // The wire contract of the agent's `POST /chat` endpoint (README, "Chat
 // endpoint contract"): request limits, message and event shapes, error codes.
 // Both sides import this one module: the site's chat client and UI, and the
-// agent service (`agent/`, which bundles it like `src/content/profile.ts`).
+// agent service (`agent/`, which bundles it like `src/shared/profile.ts`).
 // Types and plain constants only, so it is safe in either runtime.
 
 /** Limits on the conversation a chat request may carry. */
@@ -20,12 +20,21 @@ export type ChatMessage = { role: ChatRole; content: string };
 /** The request body: alternating messages, starting and ending with `user`. */
 export type ChatRequest = { messages: ChatMessage[] };
 
-/** Tokens spent by model calls. */
-export type TokenUsage = { inputTokens: number; outputTokens: number };
+/**
+ * Tokens spent by model calls. `inputTokens` counts all input; the optional
+ * cache fields say how much of it was written to or read from the prompt
+ * cache (absent: none).
+ */
+export type TokenUsage = {
+  inputTokens: number;
+  outputTokens: number;
+  cacheWriteInputTokens?: number;
+  cacheReadInputTokens?: number;
+};
 
 /**
- * Why a chat turn ended: answered (`end_turn`), cut by a token cap
- * (`max_tokens`), cut by the iteration cap (`max_iterations`), or the model
+ * Why the answer to a chat request ended: answered (`end_turn`), cut by a token cap
+ * (`max_tokens`), cut by the model-call cap (`max_iterations`), or the model
  * declined (`refusal`).
  */
 export type ChatStopReason = "end_turn" | "max_tokens" | "max_iterations" | "refusal";
@@ -46,6 +55,7 @@ export type ChatEvent =
     }
   | ({
       type: "usage";
+      /** Which model call of the request this is, counting from 1. */
       iteration: number;
       /** Set when the call never reported its usage and this is an upper bound. */
       estimated?: true;

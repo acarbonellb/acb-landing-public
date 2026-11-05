@@ -62,7 +62,7 @@ describe("createRecordingModelClient", () => {
       "input_usage",
       "text_delta",
       "text_delta",
-      "turn_end",
+      "response_end",
     ]);
     expect(recorder.calls).toEqual([
       { requestHash: requestHash(request), latencyMs: 250, events },

@@ -6,10 +6,11 @@ import type {
   ChatErrorCode,
   ChatEvent,
   ChatMessage,
+  ChatRequest,
   ChatStopReason,
   HttpErrorBody,
   HttpErrorCode,
-} from "./chat-contract";
+} from "@/shared/chat-contract";
 
 export type { ChatMessage };
 
@@ -24,7 +25,7 @@ export type ChatClientEvent =
       kind: ChatErrorKind;
       message?: string;
       retryAfterSeconds?: number;
-      /** ISO time the monthly budget renews, when the spend cap closed the chat. */
+      /** ISO time the spend cap resets (next UTC month), when it closed the chat. */
       resetsAt?: string;
     };
 
@@ -129,12 +130,13 @@ export async function* streamChat(
 ): AsyncGenerator<ChatClientEvent> {
   const doFetch = options.fetch ?? globalThis.fetch.bind(globalThis);
 
+  const request: ChatRequest = { messages };
   let res: Response;
   try {
     res = await doFetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(request),
       signal: options.signal,
     });
   } catch {

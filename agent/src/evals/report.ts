@@ -1,103 +1,10 @@
-// Metrics and the committed `agent/evals/report.md`. Pure and deterministic:
-// the same results always render the same bytes (no dates, no locale), so CI
-// can compare the regenerated report with the committed one.
-import type { Usage } from "../model";
-import { listPrices, usageCostUsd, type Pricing } from "../spend-cap";
-import { byString, caseName, percent, setLabel, type Ratio, type SetId } from "./format";
-import {
-  expectation,
-  leakKinds,
-  type CaseOutcome,
-  type CaseScore,
-  type EvalCase,
-} from "./scoring";
-
-/** One case replayed from its recording. */
-export type CaseResult = {
-  evalCase: EvalCase;
-  outcome: CaseOutcome;
-  score: CaseScore;
-  /** Summed over the case's model calls. */
-  usage: Usage;
-  latencyMs: number;
-};
-
-/** The results of one provider/model recording set. */
-export type SetResult = SetId & {
-  /** SHA-256 of the system prompt the set was recorded with. */
-  promptHash: string;
-  results: CaseResult[];
-};
-
-export type Metrics = {
-  cases: number;
-  /** off_topic, mixed and injection cases that leaked ("off-topic leak rate"). */
-  leaks: Ratio;
-  /** on_topic cases with expected tools that called one. */
-  toolAccuracy: Ratio;
-  /** Expected facts mentioned, over all mixed and on_topic cases. */
-  factCoverage: Ratio;
-  /** unknown cases that declined without inventing. */
-  unknownHandling: Ratio;
-  meanInputTokens: number;
-  meanOutputTokens: number;
-  meanLatencyMs: number;
-  /**
-   * Mean cost of a case in USD, rounded to the micro-dollar: its tokens at the
-   * model's list prices. Absent for a model without a known price.
-   */
-  meanCostUsd?: number;
-};
-
-/** Providers that run the model locally, for free. */
-const localProviders = new Set(["lmstudio"]);
-
-const free: Pricing = { inputUsdPerMTok: 0, outputUsdPerMTok: 0 };
-
-/** What the set's tokens cost: $0 locally, else the model's list prices (if known). */
-export function setPricing({ provider, model }: SetId): Pricing | undefined {
-  return localProviders.has(provider) ? free : listPrices[model];
-}
-
-function ratio(scores: CaseScore[], hit: (s: CaseScore) => boolean): Ratio {
-  return { n: scores.filter(hit).length, of: scores.length };
-}
-
-function mean(values: number[]): number {
-  return values.length ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0;
-}
-
-/** The set's metrics, priced with `setPricing`. */
-export const setMetrics = (set: SetResult) => computeMetrics(set.results, setPricing(set));
-
-export function computeMetrics(results: CaseResult[], pricing: Pricing | undefined): Metrics {
-  const scores = (...kinds: EvalCase["kind"][]) =>
-    results.filter((r) => kinds.includes(r.evalCase.kind)).map((r) => r.score);
-  const withFacts = results.flatMap((r) => (r.score.facts ? [r.score.facts] : []));
-  return {
-    cases: results.length,
-    leaks: ratio(scores(...leakKinds), (s) => !!s.leaked),
-    toolAccuracy: ratio(
-      scores("on_topic").filter((s) => s.toolOk !== undefined),
-      (s) => !!s.toolOk,
-    ),
-    factCoverage: {
-      n: withFacts.reduce((sum, f) => sum + f.mentioned, 0),
-      of: withFacts.reduce((sum, f) => sum + f.expected, 0),
-    },
-    unknownHandling: ratio(scores("unknown"), (s) => s.pass),
-    meanInputTokens: mean(results.map((r) => r.usage.inputTokens)),
-    meanOutputTokens: mean(results.map((r) => r.usage.outputTokens)),
-    meanLatencyMs: mean(results.map((r) => r.latencyMs)),
-    ...(pricing ? { meanCostUsd: meanCost(results, pricing) } : {}),
-  };
-}
-
-function meanCost(results: CaseResult[], pricing: Pricing): number {
-  if (!results.length) return 0;
-  const microUsd = results.reduce((sum, r) => sum + usageCostUsd(r.usage, pricing) * 1e6, 0);
-  return Math.round(microUsd / results.length) / 1e6;
-}
+// The committed `agent/evals/report.md`. Pure and deterministic: the same
+// results and history always render the same bytes (no dates, no locale), so
+// CI can compare the regenerated report with the committed one.
+import { byString, caseName, percent, setLabel, type Ratio } from "./format";
+import type { HistoryEntry } from "./history";
+import { setMetrics, type SetResult } from "./metrics";
+import { expectation, type CaseResponse } from "./scoring";
 
 /** "$0.000362"; "$0" for a free model; "n/a" without a price. */
 export function formatUsd(usd: number | undefined): string {
@@ -121,7 +28,7 @@ function excerpt(answer: string): string {
   return flat.length > maxExcerpt ? `${flat.slice(0, maxExcerpt - 1)}…` : flat;
 }
 
-function actual({ answer, toolCalls, error }: CaseOutcome): string {
+function actual({ answer, toolCalls, error }: CaseResponse): string {
   return [
     ...(toolCalls.length ? [toolCalls.join(", ")] : []),
     ...(error ? [`error: ${error}`] : []),
@@ -133,12 +40,12 @@ function renderSet(set: SetResult): string {
   const m = setMetrics(set);
   const rows = [...set.results]
     .sort((a, b) => byString(a.evalCase.id, b.evalCase.id))
-    .map(({ evalCase, outcome, score }) =>
+    .map(({ evalCase, response, score }) =>
       [
         caseName(evalCase),
         evalCase.kind,
         expectation(evalCase),
-        actual(outcome),
+        actual(response),
         score.pass ? "pass" : `FAIL: ${score.reasons.join("; ")}`,
       ]
         .map(cell)
@@ -187,7 +94,7 @@ function renderSummary(sets: SetResult[]): string {
   });
   return `## Summary
 
-One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's, in \`agent/src/spend-cap.ts\`); a local model costs $0.
+One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's too, in \`agent/src/pricing.ts\`); a local model costs $0.
 
 | Model | Provider | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -204,5 +111,73 @@ Generated by \`pnpm agent:eval:replay\` from the recordings in \`agent/evals/rec
 `,
     ...(sorted.length ? [renderSummary(sorted)] : []),
     ...sorted.map(renderSet),
+  ].join("\n");
+}
+
+/** Live runs shown per recording set. */
+const historyRows = 10;
+
+/** "+5.6", "-42", "±0": the sign always shown, zero as ±0. */
+function signed(delta: number, digits: number): string {
+  const text = delta.toFixed(digits);
+  if (Number(text) === 0) return `±${(0).toFixed(digits)}`;
+  return delta > 0 ? `+${text}` : text;
+}
+
+function ratioCell(now: Ratio, before: Ratio | undefined): string {
+  const value = percent(now);
+  if (value === undefined) return "n/a";
+  const previous = before && percent(before);
+  const delta = previous === undefined ? "" : ` (${signed(value - previous, 1)} pp)`;
+  return `${value.toFixed(1)}%${delta}`;
+}
+
+function countCell(now: number, before: number | undefined, unit = ""): string {
+  const delta = before === undefined ? "" : ` (${signed(now - before, 0)})`;
+  return `${now}${unit}${delta}`;
+}
+
+function historyRow(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
+  const m = entry.metrics;
+  const p = previous?.metrics;
+  return [
+    entry.date,
+    `\`${entry.commit}\``,
+    `\`${entry.promptHash.slice(0, 12)}\``,
+    String(m.cases),
+    ratioCell(m.leaks, p?.leaks),
+    ratioCell(m.toolAccuracy, p?.toolAccuracy),
+    ratioCell(m.factCoverage, p?.factCoverage),
+    ratioCell(m.unknownHandling, p?.unknownHandling),
+    countCell(m.meanInputTokens, p?.meanInputTokens),
+    countCell(m.meanOutputTokens, p?.meanOutputTokens),
+    countCell(m.meanLatencyMs, p?.meanLatencyMs, " ms"),
+    formatUsd(m.meanCostUsd),
+  ].join(" | ");
+}
+
+/** The report's "History" section; empty without history. Deterministic. */
+export function renderHistory(entries: HistoryEntry[]): string {
+  if (!entries.length) return "";
+  const labels = [...new Set(entries.map(setLabel))].sort(byString);
+  const sections = labels.map((label) => {
+    const runs = entries.filter((e) => setLabel(e) === label);
+    const rows = runs
+      .map((entry, i) => historyRow(entry, runs[i - 1]))
+      .slice(-historyRows)
+      .reverse();
+    return `### ${label}
+
+| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+${rows.map((r) => `| ${r} |`).join("\n")}
+`;
+  });
+  return [
+    `## History
+
+Last ${historyRows} live runs per recording set, newest first, from \`agent/evals/history.jsonl\`. Changes are against the previous run of the same set; pp is percentage points.
+`,
+    ...sections,
   ].join("\n");
 }

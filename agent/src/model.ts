@@ -2,6 +2,10 @@
 // a vendor SDK, so another provider (or a deterministic fake in tests) can be
 // dropped in without touching the loop or the tools.
 
+/** How hard the model thinks (and how many tokens it spends) per answer. */
+export const efforts = ["low", "medium", "high", "xhigh", "max"] as const;
+export type Effort = (typeof efforts)[number];
+
 /** A tool as the model sees it: name, description and a JSON Schema. */
 export type ModelTool = {
   name: string;
@@ -13,8 +17,29 @@ export type ToolCall = { id: string; name: string; input: unknown };
 
 export type ToolResult = { callId: string; output: string; isError: boolean };
 
+/**
+ * A call's input tokens. `inputTokens` is all of them; the cache fields say
+ * how many of those were written to or read from the prompt cache, which are
+ * priced differently (`pricing.ts`). Absent means none.
+ */
+export type InputUsage = {
+  inputTokens: number;
+  cacheWriteInputTokens?: number;
+  cacheReadInputTokens?: number;
+};
+
 /** Tokens spent by one model call. */
-export type Usage = { inputTokens: number; outputTokens: number };
+export type Usage = InputUsage & { outputTokens: number };
+
+/** Just the input part of `usage` (or of an `input_usage` event). */
+export function inputOf(usage: InputUsage): InputUsage {
+  const { inputTokens, cacheWriteInputTokens, cacheReadInputTokens } = usage;
+  return {
+    inputTokens,
+    ...(cacheWriteInputTokens !== undefined && { cacheWriteInputTokens }),
+    ...(cacheReadInputTokens !== undefined && { cacheReadInputTokens }),
+  };
+}
 
 /**
  * Why the model stopped: it finished (`end_turn`), wants tools run
@@ -24,14 +49,14 @@ export type Usage = { inputTokens: number; outputTokens: number };
 export type ModelStopReason = "end_turn" | "tool_use" | "max_tokens" | "refusal";
 
 /** One completed model call. */
-export type ModelTurn = {
+export type ModelResponse = {
   text: string;
   toolCalls: ToolCall[];
   stopReason: ModelStopReason;
   usage: Usage;
   /**
    * The provider's raw assistant content, replayed verbatim on the next call
-   * of the same turn (e.g. thinking blocks). Opaque to the loop.
+   * that answers the same turn (e.g. thinking blocks). Opaque to the loop.
    */
   providerContent?: unknown;
 };
@@ -60,14 +85,14 @@ export type ModelStreamEvent =
    * Optional, before anything else: the call's input tokens as soon as the
    * provider reports them, so a call that never finishes can still be priced.
    */
-  | { type: "input_usage"; inputTokens: number }
+  | ({ type: "input_usage" } & InputUsage)
   | { type: "text_delta"; text: string }
-  | { type: "turn_end"; turn: ModelTurn };
+  | { type: "response_end"; response: ModelResponse };
 
 export interface ModelClient {
   /**
    * Streams one model call: an optional `input_usage`, text deltas, then
-   * exactly one `turn_end`.
+   * exactly one `response_end`.
    */
   stream(request: ModelRequest): AsyncIterable<ModelStreamEvent>;
 }

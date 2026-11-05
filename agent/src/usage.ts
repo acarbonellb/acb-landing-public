@@ -4,21 +4,21 @@
 // One document per ISO week (`usage/<YYYY-Www>`) in the same `DocumentStore`
 // as the guardrails (Firestore in production, memory locally). Each chat
 // request is folded into it once, when it ends: its outcome, tokens, estimated
-// cost (the spend cap's prices) and latency as fixed histogram buckets, so
+// cost (list prices, `pricing.ts`) and latency as fixed histogram buckets, so
 // percentiles can be read back without keeping any sample. MCP requests are
 // only counted. Nothing about the message content or the client is kept.
 //
 // Recording is best effort: a failure is logged and swallowed, so it never
 // fails the request being recorded.
-import type { TokenUsage } from "../../src/lib/chat-contract";
+import type { TokenUsage } from "../../src/shared/chat-contract";
 import type {
   ChatOutcome,
   LatencyPercentiles,
   StatsResponse,
   WeekStats,
-} from "../../src/lib/stats-contract";
+} from "../../src/shared/stats-contract";
 import type { DocumentStore, StoreDocument } from "./document-store";
-import { usageCostUsd, type Pricing } from "./spend-cap";
+import { usageCostUsd, type Pricing } from "./pricing";
 
 export type { ChatOutcome, StatsResponse, WeekStats };
 

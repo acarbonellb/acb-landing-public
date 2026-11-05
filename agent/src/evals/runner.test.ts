@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { systemPrompt } from "../chat";
+import { systemPrompt } from "../system-prompt";
 import { createFakeModel } from "../fake-model";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
 import { evalContactEmail } from "./content";
-import { evaluate, recordCase, replayCase, RecordingFailedError } from "./runner";
+import { evaluate, recordCase, replayCase, replaySets, RecordingFailedError } from "./runner";
 import type { EvalCase } from "./scoring";
 
 const contact: EvalCase = {
@@ -45,7 +45,7 @@ async function recordBoth() {
 const editedPrompt = systemPrompt.replace("concise", "brief");
 
 describe("the eval runner", () => {
-  it("records cases through the real chat loop and replays them to identical outcomes", async () => {
+  it("records cases through the real chat loop and replays them to identical responses", async () => {
     const { a, b, model } = await recordBoth();
 
     expect(a.recording).toMatchObject({
@@ -58,7 +58,7 @@ describe("the eval runner", () => {
     expect(b.recording.calls).toHaveLength(1);
     // The prior turns reach the model before the new question.
     expect(model.requests[2].messages.map((m) => m.role)).toEqual(["user", "assistant", "user"]);
-    expect(a.result.outcome).toEqual({
+    expect(a.result.response).toEqual({
       answer: `Email him at ${evalContactEmail}.`,
       toolCalls: ["get_contact"],
       stopReason: "end_turn",
@@ -187,5 +187,18 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     expect(outdated.problems).toEqual([
       expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
     ]);
+  });
+});
+
+describe("replaySets (what a live run's history line is computed from)", () => {
+  it("gives the same sets and problems as evaluate, with no report or history", async () => {
+    const { a, b } = await recordBoth();
+    const input = { cases: [contact, capital], sets: [{ ...meta, recordings: [a.recording, b.recording] }] };
+
+    const replayed = await replaySets(input);
+    const { report, ...evaluated } = await evaluate(input);
+
+    expect(replayed).toEqual(evaluated);
+    expect(report).toContain("## fake / scripted");
   });
 });

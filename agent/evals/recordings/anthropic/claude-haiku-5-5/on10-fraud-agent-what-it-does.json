@@ -14,8 +14,8 @@
           "inputTokens": 1668
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -225,8 +225,8 @@
           "text": "."
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "Alberto's Fraud Detection Agent is for an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation with its reasons. The admin makes the final decision.\n\nThe agent auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve it.\n\nIt is currently in offline evals, with deployment next. On 31 eval cases, a local 9B model cut approved fraud from 54% to 8% over twelve iterations. Claude Haiku 5.5 was chosen for deployment: 86% accuracy versus 71% for the local model, and 1% of fraud approved versus 8%. It costs about $0.002 per review. The stack is TypeScript, PostgreSQL and GCP.",
             "toolCalls": [],
             "stopReason": "end_turn",

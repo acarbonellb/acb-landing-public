@@ -2,24 +2,33 @@ import { render, screen, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
-  AgentPractice,
   AgentProject,
+  Practice,
   Profile,
   Role,
   SkillGroup,
-} from "@/content/profile";
-import {
-  About,
-  Agent,
-  Contact,
-  Experience,
-  Hero,
-  Projects,
-  Stack,
-} from "./sections";
+} from "@/shared/profile";
+import { section, type SectionId } from "@/lib/sections";
+import { About } from "./about";
+import { Agent } from "./agent";
+import { Contact } from "./contact";
+import { Experience } from "./experience";
+import { Hero } from "./hero";
+import { Projects } from "./projects";
+import { Stack } from "./stack";
 
 // Sections render the content they receive, so these tests pass small
-// fixtures and assert on them: no dependency on the real CV text.
+// fixtures and assert on them: no dependency on the real CV text. Numbers and
+// titles come from the section registry.
+
+/** A section's heading ("04. projects"), numbered and titled by the registry. */
+function sectionHeading(id: SectionId) {
+  const { number, title } = section(id);
+  return screen.getByRole("heading", {
+    level: 2,
+    name: (name) => name.replace(/\s+/g, "") === `${number}.${title}`.replace(/\s+/g, ""),
+  });
+}
 
 const profile: Profile = {
   name: "Ada Lovelace",
@@ -35,7 +44,7 @@ const profile: Profile = {
   },
 };
 
-const agents: AgentProject[] = [
+const agentProjects: AgentProject[] = [
   {
     slug: "engine-agent",
     name: "Engine Agent",
@@ -84,7 +93,7 @@ const agents: AgentProject[] = [
   },
 ];
 
-const practices: AgentPractice[] = [
+const practices: Practice[] = [
   {
     title: "Tables checked twice",
     text: "Every table is recomputed by hand before printing.",
@@ -205,16 +214,14 @@ describe("Experience", () => {
 });
 
 describe("Projects", () => {
-  it("is section 04, agents I've built", () => {
-    render(<Projects agents={agents} practices={practices} />);
+  it("is headed with its registry number and title", () => {
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^04\.\s*agents I've built$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("projects")).toBeInTheDocument();
   });
 
   it("shows each agent with its context, description, status and stack", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const engine = within(
       screen.getByRole("article", { name: "./Engine Agent" }),
@@ -241,7 +248,7 @@ describe("Projects", () => {
   });
 
   it("shows the offline-evals and coming-soon badges", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
@@ -250,7 +257,7 @@ describe("Projects", () => {
   });
 
   it("shows a measured result and its detail only on agents that have one", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(
@@ -263,7 +270,7 @@ describe("Projects", () => {
   });
 
   it("links a card to its source and report, in a new tab, besides the card's own link", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const notes = within(screen.getByRole("article", { name: "./Notes Agent" }));
     const source = notes.getByRole("link", { name: /^source/ });
@@ -280,9 +287,9 @@ describe("Projects", () => {
 
   it("keeps a card's link to this page in the tab, like a practice's", () => {
     const withOnPageLink: AgentProject[] = [
-      { ...agents[0], links: [{ label: "try it", href: "#agent" }] },
+      { ...agentProjects[0], links: [{ label: "try it", href: "#agent" }] },
     ];
-    render(<Projects agents={withOnPageLink} practices={[]} />);
+    render(<Projects agentProjects={withOnPageLink} practices={[]} />);
 
     const link = screen.getByRole("link", { name: "try it" });
     expect(link).toHaveAttribute("href", "#agent");
@@ -290,7 +297,7 @@ describe("Projects", () => {
   });
 
   it("says how the agents are run, each practice with its sources (#43)", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const block = within(
       screen.getByRole("region", { name: "how I run agents" }),
@@ -318,7 +325,7 @@ describe("Projects", () => {
   });
 
   it("gives each agent card's heading the id its practice links point to", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     expect(
       screen.getByRole("heading", { name: "./Gear Agent" }),
@@ -338,16 +345,14 @@ describe("Agent", () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it("is section 05, ask my agent", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+  it("is headed with its registry number and title", () => {
+    render(<Agent />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^05\.\s*ask my agent$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("agent")).toBeInTheDocument();
   });
 
   it("holds the chat, pointed at the local agent by default", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     expect(
       screen.getByRole("textbox", { name: /ask the agent/i }),
@@ -356,7 +361,7 @@ describe("Agent", () => {
   });
 
   it("says what happens to visitors' questions, right under the chat input", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     const note = screen.getByRole("note", { name: /privacy/i });
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
@@ -369,7 +374,7 @@ describe("Agent", () => {
   });
 
   it("shows no privacy note when there is no chat", () => {
-    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
+    render(<Agent endpoints={null} />);
 
     expect(screen.queryByRole("note", { name: /privacy/i })).not.toBeInTheDocument();
   });
@@ -393,7 +398,7 @@ describe("Agent", () => {
     });
     const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
     vi.stubGlobal("fetch", fetch);
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     expect(
       await screen.findByText("this week: 7 questions answered · p50 3 s · 0% errors · $0.50"),
@@ -402,7 +407,7 @@ describe("Agent", () => {
   });
 
   it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
-    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
+    render(<Agent endpoints={null} />);
 
     expect(screen.getByText(/agent coming soon/i)).toBeInTheDocument();
     expect(
@@ -414,12 +419,10 @@ describe("Agent", () => {
 });
 
 describe("Contact", () => {
-  it("is section 06, contact", () => {
+  it("is headed with its registry number and title", () => {
     render(<Contact profile={profile} />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^06\.\s*contact$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("contact")).toBeInTheDocument();
   });
 
   it("shows the contact note and, until the chat is there, a LinkedIn link", () => {

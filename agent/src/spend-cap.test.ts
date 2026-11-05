@@ -1,11 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
-import {
-  createMemorySpendCap,
-  createStoreSpendCap,
-  usageCostUsd,
-  type SpendCap,
-} from "./spend-cap";
+import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
 
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
 const none = { inputTokens: 0, outputTokens: 0 };
@@ -27,13 +22,6 @@ async function spend(cap: SpendCap, usage: { inputTokens: number; outputTokens: 
   await status.reservation.record(usage);
   await status.reservation.settle();
 }
-
-describe("usageCostUsd", () => {
-  it("prices input and output tokens per million", () => {
-    expect(usageCostUsd({ inputTokens: 1_000_000, outputTokens: 0 }, pricing)).toBe(4);
-    expect(usageCostUsd({ inputTokens: 500_000, outputTokens: 100_000 }, pricing)).toBe(4);
-  });
-});
 
 describe("createMemorySpendCap", () => {
   it("is open until the month's spend reaches the budget", async () => {
@@ -62,6 +50,21 @@ describe("createMemorySpendCap", () => {
     await first.reservation.record({ inputTokens: 0, outputTokens: 50_000 });
     await first.reservation.settle();
     expect((await cap.reserve(worstCase)).exhausted).toBe(false);
+  });
+
+  it("holds a worst case's input at the cache-write price, the most recording can charge for it", async () => {
+    const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
+    // 2M input tokens: $8 at the input price, $10 if all are written to the cache.
+    const worstCase = { inputTokens: 2_000_000, outputTokens: 0 };
+
+    const status = await cap.reserve(worstCase);
+    if (status.exhausted) throw new Error("expected room");
+    // The whole $10 is held: not even $0.50 more fits.
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 25_000 })).exhausted).toBe(true);
+
+    // Spending it as cache writes uses up exactly what was held.
+    await status.reservation.record({ ...worstCase, cacheWriteInputTokens: 2_000_000 });
+    expect((await cap.reserve(none)).exhausted).toBe(true);
   });
 
   it("charges what a request actually spent, even beyond its reservation", async () => {
@@ -140,7 +143,7 @@ describe("createStoreSpendCap", () => {
   it("drops a hold its instance never settled once it expires, but keeps what it spent", async () => {
     const clock = fakeClock("2026-11-02T12:00:00Z");
     const store = createMemoryDocumentStore();
-    const options = { store, budgetUsd: 10, pricing, holdTtlMs: 600_000, now: clock.now };
+    const options = { store, budgetUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now };
     const crashed = createStoreSpendCap(options);
     const status = await crashed.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");
@@ -176,6 +179,36 @@ describe("createStoreSpendCap", () => {
     await status.reservation.settle();
     // The $6 stays held (until it expires) instead of the $1 going uncharged.
     expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
+  });
+
+  it("logs a settle the store can't take instead of throwing, and drops its hold once it expires", async () => {
+    const clock = fakeClock("2026-11-04T10:00:00Z");
+    const memory = createMemoryDocumentStore();
+    let down = false;
+    const store: DocumentStore = {
+      update: (path, change) =>
+        down ? Promise.reject(new Error("unreachable")) : memory.update(path, change),
+    };
+    const cap = createStoreSpendCap({
+      store,
+      budgetUsd: 10,
+      pricing,
+      now: clock.now,
+      reservationTtlMs: 15 * 60_000,
+    });
+    const status = await cap.reserve(sixDollars);
+    if (status.exhausted) throw new Error("expected room");
+
+    down = true;
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    await expect(status.reservation.settle()).resolves.toBeUndefined();
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+    down = false;
+
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
+    clock.set("2026-11-04T10:16:00Z");
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(false);
   });
 
   it("budgets each UTC month separately", async () => {

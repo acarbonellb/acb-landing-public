@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { profile } from "../../src/content/profile";
+import { profile } from "../../src/shared/profile";
 import { createAnthropicModelClient } from "./anthropic";
 import { createApp, paths, type AppDeps } from "./app";
 import type { ChatEvent } from "./chat";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { ModelUnavailableError } from "./model";
 import { listen, type RunningServer } from "./server";
+import { testAppDeps } from "./test-deps";
 
 let server: RunningServer | undefined;
 
@@ -15,11 +16,11 @@ afterEach(async () => {
 });
 
 async function start(deps: Partial<AppDeps>) {
-  server = await listen(createApp(deps), 0);
+  server = await listen(createApp(testAppDeps(deps)), 0);
   return server.url;
 }
 
-async function startWith(script: ScriptedTurn[], deps: Partial<AppDeps> = {}) {
+async function startWith(script: ScriptedResponse[], deps: Partial<AppDeps> = {}) {
   const model = createFakeModel(script);
   const url = await start({ modelClient: model, ...deps });
   return { url, model };
@@ -90,12 +91,12 @@ describe("POST /chat", () => {
     });
   });
 
-  it("enforces the configured iteration and token caps", async () => {
-    const loop: ScriptedTurn = {
+  it("enforces the configured model-call and token caps", async () => {
+    const loop: ScriptedResponse = {
       toolCalls: [{ id: "c", name: "get_profile", input: {} }],
     };
     const { url, model } = await startWith([loop, loop, loop], {
-      chatLimits: { maxIterations: 2, maxTokens: 500, maxRequestTokens: 5000 },
+      chatLimits: { maxModelCalls: 2, maxTokens: 500, maxRequestTokens: 5000 },
     });
     const events = (await readSse(await post(url, ask("Tell me everything")))).map(
       (f) => f.data,
@@ -116,7 +117,7 @@ describe("POST /chat", () => {
     );
   });
 
-  it("ends the stream with an error event when the model fails mid-turn", async () => {
+  it("ends the stream with an error event when the model fails mid-answer", async () => {
     const { url } = await startWith([
       { text: "Let me", error: new ModelUnavailableError("overloaded") },
     ]);

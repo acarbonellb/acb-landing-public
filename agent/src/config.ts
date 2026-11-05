@@ -1,13 +1,11 @@
 // Runtime configuration, read from environment variables. No secrets live in
 // the repo: the API key and the contact email come from the environment
-// (Secret Manager in production, your shell locally).
+// (Secret Manager in production, your shell locally). Plain data only: the
+// production composer (`compose.ts`) builds the adapters from it.
 import * as z from "zod";
-import { createAnthropicModelClient, efforts } from "./anthropic";
 import { chatLimits } from "./chat";
-import type { DocumentStore } from "./document-store";
-import { createFirestoreDocumentStore } from "./firestore";
-import type { ModelClient } from "./model";
-import { listPrices } from "./spend-cap";
+import { efforts } from "./model";
+import { resolvePricing } from "./pricing";
 
 const defaultModel = "claude-haiku-5-5";
 
@@ -26,16 +24,17 @@ const envSchema = z.object({
   AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
-  AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
+  AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxModelCalls),
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
-  // The default model's list prices (spend-cap.ts); change them with AGENT_MODEL.
-  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].inputUsdPerMTok),
-  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].outputUsdPerMTok),
+  // Unset, AGENT_MODEL's list prices (pricing.ts); required for a model
+  // missing from that list.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.optional(),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.optional(),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -66,6 +65,15 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     throw new Error(`Invalid agent configuration: ${z.prettifyError(parsed.error)}`);
   }
   const e = parsed.data;
+  let pricing;
+  try {
+    pricing = resolvePricing(e.AGENT_MODEL, {
+      inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
+      outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
+    });
+  } catch (error) {
+    throw new Error(`Invalid agent configuration: ${(error as Error).message}`);
+  }
   const store =
     e.AGENT_STORE === "firestore"
       ? {
@@ -76,12 +84,14 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
         }
       : { kind: "memory" as const };
   return {
+    /** The model provider's key; unset, there is no model and the chat answers 503. */
+    anthropicApiKey: e.ANTHROPIC_API_KEY,
     model: e.AGENT_MODEL,
     contactEmail: e.CONTACT_EMAIL,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {
-      maxIterations: e.AGENT_MAX_ITERATIONS,
+      maxModelCalls: e.AGENT_MAX_ITERATIONS,
       maxTokens: e.AGENT_MAX_TOKENS,
       maxRequestTokens: e.AGENT_MAX_REQUEST_TOKENS,
     },
@@ -89,24 +99,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
       monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
-      pricing: {
-        inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
-        outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
-      },
+      pricing,
     },
     store,
-    /** The shared store for the guardrails, or `null` to keep them in memory. */
-    createDocumentStore(): DocumentStore | null {
-      return store.kind === "firestore" ? createFirestoreDocumentStore(store) : null;
-    },
-    /** The production model client, or `null` when no API key is set. */
-    createModelClient(): ModelClient | null {
-      if (!e.ANTHROPIC_API_KEY) return null;
-      return createAnthropicModelClient({
-        apiKey: e.ANTHROPIC_API_KEY,
-        model: e.AGENT_MODEL,
-        effort: e.AGENT_EFFORT,
-      });
-    },
   };
 }

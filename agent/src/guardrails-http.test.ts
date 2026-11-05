@@ -6,6 +6,7 @@ import { createFakeModel } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap, type SpendCap } from "./spend-cap";
+import { testAppDeps } from "./test-deps";
 
 let server: RunningServer | undefined;
 
@@ -15,7 +16,7 @@ afterEach(async () => {
 });
 
 async function start(deps: Partial<AppDeps>) {
-  server = await listen(createApp(deps), 0);
+  server = await listen(createApp(testAppDeps(deps)), 0);
   return server.url;
 }
 
@@ -236,9 +237,30 @@ describe("monthly spend cap", () => {
     expect(model.requests).toHaveLength(2);
   });
 
+  it("charges input written to the prompt cache at its price, 1.25x the input price", async () => {
+    // 1M input tokens, all written to the cache: $5 per call, not $4. Two
+    // calls spend the $10 budget; at the base price, $2 would be left.
+    const usage = { inputTokens: 1_000_000, cacheWriteInputTokens: 1_000_000, outputTokens: 0 };
+    const model = createFakeModel([
+      { text: "One.", usage },
+      { text: "Two.", usage },
+    ]);
+    const url = await start({
+      modelClient: model,
+      spendCap: createMemorySpendCap({ budgetUsd: 10, pricing }),
+    });
+
+    for (let i = 0; i < 2; i++) {
+      const res = await chat(url);
+      expect(res.status).toBe(200);
+      await res.text();
+    }
+    expect((await chat(url)).status).toBe(503);
+  });
+
   describe("with a request's worst case of $0.02 (1,000 output tokens) against a $0.03 budget", () => {
     const outputOnly = { inputUsdPerMTok: 0, outputUsdPerMTok: 20 };
-    const chatLimits = { maxIterations: 1, maxTokens: 1000, maxRequestTokens: 1000 };
+    const chatLimits = { maxModelCalls: 1, maxTokens: 1000, maxRequestTokens: 1000 };
 
     /** A memory spend cap that tells when a request has settled. */
     function observedCap() {

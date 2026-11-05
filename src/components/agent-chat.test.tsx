@@ -1,61 +1,23 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
+import {
+  chatError,
+  chatStream,
+  controlledChatStream,
+  done,
+  fakeFetch,
+} from "@/testing/agent-fakes";
 import { AgentChat } from "./agent-chat";
 
 const CHAT_URL = "http://agent.test/chat";
 const MCP_URL = "http://agent.test/mcp";
-
-function sse(...events: object[]): string {
-  return events
-    .map((e) => `event: ${(e as { type: string }).type}\ndata: ${JSON.stringify(e)}\n\n`)
-    .join("");
-}
-
-// A streaming response the test pushes frames into, so it can look at the UI
-// mid-answer.
-function controlledStream() {
-  const encoder = new TextEncoder();
-  let controller!: ReadableStreamDefaultController<Uint8Array>;
-  const body = new ReadableStream<Uint8Array>({
-    start(c) {
-      controller = c;
-    },
-  });
-  return {
-    response: new Response(body, {
-      headers: { "Content-Type": "text/event-stream" },
-    }),
-    push: (...events: object[]) => controller.enqueue(encoder.encode(sse(...events))),
-    close: () => controller.close(),
-  };
-}
-
-function answer(...events: object[]): Response {
-  return new Response(sse(...events), {
-    headers: { "Content-Type": "text/event-stream" },
-  });
-}
-
-// Fake fetch that serves the queued responses in order and records requests.
-function fakeFetch(...responses: Response[]) {
-  const requests: { url: string; body: unknown }[] = [];
-  const fetch = async (url: RequestInfo | URL, init?: RequestInit) => {
-    requests.push({ url: String(url), body: JSON.parse(String(init?.body)) });
-    const next = responses.shift();
-    if (!next) throw new Error("unexpected request");
-    return next;
-  };
-  return { fetch: fetch as typeof globalThis.fetch, requests };
-}
 
 function renderChat(fetch: typeof globalThis.fetch) {
   return render(
     <AgentChat
       chatUrl={CHAT_URL}
       mcpUrl={MCP_URL}
-      mcpDirectUrl={MCP_URL}
-      linkedin="https://www.linkedin.com/in/ada/"
       fetch={fetch}
     />,
   );
@@ -77,7 +39,7 @@ async function ask(user: ReturnType<typeof userEvent.setup>, text: string) {
 describe("AgentChat", () => {
   it("shows the visitor's question, the tool calls and the streamed answer", async () => {
     const user = userEvent.setup();
-    const stream = controlledStream();
+    const stream = controlledChatStream();
     const { fetch, requests } = fakeFetch(stream.response);
     renderChat(fetch);
 
@@ -104,7 +66,7 @@ describe("AgentChat", () => {
     ).toBeInTheDocument();
     expect(await within(log()).findByText("Three")).toBeInTheDocument();
 
-    stream.push({ type: "text", delta: "agents." }, { type: "done", stopReason: "end_turn", usage: {} });
+    stream.push({ type: "text", delta: "agents." }, done());
     stream.close();
 
     expect(await within(log()).findByText("Three agents.")).toBeInTheDocument();
@@ -115,8 +77,8 @@ describe("AgentChat", () => {
   it("sends the earlier exchange along with a follow-up question", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      answer({ type: "text", delta: "Alberto." }, { type: "done", stopReason: "end_turn", usage: {} }),
-      answer({ type: "text", delta: "Yes." }, { type: "done", stopReason: "end_turn", usage: {} }),
+      chatStream({ type: "text", delta: "Alberto." }, done()),
+      chatStream({ type: "text", delta: "Yes." }, done()),
     );
     renderChat(fetch);
 
@@ -137,10 +99,10 @@ describe("AgentChat", () => {
   it("renders the agent's Markdown but keeps the visitor's message plain", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
-      answer(
+      chatStream(
         { type: "tool_call", id: "t1", name: "get_projects", input: { status: "in-progress" } },
         { type: "text", delta: "He built **three** agents:\n\n- Fraud\n- Portfolio" },
-        { type: "done", stopReason: "end_turn", usage: {} },
+        done(),
       ),
     );
     renderChat(fetch);
@@ -172,9 +134,9 @@ describe("AgentChat", () => {
   it("shows a rate-limit notice with the retry time", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
-      Response.json(
-        { error: { code: "rate_limited", message: "Too many questions." } },
-        { status: 429, headers: { "Retry-After": "42" } },
+      chatError(
+        { code: "rate_limited", message: "Too many questions." },
+        { headers: { "Retry-After": "42" } },
       ),
     );
     renderChat(fetch);
@@ -191,10 +153,7 @@ describe("AgentChat", () => {
   it("shows an unavailable notice with the agent's message, pointing to the MCP server", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
-      Response.json(
-        { error: { code: "unavailable", message: "Monthly budget reached." } },
-        { status: 503 },
-      ),
+      chatError({ code: "unavailable", message: "Monthly budget reached." }),
     );
     renderChat(fetch);
 
@@ -211,16 +170,11 @@ describe("AgentChat", () => {
   it("shows when the chat reopens once the monthly budget is used up", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
-      Response.json(
-        {
-          error: {
-            code: "unavailable",
-            message: "The agent has used up its budget for this month.",
-            resetsAt: "2026-12-01T00:00:00.000Z",
-          },
-        },
-        { status: 503 },
-      ),
+      chatError({
+        code: "unavailable",
+        message: "The agent has used up its budget for this month.",
+        resetsAt: "2026-12-01T00:00:00.000Z",
+      }),
     );
     renderChat(fetch);
 
@@ -234,15 +188,10 @@ describe("AgentChat", () => {
   it("doesn't repeat the notice title when the agent's message starts with it", async () => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(
-      Response.json(
-        {
-          error: {
-            code: "unavailable",
-            message: "The agent is unavailable right now. Please try again in a minute.",
-          },
-        },
-        { status: 503 },
-      ),
+      chatError({
+        code: "unavailable",
+        message: "The agent is unavailable right now. Please try again in a minute.",
+      }),
     );
     renderChat(fetch);
 
@@ -256,8 +205,8 @@ describe("AgentChat", () => {
   it("shows an error notice when the stream fails, and keeps the partial answer", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      answer({ type: "text", delta: "Half an" }, { type: "error", code: "internal", message: "Something broke." }),
-      answer({ type: "text", delta: "Fine." }, { type: "done", stopReason: "end_turn", usage: {} }),
+      chatStream({ type: "text", delta: "Half an" }, { type: "error", code: "internal", message: "Something broke." }),
+      chatStream({ type: "text", delta: "Fine." }, done()),
     );
     renderChat(fetch);
 

@@ -1,7 +1,9 @@
 "use client";
 
 import { useId, useState } from "react";
-import { formatPeriod, type Role } from "@/content/profile";
+import { formatPeriod } from "@/shared/format";
+import type { Role } from "@/shared/profile";
+import { TerminalButton } from "./ui";
 
 // One commit in the `git log` experience timeline. Collapsed it shows the
 // commit line and summary; the `git show` button discloses the role's stack and
@@ -35,19 +37,18 @@ export function ExperienceEntry({ role, head }: { role: Role; head: boolean }) {
         </p>
       )}
 
-      <button
-        type="button"
+      <TerminalButton
         id={buttonId}
         aria-expanded={open}
         aria-controls={detailsId}
         onClick={() => setOpen((o) => !o)}
-        className="mt-3 inline-flex items-center gap-2 rounded border border-border px-2 py-1 text-xs text-comment transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue"
+        className="mt-3 inline-flex items-center gap-2 px-2 py-1 text-comment"
       >
         <span aria-hidden className="text-green">
           {open ? "−" : "+"}
         </span>
         <span>{`git show ${role.hash}`}</span>
-      </button>
+      </TerminalButton>
 
       <div
         id={detailsId}

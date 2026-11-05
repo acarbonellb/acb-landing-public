@@ -1,31 +1,27 @@
 import { describe, expect, it } from "vitest";
-import { profile } from "../../src/content/profile";
+import { profile } from "../../src/shared/profile";
 import {
   chatRequestSchema,
+  createChatAgent,
   errorMessages,
   refusalText,
-  runChat,
-  systemPrompt,
   type ChatEvent,
-  type ChatOptions,
+  type ChatLimits,
 } from "./chat";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { ModelUnavailableError } from "./model";
+import { systemPrompt } from "./system-prompt";
 import { createToolset } from "./tools";
 
 async function collect(
-  script: ScriptedTurn[],
-  options: Partial<ChatOptions> = {},
+  script: ScriptedResponse[],
+  limits: Partial<ChatLimits> = {},
   question = "Where does Alberto work from?",
 ) {
   const model = createFakeModel(script);
+  const agent = createChatAgent({ model, toolset: createToolset(), limits });
   const events: ChatEvent[] = [];
-  for await (const event of runChat({
-    model,
-    toolset: createToolset(),
-    messages: [{ role: "user", content: question }],
-    ...options,
-  })) {
+  for await (const event of agent.run([{ role: "user", content: question }])) {
     events.push(event);
   }
   return { events, model };
@@ -34,7 +30,7 @@ async function collect(
 const textOf = (events: ChatEvent[]) =>
   events.flatMap((e) => (e.type === "text" ? [e.delta] : [])).join("");
 
-describe("runChat", () => {
+describe("ChatAgent.run", () => {
   it("calls a tool, feeds the result back and streams the final answer", async () => {
     const { events, model } = await collect([
       { toolCalls: [{ id: "call_1", name: "get_contact", input: {} }] },
@@ -104,12 +100,12 @@ describe("runChat", () => {
     }
   });
 
-  it("stops at the iteration cap without running more tools", async () => {
-    const loop: ScriptedTurn = {
+  it("stops at the model-call cap without running more tools", async () => {
+    const loop: ScriptedResponse = {
       toolCalls: [{ id: "call", name: "get_profile", input: {} }],
     };
     const { events, model } = await collect([loop, loop, loop, loop], {
-      maxIterations: 3,
+      maxModelCalls: 3,
     });
     expect(model.requests).toHaveLength(3);
     expect(events.filter((e) => e.type === "tool_result")).toHaveLength(2);
@@ -129,7 +125,7 @@ describe("runChat", () => {
   });
 
   it("shares one output-token budget across every model call of a request", async () => {
-    const tool = (id: string): ScriptedTurn => ({
+    const tool = (id: string): ScriptedResponse => ({
       toolCalls: [{ id, name: "get_stack", input: {} }],
       usage: { inputTokens: 100, outputTokens: 400 },
     });
@@ -143,7 +139,7 @@ describe("runChat", () => {
   });
 
   it("stops gracefully, without another model call, once the request's token budget is spent", async () => {
-    const tool = (id: string): ScriptedTurn => ({
+    const tool = (id: string): ScriptedResponse => ({
       toolCalls: [{ id, name: "get_stack", input: {} }],
       usage: { inputTokens: 100, outputTokens: 500 },
     });
@@ -152,7 +148,7 @@ describe("runChat", () => {
       maxRequestTokens: 1000,
     });
     expect(model.requests).toHaveLength(2);
-    // The second turn's tools are not run: no call is left to read their results.
+    // The second call's tools are not run: no call is left to read their results.
     expect(events.filter((e) => e.type === "tool_result")).toHaveLength(1);
     expect(events.at(-1)).toMatchObject({ type: "done", stopReason: "max_tokens" });
   });
@@ -163,11 +159,8 @@ describe("runChat", () => {
       { text: "He works", hang: true, usage: { inputTokens: 300, outputTokens: 0 } },
     ]);
     const events: ChatEvent[] = [];
-    for await (const event of runChat({
-      model,
-      toolset: createToolset(),
-      messages: [{ role: "user", content: "Stack?" }],
-      maxTokens: 500,
+    const agent = createChatAgent({ model, toolset: createToolset(), limits: { maxTokens: 500 } });
+    for await (const event of agent.run([{ role: "user", content: "Stack?" }], {
       signal: controller.signal,
     })) {
       events.push(event);
@@ -179,7 +172,7 @@ describe("runChat", () => {
     expect(events.some((e) => e.type === "error" || e.type === "done")).toBe(false);
   });
 
-  it("does not run tools from a turn cut off by the token cap", async () => {
+  it("does not run tools from a model call cut off by the token cap", async () => {
     const { events, model } = await collect([
       {
         toolCalls: [{ id: "c", name: "get_stack", input: {} }],
@@ -250,15 +243,11 @@ describe("runChat", () => {
   it("keeps the earlier conversation in order", async () => {
     const model = createFakeModel([{ text: "Yes." }]);
     const events: ChatEvent[] = [];
-    for await (const e of runChat({
-      model,
-      toolset: createToolset(),
-      messages: [
-        { role: "user", content: "Who is Alberto?" },
-        { role: "assistant", content: "A senior engineer." },
-        { role: "user", content: "Is he remote?" },
-      ],
-    })) {
+    for await (const e of createChatAgent({ model, toolset: createToolset() }).run([
+      { role: "user", content: "Who is Alberto?" },
+      { role: "assistant", content: "A senior engineer." },
+      { role: "user", content: "Is he remote?" },
+    ])) {
       events.push(e);
     }
     expect(model.requests[0].messages).toEqual([
@@ -294,6 +283,28 @@ describe("runChat", () => {
       },
       { type: "error", code: "internal", message: errorMessages.internal },
     ]);
+  });
+});
+
+describe("the chat agent", () => {
+  const messages = [{ role: "user" as const, content: "Stack?" }];
+  const limits = { maxModelCalls: 2, maxRequestTokens: 1000 };
+  const customPrompt = systemPrompt + "x".repeat(2000);
+
+  it("estimates the worst case with the system prompt it runs with", async () => {
+    const shipped = createChatAgent({ model: createFakeModel([]), toolset: createToolset(), limits });
+    const model = createFakeModel([{ text: "Hi." }]);
+    const custom = createChatAgent({ model, toolset: createToolset(), limits, system: customPrompt });
+
+    // 2000 more prompt characters at 2 per token: 1000 more input tokens on
+    // each of the 2 calls; the output is the request's token budget.
+    const base = shipped.worstCaseUsage(messages);
+    expect(custom.worstCaseUsage(messages)).toEqual({
+      inputTokens: base.inputTokens + 2000,
+      outputTokens: 1000,
+    });
+    for await (const event of custom.run(messages)) void event;
+    expect(model.requests[0].system).toBe(customPrompt);
   });
 });
 

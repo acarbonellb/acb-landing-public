@@ -1,17 +1,10 @@
 // The eval metrics history, `agent/evals/history.jsonl`: one line per recording
 // set per live run, so it shows how prompt and model changes move the numbers.
-// Only live runs append; replay only reads it. Pure functions; the script does
-// the file I/O.
+// Only live runs append; replay only reads and checks it (the report renders
+// it). Pure functions; the script does the file I/O.
 import * as z from "zod";
-import {
-  byString,
-  percent,
-  sameSet,
-  setLabel,
-  type Ratio,
-  type SetId,
-} from "./format";
-import { formatUsd, setMetrics, type Metrics, type SetResult } from "./report";
+import { sameSet, setLabel, type SetId } from "./format";
+import { setMetrics, type Metrics, type SetResult } from "./metrics";
 
 /** When and from where a live run was made. */
 export type LiveRun = {
@@ -126,72 +119,4 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
       ? [`${label}: latest history entry doesn't match the recordings (${fields.join(", ")}): ${rerecord}`]
       : [];
   });
-}
-
-/** Live runs shown per recording set. */
-const historyRows = 10;
-
-/** "+5.6", "-42", "±0": the sign always shown, zero as ±0. */
-function signed(delta: number, digits: number): string {
-  const text = delta.toFixed(digits);
-  if (Number(text) === 0) return `±${(0).toFixed(digits)}`;
-  return delta > 0 ? `+${text}` : text;
-}
-
-function ratioCell(now: Ratio, before: Ratio | undefined): string {
-  const value = percent(now);
-  if (value === undefined) return "n/a";
-  const previous = before && percent(before);
-  const delta = previous === undefined ? "" : ` (${signed(value - previous, 1)} pp)`;
-  return `${value.toFixed(1)}%${delta}`;
-}
-
-function countCell(now: number, before: number | undefined, unit = ""): string {
-  const delta = before === undefined ? "" : ` (${signed(now - before, 0)})`;
-  return `${now}${unit}${delta}`;
-}
-
-function row(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
-  const m = entry.metrics;
-  const p = previous?.metrics;
-  return [
-    entry.date,
-    `\`${entry.commit}\``,
-    `\`${entry.promptHash.slice(0, 12)}\``,
-    String(m.cases),
-    ratioCell(m.leaks, p?.leaks),
-    ratioCell(m.toolAccuracy, p?.toolAccuracy),
-    ratioCell(m.factCoverage, p?.factCoverage),
-    ratioCell(m.unknownHandling, p?.unknownHandling),
-    countCell(m.meanInputTokens, p?.meanInputTokens),
-    countCell(m.meanOutputTokens, p?.meanOutputTokens),
-    countCell(m.meanLatencyMs, p?.meanLatencyMs, " ms"),
-    formatUsd(m.meanCostUsd),
-  ].join(" | ");
-}
-
-/** The report's "History" section; empty without history. Deterministic. */
-export function renderHistory(entries: HistoryEntry[]): string {
-  if (!entries.length) return "";
-  const labels = [...new Set(entries.map(setLabel))].sort(byString);
-  const sections = labels.map((label) => {
-    const runs = entries.filter((e) => setLabel(e) === label);
-    const rows = runs
-      .map((entry, i) => row(entry, runs[i - 1]))
-      .slice(-historyRows)
-      .reverse();
-    return `### ${label}
-
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-${rows.map((r) => `| ${r} |`).join("\n")}
-`;
-  });
-  return [
-    `## History
-
-Last ${historyRows} live runs per recording set, newest first, from \`agent/evals/history.jsonl\`. Changes are against the previous run of the same set; pp is percentage points.
-`,
-    ...sections,
-  ].join("\n");
 }

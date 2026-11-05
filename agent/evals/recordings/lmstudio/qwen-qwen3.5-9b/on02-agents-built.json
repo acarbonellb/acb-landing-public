@@ -14,8 +14,8 @@
           "inputTokens": 2343
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -642,8 +642,8 @@
           "text": "."
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (offline-evals): Reviews events and organizers on a ticketing platform, recommending approve/reject/request-info with reasons. It auto-approves only on code-verified evidence; web sources can hold decisions but never approve. Offline evals show significant fraud reduction improvements.\n\n2. **Organizer Support Agent** (coming-soon): Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API.\n\n3. **Portfolio Agent** (personal-project): Answers visitors' questions about Alberto's experience and projects in natural language on his portfolio site, also exposed as an MCP server for external agents to query.",
             "toolCalls": [],
             "stopReason": "end_turn",

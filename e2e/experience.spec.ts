@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 test.describe("experience diff details", () => {
   test.use({ viewport: { width: 360, height: 800 } });
 
-  test("expands an entry into its diff without horizontal scroll", async ({
+  test("expands an entry into its diff and collapses it from the keyboard", async ({
     page,
   }) => {
     await page.goto("/");
@@ -23,21 +23,7 @@ test.describe("experience diff details", () => {
     await expect(show).toHaveAttribute("aria-expanded", "true");
     await expect(highlight).toBeVisible();
 
-    // Expand every entry, then check the page still fits the viewport.
-    for (const button of await page
-      .getByRole("button", { name: /^git show / })
-      .all()) {
-      if ((await button.getAttribute("aria-expanded")) === "false") {
-        await button.click();
-      }
-    }
-    const overflow = await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth -
-        document.documentElement.clientWidth,
-    );
-    expect(overflow).toBe(0);
-
+    // With every entry expanded the page still fits: layout.spec.ts.
     await show.focus();
     await page.keyboard.press("Enter");
     await expect(show).toHaveAttribute("aria-expanded", "false");

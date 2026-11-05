@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import type { AgentProject } from "@/content/profile";
+import type { AgentProject } from "@/shared/profile";
 import { deployedSet, evalResultsLine, withEvalResults } from "./eval-results";
 
 function line(entry: {
@@ -138,7 +138,7 @@ describe("evalResultsLine", () => {
 });
 
 describe("withEvalResults", () => {
-  const agents: AgentProject[] = [
+  const agentProjects: AgentProject[] = [
     { slug: "fraud-detection-agent", name: "Fraud", context: "c", description: "d", stack: [] },
     { slug: "portfolio-agent", name: "Portfolio Agent", context: "c", description: "d", stack: [] },
   ];
@@ -146,13 +146,13 @@ describe("withEvalResults", () => {
   it("puts the line on the Portfolio Agent card only", () => {
     const history = line({ ...haiku, cases: 42, leaks: 0, meanCostUsd: 0.000362 });
 
-    const [fraud, portfolio] = withEvalResults(agents, files(history));
+    const [fraud, portfolio] = withEvalResults(agentProjects, files(history));
 
-    expect(fraud).toEqual(agents[0]);
+    expect(fraud).toEqual(agentProjects[0]);
     expect(portfolio.result).toBe(evalResultsLine(files(history)));
   });
 
   it("leaves the cards as they are without a line", () => {
-    expect(withEvalResults(agents, files(""))).toEqual(agents);
+    expect(withEvalResults(agentProjects, files(""))).toEqual(agentProjects);
   });
 });

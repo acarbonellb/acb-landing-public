@@ -11,7 +11,7 @@ describe("loadConfig", () => {
       "https://albertocarbonell.dev",
     ]);
     expect(config.chatLimits).toEqual({
-      maxIterations: chatLimits.maxIterations,
+      maxModelCalls: chatLimits.maxModelCalls,
       maxTokens: chatLimits.maxTokens,
       maxRequestTokens: chatLimits.maxRequestTokens,
     });
@@ -36,13 +36,9 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).not.toThrow(/not-an-address/);
   });
 
-  it("has no model client without an API key", () => {
-    expect(loadConfig({}).createModelClient()).toBeNull();
-  });
-
-  it("builds a model client when an API key is set (without calling the API)", () => {
-    const client = loadConfig({ ANTHROPIC_API_KEY: "test-key" }).createModelClient();
-    expect(client).not.toBeNull();
+  it("reads the API key from ANTHROPIC_API_KEY, and has none without it", () => {
+    expect(loadConfig({ ANTHROPIC_API_KEY: "test-key" }).anthropicApiKey).toBe("test-key");
+    expect(loadConfig({}).anthropicApiKey).toBeUndefined();
   });
 
   it("reads overrides from the environment", () => {
@@ -56,7 +52,7 @@ describe("loadConfig", () => {
     expect(config).toMatchObject({
       model: "claude-sonnet-5-5",
       effort: "medium",
-      chatLimits: { maxTokens: 2048, maxIterations: 3 },
+      chatLimits: { maxTokens: 2048, maxModelCalls: 3 },
       allowedOrigins: ["https://a.example", "http://localhost:4173"],
     });
   });
@@ -87,6 +83,27 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ MONTHLY_SPEND_CAP_USD: "-1" })).toThrow(/MONTHLY_SPEND_CAP_USD/);
   });
 
+  it("defaults the prices to the configured model's list prices", () => {
+    expect(loadConfig({ AGENT_MODEL: "claude-sonnet-5-5" }).guardrails.pricing).toEqual({
+      inputUsdPerMTok: 2,
+      outputUsdPerMTok: 10,
+      cacheReadUsdPerMTok: 0.1,
+    });
+  });
+
+  it("fails for a model with no list price unless both prices are explicit", () => {
+    expect(() => loadConfig({ AGENT_MODEL: "claude-future-9" })).toThrow(/claude-future-9/);
+    expect(() =>
+      loadConfig({ AGENT_MODEL: "claude-future-9", AGENT_PRICE_INPUT_USD_PER_MTOK: "1" }),
+    ).toThrow(/AGENT_PRICE_OUTPUT_USD_PER_MTOK/);
+    const config = loadConfig({
+      AGENT_MODEL: "claude-future-9",
+      AGENT_PRICE_INPUT_USD_PER_MTOK: "1",
+      AGENT_PRICE_OUTPUT_USD_PER_MTOK: "5",
+    });
+    expect(config.guardrails.pricing).toEqual({ inputUsdPerMTok: 1, outputUsdPerMTok: 5 });
+  });
+
   it("rejects invalid values instead of silently ignoring them", () => {
     expect(() => loadConfig({ AGENT_MAX_TOKENS: "lots" })).toThrow(/AGENT_MAX_TOKENS/);
     expect(() => loadConfig({ AGENT_EFFORT: "extreme" })).toThrow(/AGENT_EFFORT/);
@@ -99,10 +116,17 @@ describe("loadConfig", () => {
     ).toBe(3000);
   });
 
-  it("keeps the guardrails' state in memory by default, with no cloud dependency", () => {
-    const config = loadConfig({});
-    expect(config.store).toEqual({ kind: "memory" });
-    expect(config.createDocumentStore()).toBeNull();
+  it("is plain data: no functions, nothing built", () => {
+    const config = loadConfig({
+      ANTHROPIC_API_KEY: "test-key",
+      AGENT_STORE: "firestore",
+      FIRESTORE_PROJECT_ID: "acb-landing",
+    });
+    expect(structuredClone(config)).toEqual(config);
+  });
+
+  it("keeps the guardrails' state in memory by default", () => {
+    expect(loadConfig({}).store).toEqual({ kind: "memory" });
   });
 
   it("selects the shared Firestore store, which needs the project", () => {
@@ -116,7 +140,6 @@ describe("loadConfig", () => {
       databaseId: "(default)",
       emulatorHost: undefined,
     });
-    expect(config.createDocumentStore()).not.toBeNull();
     expect(
       loadConfig({
         AGENT_STORE: "firestore",

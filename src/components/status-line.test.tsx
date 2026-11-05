@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
 import { StatusLine } from "./status-line";
 
 describe("StatusLine", () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { chatPrivacyNote } from "../../src/content/profile";
-import { systemPrompt } from "./chat";
+import { chatPrivacyNote } from "../../src/shared/site-copy";
+import { systemPrompt } from "./system-prompt";
 import { createToolset, type Content } from "./tools";
 
 const fixture: Content = {
@@ -18,7 +18,7 @@ const fixture: Content = {
       linkedin: "https://www.linkedin.com/in/ada/",
     },
   },
-  agents: [
+  agentProjects: [
     {
       slug: "engine",
       name: "Engine Agent",
@@ -43,7 +43,7 @@ const fixture: Content = {
       stack: ["Jacquard"],
     },
   ],
-  agentPractices: [
+  practices: [
     {
       title: "Tables checked twice",
       text: "Every table is recomputed by hand.",

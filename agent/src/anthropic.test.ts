@@ -137,7 +137,7 @@ describe("Anthropic model client", () => {
     });
   });
 
-  it("streams text deltas and ends with the turn", async () => {
+  it("streams text deltas and ends with the response", async () => {
     const { fetch } = fakeFetch(
       () => new Response(toolTurn, { headers: { "content-type": "text/event-stream" } }),
     );
@@ -155,15 +155,42 @@ describe("Anthropic model client", () => {
       { type: "text_delta", text: "check." },
     ]);
     const end = events.at(-1);
-    if (end?.type !== "turn_end") throw new Error("expected turn_end");
-    expect(end.turn).toMatchObject({
+    if (end?.type !== "response_end") throw new Error("expected response_end");
+    expect(end.response).toMatchObject({
       text: "Let me check.",
       toolCalls: [{ id: "toolu_1", name: "get_projects", input: { status: "in-progress" } }],
       stopReason: "tool_use",
       usage: { inputTokens: 120, outputTokens: 30 },
     });
     // Raw content is kept so the next call replays it verbatim.
-    expect(end.turn.providerContent).toHaveLength(2);
+    expect(end.response.providerContent).toHaveLength(2);
+  });
+
+  it("reports cache writes and reads within the input, so they can be priced apart", async () => {
+    const cached = toolTurn.replace(
+      JSON.stringify({ input_tokens: 120, output_tokens: 1 }),
+      JSON.stringify({
+        input_tokens: 20,
+        cache_creation_input_tokens: 70,
+        cache_read_input_tokens: 30,
+        output_tokens: 1,
+      }),
+    );
+    const { fetch } = fakeFetch(
+      () => new Response(cached, { headers: { "content-type": "text/event-stream" } }),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+    });
+    const events = await collect(client.stream(request));
+    const cacheUsage = { inputTokens: 120, cacheWriteInputTokens: 70, cacheReadInputTokens: 30 };
+    expect(events[0]).toEqual({ type: "input_usage", ...cacheUsage });
+    const end = events.at(-1);
+    if (end?.type !== "response_end") throw new Error("expected response_end");
+    expect(end.response.usage).toEqual({ ...cacheUsage, outputTokens: 30 });
   });
 
   it("replays provider content verbatim on the next call", async () => {
@@ -275,6 +302,55 @@ describe("Anthropic model client", () => {
           }),
           { status: 400, headers: { "content-type": "application/json" } },
         ),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+      maxRetries: 0,
+    });
+    const error = await collect(client.stream(request)).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(Error);
+    expect(error).not.toBeInstanceOf(ModelUnavailableError);
+  });
+
+  // After a 200 the provider reports trouble as an SSE `error` event; the SDK
+  // raises a plain APIError with no status, so only the body's type tells.
+  function midStreamError(type: string) {
+    const [start] = toolTurn.split("\n\n");
+    const error = { type: "error", error: { type, message: "Try again." } };
+    return `${start}\n\nevent: error\ndata: ${JSON.stringify(error)}\n\n`;
+  }
+
+  it.each(["overloaded_error", "rate_limit_error"])(
+    "turns a mid-stream %s into ModelUnavailableError",
+    async (type) => {
+      const { fetch } = fakeFetch(
+        () =>
+          new Response(midStreamError(type), {
+            headers: { "content-type": "text/event-stream" },
+          }),
+      );
+      const client = createAnthropicModelClient({
+        apiKey: "k",
+        model: "claude-opus-5-5",
+        effort: "low",
+        fetch,
+        maxRetries: 0,
+      });
+      await expect(collect(client.stream(request))).rejects.toBeInstanceOf(
+        ModelUnavailableError,
+      );
+    },
+  );
+
+  it("keeps any other mid-stream error an internal error", async () => {
+    const { fetch } = fakeFetch(
+      () =>
+        new Response(midStreamError("api_error"), {
+          headers: { "content-type": "text/event-stream" },
+        }),
     );
     const client = createAnthropicModelClient({
       apiKey: "k",

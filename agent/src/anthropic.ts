@@ -3,22 +3,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import {
   ModelUnavailableError,
+  type Effort,
+  type InputUsage,
   type ModelClient,
   type ModelMessage,
   type ModelStopReason,
-  type ModelTurn,
+  type ModelResponse,
 } from "./model";
+import { serverSideFallbackModels } from "./pricing";
 
-export const efforts = ["low", "medium", "high", "xhigh", "max"] as const;
-export type Effort = (typeof efforts)[number];
-
-/** Models that accept server-side refusal fallbacks (`fallbacks: "default"`). */
-const fallbackModels = new Set([
-  "claude-opus-5-5",
-  "claude-opus-5",
-  "claude-fable-5-1",
-  "claude-sonnet-5-5",
-]);
 
 export type AnthropicModelOptions = {
   apiKey: string;
@@ -90,16 +83,21 @@ function stopReason(reason: Anthropic.Beta.BetaStopReason | null): ModelStopReas
   }
 }
 
-/** Cached input is counted as input: an upper bound for spend tracking. */
-function inputTokens(usage: Anthropic.Beta.BetaUsage): number {
-  return (
-    usage.input_tokens +
-    (usage.cache_creation_input_tokens ?? 0) +
-    (usage.cache_read_input_tokens ?? 0)
-  );
+/**
+ * All input tokens, cached ones included, with the cache writes and reads
+ * among them reported apart: they are priced differently (`pricing.ts`).
+ */
+function inputUsage(usage: Anthropic.Beta.BetaUsage): InputUsage {
+  const written = usage.cache_creation_input_tokens ?? 0;
+  const read = usage.cache_read_input_tokens ?? 0;
+  return {
+    inputTokens: usage.input_tokens + written + read,
+    ...(written > 0 && { cacheWriteInputTokens: written }),
+    ...(read > 0 && { cacheReadInputTokens: read }),
+  };
 }
 
-function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
+function toResponse(message: Anthropic.Beta.BetaMessage): ModelResponse {
   const { usage } = message;
   return {
     text: message.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join(""),
@@ -107,7 +105,7 @@ function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
       b.type === "tool_use" ? [{ id: b.id, name: b.name, input: b.input }] : [],
     ),
     stopReason: stopReason(message.stop_reason),
-    usage: { inputTokens: inputTokens(usage), outputTokens: usage.output_tokens },
+    usage: { ...inputUsage(usage), outputTokens: usage.output_tokens },
     providerContent: message.content,
   };
 }
@@ -125,7 +123,7 @@ function upstreamMessage(error: InstanceType<typeof Anthropic.APIError>): unknow
 /**
  * Capacity, network and the provider's own limits are "try again later", not
  * bugs. The tier spend cap is a 429, covered by `RateLimitError`; no credit is
- * a 402 `billing_error`.
+ * a 402 `billing_error`. Overload and rate limits also count when streamed.
  */
 function isUnavailable(error: unknown): boolean {
   if (
@@ -137,6 +135,9 @@ function isUnavailable(error: unknown): boolean {
   }
   if (!(error instanceof Anthropic.APIError)) return false;
   if (error.status === 402 || error.type === "billing_error") return true;
+  // Mid-stream, after a 200, an SSE `error` event comes through as a plain
+  // APIError with no status: only the body's error type says what it was.
+  if (error.type === "overloaded_error" || error.type === "rate_limit_error") return true;
   const message = upstreamMessage(error);
   return (
     error instanceof Anthropic.BadRequestError &&
@@ -152,7 +153,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
     fetch: options.fetch,
     maxRetries: options.maxRetries,
   });
-  const fallbacks = fallbackModels.has(options.model);
+  const fallbacks = serverSideFallbackModels.has(options.model);
 
   return {
     async *stream(request) {
@@ -181,7 +182,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
         const stream = client.beta.messages.stream(params, { signal: request.signal });
         for await (const event of stream) {
           if (event.type === "message_start") {
-            yield { type: "input_usage", inputTokens: inputTokens(event.message.usage) };
+            yield { type: "input_usage", ...inputUsage(event.message.usage) };
           } else if (
             event.type === "content_block_delta" &&
             event.delta.type === "text_delta"
@@ -189,7 +190,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
             yield { type: "text_delta", text: event.delta.text };
           }
         }
-        yield { type: "turn_end", turn: toTurn(await stream.finalMessage()) };
+        yield { type: "response_end", response: toResponse(await stream.finalMessage()) };
       } catch (error) {
         if (isUnavailable(error)) {
           throw new ModelUnavailableError("Claude is unavailable", { cause: error });
