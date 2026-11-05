@@ -6,24 +6,12 @@ import { Section, Window } from "../ui";
 
 // The live chat with the agent service, or a "coming soon" note when the
 // build has no agent URL (see `agent-endpoint.ts`).
-export function Agent({
-  linkedin,
-  endpoints = agentUrls,
-}: {
-  /** Where the contact fallback points when the agent can't be reached. */
-  linkedin: string;
-  endpoints?: AgentEndpoints | null;
-}) {
+export function Agent({ endpoints = agentUrls }: { endpoints?: AgentEndpoints | null }) {
   return (
     <Section id="agent">
       <Window title="agent — claude · tool use">
         {endpoints ? (
-          <AgentChat
-            chatUrl={endpoints.chat}
-            mcpUrl={endpoints.mcp}
-            mcpDirectUrl={endpoints.mcpDirect}
-            linkedin={linkedin}
-          />
+          <AgentChat chatUrl={endpoints.chat} mcpUrl={endpoints.mcp} />
         ) : (
           <p className="text-sm leading-relaxed">
             <span className="text-comment">[system]</span>{" "}

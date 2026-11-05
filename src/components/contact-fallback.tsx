@@ -9,20 +9,14 @@ const fallbackReason: Record<ChatErrorKind, string> = {
 };
 
 /** The contact fallback's answer, in the chat's transcript. */
-export function ContactFallbackAnswer({
-  fallback,
-  linkedin,
-}: {
-  fallback: ContactFallback;
-  linkedin: string;
-}) {
+export function ContactFallbackAnswer({ fallback }: { fallback: ContactFallback }) {
   if (fallback.kind === "linkedin") {
     return (
       <p className="text-fg-dark">
         <span className="text-comment">[system]</span> The agent can&apos;t be
         reached right now. You can message me on{" "}
         <ExternalLink
-          href={linkedin}
+          href={fallback.url}
           className="text-blue underline underline-offset-2 hover:text-cyan"
         >
           LinkedIn

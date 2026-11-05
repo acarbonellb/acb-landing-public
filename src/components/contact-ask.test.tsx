@@ -38,16 +38,10 @@ function renderPage(fetch: typeof globalThis.fetch) {
   return render(
     <>
       <section id="agent">
-        <AgentChat
-          chatUrl={CHAT_URL}
-          mcpUrl={MCP_URL}
-          mcpDirectUrl={MCP_DIRECT_URL}
-          linkedin={LINKEDIN}
-          fetch={fetch}
-        />
+        <AgentChat chatUrl={CHAT_URL} mcpUrl={MCP_URL} fetch={fetch} />
       </section>
       <section id="contact">
-        <ContactAsk linkedin={LINKEDIN} />
+        <ContactAsk linkedin={LINKEDIN} mcpUrl={MCP_DIRECT_URL} fetch={fetch} />
       </section>
     </>,
   );

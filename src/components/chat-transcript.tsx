@@ -18,13 +18,10 @@ const stopNotes: Partial<Record<ChatStopReason, string>> = {
 export function ChatTranscript({
   turns,
   busy,
-  linkedin,
   ref,
 }: {
   turns: Turn[];
   busy: boolean;
-  /** Where the contact fallback points when the MCP tools fail too. */
-  linkedin: string;
   ref?: Ref<HTMLDivElement>;
 }) {
   return (
@@ -44,13 +41,13 @@ export function ChatTranscript({
         </span>
       </p>
       {turns.map((turn) => (
-        <TurnView key={turn.id} turn={turn} linkedin={linkedin} />
+        <TurnView key={turn.id} turn={turn} />
       ))}
     </div>
   );
 }
 
-function TurnView({ turn, linkedin }: { turn: Turn; linkedin: string }) {
+function TurnView({ turn }: { turn: Turn }) {
   const { status } = turn;
   const stopNote = status.kind === "answered" ? stopNotes[status.stopReason] : undefined;
   return (
@@ -75,7 +72,7 @@ function TurnView({ turn, linkedin }: { turn: Turn; linkedin: string }) {
         ),
       )}
       {status.kind === "fallback" && (
-        <ContactFallbackAnswer fallback={status.fallback} linkedin={linkedin} />
+        <ContactFallbackAnswer fallback={status.fallback} />
       )}
       {status.kind === "streaming" && (
         <p className="text-comment">

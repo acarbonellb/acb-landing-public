@@ -32,7 +32,7 @@ export default async function Home() {
     projects: (
       <Projects agentProjects={withEvalResults(agentProjects, { history, report })} practices={practices} />
     ),
-    agent: <Agent linkedin={profile.links.linkedin} />,
+    agent: <Agent />,
     contact: <Contact profile={profile} />,
   };
   return (

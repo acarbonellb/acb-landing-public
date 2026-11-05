@@ -1,13 +1,18 @@
 // How the contact section's "ask my agent" button reaches the chat in the
 // agent section (#50): the two are separate client components, so the chat
-// connects here while mounted and the button reads its state. Without the
-// chat (no JavaScript, or a build with no agent) the state stays "absent" and
-// the button falls back to a link.
+// connects here while mounted and the button reads its state. The button
+// sends its own question and fallback strategy; the chat only asks them.
+// Without the chat (no JavaScript, or a build with no agent) the state stays
+// "absent" and the button falls back to a link.
 import { useSyncExternalStore } from "react";
+import type { FallbackStrategy } from "@/lib/contact-fallback";
 
 export type ChatBridgeState = "absent" | "ready" | "busy";
 
-let ask: (() => void) | null = null;
+/** Asks the chat `question`; a failure is answered by `fallback`. */
+export type BridgeAsk = (question: string, options: { fallback: FallbackStrategy }) => void;
+
+let ask: BridgeAsk | null = null;
 let state: ChatBridgeState = "absent";
 const listeners = new Set<() => void>();
 
@@ -17,17 +22,17 @@ function setState(next: ChatBridgeState) {
   listeners.forEach((listener) => listener());
 }
 
-/** Called by the chat on mount: how to ask it the contact question. */
-export function connectChat(askForContact: () => void) {
-  ask = askForContact;
+/** Called by the chat on mount: how to ask it a question from outside. */
+export function connectChat(askChat: BridgeAsk) {
+  ask = askChat;
   setState("ready");
   return {
     /** While an answer streams, the button is disabled. */
     setBusy: (busy: boolean) => {
-      if (ask === askForContact) setState(busy ? "busy" : "ready");
+      if (ask === askChat) setState(busy ? "busy" : "ready");
     },
     disconnect: () => {
-      if (ask !== askForContact) return;
+      if (ask !== askChat) return;
       ask = null;
       setState("absent");
     },
@@ -42,7 +47,7 @@ function subscribe(listener: () => void) {
 }
 
 /** The chat's state for the button, and the ask itself (only when "ready"). */
-export function useChatBridge(): { state: ChatBridgeState; askForContact: () => void } {
+export function useChatBridge(): { state: ChatBridgeState; ask: BridgeAsk } {
   const current = useSyncExternalStore(
     subscribe,
     () => state,
@@ -50,8 +55,8 @@ export function useChatBridge(): { state: ChatBridgeState; askForContact: () => 
   );
   return {
     state: current,
-    askForContact: () => {
-      if (state === "ready") ask?.();
+    ask: (question, options) => {
+      if (state === "ready") ask?.(question, options);
     },
   };
 }
