@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/shared/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
-import { DEFAULT_THEME, THEME_STORAGE_KEY, THEMES } from "@/lib/theme";
+import { DEFAULT_THEME, themeScript } from "@/lib/theme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,9 +37,6 @@ export const metadata: Metadata = {
     description: siteDescription,
   },
 };
-
-// Applies the saved theme before first paint to avoid a flash.
-const themeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(${JSON.stringify(THEMES)}.indexOf(t)>=0)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

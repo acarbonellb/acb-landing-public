@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clientIpFrom, mcpClientIpFrom } from "./client-ip";
+import { clientIpFrom, mcpClientIpFrom, rateLimitKeyFor } from "./client-ip";
 
 // Hosting's peer as measured in #36 (in the user-triggered fetchers ranges).
 const hostingPeer = "66.249.93.229";
@@ -55,5 +55,22 @@ describe("mcpClientIpFrom (/mcp)", () => {
   it("falls back to the socket address without a forwarded entry", () => {
     expect(mcpClientIpFrom(undefined, "127.0.0.1")).toBe("127.0.0.1");
     expect(mcpClientIpFrom("", undefined)).toBe("unknown");
+  });
+});
+
+describe("rateLimitKeyFor", () => {
+  it("keys an IPv6 address on its /64, however it's written", () => {
+    expect(rateLimitKeyFor("2001:db8:0:1::1")).toBe("2001:db8:0:1::/64");
+    expect(rateLimitKeyFor("2001:0DB8:0000:0001:FFFF:0:0:2")).toBe("2001:db8:0:1::/64");
+    expect(rateLimitKeyFor("2001:db8::1:2:3:4")).toBe("2001:db8:0:0::/64");
+    expect(rateLimitKeyFor("::1")).toBe("0:0:0:0::/64");
+    expect(rateLimitKeyFor("fe80::1%eth0")).toBe("fe80:0:0:0::/64");
+    expect(rateLimitKeyFor("64:ff9b::198.51.100.1")).toBe("64:ff9b:0:0::/64");
+  });
+
+  it("keeps IPv4 addresses, mapped or not, and non-addresses as they are", () => {
+    expect(rateLimitKeyFor("198.51.100.1")).toBe("198.51.100.1");
+    expect(rateLimitKeyFor("::ffff:198.51.100.1")).toBe("::ffff:198.51.100.1");
+    expect(rateLimitKeyFor("unknown")).toBe("unknown");
   });
 });

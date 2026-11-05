@@ -55,3 +55,13 @@ export function fakeFirestore() {
   };
   return fake;
 }
+
+/**
+ * A `fetch` that never answers, like a Firestore that hangs: it settles only
+ * when its request is aborted, rejecting with the abort reason.
+ */
+export const hangingFetch = (_input: string | URL | Request, init?: RequestInit) =>
+  new Promise<Response>((_resolve, reject) => {
+    const signal = init?.signal;
+    signal?.addEventListener("abort", () => reject(signal.reason), { once: true });
+  });
