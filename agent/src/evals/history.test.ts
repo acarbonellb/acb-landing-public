@@ -47,9 +47,17 @@ const cleanMetrics: Metrics = {
   meanInputTokens: 1000,
   meanOutputTokens: 100,
   meanLatencyMs: 2000,
+  meanCostUsd: 0,
 };
 
 const run = { date: "2026-11-03", commit: "d7fa65c" };
+
+/** Metrics as an entry from before costs were recorded holds them. */
+function withoutCost(metrics: Metrics): Metrics {
+  const copy = { ...metrics };
+  delete copy.meanCostUsd;
+  return copy;
+}
 
 describe("historyEntry", () => {
   it("captures the set's identity, prompt hash and report metrics", () => {
@@ -85,6 +93,13 @@ describe("appendHistory and parseHistory", () => {
 
   it("appends nothing for no entries", () => {
     expect(appendHistory("", [])).toBe("");
+  });
+
+  it("parses an entry from before costs were recorded", () => {
+    const uncosted = withoutCost(first.metrics);
+    const older = { ...first, metrics: uncosted };
+
+    expect(parseHistory(`${JSON.stringify(older)}\n`)).toEqual([older]);
   });
 
   it("parses an empty file as no history and ignores blank lines", () => {
@@ -147,6 +162,14 @@ describe("checkHistory", () => {
     ]);
   });
 
+  it("fails when the latest entry has no cost, from before costs were recorded", () => {
+    const uncosted = withoutCost(entry.metrics);
+
+    expect(checkHistory([{ ...entry, metrics: uncosted }], [clean])).toEqual([
+      "lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (meanCostUsd): re-record with `pnpm agent:eval`",
+    ]);
+  });
+
   it("fails when the recordings changed without a new history line", () => {
     const leaky = setWith("Madrid.");
 
@@ -182,7 +205,7 @@ describe("renderHistory", () => {
   it("renders each set's runs newest first, with the change from the run before", () => {
     const history = [
       entry("2026-11-03", {}),
-      entry("2026-11-03", { cases: 1 }, { provider: "anthropic", model: "claude-opus-5-5" }),
+      entry("2026-11-03", { cases: 1, meanCostUsd: 0.000362 }, { provider: "anthropic", model: "claude-opus-5-5" }),
       entry(
         "2026-11-04",
         {
@@ -191,6 +214,7 @@ describe("renderHistory", () => {
           meanInputTokens: 2958,
           meanOutputTokens: 170,
           meanLatencyMs: 4449,
+          meanCostUsd: 0,
         },
         { commit: "e1f2a3b", promptHash: "b".repeat(64) },
       ),
@@ -202,16 +226,16 @@ Last 10 live runs per recording set, newest first, from \`agent/evals/history.js
 
 ### anthropic / claude-opus-5-5
 
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms |
+| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | $0.000362 |
 
 ### lmstudio / qwen/qwen3.5-9b
 
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-11-04 | \`e1f2a3b\` | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) |
-| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms |
+| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-04 | \`e1f2a3b\` | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
+| 2026-11-03 | \`abc1234\` | \`aaaaaaaaaaaa\` | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
 `);
   });
 

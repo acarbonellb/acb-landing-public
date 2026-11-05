@@ -50,7 +50,15 @@ function fakeFetch(...responses: Response[]) {
 }
 
 function renderChat(fetch: typeof globalThis.fetch) {
-  return render(<AgentChat chatUrl={CHAT_URL} mcpUrl={MCP_URL} fetch={fetch} />);
+  return render(
+    <AgentChat
+      chatUrl={CHAT_URL}
+      mcpUrl={MCP_URL}
+      mcpDirectUrl={MCP_URL}
+      linkedin="https://www.linkedin.com/in/ada/"
+      fetch={fetch}
+    />,
+  );
 }
 
 function input() {
@@ -198,6 +206,29 @@ describe("AgentChat", () => {
     // The MCP tools don't use the model, so they keep working.
     expect(alert).toHaveTextContent(/MCP server still works/i);
     expect(alert).toHaveTextContent(MCP_URL);
+  });
+
+  it("shows when the chat reopens once the monthly budget is used up", async () => {
+    const user = userEvent.setup();
+    const { fetch } = fakeFetch(
+      Response.json(
+        {
+          error: {
+            code: "unavailable",
+            message: "The agent has used up its budget for this month.",
+            resetsAt: "2026-12-01T00:00:00.000Z",
+          },
+        },
+        { status: 503 },
+      ),
+    );
+    renderChat(fetch);
+
+    await ask(user, "Hi");
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("The agent has used up its budget for this month.");
+    expect(alert).toHaveTextContent("It's back on December 1, 2026 (UTC).");
   });
 
   it("doesn't repeat the notice title when the agent's message starts with it", async () => {

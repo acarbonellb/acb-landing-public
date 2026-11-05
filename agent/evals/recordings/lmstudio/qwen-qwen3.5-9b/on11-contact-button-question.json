@@ -1,0 +1,237 @@
+{
+  "caseId": "on11",
+  "slug": "contact-button-question",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "590d137032abaada0911416830ec2e326db523ac54c5ec4f7140881c5083ba50",
+      "latencyMs": 1653,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2349
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "LkbpmWAxEVQKOoxuIpa5OkjXj3HIxvfy",
+                "name": "get_contact",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2349,
+              "outputTokens": 60
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "LkbpmWAxEVQKOoxuIpa5OkjXj3HIxvfy",
+                "name": "get_contact",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "896e034dd3cbb81cdb2c00bc22d18e52e56362c8cdf6f73f3d3a966340f8945d",
+      "latencyMs": 1259,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2454
+        },
+        {
+          "type": "text_delta",
+          "text": "You"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " reach"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " al"
+        },
+        {
+          "type": "text_delta",
+          "text": "berto"
+        },
+        {
+          "type": "text_delta",
+          "text": "@example"
+        },
+        {
+          "type": "text_delta",
+          "text": ".com"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " based"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " You"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " also"
+        },
+        {
+          "type": "text_delta",
+          "text": " find"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " GitHub"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "ac"
+        },
+        {
+          "type": "text_delta",
+          "text": "arbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": "b"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " LinkedIn"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "al"
+        },
+        {
+          "type": "text_delta",
+          "text": "bert"
+        },
+        {
+          "type": "text_delta",
+          "text": "oc"
+        },
+        {
+          "type": "text_delta",
+          "text": "arbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": ")."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "You can reach Alberto at alberto@example.com. He is based in Spain and works remotely. You can also find him on GitHub (acarbonellb) or LinkedIn (albertocarbonell).",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2454,
+              "outputTokens": 44
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "You can reach Alberto at alberto@example.com. He is based in Spain and works remotely. You can also find him on GitHub (acarbonellb) or LinkedIn (albertocarbonell)."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

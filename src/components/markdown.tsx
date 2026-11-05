@@ -38,9 +38,11 @@ function blocks(text: string): Block[] {
 // Inline spans, earliest match first; code comes first so its contents stay
 // literal. Emphasis needs a non-space right inside its markers, and `_` only
 // counts at word edges, so "5 * 3" and snake_case stay plain text. A link's
-// URL may hold one level of balanced parentheses.
+// URL may hold one level of balanced parentheses. A bare email address
+// becomes a mailto: link (the contact answer, #50); its domain must not end in
+// a dot, so a sentence's full stop stays out.
 const span =
-  /`([^`]+)`|\[([^\]]+)\]\(([^()\s]*(?:\([^()\s]*\)[^()\s]*)*)\)|\*\*(\S(?:.*?\S)?)\*\*|__(\S(?:.*?\S)?)__|\*(\S(?:.*?\S)?)\*|(?<!\w)_(\S(?:.*?\S)?)_(?!\w)/;
+  /`([^`]+)`|\[([^\]]+)\]\(([^()\s]*(?:\([^()\s]*\)[^()\s]*)*)\)|\*\*(\S(?:.*?\S)?)\*\*|__(\S(?:.*?\S)?)__|\*(\S(?:.*?\S)?)\*|(?<!\w)_(\S(?:.*?\S)?)_(?!\w)|(?<![\w.+-])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/;
 
 const safeProtocols = new Set(["http:", "https:", "mailto:"]);
 
@@ -53,7 +55,13 @@ function isSafeUrl(href: string): boolean {
   }
 }
 
-function inline(text: string): ReactNode[] {
+// Web links open in a new tab so the chat stays put; a mailto: link just
+// hands off to the mail app, and in a new tab would leave a blank one behind.
+const newTab = { target: "_blank", rel: "noopener noreferrer" } as const;
+const isMailto = (href: string) => new URL(href).protocol === "mailto:";
+
+/** `inLink`: inside a link's label, where an address must not become a nested link. */
+function inline(text: string, inLink = false): ReactNode[] {
   const out: ReactNode[] = [];
   let rest = text;
   while (rest) {
@@ -63,21 +71,32 @@ function inline(text: string): ReactNode[] {
       break;
     }
     if (m.index > 0) out.push(rest.slice(0, m.index));
-    const [, code, label, href, bold1, bold2, em1, em2] = m;
+    const [, code, label, href, bold1, bold2, em1, em2, email] = m;
     const key = out.length;
     if (code !== undefined) out.push(<code key={key}>{code}</code>);
+    else if (email !== undefined) {
+      out.push(
+        inLink ? (
+          email
+        ) : (
+          <a key={key} href={`mailto:${email}`}>
+            {email}
+          </a>
+        ),
+      );
+    }
     else if (label !== undefined) {
       out.push(
         isSafeUrl(href) ? (
-          <a key={key} href={href} target="_blank" rel="noopener noreferrer">
-            {inline(label)}
+          <a key={key} href={href} {...(isMailto(href) ? {} : newTab)}>
+            {inline(label, true)}
           </a>
         ) : (
-          <Fragment key={key}>{inline(label)}</Fragment>
+          <Fragment key={key}>{inline(label, inLink)}</Fragment>
         ),
       );
-    } else if (bold1 ?? bold2) out.push(<strong key={key}>{inline(bold1 ?? bold2)}</strong>);
-    else out.push(<em key={key}>{inline(em1 ?? em2)}</em>);
+    } else if (bold1 ?? bold2) out.push(<strong key={key}>{inline(bold1 ?? bold2, inLink)}</strong>);
+    else out.push(<em key={key}>{inline(em1 ?? em2, inLink)}</em>);
     rest = rest.slice(m.index + m[0].length);
   }
   return out;

@@ -1,0 +1,245 @@
+{
+  "caseId": "un09",
+  "slug": "years-of-go",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "14da11fb6c49c67f736ef691e69d765b6b9b70bd5acc3b46405e48b15d972ed6",
+      "latencyMs": 2351,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2345
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "ts8TpoJ6ndR7kbed21smcBKrOAeejHBK",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2345,
+              "outputTokens": 88
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "ts8TpoJ6ndR7kbed21smcBKrOAeejHBK",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "6907315b6921a17c1cb549ca98c758faa5c95b1a1135a1e183d67faac519b869",
+      "latencyMs": 2325,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2424
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": " lists"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " language"
+        },
+        {
+          "type": "text_delta",
+          "text": " skills"
+        },
+        {
+          "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " not"
+        },
+        {
+          "type": "text_delta",
+          "text": " included"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " listed"
+        },
+        {
+          "type": "text_delta",
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " so"
+        },
+        {
+          "type": "text_delta",
+          "text": " there"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " no"
+        },
+        {
+          "type": "text_delta",
+          "text": " information"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " years"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " available"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's profile lists his language skills as TypeScript, JavaScript, and Ruby. Go is not included in his listed languages or experience, so there is no information about years of Go experience available in his profile.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2424,
+              "outputTokens": 86
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's profile lists his language skills as TypeScript, JavaScript, and Ruby. Go is not included in his listed languages or experience, so there is no information about years of Go experience available in his profile."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

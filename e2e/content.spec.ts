@@ -29,25 +29,49 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
+  // The Portfolio Agent card (#44): eval results from the history, and
+  // links to its source and report that stay clickable over the card's link.
+  const portfolio = page.getByRole("article", { name: "./Portfolio Agent" });
+  await expect(
+    portfolio.getByText(/^\d+ eval cases incl\. prompt injection · .* per answer on Claude Haiku 5\.5 · replayed in CI$/),
+  ).toBeVisible();
+  await expect(portfolio.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
+    "href",
+    "https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md",
+  );
+  // No network: GitHub answers with a stub.
+  await page.context().route("https://github.com/**", (route) => route.fulfill({ body: "ok" }));
+  const [source] = await Promise.all([
+    page.waitForEvent("popup"),
+    portfolio.getByRole("link", { name: /^source/ }).click(),
+  ]);
+  await source.waitForLoadState();
+  expect(source.url()).toBe("https://github.com/acarbonellb/acb-landing-public/tree/main/agent");
+  await source.close();
+  await expect(page).not.toHaveURL(/#agent$/);
+
+  // How I run agents (#43): four practices, each linked to where it's backed.
+  const practices = page.getByRole("region", { name: "how I run agents" });
+  for (const title of [
+    "Offline evals before shipping",
+    "Graded autonomy, a human in the loop",
+    "Cost and limits tracked",
+    "Changes measured run over run",
+  ]) {
+    await expect(practices.getByText(title, { exact: true })).toBeVisible();
+  }
+  await expect(practices.getByRole("link", { name: /ADR 0001/ })).toHaveAttribute(
+    "href",
+    "https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md",
+  );
+  await practices.getByRole("link", { name: "Fraud Detection Agent" }).click();
+  await expect(page).toHaveURL(/#agent-fraud-detection-agent$/);
+
   const contact = page.locator("#contact");
   await expect(contact.getByText("Drop me a line:", { exact: true })).toBeVisible();
-  await contact.getByRole("button", { name: "show email" }).click();
-  await expect(
-    contact.getByRole("link", { name: "alberto.carbonell.beceiro@gmail.com" }),
-  ).toHaveAttribute("href", "mailto:alberto.carbonell.beceiro@gmail.com");
 
   // Education is left to the CV PDF: no section on the page.
   await expect(page.getByRole("heading", { name: /education/i })).toHaveCount(0);
 
   await expect(page.locator("body")).not.toContainText(/lorem ipsum/i);
-});
-
-// Ticket #39: crawlers that read the raw HTML (no JavaScript) must not find
-// the contact address; the RSC payload is inlined there too.
-test("keeps the contact email out of the served HTML", async ({ request }) => {
-  const html = await (await request.get("/")).text();
-
-  expect(html).toContain("show email");
-  expect(html).not.toContain("alberto.carbonell.beceiro");
-  expect(html).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/);
 });

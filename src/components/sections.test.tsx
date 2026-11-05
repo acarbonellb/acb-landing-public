@@ -1,8 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
+  AgentPractice,
   AgentProject,
   Profile,
   Role,
@@ -30,7 +30,6 @@ const profile: Profile = {
   summary: ["First about paragraph.", "Second about paragraph."],
   contactNote: "Say hi.",
   links: {
-    email: "ada@example.com",
     github: "https://github.com/ada",
     linkedin: "https://www.linkedin.com/in/ada/",
   },
@@ -53,6 +52,10 @@ const agents: AgentProject[] = [
     description: "Answers questions about the notes.",
     stack: ["Ink"],
     href: "#agent",
+    links: [
+      { label: "source", href: "https://example.com/notes-agent" },
+      { label: "eval report", href: "https://example.com/notes-agent/report.md" },
+    ],
   },
   {
     slug: "loom-agent",
@@ -60,6 +63,40 @@ const agents: AgentProject[] = [
     context: "Built for a weaving mill",
     description: "Weaves patterns.",
     stack: ["Jacquard"],
+  },
+  {
+    slug: "gear-agent",
+    name: "Gear Agent",
+    status: "offline-evals",
+    context: "Built for a clockmaker",
+    description: "Checks gear ratios.",
+    result: "Offline evals: wrong ratios fell from 40% to 5%.",
+    resultDetail: "Mean of 3 runs.",
+    stack: ["Brass"],
+  },
+  {
+    slug: "lace-agent",
+    name: "Lace Agent",
+    status: "coming-soon",
+    context: "Built for a lace maker",
+    description: "Will design lace.",
+    stack: ["Bobbins"],
+  },
+];
+
+const practices: AgentPractice[] = [
+  {
+    title: "Tables checked twice",
+    text: "Every table is recomputed by hand before printing.",
+    sources: [
+      { label: "the notes", href: "https://example.com/notes" },
+      { label: "the errata", href: "https://example.com/errata" },
+    ],
+  },
+  {
+    title: "A human turns the crank",
+    text: "The engine proposes, the operator decides.",
+    sources: [{ label: "Gear Agent", href: "#agent-gear-agent" }],
   },
 ];
 
@@ -169,7 +206,7 @@ describe("Experience", () => {
 
 describe("Projects", () => {
   it("is section 04, agents I've built", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     expect(
       screen.getByRole("heading", { level: 2, name: /^04\.\s*agents I've built$/ }),
@@ -177,7 +214,7 @@ describe("Projects", () => {
   });
 
   it("shows each agent with its context, description, status and stack", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     const engine = within(
       screen.getByRole("article", { name: "./Engine Agent" }),
@@ -195,18 +232,114 @@ describe("Projects", () => {
     );
     expect(notes.queryByText("in progress")).not.toBeInTheDocument();
     expect(notes.getByText("personal project")).toBeInTheDocument();
-    expect(notes.getByRole("link")).toHaveAttribute("href", "#agent");
+    expect(notes.getByRole("link", { name: "./Notes Agent" })).toHaveAttribute("href", "#agent");
 
     // No status claimed: no badge at all.
     const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
     expect(loom.getByText("Weaves patterns.")).toBeInTheDocument();
     expect(loom.queryByText(/in progress|personal project|live/)).not.toBeInTheDocument();
   });
+
+  it("shows the offline-evals and coming-soon badges", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
+    const lace = within(screen.getByRole("article", { name: "./Lace Agent" }));
+    expect(lace.getByText("coming soon")).toBeInTheDocument();
+  });
+
+  it("shows a measured result and its detail only on agents that have one", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(
+      gear.getByText("Offline evals: wrong ratios fell from 40% to 5%."),
+    ).toBeInTheDocument();
+    expect(gear.getByText("Mean of 3 runs.")).toBeInTheDocument();
+
+    const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
+    expect(loom.queryByText(/offline evals|runs/i)).not.toBeInTheDocument();
+  });
+
+  it("links a card to its source and report, in a new tab, besides the card's own link", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const notes = within(screen.getByRole("article", { name: "./Notes Agent" }));
+    const source = notes.getByRole("link", { name: /^source/ });
+    expect(source).toHaveAttribute("href", "https://example.com/notes-agent");
+    expect(source).toHaveAttribute("target", "_blank");
+    expect(notes.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
+      "href",
+      "https://example.com/notes-agent/report.md",
+    );
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(gear.queryByRole("link")).not.toBeInTheDocument();
+  });
+
+  it("keeps a card's link to this page in the tab, like a practice's", () => {
+    const withOnPageLink: AgentProject[] = [
+      { ...agents[0], links: [{ label: "try it", href: "#agent" }] },
+    ];
+    render(<Projects agents={withOnPageLink} practices={[]} />);
+
+    const link = screen.getByRole("link", { name: "try it" });
+    expect(link).toHaveAttribute("href", "#agent");
+    expect(link).not.toHaveAttribute("target");
+  });
+
+  it("says how the agents are run, each practice with its sources (#43)", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const block = within(
+      screen.getByRole("region", { name: "how I run agents" }),
+    );
+    const items = block.getAllByRole("listitem");
+    expect(items).toHaveLength(2);
+
+    const checked = within(items[0]);
+    expect(checked.getByText("Tables checked twice")).toBeInTheDocument();
+    expect(
+      checked.getByText("Every table is recomputed by hand before printing."),
+    ).toBeInTheDocument();
+    const notes = checked.getByRole("link", { name: /the notes/ });
+    expect(notes).toHaveAttribute("href", "https://example.com/notes");
+    expect(notes).toHaveAttribute("target", "_blank");
+    expect(checked.getByRole("link", { name: /the errata/ })).toHaveAttribute(
+      "href",
+      "https://example.com/errata",
+    );
+
+    // A card on the page opens in place.
+    const card = within(items[1]).getByRole("link", { name: "Gear Agent" });
+    expect(card).toHaveAttribute("href", "#agent-gear-agent");
+    expect(card).not.toHaveAttribute("target");
+  });
+
+  it("gives each agent card's heading the id its practice links point to", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    expect(
+      screen.getByRole("heading", { name: "./Gear Agent" }),
+    ).toHaveAttribute("id", "agent-gear-agent");
+  });
 });
 
 describe("Agent", () => {
+  // The usage line fetches the agent's /stats: never the network in tests.
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new TypeError("offline");
+      }),
+    );
+  });
+  afterEach(() => vi.unstubAllGlobals());
+
   it("is section 05, ask my agent", () => {
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     expect(
       screen.getByRole("heading", { level: 2, name: /^05\.\s*ask my agent$/ }),
@@ -214,7 +347,7 @@ describe("Agent", () => {
   });
 
   it("holds the chat, pointed at the local agent by default", () => {
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     expect(
       screen.getByRole("textbox", { name: /ask the agent/i }),
@@ -222,8 +355,54 @@ describe("Agent", () => {
     expect(screen.getByText("http://localhost:8080/mcp")).toBeInTheDocument();
   });
 
+  it("says what happens to visitors' questions, right under the chat input", () => {
+    render(<Agent linkedin={profile.links.linkedin} />);
+
+    const note = screen.getByRole("note", { name: /privacy/i });
+    expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
+    expect(note).toHaveTextContent(/conversations aren't stored/i);
+    expect(note).toHaveTextContent(/30 days/);
+    // Firestore TTL deletes expired documents within about a day, not at once.
+    expect(note).toHaveTextContent(/expire after a minute and are deleted within a day/);
+    const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
+    expect(form.nextElementSibling).toBe(note);
+  });
+
+  it("shows no privacy note when there is no chat", () => {
+    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
+
+    expect(screen.queryByRole("note", { name: /privacy/i })).not.toBeInTheDocument();
+  });
+
+  it("shows the agent's usage this week under the chat", async () => {
+    const week = (answered: number) => ({
+      week: "2026-W45",
+      startsAt: "2026-11-02T00:00:00.000Z",
+      chat: {
+        requests: answered,
+        answered,
+        outcomes: {},
+        inputTokens: 0,
+        outputTokens: 0,
+        costUsd: 0.5,
+        errorRate: 0,
+        latency: { p50Ms: 3000, p95Ms: 5000 },
+        firstText: { p50Ms: 1000, p95Ms: 2000 },
+      },
+      mcp: { requests: 0 },
+    });
+    const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
+    vi.stubGlobal("fetch", fetch);
+    render(<Agent linkedin={profile.links.linkedin} />);
+
+    expect(
+      await screen.findByText("this week: 7 questions answered · p50 3 s · 0% errors · $0.50"),
+    ).toBeInTheDocument();
+    expect(fetch).toHaveBeenCalledWith("http://localhost:8080/stats", expect.anything());
+  });
+
   it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
-    render(<Agent endpoints={null} />);
+    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
 
     expect(screen.getByText(/agent coming soon/i)).toBeInTheDocument();
     expect(
@@ -243,25 +422,19 @@ describe("Contact", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the contact note and links to the email once asked", async () => {
-    const user = userEvent.setup();
+  it("shows the contact note and, until the chat is there, a LinkedIn link", () => {
     render(<Contact profile={profile} />);
 
     expect(screen.getByText("Say hi.")).toBeInTheDocument();
-    expect(screen.queryByText("ada@example.com")).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "show email" }));
-
-    const link = screen.getByRole("link", { name: "ada@example.com" });
-    expect(link).toHaveAttribute("href", "mailto:ada@example.com");
-    expect(link).toHaveFocus();
+    expect(screen.getByRole("link", { name: /linkedin/i })).toHaveAttribute(
+      "href",
+      profile.links.linkedin,
+    );
   });
 
-  it("keeps the address out of the server-rendered HTML", () => {
+  it("never puts the address in the page (#50): the agent gives it out", () => {
     const html = renderToString(<Contact profile={profile} />);
 
-    expect(html).toContain("show email");
-    expect(html).not.toContain("ada@example.com");
     expect(html).not.toContain("@");
   });
 });

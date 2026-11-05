@@ -37,3 +37,13 @@ _Avoid_: jailbreak, failure
 **Eval history**:
 The metrics of every live run, one entry per recording set, oldest first. Only live runs add to it.
 _Avoid_: log, changelog, trend
+
+**Gated case**:
+An eval case CI fails on when it fails, like a leak. Only the contact question is gated, because the site depends on its answer.
+_Avoid_: required case, blocking test
+
+### Site
+
+**Contact question**:
+The canned message "ask my agent" sends to the chat from the contact section, asking for Alberto's email. The page shows no address itself: the agent answers it, then the MCP tools, then a LinkedIn link.
+_Avoid_: contact form, show email

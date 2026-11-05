@@ -3,15 +3,15 @@
   "slug": "current-company-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "0f554ad1f264db2e1a7e6a06d7da42cf3e72a8a230792c86f3aa97de19d3866d",
-      "latencyMs": 1973,
+      "requestHash": "356e8d0cdcec45835d73d26a404e0dcd0dd6d0dc00fd9b0ea2f66a68aec1ef62",
+      "latencyMs": 2195,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1974
+          "inputTokens": 2344
         },
         {
           "type": "turn_end",
@@ -19,20 +19,31 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "Ueb41Y7ei4btT6Xeqq7ngLxykkq3hebX",
+                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1974,
-              "outputTokens": 52
+              "inputTokens": 2344,
+              "outputTokens": 82
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "Ueb41Y7ei4btT6Xeqq7ngLxykkq3hebX",
+                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,12 +53,12 @@
       ]
     },
     {
-      "requestHash": "7088f1f862582ac77289f314041d1f7903f0e3752d64357547c6ca4a7bab675d",
-      "latencyMs": 824,
+      "requestHash": "8490f0f7da0319029077a887a362d44929a936049445793f558bde0d67d70844",
+      "latencyMs": 772,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2324
+          "inputTokens": 2980
         },
         {
           "type": "text_delta",
@@ -59,7 +70,11 @@
         },
         {
           "type": "text_delta",
-          "text": " actualmente"
+          "text": " Carbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
         },
         {
           "type": "text_delta",
@@ -67,23 +82,7 @@
         },
         {
           "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " **"
-        },
-        {
-          "type": "text_delta",
-          "text": "Cover"
-        },
-        {
-          "type": "text_delta",
-          "text": "Wallet"
-        },
-        {
-          "type": "text_delta",
-          "text": "**"
+          "text": " actualmente"
         },
         {
           "type": "text_delta",
@@ -103,22 +102,34 @@
         },
         {
           "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cover"
+        },
+        {
+          "type": "text_delta",
+          "text": "Wallet"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto actualmente trabaja en **CoverWallet** como Senior Software Engineer.",
+            "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2324,
+              "inputTokens": 2980,
               "outputTokens": 17
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja en **CoverWallet** como Senior Software Engineer."
+                "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet."
               }
             ]
           }

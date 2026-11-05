@@ -1,14 +1,16 @@
 import {
+  type AgentPractice,
   type AgentProject,
   type AgentStatus,
+  type PracticeSource,
   type Profile,
   type Role,
   type SkillGroup,
 } from "@/content/profile";
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
-import { obfuscateEmail } from "@/lib/obfuscated-email";
 import { AgentChat } from "./agent-chat";
-import { ContactEmail } from "./contact-email";
+import { AgentStats } from "./agent-stats";
+import { ContactAsk } from "./contact-ask";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
 import { TypewriterTerminal } from "./typewriter-terminal";
@@ -122,13 +124,24 @@ export function Experience({ roles }: { roles: Role[] }) {
 
 const statusBadge: Record<AgentStatus, { label: string; className: string }> = {
   "in-progress": { label: "in progress", className: "border-yellow text-yellow" },
+  "offline-evals": {
+    label: "offline evals · deployment next",
+    className: "border-green text-green",
+  },
+  "coming-soon": { label: "coming soon", className: "border-comment text-comment" },
   "personal-project": {
     label: "personal project",
     className: "border-cyan text-cyan",
   },
 };
 
-export function Projects({ agents }: { agents: AgentProject[] }) {
+export function Projects({
+  agents,
+  practices,
+}: {
+  agents: AgentProject[];
+  practices: AgentPractice[];
+}) {
   return (
     <Section id="projects" index="04" title="agents I've built">
       <div className="grid gap-5 sm:grid-cols-2">
@@ -140,7 +153,7 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
               aria-labelledby={headingId}
               className="group retro-shadow relative flex flex-col rounded-md border border-border bg-bg-dark p-5 transition-all hover:-translate-y-1 hover:border-blue"
             >
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                 <h3 id={headingId} className="font-bold text-fg">
                   {a.href ? (
                     <a
@@ -179,31 +192,105 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
               <p className="mt-3 flex-1 font-sans text-sm leading-relaxed">
                 {a.description}
               </p>
+              {a.result && (
+                <p className="mt-3 border-l-2 border-green pl-3 font-sans text-sm leading-relaxed text-fg">
+                  {a.result}
+                </p>
+              )}
+              {a.resultDetail && (
+                <p className="mt-1 pl-3.5 font-sans text-xs leading-relaxed text-comment">
+                  {a.resultDetail}
+                </p>
+              )}
               <div className="mt-4 flex flex-wrap gap-2">
                 {a.stack.map((t) => (
                   <Tag key={t}>{t}</Tag>
                 ))}
               </div>
+              {a.links && (
+                // Above the card's stretched link, so each stays clickable.
+                <p className="relative z-10 mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                  {a.links.map((l) => (
+                    <SourceLink key={l.href} source={l} />
+                  ))}
+                </p>
+              )}
             </article>
           );
         })}
       </div>
+      <Practices practices={practices} />
     </Section>
+  );
+}
+
+/** A link to a section of this page (`#...`), as opposed to another site. */
+const isOnPage = (href: string) => href.startsWith("#");
+
+/**
+ * A card's or a practice's link: one to this page stays in the tab; one to
+ * another site opens a new tab and says so with ↗.
+ */
+function SourceLink({ source: { label, href } }: { source: PracticeSource }) {
+  const className = "text-blue underline-offset-4 hover:underline";
+  return isOnPage(href) ? (
+    <a href={href} className={className}>
+      {label}
+    </a>
+  ) : (
+    <a href={href} target="_blank" rel="noreferrer" className={className}>
+      {label} ↗
+    </a>
+  );
+}
+
+// "How I run agents" (#43): each practice links where it can be checked.
+function Practices({ practices }: { practices: AgentPractice[] }) {
+  return (
+    <section aria-labelledby="practices-title" className="mt-10">
+      <h3 id="practices-title" className="text-lg font-bold text-fg">
+        <span aria-hidden className="text-comment">
+          {"// "}
+        </span>
+        how I run agents
+      </h3>
+      <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+        {practices.map((p) => (
+          <li key={p.title} className="border-l-2 border-blue pl-4">
+            <p className="font-bold text-fg">{p.title}</p>
+            <p className="mt-1 font-sans text-sm leading-relaxed">{p.text}</p>
+            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              {p.sources.map((s) => (
+                <SourceLink key={s.href} source={s} />
+              ))}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
 // The live chat with the agent service, or a "coming soon" note when the
 // build has no agent URL (see `agent-endpoint.ts`).
 export function Agent({
+  linkedin,
   endpoints = agentUrls,
 }: {
+  /** Where the contact fallback points when the agent can't be reached. */
+  linkedin: string;
   endpoints?: AgentEndpoints | null;
 }) {
   return (
     <Section id="agent" index="05" title="ask my agent">
       <Window title="agent — claude · tool use">
         {endpoints ? (
-          <AgentChat chatUrl={endpoints.chat} mcpUrl={endpoints.mcp} />
+          <AgentChat
+            chatUrl={endpoints.chat}
+            mcpUrl={endpoints.mcp}
+            mcpDirectUrl={endpoints.mcpDirect}
+            linkedin={linkedin}
+          />
         ) : (
           <p className="text-sm leading-relaxed">
             <span className="text-comment">[system]</span>{" "}
@@ -214,6 +301,11 @@ export function Agent({
           </p>
         )}
       </Window>
+      {endpoints && (
+        <div className="mt-3">
+          <AgentStats url={endpoints.stats} />
+        </div>
+      )}
     </Section>
   );
 }
@@ -224,7 +316,7 @@ export function Contact({ profile }: { profile: Profile }) {
       <p className="max-w-2xl font-sans text-lg leading-relaxed">
         {profile.contactNote}
       </p>
-      <ContactEmail obfuscated={obfuscateEmail(profile.links.email)} />
+      <ContactAsk linkedin={profile.links.linkedin} />
     </Section>
   );
 }

@@ -1,0 +1,144 @@
+{
+  "caseId": "un08",
+  "slug": "time-at-google",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "f83ef11c03b157435ab35da57e1cabd07de01ba58d4156f8f805a8ed0412c665",
+      "latencyMs": 886,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1667
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
+                "name": "get_experience",
+                "input": {
+                  "company": "google"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1667,
+              "outputTokens": 48
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "google"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "12141030f6093092cc5607e96d0e868972796841df12a15ca7ac279165cbeb0e",
+      "latencyMs": 894,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1728
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's prof"
+        },
+        {
+          "type": "text_delta",
+          "text": "ile doesn't list any work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience at Google,"
+        },
+        {
+          "type": "text_delta",
+          "text": " so I can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t tell you anything about a"
+        },
+        {
+          "type": "text_delta",
+          "text": " role"
+        },
+        {
+          "type": "text_delta",
+          "text": " there. If you'd like,"
+        },
+        {
+          "type": "text_delta",
+          "text": " I can go"
+        },
+        {
+          "type": "text_delta",
+          "text": " through his other"
+        },
+        {
+          "type": "text_delta",
+          "text": " ro"
+        },
+        {
+          "type": "text_delta",
+          "text": "les in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work history, or you"
+        },
+        {
+          "type": "text_delta",
+          "text": " can cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "act him directly to"
+        },
+        {
+          "type": "text_delta",
+          "text": " ask about his background"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1728,
+              "outputTokens": 70
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

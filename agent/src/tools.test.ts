@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import * as z from "zod";
+import { chatPrivacyNote } from "../../src/content/profile";
+import { systemPrompt } from "./chat";
 import { createToolset, type Content } from "./tools";
 
 const fixture: Content = {
@@ -11,7 +14,6 @@ const fixture: Content = {
     summary: ["First paragraph.", "Second paragraph."],
     contactNote: "Write to me.",
     links: {
-      email: "ada@example.com",
       github: "https://github.com/ada",
       linkedin: "https://www.linkedin.com/in/ada/",
     },
@@ -25,14 +27,35 @@ const fixture: Content = {
       description: "Computes Bernoulli numbers.",
       stack: ["Punch cards"],
       href: "#agent",
+      links: [
+        { label: "source", href: "https://example.com/engine" },
+        { label: "the chat", href: "#agent" },
+      ],
     },
     {
       slug: "loom",
       name: "Loom Agent",
-      status: "in-progress",
+      status: "offline-evals",
       context: "Side business",
       description: "Weaves patterns.",
+      result: "Offline evals: wrong patterns fell from 40% to 5%.",
+      resultDetail: "Mean of 3 runs.",
       stack: ["Jacquard"],
+    },
+  ],
+  agentPractices: [
+    {
+      title: "Tables checked twice",
+      text: "Every table is recomputed by hand.",
+      sources: [
+        { label: "the notes", href: "https://example.com/notes" },
+        { label: "Loom Agent", href: "#agent-loom" },
+      ],
+    },
+    {
+      title: "A human turns the crank",
+      text: "The engine proposes, the operator decides.",
+      sources: [{ label: "Loom Agent", href: "#agent-loom" }],
     },
   ],
   experience: [
@@ -71,6 +94,7 @@ const fixture: Content = {
     },
   ],
   languages: [{ name: "English", level: "Native" }],
+  contactEmail: "ada@example.com",
 };
 
 const tools = createToolset(fixture);
@@ -172,21 +196,52 @@ describe("get_projects", () => {
           context: "Personal project",
           description: "Computes Bernoulli numbers.",
           stack: ["Punch cards"],
+          links: [{ label: "source", url: "https://example.com/engine" }],
         },
         {
           name: "Loom Agent",
-          status: "in-progress",
+          status: "offline-evals",
           context: "Side business",
           description: "Weaves patterns.",
+          result: "Offline evals: wrong patterns fell from 40% to 5%.",
+          resultDetail: "Mean of 3 runs.",
           stack: ["Jacquard"],
+        },
+      ],
+      // How he runs agents (#43), with only the links that work off the page.
+      practices: [
+        {
+          title: "Tables checked twice",
+          text: "Every table is recomputed by hand.",
+          sources: [{ label: "the notes", url: "https://example.com/notes" }],
+        },
+        {
+          title: "A human turns the crank",
+          text: "The engine proposes, the operator decides.",
         },
       ],
     });
   });
 
-  it("filters by status", () => {
-    const result = tools.call("get_projects", { status: "in-progress" });
+  it("filters by status, still saying how he runs agents", () => {
+    const result = tools.call("get_projects", { status: "offline-evals" });
     expect(result.projects.map((p) => p.name)).toEqual(["Loom Agent"]);
+    expect(result.practices.map((p) => p.title)).toEqual([
+      "Tables checked twice",
+      "A human turns the crank",
+    ]);
+  });
+
+  it("says in its description that it covers how he runs agents", () => {
+    const tool = tools.list().find((t) => t.name === "get_projects")!;
+    expect(tool.description).toMatch(/how he (?:builds and )?runs (?:them|agents)/);
+  });
+
+  it("lists every status in its description", () => {
+    const tool = tools.list().find((t) => t.name === "get_projects")!;
+    for (const label of ["in progress", "offline evals", "coming soon", "personal project"]) {
+      expect(tool.description).toContain(label);
+    }
   });
 
   it("rejects an unknown status", () => {
@@ -227,5 +282,52 @@ describe("get_contact", () => {
       linkedin: "https://www.linkedin.com/in/ada/",
       location: "London",
     });
+  });
+
+  // Local development: CONTACT_EMAIL unset, so no address to give (#51).
+  describe("without a contact email", () => {
+    const noEmail = createToolset({ ...fixture, contactEmail: undefined });
+    const contact = () => noEmail.list().find((t) => t.name === "get_contact")!;
+
+    it("returns GitHub and LinkedIn only, and says to message him on LinkedIn", () => {
+      const output = noEmail.call("get_contact", {});
+      expect(output).toEqual({
+        name: "Ada Lovelace",
+        note: "No email address is available here: message Ada Lovelace on LinkedIn.",
+        github: "https://github.com/ada",
+        linkedin: "https://www.linkedin.com/in/ada/",
+        location: "London",
+      });
+      expect(contact().outputSchema.safeParse(output).success).toBe(true);
+    });
+
+    it("leaves email out of its description", () => {
+      expect(contact().description).not.toMatch(/\bemail,/);
+      expect(contact().description).toMatch(/no email address/i);
+      expect(contact().description).toMatch(/LinkedIn/);
+    });
+  });
+});
+
+describe("the chat privacy note", () => {
+  // Site-only copy (#46): the model's request must not change because of it,
+  // so the recorded evals stay valid.
+  it("is in no tool description, tool result or the system prompt", () => {
+    const toolset = createToolset();
+    const request = JSON.stringify({
+      systemPrompt,
+      tools: toolset.list().map((tool) => ({
+        name: tool.name,
+        title: tool.title,
+        description: tool.description,
+        input: z.toJSONSchema(tool.inputSchema),
+        output: z.toJSONSchema(tool.outputSchema),
+        result: toolset.call(tool.name, {}),
+      })),
+    });
+
+    for (const fragment of [chatPrivacyNote, "Conversations aren't stored", "rate-limit counters"]) {
+      expect(request).not.toContain(fragment);
+    }
   });
 });

@@ -3,15 +3,15 @@
   "slug": "programming-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "5f019a6d10f8b59cb0f9dba8fd2aa091e8428e786ca8d36e5d8a3694dfc9cf13",
-      "latencyMs": 902,
+      "requestHash": "f389220c326a1b6cf9809c170c62a2986bdbb42b2f3b90db529b62944689d571",
+      "latencyMs": 858,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1407
+          "inputTokens": 1665
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_019JcnNVh6zgyvrDjr3vvpUp",
+                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1407,
+              "inputTokens": 1665,
               "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_019JcnNVh6zgyvrDjr3vvpUp",
+                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -49,12 +49,12 @@
       ]
     },
     {
-      "requestHash": "49b064d40ae9cb1ceebee6dc4aa24a4baf372fa564e439b08b492af187ecc062",
-      "latencyMs": 789,
+      "requestHash": "474bfe873d97cd076fbf758538d72f9225e522bacee625eb0b50623962e1d13d",
+      "latencyMs": 735,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1506
+          "inputTokens": 1764
         },
         {
           "type": "text_delta",
@@ -87,7 +87,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1506,
+              "inputTokens": 1764,
               "outputTokens": 32
             },
             "providerContent": [

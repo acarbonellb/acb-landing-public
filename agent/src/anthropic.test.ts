@@ -216,6 +216,78 @@ describe("Anthropic model client", () => {
     },
   );
 
+  // The provider's own limits (docs: "Rate limits" > "Spend limits"). A
+  // workspace or organization spend limit set in the Console answers 400
+  // with a message naming it; no credit is a 402 billing_error.
+  const providerLimits: [string, number, { type: string; message: string }][] = [
+    [
+      "a workspace spend limit",
+      400,
+      {
+        type: "invalid_request_error",
+        message:
+          "You have reached your specified workspace API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.",
+      },
+    ],
+    [
+      "an organization spend limit",
+      400,
+      {
+        type: "invalid_request_error",
+        message:
+          "You have reached your specified API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.",
+      },
+    ],
+    [
+      "a billing problem (no credit left)",
+      402,
+      { type: "billing_error", message: "Your credit balance is too low to access the API." },
+    ],
+  ];
+
+  it.each(providerLimits)("turns %s into ModelUnavailableError", async (_, status, error) => {
+    const { fetch } = fakeFetch(
+      () =>
+        new Response(JSON.stringify({ type: "error", error }), {
+          status,
+          headers: { "content-type": "application/json" },
+        }),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+      maxRetries: 0,
+    });
+    await expect(collect(client.stream(request))).rejects.toBeInstanceOf(
+      ModelUnavailableError,
+    );
+  });
+
+  it("keeps any other 400 an internal error", async () => {
+    const { fetch } = fakeFetch(
+      () =>
+        new Response(
+          JSON.stringify({
+            type: "error",
+            error: { type: "invalid_request_error", message: "messages: field required" },
+          }),
+          { status: 400, headers: { "content-type": "application/json" } },
+        ),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+      maxRetries: 0,
+    });
+    const error = await collect(client.stream(request)).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(Error);
+    expect(error).not.toBeInstanceOf(ModelUnavailableError);
+  });
+
   it("lets other API errors (e.g. a bad key) through as internal errors", async () => {
     const { fetch } = fakeFetch(
       () =>

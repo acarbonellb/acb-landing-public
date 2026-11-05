@@ -93,7 +93,9 @@ jobs:
         run: scripts/smoke-check.sh "$SITE_URL" $REDIRECT_HOSTS
 
   deploy-agent:
-    needs: test
+    # After the site deploy: the smoke check also calls /mcp through the
+    # site's Hosting rewrite (firebase.json).
+    needs: [test, deploy]
     # Only main deploys, and only once the agent's public URL is configured.
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && vars.GCP_PROJECT_ID != '' && vars.AGENT_URL != ''
     runs-on: ubuntu-latest
@@ -131,7 +133,11 @@ jobs:
       # and kept across deploys; this job never changes IAM. The model and its
       # prices are the code defaults (agent/src/config.ts). The guardrails'
       # store is `memory` until the AGENT_STORE variable says `firestore`
-      # (the database must exist first). `^@^` makes `@` the separator, as
+      # (the database must exist first). The monthly spend cap is set here, in
+      # sight, and stays under the Anthropic workspace's own $5/month hard
+      # limit (README, Guardrails). The contact email is a secret too, so the
+      # address never passes through GitHub: the repo and its logs are public.
+      # `^@^` makes `@` the separator, as
       # ALLOWED_ORIGINS may hold commas.
       - name: Deploy to Cloud Run
         env:
@@ -140,10 +146,11 @@ jobs:
           gcloud run deploy agent --quiet
           --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"
           --service-account "agent-runtime@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com"
-          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest
-          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}"
+          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,CONTACT_EMAIL=contact-email:latest
+          --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=${{ vars.GCP_PROJECT_ID }}@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
-      # Never calls the model: health, MCP tools, CORS and validation only.
+      # Never calls the model: health, MCP tools (on the agent's URL and on the
+      # site's domain), the usage stats, CORS and validation only.
       - name: Smoke check
         run: scripts/agent-smoke-check.sh "${{ vars.AGENT_URL }}" "$SITE_URL"

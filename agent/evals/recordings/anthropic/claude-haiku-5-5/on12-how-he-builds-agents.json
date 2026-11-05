@@ -1,0 +1,404 @@
+{
+  "caseId": "on12",
+  "slug": "how-he-builds-agents",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "69bd2a10d3f5957e8fccd165b53bb7f85181b9826a5d25ffb2f7f5d31558a845",
+      "latencyMs": 783,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1662
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01VpqeTDvDQkJKHiSbmhnthX",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1662,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01VpqeTDvDQkJKHiSbmhnthX",
+                "name": "get_projects",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "44782835645fa8cf7ff25f237f6dd7c481590244ed20485a3bc22dba04cae643",
+      "latencyMs": 2224,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2834
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto builds agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " with a few"
+        },
+        {
+          "type": "text_delta",
+          "text": " cons"
+        },
+        {
+          "type": "text_delta",
+          "text": "istent practices:"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n- **Offline evals"
+        },
+        {
+          "type": "text_delta",
+          "text": " before shipping:"
+        },
+        {
+          "type": "text_delta",
+          "text": "** Evals are recorded"
+        },
+        {
+          "type": "text_delta",
+          "text": " against a real model and replayed"
+        },
+        {
+          "type": "text_delta",
+          "text": " in CI with"
+        },
+        {
+          "type": "text_delta",
+          "text": " no model or network. A stale"
+        },
+        {
+          "type": "text_delta",
+          "text": " recording or an off-topic"
+        },
+        {
+          "type": "text_delta",
+          "text": " leak fails the build. "
+        },
+        {
+          "type": "text_delta",
+          "text": "([ADR 0001]("
+        },
+        {
+          "type": "text_delta",
+          "text": "https://github.com/acar"
+        },
+        {
+          "type": "text_delta",
+          "text": "bon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ellb/acb-landing"
+        },
+        {
+          "type": "text_delta",
+          "text": "-public/blob/main/"
+        },
+        {
+          "type": "text_delta",
+          "text": "docs/adr/0001"
+        },
+        {
+          "type": "text_delta",
+          "text": "-agent-evals-record"
+        },
+        {
+          "type": "text_delta",
+          "text": "-replay.md))\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **Graded autonomy"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " a human in the loop:**"
+        },
+        {
+          "type": "text_delta",
+          "text": " In"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud detection agent,"
+        },
+        {
+          "type": "text_delta",
+          "text": " the agent recommends and a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human admin decides. It only"
+        },
+        {
+          "type": "text_delta",
+          "text": " auto-approves on evid"
+        },
+        {
+          "type": "text_delta",
+          "text": "ence verified in code,"
+        },
+        {
+          "type": "text_delta",
+          "text": " and web sources can hold a"
+        },
+        {
+          "type": "text_delta",
+          "text": " decision back but never approve it"
+        },
+        {
+          "type": "text_delta",
+          "text": ".\n- **Cost and"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits tracked:** His"
+        },
+        {
+          "type": "text_delta",
+          "text": " port"
+        },
+        {
+          "type": "text_delta",
+          "text": "folio agent has a per"
+        },
+        {
+          "type": "text_delta",
+          "text": "-request token budget, per-"
+        },
+        {
+          "type": "text_delta",
+          "text": "IP rate limits and a"
+        },
+        {
+          "type": "text_delta",
+          "text": " monthly spend cap."
+        },
+        {
+          "type": "text_delta",
+          "text": " E"
+        },
+        {
+          "type": "text_delta",
+          "text": "val reports show mean tok"
+        },
+        {
+          "type": "text_delta",
+          "text": "ens, latency and cost per"
+        },
+        {
+          "type": "text_delta",
+          "text": " case."
+        },
+        {
+          "type": "text_delta",
+          "text": " ([guardrails](https"
+        },
+        {
+          "type": "text_delta",
+          "text": "://github.com/acarb"
+        },
+        {
+          "type": "text_delta",
+          "text": "on"
+        },
+        {
+          "type": "text_delta",
+          "text": "ellb/"
+        },
+        {
+          "type": "text_delta",
+          "text": "acb-landing-public#"
+        },
+        {
+          "type": "text_delta",
+          "text": "guardrails))\n- **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Changes measured run over run"
+        },
+        {
+          "type": "text_delta",
+          "text": ":** Each"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval run appends its metr"
+        },
+        {
+          "type": "text_delta",
+          "text": "ics to a history, so promp"
+        },
+        {
+          "type": "text_delta",
+          "text": "t, tool or content changes"
+        },
+        {
+          "type": "text_delta",
+          "text": " show up against"
+        },
+        {
+          "type": "text_delta",
+          "text": " the previous run. ([e"
+        },
+        {
+          "type": "text_delta",
+          "text": "val history](https://github.com"
+        },
+        {
+          "type": "text_delta",
+          "text": "/acarbonellb/"
+        },
+        {
+          "type": "text_delta",
+          "text": "acb-landing-public/"
+        },
+        {
+          "type": "text_delta",
+          "text": "blob/main/agent/"
+        },
+        {
+          "type": "text_delta",
+          "text": "evals/history.json"
+        },
+        {
+          "type": "text_delta",
+          "text": "l))"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nExample result"
+        },
+        {
+          "type": "text_delta",
+          "text": ": in"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud detection agent ("
+        },
+        {
+          "type": "text_delta",
+          "text": "offline evals, 31 "
+        },
+        {
+          "type": "text_delta",
+          "text": "cases), appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ved fraud fell from "
+        },
+        {
+          "type": "text_delta",
+          "text": "54% to 8% over tw"
+        },
+        {
+          "type": "text_delta",
+          "text": "elve iterations on a local"
+        },
+        {
+          "type": "text_delta",
+          "text": " 9B model. He ch"
+        },
+        {
+          "type": "text_delta",
+          "text": "ose Claude Haiku"
+        },
+        {
+          "type": "text_delta",
+          "text": " 5.5 for deploy"
+        },
+        {
+          "type": "text_delta",
+          "text": "ment, which"
+        },
+        {
+          "type": "text_delta",
+          "text": " reached 86% accurac"
+        },
+        {
+          "type": "text_delta",
+          "text": "y at"
+        },
+        {
+          "type": "text_delta",
+          "text": " about $0.002 per review"
+        },
+        {
+          "type": "text_delta",
+          "text": ".\n\nWould you like details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on any"
+        },
+        {
+          "type": "text_delta",
+          "text": " of these"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto builds agents with a few consistent practices:\n\n- **Offline evals before shipping:** Evals are recorded against a real model and replayed in CI with no model or network. A stale recording or an off-topic leak fails the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy with a human in the loop:** In his fraud detection agent, the agent recommends and a human admin decides. It only auto-approves on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** His portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case. ([guardrails](https://github.com/acarbonellb/acb-landing-public#guardrails))\n- **Changes measured run over run:** Each eval run appends its metrics to a history, so prompt, tool or content changes show up against the previous run. ([eval history](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/history.jsonl))\n\nExample result: in the fraud detection agent (offline evals, 31 cases), approved fraud fell from 54% to 8% over twelve iterations on a local 9B model. He chose Claude Haiku 5.5 for deployment, which reached 86% accuracy at about $0.002 per review.\n\nWould you like details on any of these projects?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2834,
+              "outputTokens": 510
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto builds agents with a few consistent practices:\n\n- **Offline evals before shipping:** Evals are recorded against a real model and replayed in CI with no model or network. A stale recording or an off-topic leak fails the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy with a human in the loop:** In his fraud detection agent, the agent recommends and a human admin decides. It only auto-approves on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** His portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case. ([guardrails](https://github.com/acarbonellb/acb-landing-public#guardrails))\n- **Changes measured run over run:** Each eval run appends its metrics to a history, so prompt, tool or content changes show up against the previous run. ([eval history](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/history.jsonl))\n\nExample result: in the fraud detection agent (offline evals, 31 cases), approved fraud fell from 54% to 8% over twelve iterations on a local 9B model. He chose Claude Haiku 5.5 for deployment, which reached 86% accuracy at about $0.002 per review.\n\nWould you like details on any of these projects?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

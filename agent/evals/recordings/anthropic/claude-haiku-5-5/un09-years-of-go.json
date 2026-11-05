@@ -1,0 +1,150 @@
+{
+  "caseId": "un09",
+  "slug": "years-of-go",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "14da11fb6c49c67f736ef691e69d765b6b9b70bd5acc3b46405e48b15d972ed6",
+      "latencyMs": 842,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1665
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_016JzwfGRjEwqxoU137qRdGq",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1665,
+              "outputTokens": 79
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSpgUKEAgTGAI4AUIIdGhpbmtpbmcSDF0LdmVHyy7dUxU/XxoMLQUa8BJIiU1H0yWhIjBRx0ZsyTcwNYY5dFzQETqaI/bD/8jsgS/NclpcwIocg6GZKkjl5e/0Rgkjh5zyQgwqwwR62O8JAMPh97C+e7BeYSu+/l5FbQP7pKDoA2WWnzv/gbp9a2p+EhhGfooR1iwRehQsFZFSrZPS4NFUYxB6y78H1kncDCE2TBrGKoN88HXkzAlC2mToDogeun344Bpa2EAsbYze+FazR4SCAWBc8MGXZiSPknBu5uorzANsW6sdoZLH71F6kRnbgJmNG7SDv7BDtkOxKR7SdxlzN/42joCgre29N7h/wLpcsrbpCVkEzJc52TLp72WKrzJwHX5wnj4/Mu7CcjuIRSfKI2mwyiQZgS0Zs551vctpOkPOPMTZGXFDX/wmbGLHtDIl8JZGg/BramzdEo2Y2RH8+GheYCf4DEFOWuFSFzRyacgmF4QHC0sqzU/LoYKrXHHaOo+AMkbcVx2eyCFJVNYE5gXYMoVmuOHt/3P761oU21Hmyig0PGPH95FOxFSV4wR+zW7iCyzZedmjfY5alnGzk5/h9rwsGwG1AsrLq7+u53CIHiPfH/8Oj2SAxCOdtmWvjMaO4FSk56bvWVLUkx2fz8QbbXZtfI8yJY9pKTaoc/nkuvKbGYYfMgn+72PBN3vXwjPXSWa2gYvwBwoai+ozh2hoten6p5n5I7HQjiykg1qZzuJtv8RvAyGdKpNVMJkMSXDzjcU+ATK23Qss8XzZ5vOaH8jfH6GUtyXYtusojLPnnZYhvT2Je9IAJMlccv29Vnrz4/r1TAbcX2772w0pFJ/sKvsBanJlphWKoE/x84/1133RVlc5omZQhRtJgVLsKEQEAMV0NwcYAQ=="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_016JzwfGRjEwqxoU137qRdGq",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "d5e71c84306d52c85fb3074989ed9536e2ba7d62d7fdd7cb9fe1f730a04f5d05",
+      "latencyMs": 1940,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1794
+        },
+        {
+          "type": "text_delta",
+          "text": "Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " isn't in Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s list"
+        },
+        {
+          "type": "text_delta",
+          "text": "ed langu"
+        },
+        {
+          "type": "text_delta",
+          "text": "ages. His prof"
+        },
+        {
+          "type": "text_delta",
+          "text": "ile lists TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ", JavaScript and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby, and it"
+        },
+        {
+          "type": "text_delta",
+          "text": " do"
+        },
+        {
+          "type": "text_delta",
+          "text": "esn't give any years of exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience with Go. You can "
+        },
+        {
+          "type": "text_delta",
+          "text": "ask him directly through the"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on his"
+        },
+        {
+          "type": "text_delta",
+          "text": " site."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Go isn't in Alberto's listed languages. His profile lists TypeScript, JavaScript and Ruby, and it doesn't give any years of experience with Go. You can ask him directly through the contact details on his site.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1794,
+              "outputTokens": 263
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS3gkKEAgTGAI4AUIIdGhpbmtpbmcSDK5X2/N0whtjbNGAyxoMbmjvQ1E6bCZWIHDtIjBLmP7aTaUX2TKFlMQ8HKQR/bQ1/XQ7jZ88HSKras6RYFebUL3R0Bo+vqlzX5KwbV4q+whslgN7wzan1UYWU+gunr+1/AH+CCber1VXdp1iV9DeIhiiBybI5gd733Fcp+BOv34qAR3yDcOG2cTTO2rM4nZIYWKNn7Ut2ZlVgnnw2oDng1zNZxZ22PhVHlfcopuscudkd8aQ7h1oqVTnBW+HG8JF+iU63KUo1zGVlVp9mGsQZyNcWL7Ljn4yDiDAIM9CxqopMLhQtmNpmsZEaXQCv9+lpDdlS6Rp87io2VQ8ReBZfe5sacxLq4lVL+IVG5+PVc7QFWPqpbUa/v0XGvMdKuw62I/MBtfOUAvqkEv6Fqj++ijT6ajFteF+gzcspLNLafdIkzqWWb/35EIpivyx5g6eJ8+S3u3FLc/YdqACPSoGkQd9z1YFAYbYE6bpVuOIYoXIKmaUdekxDjDDrPXu/JXx5B8pXmD6GbiXKgSEND2/qI+srEhNYM6cJIlh6B8zJK9ZU8XTEX1H9RFPjp/OILp9Cj5IHq9Sh2zhpD/yq4mOQyjg+sI1tt/n3SpW46tTFAsJVZTYP/pe4W9Ns7VLbK+HtZ0lJnw7NwVm7/df+vXVMPGbHNN+9Fw/t4+S6dn8SZgJleF2fVG1UYANOuJXyy7PU6hCbhXbzurB6oe8GMjKcPQtumgf5P5NasZsdxtr3L2eSbqyMVmb1GwtEH2Hvmho2kaYUWV9bGd8/t9HLbDUQIenGn752eJJnK9lNVXaZfEgS02sn3/G+YEEfp340Ky5GdCE0m/UrB7FGlO7EFrenf6vIwmPm21Q/50t+iP0OghNP79vQuC5GNABH8zNx89EbwtkcTFYZ2sTGCkdRbNYdVv7z5fzRypCd4Pw2zPjDxwvwqsKgomIlIagCRvkzz+p2NYyHiACex/L08Evc1DTjx6T3mCRwJE+5TYbo6bKEo3ORq54hDQJTRORWfdL31XVuRlAuaDUkkNK0jhMoEjWYqWcFmuW4fNVbxVF3TuSKaRn/0lXwYfJ9j0kcgjvqPK1hQqh1PUZIsjRS/Q3gWTi9W6sIGS8TtzMe426WS1dx/hXG2MJ2yDCiw6Ps4sLeU4D2294H+t7ikuBePkmozOhXqlbkY7MS9f50yfkNdi/iTnlTIEnt4jFF+vm0j18twij+QONd8gmKPHMWX0OUSG1ptOPHZKlDfYVH5ISJbtBTlr0CfTN+Ef3jdqHbeKdQvrCjaJeFXeyoVFF+7YhdGQUnXvnLnMp84aEcHdrcBngWvJGuFeGNILy1McamfeI1iFbPHCV2PcGKR67ikDaoTS/ZVi2RFEjw7L2Jn/frYyqs/RvY+SMOE/2cBIvMsfuxCsZZQvk1b28BQ54DwKI09RCfOzoFzKG3WAKqRqtfO/xtAkC/q+oO2RZvytVCK6gw3cCqRNmE6/dUJt2uqvGXJmuLyTZ2jQ7TMcobx18ra3TpwKSUZ4bYRSARpbSbt8r0ybDzJCn7EMXnexT0GhafmTzi4mRPzmMzzku3DuXLUq0TjPrgoF/T1HnAN/rh0RvmepQ+El8nupLmAxRABggDb7Uj5GFS7nPtA6SvEkFGAE="
+              },
+              {
+                "type": "text",
+                "text": "Go isn't in Alberto's listed languages. His profile lists TypeScript, JavaScript and Ruby, and it doesn't give any years of experience with Go. You can ask him directly through the contact details on his site."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

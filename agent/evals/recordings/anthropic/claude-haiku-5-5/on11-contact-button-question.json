@@ -1,0 +1,132 @@
+{
+  "caseId": "on11",
+  "slug": "contact-button-question",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "590d137032abaada0911416830ec2e326db523ac54c5ec4f7140881c5083ba50",
+      "latencyMs": 776,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1670
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
+                "name": "get_contact",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1670,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
+                "name": "get_contact",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "1af64254469af673404818d6217dd906563fa925c3cffd42ca71f3f97dc930e8",
+      "latencyMs": 888,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1795
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's email address"
+        },
+        {
+          "type": "text_delta",
+          "text": " is al"
+        },
+        {
+          "type": "text_delta",
+          "text": "berto@example.com. You"
+        },
+        {
+          "type": "text_delta",
+          "text": " can also reach him on"
+        },
+        {
+          "type": "text_delta",
+          "text": " ["
+        },
+        {
+          "type": "text_delta",
+          "text": "LinkedIn](https"
+        },
+        {
+          "type": "text_delta",
+          "text": "://www.linkedin."
+        },
+        {
+          "type": "text_delta",
+          "text": "com/in/albertocar"
+        },
+        {
+          "type": "text_delta",
+          "text": "bonell/) or [G"
+        },
+        {
+          "type": "text_delta",
+          "text": "itHub](https://github."
+        },
+        {
+          "type": "text_delta",
+          "text": "com/acarbonellb"
+        },
+        {
+          "type": "text_delta",
+          "text": "). He's"
+        },
+        {
+          "type": "text_delta",
+          "text": " based in Spain and works rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "otely."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1795,
+              "outputTokens": 88
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

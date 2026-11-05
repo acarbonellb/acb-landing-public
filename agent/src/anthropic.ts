@@ -112,12 +112,36 @@ function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
   };
 }
 
-/** Capacity and network failures are "try again later", not bugs. */
+// A spend limit set on the workspace or organization answers 400
+// `invalid_request_error`, told apart from a bad request only by this message
+// prefix (docs: "Rate limits" > "Setting your own spend limit").
+const spendLimitMessage = /^You have reached your specified (workspace )?API usage limits/;
+
+function upstreamMessage(error: InstanceType<typeof Anthropic.APIError>): unknown {
+  const body = error.error as { error?: { message?: unknown } } | undefined;
+  return body?.error?.message;
+}
+
+/**
+ * Capacity, network and the provider's own limits are "try again later", not
+ * bugs. The tier spend cap is a 429, covered by `RateLimitError`; no credit is
+ * a 402 `billing_error`.
+ */
 function isUnavailable(error: unknown): boolean {
-  return (
+  if (
     error instanceof Anthropic.RateLimitError ||
     error instanceof Anthropic.InternalServerError ||
     error instanceof Anthropic.APIConnectionError
+  ) {
+    return true;
+  }
+  if (!(error instanceof Anthropic.APIError)) return false;
+  if (error.status === 402 || error.type === "billing_error") return true;
+  const message = upstreamMessage(error);
+  return (
+    error instanceof Anthropic.BadRequestError &&
+    typeof message === "string" &&
+    spendLimitMessage.test(message)
   );
 }
 

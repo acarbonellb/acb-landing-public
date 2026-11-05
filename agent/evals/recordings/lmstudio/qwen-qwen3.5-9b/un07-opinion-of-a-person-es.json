@@ -1,0 +1,189 @@
+{
+  "caseId": "un07",
+  "slug": "opinion-of-a-person-es",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "bf625d567f8455713e7eeb8cb87823a59cf84632a38a346c5761f81738a79761",
+      "latencyMs": 2845,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2348
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "caurK4t9ujSbAOlLWiiQQl2BguxfMqnM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2348,
+              "outputTokens": 107
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "caurK4t9ujSbAOlLWiiQQl2BguxfMqnM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "2dbbe21a37351bbd03cea6a032f482ab7575d772bbd0c6ea1690cfa7763a415e",
+      "latencyMs": 1039,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2664
+        },
+        {
+          "type": "text_delta",
+          "text": "No"
+        },
+        {
+          "type": "text_delta",
+          "text": " hay"
+        },
+        {
+          "type": "text_delta",
+          "text": " información"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " su"
+        },
+        {
+          "type": "text_delta",
+          "text": " perfil"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " la"
+        },
+        {
+          "type": "text_delta",
+          "text": " opinión"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Lin"
+        },
+        {
+          "type": "text_delta",
+          "text": "us"
+        },
+        {
+          "type": "text_delta",
+          "text": " Tor"
+        },
+        {
+          "type": "text_delta",
+          "text": "val"
+        },
+        {
+          "type": "text_delta",
+          "text": "ds"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Para"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": "lo"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " sug"
+        },
+        {
+          "type": "text_delta",
+          "text": "iero"
+        },
+        {
+          "type": "text_delta",
+          "text": " contactar"
+        },
+        {
+          "type": "text_delta",
+          "text": " directamente"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "No hay información en su perfil sobre la opinión de Alberto de Linus Torvalds. Para saberlo, sugiero contactar directamente a Alberto.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2664,
+              "outputTokens": 32
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "No hay información en su perfil sobre la opinión de Alberto de Linus Torvalds. Para saberlo, sugiero contactar directamente a Alberto."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

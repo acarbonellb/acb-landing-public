@@ -1,13 +1,23 @@
 "use client";
 
-import { type FormEvent, useEffect, useId, useRef, useState } from "react";
+import {
+  type FormEvent,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import {
   type ChatClientEvent,
   type ChatErrorKind,
   type ChatMessage,
   streamChat,
 } from "@/lib/chat-client";
+import { chatPrivacyNote, contactQuestion } from "@/content/profile";
+import { connectChat } from "@/lib/chat-bridge";
 import { chatRequestLimits } from "@/lib/chat-contract";
+import { fetchContactEmail } from "@/lib/mcp-contact";
 import { Markdown } from "./markdown";
 
 const { maxMessages: MAX_MESSAGES, maxMessageChars: MAX_CHARS } = chatRequestLimits;
@@ -16,18 +26,28 @@ type Part =
   | { kind: "text"; text: string }
   | { kind: "tool"; id: string; label: string };
 
+/**
+ * How a failed contact question was answered instead: by the MCP tools (no
+ * model), or, when those fail too, with a LinkedIn link.
+ */
+type Fallback = { kind: "tools"; reason: ChatErrorKind; email: string } | { kind: "linkedin" };
+
 type Turn = {
   id: number;
   question: string;
   parts: Part[];
   status: "streaming" | "done" | "failed";
   stopReason?: string;
+  /** Sent by "ask my agent": a failure falls back instead of a notice. */
+  contact?: boolean;
+  fallback?: Fallback;
 };
 
 type Notice = {
   kind: ChatErrorKind;
   message?: string;
   retryAfterSeconds?: number;
+  resetsAt?: string;
 };
 
 const noticeTitle: Record<ChatErrorKind, string> = {
@@ -51,10 +71,25 @@ function noticeDetail(notice: Notice): string {
   return rest || noticeFallback[notice.kind];
 }
 
+// The budget renews at 00:00 UTC on the 1st: show that day, in UTC, so it
+// doesn't read as the last day of the month west of Greenwich.
+function renewalDate(iso: string): string {
+  return new Date(iso).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+    dateStyle: "long",
+  });
+}
+
 // The agent's Markdown in the terminal palette. Long URLs wrap anywhere so
 // they never push the page sideways on a phone.
 const answerStyle =
   "min-w-0 flex-1 space-y-2 text-fg-dark [overflow-wrap:anywhere] [&_a]:text-blue [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:text-cyan [&_code]:text-yellow [&_em]:italic [&_li]:pl-1 [&_ol]:list-decimal [&_ol]:pl-6 [&_strong]:font-bold [&_strong]:text-fg [&_ul]:list-['-_'] [&_ul]:pl-6";
+
+const fallbackReason: Record<ChatErrorKind, string> = {
+  rate_limited: "The chat's rate limit was reached",
+  unavailable: "The model is unavailable",
+  error: "The chat couldn't answer",
+};
 
 const stopNotes: Record<string, string> = {
   max_tokens: "[answer cut short by the length limit]",
@@ -118,10 +153,17 @@ function applyEvent(turn: Turn, event: ChatClientEvent): Turn {
 export function AgentChat({
   chatUrl,
   mcpUrl,
+  mcpDirectUrl,
+  linkedin,
   fetch,
 }: {
   chatUrl: string;
+  /** Shown to visitors for their own MCP clients. */
   mcpUrl: string;
+  /** Called by the page itself: the contact fallback's `get_contact`. */
+  mcpDirectUrl: string;
+  /** The last resort when neither the chat nor the MCP tools answer. */
+  linkedin: string;
   fetch?: typeof globalThis.fetch;
 }) {
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -130,6 +172,8 @@ export function AgentChat({
   const [copied, setCopied] = useState(false);
   const abort = useRef<AbortController | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const bridge = useRef<ReturnType<typeof connectChat> | null>(null);
   const nextId = useRef(0);
   const inputId = useId();
   const busy = turns.at(-1)?.status === "streaming";
@@ -142,38 +186,84 @@ export function AgentChat({
     if (el) el.scrollTop = el.scrollHeight;
   }, [turns]);
 
-  async function onSubmit(e: FormEvent) {
+  function onSubmit(e: FormEvent) {
     e.preventDefault();
     const question = draft.trim();
     if (!question || busy) return;
+    setDraft("");
+    void send(question);
+  }
 
+  async function send(question: string, { contact = false } = {}) {
     const id = nextId.current++;
     const messages = historyFor(turns, question);
     const update = (fn: (t: Turn) => Turn) =>
       setTurns((all) => all.map((t) => (t.id === id ? fn(t) : t)));
 
-    setDraft("");
     setNotice(null);
-    setTurns((all) => [...all, { id, question, parts: [], status: "streaming" }]);
+    setTurns((all) => [
+      ...all,
+      { id, question, parts: [], status: "streaming", ...(contact && { contact }) },
+    ]);
 
     const controller = new AbortController();
     abort.current = controller;
+    let failure: ChatErrorKind | undefined;
     for await (const event of streamChat(chatUrl, messages, {
       fetch,
       signal: controller.signal,
     })) {
+      if (event.type === "error" && contact) {
+        // Still streaming while the fallback below runs.
+        failure = event.kind;
+        break;
+      }
       update((t) => applyEvent(t, event));
       if (event.type === "error") {
         setNotice({
           kind: event.kind,
           message: event.message,
           retryAfterSeconds: event.retryAfterSeconds,
+          resetsAt: event.resetsAt,
         });
       }
+    }
+    if (failure) {
+      // No model needed: the address straight from the MCP tools, else LinkedIn.
+      const email = await fetchContactEmail(mcpDirectUrl, {
+        fetch,
+        signal: controller.signal,
+      });
+      const fallback: Fallback = email
+        ? { kind: "tools", reason: failure, email }
+        : { kind: "linkedin" };
+      update((t) => ({ ...t, status: "failed", fallback }));
     }
     // Aborted mid-stream (e.g. unmount): leave nothing spinning.
     update((t) => (t.status === "streaming" ? { ...t, status: "failed" } : t));
   }
+
+  // "ask my agent" (contact section): bring the chat into view, focus it and
+  // send the contact question as the visitor's message.
+  const askForContact = useEffectEvent(() => {
+    if (busy) return;
+    logRef.current?.closest("section")?.scrollIntoView?.({ block: "start" });
+    inputRef.current?.focus({ preventScroll: true });
+    void send(contactQuestion, { contact: true });
+  });
+
+  useEffect(() => {
+    const connection = connectChat(() => askForContact());
+    bridge.current = connection;
+    return () => {
+      connection.disconnect();
+      bridge.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    bridge.current?.setBusy(busy);
+  }, [busy]);
 
   async function copyCommand() {
     try {
@@ -223,6 +313,44 @@ export function AgentChat({
                 </div>
               ),
             )}
+            {turn.fallback?.kind === "tools" && (
+              <>
+                <p className="text-fg-dark">
+                  <span className="text-comment">[system]</span>{" "}
+                  {fallbackReason[turn.fallback.reason]}; here&apos;s the answer straight
+                  from my tools.
+                </p>
+                <p className="break-words text-fg-dark">
+                  <span className="text-magenta">mcp ›</span> calling{" "}
+                  <code className="text-yellow">get_contact()</code>
+                </p>
+                <p className="[overflow-wrap:anywhere]">
+                  <span className="text-magenta">mcp ›</span>{" "}
+                  <span className="text-fg-dark">Email: </span>
+                  <a
+                    href={`mailto:${turn.fallback.email}`}
+                    className="text-blue underline underline-offset-2 hover:text-cyan"
+                  >
+                    {turn.fallback.email}
+                  </a>
+                </p>
+              </>
+            )}
+            {turn.fallback?.kind === "linkedin" && (
+              <p className="text-fg-dark">
+                <span className="text-comment">[system]</span> The agent can&apos;t be
+                reached right now. You can message me on{" "}
+                <a
+                  href={linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue underline underline-offset-2 hover:text-cyan"
+                >
+                  LinkedIn
+                </a>
+                .
+              </p>
+            )}
             {turn.status === "streaming" && (
               <p className="text-comment">
                 <span className="text-magenta">agent ›</span> thinking…
@@ -251,6 +379,8 @@ export function AgentChat({
             {noticeDetail(notice)}
             {notice.retryAfterSeconds !== undefined &&
               ` Try again in ${notice.retryAfterSeconds}s.`}
+            {notice.resetsAt !== undefined &&
+              ` It's back on ${renewalDate(notice.resetsAt)} (UTC).`}
           </p>
           {/* The MCP tools don't use the model, so they outlive the chat. */}
           {notice.kind === "unavailable" && (
@@ -273,6 +403,7 @@ export function AgentChat({
           ❯
         </span>
         <input
+          ref={inputRef}
           id={inputId}
           type="text"
           value={draft}
@@ -280,7 +411,8 @@ export function AgentChat({
           maxLength={MAX_CHARS}
           autoComplete="off"
           placeholder="ask about my experience, projects, stack…"
-          className="min-w-0 flex-1 bg-transparent text-fg outline-none placeholder:text-comment"
+          // 16px on phones: iOS Safari zooms in on focus into any smaller field.
+          className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
         <button
           type="submit"
@@ -290,6 +422,15 @@ export function AgentChat({
           send ↵
         </button>
       </form>
+
+      <p
+        role="note"
+        aria-label="Privacy"
+        className="-mt-4 text-xs leading-relaxed text-comment"
+      >
+        <span aria-hidden>{"// "}</span>
+        {chatPrivacyNote}
+      </p>
 
       <div className="border-t border-border pt-5 text-sm">
         <p className="text-comment">

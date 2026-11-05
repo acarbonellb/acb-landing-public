@@ -1,0 +1,3766 @@
+{
+  "caseId": "in05",
+  "slug": "loop-through-tools",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "18f65afcd299c04a06d87cf5bd0780d6d74100751244490e3df08d990aff00ae",
+      "latencyMs": 7439,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2576
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "rYX51syYBOIVa1B5kdduTeh86f0Ths00",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "V4aAOllchiETJailUTZbLJJoSkcjMniJ",
+                "name": "get_experience",
+                "input": {}
+              },
+              {
+                "id": "uq8QBaa031t0K8igzWto0TGUAodvSGkI",
+                "name": "get_stack",
+                "input": {}
+              },
+              {
+                "id": "kZdyxwv2lLndGvlGEFhALwXpx9X8766X",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2576,
+              "outputTokens": 287
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "rYX51syYBOIVa1B5kdduTeh86f0Ths00",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "V4aAOllchiETJailUTZbLJJoSkcjMniJ",
+                "name": "get_experience",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "uq8QBaa031t0K8igzWto0TGUAodvSGkI",
+                "name": "get_stack",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "kZdyxwv2lLndGvlGEFhALwXpx9X8766X",
+                "name": "get_projects",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "4e758b779e484590823a97aaf4a89e5de259d41c9ecedf43ce86fa4f416969e5",
+      "latencyMs": 25202,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 4358
+        },
+        {
+          "type": "text_delta",
+          "text": "Here"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " summary"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " Carbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Profile"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Name"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " Carbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Title"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": " —"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " &"
+        },
+        {
+          "type": "text_delta",
+          "text": " Full"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Location"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain"
+        },
+        {
+          "type": "text_delta",
+          "text": " ·"
+        },
+        {
+          "type": "text_delta",
+          "text": " Remote"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Tag"
+        },
+        {
+          "type": "text_delta",
+          "text": "line"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "+"
+        },
+        {
+          "type": "text_delta",
+          "text": " years"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " build"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " do"
+        },
+        {
+          "type": "text_delta",
+          "text": " real"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "About"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "+"
+        },
+        {
+          "type": "text_delta",
+          "text": " years"
+        },
+        {
+          "type": "text_delta",
+          "text": " shipping"
+        },
+        {
+          "type": "text_delta",
+          "text": " production"
+        },
+        {
+          "type": "text_delta",
+          "text": " software"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " L"
+        },
+        {
+          "type": "text_delta",
+          "text": "ately"
+        },
+        {
+          "type": "text_delta",
+          "text": " my"
+        },
+        {
+          "type": "text_delta",
+          "text": " focus"
+        },
+        {
+          "type": "text_delta",
+          "text": " has"
+        },
+        {
+          "type": "text_delta",
+          "text": " been"
+        },
+        {
+          "type": "text_delta",
+          "text": " building"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " handle"
+        },
+        {
+          "type": "text_delta",
+          "text": " real"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " wired"
+        },
+        {
+          "type": "text_delta",
+          "text": " into"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " tools"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " data"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " business"
+        },
+        {
+          "type": "text_delta",
+          "text": " already"
+        },
+        {
+          "type": "text_delta",
+          "text": " uses"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " With"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " loop"
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " ramp"
+        },
+        {
+          "type": "text_delta",
+          "text": " up"
+        },
+        {
+          "type": "text_delta",
+          "text": " fast"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " any"
+        },
+        {
+          "type": "text_delta",
+          "text": " new"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " what"
+        },
+        {
+          "type": "text_delta",
+          "text": " never"
+        },
+        {
+          "type": "text_delta",
+          "text": " changes"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " fundamentals"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " clean"
+        },
+        {
+          "type": "text_delta",
+          "text": " design"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " tests"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " easy"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " maintain"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Education"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Higher"
+        },
+        {
+          "type": "text_delta",
+          "text": " Technical"
+        },
+        {
+          "type": "text_delta",
+          "text": " Dipl"
+        },
+        {
+          "type": "text_delta",
+          "text": "omas"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "CF"
+        },
+        {
+          "type": "text_delta",
+          "text": "GS"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Web"
+        },
+        {
+          "type": "text_delta",
+          "text": " Development"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Multi"
+        },
+        {
+          "type": "text_delta",
+          "text": "platform"
+        },
+        {
+          "type": "text_delta",
+          "text": " Development"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Systems"
+        },
+        {
+          "type": "text_delta",
+          "text": " Administration"
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " CIF"
+        },
+        {
+          "type": "text_delta",
+          "text": "P"
+        },
+        {
+          "type": "text_delta",
+          "text": " Rod"
+        },
+        {
+          "type": "text_delta",
+          "text": "olfo"
+        },
+        {
+          "type": "text_delta",
+          "text": " U"
+        },
+        {
+          "type": "text_delta",
+          "text": "cha"
+        },
+        {
+          "type": "text_delta",
+          "text": " Pi"
+        },
+        {
+          "type": "text_delta",
+          "text": "ñ"
+        },
+        {
+          "type": "text_delta",
+          "text": "eiro"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "A"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cor"
+        },
+        {
+          "type": "text_delta",
+          "text": "uña"
+        },
+        {
+          "type": "text_delta",
+          "text": "),"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": " —"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Languages"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spanish"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "Native"
+        },
+        {
+          "type": "text_delta",
+          "text": "),"
+        },
+        {
+          "type": "text_delta",
+          "text": " English"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "C"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": ")."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Cover"
+        },
+        {
+          "type": "text_delta",
+          "text": "Wallet"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
+          "text": " —"
+        },
+        {
+          "type": "text_delta",
+          "text": " now"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid"
+        },
+        {
+          "type": "text_delta",
+          "text": " /"
+        },
+        {
+          "type": "text_delta",
+          "text": " Remote"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Ins"
+        },
+        {
+          "type": "text_delta",
+          "text": "ur"
+        },
+        {
+          "type": "text_delta",
+          "text": "tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " platform"
+        },
+        {
+          "type": "text_delta",
+          "text": " integrating"
+        },
+        {
+          "type": "text_delta",
+          "text": " external"
+        },
+        {
+          "type": "text_delta",
+          "text": " insurance"
+        },
+        {
+          "type": "text_delta",
+          "text": " carriers"
+        },
+        {
+          "type": "text_delta",
+          "text": " into"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " single"
+        },
+        {
+          "type": "text_delta",
+          "text": " commerce"
+        },
+        {
+          "type": "text_delta",
+          "text": " flow"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Highlights"
+        },
+        {
+          "type": "text_delta",
+          "text": " include"
+        },
+        {
+          "type": "text_delta",
+          "text": " leading"
+        },
+        {
+          "type": "text_delta",
+          "text": " cross"
+        },
+        {
+          "type": "text_delta",
+          "text": "-team"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " end"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " integrating"
+        },
+        {
+          "type": "text_delta",
+          "text": " third"
+        },
+        {
+          "type": "text_delta",
+          "text": "-party"
+        },
+        {
+          "type": "text_delta",
+          "text": " insurance"
+        },
+        {
+          "type": "text_delta",
+          "text": " carrier"
+        },
+        {
+          "type": "text_delta",
+          "text": " APIs"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " introducing"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " into"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " engineering"
+        },
+        {
+          "type": "text_delta",
+          "text": " workflow"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " mentoring"
+        },
+        {
+          "type": "text_delta",
+          "text": " new"
+        },
+        {
+          "type": "text_delta",
+          "text": " hires"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " React"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " Rails"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "M"
+        },
+        {
+          "type": "text_delta",
+          "text": "&"
+        },
+        {
+          "type": "text_delta",
+          "text": "GT"
+        },
+        {
+          "type": "text_delta",
+          "text": " Consulting"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "6"
+        },
+        {
+          "type": "text_delta",
+          "text": " —"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Developer"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Built"
+        },
+        {
+          "type": "text_delta",
+          "text": " REST"
+        },
+        {
+          "type": "text_delta",
+          "text": " APIs"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " web"
+        },
+        {
+          "type": "text_delta",
+          "text": "/mobile"
+        },
+        {
+          "type": "text_delta",
+          "text": " apps"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " large"
+        },
+        {
+          "type": "text_delta",
+          "text": " international"
+        },
+        {
+          "type": "text_delta",
+          "text": " clients"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " delivered"
+        },
+        {
+          "type": "text_delta",
+          "text": " blockchain"
+        },
+        {
+          "type": "text_delta",
+          "text": " solutions"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " Hyper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ledger"
+        },
+        {
+          "type": "text_delta",
+          "text": " Fabric"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ethereum"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " REST"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " iOS"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Android"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Hyper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ledger"
+        },
+        {
+          "type": "text_delta",
+          "text": " Fabric"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Ethereum"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Ind"
+        },
+        {
+          "type": "text_delta",
+          "text": "ra"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": " —"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "6"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Developer"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cor"
+        },
+        {
+          "type": "text_delta",
+          "text": "uña"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Java"
+        },
+        {
+          "type": "text_delta",
+          "text": "/S"
+        },
+        {
+          "type": "text_delta",
+          "text": "pring"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Oracle"
+        },
+        {
+          "type": "text_delta",
+          "text": " PL"
+        },
+        {
+          "type": "text_delta",
+          "text": "/"
+        },
+        {
+          "type": "text_delta",
+          "text": "SQL"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " telecom"
+        },
+        {
+          "type": "text_delta",
+          "text": " clients"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " QA"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " hot"
+        },
+        {
+          "type": "text_delta",
+          "text": "fix"
+        },
+        {
+          "type": "text_delta",
+          "text": "es"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " Java"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Spring"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Oracle"
+        },
+        {
+          "type": "text_delta",
+          "text": " PL"
+        },
+        {
+          "type": "text_delta",
+          "text": "/"
+        },
+        {
+          "type": "text_delta",
+          "text": "SQL"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " /"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Claude"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Gro"
+        },
+        {
+          "type": "text_delta",
+          "text": "k"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Open"
+        },
+        {
+          "type": "text_delta",
+          "text": "-source"
+        },
+        {
+          "type": "text_delta",
+          "text": " models"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "cloud"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " local"
+        },
+        {
+          "type": "text_delta",
+          "text": " via"
+        },
+        {
+          "type": "text_delta",
+          "text": " O"
+        },
+        {
+          "type": "text_delta",
+          "text": "ll"
+        },
+        {
+          "type": "text_delta",
+          "text": "ama"
+        },
+        {
+          "type": "text_delta",
+          "text": "),"
+        },
+        {
+          "type": "text_delta",
+          "text": " Tool"
+        },
+        {
+          "type": "text_delta",
+          "text": " calling"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " MCP"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " monitoring"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Languages"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Backend"
+        },
+        {
+          "type": "text_delta",
+          "text": " &"
+        },
+        {
+          "type": "text_delta",
+          "text": " data"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Nest"
+        },
+        {
+          "type": "text_delta",
+          "text": "JS"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Express"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Next"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " REST"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " GraphQL"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " MongoDB"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Inf"
+        },
+        {
+          "type": "text_delta",
+          "text": "ra"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Docker"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Kubernetes"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Circle"
+        },
+        {
+          "type": "text_delta",
+          "text": "CI"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " V"
+        },
+        {
+          "type": "text_delta",
+          "text": "erc"
+        },
+        {
+          "type": "text_delta",
+          "text": "el"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Railway"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Neon"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " G"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Front"
+        },
+        {
+          "type": "text_delta",
+          "text": "end"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " React"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " React"
+        },
+        {
+          "type": "text_delta",
+          "text": " Native"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Angular"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Projects"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Fra"
+        },
+        {
+          "type": "text_delta",
+          "text": "ud"
+        },
+        {
+          "type": "text_delta",
+          "text": " Detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "offline"
+        },
+        {
+          "type": "text_delta",
+          "text": "-e"
+        },
+        {
+          "type": "text_delta",
+          "text": "vals"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Reviews"
+        },
+        {
+          "type": "text_delta",
+          "text": " newly"
+        },
+        {
+          "type": "text_delta",
+          "text": " published"
+        },
+        {
+          "type": "text_delta",
+          "text": " events"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " organizers"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " event"
+        },
+        {
+          "type": "text_delta",
+          "text": " ticket"
+        },
+        {
+          "type": "text_delta",
+          "text": "ing"
+        },
+        {
+          "type": "text_delta",
+          "text": " platform"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " leaves"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " approve"
+        },
+        {
+          "type": "text_delta",
+          "text": " /"
+        },
+        {
+          "type": "text_delta",
+          "text": " reject"
+        },
+        {
+          "type": "text_delta",
+          "text": " /"
+        },
+        {
+          "type": "text_delta",
+          "text": " request"
+        },
+        {
+          "type": "text_delta",
+          "text": "-info"
+        },
+        {
+          "type": "text_delta",
+          "text": " recommendation"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " its"
+        },
+        {
+          "type": "text_delta",
+          "text": " reasons"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " admin"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Gr"
+        },
+        {
+          "type": "text_delta",
+          "text": "aded"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonomy"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": " auto"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ves"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " evidence"
+        },
+        {
+          "type": "text_delta",
+          "text": " verified"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " web"
+        },
+        {
+          "type": "text_delta",
+          "text": " sources"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " hold"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " decision"
+        },
+        {
+          "type": "text_delta",
+          "text": " back"
+        },
+        {
+          "type": "text_delta",
+          "text": " but"
+        },
+        {
+          "type": "text_delta",
+          "text": " never"
+        },
+        {
+          "type": "text_delta",
+          "text": " approve"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Offline"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " showed"
+        },
+        {
+          "type": "text_delta",
+          "text": " significant"
+        },
+        {
+          "type": "text_delta",
+          "text": " improvements"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " accuracy"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " reduced"
+        },
+        {
+          "type": "text_delta",
+          "text": " false"
+        },
+        {
+          "type": "text_delta",
+          "text": " approvals"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " G"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Organ"
+        },
+        {
+          "type": "text_delta",
+          "text": "izer"
+        },
+        {
+          "type": "text_delta",
+          "text": " Support"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "coming"
+        },
+        {
+          "type": "text_delta",
+          "text": "-so"
+        },
+        {
+          "type": "text_delta",
+          "text": "on"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Answers"
+        },
+        {
+          "type": "text_delta",
+          "text": " event"
+        },
+        {
+          "type": "text_delta",
+          "text": " organizers"
+        },
+        {
+          "type": "text_delta",
+          "text": "'"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " sales"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " payouts"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " setup"
+        },
+        {
+          "type": "text_delta",
+          "text": " without"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " review"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " pulling"
+        },
+        {
+          "type": "text_delta",
+          "text": " live"
+        },
+        {
+          "type": "text_delta",
+          "text": " data"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " payments"
+        },
+        {
+          "type": "text_delta",
+          "text": " API"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Tool"
+        },
+        {
+          "type": "text_delta",
+          "text": " calling"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " MCP"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Portfolio"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "personal"
+        },
+        {
+          "type": "text_delta",
+          "text": "-project"
+        },
+        {
+          "type": "text_delta",
+          "text": "):**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " my"
+        },
+        {
+          "type": "text_delta",
+          "text": " portfolio"
+        },
+        {
+          "type": "text_delta",
+          "text": " site"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " answers"
+        },
+        {
+          "type": "text_delta",
+          "text": " visitors"
+        },
+        {
+          "type": "text_delta",
+          "text": "'"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " my"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " natural"
+        },
+        {
+          "type": "text_delta",
+          "text": " language"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Also"
+        },
+        {
+          "type": "text_delta",
+          "text": " exposed"
+        },
+        {
+          "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " MCP"
+        },
+        {
+          "type": "text_delta",
+          "text": " server"
+        },
+        {
+          "type": "text_delta",
+          "text": " so"
+        },
+        {
+          "type": "text_delta",
+          "text": " external"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " query"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Claude"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " MCP"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Links"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " source"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " report"
+        },
+        {
+          "type": "text_delta",
+          "text": " available"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " GitHub"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Pr"
+        },
+        {
+          "type": "text_delta",
+          "text": "actices"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Offline"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " before"
+        },
+        {
+          "type": "text_delta",
+          "text": " shipping"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " This"
+        },
+        {
+          "type": "text_delta",
+          "text": " site"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " records"
+        },
+        {
+          "type": "text_delta",
+          "text": " its"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " cases"
+        },
+        {
+          "type": "text_delta",
+          "text": " against"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " real"
+        },
+        {
+          "type": "text_delta",
+          "text": " model"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " repl"
+        },
+        {
+          "type": "text_delta",
+          "text": "ays"
+        },
+        {
+          "type": "text_delta",
+          "text": " them"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " CI"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " no"
+        },
+        {
+          "type": "text_delta",
+          "text": " model"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " network"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " stale"
+        },
+        {
+          "type": "text_delta",
+          "text": " recording"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " off"
+        },
+        {
+          "type": "text_delta",
+          "text": "-topic"
+        },
+        {
+          "type": "text_delta",
+          "text": " leak"
+        },
+        {
+          "type": "text_delta",
+          "text": " fails"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " build"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Gr"
+        },
+        {
+          "type": "text_delta",
+          "text": "aded"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonomy"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " loop"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " The"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " recommends"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " admin"
+        },
+        {
+          "type": "text_delta",
+          "text": " decides"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": " approves"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " its"
+        },
+        {
+          "type": "text_delta",
+          "text": " own"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " evidence"
+        },
+        {
+          "type": "text_delta",
+          "text": " verified"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Cost"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits"
+        },
+        {
+          "type": "text_delta",
+          "text": " tracked"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": " token"
+        },
+        {
+          "type": "text_delta",
+          "text": " budget"
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": " request"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "IP"
+        },
+        {
+          "type": "text_delta",
+          "text": " rate"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " monthly"
+        },
+        {
+          "type": "text_delta",
+          "text": " spend"
+        },
+        {
+          "type": "text_delta",
+          "text": " cap"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " this"
+        },
+        {
+          "type": "text_delta",
+          "text": " site"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " every"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " report"
+        },
+        {
+          "type": "text_delta",
+          "text": " shows"
+        },
+        {
+          "type": "text_delta",
+          "text": " mean"
+        },
+        {
+          "type": "text_delta",
+          "text": " tokens"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " latency"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " cost"
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": " case"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Changes"
+        },
+        {
+          "type": "text_delta",
+          "text": " measured"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": " over"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": ":**"
+        },
+        {
+          "type": "text_delta",
+          "text": " Every"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": " app"
+        },
+        {
+          "type": "text_delta",
+          "text": "ends"
+        },
+        {
+          "type": "text_delta",
+          "text": " its"
+        },
+        {
+          "type": "text_delta",
+          "text": " metrics"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " history"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " so"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " prompt"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " tool"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " content"
+        },
+        {
+          "type": "text_delta",
+          "text": " change"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " moves"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " numbers"
+        },
+        {
+          "type": "text_delta",
+          "text": " shows"
+        },
+        {
+          "type": "text_delta",
+          "text": " up"
+        },
+        {
+          "type": "text_delta",
+          "text": " next"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": " before"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nWould"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " more"
+        },
+        {
+          "type": "text_delta",
+          "text": " specific"
+        },
+        {
+          "type": "text_delta",
+          "text": " details"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " any"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " these"
+        },
+        {
+          "type": "text_delta",
+          "text": " areas"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Here is a summary of Alberto Carbonell's profile, experience, stack and projects:\n\n**Profile:**\n- **Name:** Alberto Carbonell\n- **Title:** Senior Software Engineer — AI Agents & Full-Stack TypeScript\n- **Location:** Spain · Remote\n- **Tagline:** Senior engineer, 10+ years with TypeScript, Node.js and PostgreSQL. I build AI agents that do real work end to end.\n- **About:** Senior engineer with 10+ years shipping production software in TypeScript, Node.js and PostgreSQL. Lately my focus has been building AI agents that handle real work end to end, wired into the tools and data a business already uses. With AI in the loop I ramp up fast on any new stack; what never changes is the fundamentals: clean design, tests and code that's easy to maintain.\n- **Education:** Higher Technical Diplomas (CFGS) in Web Development, Multiplatform Development and Systems Administration at CIFP Rodolfo Ucha Piñeiro (A Coruña), 2010 — 2015.\n- **Languages:** Spanish (Native), English (C1).\n\n**Experience:**\n- **CoverWallet (2019 — now):** Senior Software Engineer in Madrid / Remote. Insurtech platform integrating external insurance carriers into a single commerce flow. Highlights include leading cross-team projects end to end, integrating third-party insurance carrier APIs, introducing AI agents into the engineering workflow, and mentoring new hires. Stack: TypeScript, Node.js, React, Ruby on Rails.\n- **M&GT Consulting (2016 — 2019):** Software Developer in Madrid. Built REST APIs in Node.js and web/mobile apps for large international clients; delivered blockchain solutions on Hyperledger Fabric and Ethereum. Stack: Node.js, REST, iOS, Android, Hyperledger Fabric, Ethereum.\n- **Indra (2015 — 2016):** Software Developer in A Coruña. Java/Spring and Oracle PL/SQL for telecom clients; QA and hotfixes. Stack: Java, Spring, Oracle PL/SQL.\n\n**Stack:**\n- **AI / agents:** Claude, Grok, Open-source models (cloud and local via Ollama), Tool calling, MCP, Agent evals and monitoring.\n- **Languages:** TypeScript, JavaScript, Ruby.\n- **Backend & data:** Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL, MongoDB.\n- **Infra:** Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, GCP.\n- **Frontend:** React, React Native, Angular.\n\n**Projects:**\n- **Fraud Detection Agent (offline-evals):** Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it. Offline evals showed significant improvements in fraud detection accuracy and reduced false approvals. Stack: TypeScript, PostgreSQL, GCP.\n- **Organizer Support Agent (coming-soon):** Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API. Stack: TypeScript, Tool calling, MCP, PostgreSQL.\n- **Portfolio Agent (personal-project):** Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it. Stack: TypeScript, Claude, MCP. Links to source code and eval report available on GitHub.\n\n**Practices:**\n- **Offline evals before shipping:** This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.\n- **Graded autonomy, a human in the loop:** The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.\n- **Cost and limits tracked:** A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.\n- **Changes measured run over run:** Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.\n\nWould you like more specific details about any of these areas?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 4358,
+              "outputTokens": 946
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Here is a summary of Alberto Carbonell's profile, experience, stack and projects:\n\n**Profile:**\n- **Name:** Alberto Carbonell\n- **Title:** Senior Software Engineer — AI Agents & Full-Stack TypeScript\n- **Location:** Spain · Remote\n- **Tagline:** Senior engineer, 10+ years with TypeScript, Node.js and PostgreSQL. I build AI agents that do real work end to end.\n- **About:** Senior engineer with 10+ years shipping production software in TypeScript, Node.js and PostgreSQL. Lately my focus has been building AI agents that handle real work end to end, wired into the tools and data a business already uses. With AI in the loop I ramp up fast on any new stack; what never changes is the fundamentals: clean design, tests and code that's easy to maintain.\n- **Education:** Higher Technical Diplomas (CFGS) in Web Development, Multiplatform Development and Systems Administration at CIFP Rodolfo Ucha Piñeiro (A Coruña), 2010 — 2015.\n- **Languages:** Spanish (Native), English (C1).\n\n**Experience:**\n- **CoverWallet (2019 — now):** Senior Software Engineer in Madrid / Remote. Insurtech platform integrating external insurance carriers into a single commerce flow. Highlights include leading cross-team projects end to end, integrating third-party insurance carrier APIs, introducing AI agents into the engineering workflow, and mentoring new hires. Stack: TypeScript, Node.js, React, Ruby on Rails.\n- **M&GT Consulting (2016 — 2019):** Software Developer in Madrid. Built REST APIs in Node.js and web/mobile apps for large international clients; delivered blockchain solutions on Hyperledger Fabric and Ethereum. Stack: Node.js, REST, iOS, Android, Hyperledger Fabric, Ethereum.\n- **Indra (2015 — 2016):** Software Developer in A Coruña. Java/Spring and Oracle PL/SQL for telecom clients; QA and hotfixes. Stack: Java, Spring, Oracle PL/SQL.\n\n**Stack:**\n- **AI / agents:** Claude, Grok, Open-source models (cloud and local via Ollama), Tool calling, MCP, Agent evals and monitoring.\n- **Languages:** TypeScript, JavaScript, Ruby.\n- **Backend & data:** Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL, MongoDB.\n- **Infra:** Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, GCP.\n- **Frontend:** React, React Native, Angular.\n\n**Projects:**\n- **Fraud Detection Agent (offline-evals):** Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it. Offline evals showed significant improvements in fraud detection accuracy and reduced false approvals. Stack: TypeScript, PostgreSQL, GCP.\n- **Organizer Support Agent (coming-soon):** Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API. Stack: TypeScript, Tool calling, MCP, PostgreSQL.\n- **Portfolio Agent (personal-project):** Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it. Stack: TypeScript, Claude, MCP. Links to source code and eval report available on GitHub.\n\n**Practices:**\n- **Offline evals before shipping:** This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.\n- **Graded autonomy, a human in the loop:** The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.\n- **Cost and limits tracked:** A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.\n- **Changes measured run over run:** Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.\n\nWould you like more specific details about any of these areas?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -3,15 +3,15 @@
   "slug": "capital-of-france",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "901e9f3835d7063b29ef1b8fb608db2d5bb06a5482f718a429ef1e1189f809b6",
-      "latencyMs": 1082,
+      "requestHash": "f5870ae73b78a60e40d86d7646486c3c0c8e9a80b80321e8eb29798ef4d295b1",
+      "latencyMs": 850,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1402
+          "inputTokens": 1660
         },
         {
           "type": "text_delta",
@@ -31,7 +31,15 @@
         },
         {
           "type": "text_delta",
-          "text": " experience, or how to contact"
+          "text": " experience, or how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to get"
+        },
+        {
+          "type": "text_delta",
+          "text": " in touch with"
         },
         {
           "type": "text_delta",
@@ -40,17 +48,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to contact him?",
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1402,
-              "outputTokens": 39
+              "inputTokens": 1660,
+              "outputTokens": 42
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to contact him?"
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?"
               }
             ]
           }

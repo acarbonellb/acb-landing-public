@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as content from "./profile";
 import {
+  agentPractices,
   agents,
   education,
   experience,
@@ -23,18 +24,97 @@ describe("content module", () => {
     );
     expect(profile.location).toBe("Spain · Remote");
     expect(profile.links).toEqual({
-      email: "alberto.carbonell.beceiro@gmail.com",
       github: "https://github.com/acarbonellb",
       linkedin: "https://www.linkedin.com/in/albertocarbonell/",
     });
   });
 
-  it("lists the three agents with only the statuses the CV gives them", () => {
+  it("lists the three agents, each with an accurate status", () => {
     expect(agents.map((a) => [a.name, a.status])).toEqual([
-      ["Fraud Detection Agent", "in-progress"],
-      ["Organizer Support Agent", undefined],
+      ["Fraud Detection Agent", "offline-evals"],
+      ["Organizer Support Agent", "coming-soon"],
       ["Portfolio Agent", "personal-project"],
     ]);
+  });
+
+  it("describes the fraud agent and its measured result with the approved copy", () => {
+    const fraud = agents.find((a) => a.slug === "fraud-detection-agent");
+    expect(fraud?.description).toBe(
+      "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
+    );
+    expect(fraud?.result).toBe(
+      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+    );
+    expect(fraud?.resultDetail).toBe(
+      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
+    );
+  });
+
+  it("links the portfolio agent to its chat, its source and its eval report (#44)", () => {
+    const repo = "https://github.com/acarbonellb/acb-landing-public";
+    const portfolio = agents.find((a) => a.slug === "portfolio-agent");
+    expect(portfolio?.href).toBe("#agent");
+    expect(portfolio?.links).toEqual([
+      { label: "source", href: `${repo}/tree/main/agent` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ]);
+  });
+
+  it("names no ticketing platform and claims no ownership or order blocking", () => {
+    const text = JSON.stringify(agents);
+    expect(text).not.toMatch(/found(?:ed|er)|purchases|orders/i);
+    expect(
+      agents
+        .filter((a) => a.slug !== "portfolio-agent")
+        .map((a) => a.context),
+    ).toEqual([
+      "An online event ticketing platform",
+      "An online event ticketing platform",
+    ]);
+  });
+
+  it("says how Alberto runs agents, each practice backed by this public repo or the page (#43)", () => {
+    const repo = "https://github.com/acarbonellb/acb-landing-public";
+    expect(agentPractices).toEqual([
+      {
+        title: "Offline evals before shipping",
+        text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",
+        sources: [
+          {
+            label: "ADR 0001",
+            href: `${repo}/blob/main/docs/adr/0001-agent-evals-record-replay.md`,
+          },
+        ],
+      },
+      {
+        title: "Graded autonomy, a human in the loop",
+        text: "The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.",
+        sources: [{ label: "Fraud Detection Agent", href: "#agent-fraud-detection-agent" }],
+      },
+      {
+        title: "Cost and limits tracked",
+        text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.",
+        sources: [
+          { label: "guardrails", href: `${repo}#guardrails` },
+          { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+        ],
+      },
+      {
+        title: "Changes measured run over run",
+        text: "Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.",
+        sources: [
+          { label: "eval history", href: `${repo}/blob/main/agent/evals/history.jsonl` },
+        ],
+      },
+    ]);
+  });
+
+  it("links only to this repo or to a card on the page, never to another repo", () => {
+    for (const { href } of agentPractices.flatMap((p) => p.sources)) {
+      expect(href).toMatch(
+        /^(?:https:\/\/github\.com\/acarbonellb\/acb-landing-public(?:[/#]|$)|#agent-)/,
+      );
+    }
   });
 
   it("lists the three roles, newest first", () => {

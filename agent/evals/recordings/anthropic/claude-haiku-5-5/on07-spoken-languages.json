@@ -3,15 +3,15 @@
   "slug": "spoken-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "aae822a50cec3ceacb6e65316488fe7a2256bb2ef36588679df4525bb28f6008",
-      "latencyMs": 809,
+      "requestHash": "d508ae042c1ce1f511dc308661752c318ed3ac24ec2a3f270f85254972a18081",
+      "latencyMs": 766,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1405
+          "inputTokens": 1663
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01YM7vP9QaNTYH37sqSm12sw",
+                "id": "toolu_015qpWH6tbmdfXkGd3XdDMud",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1405,
+              "inputTokens": 1663,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01YM7vP9QaNTYH37sqSm12sw",
+                "id": "toolu_015qpWH6tbmdfXkGd3XdDMud",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,39 +45,59 @@
       ]
     },
     {
-      "requestHash": "7e8aa4c2e2b98f9ccc473cb96689e8cb2766920e5ae0e5f88fe6191008e87af7",
-      "latencyMs": 674,
+      "requestHash": "744fe8bf68f90020f8e1e28c75ba8dd5f8bfb4a2196d4d5924f911984625d4ac",
+      "latencyMs": 710,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1878
+          "inputTokens": 2136
         },
         {
           "type": "text_delta",
-          "text": "Alberto speaks"
+          "text": "Alberto speaks two"
         },
         {
           "type": "text_delta",
-          "text": " Spanish (native) and English"
+          "text": " languages:"
         },
         {
           "type": "text_delta",
-          "text": " (C1)."
+          "text": "\n\n- **Spanish**"
+        },
+        {
+          "type": "text_delta",
+          "text": ": native"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **English**: C1"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "(adv"
+        },
+        {
+          "type": "text_delta",
+          "text": "anced)"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto speaks Spanish (native) and English (C1).",
+            "text": "Alberto speaks two languages:\n\n- **Spanish**: native\n- **English**: C1 (advanced)",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1878,
-              "outputTokens": 22
+              "inputTokens": 2136,
+              "outputTokens": 37
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto speaks Spanish (native) and English (C1)."
+                "text": "Alberto speaks two languages:\n\n- **Spanish**: native\n- **English**: C1 (advanced)"
               }
             ]
           }

@@ -24,6 +24,8 @@ export type ChatClientEvent =
       kind: ChatErrorKind;
       message?: string;
       retryAfterSeconds?: number;
+      /** ISO time the monthly budget renews, when the spend cap closed the chat. */
+      resetsAt?: string;
     };
 
 // What arrives off the wire: shaped like the contract, but unchecked.
@@ -43,6 +45,12 @@ function seconds(value: unknown): number | undefined {
     : undefined;
 }
 
+function isoDate(value: unknown): string | undefined {
+  return typeof value === "string" && !Number.isNaN(Date.parse(value))
+    ? value
+    : undefined;
+}
+
 function toError(
   payload: ErrorPayload | undefined,
   status?: number,
@@ -59,6 +67,8 @@ function toError(
     seconds(retryAfterHeader ?? undefined) ??
     seconds(payload?.retryAfterSeconds);
   if (retry !== undefined) event.retryAfterSeconds = retry;
+  const resetsAt = isoDate(payload?.resetsAt);
+  if (resetsAt !== undefined) event.resetsAt = resetsAt;
   return event;
 }
 

@@ -3,15 +3,15 @@
   "slug": "agents-built",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "ea4a3a01b5a9bc9e9ad9e36b27400ee8082968b0e0ab455a6fa0426fa88473be",
-      "latencyMs": 789,
+      "requestHash": "388407fa2ec4fd8fa1332e02e13898812910249adfaf26e7a861b6be647677b8",
+      "latencyMs": 925,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1406
+          "inputTokens": 1664
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01AaMp44ULva8TbPFaNGRcXs",
+                "id": "toolu_01HDjtYHNzWnYGTL295NLW9a",
                 "name": "get_projects",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1406,
+              "inputTokens": 1664,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01AaMp44ULva8TbPFaNGRcXs",
+                "id": "toolu_01HDjtYHNzWnYGTL295NLW9a",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "646c2b42ef151aaedf12dec0cc52297e5273e544970c116954c2a43cc53b42e0",
-      "latencyMs": 1717,
+      "requestHash": "00609e2730cefcdff038a5c23c71987392f3872ce73f03eb56316641d5d11137",
+      "latencyMs": 2080,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1820
+          "inputTokens": 2836
         },
         {
           "type": "text_delta",
@@ -58,95 +58,131 @@
         },
         {
           "type": "text_delta",
-          "text": "I agents:\n\n1. **"
+          "text": "I agents:\n\n-"
         },
         {
           "type": "text_delta",
-          "text": "Fraud Detection"
+          "text": " **Fraud Detection"
         },
         {
           "type": "text_delta",
-          "text": " Agent** (in prog"
+          "text": " Agent** (off"
         },
         {
           "type": "text_delta",
-          "text": "ress),"
+          "text": "line evals,"
         },
         {
           "type": "text_delta",
-          "text": " built for Satella Tick"
+          "text": " n"
         },
         {
           "type": "text_delta",
-          "text": "ets, the"
+          "text": "earing deployment): re"
         },
         {
           "type": "text_delta",
-          "text": " event ticketing platform he"
+          "text": "views newly published events and organ"
         },
         {
           "type": "text_delta",
-          "text": " co-founded and runs as"
+          "text": "izers on an online"
         },
         {
           "type": "text_delta",
-          "text": " a side business. It monitors"
+          "text": " ticketing platform and rec"
         },
         {
           "type": "text_delta",
-          "text": " ticket purchases and fl"
+          "text": "ommends approve, reject"
         },
         {
           "type": "text_delta",
-          "text": "ags or blocks suspic"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "ious orders, such as card test"
+          "text": " or request-info for"
         },
         {
           "type": "text_delta",
-          "text": "ing or bulk resale pat"
+          "text": " a human admin."
         },
         {
           "type": "text_delta",
-          "text": "terns, and"
+          "text": " On"
         },
         {
           "type": "text_delta",
-          "text": " escalates to a human below a"
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": " confidence threshold."
+          "text": "31 e"
         },
         {
           "type": "text_delta",
-          "text": " Stack: TypeScript"
+          "text": "val cases,"
         },
         {
           "type": "text_delta",
-          "text": ", PostgreSQL"
+          "text": " Claude Haiku 5"
         },
         {
           "type": "text_delta",
-          "text": ", GCP.\n2."
+          "text": ".5 ("
         },
         {
           "type": "text_delta",
-          "text": " **Organizer Support"
+          "text": "chosen for deployment)"
         },
         {
           "type": "text_delta",
-          "text": " Agent**, also for Sat"
+          "text": " reached 86% accurac"
         },
         {
           "type": "text_delta",
-          "text": "ella Tickets. It answ"
+          "text": "y and appro"
         },
         {
           "type": "text_delta",
-          "text": "ers event organizers' questions"
+          "text": "ved 1% of fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " about $0.002 per review"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **Organizer"
+        },
+        {
+          "type": "text_delta",
+          "text": " Support Agent**"
+        },
+        {
+          "type": "text_delta",
+          "text": " (coming soon,"
+        },
+        {
+          "type": "text_delta",
+          "text": " not built yet): would"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer organizers' questions"
         },
         {
           "type": "text_delta",
@@ -154,35 +190,35 @@
         },
         {
           "type": "text_delta",
-          "text": " setup, p"
+          "text": " setup by"
         },
         {
           "type": "text_delta",
-          "text": "ulling live data from Postg"
+          "text": " pulling live data from Post"
         },
         {
           "type": "text_delta",
-          "text": "reSQL and the payments"
+          "text": "greSQL and the pay"
         },
         {
           "type": "text_delta",
-          "text": " API. Stack: Typ"
+          "text": "ments API."
         },
         {
           "type": "text_delta",
-          "text": "eScript, t"
+          "text": " Planned st"
         },
         {
           "type": "text_delta",
-          "text": "ool calling, MCP,"
+          "text": "ack: TypeScript,"
         },
         {
           "type": "text_delta",
-          "text": " PostgreSQL."
+          "text": " tool calling, MCP"
         },
         {
           "type": "text_delta",
-          "text": "\n3. **Portfol"
+          "text": ".\n- **Portfol"
         },
         {
           "type": "text_delta",
@@ -190,62 +226,122 @@
         },
         {
           "type": "text_delta",
-          "text": " project), the"
+          "text": " project): the"
         },
         {
           "type": "text_delta",
-          "text": " ass"
+          "text": " ag"
         },
         {
           "type": "text_delta",
-          "text": "istant on this site. It answ"
+          "text": "ent on this site that"
         },
         {
           "type": "text_delta",
-          "text": "ers visitors' questions about"
+          "text": " answers vis"
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": "itors' questions about"
         },
         {
           "type": "text_delta",
-          "text": " experience and projects,"
+          "text": " Alberto."
         },
         {
           "type": "text_delta",
-          "text": " and is also exposed as an"
+          "text": " It is also exposed as an"
         },
         {
           "type": "text_delta",
-          "text": " MCP server so external agents"
+          "text": " MCP server."
         },
         {
           "type": "text_delta",
-          "text": " can query it. Stack:"
+          "text": " Source and"
         },
         {
           "type": "text_delta",
-          "text": " TypeScript, Cla"
+          "text": " eval report are public"
         },
         {
           "type": "text_delta",
-          "text": "ude, MCP."
+          "text": " on GitHub.\n\nHe"
+        },
+        {
+          "type": "text_delta",
+          "text": " also foll"
+        },
+        {
+          "type": "text_delta",
+          "text": "ows pract"
+        },
+        {
+          "type": "text_delta",
+          "text": "ices such as off"
+        },
+        {
+          "type": "text_delta",
+          "text": "line evals before shipping,"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human in"
+        },
+        {
+          "type": "text_delta",
+          "text": " the loop,"
+        },
+        {
+          "type": "text_delta",
+          "text": " t"
+        },
+        {
+          "type": "text_delta",
+          "text": "racked"
+        },
+        {
+          "type": "text_delta",
+          "text": " cost and limits, and meas"
+        },
+        {
+          "type": "text_delta",
+          "text": "uring changes run over run."
+        },
+        {
+          "type": "text_delta",
+          "text": " Ask if"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " want details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on any of these."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in progress), built for Satella Tickets, the event ticketing platform he co-founded and runs as a side business. It monitors ticket purchases and flags or blocks suspicious orders, such as card testing or bulk resale patterns, and escalates to a human below a confidence threshold. Stack: TypeScript, PostgreSQL, GCP.\n2. **Organizer Support Agent**, also for Satella Tickets. It answers event organizers' questions about sales, payouts and setup, pulling live data from PostgreSQL and the payments API. Stack: TypeScript, tool calling, MCP, PostgreSQL.\n3. **Portfolio Agent** (personal project), the assistant on this site. It answers visitors' questions about his experience and projects, and is also exposed as an MCP server so external agents can query it. Stack: TypeScript, Claude, MCP.",
+            "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, nearing deployment): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On 31 eval cases, Claude Haiku 5.5 (chosen for deployment) reached 86% accuracy and approved 1% of fraud, at about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not built yet): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API. Planned stack: TypeScript, tool calling, MCP.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about Alberto. It is also exposed as an MCP server. Source and eval report are public on GitHub.\n\nHe also follows practices such as offline evals before shipping, a human in the loop, tracked cost and limits, and measuring changes run over run. Ask if you want details on any of these.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1820,
-              "outputTokens": 315
+              "inputTokens": 2836,
+              "outputTokens": 346
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto has built three AI agents:\n\n1. **Fraud Detection Agent** (in progress), built for Satella Tickets, the event ticketing platform he co-founded and runs as a side business. It monitors ticket purchases and flags or blocks suspicious orders, such as card testing or bulk resale patterns, and escalates to a human below a confidence threshold. Stack: TypeScript, PostgreSQL, GCP.\n2. **Organizer Support Agent**, also for Satella Tickets. It answers event organizers' questions about sales, payouts and setup, pulling live data from PostgreSQL and the payments API. Stack: TypeScript, tool calling, MCP, PostgreSQL.\n3. **Portfolio Agent** (personal project), the assistant on this site. It answers visitors' questions about his experience and projects, and is also exposed as an MCP server so external agents can query it. Stack: TypeScript, Claude, MCP."
+                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, nearing deployment): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On 31 eval cases, Claude Haiku 5.5 (chosen for deployment) reached 86% accuracy and approved 1% of fraud, at about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not built yet): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API. Planned stack: TypeScript, tool calling, MCP.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about Alberto. It is also exposed as an MCP server. Source and eval report are public on GitHub.\n\nHe also follows practices such as offline evals before shipping, a human in the loop, tracked cost and limits, and measuring changes run over run. Ask if you want details on any of these."
               }
             ]
           }

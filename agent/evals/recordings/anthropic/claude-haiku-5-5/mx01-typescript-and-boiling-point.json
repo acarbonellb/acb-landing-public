@@ -3,15 +3,15 @@
   "slug": "typescript-and-boiling-point",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9f522622e55b57c7f99813e6a34fd0e48492be361f43ae0a943c80028b4e4887",
-      "latencyMs": 982,
+      "requestHash": "9a3970d13d9dfc1daccac361523cc4045e598ca4fbe429bedbdb67dfcb059e96",
+      "latencyMs": 1256,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1421
+          "inputTokens": 1679
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01CUnKbqXqUwaafjezRvc22j",
+                "id": "toolu_012GeGBU9rhhBZP3DxvPcdms",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,18 +28,18 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1421,
-              "outputTokens": 90
+              "inputTokens": 1679,
+              "outputTokens": 115
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQS2AUKEAgTGAI4AUIIdGhpbmtpbmcSDJueUcfnfYqC0GjzJBoMKVTxRQXH5a/bXxVRIjClR8DQo+SInMiJRUDHq5qE7eU4qD7Wz8Z70hvkOSMFyVQTQCYPK/s7nhE8DSuJTDYq9QTyBGwvwZZqLMezPPlYPFbo2kQBkZm6+bbmrnT7tg2gYGjwBU8bGFp8Dd1VKJpvJCjb+Oxkc7uZeWsttfZ6HTQh+eShHBAPrfWuheSBXAAY2EOMAQX3gOIQMKf9zx2/2MjrfKD9Z/A835ZVT+VUXntjui9xFsokMS+KX10feBRuOHXDzlNGEU/iWzWtB1XLi2xD1F8iGsskXI/QWbJGBWu/tzG1PlRsgiMhOE2dO8ea8LB6VCLsCczuQ4RTC/0qaeccX6xHDOf2sLk/AWDPtXeEmAUWy2QgcqNRqgEY/mbkJ5+LSfF6xeV61EwvgpW2kUMJfGS4fsAhKnB5d1YUITj7R9pCG5TGjROJeWxfCP2D2s4N7ILLy+j1G647T51s3PhvuM55fFM7Fpq+5cssYIiOK/SO8KO1MoDPZE1pjPvt82LAtPs8h6IWvLiV5NFK+3SZzjqGwljn46fVvFiNMZLn343Spn+8lvnWfNHkwsmFfhz6vrByaTnmY5Z1qOILTSQGVCGYwa2DQMRMeGH6AjeHdVN873GiL2GAmYeQddmB/A+x8Ies5TTnkanPXd7hD4BmNoN3CDlFtMUg+Vc0LNFiFz1sUDjTKMp3WeEEMxd0Uvk1c7BfIN7+p2BP1yp5ER/HGAJlG/qR4M2okFxembfKIuCMWhyOjxVx2GAUw68LgQKPik2K5u6hPuSpy9ajDnjlRUhADBZUTOEweQSCQoLftoNw8uEMGJJ8G82sJH4zyoDmQ7PM00qoRd0ZqaV+dCiKvovUnzItUa9o0cwnSvlUMF0C84y2k7kiAxZqAlIwvopDKLbhDJFTAOsxcIjkoWYJUNHSwxgB"
+                "signature": "CAQSngYKEAgTGAI4AUIIdGhpbmtpbmcSDIBBUC7sSO+WsTuzGxoMNfmkod17HsODcB1zIjAou+mH+ZlUgOSModLW7zp0OfNV3jxSAEpxdOFYm6QgYGhabUEr824sKa1c4eBivJQquwW0gGzCE0+PbBNuBypjbBo4xuylIdvc4/TsG0UsSG7jkNtnxGKkacHhnt5wSfO3ejwKfprxbKCgpunCjpBnUhbMHxrd57UbVsG7gEPdWoZaGEpG+SuiUMqxLcpw4bKgzgItdN2UTgwnKoM6t1ZyYMWg2X/YY0ePXN35SfN1XL4y3ubyNgK00ZHctFdaqbWr11bhfV5Ib2ZJXilMe3ua+uXrp/GOa1a6oAByMQTWCEhAzRfN4q3jFes2Z5D0CCxPEPu1MpLNBrVbEd3s0Fa1Uf31ndwKAr/bAXjaBvgDqNI6deSiuY3/S9cNdnOE3qf2kNwk2oVPDX4rqGe1X5OzmwNpZdx5JVVIOMd4pCsxaLcBD6QGaxpWYfltYZAPvWn1txv8IZA/9FMl4WHbrXrKNrDrQFpj8IyeW94V4qqYoxyZRIkiQmvJu6FNN6qbhmp8CfDrBL7TW7cXQJku0Nlm09It7LZ3lAOKsS2oVg3RbdYG5XMY9JJKJtTSG8c1lwgT4EBIQDPde/w+cu+sIRl+1yJlxQw/d+3SHmB/HDs4+pgimtlhXJPRbw0M3ldgiZr0koqm2rSl4Dy9f9qneXMQRKeUSPeQwaFOWsGOft9rRVASu5bPLwmM/in+PgAqDPrzgT79hFZB/IEtihZvojM/nNHOOm4sw+VXNQQfezcV8P8Xz+wLv/ilsplENRfuDToTZ7M/+XWo2Rjs9Sv0qOdYl7MJxlC4fwxIYX81Ag4uoC/ypfzQ6niSHvmYZUkZqGa4apH+CahqAki0bYvRc9R9rJ8wTdexMQY6kzjipnICfNzJWBoROUmZ8kBMs7RtMusqBlY5f8fg7dlWLyOb3pYWPVbvUBzHusY+zGtUYzdp1JvCxmBPOj/MO6KVJblBA6eB28SZJSmtfvI4AhRGBeVWdiyskS8ybmIhD2IMbYkYAQ=="
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01CUnKbqXqUwaafjezRvc22j",
+                "id": "toolu_012GeGBU9rhhBZP3DxvPcdms",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -54,111 +54,79 @@
       ]
     },
     {
-      "requestHash": "0bee4bec74b37e12b0e71cd218e2b9619dc6ed1101cd2a958fa3cdff522e00cf",
-      "latencyMs": 1017,
+      "requestHash": "900a0c874a3dd0042f0641027dc4a6fc40903c220dcf022f06720f9938972834",
+      "latencyMs": 814,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1561
+          "inputTokens": 1844
         },
         {
           "type": "text_delta",
-          "text": "Yes, Alberto"
+          "text": "Yes, T"
         },
         {
           "type": "text_delta",
-          "text": " knows TypeScript."
+          "text": "ypeScript is listed in"
         },
         {
           "type": "text_delta",
-          "text": " It"
+          "text": " Alberto's language skills"
         },
         {
           "type": "text_delta",
-          "text": "'s list"
+          "text": ", alongside JavaSc"
         },
         {
           "type": "text_delta",
-          "text": "ed in his language"
+          "text": "ript and Ruby."
         },
         {
           "type": "text_delta",
-          "text": " skills al"
+          "text": "\n\nI can only"
         },
         {
           "type": "text_delta",
-          "text": "ongside JavaScript and"
+          "text": " answer questions about Alber"
         },
         {
           "type": "text_delta",
-          "text": " Ruby.\n\nI can"
+          "text": "to, so I can't help with"
         },
         {
           "type": "text_delta",
-          "text": " only answer questions about Al"
+          "text": " the boiling point question"
         },
         {
           "type": "text_delta",
-          "text": "berto and his work,"
+          "text": ". Would you like to know more"
         },
         {
           "type": "text_delta",
-          "text": " so I can't help"
+          "text": " about his work experience or"
         },
         {
           "type": "text_delta",
-          "text": " with the bo"
+          "text": " his AI agent"
         },
         {
           "type": "text_delta",
-          "text": "iling point question."
-        },
-        {
-          "type": "text_delta",
-          "text": " I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " t"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell you about his proj"
-        },
-        {
-          "type": "text_delta",
-          "text": "ects, exper"
-        },
-        {
-          "type": "text_delta",
-          "text": "ience, or how to"
-        },
-        {
-          "type": "text_delta",
-          "text": " get in touch with"
-        },
-        {
-          "type": "text_delta",
-          "text": " him."
+          "text": " projects?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, Alberto knows TypeScript. It's listed in his language skills alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto and his work, so I can't help with the boiling point question. I can tell you about his projects, experience, or how to get in touch with him.",
+            "text": "Yes, TypeScript is listed in Alberto's language skills, alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto, so I can't help with the boiling point question. Would you like to know more about his work experience or his AI agent projects?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1561,
-              "outputTokens": 94
+              "inputTokens": 1844,
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, Alberto knows TypeScript. It's listed in his language skills alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto and his work, so I can't help with the boiling point question. I can tell you about his projects, experience, or how to get in touch with him."
+                "text": "Yes, TypeScript is listed in Alberto's language skills, alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto, so I can't help with the boiling point question. Would you like to know more about his work experience or his AI agent projects?"
               }
             ]
           }

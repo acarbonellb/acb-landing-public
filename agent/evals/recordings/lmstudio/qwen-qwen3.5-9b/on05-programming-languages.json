@@ -3,15 +3,15 @@
   "slug": "programming-languages",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "5f019a6d10f8b59cb0f9dba8fd2aa091e8428e786ca8d36e5d8a3694dfc9cf13",
-      "latencyMs": 5823,
+      "requestHash": "f389220c326a1b6cf9809c170c62a2986bdbb42b2f3b90db529b62944689d571",
+      "latencyMs": 2074,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1973
+          "inputTokens": 2343
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "trl5B8vCPwdMGn0TiF7lNxBUBmIkgcW6",
+                "id": "S457hSTNKx0yB3Wz239TM4jk5hmbL6xD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1973,
-              "outputTokens": 188
+              "inputTokens": 2343,
+              "outputTokens": 77
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "trl5B8vCPwdMGn0TiF7lNxBUBmIkgcW6",
+                "id": "S457hSTNKx0yB3Wz239TM4jk5hmbL6xD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "b51c00527326ae363bb23f160c79ae1787f2a6cbcb4fb0c6f04319f079939674",
-      "latencyMs": 597,
+      "requestHash": "2220e62a32a44b2538c271e36e64077b2b01224768d9a15631cc9bdaff2cb0ae",
+      "latencyMs": 1403,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2050
+          "inputTokens": 2420
         },
         {
           "type": "text_delta",
@@ -67,19 +67,31 @@
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
+          "text": " **"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "Type"
         },
         {
           "type": "text_delta",
-          "text": " JavaScript"
+          "text": "Script"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "**,"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": "**,"
         },
         {
           "type": "text_delta",
@@ -87,7 +99,31 @@
         },
         {
           "type": "text_delta",
-          "text": " Ruby"
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " programming"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
         },
         {
           "type": "text_delta",
@@ -96,17 +132,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto uses TypeScript, JavaScript, and Ruby.",
+            "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** for his programming work.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2050,
-              "outputTokens": 13
+              "inputTokens": 2420,
+              "outputTokens": 50
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses TypeScript, JavaScript, and Ruby."
+                "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** for his programming work."
               }
             ]
           }

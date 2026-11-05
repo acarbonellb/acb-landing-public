@@ -5,6 +5,7 @@
 import * as z from "zod";
 import * as shared from "../../src/content/profile";
 import type {
+  AgentPractice,
   AgentProject,
   Education,
   Profile,
@@ -17,15 +18,23 @@ import type {
 export type Content = {
   profile: Profile;
   agents: AgentProject[];
+  /** How he runs agents (#43), served with the projects. */
+  agentPractices: AgentPractice[];
   experience: Role[];
   skillGroups: SkillGroup[];
   education: Education[];
   languages: SpokenLanguage[];
+  /**
+   * The address `get_contact` gives out. Not in the public repo: production
+   * reads it from `CONTACT_EMAIL` (`config.ts`); without it there's no email.
+   */
+  contactEmail?: string;
 };
 
 export const siteContent: Content = {
   profile: shared.profile,
   agents: shared.agents,
+  agentPractices: shared.agentPractices,
   experience: shared.experience,
   skillGroups: shared.skillGroups,
   education: shared.education,
@@ -55,6 +64,10 @@ function defineTool<I extends ObjectSchema, O extends ObjectSchema>(
 
 const period = z.string().describe('Year range, e.g. "2019 — now"');
 const { formatPeriod } = shared;
+
+/** Links that work off the page: one to a card on it means nothing to an MCP client. */
+const offPageLinks = (links: shared.PracticeSource[]) =>
+  links.filter((l) => l.href.startsWith("https://")).map((l) => ({ label: l.label, url: l.href }));
 
 function buildTools(content: Content) {
   const groupKeys = content.skillGroups.map((g) => g.key);
@@ -150,7 +163,7 @@ function buildTools(content: Content) {
       name: "get_projects",
       title: "Agent projects",
       description:
-        "AI agents Alberto has built: what each does, who it was built for, its status (only when there is one: in progress or personal project) and stack. Optionally filter by status.",
+        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, offline evals with deployment next, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one), stack and links (e.g. its source code, where public). Also how he builds and runs agents: evals, human in the loop, cost and limits, measuring changes, each with links to public sources where they exist. Optionally filter the projects by status.",
       inputSchema: z
         .object({
           status: z
@@ -166,20 +179,42 @@ function buildTools(content: Content) {
             status: z.enum(shared.agentStatuses).optional(),
             context: z.string(),
             description: z.string(),
+            result: z.string().optional(),
+            resultDetail: z.string().optional(),
             stack: z.array(z.string()),
+            links: z.array(z.object({ label: z.string(), url: z.string() })).optional(),
+          }),
+        ),
+        practices: z.array(
+          z.object({
+            title: z.string(),
+            text: z.string(),
+            sources: z
+              .array(z.object({ label: z.string(), url: z.string() }))
+              .optional(),
           }),
         ),
       }),
       run: ({ status }) => ({
         projects: content.agents
           .filter((a) => !status || a.status === status)
-          .map((a) => ({
-            name: a.name,
-            status: a.status,
-            context: a.context,
-            description: a.description,
-            stack: a.stack,
-          })),
+          .map((a) => {
+            const links = offPageLinks(a.links ?? []);
+            return {
+              name: a.name,
+              status: a.status,
+              context: a.context,
+              description: a.description,
+              ...(a.result ? { result: a.result } : {}),
+              ...(a.resultDetail ? { resultDetail: a.resultDetail } : {}),
+              stack: a.stack,
+              ...(links.length ? { links } : {}),
+            };
+          }),
+        practices: content.agentPractices.map(({ title, text, sources }) => {
+          const links = offPageLinks(sources);
+          return { title, text, ...(links.length ? { sources: links } : {}) };
+        }),
       }),
     }),
 
@@ -215,21 +250,24 @@ function buildTools(content: Content) {
     get_contact: defineTool({
       name: "get_contact",
       title: "Contact",
-      description:
-        "How to reach Alberto: email, GitHub and LinkedIn, plus where he works from.",
+      description: content.contactEmail
+        ? "How to reach Alberto: email, GitHub and LinkedIn, plus where he works from."
+        : "How to reach Alberto: GitHub and LinkedIn, plus where he works from. No email address is available here: point people to LinkedIn to message him.",
       inputSchema: z.object({}).strict(),
       outputSchema: z.object({
         name: z.string(),
         note: z.string(),
-        email: z.string(),
+        email: z.string().optional(),
         github: z.string(),
         linkedin: z.string(),
         location: z.string(),
       }),
       run: () => ({
         name: content.profile.name,
-        note: content.profile.contactNote,
-        email: content.profile.links.email,
+        note: content.contactEmail
+          ? content.profile.contactNote
+          : `No email address is available here: message ${content.profile.name} on LinkedIn.`,
+        ...(content.contactEmail ? { email: content.contactEmail } : {}),
         github: content.profile.links.github,
         linkedin: content.profile.links.linkedin,
         location: content.profile.location,

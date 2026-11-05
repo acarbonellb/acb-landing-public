@@ -160,6 +160,41 @@ describe("streamChat", () => {
     ]);
   });
 
+  it("passes on when the spend cap renews", async () => {
+    const { fetch } = fakeFetch(
+      Response.json(
+        {
+          error: {
+            code: "unavailable",
+            message: "Budget used up.",
+            resetsAt: "2026-12-01T00:00:00.000Z",
+          },
+        },
+        { status: 503 },
+      ),
+    );
+
+    const [event] = await collect(streamChat("/chat", question, { fetch }));
+
+    expect(event).toMatchObject({
+      kind: "unavailable",
+      resetsAt: "2026-12-01T00:00:00.000Z",
+    });
+  });
+
+  it("drops a renewal time that isn't a date", async () => {
+    const { fetch } = fakeFetch(
+      Response.json(
+        { error: { code: "unavailable", message: "x", resetsAt: "soon" } },
+        { status: 503 },
+      ),
+    );
+
+    const [event] = await collect(streamChat("/chat", question, { fetch }));
+
+    expect(event).not.toHaveProperty("resetsAt");
+  });
+
   it("falls back to a generic error for unknown codes and non-JSON bodies", async () => {
     const unknown = fakeFetch(
       Response.json(

@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { profile } from "../../../src/content/profile";
 import { systemPrompt } from "../chat";
 import { createFakeModel } from "../fake-model";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
+import { evalContactEmail } from "./content";
 import { evaluate, recordCase, replayCase, RecordingFailedError } from "./runner";
 import type { EvalCase } from "./scoring";
 
@@ -13,7 +13,7 @@ const contact: EvalCase = {
   kind: "on_topic",
   question: "How can I contact him?",
   tools: ["get_contact"],
-  facts: [profile.links.email],
+  facts: [evalContactEmail],
 };
 
 const capital: EvalCase = {
@@ -33,7 +33,7 @@ const meta = { provider: "fake", model: "scripted" };
 async function recordBoth() {
   const model = createFakeModel([
     { toolCalls: [{ id: "c1", name: "get_contact", input: {} }] },
-    { text: `Email him at ${profile.links.email}.` },
+    { text: `Email him at ${evalContactEmail}.` },
     { text: "Solo puedo responder sobre Alberto." },
   ]);
   const a = await recordCase(contact, model, meta);
@@ -59,11 +59,15 @@ describe("the eval runner", () => {
     // The prior turns reach the model before the new question.
     expect(model.requests[2].messages.map((m) => m.role)).toEqual(["user", "assistant", "user"]);
     expect(a.result.outcome).toEqual({
-      answer: `Email him at ${profile.links.email}.`,
+      answer: `Email him at ${evalContactEmail}.`,
       toolCalls: ["get_contact"],
       stopReason: "end_turn",
     });
     expect(a.result.score.pass).toBe(true);
+    // The tools run with the placeholder address, never the real one (#51).
+    expect(JSON.stringify(model.requests[1].messages)).toContain(
+      '\\"email\\":\\"alberto@example.com\\"',
+    );
 
     const replayedA = await replayCase(contact, a.recording);
     const replayedB = await replayCase(capital, b.recording);
@@ -143,6 +147,25 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
 
     expect(problems).toEqual([
       "fake / scripted ot01-capital-after-greeting leaked: leaked /\\bmadrid\\b/i",
+    ]);
+  });
+
+  it("fails when a gated on-topic case fails, and only reports an ungated one", async () => {
+    const gated: EvalCase = { ...contact, id: "on02", slug: "contact-gated", gated: true };
+    const noEmail = () => createFakeModel([{ text: "Find him on LinkedIn." }]);
+    const recordings = [
+      (await recordCase(contact, noEmail(), meta)).recording,
+      (await recordCase(gated, noEmail(), meta)).recording,
+    ];
+
+    const { problems } = await evaluate({
+      cases: [contact, gated],
+      sets: [{ ...meta, recordings }],
+    });
+
+    expect(problems).toEqual([
+      "fake / scripted on02-contact-gated failed a gated case: called no tool, expected get_contact; missing fact: " +
+        evalContactEmail,
     ]);
   });
 

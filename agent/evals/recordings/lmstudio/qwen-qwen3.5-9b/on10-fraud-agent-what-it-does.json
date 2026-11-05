@@ -1,0 +1,745 @@
+{
+  "caseId": "on10",
+  "slug": "fraud-agent-what-it-does",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "6f7807297fd0f524bce336613ba233485f693d2b26961e80a7ba027c094e2e5f",
+      "latencyMs": 1671,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2345
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "qi4fGaYGDcMOBmLeaVKcRvg4aqMBxKv8",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2345,
+              "outputTokens": 61
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "qi4fGaYGDcMOBmLeaVKcRvg4aqMBxKv8",
+                "name": "get_projects",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "a72b315eb91b9ef6c0e2c9cb4a55183ad13385b4399f89c82c30a7bbc3fe3c7e",
+      "latencyMs": 8594,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 3116
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " Fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " Detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " designed"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " online"
+        },
+        {
+          "type": "text_delta",
+          "text": " event"
+        },
+        {
+          "type": "text_delta",
+          "text": " ticket"
+        },
+        {
+          "type": "text_delta",
+          "text": "ing"
+        },
+        {
+          "type": "text_delta",
+          "text": " platform"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " It"
+        },
+        {
+          "type": "text_delta",
+          "text": " reviews"
+        },
+        {
+          "type": "text_delta",
+          "text": " newly"
+        },
+        {
+          "type": "text_delta",
+          "text": " published"
+        },
+        {
+          "type": "text_delta",
+          "text": " events"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " organizers"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " then"
+        },
+        {
+          "type": "text_delta",
+          "text": " provides"
+        },
+        {
+          "type": "text_delta",
+          "text": " recommendations"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "approve"
+        },
+        {
+          "type": "text_delta",
+          "text": "/re"
+        },
+        {
+          "type": "text_delta",
+          "text": "ject"
+        },
+        {
+          "type": "text_delta",
+          "text": "/request"
+        },
+        {
+          "type": "text_delta",
+          "text": "-info"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " reasons"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " admin"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " decide"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nKey"
+        },
+        {
+          "type": "text_delta",
+          "text": " features"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Gr"
+        },
+        {
+          "type": "text_delta",
+          "text": "aded"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonomy"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " It"
+        },
+        {
+          "type": "text_delta",
+          "text": " auto"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ves"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " evidence"
+        },
+        {
+          "type": "text_delta",
+          "text": " verified"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " web"
+        },
+        {
+          "type": "text_delta",
+          "text": " sources"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " hold"
+        },
+        {
+          "type": "text_delta",
+          "text": " decisions"
+        },
+        {
+          "type": "text_delta",
+          "text": " back"
+        },
+        {
+          "type": "text_delta",
+          "text": " but"
+        },
+        {
+          "type": "text_delta",
+          "text": " never"
+        },
+        {
+          "type": "text_delta",
+          "text": " approve"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonom"
+        },
+        {
+          "type": "text_delta",
+          "text": "ously"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Performance"
+        },
+        {
+          "type": "text_delta",
+          "text": " improvements"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " Offline"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " showed"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " approval"
+        },
+        {
+          "type": "text_delta",
+          "text": " rates"
+        },
+        {
+          "type": "text_delta",
+          "text": " dropping"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": "4"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "8"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": " over"
+        },
+        {
+          "type": "text_delta",
+          "text": " twelve"
+        },
+        {
+          "type": "text_delta",
+          "text": " iterations"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "local"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
+          "text": "B"
+        },
+        {
+          "type": "text_delta",
+          "text": " model"
+        },
+        {
+          "type": "text_delta",
+          "text": "),"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Claude"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ha"
+        },
+        {
+          "type": "text_delta",
+          "text": "iku"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": " achieved"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "8"
+        },
+        {
+          "type": "text_delta",
+          "text": "6"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": " accuracy"
+        },
+        {
+          "type": "text_delta",
+          "text": " vs"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "7"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " approved"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonom"
+        },
+        {
+          "type": "text_delta",
+          "text": "ously"
+        },
+        {
+          "type": "text_delta",
+          "text": " vs"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "8"
+        },
+        {
+          "type": "text_delta",
+          "text": "%"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Cost"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " About"
+        },
+        {
+          "type": "text_delta",
+          "text": " $"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": " review"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nThe"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " currently"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " offline"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " status"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " deployment"
+        },
+        {
+          "type": "text_delta",
+          "text": " planned"
+        },
+        {
+          "type": "text_delta",
+          "text": " next"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's Fraud Detection Agent is designed for an online event ticketing platform. It reviews newly published events and organizers, then provides recommendations (approve/reject/request-info) with reasons for a human admin to decide.\n\nKey features:\n- **Graded autonomy**: It auto-approves only on evidence verified in code; web sources can hold decisions back but never approve autonomously\n- **Performance improvements**: Offline evals showed fraud approval rates dropping from 54% to 8% over twelve iterations (local 9B model), and Claude Haiku 5.5 achieved 86% accuracy vs 71% with only 1% of fraud approved autonomously vs 8%\n- **Cost**: About $0.002 per review\n\nThe agent is currently in offline evals status, with deployment planned next.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 3116,
+              "outputTokens": 322
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's Fraud Detection Agent is designed for an online event ticketing platform. It reviews newly published events and organizers, then provides recommendations (approve/reject/request-info) with reasons for a human admin to decide.\n\nKey features:\n- **Graded autonomy**: It auto-approves only on evidence verified in code; web sources can hold decisions back but never approve autonomously\n- **Performance improvements**: Offline evals showed fraud approval rates dropping from 54% to 8% over twelve iterations (local 9B model), and Claude Haiku 5.5 achieved 86% accuracy vs 71% with only 1% of fraud approved autonomously vs 8%\n- **Cost**: About $0.002 per review\n\nThe agent is currently in offline evals status, with deployment planned next."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

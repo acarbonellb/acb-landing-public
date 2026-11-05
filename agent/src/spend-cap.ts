@@ -24,6 +24,15 @@ import type { Usage } from "./model";
 /** USD per million tokens. */
 export type Pricing = { inputUsdPerMTok: number; outputUsdPerMTok: number };
 
+/**
+ * List prices of the Claude models the agent runs on: the spend cap's default
+ * prices (config.ts) and the eval report's cost per case. Prompts up to 100K
+ * tokens, far above a chat request.
+ */
+export const listPrices: Readonly<Record<string, Pricing>> = {
+  "claude-haiku-5-5": { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
+};
+
 /** Spend held for one running request. */
 export interface SpendReservation {
   /** Charges the actual usage of one model call. */

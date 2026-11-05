@@ -1,32 +1,41 @@
 // Runtime configuration, read from environment variables. No secrets live in
-// the repo: the API key comes from the environment (Secret Manager in
-// production, your shell locally).
+// the repo: the API key and the contact email come from the environment
+// (Secret Manager in production, your shell locally).
 import * as z from "zod";
 import { createAnthropicModelClient, efforts } from "./anthropic";
 import { chatLimits } from "./chat";
 import type { DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
+import { listPrices } from "./spend-cap";
+
+const defaultModel = "claude-haiku-5-5";
 
 const intFromEnv = z.coerce.number().int().positive();
 const usdFromEnv = z.coerce.number().nonnegative();
 
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
-  AGENT_MODEL: z.string().min(1).default("claude-haiku-5-5"),
+  // The address get_contact gives out. Secret Manager in production, never
+  // the repo; unset, the tools offer LinkedIn and GitHub only. Trimmed first:
+  // a secret saved with a trailing newline must not stop the service starting.
+  CONTACT_EMAIL: z.preprocess(
+    (value) => (typeof value === "string" ? value.trim() || undefined : value),
+    z.email().optional(),
+  ),
+  AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
-  MONTHLY_SPEND_CAP_USD: usdFromEnv.default(20),
-  // Claude Haiku 5.5 list prices (prompts up to 100K tokens, far above a
-  // chat request); change them with AGENT_MODEL.
-  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(0.1),
-  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(0.5),
-  // At least 1: 0 or less would make `clientIpFrom` read no proxy entry.
-  TRUSTED_PROXY_HOPS: z.coerce.number().int().min(1).default(1),
+  // Under the $5/month hard limit set on the Anthropic workspace, so this
+  // cap (and its "budget reached" message) is what the visitor meets first.
+  MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
+  // The default model's list prices (spend-cap.ts); change them with AGENT_MODEL.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].inputUsdPerMTok),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].outputUsdPerMTok),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -68,6 +77,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       : { kind: "memory" as const };
   return {
     model: e.AGENT_MODEL,
+    contactEmail: e.CONTACT_EMAIL,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {
@@ -83,8 +93,6 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
         inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
         outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
       },
-      /** Proxies that append to X-Forwarded-For (Cloud Run: 1). */
-      trustedProxyHops: e.TRUSTED_PROXY_HOPS,
     },
     store,
     /** The shared store for the guardrails, or `null` to keep them in memory. */

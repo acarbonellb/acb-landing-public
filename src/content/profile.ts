@@ -13,13 +13,19 @@ export type Profile = {
   tagline: string;
   /** About paragraphs. */
   summary: string[];
-  /** Short call to action above the contact email. */
+  /** Short call to action above the contact link ("ask my agent", or LinkedIn). */
   contactNote: string;
-  links: { email: string; github: string; linkedin: string };
+  /** No email: the repo is public. The agent reads it from its environment (#51). */
+  links: { github: string; linkedin: string };
 };
 
 /** Statuses the CV states; a project without one makes no status claim. */
-export const agentStatuses = ["in-progress", "personal-project"] as const;
+export const agentStatuses = [
+  "in-progress",
+  "offline-evals",
+  "coming-soon",
+  "personal-project",
+] as const;
 export type AgentStatus = (typeof agentStatuses)[number];
 
 export type AgentProject = {
@@ -29,8 +35,28 @@ export type AgentProject = {
   /** Who it was built for. */
   context: string;
   description: string;
+  /** Measured result, one line: what the evals showed. */
+  result?: string;
+  /** Secondary line under the result: caveats, cost, run counts. */
+  resultDetail?: string;
   stack: string[];
+  /** Where the whole card points: e.g. the chat on this page. */
   href?: string;
+  /** Extra links on the card, e.g. its source and eval report. */
+  links?: PracticeSource[];
+};
+
+/** Where a practice can be checked: this public repo or a card on the page. */
+export type PracticeSource = { label: string; href: string };
+
+/**
+ * One "how I run agents" bullet (#43). State only what a public source backs:
+ * this repo, or approved copy already on the page. Never link a private repo.
+ */
+export type AgentPractice = {
+  title: string;
+  text: string;
+  sources: PracticeSource[];
 };
 
 export type Role = {
@@ -77,29 +103,34 @@ export const profile: Profile = {
   ],
   contactNote: "Drop me a line:",
   links: {
-    email: "alberto.carbonell.beceiro@gmail.com",
     github: "https://github.com/acarbonellb",
     linkedin: "https://www.linkedin.com/in/albertocarbonell/",
   },
 };
 
-const satella =
-  "Satella Tickets, the event ticketing platform I co-founded and run as a side business";
+const ticketing = "An online event ticketing platform";
+
+const repo = "https://github.com/acarbonellb/acb-landing-public";
 
 export const agents: AgentProject[] = [
   {
     slug: "fraud-detection-agent",
     name: "Fraud Detection Agent",
-    status: "in-progress",
-    context: satella,
+    status: "offline-evals",
+    context: ticketing,
     description:
-      "Monitors ticket purchases and flags or blocks suspicious orders (e.g. card testing, bulk resale patterns) without manual review. Escalates to a human below a confidence threshold.",
+      "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
+    result:
+      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+    resultDetail:
+      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
     stack: ["TypeScript", "PostgreSQL", "GCP"],
   },
   {
     slug: "organizer-support-agent",
     name: "Organizer Support Agent",
-    context: satella,
+    status: "coming-soon",
+    context: ticketing,
     description:
       "Answers event organizers' questions about sales, payouts and setup without human review, pulling live data from PostgreSQL and the payments API.",
     stack: ["TypeScript", "Tool calling", "MCP", "PostgreSQL"],
@@ -113,6 +144,45 @@ export const agents: AgentProject[] = [
       "Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it.",
     stack: ["TypeScript", "Claude", "MCP"],
     href: "#agent",
+    // Its eval results line is generated at build time (src/lib/eval-results.ts).
+    links: [
+      { label: "source", href: `${repo}/tree/main/agent` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ],
+  },
+];
+
+export const agentPractices: AgentPractice[] = [
+  {
+    title: "Offline evals before shipping",
+    text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",
+    sources: [
+      {
+        label: "ADR 0001",
+        href: `${repo}/blob/main/docs/adr/0001-agent-evals-record-replay.md`,
+      },
+    ],
+  },
+  {
+    // Backed only by the fraud agent's approved copy above (#41).
+    title: "Graded autonomy, a human in the loop",
+    text: "The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.",
+    sources: [{ label: "Fraud Detection Agent", href: "#agent-fraud-detection-agent" }],
+  },
+  {
+    title: "Cost and limits tracked",
+    text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.",
+    sources: [
+      { label: "guardrails", href: `${repo}#guardrails` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ],
+  },
+  {
+    title: "Changes measured run over run",
+    text: "Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.",
+    sources: [
+      { label: "eval history", href: `${repo}/blob/main/agent/evals/history.jsonl` },
+    ],
   },
 ];
 
@@ -219,6 +289,22 @@ export const languages: SpokenLanguage[] = [
   { name: "Spanish", level: "Native" },
   { name: "English", level: "C1" },
 ];
+
+/**
+ * Shown under the chat input. Each claim is checked against the agent's code
+ * and the GCP config (PR for #46): re-check it when logging, the store or the
+ * model provider changes. Site-only: no tool, tool description or system
+ * prompt reads it, so it never reaches the model.
+ */
+export const chatPrivacyNote =
+  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are deleted within a day. The agent and its MCP server share my contact email on purpose.";
+
+/**
+ * What the contact section's "ask my agent" button sends to the chat, as the
+ * visitor's message (#50). The eval case `on11` asks exactly this and is
+ * gated in CI (ADR 0001), as it's the site's contact path.
+ */
+export const contactQuestion = "I'd like to contact Alberto, what's his email address?";
 
 /** "2019 — now", "2016 — 2019". */
 export function formatPeriod({ from, to }: Period): string {

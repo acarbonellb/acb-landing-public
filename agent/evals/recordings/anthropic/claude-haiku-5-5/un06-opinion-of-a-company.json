@@ -1,0 +1,161 @@
+{
+  "caseId": "un06",
+  "slug": "opinion-of-a-company",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "6377cb602964b15e8e1af333325deb5f4cd73ab8e64be1f858886c61f828339a",
+      "latencyMs": 1139,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1666
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01UM1ur2jLod8L4bWEZwF91f",
+                "name": "get_experience",
+                "input": {
+                  "company": "google"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1666,
+              "outputTokens": 132
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS4AYKEAgTGAI4AUIIdGhpbmtpbmcSDOxefcM4WtMJd+H25xoM3o5+EuLa9yjaENpKIjA7K5MDVH4+VHuhldJRY530MFza28HR8mJRN/DQ/7vjyiYHV9/TE6Yvtwv9bqWrj3Mq/QVNEPkOGBs8FxuYA399IUSchdxg3wQV//vjAECK/BlkoojNgg4W6jzwA5QBBRABNTaTRb6K9GzxZK2vFAs0DbnR369uFMaxrPbxZTLVc5joxJvQSrNL16iIAlMubqgekf1Z6MvcRXMa7hZvmNMe63t3XDgLGNfv9fGrvVOEXb+tQArq9ogrriiO8yl6m0OahEn8iiUlqOmliXNxtFAcmJvaUS6SkZXMtZXjrZwnA06tvnuN+ss7ikRTcI1y7cTw4zNdkUd4Cg1D6GKURdG8bBcoKNDBBKJQpdVgarGinIqcGpmGBpU/4DiWQ7sLW6jExBNI48jgtcTl1vYH3E7EJsIMoxzP4sC7Ko+9KJ4z25nmYDdyYToN8sk532NTq1jjkgRfFQD2OhI5clBGl4rXw/+fRtBPfQ9ZSkLu1JbuASbaGEGEE1km8DlXsIZyPKks9s5ftwSN+jQ6vz4CMEgaWKxGZJF5f5ckQ97TxmSoGN4JczNvW/MqvN5vUnOUtzSPEiwo8hWXhuUgcyOoSPxgbKFLBP404Xm9NT8H67Ay9onAwHhlahWC+02nHqD0H7WzyKDwmCx8wdfArbRS/vOYc4kminclTOiiuArFyr7DWL10hOuAb8ymaUqpctluzvzZ6NT7fNPcwoO55GcDKAmjo9eOEeJM5xfeyJcyxsrzA3X+5RTTCxoBcqIXwNOd/f1Ldme8int2uJSD9F/bHpfr8GulO/N8P+DlClHDbsjgafn6Bn3sGZd1Kuf3PeBXfjNPkG5UbhWEltuqDOcBWp7y9bKnkhn4trIlRqR/jmQ5tYYBQxig7JJMOfmIc6JN0vfI3lUn7nTH1aJvJlryEAx9aABSMvtXo8mR4KKQPVHi5Rl+JwtlS4eKazc4NvTIBI8tBelIjGE+4UNWSkNfDV+qmM7/ri7IjT9PcA1qadq69rgaGJevUVk823Ar4WMOkzM/JrAinS0DRDSugBq59MVNnYWisPDOEoU6kbIUsXuxqcl8WFSui6KWzfG87Z8utn4YAQ=="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01UM1ur2jLod8L4bWEZwF91f",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "google"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "bfded75a2c325a8ea281f56ab33ae270ec75d710a67ff48d3282bd669c6cfed1",
+      "latencyMs": 1033,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1811
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's profile does"
+        },
+        {
+          "type": "text_delta",
+          "text": "n't say"
+        },
+        {
+          "type": "text_delta",
+          "text": " what"
+        },
+        {
+          "type": "text_delta",
+          "text": " he thinks of Google."
+        },
+        {
+          "type": "text_delta",
+          "text": " His work"
+        },
+        {
+          "type": "text_delta",
+          "text": " history doesn't list"
+        },
+        {
+          "type": "text_delta",
+          "text": " any ro"
+        },
+        {
+          "type": "text_delta",
+          "text": "les at Google, so I can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t spe"
+        },
+        {
+          "type": "text_delta",
+          "text": "ak to that"
+        },
+        {
+          "type": "text_delta",
+          "text": " either. For his"
+        },
+        {
+          "type": "text_delta",
+          "text": " views"
+        },
+        {
+          "type": "text_delta",
+          "text": ", you could"
+        },
+        {
+          "type": "text_delta",
+          "text": " cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "act him direct"
+        },
+        {
+          "type": "text_delta",
+          "text": "ly through the"
+        },
+        {
+          "type": "text_delta",
+          "text": " links"
+        },
+        {
+          "type": "text_delta",
+          "text": " on this"
+        },
+        {
+          "type": "text_delta",
+          "text": " site."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's profile doesn't say what he thinks of Google. His work history doesn't list any roles at Google, so I can't speak to that either. For his views, you could contact him directly through the links on this site.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1811,
+              "outputTokens": 66
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's profile doesn't say what he thinks of Google. His work history doesn't list any roles at Google, so I can't speak to that either. For his views, you could contact him directly through the links on this site."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

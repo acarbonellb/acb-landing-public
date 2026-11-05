@@ -222,6 +222,7 @@ test("shows the unavailable state", async ({ page }) => {
     errorReply(503, {
       code: "unavailable",
       message: "The chat is resting until next month.",
+      resetsAt: "2026-12-01T00:00:00.000Z",
     }),
   );
   await page.goto("/#agent");
@@ -231,6 +232,7 @@ test("shows the unavailable state", async ({ page }) => {
   const alert = agentSection(page).getByRole("alert");
   await expect(alert).toContainText("The agent is unavailable right now.");
   await expect(alert).toContainText("The chat is resting until next month.");
+  await expect(alert).toContainText("It's back on December 1, 2026 (UTC).");
   await expectAccessible(page);
 });
 
@@ -243,15 +245,16 @@ test("shows an error when the agent can't be reached", async ({ page }) => {
   await expect(agentSection(page).getByRole("alert")).toContainText("Something went wrong.");
 });
 
-test("shows the MCP endpoint and a ready-to-copy command", async ({
+test("shows the MCP endpoint on the site's domain and a ready-to-copy command", async ({
   page,
   context,
 }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/#agent");
 
+  // The chat calls the agent's own URL; MCP goes through the /mcp rewrite.
   const command =
-    "claude mcp add --transport http albertocarbonell http://localhost:8080/mcp";
+    "claude mcp add --transport http albertocarbonell https://albertocarbonell.dev/mcp";
   await expect(page.getByText(command)).toBeVisible();
 
   await page.getByRole("button", { name: /copy/i }).click();
