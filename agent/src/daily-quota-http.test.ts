@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it } from "vitest";
+import { createAnswerSigner } from "./answer-signing";
 import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
 import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
 import { createMemoryDocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap } from "./spend-cap";
-import { testAppDeps } from "./test-deps";
+import { testAppDeps, testSigningKey } from "./test-deps";
 
 let servers: RunningServer[] = [];
 
@@ -22,7 +23,7 @@ async function start(deps: Partial<AppDeps>) {
 
 const origin = "https://albertocarbonell.dev";
 
-function chat(url: string, ip: string, messages = [{ role: "user", content: "Who is Alberto?" }]) {
+function chat(url: string, ip: string, messages: unknown[] = [{ role: "user", content: "Who is Alberto?" }]) {
   return fetch(new URL(paths.chat, url), {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Forwarded-For": ip, Origin: origin },
@@ -89,10 +90,13 @@ describe("daily spend quota", () => {
       chatLimits,
       dailyQuota: createMemoryDailyQuota({ quotaUsd: 0.04, pricing: inputOnly }),
     });
-    const long = Array.from({ length: 18 }, (_, i) => ({
-      role: i % 2 === 0 ? "user" : "assistant",
-      content: "x".repeat(2000),
-    }));
+    const signer = createAnswerSigner(testSigningKey);
+    const content = "x".repeat(2000);
+    const long: unknown[] = Array.from({ length: 18 }, (_, i) =>
+      i % 2 === 0
+        ? { role: "user", content }
+        : { role: "assistant", content, signature: signer.sign(content) },
+    );
     long.push({ role: "user", content: "y".repeat(2000) });
 
     expect((await chat(url, "198.51.100.1", long)).status).toBe(429);

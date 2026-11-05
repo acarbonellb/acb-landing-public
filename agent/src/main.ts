@@ -14,6 +14,11 @@ console.log(`Chat endpoint: ${server.url}${paths.chat}`);
 if (!config.anthropicApiKey) {
   console.warn("ANTHROPIC_API_KEY is not set: the chat endpoint answers 503.");
 }
+if (!config.answerSigningKey) {
+  console.warn(
+    "ANSWER_SIGNING_KEY is not set: answers are signed with a key of this process only, so a restart refuses earlier ones.",
+  );
+}
 if (!config.contactEmail) {
   console.warn("CONTACT_EMAIL is not set: get_contact offers LinkedIn and GitHub only.");
 }

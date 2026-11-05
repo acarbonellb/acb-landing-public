@@ -5,7 +5,8 @@ import { cors } from "hono/cors";
 import { createMiddleware } from "hono/factory";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import type { ChatMessage, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import type { AnswerSigner } from "./answer-signing";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import type { DailyQuota } from "./daily-quota";
 import { createMcpServer } from "./mcp";
@@ -36,6 +37,8 @@ export const httpErrorMessages = {
   dailyQuota:
     "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
   statsUnavailable: "Usage stats are unavailable.",
+  unsignedAnswer:
+    "An earlier answer in this conversation is missing its signature or was changed, so the agent can't continue it. Reload the page to start a new conversation.",
   spendCap:
     "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
 } as const;
@@ -52,6 +55,8 @@ export type AppDeps = {
   /** Browser origins allowed to call the chat endpoint. */
   allowedOrigins: string[];
   chatLimits: ChatLimits;
+  /** Signs the chat's answers and checks the earlier ones a request sends back. */
+  answerSigner: AnswerSigner;
   /**
    * Per-IP limits: in the shared store when `AGENT_STORE` selects one, else
    * in memory, per instance (`rate-limit.ts`).
@@ -120,8 +125,14 @@ const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>
   await next();
 });
 
-/** The chat request in the body, or the `400` that refuses it. */
-async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
+/**
+ * The conversation in the body, as the chat agent reads it, or the `400` that
+ * refuses it: malformed, or an earlier answer unsigned or changed.
+ */
+async function parseChatRequest(
+  c: Context,
+  answerSigner: AnswerSigner,
+): Promise<ChatMessage[] | Response> {
   let body: unknown;
   try {
     body = await c.req.json();
@@ -132,7 +143,11 @@ async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
   if (!parsed.success) {
     return jsonError(c, 400, { code: "invalid_request", message: z.prettifyError(parsed.error) });
   }
-  return parsed.data;
+  const messages = answerSigner.verify(parsed.data.messages);
+  if (!messages) {
+    return jsonError(c, 400, { code: "invalid_request", message: httpErrorMessages.unsignedAnswer });
+  }
+  return messages;
 }
 
 export function createApp(deps: AppDeps): Hono {
@@ -141,6 +156,7 @@ export function createApp(deps: AppDeps): Hono {
     modelClient,
     allowedOrigins,
     chatLimits,
+    answerSigner,
     chatRateLimiter,
     mcpRateLimiter,
     spendCap,
@@ -272,13 +288,12 @@ export function createApp(deps: AppDeps): Hono {
         jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." }),
     }),
     async (c) => {
-      const request = await parseChatRequest(c);
-      if (request instanceof Response) return request;
+      const messages = await parseChatRequest(c, answerSigner);
+      if (messages instanceof Response) return messages;
       if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
-      const { messages } = request;
       // Reserve the most this request can cost while it runs, against the
       // key's daily quota and then the month's spend cap (see spend-holds.ts).
       // The quota first: its document is the key's own, so a key over it
@@ -311,13 +326,15 @@ export function createApp(deps: AppDeps): Hono {
       const abort = new AbortController();
       const stop = () => abort.abort();
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
-      const events = meteredChat(messages, {
+      // The answer is signed as it ends, so it can come back in the next
+      // chat request (answer-signing.ts).
+      const events = answerSigner.signEvents(meteredChat(messages, {
         agent: chatAgent,
         reservation: combineReservations(quota.reservation, spend.reservation),
         usage,
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
-      });
+      }));
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         // Drained to the end even once the visitor has left: every model call

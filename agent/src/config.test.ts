@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { chatLimits } from "./chat";
 import { loadConfig } from "./config";
 
+const signingKey = "test-signing-key-0123456789abcdefghijklmnop";
+
 describe("loadConfig", () => {
   it("defaults to Claude Haiku 5.5 (the cheapest current model), the site origins and the built-in caps", () => {
     const config = loadConfig({});
@@ -152,19 +154,50 @@ describe("loadConfig", () => {
   });
 
   it("starts in production with the Firestore store, or with memory when explicitly allowed", () => {
+    const production = { NODE_ENV: "production", ANSWER_SIGNING_KEY: signingKey };
     expect(
       loadConfig({
-        NODE_ENV: "production",
+        ...production,
         AGENT_STORE: "firestore",
         FIRESTORE_PROJECT_ID: "acb-landing",
       }).store.kind,
     ).toBe("firestore");
     expect(
-      loadConfig({ NODE_ENV: "production", AGENT_ALLOW_MEMORY_STORE: "true" }).store,
+      loadConfig({ ...production, AGENT_ALLOW_MEMORY_STORE: "true" }).store,
     ).toEqual({ kind: "memory" });
     expect(() =>
-      loadConfig({ NODE_ENV: "production", AGENT_ALLOW_MEMORY_STORE: "yes" }),
+      loadConfig({ ...production, AGENT_ALLOW_MEMORY_STORE: "yes" }),
     ).toThrow(/AGENT_ALLOW_MEMORY_STORE/);
+  });
+
+  describe("answer signing key", () => {
+    const firestoreInProduction = {
+      NODE_ENV: "production",
+      AGENT_STORE: "firestore",
+      FIRESTORE_PROJECT_ID: "acb-landing",
+    };
+
+    it("is required in production, so the service doesn't start without it", () => {
+      expect(() => loadConfig(firestoreInProduction)).toThrow(/production.*ANSWER_SIGNING_KEY/s);
+      expect(() => loadConfig({ ...firestoreInProduction, ANSWER_SIGNING_KEY: "\n" })).toThrow(
+        /ANSWER_SIGNING_KEY/,
+      );
+    });
+
+    it("is read from the environment, trimmed of a secret's trailing newline", () => {
+      expect(
+        loadConfig({ ...firestoreInProduction, ANSWER_SIGNING_KEY: `${signingKey}\n` })
+          .answerSigningKey,
+      ).toBe(signingKey);
+    });
+
+    it("refuses a short key", () => {
+      expect(() => loadConfig({ ANSWER_SIGNING_KEY: "short" })).toThrow(/ANSWER_SIGNING_KEY/);
+    });
+
+    it("may be unset outside production (local development, tests)", () => {
+      expect(loadConfig({ NODE_ENV: "development" }).answerSigningKey).toBeUndefined();
+    });
   });
 
   it("keeps defaulting to memory outside production (local development, tests)", () => {

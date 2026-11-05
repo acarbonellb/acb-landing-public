@@ -21,6 +21,13 @@ const envSchema = z.object({
     (value) => (typeof value === "string" ? value.trim() || undefined : value),
     z.email().optional(),
   ),
+  // Signs the chat's answers (answer-signing.ts). Secret Manager in
+  // production, where it is required; unset elsewhere, each process makes
+  // its own. Trimmed like the email.
+  ANSWER_SIGNING_KEY: z.preprocess(
+    (value) => (typeof value === "string" ? value.trim() || undefined : value),
+    z.string().min(32, "must be at least 32 characters").optional(),
+  ),
   AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
@@ -78,7 +85,12 @@ const envSchema = z.object({
       "Set AGENT_STORE=firestore, or AGENT_ALLOW_MEMORY_STORE=true to accept that",
     path: ["AGENT_STORE"],
   },
-);
+).refine((e) => e.NODE_ENV !== "production" || e.ANSWER_SIGNING_KEY, {
+  // Each instance would sign with its own key, so answers from one would be
+  // refused by the next after a cold start or a deploy.
+  message: "required in production, where every instance must sign answers with the same key",
+  path: ["ANSWER_SIGNING_KEY"],
+});
 
 export type Config = ReturnType<typeof loadConfig>;
 
@@ -113,6 +125,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     anthropicApiKey: e.ANTHROPIC_API_KEY,
     model: e.AGENT_MODEL,
     contactEmail: e.CONTACT_EMAIL,
+    /** Signs the chat's answers; unset (never in production), each process makes its own. */
+    answerSigningKey: e.ANSWER_SIGNING_KEY,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {

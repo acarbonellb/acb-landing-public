@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createChatAgent, type ChatEvent } from "./chat";
+import { createChatAgent, type ChatRunEvent } from "./chat";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { meteredChat } from "./metered-chat";
@@ -43,7 +43,7 @@ async function run(script: ScriptedResponse[], { failSettle = false } = {}) {
       }
     : status.reservation;
 
-  const events: ChatEvent[] = [];
+  const events: ChatRunEvent[] = [];
   for await (const event of meteredChat(question, {
     agent,
     reservation,
@@ -65,7 +65,7 @@ describe("meteredChat", () => {
     const { events, stats } = await run(script);
 
     const unmetered = createChatAgent({ model: createFakeModel(script), toolset: createToolset() });
-    const expected: ChatEvent[] = [];
+    const expected: ChatRunEvent[] = [];
     for await (const event of unmetered.run(question)) expected.push(event);
     expect(events).toEqual(expected);
     expect(stats).toMatchObject({
