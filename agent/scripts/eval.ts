@@ -30,6 +30,7 @@ import {
   parseHistory,
   type LiveRun,
 } from "../src/evals/history";
+import { liveRunConfig } from "../src/evals/live-run";
 import {
   evaluate,
   recordCase,
@@ -116,24 +117,22 @@ async function replay(check: boolean): Promise<number> {
   return problems.length ? 1 : 0;
 }
 
-function isLocal(url: string): boolean {
-  return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url).hostname);
-}
-
 async function record(): Promise<number> {
-  const env = process.env;
-  const baseURL = env.ANTHROPIC_BASE_URL || "http://localhost:1234";
-  const local = isLocal(baseURL);
+  let config;
+  try {
+    // The agent's own config schema: the same settings, rejected the same way.
+    config = liveRunConfig(process.env, { provider: values.provider });
+  } catch (error) {
+    console.error((error as Error).message);
+    return 1;
+  }
+  const { baseURL, local, provider, model, effort, apiKey } = config;
   if (!local && !values.paid) {
     console.error(
       `${baseURL} is a paid provider. Only record against it with the owner's go-ahead, then pass --paid.`,
     );
     return 1;
   }
-  const provider =
-    values.provider || env.AGENT_EVAL_PROVIDER || (local ? "lmstudio" : "anthropic");
-  const model = env.AGENT_MODEL || "qwen/qwen3.5-9b";
-  const apiKey = env.ANTHROPIC_API_KEY || (local ? "lmstudio" : "");
   if (!apiKey) {
     console.error("ANTHROPIC_API_KEY is not set.");
     return 1;
@@ -145,16 +144,18 @@ async function record(): Promise<number> {
     console.error(guard.refused);
     return 1;
   }
-  const client = createAnthropicModelClient({ apiKey, model, effort: "low", baseURL });
+  const client = createAnthropicModelClient({ apiKey, model, effort, baseURL });
   const only = values.only?.split(",");
   const selected = cases.filter((c) => !only || only.includes(c.id));
 
-  console.log(`Recording ${selected.length} cases with ${setLabel({ provider, model })} at ${baseURL}`);
+  console.log(
+    `Recording ${selected.length} cases with ${setLabel({ provider, model })} (effort ${effort}) at ${baseURL}`,
+  );
   let failed = 0;
   for (const evalCase of selected) {
     const name = caseName(evalCase);
     try {
-      const { recording, result } = await recordCase(evalCase, client, { provider, model });
+      const { recording, result } = await recordCase(evalCase, client, { provider, model }, { effort });
       // Only now: a run that fails half-way never overwrites a good recording.
       await saveRecording(recording);
       const verdict = result.score.pass ? "pass" : `FAIL: ${result.score.reasons.join("; ")}`;

@@ -17,16 +17,24 @@ export type LiveRun = {
 
 /**
  * How an entry was made: a live run, a deliberate second live run at the same
- * commit (`--rerun`), or the stored recordings scored again with no model call.
+ * commit (`--rerun`), the stored recordings scored again with no model call,
+ * or the stored recordings rewritten to a new format by a script (#98), with
+ * the same scores and no model call.
  */
-export const entryKinds = ["live", "rerun", "rescored"] as const;
+export const entryKinds = ["live", "rerun", "rescored", "migrated"] as const;
 export type EntryKind = (typeof entryKinds)[number];
 
 export type HistoryEntry = LiveRun &
   SetId & {
     /** Absent from entries made before kinds were recorded (all live runs). */
     kind?: EntryKind;
-    promptHash: string;
+    /**
+     * The request identity (system prompt and tools) of the recordings it was
+     * made from; absent from entries made before it covered the tools.
+     */
+    requestIdentity?: string;
+    /** Those older entries' hash of the system prompt alone. */
+    promptHash?: string;
     /** The set's recordings fingerprint; absent from entries made before it was recorded. */
     fingerprint?: string;
     metrics: Metrics;
@@ -34,14 +42,15 @@ export type HistoryEntry = LiveRun &
 
 const ratio = z.object({ n: z.number().int(), of: z.number().int() }).strict();
 
-const entrySchema: z.ZodType<HistoryEntry> = z
+const entrySchema = z
   .object({
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     commit: z.string().min(1),
     kind: z.enum(entryKinds).optional(),
     provider: z.string().min(1),
     model: z.string().min(1),
-    promptHash: z.string().min(1),
+    requestIdentity: z.string().min(1).optional(),
+    promptHash: z.string().min(1).optional(),
     fingerprint: z.string().min(1).optional(),
     metrics: z
       .object({
@@ -58,7 +67,10 @@ const entrySchema: z.ZodType<HistoryEntry> = z
       })
       .strict(),
   })
-  .strict();
+  .strict()
+  .refine((e) => e.requestIdentity || e.promptHash, {
+    message: "needs a requestIdentity (or, before it covered the tools, a promptHash)",
+  }) satisfies z.ZodType<HistoryEntry>;
 
 export function historyEntry(set: SetResult, run: LiveRun, kind: EntryKind): HistoryEntry {
   return {
@@ -66,7 +78,7 @@ export function historyEntry(set: SetResult, run: LiveRun, kind: EntryKind): His
     kind,
     provider: set.provider,
     model: set.model,
-    promptHash: set.promptHash,
+    requestIdentity: set.requestIdentity,
     fingerprint: set.fingerprint,
     metrics: setMetrics(set),
   };
@@ -109,7 +121,8 @@ export function appendLiveRun(
  * The re-run guard: what a live run of `set` at `commit` is. A second live run
  * at a commit that already has one (a live run or re-run; entries without a
  * kind were all live runs) is refused unless `rerun`, and is then marked as a
- * re-run, so the history never hides a lucky retry. Re-scores don't count.
+ * re-run, so the history never hides a lucky retry. Re-scores and migrations
+ * don't count.
  */
 export function liveRunKind(
   entries: HistoryEntry[],
@@ -118,7 +131,7 @@ export function liveRunKind(
   rerun: boolean,
 ): { kind: "live" | "rerun" } | { refused: string } {
   const ranHere = entries.some(
-    (e) => sameSet(e, set) && e.commit === commit && e.kind !== "rescored",
+    (e) => sameSet(e, set) && e.commit === commit && e.kind !== "rescored" && e.kind !== "migrated",
   );
   if (!ranHere) return { kind: "live" };
   if (rerun) return { kind: "rerun" };
@@ -146,10 +159,12 @@ function changedMetrics(entry: HistoryEntry, set: SetResult): string[] {
 
 const rerecord = "re-record with `pnpm agent:eval`";
 const rescore = "re-score with `pnpm agent:eval:rescore`";
+const migrate =
+  "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)";
 
 /**
  * What fails CI, for each recording set's latest history entry:
- * - missing, or its fingerprint or prompt hash differs from the recordings:
+ * - missing, or its fingerprint or request identity differs from the recordings:
  *   recordings committed without the history line their live run appended, or
  *   a history line without its recordings. Only a live run fixes it.
  * - no fingerprint (made before fingerprints were recorded), or the same
@@ -164,9 +179,12 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
     if (latest.fingerprint === undefined) {
       return [`${label}: latest history entry has no recordings fingerprint: ${rescore}`];
     }
+    if (latest.requestIdentity === undefined) {
+      return [`${label}: latest history entry has no request identity, only a system prompt hash: ${migrate}`];
+    }
     const identity = [
       ...(latest.fingerprint !== set.fingerprint ? ["fingerprint"] : []),
-      ...(latest.promptHash !== set.promptHash ? ["promptHash"] : []),
+      ...(latest.requestIdentity !== set.requestIdentity ? ["requestIdentity"] : []),
     ];
     if (identity.length) {
       return [`${label}: latest history entry doesn't match the recordings (${identity.join(", ")}): ${rerecord}`];
@@ -182,9 +200,10 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
  * What `pnpm agent:eval:rescore` appends: a `rescored` entry for each set whose
  * stored recordings now score differently from its latest entry, or whose
  * latest entry has no fingerprint yet. Never calls a model, so it only accepts
- * recordings the latest entry was made from: the same fingerprint, or, for an
- * entry from before fingerprints, the same prompt hash and metrics (what the
- * history was checked by then). Recordings that changed need a live run.
+ * recordings the latest entry was made from: the same fingerprint and request
+ * identity, or, for an entry from before fingerprints, the same metrics (with
+ * recordings that still replay, what the history was checked by then).
+ * Recordings that changed need a live run.
  */
 export function rescoreHistory(
   entries: HistoryEntry[],
@@ -206,9 +225,13 @@ export function rescoreHistory(
       continue;
     }
     const legacy = latest.fingerprint === undefined;
+    if (!legacy && latest.requestIdentity === undefined) {
+      problems.push(`${label}: latest history entry has no request identity, not re-scored: ${migrate}`);
+      continue;
+    }
     const sameRecordings = legacy
-      ? latest.promptHash === set.promptHash && !changedMetrics(latest, set).length
-      : latest.fingerprint === set.fingerprint && latest.promptHash === set.promptHash;
+      ? !changedMetrics(latest, set).length
+      : latest.fingerprint === set.fingerprint && latest.requestIdentity === set.requestIdentity;
     if (!sameRecordings) {
       problems.push(`${label}: recordings changed since the latest history entry, not re-scored: ${rerecord}`);
       continue;

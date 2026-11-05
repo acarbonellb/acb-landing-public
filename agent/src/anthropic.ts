@@ -30,6 +30,26 @@ export type AnthropicModelOptions = {
 
 type Params = Anthropic.Beta.Messages.MessageCreateParamsStreaming;
 
+/**
+ * The parameters the client adds to every request, beyond the request's own
+ * prompt, tools, messages and token cap: what eval recordings store as the
+ * settings they were made with, so a change to them shows.
+ */
+export function anthropicRequestParams({
+  model,
+  effort,
+}: Pick<AnthropicModelOptions, "model" | "effort">) {
+  return {
+    output_config: { effort },
+    // System prompt and tools never change: cache that prefix.
+    cache_control: { type: "ephemeral" as const },
+    ...(serverSideFallbackModels.has(model) && {
+      betas: ["server-side-fallback-2026-07-01"],
+      fallbacks: "default" as const,
+    }),
+  };
+}
+
 function toParams(messages: ModelMessage[]): Anthropic.Beta.BetaMessageParam[] {
   return messages.map((m): Anthropic.Beta.BetaMessageParam => {
     switch (m.role) {
@@ -153,7 +173,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
     fetch: options.fetch,
     maxRetries: options.maxRetries,
   });
-  const fallbacks = serverSideFallbackModels.has(options.model);
+  const fixed = anthropicRequestParams(options);
 
   return {
     async *stream(request) {
@@ -170,13 +190,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
           input_schema: tool.inputSchema as Anthropic.Beta.BetaTool.InputSchema,
         })),
         messages: toParams(request.messages),
-        output_config: { effort: options.effort },
-        // System prompt and tools never change: cache that prefix.
-        cache_control: { type: "ephemeral" },
-        ...(fallbacks && {
-          betas: ["server-side-fallback-2026-07-01"],
-          fallbacks: "default" as const,
-        }),
+        ...fixed,
       };
       try {
         const stream = client.beta.messages.stream(params, { signal: request.signal });

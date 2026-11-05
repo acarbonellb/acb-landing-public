@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { systemPrompt } from "../system-prompt";
 import { createFakeModel } from "../fake-model";
+import { createToolset, type Toolset } from "../tools";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
-import { evalContactEmail } from "./content";
+import { evalContactEmail, evalContent } from "./content";
 import {
   evaluate,
   recordCase,
@@ -51,6 +52,18 @@ async function recordBoth() {
 
 // One word of the shipped prompt changed.
 const editedPrompt = systemPrompt.replace("concise", "brief");
+
+/** The eval toolset with one tool's description edited. */
+function editedTools(): Toolset {
+  const toolset = createToolset(evalContent);
+  return {
+    ...toolset,
+    list: () =>
+      toolset
+        .list()
+        .map((t) => (t.name === "get_contact" ? { ...t, description: `${t.description} Edited.` } : t)),
+  };
+}
 
 describe("the eval runner", () => {
   it("records cases through the real chat loop and replays them to identical responses", async () => {
@@ -127,6 +140,7 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     });
 
     expect(problems).toEqual([
+      expect.stringMatching(/^fake \/ scripted: 2 recordings were made with another request identity/),
       expect.stringMatching(/^fake \/ scripted on01-contact: Stale recording \(request_changed/),
       expect.stringMatching(/^fake \/ scripted ot01-capital-after-greeting: Stale recording/),
     ]);
@@ -195,6 +209,83 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     expect(outdated.problems).toEqual([
       expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(fingerprint\)/),
     ]);
+  });
+});
+
+describe("the request identity", () => {
+  it("covers the tools: a tool description change changes it, and CI reports it", async () => {
+    const { a, b } = await recordBoth();
+    const set = { ...meta, recordings: [a.recording, b.recording] };
+    const recorded = await evaluate({ cases: [contact, capital], sets: [set] });
+    const history = [historyEntry(recorded.sets[0], { date: "2026-11-03", commit: "abc1234" }, "live")];
+
+    const edited = await recordCase(contact, createFakeModel([{ text: "Hi" }]), meta, {
+      toolset: editedTools(),
+    });
+    const changed = await evaluate({
+      cases: [contact, capital],
+      sets: [set],
+      history,
+      toolset: editedTools(),
+    });
+
+    expect(a.recording.requestIdentity).toMatch(/^[0-9a-f]{64}$/);
+    expect(b.recording.requestIdentity).toBe(a.recording.requestIdentity);
+    expect(edited.recording.requestIdentity).not.toBe(a.recording.requestIdentity);
+    expect(changed.problems).toContain(
+      "fake / scripted: 2 recordings were made with another request identity (the system prompt or the tools changed): re-record with `pnpm agent:eval`",
+    );
+    expect(changed.problems).toContain(
+      "fake / scripted: latest history entry doesn't match the recordings (requestIdentity): re-record with `pnpm agent:eval`",
+    );
+  });
+});
+
+describe("the recorded model settings", () => {
+  it("state the effort and the adapter's request parameters, the agent's by default", async () => {
+    const { a } = await recordBoth();
+    const { recording } = await recordCase(capital, createFakeModel([{ text: "No." }]), meta, {
+      effort: "high",
+    });
+
+    expect(a.recording.settings).toEqual({
+      effort: "low",
+      requestParams: { output_config: { effort: "low" }, cache_control: { type: "ephemeral" } },
+    });
+    expect(recording.settings).toEqual({
+      effort: "high",
+      requestParams: { output_config: { effort: "high" }, cache_control: { type: "ephemeral" } },
+    });
+  });
+
+  it("flag a recording made with other settings than the agent's", async () => {
+    const { a } = await recordBoth();
+    const { recording } = await recordCase(capital, createFakeModel([{ text: "No." }]), meta, {
+      effort: "high",
+    });
+
+    const { problems, report } = await evaluate({
+      cases: [contact, capital],
+      sets: [{ ...meta, recordings: [a.recording, recording] }],
+    });
+
+    expect(problems).toEqual([
+      "fake / scripted: recorded with other model settings than the agent's (ot01-capital-after-greeting): re-record with `pnpm agent:eval`",
+    ]);
+    expect(report).toContain("Model settings: mixed (see `pnpm agent:eval:replay --check`)");
+  });
+
+  it("show in the set's section of the report", async () => {
+    const { a, b } = await recordBoth();
+
+    const { report } = await evaluate({
+      cases: [contact, capital],
+      sets: [{ ...meta, recordings: [a.recording, b.recording] }],
+    });
+
+    expect(report).toContain(
+      '## fake / scripted\n\nModel settings: effort `low` · request parameters `{"cache_control":{"type":"ephemeral"},"output_config":{"effort":"low"}}`\n',
+    );
   });
 });
 

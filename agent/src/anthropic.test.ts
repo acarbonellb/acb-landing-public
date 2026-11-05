@@ -1,7 +1,7 @@
 // The Anthropic adapter, driven by the real SDK against a canned `fetch`:
 // no request ever leaves the process.
 import { describe, expect, it } from "vitest";
-import { createAnthropicModelClient } from "./anthropic";
+import { anthropicRequestParams, createAnthropicModelClient } from "./anthropic";
 import { ModelUnavailableError, type ModelRequest, type ModelStreamEvent } from "./model";
 
 type Captured = { url: string; body: Record<string, unknown>; headers: Headers };
@@ -134,6 +134,29 @@ describe("Anthropic model client", () => {
           ],
         },
       ],
+    });
+  });
+
+  it("sends exactly the request parameters it reports, which eval recordings store", async () => {
+    for (const model of ["claude-haiku-5-5", "claude-opus-5-5"]) {
+      const { fetch, calls } = fakeFetch(
+        () => new Response(toolTurn, { headers: { "content-type": "text/event-stream" } }),
+      );
+      const options = { model, effort: "medium" as const };
+      await collect(createAnthropicModelClient({ apiKey: "k", fetch, ...options }).stream(request));
+
+      const [{ body, headers }] = calls;
+      // The rest are the request's own: what a recording's request hash covers.
+      const own = new Set(["model", "max_tokens", "stream", "system", "tools", "messages"]);
+      const sent = Object.fromEntries(Object.entries(body).filter(([key]) => !own.has(key)));
+      const betas = headers.get("anthropic-beta");
+      expect({ ...sent, ...(betas && { betas: betas.split(",") }) }).toEqual(
+        anthropicRequestParams(options),
+      );
+    }
+    expect(anthropicRequestParams({ model: "claude-haiku-5-5", effort: "low" })).toEqual({
+      output_config: { effort: "low" },
+      cache_control: { type: "ephemeral" },
     });
   });
 

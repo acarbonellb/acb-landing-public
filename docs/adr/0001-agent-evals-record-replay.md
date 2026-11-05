@@ -33,3 +33,14 @@ Now each history entry stores a **recordings fingerprint**: a SHA-256 of the set
 **Re-run guard.** A live run at a commit that already has a live run (or re-run) of the set is refused unless `--rerun` is passed, and the entry is then marked `rerun`, so a lucky retry is visible in the history and the report instead of looking like an improvement. Re-scores don't count. To record a real change, commit it first.
 
 Older entries without a kind or fingerprint still parse, and the report shows them as `live` (only live runs appended before). The report's History section shows each entry's kind.
+
+## Amendment (#98): request identity and model settings
+
+The history and the recordings stored a `promptHash`, a hash of the system prompt alone, which the report called "the prompt". A tool description change didn't change it, so the history could show the same "prompt" for two different requests. Live runs also hardcoded the effort and parsed the environment themselves, and nothing recorded the settings a recording was made with.
+
+Now:
+
+- **Request identity.** Recordings and history entries store `requestIdentity`: a SHA-256 of the system prompt and the tool definitions as the model sees them. Replay computes it from the code and fails when a set's recordings or its latest history entry hold another one ("the system prompt or the tools changed: re-record"). Older history entries keep their `promptHash`, shown as "prompt only" in the report; they are not rewritten, since the tools they were made with aren't known.
+- **Model settings.** Each recording states the effort and the parameters the model client adds to every request (`anthropicRequestParams`, the same function the adapter sends them from). They sit below the `ModelClient` seam, so the request hash can't see them; replay fails when a recording's settings differ from the agent's (its config schema's default effort), and the report shows each set's settings.
+- **Config schema.** A live run reads the model, effort and key through `loadConfig`, the agent's own schema, so an invalid setting fails the same way and an eval can't run with settings production would read differently. Only the defaults differ (LM Studio's model and key on localhost).
+- **Migration.** `scripts/migrate-request-identity.ts` rewrote the stored recordings with their request identity and settings and appended one `migrated` history entry per set, with no model call. It only accepts recordings that match their latest entry's fingerprint and still replay to the same scores: then the request identity is the current one by construction, and the settings are those every live run had used (effort `low`, the adapter's parameters unchanged since the recordings were made). `migrated` entries don't count as live runs for the re-run guard.

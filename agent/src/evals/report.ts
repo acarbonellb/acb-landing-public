@@ -3,7 +3,8 @@
 // CI can compare the regenerated report with the committed one.
 import { byString, caseName, percent, setLabel, type Ratio } from "./format";
 import type { HistoryEntry } from "./history";
-import { setMetrics, type SetResult } from "./metrics";
+import { setMetrics, type ModelSettings, type SetResult } from "./metrics";
+import { canonicalJson } from "./recording";
 import { expectation, type CaseResponse } from "./scoring";
 
 /** "$0.000362"; "$0" for a free model; "n/a" without a price. */
@@ -36,6 +37,11 @@ function actual({ answer, toolCalls, error }: CaseResponse): string {
   ].join(" · ");
 }
 
+function settingsLine(settings: ModelSettings | undefined): string {
+  if (!settings) return "Model settings: mixed (see `pnpm agent:eval:replay --check`)";
+  return `Model settings: effort \`${settings.effort}\` · request parameters \`${canonicalJson(settings.requestParams)}\``;
+}
+
 function renderSet(set: SetResult): string {
   const m = setMetrics(set);
   const rows = [...set.results]
@@ -53,7 +59,9 @@ function renderSet(set: SetResult): string {
     );
   return `## ${setLabel(set)}
 
-System prompt \`${set.promptHash.slice(0, 12)}\` · ${m.cases} cases
+${settingsLine(set.settings)}
+
+Request identity (system prompt and tools) \`${set.requestIdentity.slice(0, 12)}\` · ${m.cases} cases
 
 | Metric | Value |
 | --- | --- |
@@ -137,6 +145,12 @@ function countCell(now: number, before: number | undefined, unit = ""): string {
   return `${now}${unit}${delta}`;
 }
 
+/** The entry's request identity; an older entry's system prompt hash, marked as such. */
+function identityCell({ requestIdentity, promptHash }: HistoryEntry): string {
+  if (requestIdentity) return `\`${requestIdentity.slice(0, 12)}\``;
+  return `\`${(promptHash ?? "").slice(0, 12)}\` (prompt only)`;
+}
+
 function historyRow(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
   const m = entry.metrics;
   const p = previous?.metrics;
@@ -145,7 +159,7 @@ function historyRow(entry: HistoryEntry, previous: HistoryEntry | undefined): st
     `\`${entry.commit}\``,
     // Entries from before kinds were recorded were all live runs.
     entry.kind ?? "live",
-    `\`${entry.promptHash.slice(0, 12)}\``,
+    identityCell(entry),
     String(m.cases),
     ratioCell(m.leaks, p?.leaks),
     ratioCell(m.toolAccuracy, p?.toolAccuracy),
@@ -170,7 +184,7 @@ export function renderHistory(entries: HistoryEntry[]): string {
       .reverse();
     return `### ${label}
 
-| Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 `;
@@ -178,7 +192,7 @@ ${rows.map((r) => `| ${r} |`).join("\n")}
   return [
     `## History
 
-Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, and \`rescored\` for the stored recordings scored again with no model call. Changes are against the previous entry of the same set; pp is percentage points.
+Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
 `,
     ...sections,
   ].join("\n");
