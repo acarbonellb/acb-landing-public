@@ -6,12 +6,48 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "cb5680ce0b8f0bd0a88ffab259aed886062bca368ac03239bbb9d81715c2e081",
-      "latencyMs": 7056,
+      "requestHash": "bf625d567f8455713e7eeb8cb87823a59cf84632a38a346c5761f81738a79761",
+      "latencyMs": 2845,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2326
+          "inputTokens": 2348
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "caurK4t9ujSbAOlLWiiQQl2BguxfMqnM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2348,
+              "outputTokens": 107
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "caurK4t9ujSbAOlLWiiQQl2BguxfMqnM",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "2dbbe21a37351bbd03cea6a032f482ab7575d772bbd0c6ea1690cfa7763a415e",
+      "latencyMs": 1039,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2664
         },
         {
           "type": "text_delta",
@@ -19,35 +55,11 @@
         },
         {
           "type": "text_delta",
-          "text": " tengo"
+          "text": " hay"
         },
         {
           "type": "text_delta",
           "text": " información"
-        },
-        {
-          "type": "text_delta",
-          "text": " sobre"
-        },
-        {
-          "type": "text_delta",
-          "text": " las"
-        },
-        {
-          "type": "text_delta",
-          "text": " opiniones"
-        },
-        {
-          "type": "text_delta",
-          "text": " personales"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
         },
         {
           "type": "text_delta",
@@ -63,39 +75,27 @@
         },
         {
           "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " Las"
-        },
-        {
-          "type": "text_delta",
-          "text": " prefer"
-        },
-        {
-          "type": "text_delta",
-          "text": "encias"
-        },
-        {
-          "type": "text_delta",
-          "text": " o"
-        },
-        {
-          "type": "text_delta",
-          "text": " comentarios"
-        },
-        {
-          "type": "text_delta",
           "text": " sobre"
         },
         {
           "type": "text_delta",
-          "text": " personas"
+          "text": " la"
         },
         {
           "type": "text_delta",
-          "text": " como"
+          "text": " opinión"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
         },
         {
           "type": "text_delta",
@@ -119,35 +119,23 @@
         },
         {
           "type": "text_delta",
-          "text": " no"
-        },
-        {
-          "type": "text_delta",
-          "text": " están"
-        },
-        {
-          "type": "text_delta",
-          "text": " disponibles"
-        },
-        {
-          "type": "text_delta",
-          "text": " púb"
-        },
-        {
-          "type": "text_delta",
-          "text": "lic"
-        },
-        {
-          "type": "text_delta",
-          "text": "amente"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
           "type": "text_delta",
-          "text": " Te"
+          "text": " Para"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": "lo"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -175,134 +163,22 @@
         },
         {
           "type": "text_delta",
-          "text": " para"
-        },
-        {
-          "type": "text_delta",
-          "text": " conocer"
-        },
-        {
-          "type": "text_delta",
-          "text": " sus"
-        },
-        {
-          "type": "text_delta",
-          "text": " puntos"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " vista"
-        },
-        {
-          "type": "text_delta",
-          "text": " personales"
-        },
-        {
-          "type": "text_delta",
           "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": "\n\n¿"
-        },
-        {
-          "type": "text_delta",
-          "text": "Te"
-        },
-        {
-          "type": "text_delta",
-          "text": " gustaría"
-        },
-        {
-          "type": "text_delta",
-          "text": " saber"
-        },
-        {
-          "type": "text_delta",
-          "text": " más"
-        },
-        {
-          "type": "text_delta",
-          "text": " sobre"
-        },
-        {
-          "type": "text_delta",
-          "text": " sus"
-        },
-        {
-          "type": "text_delta",
-          "text": " proyectos"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " agentes"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " IA"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " su"
-        },
-        {
-          "type": "text_delta",
-          "text": " experiencia"
-        },
-        {
-          "type": "text_delta",
-          "text": " laboral"
-        },
-        {
-          "type": "text_delta",
-          "text": " o"
-        },
-        {
-          "type": "text_delta",
-          "text": " su"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
-          "text": " tecnológico"
-        },
-        {
-          "type": "text_delta",
-          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "No tengo información sobre las opiniones personales de Alberto en su perfil. Las preferencias o comentarios sobre personas como Linus Torvalds no están disponibles públicamente. Te sugiero contactar directamente a Alberto para conocer sus puntos de vista personales.\n\n¿Te gustaría saber más sobre sus proyectos de agentes de IA, su experiencia laboral o su stack tecnológico?",
+            "text": "No hay información en su perfil sobre la opinión de Alberto de Linus Torvalds. Para saberlo, sugiero contactar directamente a Alberto.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2326,
-              "outputTokens": 276
+              "inputTokens": 2664,
+              "outputTokens": 32
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre las opiniones personales de Alberto en su perfil. Las preferencias o comentarios sobre personas como Linus Torvalds no están disponibles públicamente. Te sugiero contactar directamente a Alberto para conocer sus puntos de vista personales.\n\n¿Te gustaría saber más sobre sus proyectos de agentes de IA, su experiencia laboral o su stack tecnológico?"
+                "text": "No hay información en su perfil sobre la opinión de Alberto de Linus Torvalds. Para saberlo, sugiero contactar directamente a Alberto."
               }
             ]
           }

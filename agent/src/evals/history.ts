@@ -11,7 +11,7 @@ import {
   type Ratio,
   type SetId,
 } from "./format";
-import { computeMetrics, type Metrics, type SetResult } from "./report";
+import { formatUsd, setMetrics, type Metrics, type SetResult } from "./report";
 
 /** When and from where a live run was made. */
 export type LiveRun = {
@@ -46,6 +46,8 @@ const entrySchema: z.ZodType<HistoryEntry> = z
         meanInputTokens: z.number(),
         meanOutputTokens: z.number(),
         meanLatencyMs: z.number(),
+        // Absent from entries made before costs were recorded.
+        meanCostUsd: z.number().optional(),
       })
       .strict(),
   })
@@ -57,7 +59,7 @@ export function historyEntry(set: SetResult, run: LiveRun): HistoryEntry {
     provider: set.provider,
     model: set.model,
     promptHash: set.promptHash,
-    metrics: computeMetrics(set.results),
+    metrics: setMetrics(set),
   };
 }
 
@@ -164,6 +166,7 @@ function row(entry: HistoryEntry, previous: HistoryEntry | undefined): string {
     countCell(m.meanInputTokens, p?.meanInputTokens),
     countCell(m.meanOutputTokens, p?.meanOutputTokens),
     countCell(m.meanLatencyMs, p?.meanLatencyMs, " ms"),
+    formatUsd(m.meanCostUsd),
   ].join(" | ");
 }
 
@@ -179,8 +182,8 @@ export function renderHistory(entries: HistoryEntry[]): string {
       .reverse();
     return `### ${label}
 
-| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Date | Commit | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 `;
   });

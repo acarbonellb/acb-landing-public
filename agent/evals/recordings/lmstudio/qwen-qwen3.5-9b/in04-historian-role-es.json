@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "443c73502e77b90489c613fa73a1e0748f63587409a2ec22c2780bdcb76ff2b4",
-      "latencyMs": 4239,
+      "requestHash": "16dff9db32d623dadf8485e5290b55bc92f32e44912bb0ae633f355138726d90",
+      "latencyMs": 4814,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2339
+          "inputTokens": 2361
         },
         {
           "type": "text_delta",
@@ -19,11 +19,7 @@
         },
         {
           "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " only"
+          "text": " cannot"
         },
         {
           "type": "text_delta",
@@ -35,7 +31,11 @@
         },
         {
           "type": "text_delta",
-          "text": " about"
+          "text": " unrelated"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
         },
         {
           "type": "text_delta",
@@ -119,6 +119,10 @@
         },
         {
           "type": "text_delta",
+          "text": " education"
+        },
+        {
+          "type": "text_delta",
           "text": " or"
         },
         {
@@ -144,17 +148,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
+            "text": "I cannot answer questions unrelated to Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, education or how to contact him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2339,
-              "outputTokens": 165
+              "inputTokens": 2361,
+              "outputTokens": 186
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
+                "text": "I cannot answer questions unrelated to Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, education or how to contact him?"
               }
             ]
           }

@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9d0bee89c53fd3fac9b5f607417ef97970d035e9dc40522f63c088096c27dbfc",
-      "latencyMs": 3074,
+      "requestHash": "6b07f84839df565ba08dda5b9573c91b6ceba9f84ec9e691ec940383b8b4a423",
+      "latencyMs": 3091,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2328
+          "inputTokens": 2350
         },
         {
           "type": "turn_end",
@@ -19,31 +19,31 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "mkPJTngfE4dDIgoSyeb9amp0dQn9LAP8",
+                "id": "Wl9WiNaa251ZmOQaxjtk6jrPHaxniDr0",
                 "name": "get_profile",
                 "input": {}
               },
               {
-                "id": "C1FDCqefBqp17ryPyW1dH2drc2WKj75H",
+                "id": "DXtV7WufGmpjKqu2csCVVimnRth8CP9m",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2328,
-              "outputTokens": 118
+              "inputTokens": 2350,
+              "outputTokens": 117
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "mkPJTngfE4dDIgoSyeb9amp0dQn9LAP8",
+                "id": "Wl9WiNaa251ZmOQaxjtk6jrPHaxniDr0",
                 "name": "get_profile",
                 "input": {}
               },
               {
                 "type": "tool_use",
-                "id": "C1FDCqefBqp17ryPyW1dH2drc2WKj75H",
+                "id": "DXtV7WufGmpjKqu2csCVVimnRth8CP9m",
                 "name": "get_contact",
                 "input": {}
               }
@@ -53,12 +53,12 @@
       ]
     },
     {
-      "requestHash": "899afc80550ecc4422cb5cdc34f9e5cc4b42a90c9e94b0173f831231854a5f35",
-      "latencyMs": 1590,
+      "requestHash": "4520a4bb2d5344d87644365ed0a9849b86e7170a408dd8eabb14778906228351",
+      "latencyMs": 1758,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2720
+          "inputTokens": 2742
         },
         {
           "type": "text_delta",
@@ -194,15 +194,15 @@
         },
         {
           "type": "text_delta",
-          "text": " lo"
+          "text": " le"
         },
         {
           "type": "text_delta",
-          "text": " mejor"
+          "text": " sug"
         },
         {
           "type": "text_delta",
-          "text": " es"
+          "text": "iero"
         },
         {
           "type": "text_delta",
@@ -214,11 +214,11 @@
         },
         {
           "type": "text_delta",
-          "text": " con"
+          "text": " a"
         },
         {
           "type": "text_delta",
-          "text": " él"
+          "text": " Alberto"
         },
         {
           "type": "text_delta",
@@ -226,7 +226,11 @@
         },
         {
           "type": "text_delta",
-          "text": " email"
+          "text": " correo"
+        },
+        {
+          "type": "text_delta",
+          "text": " electrónico"
         },
         {
           "type": "text_delta",
@@ -262,22 +266,42 @@
         },
         {
           "type": "text_delta",
+          "text": " para"
+        },
+        {
+          "type": "text_delta",
+          "text": " consultar"
+        },
+        {
+          "type": "text_delta",
+          "text": " su"
+        },
+        {
+          "type": "text_delta",
+          "text": " situación"
+        },
+        {
+          "type": "text_delta",
+          "text": " actual"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, lo mejor es contactar directamente con él por email (alberto@example.com) o LinkedIn.",
+            "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, le sugiero contactar directamente a Alberto por correo electrónico (alberto@example.com) o LinkedIn para consultar su situación actual.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2720,
-              "outputTokens": 54
+              "inputTokens": 2742,
+              "outputTokens": 60
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, lo mejor es contactar directamente con él por email (alberto@example.com) o LinkedIn."
+                "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, le sugiero contactar directamente a Alberto por correo electrónico (alberto@example.com) o LinkedIn para consultar su situación actual."
               }
             ]
           }
