@@ -7,6 +7,7 @@ import {
   type ChatMessage,
   streamChat,
 } from "@/lib/chat-client";
+import { chatPrivacyNote } from "@/content/profile";
 import { chatRequestLimits } from "@/lib/chat-contract";
 import { Markdown } from "./markdown";
 
@@ -303,6 +304,15 @@ export function AgentChat({
           send ↵
         </button>
       </form>
+
+      <p
+        role="note"
+        aria-label="Privacy"
+        className="-mt-4 text-xs leading-relaxed text-comment"
+      >
+        <span aria-hidden>{"// "}</span>
+        {chatPrivacyNote}
+      </p>
 
       <div className="border-t border-border pt-5 text-sm">
         <p className="text-comment">
