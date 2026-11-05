@@ -2,16 +2,18 @@ import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/
 import { Hono, type Context, type MiddlewareHandler } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import { cors } from "hono/cors";
+import { createMiddleware } from "hono/factory";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/shared/chat-contract";
-import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
+import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { createMcpServer } from "./mcp";
+import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import type { RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
 import type { Toolset } from "./tools";
-import type { ChatOutcome, UsageRecorder } from "./usage";
+import type { UsageRecorder } from "./usage";
 
 export type { HttpErrorBody, HttpErrorCode };
 
@@ -44,7 +46,7 @@ export type AppDeps = {
   modelClient: ModelClient | null;
   /** Browser origins allowed to call the chat endpoint. */
   allowedOrigins: string[];
-  chatLimits: { maxIterations: number; maxTokens: number; maxRequestTokens: number };
+  chatLimits: ChatLimits;
   /**
    * Per-IP limits: in the shared store when `AGENT_STORE` selects one, else
    * in memory, per instance (`rate-limit.ts`).
@@ -84,6 +86,27 @@ function rateLimit(
   };
 }
 
+/** Notes when a chat request arrived, in its context, for its latency (`usage.ts`). */
+const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>(async (c, next) => {
+  c.set("chatStartedAt", performance.now());
+  await next();
+});
+
+/** The chat request in the body, or the `400` that refuses it. */
+async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
+  let body: unknown;
+  try {
+    body = await c.req.json();
+  } catch {
+    return jsonError(c, 400, { code: "invalid_request", message: "Request body must be JSON." });
+  }
+  const parsed = chatRequestSchema.safeParse(body);
+  if (!parsed.success) {
+    return jsonError(c, 400, { code: "invalid_request", message: z.prettifyError(parsed.error) });
+  }
+  return parsed.data;
+}
+
 export function createApp(deps: AppDeps): Hono {
   const {
     toolset,
@@ -97,9 +120,12 @@ export function createApp(deps: AppDeps): Hono {
     clientKey,
     mcpClientKey,
   } = deps;
+  // One agent for every chat request: its estimate and its run share the
+  // toolset, limits and system prompt.
+  const chatAgent = modelClient
+    ? createChatAgent({ model: modelClient, toolset, limits: chatLimits })
+    : null;
   const app = new Hono();
-  // When each chat request arrived, for its latency (`usage.ts`).
-  const chatStartedAt = new WeakMap<Request, number>();
 
   app.get(paths.health, (c) => c.json({ status: "ok" }));
 
@@ -188,10 +214,7 @@ export function createApp(deps: AppDeps): Hono {
 
   app.post(
     paths.chat,
-    async (c, next) => {
-      chatStartedAt.set(c.req.raw, performance.now());
-      await next();
-    },
+    markChatStart,
     // Counted before anything else, so malformed requests count too.
     rateLimit(chatRateLimiter, clientKey, async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
@@ -207,29 +230,15 @@ export function createApp(deps: AppDeps): Hono {
         jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." }),
     }),
     async (c) => {
-      let body: unknown;
-      try {
-        body = await c.req.json();
-      } catch {
-        return jsonError(c, 400, {
-          code: "invalid_request",
-          message: "Request body must be JSON.",
-        });
-      }
-      const parsed = chatRequestSchema.safeParse(body);
-      if (!parsed.success) {
-        return jsonError(c, 400, {
-          code: "invalid_request",
-          message: z.prettifyError(parsed.error),
-        });
-      }
-      if (!modelClient) {
+      const request = await parseChatRequest(c);
+      if (request instanceof Response) return request;
+      if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
-      const { messages } = parsed.data;
+      const { messages } = request;
       // Hold the most this request can cost while it runs (see spend-cap.ts).
-      const budget = await spendCap.reserve(worstCaseUsage(toolset, messages, chatLimits));
+      const budget = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
       if (budget.exhausted) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
@@ -238,50 +247,30 @@ export function createApp(deps: AppDeps): Hono {
           resetsAt: budget.resetsAt,
         });
       }
-      const { reservation } = budget;
 
       // A closed connection aborts the model call, so nobody pays for an
       // answer no one reads.
       const abort = new AbortController();
       const stop = () => abort.abort();
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
-      const startedAt = chatStartedAt.get(c.req.raw) ?? performance.now();
-      const elapsed = () => Math.round(performance.now() - startedAt);
-      // What `usage.ts` records once the stream ends: no content.
-      let outcome: ChatOutcome = "aborted";
-      let firstTextMs: number | undefined;
-      const spent: TokenUsage = { inputTokens: 0, outputTokens: 0 };
+      const events = meteredChat(messages, {
+        agent: chatAgent,
+        reservation: budget.reservation,
+        usage,
+        startedAt: c.get("chatStartedAt"),
+        signal: abort.signal,
+      });
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
-        try {
-          for await (const event of runChat({
-            model: modelClient,
-            toolset,
-            messages,
-            ...chatLimits,
-            signal: abort.signal,
-          })) {
-            // Every model call is paid for, even if the visitor has left: keep
-            // draining after an abort, as the cut-off call still reports its
-            // (estimated) usage.
-            if (event.type === "usage") {
-              await reservation.record(event);
-              spent.inputTokens += event.inputTokens;
-              spent.outputTokens += event.outputTokens;
-            }
-            if (event.type === "text") firstTextMs ??= elapsed();
-            if (event.type === "done") outcome = event.stopReason;
-            if (event.type === "error") outcome = `error:${event.code}`;
-            if (stream.aborted) continue;
-            try {
-              await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
-            } catch {
-              stop();
-            }
+        // Drained to the end even once the visitor has left: every model call
+        // is paid for, and the metered chat records it when the run ends.
+        for await (const event of events) {
+          if (stream.aborted) continue;
+          try {
+            await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+          } catch {
+            stop();
           }
-        } finally {
-          await reservation.settle();
-          await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs });
         }
       });
     },

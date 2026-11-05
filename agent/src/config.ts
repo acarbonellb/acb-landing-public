@@ -5,7 +5,7 @@
 import * as z from "zod";
 import { chatLimits } from "./chat";
 import { efforts } from "./model";
-import { listPrices } from "./spend-cap";
+import { resolvePricing } from "./pricing";
 
 const defaultModel = "claude-haiku-5-5";
 
@@ -31,9 +31,10 @@ const envSchema = z.object({
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
-  // The default model's list prices (spend-cap.ts); change them with AGENT_MODEL.
-  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].inputUsdPerMTok),
-  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].outputUsdPerMTok),
+  // Unset, AGENT_MODEL's list prices (pricing.ts); required for a model
+  // missing from that list.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.optional(),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.optional(),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
@@ -64,6 +65,15 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     throw new Error(`Invalid agent configuration: ${z.prettifyError(parsed.error)}`);
   }
   const e = parsed.data;
+  let pricing;
+  try {
+    pricing = resolvePricing(e.AGENT_MODEL, {
+      inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
+      outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
+    });
+  } catch (error) {
+    throw new Error(`Invalid agent configuration: ${(error as Error).message}`);
+  }
   const store =
     e.AGENT_STORE === "firestore"
       ? {
@@ -89,10 +99,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
       monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
-      pricing: {
-        inputUsdPerMTok: e.AGENT_PRICE_INPUT_USD_PER_MTOK,
-        outputUsdPerMTok: e.AGENT_PRICE_OUTPUT_USD_PER_MTOK,
-      },
+      pricing,
     },
     store,
   };

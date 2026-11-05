@@ -20,24 +20,17 @@
 import { randomUUID } from "node:crypto";
 import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
 import type { Usage } from "./model";
-
-/** USD per million tokens. */
-export type Pricing = { inputUsdPerMTok: number; outputUsdPerMTok: number };
+import { usageCostUsd, type Pricing } from "./pricing";
 
 /**
- * List prices of the Claude models the agent runs on: the spend cap's default
- * prices (config.ts) and the eval report's cost per case. Prompts up to 100K
- * tokens, far above a chat request.
+ * Spend held for one running request. Both methods are best effort: a store
+ * failure is logged, never thrown, as the visitor's answer is already
+ * streaming. What can't be settled is released when its hold expires.
  */
-export const listPrices: Readonly<Record<string, Pricing>> = {
-  "claude-haiku-5-5": { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
-};
-
-/** Spend held for one running request. */
 export interface SpendReservation {
-  /** Charges the actual usage of one model call. */
+  /** Charges the actual usage of one model call. Never throws. */
   record(usage: Usage): Promise<void>;
-  /** Ends the request: releases what was held and not spent. Idempotent. */
+  /** Ends the request: releases what was held and not spent. Idempotent. Never throws. */
   settle(): Promise<void>;
 }
 
@@ -66,14 +59,6 @@ export type SpendCapOptions = {
    */
   holdTtlMs?: number;
 };
-
-export function usageCostUsd(usage: Usage, pricing: Pricing): number {
-  return (
-    (usage.inputTokens * pricing.inputUsdPerMTok +
-      usage.outputTokens * pricing.outputUsdPerMTok) /
-    1_000_000
-  );
-}
 
 /** `YYYY-MM` of the UTC month containing `t`. */
 const monthKey = (t: number) => new Date(t).toISOString().slice(0, 7);
@@ -155,12 +140,17 @@ export function createStoreSpendCap(
       async settle() {
         if (settled || unrecorded) return;
         settled = true;
-        await store.update(path, (doc) => {
-          const month = readMonth(doc);
-          if (!(id in month.holds)) return { result: undefined };
-          delete month.holds[id];
-          return { doc: month, result: undefined };
-        });
+        try {
+          await store.update(path, (doc) => {
+            const month = readMonth(doc);
+            if (!(id in month.holds)) return { result: undefined };
+            delete month.holds[id];
+            return { doc: month, result: undefined };
+          });
+        } catch (error) {
+          // Not rethrown, like `record`: the hold is released when it expires.
+          console.error("Spend cap: could not settle a reservation", error);
+        }
       },
     };
   }

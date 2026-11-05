@@ -1,7 +1,7 @@
 // A recording set's metrics and cost: what the report shows and the history
 // stores. Pure; changes only when what is measured, or how it's priced, does.
 import type { Usage } from "../model";
-import { listPrices, usageCostUsd, type Pricing } from "../spend-cap";
+import { listPrices, usageCostUsd, type Pricing } from "../pricing";
 import type { Ratio, SetId } from "./format";
 import { leakKinds, type CaseOutcome, type CaseScore, type EvalCase } from "./scoring";
 

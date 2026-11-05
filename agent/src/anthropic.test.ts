@@ -166,6 +166,33 @@ describe("Anthropic model client", () => {
     expect(end.turn.providerContent).toHaveLength(2);
   });
 
+  it("reports cache writes and reads within the input, so they can be priced apart", async () => {
+    const cached = toolTurn.replace(
+      JSON.stringify({ input_tokens: 120, output_tokens: 1 }),
+      JSON.stringify({
+        input_tokens: 20,
+        cache_creation_input_tokens: 70,
+        cache_read_input_tokens: 30,
+        output_tokens: 1,
+      }),
+    );
+    const { fetch } = fakeFetch(
+      () => new Response(cached, { headers: { "content-type": "text/event-stream" } }),
+    );
+    const client = createAnthropicModelClient({
+      apiKey: "k",
+      model: "claude-opus-5-5",
+      effort: "low",
+      fetch,
+    });
+    const events = await collect(client.stream(request));
+    const cacheUsage = { inputTokens: 120, cacheWriteInputTokens: 70, cacheReadInputTokens: 30 };
+    expect(events[0]).toEqual({ type: "input_usage", ...cacheUsage });
+    const end = events.at(-1);
+    if (end?.type !== "turn_end") throw new Error("expected turn_end");
+    expect(end.turn.usage).toEqual({ ...cacheUsage, outputTokens: 30 });
+  });
+
   it("replays provider content verbatim on the next call", async () => {
     const { fetch, calls } = fakeFetch(
       () => new Response(toolTurn, { headers: { "content-type": "text/event-stream" } }),
