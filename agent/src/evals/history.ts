@@ -29,6 +29,8 @@ export type HistoryEntry = LiveRun &
     promptHash: string;
     /** The set's recordings fingerprint; absent from entries made before it was recorded. */
     fingerprint?: string;
+    /** A re-score's note on the scoring change it applies (ADR 0001, scorer changes). */
+    note?: string;
     metrics: Metrics;
   };
 
@@ -43,6 +45,7 @@ const entrySchema: z.ZodType<HistoryEntry> = z
     model: z.string().min(1),
     promptHash: z.string().min(1),
     fingerprint: z.string().min(1).optional(),
+    note: z.string().min(1).optional(),
     metrics: z
       .object({
         cases: z.number().int(),
@@ -181,7 +184,11 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
 /**
  * What `pnpm agent:eval:rescore` appends: a `rescored` entry for each set whose
  * stored recordings now score differently from its latest entry, or whose
- * latest entry has no fingerprint yet. Never calls a model, so it only accepts
+ * latest entry has no fingerprint yet. Scores only change through a scoring or
+ * case change, and that needs a `note` saying what it is (ADR 0001's rule for
+ * scorer changes); with a note, every set gets an entry, since the change
+ * applies to all of them, whether or not it moved their scores. Without one,
+ * changed scores are refused. Never calls a model, so it only accepts
  * recordings the latest entry was made from: the same fingerprint, or, for an
  * entry from before fingerprints, the same prompt hash and metrics (what the
  * history was checked by then). Recordings that changed need a live run.
@@ -191,6 +198,7 @@ export function rescoreHistory(
   sets: SetResult[],
   caseCount: number,
   run: LiveRun,
+  note?: string,
 ): { entries: HistoryEntry[]; problems: string[] } {
   const appended: HistoryEntry[] = [];
   const problems: string[] = [];
@@ -213,7 +221,13 @@ export function rescoreHistory(
       problems.push(`${label}: recordings changed since the latest history entry, not re-scored: ${rerecord}`);
       continue;
     }
-    if (legacy || changedMetrics(latest, set).length) {
+    if (note) {
+      appended.push({ ...historyEntry(set, run, "rescored"), note });
+    } else if (!legacy && changedMetrics(latest, set).length) {
+      problems.push(
+        `${label}: scores changed with the same recordings: say what the scoring change is with \`pnpm agent:eval:rescore --note "..."\``,
+      );
+    } else if (legacy) {
       appended.push(historyEntry(set, run, "rescored"));
     }
   }

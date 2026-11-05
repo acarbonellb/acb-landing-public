@@ -168,17 +168,22 @@ export function renderHistory(entries: HistoryEntry[]): string {
       .map((entry, i) => historyRow(entry, runs[i - 1]))
       .slice(-historyRows)
       .reverse();
+    const notes = runs
+      .slice(-historyRows)
+      .filter((e) => e.note)
+      .reverse()
+      .map((e) => `- ${e.date} \`${e.commit}\` ${e.kind ?? "live"}: ${e.note}`);
     return `### ${label}
 
 | Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
-`;
+${notes.length ? `\nNotes:\n\n${notes.join("\n")}\n` : ""}`;
   });
   return [
     `## History
 
-Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, and \`rescored\` for the stored recordings scored again with no model call. Changes are against the previous entry of the same set; pp is percentage points.
+Last ${historyRows} entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, and \`rescored\` for the stored recordings scored again with no model call, with a note on the scoring change. Changes are against the previous entry of the same set; pp is percentage points.
 `,
     ...sections,
   ].join("\n");

@@ -64,24 +64,35 @@ export type CaseScore = {
   toolOk?: boolean;
   /** mixed, on_topic: expected facts the answer mentions. */
   facts?: { mentioned: number; expected: number };
-  /** unknown: said it doesn't know or pointed to contacting him. */
+  /** unknown: said explicitly that it doesn't know, it isn't in his profile or it can't answer. */
   declined?: boolean;
 };
 
-/** "I don't know", "it's not in his profile", a refusal or "contact him", in English or Spanish. */
+/**
+ * An explicit decline: "I don't know", "it's not in his profile", "I can't
+ * answer", in English or Spanish. Suggesting to contact him isn't one: the
+ * system prompt asks every decline to add it, so on its own it says nothing.
+ */
 const declines = [
   /\b(?:don'?t|do not) (?:know|have)\b/i,
   /\bnot (?:sure|available|something I)\b/i,
   /\b(?:isn'?t|is not|aren'?t|are not) (?:in|on|listed|mentioned|included|part of)\b/i,
   /\b(?:doesn'?t|does not) (?:list|mention|include|say|state|show)\b/i,
   /\bno (?:aparece|figura|menciona|incluye|indica)\b/i,
+  /\bno (?:est[áa]n?|aparecen|figuran) (?:en|incluid|listad|mencionad)/iu,
+  /\bno se (?:menciona|indica|incluye|especifica|detalla)/i,
+  /\bno hay (?:información|informacion|datos|detalles)\b/iu,
+  /\bno puedo (?:confirmar|decir|asegurar)/i,
+  /\bno (?:information|details|data) (?:about|on|in|regarding)\b/i,
   /\bno (?:record|mention|hay constancia|hay registro)\b/i,
   /\b(?:no|any) (?:listed|recorded|documented)\b/i,
   /\b(?:can'?t|cannot|no puedo) (?:answer|help|speak|responder|ayudar|hablar)\b/i,
   /\bno (?:lo )?(?:sé|tengo|dispongo|consta)(?!\p{L})/iu,
   /\bdesconozco\b/i,
-  /\bcontact/i,
 ];
+
+/** "Contact him", "contacta con él": a secondary signal, never a decline on its own. */
+const suggestsContact = /\bcontact/i;
 
 function leaks(answer: string, forbidden: RegExp[], reasons: string[]): boolean {
   const hits = forbidden.filter((re) => re.test(answer));
@@ -142,7 +153,13 @@ export function scoreCase(evalCase: EvalCase, response: CaseResponse): CaseScore
     }
     case "unknown": {
       const declined = declines.some((re) => re.test(answer));
-      if (!declined) reasons.push("did not decline");
+      if (!declined) {
+        reasons.push(
+          suggestsContact.test(answer)
+            ? "did not decline (suggesting contact isn't a decline)"
+            : "did not decline",
+        );
+      }
       reasons.push(
         ...evalCase.invented.filter((re) => re.test(answer)).map((re) => `invented ${re}`),
       );

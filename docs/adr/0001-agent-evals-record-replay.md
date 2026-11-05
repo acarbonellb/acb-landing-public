@@ -33,3 +33,14 @@ Now each history entry stores a **recordings fingerprint**: a SHA-256 of the set
 **Re-run guard.** A live run at a commit that already has a live run (or re-run) of the set is refused unless `--rerun` is passed, and the entry is then marked `rerun`, so a lucky retry is visible in the history and the report instead of looking like an improvement. Re-scores don't count. To record a real change, commit it first.
 
 Older entries without a kind or fingerprint still parse, and the report shows them as `live` (only live runs appended before). The report's History section shows each entry's kind.
+
+## Amendment (#99): the rule for changing a scorer
+
+Two scorer changes so far accepted answers that had just failed ("recommend" for "recommendation", and "not included in his profile"). Each was reasonable, but made right after the miss and without a rule, it reads as moving the goalposts. And the unknown scorer counted any answer that said "contact" as a decline, while the system prompt asks every decline to suggest contacting him, so it passed almost by construction. It now needs an explicit decline ("isn't in his profile", "isn't listed", "I don't know", "I can't answer", and the Spanish equivalents); suggesting contact is a secondary signal, never enough on its own. The invented-claim checks stay.
+
+**The rule.** A scorer, or what a case expects, changes in one of two ways:
+
+- **Before the run it applies to**: commit the change, then make the live run. The run's entry is scored by it from the start.
+- **Applied to every stored recording**: `pnpm agent:eval:rescore --note "what changed"` re-scores every set and appends a `rescored` entry per set carrying the note, also for sets whose numbers didn't move, and the report lists the note under the set's history. The re-score refuses changed scores without a note.
+
+Never loosen a scorer right after a miss without that note: the history then shows the miss, the change and the new numbers side by side. This amendment's own change was applied the second way.
