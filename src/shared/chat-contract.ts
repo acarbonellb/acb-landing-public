@@ -20,8 +20,17 @@ export type ChatMessage = { role: ChatRole; content: string };
 /** The request body: alternating messages, starting and ending with `user`. */
 export type ChatRequest = { messages: ChatMessage[] };
 
-/** Tokens spent by model calls. */
-export type TokenUsage = { inputTokens: number; outputTokens: number };
+/**
+ * Tokens spent by model calls. `inputTokens` counts all input; the optional
+ * cache fields say how much of it was written to or read from the prompt
+ * cache (absent: none).
+ */
+export type TokenUsage = {
+  inputTokens: number;
+  outputTokens: number;
+  cacheWriteInputTokens?: number;
+  cacheReadInputTokens?: number;
+};
 
 /**
  * Why a chat turn ended: answered (`end_turn`), cut by a token cap

@@ -94,7 +94,7 @@ function renderSummary(sets: SetResult[]): string {
   });
   return `## Summary
 
-One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's, in \`agent/src/spend-cap.ts\`); a local model costs $0.
+One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's too, in \`agent/src/pricing.ts\`); a local model costs $0.
 
 | Model | Provider | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

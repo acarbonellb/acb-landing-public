@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
 import { chatPrivacyNote } from "../../src/shared/site-copy";
-import { systemPrompt } from "./chat";
+import { systemPrompt } from "./system-prompt";
 import { createToolset, type Content } from "./tools";
 
 const fixture: Content = {
