@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "014898e12a6e2404fb2090048d3767b1452ecfd630810ed23df8fa0a645b952a",
-      "latencyMs": 769,
+      "requestHash": "590d137032abaada0911416830ec2e326db523ac54c5ec4f7140881c5083ba50",
+      "latencyMs": 776,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1658
+          "inputTokens": 1670
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01BPKfyQVJqz1D4fBwgkomZj",
+                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1658,
+              "inputTokens": 1670,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01BPKfyQVJqz1D4fBwgkomZj",
+                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "ca1bcc359fd8ef450539dc2332ca5816f6c3277d56e46fc9e5394ca8125e60fe",
-      "latencyMs": 796,
+      "requestHash": "1af64254469af673404818d6217dd906563fa925c3cffd42ca71f3f97dc930e8",
+      "latencyMs": 888,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1783
+          "inputTokens": 1795
         },
         {
           "type": "text_delta",
@@ -58,11 +58,15 @@
         },
         {
           "type": "text_delta",
-          "text": " is alberto@example.com"
+          "text": " is al"
         },
         {
           "type": "text_delta",
-          "text": ". You can also reach him on"
+          "text": "berto@example.com. You"
+        },
+        {
+          "type": "text_delta",
+          "text": " can also reach him on"
         },
         {
           "type": "text_delta",
@@ -70,27 +74,27 @@
         },
         {
           "type": "text_delta",
-          "text": "GitHub](https://github"
+          "text": "LinkedIn](https"
         },
         {
           "type": "text_delta",
-          "text": ".com/acarbonell"
+          "text": "://www.linkedin."
         },
         {
           "type": "text_delta",
-          "text": "b) or [Linked"
+          "text": "com/in/albertocar"
         },
         {
           "type": "text_delta",
-          "text": "In](https://www.lin"
+          "text": "bonell/) or [G"
         },
         {
           "type": "text_delta",
-          "text": "kedin.com/in/"
+          "text": "itHub](https://github."
         },
         {
           "type": "text_delta",
-          "text": "albertocarbonell/"
+          "text": "com/acarbonellb"
         },
         {
           "type": "text_delta",
@@ -107,17 +111,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's email address is alberto@example.com. You can also reach him on [GitHub](https://github.com/acarbonellb) or [LinkedIn](https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely.",
+            "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1783,
+              "inputTokens": 1795,
               "outputTokens": 88
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's email address is alberto@example.com. You can also reach him on [GitHub](https://github.com/acarbonellb) or [LinkedIn](https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely."
+                "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely."
               }
             ]
           }

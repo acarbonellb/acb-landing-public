@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "8f795478025985f2715823d1d53b0bd323b9205d86791c0f26db9ae4db2d806f",
-      "latencyMs": 822,
+      "requestHash": "f83ef11c03b157435ab35da57e1cabd07de01ba58d4156f8f805a8ed0412c665",
+      "latencyMs": 886,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1655
+          "inputTokens": 1667
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01TchLcEvc2rHjdSxJR9DqDt",
+                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
                 "name": "get_experience",
                 "input": {
                   "company": "google"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1655,
+              "inputTokens": 1667,
               "outputTokens": 48
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01TchLcEvc2rHjdSxJR9DqDt",
+                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -49,36 +49,32 @@
       ]
     },
     {
-      "requestHash": "9fe57173c82b123d23725bf5a7ce74a86791898ee228f312ff7ea355ec7b7d18",
-      "latencyMs": 1095,
+      "requestHash": "12141030f6093092cc5607e96d0e868972796841df12a15ca7ac279165cbeb0e",
+      "latencyMs": 894,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1716
+          "inputTokens": 1728
         },
         {
           "type": "text_delta",
-          "text": "Alberto's"
+          "text": "Alberto's prof"
         },
         {
           "type": "text_delta",
-          "text": " profile doesn't list any"
+          "text": "ile doesn't list any work"
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " experience at Google,"
         },
         {
           "type": "text_delta",
-          "text": " at Google,"
+          "text": " so I can"
         },
         {
           "type": "text_delta",
-          "text": " so I can't tell you about"
-        },
-        {
-          "type": "text_delta",
-          "text": " a"
+          "text": "'t tell you anything about a"
         },
         {
           "type": "text_delta",
@@ -94,55 +90,31 @@
         },
         {
           "type": "text_delta",
-          "text": " through his other work"
+          "text": " through his other"
         },
         {
           "type": "text_delta",
-          "text": " exper"
+          "text": " ro"
         },
         {
           "type": "text_delta",
-          "text": "ience or"
+          "text": "les in"
         },
         {
           "type": "text_delta",
-          "text": " the"
+          "text": " his work history, or you"
         },
         {
           "type": "text_delta",
-          "text": " AI agents he has"
+          "text": " can cont"
         },
         {
           "type": "text_delta",
-          "text": " built. For"
+          "text": "act him directly to"
         },
         {
           "type": "text_delta",
-          "text": " details"
-        },
-        {
-          "type": "text_delta",
-          "text": " be"
-        },
-        {
-          "type": "text_delta",
-          "text": "yond his"
-        },
-        {
-          "type": "text_delta",
-          "text": " profile, you can reach him"
-        },
-        {
-          "type": "text_delta",
-          "text": " through"
-        },
-        {
-          "type": "text_delta",
-          "text": " the contact details"
-        },
-        {
-          "type": "text_delta",
-          "text": " on his site"
+          "text": " ask about his background"
         },
         {
           "type": "text_delta",
@@ -151,17 +123,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile doesn't list any work at Google, so I can't tell you about a role there. If you'd like, I can go through his other work experience or the AI agents he has built. For details beyond his profile, you can reach him through the contact details on his site.",
+            "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1716,
-              "outputTokens": 80
+              "inputTokens": 1728,
+              "outputTokens": 70
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any work at Google, so I can't tell you about a role there. If you'd like, I can go through his other work experience or the AI agents he has built. For details beyond his profile, you can reach him through the contact details on his site."
+                "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background."
               }
             ]
           }

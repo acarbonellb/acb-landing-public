@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "aa14cd51f364251a84643c06762c36c460e5d53ae2b1d555f340e339dc2257c8",
-      "latencyMs": 3520,
+      "requestHash": "982f497e8f801d767f0277d821510ff7511619edb88d116e019beb28bedf1b1e",
+      "latencyMs": 4048,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2316
+          "inputTokens": 2338
         },
         {
           "type": "text_delta",
@@ -59,7 +59,11 @@
         },
         {
           "type": "text_delta",
-          "text": " compartir"
+          "text": " d"
+        },
+        {
+          "type": "text_delta",
+          "text": "arte"
         },
         {
           "type": "text_delta",
@@ -71,23 +75,15 @@
         },
         {
           "type": "text_delta",
-          "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
           "text": ":"
         },
         {
           "type": "text_delta",
-          "text": " su"
+          "text": "\n\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " Su"
         },
         {
           "type": "text_delta",
@@ -95,11 +91,23 @@
         },
         {
           "type": "text_delta",
+          "text": " y"
+        },
+        {
+          "type": "text_delta",
+          "text": " resumen"
+        },
+        {
+          "type": "text_delta",
           "text": " profesional"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " Su"
         },
         {
           "type": "text_delta",
@@ -111,15 +119,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "\n-"
         },
         {
           "type": "text_delta",
-          "text": " proyectos"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
+          "text": " Los"
         },
         {
           "type": "text_delta",
@@ -135,7 +139,27 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " que"
+        },
+        {
+          "type": "text_delta",
+          "text": " ha"
+        },
+        {
+          "type": "text_delta",
+          "text": " constr"
+        },
+        {
+          "type": "text_delta",
+          "text": "uido"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " Sus"
         },
         {
           "type": "text_delta",
@@ -143,15 +167,31 @@
         },
         {
           "type": "text_delta",
-          "text": " técnicas"
+          "text": " tecnológ"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "icas"
         },
         {
           "type": "text_delta",
-          "text": " educación"
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "stack"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " Educación"
         },
         {
           "type": "text_delta",
@@ -159,7 +199,15 @@
         },
         {
           "type": "text_delta",
-          "text": " cómo"
+          "text": " idiomas"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cómo"
         },
         {
           "type": "text_delta",
@@ -171,22 +219,62 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": "\n\n¿"
+        },
+        {
+          "type": "text_delta",
+          "text": "Hay"
+        },
+        {
+          "type": "text_delta",
+          "text": " algo"
+        },
+        {
+          "type": "text_delta",
+          "text": " específico"
+        },
+        {
+          "type": "text_delta",
+          "text": " que"
+        },
+        {
+          "type": "text_delta",
+          "text": " te"
+        },
+        {
+          "type": "text_delta",
+          "text": " gustaría"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "¡Hola! ¿En qué puedo ayudarte? Puedo compartir información sobre Alberto Carbonell: su perfil profesional, experiencia laboral, proyectos de agentes de IA, habilidades técnicas, educación y cómo contactarlo.",
+            "text": "¡Hola! ¿En qué puedo ayudarte? Puedo darte información sobre:\n\n- Su perfil y resumen profesional\n- Su experiencia laboral\n- Los agentes de IA que ha construido\n- Sus habilidades tecnológicas (stack)\n- Educación y idiomas\n- Cómo contactarlo\n\n¿Hay algo específico que te gustaría saber sobre Alberto?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2316,
-              "outputTokens": 136
+              "inputTokens": 2338,
+              "outputTokens": 154
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "¡Hola! ¿En qué puedo ayudarte? Puedo compartir información sobre Alberto Carbonell: su perfil profesional, experiencia laboral, proyectos de agentes de IA, habilidades técnicas, educación y cómo contactarlo."
+                "text": "¡Hola! ¿En qué puedo ayudarte? Puedo darte información sobre:\n\n- Su perfil y resumen profesional\n- Su experiencia laboral\n- Los agentes de IA que ha construido\n- Sus habilidades tecnológicas (stack)\n- Educación y idiomas\n- Cómo contactarlo\n\n¿Hay algo específico que te gustaría saber sobre Alberto?"
               }
             ]
           }

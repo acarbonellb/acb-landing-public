@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9076b01a4124694059fe79314eced612b23696e4fb216d77f93e52e51d8ab63b",
-      "latencyMs": 1478,
+      "requestHash": "356e8d0cdcec45835d73d26a404e0dcd0dd6d0dc00fd9b0ea2f66a68aec1ef62",
+      "latencyMs": 2195,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2322
+          "inputTokens": 2344
         },
         {
           "type": "turn_end",
@@ -19,20 +19,31 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "XGoIURscIxjqeTIr5fXgm4kBBQCrMYSC",
+                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2322,
-              "outputTokens": 54
+              "inputTokens": 2344,
+              "outputTokens": 82
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "XGoIURscIxjqeTIr5fXgm4kBBQCrMYSC",
+                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,12 +53,12 @@
       ]
     },
     {
-      "requestHash": "6edf13b79c87314e0ad1139c8dec58e522eca8c9c97d8fedf9f43090f7f852b2",
-      "latencyMs": 767,
+      "requestHash": "8490f0f7da0319029077a887a362d44929a936049445793f558bde0d67d70844",
+      "latencyMs": 772,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2672
+          "inputTokens": 2980
         },
         {
           "type": "text_delta",
@@ -59,11 +70,19 @@
         },
         {
           "type": "text_delta",
-          "text": " actualmente"
+          "text": " Carbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
         },
         {
           "type": "text_delta",
           "text": " trabaja"
+        },
+        {
+          "type": "text_delta",
+          "text": " actualmente"
         },
         {
           "type": "text_delta",
@@ -95,50 +114,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " desde"
-        },
-        {
-          "type": "text_delta",
-          "text": " "
-        },
-        {
-          "type": "text_delta",
-          "text": "2"
-        },
-        {
-          "type": "text_delta",
-          "text": "0"
-        },
-        {
-          "type": "text_delta",
-          "text": "1"
-        },
-        {
-          "type": "text_delta",
-          "text": "9"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, desde 2019.",
+            "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2672,
-              "outputTokens": 22
+              "inputTokens": 2980,
+              "outputTokens": 17
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, desde 2019."
+                "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet."
               }
             ]
           }

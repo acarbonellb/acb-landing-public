@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "ccc5bcd054e12f589fc7bb79de09c722fd6ab4b8dfbd5c88388fea577dc6b3aa",
-      "latencyMs": 5144,
+      "requestHash": "c655baed41f177087b7cd6c15ed7e29b2328641223f2ab3b83edb09ae3761571",
+      "latencyMs": 4639,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2336
+          "inputTokens": 2358
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "hvGVzslv9scb1SZD772UsGf6MTYkUwQe",
+                "id": "1XGk5m6voFZEjMX91cRPqNmK0xOdOAbv",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2336,
-              "outputTokens": 190
+              "inputTokens": 2358,
+              "outputTokens": 178
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "hvGVzslv9scb1SZD772UsGf6MTYkUwQe",
+                "id": "1XGk5m6voFZEjMX91cRPqNmK0xOdOAbv",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "14589d5aaeb2e75f8f14ce00a8043a603ebc09c1103bbe4c8c4579ccee5e4bd4",
-      "latencyMs": 1617,
+      "requestHash": "76225c4136d3e19c2ff41e1f625d1e478235e06bb996f424f4874f9c0d974cbb",
+      "latencyMs": 1552,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2700
+          "inputTokens": 2722
         },
         {
           "type": "text_delta",
@@ -95,11 +95,23 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "Madrid"
+          "text": " con"
+        },
+        {
+          "type": "text_delta",
+          "text": " sede"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid"
         },
         {
           "type": "text_delta",
@@ -107,15 +119,11 @@
         },
         {
           "type": "text_delta",
-          "text": " Remote"
+          "text": " remoto"
         },
         {
           "type": "text_delta",
-          "text": ")."
-        },
-        {
-          "type": "text_delta",
-          "text": " "
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -159,7 +167,7 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": ":"
         },
         {
           "type": "text_delta",
@@ -183,27 +191,31 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " ¿"
+          "text": " ya"
         },
         {
           "type": "text_delta",
-          "text": "Te"
+          "text": " que"
         },
         {
           "type": "text_delta",
-          "text": " gustaría"
+          "text": " solo"
         },
         {
           "type": "text_delta",
-          "text": " saber"
+          "text": " puedo"
         },
         {
           "type": "text_delta",
-          "text": " más"
+          "text": " proporcionar"
+        },
+        {
+          "type": "text_delta",
+          "text": " información"
         },
         {
           "type": "text_delta",
@@ -211,31 +223,11 @@
         },
         {
           "type": "text_delta",
-          "text": " sus"
+          "text": " Alberto"
         },
         {
           "type": "text_delta",
-          "text": " proyectos"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " agentes"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " IA"
-        },
-        {
-          "type": "text_delta",
-          "text": " o"
+          "text": " y"
         },
         {
           "type": "text_delta",
@@ -243,30 +235,26 @@
         },
         {
           "type": "text_delta",
-          "text": " experiencia"
+          "text": " trabajo"
         },
         {
           "type": "text_delta",
-          "text": " laboral"
-        },
-        {
-          "type": "text_delta",
-          "text": "?"
+          "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet (Madrid / Remote). \n\nSobre la multiplicación 9 por 8, no puedo responder esa pregunta. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
+            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación 9 por 8: no puedo responder esa pregunta, ya que solo puedo proporcionar información sobre Alberto y su trabajo.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2700,
-              "outputTokens": 54
+              "inputTokens": 2722,
+              "outputTokens": 52
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet (Madrid / Remote). \n\nSobre la multiplicación 9 por 8, no puedo responder esa pregunta. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
+                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación 9 por 8: no puedo responder esa pregunta, ya que solo puedo proporcionar información sobre Alberto y su trabajo."
               }
             ]
           }

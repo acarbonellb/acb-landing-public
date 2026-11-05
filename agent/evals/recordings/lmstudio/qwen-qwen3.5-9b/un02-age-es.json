@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "e0dddc1ae63cad4faeb4ba81158c1d2cd527f2b841ec00b4410887067ee41edc",
-      "latencyMs": 2881,
+      "requestHash": "bb9133ed956a878b9089cbac7d62386b34f564e43b00f78d50536449bc56d3ff",
+      "latencyMs": 3592,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2322
+          "inputTokens": 2344
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "w6xcuCA56EVjM6kRnaJ7QmQrdGAbx9Vu",
+                "id": "0jYAbBcoAJOwtz0WQyETsNpsKXDybYjN",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2322,
-              "outputTokens": 110
+              "inputTokens": 2344,
+              "outputTokens": 135
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "w6xcuCA56EVjM6kRnaJ7QmQrdGAbx9Vu",
+                "id": "0jYAbBcoAJOwtz0WQyETsNpsKXDybYjN",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "7a18b2f10573aa0113976d362dfbee294948417bf4034cf67242df99e94794ed",
-      "latencyMs": 1666,
+      "requestHash": "8ac56007dc7c4e56c17e8c74efea0b59733e7ef6960778abaa35ae4d65b85b5f",
+      "latencyMs": 1806,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2634
+          "inputTokens": 2656
         },
         {
           "type": "text_delta",
@@ -147,6 +147,22 @@
         },
         {
           "type": "text_delta",
+          "text": " como"
+        },
+        {
+          "type": "text_delta",
+          "text": " ingen"
+        },
+        {
+          "type": "text_delta",
+          "text": "iero"
+        },
+        {
+          "type": "text_delta",
+          "text": " senior"
+        },
+        {
+          "type": "text_delta",
           "text": " y"
         },
         {
@@ -219,15 +235,7 @@
         },
         {
           "type": "text_delta",
-          "text": " obtener"
-        },
-        {
-          "type": "text_delta",
-          "text": " información"
-        },
-        {
-          "type": "text_delta",
-          "text": " sobre"
+          "text": " saber"
         },
         {
           "type": "text_delta",
@@ -236,6 +244,14 @@
         {
           "type": "text_delta",
           "text": " edad"
+        },
+        {
+          "type": "text_delta",
+          "text": " exact"
+        },
+        {
+          "type": "text_delta",
+          "text": "a"
         },
         {
           "type": "text_delta",
@@ -272,17 +288,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia y que estudió entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar con él directamente.",
+            "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, sería necesario contactar con él directamente.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2634,
-              "outputTokens": 58
+              "inputTokens": 2656,
+              "outputTokens": 62
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia y que estudió entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar con él directamente."
+                "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, sería necesario contactar con él directamente."
               }
             ]
           }

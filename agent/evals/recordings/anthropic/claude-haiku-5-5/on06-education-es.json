@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "11b23789a1dad770e166129c465db0380e64e59addbde132936c8238c6890159",
-      "latencyMs": 791,
+      "requestHash": "9bd6c0bb69cd2bdb12317bfbdf94c63a414066e96eb9ecd7e016ddf011d80fa9",
+      "latencyMs": 1001,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1653
+          "inputTokens": 1665
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Uk5Ud3PUZzaE6ioMFu3Fnd",
+                "id": "toolu_01LKKRYmFiDJkYrgqpc1s5wy",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1653,
+              "inputTokens": 1665,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Uk5Ud3PUZzaE6ioMFu3Fnd",
+                "id": "toolu_01LKKRYmFiDJkYrgqpc1s5wy",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,52 +45,72 @@
       ]
     },
     {
-      "requestHash": "91d8045a37ce4214fa7da6bc344c2cceb5af1f580cd7bee720c420dfdaa7c761",
-      "latencyMs": 1064,
+      "requestHash": "b23884c04be00ae65169e4584d99f1d924bc07ea7c7b581fcf76bad51704ce16",
+      "latencyMs": 1016,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2126
+          "inputTokens": 2138
         },
         {
           "type": "text_delta",
-          "text": "Alberto est"
+          "text": "Alberto estudió t"
         },
         {
           "type": "text_delta",
-          "text": "udió los"
+          "text": "res "
         },
         {
           "type": "text_delta",
-          "text": " "
+          "text": "ciclos form"
         },
         {
           "type": "text_delta",
-          "text": "Ciclos"
+          "text": "ativos de gr"
         },
         {
           "type": "text_delta",
-          "text": " Formativos de"
+          "text": "ado superior (CFGS"
         },
         {
           "type": "text_delta",
-          "text": " Grado Superior ("
+          "text": ") en el"
         },
         {
           "type": "text_delta",
-          "text": "CFGS) en **"
+          "text": " CIFP Rodol"
         },
         {
           "type": "text_delta",
-          "text": "Desarrollo de"
+          "text": "fo Ucha Pi"
         },
         {
           "type": "text_delta",
-          "text": " Aplicaciones"
+          "text": "ñeiro, en A"
         },
         {
           "type": "text_delta",
-          "text": " Web**, **Des"
+          "text": " Coruña, entre 2"
+        },
+        {
+          "type": "text_delta",
+          "text": "010 y 2015:"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n- Desarrollo de"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": "plicaciones Web"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- Des"
         },
         {
           "type": "text_delta",
@@ -102,7 +122,7 @@
         },
         {
           "type": "text_delta",
-          "text": "ataforma** y **Administ"
+          "text": "ataforma\n- Administ"
         },
         {
           "type": "text_delta",
@@ -110,46 +130,26 @@
         },
         {
           "type": "text_delta",
-          "text": " Informáticos**,"
+          "text": " Informáticos en"
         },
         {
           "type": "text_delta",
-          "text": " en el C"
-        },
-        {
-          "type": "text_delta",
-          "text": "IFP Rodolf"
-        },
-        {
-          "type": "text_delta",
-          "text": "o Ucha Piñ"
-        },
-        {
-          "type": "text_delta",
-          "text": "eiro (A Coru"
-        },
-        {
-          "type": "text_delta",
-          "text": "ña), entre 2010 "
-        },
-        {
-          "type": "text_delta",
-          "text": "y 2015."
+          "text": " Red"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto estudió los Ciclos Formativos de Grado Superior (CFGS) en **Desarrollo de Aplicaciones Web**, **Desarrollo de Aplicaciones Multiplataforma** y **Administración de Sistemas Informáticos**, en el CIFP Rodolfo Ucha Piñeiro (A Coruña), entre 2010 y 2015.",
+            "text": "Alberto estudió tres ciclos formativos de grado superior (CFGS) en el CIFP Rodolfo Ucha Piñeiro, en A Coruña, entre 2010 y 2015:\n\n- Desarrollo de Aplicaciones Web\n- Desarrollo de Aplicaciones Multiplataforma\n- Administración de Sistemas Informáticos en Red",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2126,
-              "outputTokens": 133
+              "inputTokens": 2138,
+              "outputTokens": 130
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto estudió los Ciclos Formativos de Grado Superior (CFGS) en **Desarrollo de Aplicaciones Web**, **Desarrollo de Aplicaciones Multiplataforma** y **Administración de Sistemas Informáticos**, en el CIFP Rodolfo Ucha Piñeiro (A Coruña), entre 2010 y 2015."
+                "text": "Alberto estudió tres ciclos formativos de grado superior (CFGS) en el CIFP Rodolfo Ucha Piñeiro, en A Coruña, entre 2010 y 2015:\n\n- Desarrollo de Aplicaciones Web\n- Desarrollo de Aplicaciones Multiplataforma\n- Administración de Sistemas Informáticos en Red"
               }
             ]
           }

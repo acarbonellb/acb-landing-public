@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "ceaef4ed97c64908ad886ef77c6a5ffc8a2cf9a4920d951b137d1ce369d7e081",
-      "latencyMs": 1680,
+      "requestHash": "b11d80e000521e3573d20a2ccf7bff9bd7d5f65aa45fab3cabebf7433cfcd12b",
+      "latencyMs": 2775,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2319
+          "inputTokens": 2341
         },
         {
           "type": "turn_end",
@@ -19,21 +19,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "4LDhnerOdRVJX16IRB4DzZUzAQJDAOVV",
-                "name": "get_profile",
+                "id": "DENWSyi4USTdWkRQyJGxEYPkyCskDzND",
+                "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2319,
-              "outputTokens": 62
+              "inputTokens": 2341,
+              "outputTokens": 104
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "4LDhnerOdRVJX16IRB4DzZUzAQJDAOVV",
-                "name": "get_profile",
+                "id": "DENWSyi4USTdWkRQyJGxEYPkyCskDzND",
+                "name": "get_contact",
                 "input": {}
               }
             ]
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "d8f77f065ea3555ea1e3878e54022f44bcdc93a734d52fd055848dff9a221f60",
-      "latencyMs": 548,
+      "requestHash": "fc3ae8de883995d7c5f1b795eee7981d7ffdada345f3093276590442a0224856",
+      "latencyMs": 464,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2628
+          "inputTokens": 2438
         },
         {
           "type": "text_delta",
@@ -96,7 +96,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2628,
+              "inputTokens": 2438,
               "outputTokens": 13
             },
             "providerContent": [

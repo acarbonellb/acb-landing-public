@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9b68cfe30cdef13b010501c5943c386134ff354c09d5aa5ad2ad7d0eb75bed97",
-      "latencyMs": 783,
+      "requestHash": "d508ae042c1ce1f511dc308661752c318ed3ac24ec2a3f270f85254972a18081",
+      "latencyMs": 766,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1651
+          "inputTokens": 1663
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01BYUVmCitF4yFtTDjJ7CCMf",
+                "id": "toolu_015qpWH6tbmdfXkGd3XdDMud",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1651,
+              "inputTokens": 1663,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01BYUVmCitF4yFtTDjJ7CCMf",
+                "id": "toolu_015qpWH6tbmdfXkGd3XdDMud",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "9b44a509718e2ee95fc753807931fa772544d5ab9e367de2d13c4b2eab4f847e",
-      "latencyMs": 713,
+      "requestHash": "744fe8bf68f90020f8e1e28c75ba8dd5f8bfb4a2196d4d5924f911984625d4ac",
+      "latencyMs": 710,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2124
+          "inputTokens": 2136
         },
         {
           "type": "text_delta",
@@ -58,11 +58,11 @@
         },
         {
           "type": "text_delta",
-          "text": " languages:\n\n- **Sp"
+          "text": " languages:"
         },
         {
           "type": "text_delta",
-          "text": "anish**"
+          "text": "\n\n- **Spanish**"
         },
         {
           "type": "text_delta",
@@ -74,11 +74,15 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": "advanced)"
+          "text": "(adv"
+        },
+        {
+          "type": "text_delta",
+          "text": "anced)"
         },
         {
           "type": "turn_end",
@@ -87,7 +91,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2124,
+              "inputTokens": 2136,
               "outputTokens": 37
             },
             "providerContent": [

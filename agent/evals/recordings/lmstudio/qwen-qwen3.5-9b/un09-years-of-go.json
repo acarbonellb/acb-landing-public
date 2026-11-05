@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "999eb941bac9f5d7ec24fc4a0a47c658b3a7acafe490a98e220bdb7344dea158",
-      "latencyMs": 3165,
+      "requestHash": "14da11fb6c49c67f736ef691e69d765b6b9b70bd5acc3b46405e48b15d972ed6",
+      "latencyMs": 2351,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2323
+          "inputTokens": 2345
         },
         {
           "type": "turn_end",
@@ -19,40 +19,25 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "uYZmzvaSLaF75nUllCsqAtKOts2iAVtk",
+                "id": "ts8TpoJ6ndR7kbed21smcBKrOAeejHBK",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
-                }
-              },
-              {
-                "id": "3GHsxbGE0gzx4GOovimdu3GFS1K96RxB",
-                "name": "get_stack",
-                "input": {
-                  "group": "backend"
                 }
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2323,
-              "outputTokens": 121
+              "inputTokens": 2345,
+              "outputTokens": 88
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "uYZmzvaSLaF75nUllCsqAtKOts2iAVtk",
+                "id": "ts8TpoJ6ndR7kbed21smcBKrOAeejHBK",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
-                }
-              },
-              {
-                "type": "tool_use",
-                "id": "3GHsxbGE0gzx4GOovimdu3GFS1K96RxB",
-                "name": "get_stack",
-                "input": {
-                  "group": "backend"
                 }
               }
             ]
@@ -61,36 +46,20 @@
       ]
     },
     {
-      "requestHash": "81ff38d047a8a1b34759bc436e3a51b462a79c318785a843643b84cdfb06629e",
-      "latencyMs": 3753,
+      "requestHash": "6907315b6921a17c1cb549ca98c758faa5c95b1a1135a1e183d67faac519b869",
+      "latencyMs": 2325,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2471
+          "inputTokens": 2424
         },
         {
           "type": "text_delta",
-          "text": "Go"
+          "text": "Albert"
         },
         {
           "type": "text_delta",
-          "text": " is"
-        },
-        {
-          "type": "text_delta",
-          "text": " not"
-        },
-        {
-          "type": "text_delta",
-          "text": " listed"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
+          "text": "o"
         },
         {
           "type": "text_delta",
@@ -102,11 +71,11 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": " lists"
         },
         {
           "type": "text_delta",
-          "text": " His"
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -118,7 +87,7 @@
         },
         {
           "type": "text_delta",
-          "text": " include"
+          "text": " as"
         },
         {
           "type": "text_delta",
@@ -146,11 +115,27 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": " and"
+          "text": " Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " not"
+        },
+        {
+          "type": "text_delta",
+          "text": " included"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
         },
         {
           "type": "text_delta",
@@ -158,111 +143,15 @@
         },
         {
           "type": "text_delta",
-          "text": " backend"
+          "text": " listed"
         },
         {
           "type": "text_delta",
-          "text": " stack"
+          "text": " languages"
         },
         {
           "type": "text_delta",
-          "text": " includes"
-        },
-        {
-          "type": "text_delta",
-          "text": " Node"
-        },
-        {
-          "type": "text_delta",
-          "text": ".js"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " Nest"
-        },
-        {
-          "type": "text_delta",
-          "text": "JS"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " Express"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " Next"
-        },
-        {
-          "type": "text_delta",
-          "text": ".js"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " REST"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " GraphQL"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " PostgreSQL"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " MongoDB"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " For"
-        },
-        {
-          "type": "text_delta",
-          "text": " details"
-        },
-        {
-          "type": "text_delta",
-          "text": " on"
-        },
-        {
-          "type": "text_delta",
-          "text": " Go"
+          "text": " or"
         },
         {
           "type": "text_delta",
@@ -274,31 +163,59 @@
         },
         {
           "type": "text_delta",
-          "text": " you"
+          "text": " so"
         },
         {
           "type": "text_delta",
-          "text": " would"
+          "text": " there"
         },
         {
           "type": "text_delta",
-          "text": " need"
+          "text": " is"
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": " no"
         },
         {
           "type": "text_delta",
-          "text": " contact"
+          "text": " information"
         },
         {
           "type": "text_delta",
-          "text": " him"
+          "text": " about"
         },
         {
           "type": "text_delta",
-          "text": " directly"
+          "text": " years"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " available"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
         },
         {
           "type": "text_delta",
@@ -307,17 +224,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Go is not listed in Alberto's profile. His language skills include TypeScript, JavaScript, and Ruby, and his backend stack includes Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL, and MongoDB. For details on Go experience, you would need to contact him directly.",
+            "text": "Alberto's profile lists his language skills as TypeScript, JavaScript, and Ruby. Go is not included in his listed languages or experience, so there is no information about years of Go experience available in his profile.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2471,
-              "outputTokens": 144
+              "inputTokens": 2424,
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Go is not listed in Alberto's profile. His language skills include TypeScript, JavaScript, and Ruby, and his backend stack includes Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL, and MongoDB. For details on Go experience, you would need to contact him directly."
+                "text": "Alberto's profile lists his language skills as TypeScript, JavaScript, and Ruby. Go is not included in his listed languages or experience, so there is no information about years of Go experience available in his profile."
               }
             ]
           }

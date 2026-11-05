@@ -29,6 +29,27 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
+  // The Portfolio Agent card (#44): eval results from the history, and
+  // links to its source and report that stay clickable over the card's link.
+  const portfolio = page.getByRole("article", { name: "./Portfolio Agent" });
+  await expect(
+    portfolio.getByText(/^\d+ eval cases incl\. prompt injection · .* per answer on Claude Haiku 5\.5 · replayed in CI$/),
+  ).toBeVisible();
+  await expect(portfolio.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
+    "href",
+    "https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md",
+  );
+  // No network: GitHub answers with a stub.
+  await page.context().route("https://github.com/**", (route) => route.fulfill({ body: "ok" }));
+  const [source] = await Promise.all([
+    page.waitForEvent("popup"),
+    portfolio.getByRole("link", { name: /^source/ }).click(),
+  ]);
+  await source.waitForLoadState();
+  expect(source.url()).toBe("https://github.com/acarbonellb/acb-landing-public/tree/main/agent");
+  await source.close();
+  await expect(page).not.toHaveURL(/#agent$/);
+
   // How I run agents (#43): four practices, each linked to where it's backed.
   const practices = page.getByRole("region", { name: "how I run agents" });
   for (const title of [

@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "3f3b13bb4bd090738622d4a85999b7ba7b4224114842113d5a654f5c28ab1fa3",
-      "latencyMs": 782,
+      "requestHash": "f389220c326a1b6cf9809c170c62a2986bdbb42b2f3b90db529b62944689d571",
+      "latencyMs": 858,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1653
+          "inputTokens": 1665
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Xjuz1UnKCwuKsFpWFCwQSb",
+                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1653,
+              "inputTokens": 1665,
               "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Xjuz1UnKCwuKsFpWFCwQSb",
+                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -49,24 +49,32 @@
       ]
     },
     {
-      "requestHash": "a5b460f9dc4a784f677030247f410c5279203aadb66ffaad677a2d880b674db8",
-      "latencyMs": 663,
+      "requestHash": "474bfe873d97cd076fbf758538d72f9225e522bacee625eb0b50623962e1d13d",
+      "latencyMs": 735,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1752
+          "inputTokens": 1764
         },
         {
           "type": "text_delta",
-          "text": "Alberto's"
+          "text": "Alberto works"
         },
         {
           "type": "text_delta",
-          "text": " programming languages are Type"
+          "text": " with three"
+        },
+        {
+          "type": "text_delta",
+          "text": " programming languages: Type"
         },
         {
           "type": "text_delta",
           "text": "Script, JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -75,17 +83,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's programming languages are TypeScript, JavaScript and Ruby.",
+            "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1752,
-              "outputTokens": 29
+              "inputTokens": 1764,
+              "outputTokens": 32
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's programming languages are TypeScript, JavaScript and Ruby."
+                "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby."
               }
             ]
           }

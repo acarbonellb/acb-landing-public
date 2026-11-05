@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "3f3b13bb4bd090738622d4a85999b7ba7b4224114842113d5a654f5c28ab1fa3",
-      "latencyMs": 1868,
+      "requestHash": "f389220c326a1b6cf9809c170c62a2986bdbb42b2f3b90db529b62944689d571",
+      "latencyMs": 2074,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2321
+          "inputTokens": 2343
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "lY3PCa62qp10s5f7umlUBLU6srorYVwN",
+                "id": "S457hSTNKx0yB3Wz239TM4jk5hmbL6xD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2321,
-              "outputTokens": 69
+              "inputTokens": 2343,
+              "outputTokens": 77
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "lY3PCa62qp10s5f7umlUBLU6srorYVwN",
+                "id": "S457hSTNKx0yB3Wz239TM4jk5hmbL6xD",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "bdb954402124a2bffb91037a57bbcf00cd03b0050b4f56ba92254fe374aa90f5",
-      "latencyMs": 456,
+      "requestHash": "2220e62a32a44b2538c271e36e64077b2b01224768d9a15631cc9bdaff2cb0ae",
+      "latencyMs": 1403,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2398
+          "inputTokens": 2420
         },
         {
           "type": "text_delta",
@@ -67,19 +67,31 @@
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
+          "text": " **"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "Type"
         },
         {
           "type": "text_delta",
-          "text": " JavaScript"
+          "text": "Script"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "**,"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": "**,"
         },
         {
           "type": "text_delta",
@@ -87,7 +99,31 @@
         },
         {
           "type": "text_delta",
-          "text": " Ruby"
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " programming"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
         },
         {
           "type": "text_delta",
@@ -96,17 +132,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto uses TypeScript, JavaScript, and Ruby.",
+            "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** for his programming work.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2398,
-              "outputTokens": 13
+              "inputTokens": 2420,
+              "outputTokens": 50
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses TypeScript, JavaScript, and Ruby."
+                "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** for his programming work."
               }
             ]
           }
