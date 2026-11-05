@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
-      "latencyMs": 1601,
+      "requestHash": "9076b01a4124694059fe79314eced612b23696e4fb216d77f93e52e51d8ab63b",
+      "latencyMs": 1478,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2252
+          "inputTokens": 2322
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "plGTOi0fvJfzPMUcfhd5kUrcLtFoJOqK",
+                "id": "XGoIURscIxjqeTIr5fXgm4kBBQCrMYSC",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2252,
-              "outputTokens": 57
+              "inputTokens": 2322,
+              "outputTokens": 54
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "plGTOi0fvJfzPMUcfhd5kUrcLtFoJOqK",
+                "id": "XGoIURscIxjqeTIr5fXgm4kBBQCrMYSC",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "0e402a0a691cf9843da79d69bb62c559c0a94a50a7a657424b2749f021f62e26",
-      "latencyMs": 611,
+      "requestHash": "6edf13b79c87314e0ad1139c8dec58e522eca8c9c97d8fedf9f43090f7f852b2",
+      "latencyMs": 767,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2602
+          "inputTokens": 2672
         },
         {
           "type": "text_delta",
@@ -95,22 +95,50 @@
         },
         {
           "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " desde"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet.",
+            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, desde 2019.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2602,
-              "outputTokens": 15
+              "inputTokens": 2672,
+              "outputTokens": 22
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet."
+                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, desde 2019."
               }
             ]
           }

@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "a99a4d2b96cfbf2c692367b0b677b8eff633728a77e83da77e5a29a9eee3c2a4",
-      "latencyMs": 1569,
+      "requestHash": "1c289f6214306600e9fcfd4c132ff6210a910f9ccfb0a18b048e72b3706782f4",
+      "latencyMs": 1320,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2250
+          "inputTokens": 2320
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "c1pqdNoFwGFCxOpciq7fQxqkMNPQrDOD",
+                "id": "TgqRLMlfouivew7iXN79bqsZdaBjRqiG",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2250,
-              "outputTokens": 56
+              "inputTokens": 2320,
+              "outputTokens": 48
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "c1pqdNoFwGFCxOpciq7fQxqkMNPQrDOD",
+                "id": "TgqRLMlfouivew7iXN79bqsZdaBjRqiG",
                 "name": "get_contact",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "ee073cdb1638b2a719d691e4fff0b003686751d0f7fdb938211f9bee91fca937",
-      "latencyMs": 1475,
+      "requestHash": "7df39b144dcabfea9966f2032f02ec378f413091a63d73d7b09cd5dad9a40e6d",
+      "latencyMs": 1538,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2348
+          "inputTokens": 2418
         },
         {
           "type": "text_delta",
@@ -95,59 +95,19 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " He"
+          "text": " or"
         },
         {
           "type": "text_delta",
-          "text": " is"
+          "text": " connect"
         },
         {
           "type": "text_delta",
-          "text": " based"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " Spain"
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " works"
-        },
-        {
-          "type": "text_delta",
-          "text": " remotely"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " You"
-        },
-        {
-          "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " also"
-        },
-        {
-          "type": "text_delta",
-          "text": " find"
+          "text": " with"
         },
         {
           "type": "text_delta",
@@ -164,6 +124,14 @@
         {
           "type": "text_delta",
           "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "https"
+        },
+        {
+          "type": "text_delta",
+          "text": "://"
         },
         {
           "type": "text_delta",
@@ -195,7 +163,7 @@
         },
         {
           "type": "text_delta",
-          "text": " or"
+          "text": " and"
         },
         {
           "type": "text_delta",
@@ -207,7 +175,19 @@
         },
         {
           "type": "text_delta",
-          "text": "linkedin"
+          "text": "https"
+        },
+        {
+          "type": "text_delta",
+          "text": "://"
+        },
+        {
+          "type": "text_delta",
+          "text": "www"
+        },
+        {
+          "type": "text_delta",
+          "text": ".linkedin"
         },
         {
           "type": "text_delta",
@@ -246,19 +226,55 @@
           "text": ")."
         },
         {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " based"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
           "type": "turn_end",
           "turn": {
-            "text": "You can reach Alberto via email at alberto@example.com. He is based in Spain and works remotely. You can also find him on GitHub (github.com/acarbonellb) or LinkedIn (linkedin.com/in/albertocarbonell/).",
+            "text": "You can reach Alberto via email at alberto@example.com, or connect with him on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2348,
-              "outputTokens": 52
+              "inputTokens": 2418,
+              "outputTokens": 56
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto via email at alberto@example.com. He is based in Spain and works remotely. You can also find him on GitHub (github.com/acarbonellb) or LinkedIn (linkedin.com/in/albertocarbonell/)."
+                "text": "You can reach Alberto via email at alberto@example.com, or connect with him on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely."
               }
             ]
           }

@@ -1,4 +1,5 @@
 import {
+  type AgentPractice,
   type AgentProject,
   type AgentStatus,
   type Profile,
@@ -133,7 +134,13 @@ const statusBadge: Record<AgentStatus, { label: string; className: string }> = {
   },
 };
 
-export function Projects({ agents }: { agents: AgentProject[] }) {
+export function Projects({
+  agents,
+  practices,
+}: {
+  agents: AgentProject[];
+  practices: AgentPractice[];
+}) {
   return (
     <Section id="projects" index="04" title="agents I've built">
       <div className="grid gap-5 sm:grid-cols-2">
@@ -203,7 +210,53 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
           );
         })}
       </div>
+      <Practices practices={practices} />
     </Section>
+  );
+}
+
+// "How I run agents" (#43): each practice links where it can be checked.
+function Practices({ practices }: { practices: AgentPractice[] }) {
+  return (
+    <section aria-labelledby="practices-title" className="mt-10">
+      <h3 id="practices-title" className="text-lg font-bold text-fg">
+        <span aria-hidden className="text-comment">
+          {"// "}
+        </span>
+        how I run agents
+      </h3>
+      <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+        {practices.map((p) => (
+          <li key={p.title} className="border-l-2 border-blue pl-4">
+            <p className="font-bold text-fg">{p.title}</p>
+            <p className="mt-1 font-sans text-sm leading-relaxed">{p.text}</p>
+            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+              {p.sources.map((s) =>
+                s.href.startsWith("#") ? (
+                  <a
+                    key={s.href}
+                    href={s.href}
+                    className="text-blue underline-offset-4 hover:underline"
+                  >
+                    {s.label}
+                  </a>
+                ) : (
+                  <a
+                    key={s.href}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue underline-offset-4 hover:underline"
+                  >
+                    {s.label} ↗
+                  </a>
+                ),
+              )}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

@@ -1,0 +1,725 @@
+{
+  "caseId": "on12",
+  "slug": "how-he-builds-agents",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "c1540108cdbba55c6116ddea37afae6aca30e1bb0053da8fc62013e908392698",
+      "latencyMs": 2670,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2320
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "XfQkr7aubqEaMS6gpmo95knmLGZBOBAc",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2320,
+              "outputTokens": 102
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "XfQkr7aubqEaMS6gpmo95knmLGZBOBAc",
+                "name": "get_projects",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "22207025525c597857909b91994f71783396e2248791ac1b308e9a94f63faa4d",
+      "latencyMs": 8094,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 3029
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " builds"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " focus"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " reliability"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " safety"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Offline"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": "s"
+        },
+        {
+          "type": "text_delta",
+          "text": " before"
+        },
+        {
+          "type": "text_delta",
+          "text": " shipping"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " records"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " cases"
+        },
+        {
+          "type": "text_delta",
+          "text": " against"
+        },
+        {
+          "type": "text_delta",
+          "text": " real"
+        },
+        {
+          "type": "text_delta",
+          "text": " models"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " repl"
+        },
+        {
+          "type": "text_delta",
+          "text": "ays"
+        },
+        {
+          "type": "text_delta",
+          "text": " them"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " CI"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " no"
+        },
+        {
+          "type": "text_delta",
+          "text": " model"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " network"
+        },
+        {
+          "type": "text_delta",
+          "text": " access"
+        },
+        {
+          "type": "text_delta",
+          "text": "—"
+        },
+        {
+          "type": "text_delta",
+          "text": "st"
+        },
+        {
+          "type": "text_delta",
+          "text": "ale"
+        },
+        {
+          "type": "text_delta",
+          "text": " recordings"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " off"
+        },
+        {
+          "type": "text_delta",
+          "text": "-topic"
+        },
+        {
+          "type": "text_delta",
+          "text": " leaks"
+        },
+        {
+          "type": "text_delta",
+          "text": " fail"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " build"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Gr"
+        },
+        {
+          "type": "text_delta",
+          "text": "aded"
+        },
+        {
+          "type": "text_delta",
+          "text": " autonomy"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": "-in"
+        },
+        {
+          "type": "text_delta",
+          "text": "-the"
+        },
+        {
+          "type": "text_delta",
+          "text": "-loop"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " For"
+        },
+        {
+          "type": "text_delta",
+          "text": " example"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " recommends"
+        },
+        {
+          "type": "text_delta",
+          "text": " actions"
+        },
+        {
+          "type": "text_delta",
+          "text": " but"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " admin"
+        },
+        {
+          "type": "text_delta",
+          "text": " makes"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " final"
+        },
+        {
+          "type": "text_delta",
+          "text": " decision"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " it"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " auto"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ves"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " evidence"
+        },
+        {
+          "type": "text_delta",
+          "text": " verified"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " code"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Cost"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits"
+        },
+        {
+          "type": "text_delta",
+          "text": " tracked"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " uses"
+        },
+        {
+          "type": "text_delta",
+          "text": " token"
+        },
+        {
+          "type": "text_delta",
+          "text": " budgets"
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": " request"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": "-"
+        },
+        {
+          "type": "text_delta",
+          "text": "IP"
+        },
+        {
+          "type": "text_delta",
+          "text": " rate"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " monthly"
+        },
+        {
+          "type": "text_delta",
+          "text": " spend"
+        },
+        {
+          "type": "text_delta",
+          "text": " caps"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Every"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " report"
+        },
+        {
+          "type": "text_delta",
+          "text": " shows"
+        },
+        {
+          "type": "text_delta",
+          "text": " mean"
+        },
+        {
+          "type": "text_delta",
+          "text": " tokens"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " latency"
+        },
+        {
+          "type": "text_delta",
+          "text": " per"
+        },
+        {
+          "type": "text_delta",
+          "text": " case"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n-"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Changes"
+        },
+        {
+          "type": "text_delta",
+          "text": " measured"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": " over"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": "**:"
+        },
+        {
+          "type": "text_delta",
+          "text": " Each"
+        },
+        {
+          "type": "text_delta",
+          "text": " eval"
+        },
+        {
+          "type": "text_delta",
+          "text": " run"
+        },
+        {
+          "type": "text_delta",
+          "text": " app"
+        },
+        {
+          "type": "text_delta",
+          "text": "ends"
+        },
+        {
+          "type": "text_delta",
+          "text": " metrics"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " history"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " so"
+        },
+        {
+          "type": "text_delta",
+          "text": " any"
+        },
+        {
+          "type": "text_delta",
+          "text": " change"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " prompts"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " tools"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " content"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " affects"
+        },
+        {
+          "type": "text_delta",
+          "text": " performance"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " immediately"
+        },
+        {
+          "type": "text_delta",
+          "text": " visible"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto builds agents with a focus on reliability and safety:\n\n- **Offline evals before shipping**: He records agent cases against real models and replays them in CI, with no model or network access—stale recordings or off-topic leaks fail the build.\n\n- **Graded autonomy with human-in-the-loop**: For example, his fraud detection agent recommends actions but a human admin makes the final decision; it only auto-approves on evidence verified in code.\n\n- **Cost and limits tracked**: He uses token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report shows mean tokens and latency per case.\n\n- **Changes measured run over run**: Each eval run appends metrics to a history, so any change to prompts, tools or content that affects performance is immediately visible.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 3029,
+              "outputTokens": 308
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto builds agents with a focus on reliability and safety:\n\n- **Offline evals before shipping**: He records agent cases against real models and replays them in CI, with no model or network access—stale recordings or off-topic leaks fail the build.\n\n- **Graded autonomy with human-in-the-loop**: For example, his fraud detection agent recommends actions but a human admin makes the final decision; it only auto-approves on evidence verified in code.\n\n- **Cost and limits tracked**: He uses token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report shows mean tokens and latency per case.\n\n- **Changes measured run over run**: Each eval run appends metrics to a history, so any change to prompts, tools or content that affects performance is immediately visible."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

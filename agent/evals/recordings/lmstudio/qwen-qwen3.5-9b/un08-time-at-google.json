@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
-      "latencyMs": 1990,
+      "requestHash": "8f795478025985f2715823d1d53b0bd323b9205d86791c0f26db9ae4db2d806f",
+      "latencyMs": 1850,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2253
+          "inputTokens": 2323
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "3tjF6Y81tGjOihr5wKY2DcW6Dzj24jbM",
+                "id": "6XB6CKfQKjSKHgaQQQdrMMixJnP8EWSU",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2253,
-              "outputTokens": 70
+              "inputTokens": 2323,
+              "outputTokens": 69
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "3tjF6Y81tGjOihr5wKY2DcW6Dzj24jbM",
+                "id": "6XB6CKfQKjSKHgaQQQdrMMixJnP8EWSU",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "db78a8c22b671fa3fd636e3cb1907b7a1f064d95ed098349cecf92178f70506b",
-      "latencyMs": 2467,
+      "requestHash": "8134c1af616250e1889f8211d1b1d7794d892fa8fa714941357ab90c4693ef40",
+      "latencyMs": 883,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2315
+          "inputTokens": 2385
         },
         {
           "type": "text_delta",
@@ -63,14 +63,6 @@
         },
         {
           "type": "text_delta",
-          "text": "'s"
-        },
-        {
-          "type": "text_delta",
-          "text": " profile"
-        },
-        {
-          "type": "text_delta",
           "text": " does"
         },
         {
@@ -79,7 +71,7 @@
         },
         {
           "type": "text_delta",
-          "text": " list"
+          "text": " have"
         },
         {
           "type": "text_delta",
@@ -87,7 +79,7 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " listed"
         },
         {
           "type": "text_delta",
@@ -107,15 +99,11 @@
         },
         {
           "type": "text_delta",
-          "text": " If"
+          "text": " Would"
         },
         {
           "type": "text_delta",
           "text": " you"
-        },
-        {
-          "type": "text_delta",
-          "text": "'d"
         },
         {
           "type": "text_delta",
@@ -131,10 +119,6 @@
         },
         {
           "type": "text_delta",
-          "text": " more"
-        },
-        {
-          "type": "text_delta",
           "text": " about"
         },
         {
@@ -143,43 +127,15 @@
         },
         {
           "type": "text_delta",
-          "text": " career"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " history"
         },
         {
           "type": "text_delta",
-          "text": " feel"
-        },
-        {
-          "type": "text_delta",
-          "text": " free"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " ask"
-        },
-        {
-          "type": "text_delta",
-          "text": " about"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " other"
-        },
-        {
-          "type": "text_delta",
-          "text": " roles"
+          "text": " elsewhere"
         },
         {
           "type": "text_delta",
@@ -187,26 +143,38 @@
         },
         {
           "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
           "text": " projects"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his career, feel free to ask about his other roles or projects.",
+            "text": "Alberto does not have any listed experience at Google. Would you like to know about his work history elsewhere or his AI agent projects?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2315,
-              "outputTokens": 88
+              "inputTokens": 2385,
+              "outputTokens": 30
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his career, feel free to ask about his other roles or projects."
+                "text": "Alberto does not have any listed experience at Google. Would you like to know about his work history elsewhere or his AI agent projects?"
               }
             ]
           }

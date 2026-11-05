@@ -39,6 +39,21 @@ const fixture: Content = {
       stack: ["Jacquard"],
     },
   ],
+  agentPractices: [
+    {
+      title: "Tables checked twice",
+      text: "Every table is recomputed by hand.",
+      sources: [
+        { label: "the notes", href: "https://example.com/notes" },
+        { label: "Loom Agent", href: "#agent-loom" },
+      ],
+    },
+    {
+      title: "A human turns the crank",
+      text: "The engine proposes, the operator decides.",
+      sources: [{ label: "Loom Agent", href: "#agent-loom" }],
+    },
+  ],
   experience: [
     {
       slug: "engine-co",
@@ -188,12 +203,33 @@ describe("get_projects", () => {
           stack: ["Jacquard"],
         },
       ],
+      // How he runs agents (#43), with only the links that work off the page.
+      practices: [
+        {
+          title: "Tables checked twice",
+          text: "Every table is recomputed by hand.",
+          sources: [{ label: "the notes", url: "https://example.com/notes" }],
+        },
+        {
+          title: "A human turns the crank",
+          text: "The engine proposes, the operator decides.",
+        },
+      ],
     });
   });
 
-  it("filters by status", () => {
+  it("filters by status, still saying how he runs agents", () => {
     const result = tools.call("get_projects", { status: "offline-evals" });
     expect(result.projects.map((p) => p.name)).toEqual(["Loom Agent"]);
+    expect(result.practices.map((p) => p.title)).toEqual([
+      "Tables checked twice",
+      "A human turns the crank",
+    ]);
+  });
+
+  it("says in its description that it covers how he runs agents", () => {
+    const tool = tools.list().find((t) => t.name === "get_projects")!;
+    expect(tool.description).toMatch(/how he (?:builds and )?runs (?:them|agents)/);
   });
 
   it("lists every status in its description", () => {

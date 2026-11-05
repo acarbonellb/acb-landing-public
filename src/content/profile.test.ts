@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import * as content from "./profile";
 import {
+  agentPractices,
   agents,
   education,
   experience,
@@ -60,6 +61,50 @@ describe("content module", () => {
       "An online event ticketing platform",
       "An online event ticketing platform",
     ]);
+  });
+
+  it("says how Alberto runs agents, each practice backed by this public repo or the page (#43)", () => {
+    const repo = "https://github.com/acarbonellb/acb-landing-public";
+    expect(agentPractices).toEqual([
+      {
+        title: "Offline evals before shipping",
+        text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",
+        sources: [
+          {
+            label: "ADR 0001",
+            href: `${repo}/blob/main/docs/adr/0001-agent-evals-record-replay.md`,
+          },
+        ],
+      },
+      {
+        title: "Graded autonomy, a human in the loop",
+        text: "The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.",
+        sources: [{ label: "Fraud Detection Agent", href: "#agent-fraud-detection-agent" }],
+      },
+      {
+        title: "Cost and limits tracked",
+        text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens and latency per case.",
+        sources: [
+          { label: "guardrails", href: `${repo}#guardrails` },
+          { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+        ],
+      },
+      {
+        title: "Changes measured run over run",
+        text: "Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.",
+        sources: [
+          { label: "eval history", href: `${repo}/blob/main/agent/evals/history.jsonl` },
+        ],
+      },
+    ]);
+  });
+
+  it("links only to this repo or to a card on the page, never to another repo", () => {
+    for (const { href } of agentPractices.flatMap((p) => p.sources)) {
+      expect(href).toMatch(
+        /^(?:https:\/\/github\.com\/acarbonellb\/acb-landing-public(?:[/#]|$)|#agent-)/,
+      );
+    }
   });
 
   it("lists the three roles, newest first", () => {

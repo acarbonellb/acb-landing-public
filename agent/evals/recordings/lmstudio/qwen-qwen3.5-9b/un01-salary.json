@@ -6,40 +6,56 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "1a0cfaafb8cf3f149a0bd8e61e163ae633c12b3bda58418f7e6d4cf5562a9cfc",
-      "latencyMs": 6479,
+      "requestHash": "a1ac4240381ac969b3a2f05c9bbee9e770ac4e531743df7857e45d3c515a4728",
+      "latencyMs": 2378,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2250
+          "inputTokens": 2320
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "N6oWo2H1JIgQWkSCnFOA16ShEtUSiIjj",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2320,
+              "outputTokens": 90
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "N6oWo2H1JIgQWkSCnFOA16ShEtUSiIjj",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "faa36dbb798cd55148005fb82e6209ffaa43ee445c04d84439751717b0124fe9",
+      "latencyMs": 1386,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2630
         },
         {
           "type": "text_delta",
-          "text": "I"
+          "text": "Albert"
         },
         {
           "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " only"
-        },
-        {
-          "type": "text_delta",
-          "text": " answer"
-        },
-        {
-          "type": "text_delta",
-          "text": " questions"
-        },
-        {
-          "type": "text_delta",
-          "text": " about"
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
+          "text": "o"
         },
         {
           "type": "text_delta",
@@ -47,7 +63,35 @@
         },
         {
           "type": "text_delta",
-          "text": " public"
+          "text": " salary"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " earnings"
+        },
+        {
+          "type": "text_delta",
+          "text": " are"
+        },
+        {
+          "type": "text_delta",
+          "text": " not"
+        },
+        {
+          "type": "text_delta",
+          "text": " mentioned"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -55,7 +99,87 @@
         },
         {
           "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " For"
+        },
+        {
+          "type": "text_delta",
+          "text": " details"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
           "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " would"
+        },
+        {
+          "type": "text_delta",
+          "text": " need"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
+        },
+        {
+          "type": "text_delta",
+          "text": " directly"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -71,7 +195,11 @@
         },
         {
           "type": "text_delta",
-          "text": " projects"
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
         },
         {
           "type": "text_delta",
@@ -79,210 +207,38 @@
         },
         {
           "type": "text_delta",
-          "text": " skills"
+          "text": " or"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " tech"
         },
         {
           "type": "text_delta",
-          "text": " education"
+          "text": " stack"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " instead"
         },
         {
           "type": "text_delta",
-          "text": " languages"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " information"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " His"
-        },
-        {
-          "type": "text_delta",
-          "text": " earnings"
-        },
-        {
-          "type": "text_delta",
-          "text": " are"
-        },
-        {
-          "type": "text_delta",
-          "text": " personal"
-        },
-        {
-          "type": "text_delta",
-          "text": " financial"
-        },
-        {
-          "type": "text_delta",
-          "text": " details"
-        },
-        {
-          "type": "text_delta",
-          "text": " not"
-        },
-        {
-          "type": "text_delta",
-          "text": " included"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " portfolio"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " If"
-        },
-        {
-          "type": "text_delta",
-          "text": " you"
-        },
-        {
-          "type": "text_delta",
-          "text": "'re"
-        },
-        {
-          "type": "text_delta",
-          "text": " interested"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " working"
-        },
-        {
-          "type": "text_delta",
-          "text": " with"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " I"
-        },
-        {
-          "type": "text_delta",
-          "text": "'d"
-        },
-        {
-          "type": "text_delta",
-          "text": " suggest"
-        },
-        {
-          "type": "text_delta",
-          "text": " reaching"
-        },
-        {
-          "type": "text_delta",
-          "text": " out"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
-          "text": " directly"
-        },
-        {
-          "type": "text_delta",
-          "text": " through"
-        },
-        {
-          "type": "text_delta",
-          "text": " the"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " information"
-        },
-        {
-          "type": "text_delta",
-          "text": " available"
-        },
-        {
-          "type": "text_delta",
-          "text": " on"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " site"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto's public profile, work experience, projects, skills, education, languages, and contact information. His earnings are personal financial details not included in his portfolio. If you're interested in working with him, I'd suggest reaching out to him directly through the contact information available on his site.",
+            "text": "Alberto's salary or earnings are not mentioned in his profile. For details like that, you would need to contact him directly. Would you like to know about his work experience, AI agents, or tech stack instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2250,
-              "outputTokens": 244
+              "inputTokens": 2630,
+              "outputTokens": 47
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto's public profile, work experience, projects, skills, education, languages, and contact information. His earnings are personal financial details not included in his portfolio. If you're interested in working with him, I'd suggest reaching out to him directly through the contact information available on his site."
+                "text": "Alberto's salary or earnings are not mentioned in his profile. For details like that, you would need to contact him directly. Would you like to know about his work experience, AI agents, or tech stack instead?"
               }
             ]
           }

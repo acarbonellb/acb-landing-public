@@ -43,6 +43,19 @@ export type AgentProject = {
   href?: string;
 };
 
+/** Where a practice can be checked: this public repo or a card on the page. */
+export type PracticeSource = { label: string; href: string };
+
+/**
+ * One "how I run agents" bullet (#43). State only what a public source backs:
+ * this repo, or approved copy already on the page. Never link a private repo.
+ */
+export type AgentPractice = {
+  title: string;
+  text: string;
+  sources: PracticeSource[];
+};
+
 export type Role = {
   slug: string;
   /** Short commit-style hash, decorative (git log styling). */
@@ -126,6 +139,42 @@ export const agents: AgentProject[] = [
       "Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it.",
     stack: ["TypeScript", "Claude", "MCP"],
     href: "#agent",
+  },
+];
+
+const repo = "https://github.com/acarbonellb/acb-landing-public";
+
+export const agentPractices: AgentPractice[] = [
+  {
+    title: "Offline evals before shipping",
+    text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",
+    sources: [
+      {
+        label: "ADR 0001",
+        href: `${repo}/blob/main/docs/adr/0001-agent-evals-record-replay.md`,
+      },
+    ],
+  },
+  {
+    // Backed only by the fraud agent's approved copy above (#41).
+    title: "Graded autonomy, a human in the loop",
+    text: "The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.",
+    sources: [{ label: "Fraud Detection Agent", href: "#agent-fraud-detection-agent" }],
+  },
+  {
+    title: "Cost and limits tracked",
+    text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens and latency per case.",
+    sources: [
+      { label: "guardrails", href: `${repo}#guardrails` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ],
+  },
+  {
+    title: "Changes measured run over run",
+    text: "Every eval run appends its metrics to a history, so a prompt, tool or content change that moves the numbers shows up next to the run before it.",
+    sources: [
+      { label: "eval history", href: `${repo}/blob/main/agent/evals/history.jsonl` },
+    ],
   },
 ];
 

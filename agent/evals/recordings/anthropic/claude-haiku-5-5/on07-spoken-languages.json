@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9fdefbf28738a24540381a4c343e80432bda0537c0768911807527aa482ca637",
-      "latencyMs": 880,
+      "requestHash": "9b68cfe30cdef13b010501c5943c386134ff354c09d5aa5ad2ad7d0eb75bed97",
+      "latencyMs": 783,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1603
+          "inputTokens": 1651
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01NhzZexaevb7TJVc3uqsNLP",
+                "id": "toolu_01BYUVmCitF4yFtTDjJ7CCMf",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1603,
+              "inputTokens": 1651,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01NhzZexaevb7TJVc3uqsNLP",
+                "id": "toolu_01BYUVmCitF4yFtTDjJ7CCMf",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "b229ae403d2f3eec3427fb9c01f41746f5ba34af2c2e1383f5f604cc814a140b",
-      "latencyMs": 715,
+      "requestHash": "9b44a509718e2ee95fc753807931fa772544d5ab9e367de2d13c4b2eab4f847e",
+      "latencyMs": 713,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2076
+          "inputTokens": 2124
         },
         {
           "type": "text_delta",
@@ -58,34 +58,42 @@
         },
         {
           "type": "text_delta",
-          "text": " languages:"
+          "text": " languages:\n\n- **Sp"
         },
         {
           "type": "text_delta",
-          "text": " Spanish ("
+          "text": "anish**"
         },
         {
           "type": "text_delta",
-          "text": "native) and English (C1 "
+          "text": ": native"
         },
         {
           "type": "text_delta",
-          "text": "level)."
+          "text": "\n- **English**: C1"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "advanced)"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto speaks two languages: Spanish (native) and English (C1 level).",
+            "text": "Alberto speaks two languages:\n\n- **Spanish**: native\n- **English**: C1 (advanced)",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2076,
-              "outputTokens": 28
+              "inputTokens": 2124,
+              "outputTokens": 37
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto speaks two languages: Spanish (native) and English (C1 level)."
+                "text": "Alberto speaks two languages:\n\n- **Spanish**: native\n- **English**: C1 (advanced)"
               }
             ]
           }

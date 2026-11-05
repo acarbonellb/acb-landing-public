@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
+  AgentPractice,
   AgentProject,
   Profile,
   Role,
@@ -76,6 +77,22 @@ const agents: AgentProject[] = [
     context: "Built for a lace maker",
     description: "Will design lace.",
     stack: ["Bobbins"],
+  },
+];
+
+const practices: AgentPractice[] = [
+  {
+    title: "Tables checked twice",
+    text: "Every table is recomputed by hand before printing.",
+    sources: [
+      { label: "the notes", href: "https://example.com/notes" },
+      { label: "the errata", href: "https://example.com/errata" },
+    ],
+  },
+  {
+    title: "A human turns the crank",
+    text: "The engine proposes, the operator decides.",
+    sources: [{ label: "Gear Agent", href: "#agent-gear-agent" }],
   },
 ];
 
@@ -185,7 +202,7 @@ describe("Experience", () => {
 
 describe("Projects", () => {
   it("is section 04, agents I've built", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     expect(
       screen.getByRole("heading", { level: 2, name: /^04\.\s*agents I've built$/ }),
@@ -193,7 +210,7 @@ describe("Projects", () => {
   });
 
   it("shows each agent with its context, description, status and stack", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     const engine = within(
       screen.getByRole("article", { name: "./Engine Agent" }),
@@ -220,7 +237,7 @@ describe("Projects", () => {
   });
 
   it("shows the offline-evals and coming-soon badges", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
@@ -229,7 +246,7 @@ describe("Projects", () => {
   });
 
   it("shows a measured result and its detail only on agents that have one", () => {
-    render(<Projects agents={agents} />);
+    render(<Projects agents={agents} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(
@@ -239,6 +256,42 @@ describe("Projects", () => {
 
     const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
     expect(loom.queryByText(/offline evals|runs/i)).not.toBeInTheDocument();
+  });
+
+  it("says how the agents are run, each practice with its sources (#43)", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const block = within(
+      screen.getByRole("region", { name: "how I run agents" }),
+    );
+    const items = block.getAllByRole("listitem");
+    expect(items).toHaveLength(2);
+
+    const checked = within(items[0]);
+    expect(checked.getByText("Tables checked twice")).toBeInTheDocument();
+    expect(
+      checked.getByText("Every table is recomputed by hand before printing."),
+    ).toBeInTheDocument();
+    const notes = checked.getByRole("link", { name: /the notes/ });
+    expect(notes).toHaveAttribute("href", "https://example.com/notes");
+    expect(notes).toHaveAttribute("target", "_blank");
+    expect(checked.getByRole("link", { name: /the errata/ })).toHaveAttribute(
+      "href",
+      "https://example.com/errata",
+    );
+
+    // A card on the page opens in place.
+    const card = within(items[1]).getByRole("link", { name: "Gear Agent" });
+    expect(card).toHaveAttribute("href", "#agent-gear-agent");
+    expect(card).not.toHaveAttribute("target");
+  });
+
+  it("gives each agent card's heading the id its practice links point to", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    expect(
+      screen.getByRole("heading", { name: "./Gear Agent" }),
+    ).toHaveAttribute("id", "agent-gear-agent");
   });
 });
 

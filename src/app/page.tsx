@@ -10,6 +10,7 @@ import {
 } from "@/components/sections";
 import { StatusLine } from "@/components/status-line";
 import {
+  agentPractices,
   agents,
   experience,
   profile,
@@ -25,7 +26,7 @@ export default function Home() {
         <About summary={profile.summary} />
         <Stack skillGroups={skillGroups} />
         <Experience roles={experience} />
-        <Projects agents={agents} />
+        <Projects agents={agents} practices={agentPractices} />
         <Agent linkedin={profile.links.linkedin} />
         <Contact profile={profile} />
       </main>

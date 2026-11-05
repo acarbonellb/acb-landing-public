@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
-      "latencyMs": 789,
+      "requestHash": "8f795478025985f2715823d1d53b0bd323b9205d86791c0f26db9ae4db2d806f",
+      "latencyMs": 822,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1607
+          "inputTokens": 1655
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_015ijBAhFT18mGLmsW5DTgK9",
+                "id": "toolu_01TchLcEvc2rHjdSxJR9DqDt",
                 "name": "get_experience",
                 "input": {
                   "company": "google"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1607,
+              "inputTokens": 1655,
               "outputTokens": 48
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_015ijBAhFT18mGLmsW5DTgK9",
+                "id": "toolu_01TchLcEvc2rHjdSxJR9DqDt",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -49,12 +49,12 @@
       ]
     },
     {
-      "requestHash": "b9535553d1e25ee63597472d876be8acf0a6639401ecfa97f711a5f9bf11ca86",
-      "latencyMs": 1044,
+      "requestHash": "9fe57173c82b123d23725bf5a7ce74a86791898ee228f312ff7ea355ec7b7d18",
+      "latencyMs": 1095,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1668
+          "inputTokens": 1716
         },
         {
           "type": "text_delta",
@@ -66,27 +66,35 @@
         },
         {
           "type": "text_delta",
-          "text": " work at Google,"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " so I can"
+          "text": " at Google,"
         },
         {
           "type": "text_delta",
-          "text": "'t share"
+          "text": " so I can't tell you about"
         },
         {
           "type": "text_delta",
-          "text": " details about that"
+          "text": " a"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": " role"
         },
         {
           "type": "text_delta",
-          "text": " His"
+          "text": " there. If you'd like,"
+        },
+        {
+          "type": "text_delta",
+          "text": " I can go"
+        },
+        {
+          "type": "text_delta",
+          "text": " through his other work"
         },
         {
           "type": "text_delta",
@@ -94,43 +102,43 @@
         },
         {
           "type": "text_delta",
-          "text": "ience on"
+          "text": "ience or"
         },
         {
           "type": "text_delta",
-          "text": " record"
+          "text": " the"
         },
         {
           "type": "text_delta",
-          "text": " is available if"
+          "text": " AI agents he has"
         },
         {
           "type": "text_delta",
-          "text": " you'"
+          "text": " built. For"
         },
         {
           "type": "text_delta",
-          "text": "d like to expl"
+          "text": " details"
         },
         {
           "type": "text_delta",
-          "text": "ore it"
+          "text": " be"
         },
         {
           "type": "text_delta",
-          "text": ", or you"
+          "text": "yond his"
         },
         {
           "type": "text_delta",
-          "text": " can reach out"
+          "text": " profile, you can reach him"
         },
         {
           "type": "text_delta",
-          "text": " to him directly through the"
+          "text": " through"
         },
         {
           "type": "text_delta",
-          "text": " contact details"
+          "text": " the contact details"
         },
         {
           "type": "text_delta",
@@ -143,17 +151,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile doesn't list any work at Google, so I can't share details about that. His experience on record is available if you'd like to explore it, or you can reach out to him directly through the contact details on his site.",
+            "text": "Alberto's profile doesn't list any work at Google, so I can't tell you about a role there. If you'd like, I can go through his other work experience or the AI agents he has built. For details beyond his profile, you can reach him through the contact details on his site.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1668,
-              "outputTokens": 65
+              "inputTokens": 1716,
+              "outputTokens": 80
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any work at Google, so I can't share details about that. His experience on record is available if you'd like to explore it, or you can reach out to him directly through the contact details on his site."
+                "text": "Alberto's profile doesn't list any work at Google, so I can't tell you about a role there. If you'd like, I can go through his other work experience or the AI agents he has built. For details beyond his profile, you can reach him through the contact details on his site."
               }
             ]
           }

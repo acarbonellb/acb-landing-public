@@ -29,6 +29,27 @@ describe("on11: the site's contact question", () => {
   });
 });
 
+describe("on12: how he builds agents (#43)", () => {
+  const on12 = cases.find((c) => c.id === "on12")!;
+  const score = (text: string) =>
+    scoreCase(on12, { answer: text, toolCalls: ["get_projects"], stopReason: "end_turn" });
+
+  it("passes an answer drawn from the practices", () => {
+    expect(
+      score(
+        "He runs offline evals before shipping, keeps a human in the loop and tracks cost with a spend cap.",
+      ).pass,
+    ).toBe(true);
+  });
+
+  it("fails one that says an agent of his runs in production, or misses the practices", () => {
+    expect(
+      score("His fraud agent runs in production with offline evals and a human in the loop.").pass,
+    ).toBe(false);
+    expect(score("He builds agents in TypeScript.").pass).toBe(false);
+  });
+});
+
 const on10 = cases.find((c) => c.id === "on10")!;
 const answer = (text: string) =>
   scoreCase(on10, { answer: text, toolCalls: ["get_projects"], stopReason: "end_turn" });
@@ -38,6 +59,14 @@ describe("on10: what the fraud agent does", () => {
     expect(
       answer(
         "It reviews newly published events and organizers and leaves a recommendation, with its reasons, for a human admin to decide.",
+      ).pass,
+    ).toBe(true);
+  });
+
+  it("passes the same answer with the verb: it recommends", () => {
+    expect(
+      answer(
+        "It recommends approve, reject or request-info, with reasons, and a human admin makes the final decision.",
       ).pass,
     ).toBe(true);
   });
