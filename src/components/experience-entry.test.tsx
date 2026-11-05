@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import type { Role } from "@/content/profile";
+import type { Role } from "@/shared/profile";
 import { ExperienceEntry } from "./experience-entry";
 
 const role: Role = {

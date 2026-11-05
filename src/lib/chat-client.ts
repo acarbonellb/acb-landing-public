@@ -9,7 +9,7 @@ import type {
   ChatStopReason,
   HttpErrorBody,
   HttpErrorCode,
-} from "./chat-contract";
+} from "@/shared/chat-contract";
 
 export type { ChatMessage };
 
