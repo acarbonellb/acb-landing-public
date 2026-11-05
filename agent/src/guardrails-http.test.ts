@@ -319,6 +319,45 @@ describe("global rate-limit ceilings", () => {
   });
 });
 
+function getStats(url: string, ip: string) {
+  return fetch(new URL(paths.stats, url), { headers: { "X-Forwarded-For": ip } });
+}
+
+describe("/stats rate limits", () => {
+  it("refuses an IP past its own per-IP limit, with the stats' JSON 429", async () => {
+    const url = await start(guardrails({ RATE_LIMIT_STATS_PER_MINUTE: "2" }));
+
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    const res = await getStats(url, "198.51.100.1");
+
+    expect(res.status).toBe(429);
+    expect(res.headers.get("retry-after")).toBe("60");
+    expect(await res.json()).toEqual({
+      error: { code: "rate_limited", message: httpErrorMessages.rateLimited },
+    });
+    expect((await getStats(url, "198.51.100.2")).status).toBe(200);
+  });
+
+  it("refuses many keys together past its own global ceiling", async () => {
+    const url = await start(guardrails({ RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "2" }));
+
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.2")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.3")).status).toBe(429);
+  });
+
+  it("doesn't use up /mcp's per-IP limit or global ceiling", async () => {
+    const url = await start(
+      guardrails({ RATE_LIMIT_MCP_PER_MINUTE: "1", RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "1" }),
+    );
+
+    for (let i = 0; i < 3; i++) expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+
+    expect((await listTools(url, "198.51.100.1")).status).toBe(200);
+  });
+});
+
 describe("local refusal cache over the shared store", () => {
   /** A memory store that counts the rate-limit windows it reads. */
   function countingStore() {

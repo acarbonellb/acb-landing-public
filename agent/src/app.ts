@@ -66,6 +66,8 @@ export type AppDeps = {
    */
   chatRateLimiter: RateLimiter;
   mcpRateLimiter: RateLimiter;
+  /** Its own limit and ceiling, so polling `/stats` never uses up `/mcp`'s. */
+  statsRateLimiter: RateLimiter;
   /** Monthly spend cap on the model; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
   /** Per-key daily spend quota on `/chat`; shared or in memory like the limits (`daily-quota.ts`). */
@@ -203,6 +205,7 @@ export function createApp(deps: AppDeps): Hono {
     answerSigner,
     chatRateLimiter,
     mcpRateLimiter,
+    statsRateLimiter,
     spendCap,
     dailyQuota,
     usage,
@@ -233,11 +236,11 @@ export function createApp(deps: AppDeps): Hono {
   app.get(paths.health, (c) => c.json({ status: "ok" }));
 
   // Public usage aggregates (no content, no IPs), read by the site from any
-  // origin. Under the MCP rate limit, sharing its per-IP count.
+  // origin. Under its own per-IP limit and global ceiling.
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(mcpRateLimiter, rateLimitKey, "open", (c) =>
+    rateLimit(statsRateLimiter, rateLimitKey, "open", (c) =>
       jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
     ),
     async (c) => {

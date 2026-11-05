@@ -88,19 +88,9 @@ describe("GET /stats", () => {
     expect(body.current.chat.requests).toBe(0);
   });
 
-  it("is under the MCP rate limit", async () => {
-    const { url } = await start([], {
-      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-    });
-    expect((await fetch(new URL(paths.stats, url))).status).toBe(200);
-    const res = await fetch(new URL(paths.stats, url));
-    expect(res.status).toBe(429);
-    expect(res.headers.get("retry-after")).toBe("60");
-  });
-
   it("keys its limit on the right-most X-Forwarded-For entry, even after a Hosting peer", async () => {
     const { url } = await start([], {
-      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+      statsRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
     });
     const get = (forwardedFor: string) =>
       fetch(new URL(paths.stats, url), { headers: { "X-Forwarded-For": forwardedFor } });

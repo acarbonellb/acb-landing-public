@@ -49,7 +49,7 @@ export function createGuardrails(
   { guardrails, alerts }: Config,
 ): Pick<
   AppDeps,
-  "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
+  "chatRateLimiter" | "mcpRateLimiter" | "statsRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
 > {
   const { pricing } = guardrails;
   const shared = sharedStore && withStoreHealthEvents(sharedStore);
@@ -76,6 +76,11 @@ export function createGuardrails(
       "mcp",
       guardrails.mcpRequestsPerMinute,
       guardrails.mcpGlobalRequestsPerMinute,
+    ),
+    statsRateLimiter: rateLimiter(
+      "stats",
+      guardrails.statsRequestsPerMinute,
+      guardrails.statsGlobalRequestsPerMinute,
     ),
     spendCap: createStoreSpendCap({ store, capUsd: guardrails.monthlySpendCapUsd, pricing }),
     dailyQuota: createStoreDailyQuota({ store, quotaUsd: guardrails.dailyQuotaUsd, pricing }),
