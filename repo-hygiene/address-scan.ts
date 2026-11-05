@@ -21,8 +21,10 @@ export function findAddresses(text: string): string[] {
 // Reserved for tests and documentation (RFC 2606, RFC 6761), and the third
 // parties whose addresses the repo legitimately holds.
 const safeDomain =
-  /(?:^|\.)(?:example\.(?:com|net|org)|example|test|invalid|localhost)$|\.iam\.gserviceaccount\.com$|^oikoi\.com$/;
+  /(?:^|\.)(?:example\.(?:com|net|org)|example|test|invalid|localhost)$|\.iam\.gserviceaccount\.com$|^oikoi\.com$|^izs\.me$/;
 // oikoi.com: VT323's author, in its font license and the font file (assets/).
+// izs.me: glob's maintainer, in an npm deprecation notice that
+// deploy/firebase-tools/package-lock.json carries for one of its dependencies.
 
 /** Whether `email` may appear in the public repo. */
 export function isPublicSafeAddress(email: string): boolean {
