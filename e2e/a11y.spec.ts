@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
-import { THEME_STORAGE_KEY, THEMES, type Theme } from "../src/lib/theme";
+import { DEFAULT_THEME, THEME_STORAGE_KEY, THEMES, type Theme } from "../src/lib/theme";
 import { chatError, chatStream, done, mcpContact } from "../src/testing/agent-fakes";
 import { ask, conversation, expect, markdownAnswer, test } from "./fixtures";
 
@@ -122,7 +122,7 @@ for (const theme of THEMES) {
 test("the keyboard reaches the chat and the contact button in reading order", async ({
   page,
 }) => {
-  await openIn(page, "night");
+  await openIn(page, DEFAULT_THEME);
   const input = page.getByRole("textbox", { name: /ask the agent/i });
   const send = page.getByRole("button", { name: /send/i });
   const copy = page.getByRole("button", { name: /copy mcp command/i });
