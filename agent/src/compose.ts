@@ -9,7 +9,12 @@ import type { Config } from "./config";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
-import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
+import {
+  createMemoryRateLimiter,
+  createStoreRateLimiter,
+  withGlobalCeiling,
+  withRefusalCache,
+} from "./rate-limit";
 import { createMemorySpendCap, createStoreSpendCap } from "./spend-cap";
 import { createToolset, siteContent } from "./tools";
 import { createUsageRecorder } from "./usage";
@@ -41,20 +46,36 @@ export function createGuardrails(
 ): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {
   const { pricing } = guardrails;
   const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
+  const limits = {
+    chat: [guardrails.chatRequestsPerMinute, guardrails.chatGlobalRequestsPerMinute],
+    mcp: [guardrails.mcpRequestsPerMinute, guardrails.mcpGlobalRequestsPerMinute],
+  } as const;
   if (store) {
-    const rateLimiter = (name: string, limit: number) =>
-      createStoreRateLimiter({ store, name, limit, windowMs: minute });
+    // Each window's refusals are remembered locally, so a flood that is
+    // already refused costs no store reads. The ceiling's window is
+    // `rateLimits/<name>:*`.
+    const rateLimiter = (name: keyof typeof limits) => {
+      const [perKey, global] = limits[name].map((limit) =>
+        withRefusalCache(createStoreRateLimiter({ store, name, limit, windowMs: minute })),
+      );
+      return withGlobalCeiling(perKey, global);
+    };
     return {
-      chatRateLimiter: rateLimiter("chat", guardrails.chatRequestsPerMinute),
-      mcpRateLimiter: rateLimiter("mcp", guardrails.mcpRequestsPerMinute),
+      chatRateLimiter: rateLimiter("chat"),
+      mcpRateLimiter: rateLimiter("mcp"),
       spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
       usage: createUsageRecorder({ store, pricing }),
     };
   }
-  const rateLimiter = (limit: number) => createMemoryRateLimiter({ limit, windowMs: minute });
+  const rateLimiter = (name: keyof typeof limits) => {
+    const [perKey, global] = limits[name].map((limit) =>
+      createMemoryRateLimiter({ limit, windowMs: minute }),
+    );
+    return withGlobalCeiling(perKey, global);
+  };
   return {
-    chatRateLimiter: rateLimiter(guardrails.chatRequestsPerMinute),
-    mcpRateLimiter: rateLimiter(guardrails.mcpRequestsPerMinute),
+    chatRateLimiter: rateLimiter("chat"),
+    mcpRateLimiter: rateLimiter("mcp"),
     spendCap: createMemorySpendCap(spendCapOptions),
     usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
   };

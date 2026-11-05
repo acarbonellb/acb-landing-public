@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createMemoryDocumentStore } from "./document-store";
-import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
+import { createMemoryRateLimiter, createStoreRateLimiter, withRefusalCache } from "./rate-limit";
 
 function fakeClock(start = Date.UTC(2026, 10, 2, 12, 0, 0)) {
   let now = start;
@@ -108,5 +108,57 @@ describe("createStoreRateLimiter", () => {
     expect((await chat.hit("a")).allowed).toBe(false);
     clock.advance(60_000);
     expect(await chat.hit("a")).toEqual({ allowed: true });
+  });
+});
+
+describe("withRefusalCache", () => {
+  it("never allows what the store would refuse, and asks the store again once the wait ends", async () => {
+    const clock = fakeClock();
+    const options = { name: "chat", limit: 2, windowMs: 60_000, now: clock.now };
+    // The same hits, at the same times, through the cache and straight to a store.
+    const cached = withRefusalCache(
+      createStoreRateLimiter({ store: createMemoryDocumentStore(), ...options }),
+      { now: clock.now },
+    );
+    const bare = createStoreRateLimiter({ store: createMemoryDocumentStore(), ...options });
+
+    const steps = [0, 100, 900, 15_000, 20_500, 23_999, 1, 7_000, 500, 30_000, 12_345, 60_000];
+    const allowed: boolean[] = [];
+    for (const step of steps) {
+      clock.advance(step);
+      const fromStore = await bare.hit("a");
+      const decision = await cached.hit("a");
+      if (!fromStore.allowed) expect(decision).toEqual(fromStore);
+      allowed.push(decision.allowed);
+    }
+    // Windows open at 0 s, 60.499 s and 170.345 s: two hits pass in each.
+    expect(allowed).toEqual([
+      true, true, false, false, false, true, true, false, false, false, false, true,
+    ]);
+  });
+
+  it("keeps at most `maxKeys` refusals, forgetting the oldest, which the store is then asked about", async () => {
+    const clock = fakeClock();
+    const store = createStoreRateLimiter({
+      store: createMemoryDocumentStore(),
+      name: "chat",
+      limit: 1,
+      windowMs: 60_000,
+      now: clock.now,
+    });
+    let asked = 0;
+    const limiter = withRefusalCache(
+      { hit: (key) => (asked++, store.hit(key)) },
+      { maxKeys: 2, now: clock.now },
+    );
+    for (const key of ["a", "b", "c"]) await limiter.hit(key);
+    for (const key of ["a", "b", "c"]) expect((await limiter.hit(key)).allowed).toBe(false);
+
+    asked = 0;
+    expect((await limiter.hit("b")).allowed).toBe(false);
+    expect((await limiter.hit("c")).allowed).toBe(false);
+    expect(asked).toBe(0);
+    expect((await limiter.hit("a")).allowed).toBe(false);
+    expect(asked).toBe(1);
   });
 });
