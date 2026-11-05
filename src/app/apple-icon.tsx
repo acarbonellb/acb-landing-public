@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { nightPalette as c } from "@/lib/palette";
 
 // Home-screen icon: the same ">_" prompt as icon.svg, as a PNG for iOS.
 
@@ -16,18 +17,18 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#1a1b26",
+          background: c.bg,
         }}
       >
         <svg width="140" height="140" viewBox="0 0 32 32">
           <path
             d="M8 10 L14 16 L8 22"
             fill="none"
-            stroke="#7aa2f7"
+            stroke={c.blue}
             strokeWidth="3"
             strokeLinecap="square"
           />
-          <rect x="16" y="20" width="9" height="3" fill="#9ece6a" />
+          <rect x="16" y="20" width="9" height="3" fill={c.green} />
         </svg>
       </div>
     ),
