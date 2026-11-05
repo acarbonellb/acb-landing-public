@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import * as z from "zod";
+import { chatPrivacyNote } from "../../src/content/profile";
+import { systemPrompt } from "./chat";
 import { createToolset, type Content } from "./tools";
 
 const fixture: Content = {
@@ -238,5 +241,28 @@ describe("get_contact", () => {
       linkedin: "https://www.linkedin.com/in/ada/",
       location: "London",
     });
+  });
+});
+
+describe("the chat privacy note", () => {
+  // Site-only copy (#46): the model's request must not change because of it,
+  // so the recorded evals stay valid.
+  it("is in no tool description, tool result or the system prompt", () => {
+    const toolset = createToolset();
+    const request = JSON.stringify({
+      systemPrompt,
+      tools: toolset.list().map((tool) => ({
+        name: tool.name,
+        title: tool.title,
+        description: tool.description,
+        input: z.toJSONSchema(tool.inputSchema),
+        output: z.toJSONSchema(tool.outputSchema),
+        result: toolset.call(tool.name, {}),
+      })),
+    });
+
+    for (const fragment of [chatPrivacyNote, "Conversations aren't stored", "rate-limit counters"]) {
+      expect(request).not.toContain(fragment);
+    }
   });
 });

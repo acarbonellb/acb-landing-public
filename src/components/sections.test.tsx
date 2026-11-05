@@ -273,6 +273,23 @@ describe("Agent", () => {
     expect(screen.getByText("http://localhost:8080/mcp")).toBeInTheDocument();
   });
 
+  it("says what happens to visitors' questions, right under the chat input", () => {
+    render(<Agent />);
+
+    const note = screen.getByRole("note", { name: /privacy/i });
+    expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
+    expect(note).toHaveTextContent(/conversations aren't stored/i);
+    expect(note).toHaveTextContent(/30 days/);
+    const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
+    expect(form.nextElementSibling).toBe(note);
+  });
+
+  it("shows no privacy note when there is no chat", () => {
+    render(<Agent endpoints={null} />);
+
+    expect(screen.queryByRole("note", { name: /privacy/i })).not.toBeInTheDocument();
+  });
+
   it("shows the agent's usage this week under the chat", async () => {
     const week = (answered: number) => ({
       week: "2026-W45",

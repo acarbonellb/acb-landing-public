@@ -233,6 +233,15 @@ export const languages: SpokenLanguage[] = [
   { name: "English", level: "C1" },
 ];
 
+/**
+ * Shown under the chat input. Each claim is checked against the agent's code
+ * and the GCP config (PR for #46): re-check it when logging, the store or the
+ * model provider changes. Site-only: no tool, tool description or system
+ * prompt reads it, so it never reaches the model.
+ */
+export const chatPrivacyNote =
+  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are then deleted. The agent and its MCP server share my contact email on purpose.";
+
 /** "2019 — now", "2016 — 2019". */
 export function formatPeriod({ from, to }: Period): string {
   return `${from} — ${to ?? "now"}`;
