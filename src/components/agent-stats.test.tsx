@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { fakeFetch, json, stats, weekStats } from "@/testing/agent-fakes";
+import type { WeekStats } from "@/shared/stats-contract";
 import { AgentStats } from "./agent-stats";
 
 const STATS_URL = "http://agent.test/stats";
@@ -90,10 +91,13 @@ describe("AgentStats", () => {
     ["the questions answered", (w: WeekStats) => ({ ...w, chat: { ...w.chat, answered: "24" } })],
     ["the cost", (w: WeekStats) => ({ ...w, chat: { ...w.chat, costUsd: undefined } })],
   ])("shows nothing when a week lacks %s", async (_, malform) => {
-    const { fetch, urls } = serving({ current: malform(busyWeek), previous: week("2026-W44") });
+    // Off the contract on purpose, so a plain JSON answer, not `stats()`.
+    const { fetch, requests } = fakeFetch(
+      json(200, { current: malform(busyWeek), previous: week("2026-W44") }),
+    );
     const { container } = render(<AgentStats url={STATS_URL} fetch={fetch} />);
 
-    await waitFor(() => expect(urls).toHaveLength(1));
+    await waitFor(() => expect(requests).toHaveLength(1));
     await new Promise((resolve) => setTimeout(resolve, 10));
     expect(container).toBeEmptyDOMElement();
   });
