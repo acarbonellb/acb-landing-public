@@ -3,18 +3,19 @@
 //   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun]
 //     Live: runs every case against the configured model, records each one
 //     that completes, appends the set's metrics to history.jsonl, then
-//     regenerates the report. Defaults to LM Studio on localhost; any other
+//     regenerates the report and summary. Defaults to LM Studio on localhost; any other
 //     server is a paid provider and needs --paid. Refused at a commit that
 //     already has a live run of the set, unless --rerun (marked `rerun`).
 //   tsx scripts/eval.ts rescore
 //     Scores the stored recordings with the current cases and scoring (no
 //     model, no network), appends a `rescored` entry for each set whose scores
-//     changed, then regenerates the report.
+//     changed, then regenerates the report and summary.
 //   tsx scripts/eval.ts replay [--check]
 //     Replays the committed recordings (no model, no network) and writes the
-//     report; with --check, writes nothing and fails on stale or missing
-//     recordings, leaks, a history that doesn't match the recordings, or a
-//     report that differs from the committed one. Never appends history.
+//     report and summary.json; with --check, writes nothing and fails on stale
+//     or missing recordings, leaks, a history that doesn't match the
+//     recordings, or a report or summary that differs from the committed one.
+//     Never appends history.
 import { execFileSync } from "node:child_process";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -35,6 +36,7 @@ import {
   recordCase,
   replaySets,
   rescore,
+  staleFiles,
   type Recording,
   type RecordingSet,
 } from "../src/evals/runner";
@@ -42,6 +44,7 @@ import {
 const evalsDir = fileURLToPath(new URL("../evals/", import.meta.url));
 const recordingsDir = join(evalsDir, "recordings");
 const reportPath = join(evalsDir, "report.md");
+const summaryPath = join(evalsDir, "summary.json");
 const historyPath = join(evalsDir, "history.jsonl");
 
 const readHistory = () => readFile(historyPath, "utf8").catch(() => "");
@@ -99,20 +102,22 @@ async function saveRecording(recording: Recording) {
 
 async function replay(check: boolean): Promise<number> {
   const history = parseHistory(await readHistory());
-  const { report, problems } = await evaluate({ cases, sets: await loadSets(), history });
+  const { report, summary, problems } = await evaluate({ cases, sets: await loadSets(), history });
   if (!check) {
     await writeFile(reportPath, report);
-    console.log(`Wrote ${reportPath}`);
+    await writeFile(summaryPath, summary);
+    console.log(`Wrote ${reportPath} and ${summaryPath}`);
     return problems.length ? 1 : 0;
   }
-  const committed = await readFile(reportPath, "utf8").catch(() => undefined);
-  if (committed !== report) {
-    problems.push(
-      "agent/evals/report.md differs from the recordings: run `pnpm agent:eval:replay` and commit it",
-    );
-  }
+  const committed = async (path: string) => readFile(path, "utf8").catch(() => undefined);
+  problems.push(
+    ...staleFiles(
+      { report, summary },
+      { report: await committed(reportPath), summary: await committed(summaryPath) },
+    ),
+  );
   for (const problem of problems) console.error(`✗ ${problem}`);
-  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks, report is up to date");
+  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks, report and summary are up to date");
   return problems.length ? 1 : 0;
 }
 
