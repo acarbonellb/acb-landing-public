@@ -4,10 +4,11 @@ import { bodyLimit } from "hono/body-limit";
 import { cors } from "hono/cors";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { HttpErrorBody, HttpErrorCode } from "../../src/lib/chat-contract";
+import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/lib/chat-contract";
 import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
 import { clientIp } from "./client-ip";
 import { loadConfig } from "./config";
+import { createMemoryDocumentStore } from "./document-store";
 import { createMcpServer } from "./mcp";
 import type { ModelClient } from "./model";
 import {
@@ -17,6 +18,7 @@ import {
 } from "./rate-limit";
 import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
 import { createToolset, type Toolset } from "./tools";
+import { createUsageRecorder, type ChatOutcome, type UsageRecorder } from "./usage";
 
 export type { HttpErrorBody, HttpErrorCode };
 
@@ -25,6 +27,7 @@ export const paths = {
   health: "/health",
   mcp: "/mcp",
   chat: "/chat",
+  stats: "/stats",
 } as const;
 
 /** Largest chat request body accepted, in bytes. */
@@ -56,6 +59,8 @@ export type AppDeps = {
   mcpRateLimiter: RateLimiter;
   /** Monthly model budget; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
+  /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
+  usage: UsageRecorder;
   /** Key for the rate limiters: the client IP by default. */
   clientKey: (c: Context) => string;
 };
@@ -73,7 +78,7 @@ const jsonError = (
 function rateLimit(
   limiter: RateLimiter,
   clientKey: (c: Context) => string,
-  refuse: (c: Context, retryAfterSeconds: number) => Response,
+  refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
     const decision = await limiter.hit(clientKey(c));
@@ -106,12 +111,38 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
       ? createStoreSpendCap({ ...spendCapOptions, store })
       : createMemorySpendCap(spendCapOptions),
     clientKey = clientIp,
+    usage = createUsageRecorder({
+      store: store ?? createMemoryDocumentStore(),
+      pricing: config.guardrails.pricing,
+    }),
   } = deps;
   const modelClient =
     deps.modelClient === undefined ? config.createModelClient() : deps.modelClient;
   const app = new Hono();
+  // When each chat request arrived, for its latency (`usage.ts`).
+  const chatStartedAt = new WeakMap<Request, number>();
 
   app.get(paths.health, (c) => c.json({ status: "ok" }));
+
+  // Public usage aggregates (no content, no IPs), read by the site from any
+  // origin. Under the MCP rate limit, sharing its per-IP count.
+  app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
+  app.get(
+    paths.stats,
+    rateLimit(mcpRateLimiter, clientKey, (c) =>
+      jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
+    ),
+    async (c) => {
+      try {
+        const body = await usage.stats();
+        c.header("Cache-Control", "public, max-age=300");
+        return c.json(body);
+      } catch (error) {
+        console.error("Usage: could not read the stats", error);
+        return jsonError(c, 503, { code: "unavailable", message: "Usage stats are unavailable." });
+      }
+    },
+  );
 
   // Public, read-only MCP server: any origin may call it, nothing uses cookies.
   app.use(
@@ -158,7 +189,8 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    return transport.handleRequest(c.req.raw);
+    const [response] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
+    return response;
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -177,14 +209,19 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
 
   app.post(
     paths.chat,
+    async (c, next) => {
+      chatStartedAt.set(c.req.raw, performance.now());
+      await next();
+    },
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, clientKey, (c, retryAfterSeconds) =>
-      jsonError(c, 429, {
+    rateLimit(chatRateLimiter, clientKey, async (c, retryAfterSeconds) => {
+      await usage.recordChat({ outcome: "http_429" });
+      return jsonError(c, 429, {
         code: "rate_limited",
         message: httpErrorMessages.rateLimited,
         retryAfterSeconds,
-      }),
-    ),
+      });
+    }),
     bodyLimit({
       maxSize: maxChatBodyBytes,
       onError: (c) =>
@@ -208,12 +245,14 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
         });
       }
       if (!modelClient) {
+        await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
       const { messages } = parsed.data;
       // Hold the most this request can cost while it runs (see spend-cap.ts).
       const budget = await spendCap.reserve(worstCaseUsage(toolset, messages, chatLimits));
       if (budget.exhausted) {
+        await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
           message: httpErrorMessages.spendCap,
@@ -227,6 +266,12 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
       const abort = new AbortController();
       const stop = () => abort.abort();
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
+      const startedAt = chatStartedAt.get(c.req.raw) ?? performance.now();
+      const elapsed = () => Math.round(performance.now() - startedAt);
+      // What `usage.ts` records once the stream ends: no content.
+      let outcome: ChatOutcome = "aborted";
+      let firstTextMs: number | undefined;
+      const spent: TokenUsage = { inputTokens: 0, outputTokens: 0 };
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         try {
@@ -240,7 +285,14 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
             // Every model call is paid for, even if the visitor has left: keep
             // draining after an abort, as the cut-off call still reports its
             // (estimated) usage.
-            if (event.type === "usage") await reservation.record(event);
+            if (event.type === "usage") {
+              await reservation.record(event);
+              spent.inputTokens += event.inputTokens;
+              spent.outputTokens += event.outputTokens;
+            }
+            if (event.type === "text") firstTextMs ??= elapsed();
+            if (event.type === "done") outcome = event.stopReason;
+            if (event.type === "error") outcome = `error:${event.code}`;
             if (stream.aborted) continue;
             try {
               await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
@@ -250,6 +302,7 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
           }
         } finally {
           await reservation.settle();
+          await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs });
         }
       });
     },

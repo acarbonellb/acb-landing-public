@@ -6,6 +6,11 @@ test("loads without console errors", async ({ page }) => {
     if (msg.type() === "error") errors.push(msg.text());
   });
   page.on("pageerror", (err) => errors.push(err.message));
+  // The usage line calls the agent, which isn't running here; the browser
+  // would log the refused connection. Answer for it (no line to show).
+  await page.route("**/stats", (route) =>
+    route.fulfill({ headers: { "Access-Control-Allow-Origin": "*" }, json: {} }),
+  );
 
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
