@@ -38,7 +38,7 @@ export type WeekStats = {
     outcomes: Partial<Record<ChatOutcome, number>>;
     inputTokens: number;
     outputTokens: number;
-    /** Estimated model spend, at the spend cap's prices. */
+    /** Estimated model spend, at the model's list prices (`agent/src/pricing.ts`). */
     costUsd: number;
     /** `error:*` outcomes over the requests that streamed; `null` if none did. */
     errorRate: number | null;
