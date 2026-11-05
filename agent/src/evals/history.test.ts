@@ -237,6 +237,12 @@ describe("checkHistory", () => {
     expect(checkHistory([older, entry], [clean])).toEqual([]);
   });
 
+  it("passes for an entry read back from history.jsonl, whatever key order its metrics come back in", () => {
+    const written = appendHistory("", [historyEntry(setWith("Solo hablo de Alberto."), run, "live")]);
+
+    expect(checkHistory(parseHistory(written), [clean])).toEqual([]);
+  });
+
   it("only compares entries of the same provider and model", () => {
     const other = { ...entry, provider: "anthropic", model: "claude-opus-5-5", fingerprint: "b" };
 
