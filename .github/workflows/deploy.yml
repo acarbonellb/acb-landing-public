@@ -132,8 +132,10 @@ jobs:
       # The service's public (allUsers) invoker binding is set once by hand
       # and kept across deploys; this job never changes IAM. The model and its
       # prices are the code defaults (agent/src/config.ts). The guardrails'
-      # store is `memory` until the AGENT_STORE variable says `firestore`
-      # (the database must exist first). The monthly spend cap is set here, in
+      # store is `firestore` unless the AGENT_STORE variable says otherwise;
+      # never `memory` by default, which resets the spend cap on every cold
+      # start and which the agent refuses in production unless
+      # AGENT_ALLOW_MEMORY_STORE=true. The monthly spend cap is set here, in
       # sight, and stays under the Anthropic workspace's own $5/month hard
       # limit (README, Guardrails). The contact email is a secret too, so the
       # address never passes through GitHub: the repo and its logs are public.
@@ -141,7 +143,7 @@ jobs:
       # ALLOWED_ORIGINS may hold commas.
       - name: Deploy to Cloud Run
         env:
-          AGENT_STORE: ${{ vars.AGENT_STORE || 'memory' }}
+          AGENT_STORE: ${{ vars.AGENT_STORE || 'firestore' }}
         run: >-
           gcloud run deploy agent --quiet
           --project "${{ vars.GCP_PROJECT_ID }}" --region "$REGION" --image "$IMAGE"

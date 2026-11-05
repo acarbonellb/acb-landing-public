@@ -50,10 +50,26 @@ const envSchema = z.object({
   FIRESTORE_PROJECT_ID: z.string().optional(),
   FIRESTORE_DATABASE: z.string().min(1).default("(default)"),
   FIRESTORE_EMULATOR_HOST: z.string().optional(),
+  // The image sets NODE_ENV=production (agent/Dockerfile). There, scaled to
+  // zero, the memory store would start the month's spend again at $0 on every
+  // cold start, so it needs this explicit override.
+  NODE_ENV: z.string().optional(),
+  AGENT_ALLOW_MEMORY_STORE: z.enum(["true", "false"]).default("false"),
 }).refine((e) => e.AGENT_STORE !== "firestore" || e.FIRESTORE_PROJECT_ID, {
   message: "required when AGENT_STORE is firestore",
   path: ["FIRESTORE_PROJECT_ID"],
-});
+}).refine(
+  (e) =>
+    e.NODE_ENV !== "production" ||
+    e.AGENT_STORE !== "memory" ||
+    e.AGENT_ALLOW_MEMORY_STORE === "true",
+  {
+    message:
+      "AGENT_STORE is memory in production: the spend cap and rate limits would reset on every cold start. " +
+      "Set AGENT_STORE=firestore, or AGENT_ALLOW_MEMORY_STORE=true to accept that",
+    path: ["AGENT_STORE"],
+  },
+);
 
 export type Config = ReturnType<typeof loadConfig>;
 
