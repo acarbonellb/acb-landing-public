@@ -31,6 +31,11 @@ const envSchema = z.object({
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
+  // Per rate-limit key and UTC day. /stats measured about $0.0004 per answer
+  // (W45), so this is ~250 short answers, or a few dozen long conversations,
+  // and still fits a maximal request's worst case (~$0.02 on the default
+  // model). Forty keys a day are needed to spend the month's cap.
+  DAILY_SPEND_QUOTA_USD: usdFromEnv.default(0.1),
   // Unset, AGENT_MODEL's list prices (pricing.ts); required for a model
   // missing from that list.
   AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.optional(),
@@ -115,6 +120,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
       monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
+      dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,
     },
     store,

@@ -3,6 +3,7 @@
 // router (`app.ts`) takes them all as given, and tests build theirs with
 // `testAppDeps` (`test-deps.ts`).
 import { createAnthropicModelClient } from "./anthropic";
+import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
 import { mcpRateLimitKey, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
@@ -32,15 +33,16 @@ function createModelClient(config: Config): ModelClient | null {
 }
 
 /**
- * The rate limits, spend cap and usage stats: all in the shared store when
+ * The rate limits, daily quota, spend cap and usage stats: all in the shared store when
  * one is configured, else all in memory, per instance.
  */
 export function createGuardrails(
   store: DocumentStore | null,
   { guardrails }: Config,
-): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {
+): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "dailyQuota" | "usage"> {
   const { pricing } = guardrails;
   const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
+  const dailyQuotaOptions = { quotaUsd: guardrails.dailyQuotaUsd, pricing };
   if (store) {
     const rateLimiter = (name: string, limit: number) =>
       createStoreRateLimiter({ store, name, limit, windowMs: minute });
@@ -48,6 +50,7 @@ export function createGuardrails(
       chatRateLimiter: rateLimiter("chat", guardrails.chatRequestsPerMinute),
       mcpRateLimiter: rateLimiter("mcp", guardrails.mcpRequestsPerMinute),
       spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
+      dailyQuota: createStoreDailyQuota({ ...dailyQuotaOptions, store }),
       usage: createUsageRecorder({ store, pricing }),
     };
   }
@@ -56,6 +59,7 @@ export function createGuardrails(
     chatRateLimiter: rateLimiter(guardrails.chatRequestsPerMinute),
     mcpRateLimiter: rateLimiter(guardrails.mcpRequestsPerMinute),
     spendCap: createMemorySpendCap(spendCapOptions),
+    dailyQuota: createMemoryDailyQuota(dailyQuotaOptions),
     usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
   };
 }

@@ -7,11 +7,13 @@ import { streamSSE } from "hono/streaming";
 import * as z from "zod";
 import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
+import type { DailyQuota } from "./daily-quota";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import type { RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
+import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
 import type { UsageRecorder } from "./usage";
 
@@ -31,6 +33,8 @@ export const maxChatBodyBytes = 64 * 1024;
 /** User-facing messages of the HTTP-layer refusals, safe to show as-is. */
 export const httpErrorMessages = {
   rateLimited: "Too many requests. Please wait a moment and try again.",
+  dailyQuota:
+    "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
   spendCap:
     "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
 } as const;
@@ -55,6 +59,8 @@ export type AppDeps = {
   mcpRateLimiter: RateLimiter;
   /** Monthly model budget; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
+  /** Per-key daily spend quota on `/chat`; shared or in memory like the limits (`daily-quota.ts`). */
+  dailyQuota: DailyQuota;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
   /** Key for the `/chat` and `/stats` rate limits: the client IP, or its `/64` for IPv6, in production. */
@@ -116,6 +122,7 @@ export function createApp(deps: AppDeps): Hono {
     chatRateLimiter,
     mcpRateLimiter,
     spendCap,
+    dailyQuota,
     usage,
     rateLimitKey,
     mcpRateLimitKey,
@@ -237,9 +244,25 @@ export function createApp(deps: AppDeps): Hono {
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
       const { messages } = request;
-      // Reserve the most this request can cost while it runs (see spend-cap.ts).
-      const spend = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
+      // Reserve the most this request can cost while it runs, against the
+      // key's daily quota and then the month's spend cap (see spend-holds.ts).
+      // The quota first: its document is the key's own, so a key over it
+      // never touches the month's shared one.
+      const worstCase = chatAgent.worstCaseUsage(messages);
+      const quota = await dailyQuota.reserve(rateLimitKey(c), worstCase);
+      if (quota.exceeded) {
+        await usage.recordChat({ outcome: "http_429" });
+        c.header("Retry-After", String(quota.retryAfterSeconds));
+        return jsonError(c, 429, {
+          code: "rate_limited",
+          message: httpErrorMessages.dailyQuota,
+          retryAfterSeconds: quota.retryAfterSeconds,
+          resetsAt: quota.resetsAt,
+        });
+      }
+      const spend = await spendCap.reserve(worstCase);
       if (spend.exhausted) {
+        await quota.reservation.settle();
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
@@ -255,7 +278,7 @@ export function createApp(deps: AppDeps): Hono {
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
       const events = meteredChat(messages, {
         agent: chatAgent,
-        reservation: spend.reservation,
+        reservation: combineReservations(quota.reservation, spend.reservation),
         usage,
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,

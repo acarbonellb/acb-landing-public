@@ -2,6 +2,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { afterEach, describe, expect, it } from "vitest";
 import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
+import { createMemoryDailyQuota } from "./daily-quota";
 import { createFakeModel } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
@@ -275,6 +276,7 @@ describe("monthly spend cap", () => {
     const url = await start({
       modelClient: model,
       spendCap: createMemorySpendCap({ budgetUsd: 10, pricing }),
+      dailyQuota: createMemoryDailyQuota({ quotaUsd: 100, pricing }),
     });
 
     for (let i = 0; i < 2; i++) {
@@ -297,6 +299,7 @@ describe("monthly spend cap", () => {
     const url = await start({
       modelClient: model,
       spendCap: createMemorySpendCap({ budgetUsd: 10, pricing }),
+      dailyQuota: createMemoryDailyQuota({ quotaUsd: 100, pricing }),
     });
 
     for (let i = 0; i < 2; i++) {
