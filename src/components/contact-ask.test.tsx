@@ -2,7 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { contactQuestion } from "@/content/profile";
+import { contactQuestion } from "@/shared/profile";
 import { AgentChat } from "./agent-chat";
 import { ContactAsk } from "./contact-ask";
 

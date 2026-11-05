@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { profile } from "../../src/content/profile";
+import { profile } from "../../src/shared/profile";
 import {
   chatRequestSchema,
   errorMessages,

@@ -1,4 +1,4 @@
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
 import { MobileMenu, type NavItem } from "./mobile-menu";
 import { ThemeToggle } from "./theme-toggle";
 

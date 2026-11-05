@@ -3,7 +3,7 @@
 // answer from the same data. Read-only and public by design: every tool only
 // reads the shared content module.
 import * as z from "zod";
-import * as shared from "../../src/content/profile";
+import * as shared from "../../src/shared/profile";
 import type {
   AgentPractice,
   AgentProject,
@@ -12,7 +12,7 @@ import type {
   Role,
   SkillGroup,
   SpokenLanguage,
-} from "../../src/content/profile";
+} from "../../src/shared/profile";
 
 /** Everything the tools read. Defaults to the landing's content module. */
 export type Content = {

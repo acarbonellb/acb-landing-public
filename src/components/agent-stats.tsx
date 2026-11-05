@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { StatsResponse, WeekStats } from "@/lib/stats-contract";
+import type { StatsResponse, WeekStats } from "@/shared/stats-contract";
 
 // A one-line summary of the agent's usage, read from its public `GET /stats`
 // in the browser (the static page can't know it at build time). Anything

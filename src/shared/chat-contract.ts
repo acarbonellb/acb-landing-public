@@ -1,7 +1,7 @@
 // The wire contract of the agent's `POST /chat` endpoint (README, "Chat
 // endpoint contract"): request limits, message and event shapes, error codes.
 // Both sides import this one module: the site's chat client and UI, and the
-// agent service (`agent/`, which bundles it like `src/content/profile.ts`).
+// agent service (`agent/`, which bundles it like `src/shared/profile.ts`).
 // Types and plain constants only, so it is safe in either runtime.
 
 /** Limits on the conversation a chat request may carry. */

@@ -8,7 +8,7 @@ import {
   type ChatEvent,
   type ChatMessage,
   type ChatStopReason,
-} from "../../src/lib/chat-contract";
+} from "../../src/shared/chat-contract";
 import {
   ModelUnavailableError,
   type ModelClient,

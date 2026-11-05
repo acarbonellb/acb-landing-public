@@ -1,4 +1,4 @@
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
 
 // Footer styled like a vim/lualine status line.
 export function StatusLine() {

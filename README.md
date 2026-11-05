@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Content lives in `src/content/profile.ts`.
+Content lives in `src/shared/profile.ts`.
 
 The "ask my agent" chat calls the agent service (below) straight from the browser. Its base URL is inlined at build time from `NEXT_PUBLIC_AGENT_URL`; the chat uses `<base>/chat`. A production build shows `https://albertocarbonell.dev/mcp` as the public MCP endpoint: `firebase.json` rewrites `/mcp` on the site to the Cloud Run service `agent`. The chat can't go through that rewrite, because Hosting buffers streamed responses ([ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md)); `next dev` shows `<base>/mcp`. For example `NEXT_PUBLIC_AGENT_URL=https://agent.example.run.app pnpm build`. `next dev` defaults to `http://localhost:8080` (the local `pnpm agent:dev`); a production build without it shows an "agent coming soon" note instead of the chat, so the site never publishes a localhost endpoint.
 
@@ -59,7 +59,7 @@ The agent service (below) runs as a separate Cloud Run service that the browser 
 
 ## Agent service
 
-`agent/` is a separate TypeScript service (pnpm workspace package) that answers questions about me. One set of read-only tools (`get_profile`, `get_experience`, `get_projects`, `get_stack`, `get_contact`) reads the same `src/content/profile.ts` as the landing, bundled in at build time, so the agent and the page never disagree.
+`agent/` is a separate TypeScript service (pnpm workspace package) that answers questions about me. One set of read-only tools (`get_profile`, `get_experience`, `get_projects`, `get_stack`, `get_contact`) reads the same `src/shared/profile.ts` as the landing, bundled in at build time, so the agent and the page never disagree.
 
 The tools are served twice, built on [Hono](https://hono.dev):
 
@@ -80,7 +80,7 @@ pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node
 | `GET /health` | Health check, returns `{"status":"ok"}` |
 | `GET /stats` | This and last week's usage aggregates, public JSON (see [Usage stats](#usage-stats)) |
 
-**Contact through the agent.** The page holds no email address, and neither does the repo: the agent reads it from `CONTACT_EMAIL`. `pnpm test` fails on any address in a repo file outside reserved test domains (`example.com`, `.test`, ...) and listed third parties; run it with `CONTACT_EMAIL` set in your shell to also search for the real address's scrambled forms (CI never has it). The contact section's "ask my agent" button scrolls to the chat and sends a canned question (`contactQuestion` in `src/content/profile.ts`); the agent answers through `get_contact`, and the chat links any address in an answer to `mailto:`. If `/chat` answers 503 or 429, or the stream ends in an error, the page calls `POST /mcp` `tools/call get_contact` on the agent's own URL instead (no model, no spend; open to any origin, under the MCP rate limit) and says so in the chat. If that fails too, or without JavaScript, it shows a LinkedIn link.
+**Contact through the agent.** The page holds no email address, and neither does the repo: the agent reads it from `CONTACT_EMAIL`. `pnpm test` fails on any address in a repo file outside reserved test domains (`example.com`, `.test`, ...) and listed third parties; run it with `CONTACT_EMAIL` set in your shell to also search for the real address's scrambled forms (CI never has it). The contact section's "ask my agent" button scrolls to the chat and sends a canned question (`contactQuestion` in `src/shared/profile.ts`); the agent answers through `get_contact`, and the chat links any address in an answer to `mailto:`. If `/chat` answers 503 or 429, or the stream ends in an error, the page calls `POST /mcp` `tools/call get_contact` on the agent's own URL instead (no model, no spend; open to any origin, under the MCP rate limit) and says so in the chat. If that fails too, or without JavaScript, it shows a LinkedIn link.
 
 ### Configuration
 
@@ -116,7 +116,7 @@ curl -N localhost:8080/chat -H 'content-type: application/json' \
 
 ### Chat endpoint contract
 
-The model client is an injected interface (`agent/src/model.ts`): production uses Claude (`agent/src/anthropic.ts`), tests use a scripted fake (`agent/src/fake-model.ts`), and other providers can be added behind the same interface. The loop (`agent/src/chat.ts`) keeps the agent on topic and grounded in the tools through its system prompt, caps output tokens per model call and per request (one budget shared by all the request's calls) and model calls per request, and returns invalid tool input to the model as an error result. The wire types and limits below live in `src/lib/chat-contract.ts`, imported by both the site and the agent.
+The model client is an injected interface (`agent/src/model.ts`): production uses Claude (`agent/src/anthropic.ts`), tests use a scripted fake (`agent/src/fake-model.ts`), and other providers can be added behind the same interface. The loop (`agent/src/chat.ts`) keeps the agent on topic and grounded in the tools through its system prompt, caps output tokens per model call and per request (one budget shared by all the request's calls) and model calls per request, and returns invalid tool input to the model as an error result. The wire types and limits below live in `src/shared/chat-contract.ts`, imported by both the site and the agent.
 
 **Request.** `POST /chat` with `Content-Type: application/json`. The conversation is stateless: the browser sends what it shows, ending with the new question.
 
@@ -225,7 +225,7 @@ The agent keeps weekly aggregates of its own traffic (`agent/src/usage.ts`) and 
 
 Histogram keys are bucket upper bounds in ms (`inf` past the last).
 
-**`GET /stats`** answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under the `/mcp` rate limit (the same per-IP count); `503 unavailable` if the store can't be read. The types are `StatsResponse` in `src/lib/stats-contract.ts`:
+**`GET /stats`** answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under the `/mcp` rate limit (the same per-IP count); `503 unavailable` if the store can't be read. The types are `StatsResponse` in `src/shared/stats-contract.ts`:
 
 ```json
 {
@@ -265,9 +265,9 @@ ANTHROPIC_BASE_URL=https://api.anthropic.com ANTHROPIC_API_KEY=sk-ant-... \
   AGENT_MODEL=claude-haiku-5-5 AGENT_EVAL_PROVIDER=anthropic pnpm agent:eval --paid
 ```
 
-Each provider/model gets its own recording set and report section; the provider label comes from `--provider`, then `AGENT_EVAL_PROVIDER`, then the server (`lmstudio` on localhost, `anthropic` otherwise). Run limits are the chat loop's code defaults (`chatLimits` in `agent/src/chat.ts`, plus the request limits in `src/lib/chat-contract.ts`), never your `AGENT_MAX_*` env.
+Each provider/model gets its own recording set and report section; the provider label comes from `--provider`, then `AGENT_EVAL_PROVIDER`, then the server (`lmstudio` on localhost, `anthropic` otherwise). Run limits are the chat loop's code defaults (`chatLimits` in `agent/src/chat.ts`, plus the request limits in `src/shared/chat-contract.ts`), never your `AGENT_MAX_*` env.
 
-**When to re-record.** A recording is only valid for the exact request it answered. Changing the system prompt, a tool's description or schema, `src/content/profile.ts` (tool results) or the chat limits changes the request, so `--check` fails as **stale** ("re-run `pnpm agent:eval` and commit"). Re-run it and commit the recordings, `history.jsonl` and `report.md` together. CI never re-records.
+**When to re-record.** A recording is only valid for the exact request it answered. Changing the system prompt, a tool's description or schema, `src/shared/profile.ts` (tool results) or the chat limits changes the request, so `--check` fails as **stale** ("re-run `pnpm agent:eval` and commit"). Re-run it and commit the recordings, `history.jsonl` and `report.md` together. CI never re-records.
 
 **History.** Every live run appends one line per recording set to `agent/evals/history.jsonl`: date (UTC), the commit it started from, provider, model, system prompt hash, case count and the report's metrics, including the mean cost per case: each case's tokens at the model's list prices (`listPrices` in `agent/src/spend-cap.ts`, the same table as the spend cap's default prices; a local model costs $0, a model missing from the table shows n/a). Entries from before costs were recorded have none; only each set's latest entry is checked against the recordings. Replay never appends. The report opens with a summary, one row per set: model, provider, cases, quality metrics, mean tokens, latency and cost per case. The report's "History" section shows the last 10 runs per set, newest first, each metric with its change from the run before (pp = percentage points). A prompt hash that changes between rows means the system prompt changed; the same hash with different numbers means the model, tools or content did (or the model just answered differently). Small local models aren't deterministic, so a couple of points of fact coverage between identical runs is noise; any leak is not.
 

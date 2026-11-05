@@ -6,8 +6,8 @@ import {
   experience,
   profile,
   skillGroups,
-} from "../../src/content/profile";
-import { fetchContactEmail } from "../../src/lib/mcp-contact";
+} from "../../src/shared/profile";
+import { fetchContactEmail } from "../../src/shared/mcp-contact";
 import { createApp } from "./app";
 import { composeAppDeps } from "./compose";
 import { loadConfig } from "./config";

@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
-import { profile } from "@/content/profile";
+import { profile } from "@/shared/profile";
 import { SITE_URL } from "@/lib/site";
 
 // Link preview in the site's retro terminal look (Tokyo Night palette, VT323).
