@@ -7,6 +7,7 @@ import { createFakeModel, type ScriptedTurn } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap } from "./spend-cap";
+import { testAppDeps } from "./test-deps";
 import { createUsageRecorder, type StatsResponse } from "./usage";
 
 let server: RunningServer | undefined;
@@ -23,7 +24,7 @@ async function start(script: ScriptedTurn[], deps: Partial<AppDeps> = {}) {
   const store = createMemoryDocumentStore();
   const usage = createUsageRecorder({ store, pricing });
   server = await listen(
-    createApp({ modelClient: createFakeModel(script), usage, ...deps }),
+    createApp(testAppDeps({ modelClient: createFakeModel(script), usage, ...deps })),
     0,
   );
   return { url: server.url, store };

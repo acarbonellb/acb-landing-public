@@ -6,6 +6,7 @@ import type { ChatEvent } from "./chat";
 import { createFakeModel, type ScriptedTurn } from "./fake-model";
 import { ModelUnavailableError } from "./model";
 import { listen, type RunningServer } from "./server";
+import { testAppDeps } from "./test-deps";
 
 let server: RunningServer | undefined;
 
@@ -15,7 +16,7 @@ afterEach(async () => {
 });
 
 async function start(deps: Partial<AppDeps>) {
-  server = await listen(createApp(deps), 0);
+  server = await listen(createApp(testAppDeps(deps)), 0);
   return server.url;
 }
 

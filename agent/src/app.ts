@@ -6,19 +6,12 @@ import { streamSSE } from "hono/streaming";
 import * as z from "zod";
 import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/shared/chat-contract";
 import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
-import { clientIp, mcpClientIp } from "./client-ip";
-import { loadConfig } from "./config";
-import { createMemoryDocumentStore } from "./document-store";
 import { createMcpServer } from "./mcp";
 import type { ModelClient } from "./model";
-import {
-  createMemoryRateLimiter,
-  createStoreRateLimiter,
-  type RateLimiter,
-} from "./rate-limit";
-import { createMemorySpendCap, createStoreSpendCap, type SpendCap } from "./spend-cap";
-import { createToolset, siteContent, type Toolset } from "./tools";
-import { createUsageRecorder, type ChatOutcome, type UsageRecorder } from "./usage";
+import type { RateLimiter } from "./rate-limit";
+import type { SpendCap } from "./spend-cap";
+import type { Toolset } from "./tools";
+import type { ChatOutcome, UsageRecorder } from "./usage";
 
 export type { HttpErrorBody, HttpErrorCode };
 
@@ -41,8 +34,9 @@ export const httpErrorMessages = {
 } as const;
 
 /**
- * Everything the service depends on. Tests inject fakes; production uses the
- * defaults, read from the environment (see `config.ts`).
+ * Everything the service depends on, all required: production builds them
+ * from the configuration (`compose.ts`), tests from the memory adapters and
+ * the fake model (`test-deps.ts`).
  */
 export type AppDeps = {
   toolset: Toolset;
@@ -52,8 +46,8 @@ export type AppDeps = {
   allowedOrigins: string[];
   chatLimits: { maxIterations: number; maxTokens: number; maxRequestTokens: number };
   /**
-   * Per-IP limits. By default in the shared store when `AGENT_STORE` selects
-   * one, else in memory, per instance (`rate-limit.ts`).
+   * Per-IP limits: in the shared store when `AGENT_STORE` selects one, else
+   * in memory, per instance (`rate-limit.ts`).
    */
   chatRateLimiter: RateLimiter;
   mcpRateLimiter: RateLimiter;
@@ -61,7 +55,7 @@ export type AppDeps = {
   spendCap: SpendCap;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
-  /** Key for the `/chat` and `/stats` rate limits: the client IP by default. */
+  /** Key for the `/chat` and `/stats` rate limits: the client IP in production. */
   clientKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP, through the Hosting rewrite too. */
   mcpClientKey: (c: Context) => string;
@@ -90,37 +84,19 @@ function rateLimit(
   };
 }
 
-const minute = 60_000;
-
-export function createApp(deps: Partial<AppDeps> = {}): Hono {
-  const config = loadConfig();
-  const store = config.createDocumentStore();
-  const rateLimiter = (name: string, limit: number) =>
-    store
-      ? createStoreRateLimiter({ store, name, limit, windowMs: minute })
-      : createMemoryRateLimiter({ limit, windowMs: minute });
-  const spendCapOptions = {
-    budgetUsd: config.guardrails.monthlyBudgetUsd,
-    pricing: config.guardrails.pricing,
-  };
+export function createApp(deps: AppDeps): Hono {
   const {
-    toolset = createToolset({ ...siteContent, contactEmail: config.contactEmail }),
-    allowedOrigins = config.allowedOrigins,
-    chatLimits = config.chatLimits,
-    chatRateLimiter = rateLimiter("chat", config.guardrails.chatRequestsPerMinute),
-    mcpRateLimiter = rateLimiter("mcp", config.guardrails.mcpRequestsPerMinute),
-    spendCap = store
-      ? createStoreSpendCap({ ...spendCapOptions, store })
-      : createMemorySpendCap(spendCapOptions),
-    clientKey = clientIp,
-    mcpClientKey = mcpClientIp,
-    usage = createUsageRecorder({
-      store: store ?? createMemoryDocumentStore(),
-      pricing: config.guardrails.pricing,
-    }),
+    toolset,
+    modelClient,
+    allowedOrigins,
+    chatLimits,
+    chatRateLimiter,
+    mcpRateLimiter,
+    spendCap,
+    usage,
+    clientKey,
+    mcpClientKey,
   } = deps;
-  const modelClient =
-    deps.modelClient === undefined ? config.createModelClient() : deps.modelClient;
   const app = new Hono();
   // When each chat request arrived, for its latency (`usage.ts`).
   const chatStartedAt = new WeakMap<Request, number>();

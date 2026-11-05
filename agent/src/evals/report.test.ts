@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { computeMetrics, renderReport, setPricing, type CaseResult, type SetResult } from "./report";
+import { computeMetrics, setPricing, type CaseResult, type SetResult } from "./metrics";
+import { renderReport } from "./report";
 import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
 
 function result(
