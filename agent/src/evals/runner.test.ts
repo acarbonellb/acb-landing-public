@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { systemPrompt } from "../chat";
+import { systemPrompt } from "../system-prompt";
 import { createFakeModel } from "../fake-model";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
