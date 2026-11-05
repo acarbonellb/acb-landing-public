@@ -74,10 +74,10 @@ describe("AgentChat", () => {
     expect(screen.queryByText(/thinking/i)).not.toBeInTheDocument();
   });
 
-  it("sends the earlier exchange along with a follow-up question", async () => {
+  it("sends the earlier exchange, with its answer's signature, along with a follow-up question", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      chatStream({ type: "text", delta: "Alberto." }, done()),
+      chatStream({ type: "text", delta: "Alberto." }, done("end_turn", "sig-who")),
       chatStream({ type: "text", delta: "Yes." }, done()),
     );
     renderChat(fetch);
@@ -90,7 +90,7 @@ describe("AgentChat", () => {
     expect(requests[1].body).toEqual({
       messages: [
         { role: "user", content: "Who?" },
-        { role: "assistant", content: "Alberto." },
+        { role: "assistant", content: "Alberto.", signature: "sig-who" },
         { role: "user", content: "Remote?" },
       ],
     });
