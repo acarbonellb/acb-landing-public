@@ -278,6 +278,17 @@ describe("Projects", () => {
     expect(gear.queryByRole("link")).not.toBeInTheDocument();
   });
 
+  it("keeps a card's link to this page in the tab, like a practice's", () => {
+    const withOnPageLink: AgentProject[] = [
+      { ...agents[0], links: [{ label: "try it", href: "#agent" }] },
+    ];
+    render(<Projects agents={withOnPageLink} practices={[]} />);
+
+    const link = screen.getByRole("link", { name: "try it" });
+    expect(link).toHaveAttribute("href", "#agent");
+    expect(link).not.toHaveAttribute("target");
+  });
+
   it("says how the agents are run, each practice with its sources (#43)", () => {
     render(<Projects agents={agents} practices={practices} />);
 
@@ -351,6 +362,8 @@ describe("Agent", () => {
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
     expect(note).toHaveTextContent(/conversations aren't stored/i);
     expect(note).toHaveTextContent(/30 days/);
+    // Firestore TTL deletes expired documents within about a day, not at once.
+    expect(note).toHaveTextContent(/expire after a minute and are deleted within a day/);
     const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
     expect(form.nextElementSibling).toBe(note);
   });

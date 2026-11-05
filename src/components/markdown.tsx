@@ -55,6 +55,11 @@ function isSafeUrl(href: string): boolean {
   }
 }
 
+// Web links open in a new tab so the chat stays put; a mailto: link just
+// hands off to the mail app, and in a new tab would leave a blank one behind.
+const newTab = { target: "_blank", rel: "noopener noreferrer" } as const;
+const isMailto = (href: string) => new URL(href).protocol === "mailto:";
+
 /** `inLink`: inside a link's label, where an address must not become a nested link. */
 function inline(text: string, inLink = false): ReactNode[] {
   const out: ReactNode[] = [];
@@ -74,7 +79,7 @@ function inline(text: string, inLink = false): ReactNode[] {
         inLink ? (
           email
         ) : (
-          <a key={key} href={`mailto:${email}`} target="_blank" rel="noopener noreferrer">
+          <a key={key} href={`mailto:${email}`}>
             {email}
           </a>
         ),
@@ -83,7 +88,7 @@ function inline(text: string, inLink = false): ReactNode[] {
     else if (label !== undefined) {
       out.push(
         isSafeUrl(href) ? (
-          <a key={key} href={href} target="_blank" rel="noopener noreferrer">
+          <a key={key} href={href} {...(isMailto(href) ? {} : newTab)}>
             {inline(label, true)}
           </a>
         ) : (

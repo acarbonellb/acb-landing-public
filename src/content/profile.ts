@@ -13,7 +13,7 @@ export type Profile = {
   tagline: string;
   /** About paragraphs. */
   summary: string[];
-  /** Short call to action above the contact email. */
+  /** Short call to action above the contact link ("ask my agent", or LinkedIn). */
   contactNote: string;
   /** No email: the repo is public. The agent reads it from its environment (#51). */
   links: { github: string; linkedin: string };
@@ -297,7 +297,7 @@ export const languages: SpokenLanguage[] = [
  * prompt reads it, so it never reaches the model.
  */
 export const chatPrivacyNote =
-  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are then deleted. The agent and its MCP server share my contact email on purpose.";
+  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are deleted within a day. The agent and its MCP server share my contact email on purpose.";
 
 /**
  * What the contact section's "ask my agent" button sends to the chat, as the
