@@ -19,7 +19,13 @@ import { cases } from "../evals/cases";
 import { createAnthropicModelClient } from "../src/anthropic";
 import { caseName, sameSet, setLabel, type SetId } from "../src/evals/format";
 import { appendLiveRun, parseHistory } from "../src/evals/history";
-import { evaluate, recordCase, type Recording, type RecordingSet } from "../src/evals/runner";
+import {
+  evaluate,
+  recordCase,
+  replaySets,
+  type Recording,
+  type RecordingSet,
+} from "../src/evals/runner";
 
 const evalsDir = fileURLToPath(new URL("../evals/", import.meta.url));
 const recordingsDir = join(evalsDir, "recordings");
@@ -145,7 +151,7 @@ async function record(): Promise<number> {
 
 /** Appends the history line of the set just recorded (see `appendLiveRun`). */
 async function appendToHistory(id: SetId) {
-  const { sets } = await evaluate({ cases, sets: await loadSets() });
+  const { sets } = await replaySets({ cases, sets: await loadSets() });
   const commit = execFileSync("git", ["rev-parse", "--short", "HEAD"], { encoding: "utf8" }).trim();
   const date = new Date().toISOString().slice(0, 10);
   const set = sets.find((s) => sameSet(s, id));
