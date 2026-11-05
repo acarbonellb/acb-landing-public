@@ -14,8 +14,8 @@
           "inputTokens": 1662
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -381,8 +381,8 @@
           "text": " projects?"
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "Alberto builds agents with a few consistent practices:\n\n- **Offline evals before shipping:** Evals are recorded against a real model and replayed in CI with no model or network. A stale recording or an off-topic leak fails the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy with a human in the loop:** In his fraud detection agent, the agent recommends and a human admin decides. It only auto-approves on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** His portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case. ([guardrails](https://github.com/acarbonellb/acb-landing-public#guardrails))\n- **Changes measured run over run:** Each eval run appends its metrics to a history, so prompt, tool or content changes show up against the previous run. ([eval history](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/history.jsonl))\n\nExample result: in the fraud detection agent (offline evals, 31 cases), approved fraud fell from 54% to 8% over twelve iterations on a local 9B model. He chose Claude Haiku 5.5 for deployment, which reached 86% accuracy at about $0.002 per review.\n\nWould you like details on any of these projects?",
             "toolCalls": [],
             "stopReason": "end_turn",

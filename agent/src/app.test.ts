@@ -2,7 +2,7 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
-  agents,
+  agentProjects,
   experience,
   profile,
   skillGroups,
@@ -107,7 +107,7 @@ describe("agent service over HTTP", () => {
         projects: { name: string; status: string }[];
       };
       expect(projects.map((p) => [p.name, p.status])).toEqual(
-        agents.map((a) => [a.name, a.status]),
+        agentProjects.map((a) => [a.name, a.status]),
       );
     });
 

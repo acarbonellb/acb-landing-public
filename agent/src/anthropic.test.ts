@@ -137,7 +137,7 @@ describe("Anthropic model client", () => {
     });
   });
 
-  it("streams text deltas and ends with the turn", async () => {
+  it("streams text deltas and ends with the response", async () => {
     const { fetch } = fakeFetch(
       () => new Response(toolTurn, { headers: { "content-type": "text/event-stream" } }),
     );
@@ -155,15 +155,15 @@ describe("Anthropic model client", () => {
       { type: "text_delta", text: "check." },
     ]);
     const end = events.at(-1);
-    if (end?.type !== "turn_end") throw new Error("expected turn_end");
-    expect(end.turn).toMatchObject({
+    if (end?.type !== "response_end") throw new Error("expected response_end");
+    expect(end.response).toMatchObject({
       text: "Let me check.",
       toolCalls: [{ id: "toolu_1", name: "get_projects", input: { status: "in-progress" } }],
       stopReason: "tool_use",
       usage: { inputTokens: 120, outputTokens: 30 },
     });
     // Raw content is kept so the next call replays it verbatim.
-    expect(end.turn.providerContent).toHaveLength(2);
+    expect(end.response.providerContent).toHaveLength(2);
   });
 
   it("reports cache writes and reads within the input, so they can be priced apart", async () => {
@@ -189,8 +189,8 @@ describe("Anthropic model client", () => {
     const cacheUsage = { inputTokens: 120, cacheWriteInputTokens: 70, cacheReadInputTokens: 30 };
     expect(events[0]).toEqual({ type: "input_usage", ...cacheUsage });
     const end = events.at(-1);
-    if (end?.type !== "turn_end") throw new Error("expected turn_end");
-    expect(end.turn.usage).toEqual({ ...cacheUsage, outputTokens: 30 });
+    if (end?.type !== "response_end") throw new Error("expected response_end");
+    expect(end.response.usage).toEqual({ ...cacheUsage, outputTokens: 30 });
   });
 
   it("replays provider content verbatim on the next call", async () => {

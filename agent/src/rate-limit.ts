@@ -1,4 +1,4 @@
-// Per-key (per-IP) rate limiting for the chat and MCP endpoints.
+// Rate limiting per rate-limit key (the client IP) for the chat and MCP endpoints.
 //
 // Two implementations of `RateLimiter`: `createStoreRateLimiter` keeps the
 // counts in a shared `DocumentStore` (Firestore in production), so they hold

@@ -93,9 +93,9 @@ export function evalResultsLine({ history: historyText, report }: EvalFiles): st
   ].join(" · ");
 }
 
-/** `agents` with the results line as the Portfolio Agent card's result. */
-export function withEvalResults(agents: AgentProject[], files: EvalFiles): AgentProject[] {
+/** The agent projects, with the results line as the Portfolio Agent card's result. */
+export function withEvalResults(agentProjects: AgentProject[], files: EvalFiles): AgentProject[] {
   const result = evalResultsLine(files);
-  if (!result) return agents;
-  return agents.map((a) => (a.slug === cardSlug ? { ...a, result } : a));
+  if (!result) return agentProjects;
+  return agentProjects.map((a) => (a.slug === cardSlug ? { ...a, result } : a));
 }

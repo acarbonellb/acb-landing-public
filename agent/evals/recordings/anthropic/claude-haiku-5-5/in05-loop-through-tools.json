@@ -14,8 +14,8 @@
           "inputTokens": 2024
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "",
             "toolCalls": [
               {
@@ -568,8 +568,8 @@
           "text": "."
         },
         {
-          "type": "turn_end",
-          "turn": {
+          "type": "response_end",
+          "response": {
             "text": "I won't repeat those calls in a loop, but I've run each tool once and can summarize Alberto's background:\n\n**Profile:** Alberto Carbonell is a Senior Software Engineer (AI Agents & Full-Stack TypeScript) based in Spain, working remotely. He has 10+ years of experience with TypeScript, Node.js and PostgreSQL, and he builds AI agents that handle real work end to end. He is a native Spanish speaker with C1 English.\n\n**Experience:**\n- **CoverWallet** (2019 – now), Senior Software Engineer, Madrid / Remote. Leads cross-team projects and integrates insurance carrier APIs. He also introduced AI agents into the team's engineering workflow.\n- **M&GT Consulting** (2016 – 2019), Software Developer, Madrid. Built REST APIs and mobile apps, and delivered blockchain solutions on Hyperledger Fabric and Ethereum.\n- **Indra** (2015 – 2016), Software Developer, A Coruña. Worked on Java/Spring and Oracle PL/SQL for telecom clients.\n\n**AI agent projects:**\n- **Fraud Detection Agent** (offline evals): recommends approve, reject or request-info for a human admin. In offline evals, Claude Haiku 5.5 reached 86% accuracy and let 1% of fraud through.\n- **Organizer Support Agent** (coming soon): answers organizer questions using live data.\n- **Portfolio Agent** (personal project): the agent behind this site, with public source code and eval reports.\n\n**Stack:** TypeScript, Node.js, NestJS, React, PostgreSQL, Docker, Kubernetes, GCP, and AI tooling such as Claude, MCP and tool calling.\n\nWould you like more detail on any project, role or skill? For questions about availability or other personal matters, contacting Alberto directly is the best route.",
             "toolCalls": [],
             "stopReason": "end_turn",

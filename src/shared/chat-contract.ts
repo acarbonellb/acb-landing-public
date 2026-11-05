@@ -33,7 +33,7 @@ export type TokenUsage = {
 };
 
 /**
- * Why a chat turn ended: answered (`end_turn`), cut by a token cap
+ * Why the answer to a chat request ended: answered (`end_turn`), cut by a token cap
  * (`max_tokens`), cut by the iteration cap (`max_iterations`), or the model
  * declined (`refusal`).
  */

@@ -8,7 +8,7 @@ import {
   type ModelClient,
   type ModelMessage,
   type ModelStopReason,
-  type ModelTurn,
+  type ModelResponse,
 } from "./model";
 import { serverSideFallbackModels } from "./pricing";
 
@@ -97,7 +97,7 @@ function inputUsage(usage: Anthropic.Beta.BetaUsage): InputUsage {
   };
 }
 
-function toTurn(message: Anthropic.Beta.BetaMessage): ModelTurn {
+function toResponse(message: Anthropic.Beta.BetaMessage): ModelResponse {
   const { usage } = message;
   return {
     text: message.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join(""),
@@ -190,7 +190,7 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
             yield { type: "text_delta", text: event.delta.text };
           }
         }
-        yield { type: "turn_end", turn: toTurn(await stream.finalMessage()) };
+        yield { type: "response_end", response: toResponse(await stream.finalMessage()) };
       } catch (error) {
         if (isUnavailable(error)) {
           throw new ModelUnavailableError("Claude is unavailable", { cause: error });

@@ -3,7 +3,7 @@ import { profile } from "../../src/shared/profile";
 import { createAnthropicModelClient } from "./anthropic";
 import { createApp, paths, type AppDeps } from "./app";
 import type { ChatEvent } from "./chat";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { ModelUnavailableError } from "./model";
 import { listen, type RunningServer } from "./server";
 import { testAppDeps } from "./test-deps";
@@ -20,7 +20,7 @@ async function start(deps: Partial<AppDeps>) {
   return server.url;
 }
 
-async function startWith(script: ScriptedTurn[], deps: Partial<AppDeps> = {}) {
+async function startWith(script: ScriptedResponse[], deps: Partial<AppDeps> = {}) {
   const model = createFakeModel(script);
   const url = await start({ modelClient: model, ...deps });
   return { url, model };
@@ -92,7 +92,7 @@ describe("POST /chat", () => {
   });
 
   it("enforces the configured iteration and token caps", async () => {
-    const loop: ScriptedTurn = {
+    const loop: ScriptedResponse = {
       toolCalls: [{ id: "c", name: "get_profile", input: {} }],
     };
     const { url, model } = await startWith([loop, loop, loop], {
@@ -117,7 +117,7 @@ describe("POST /chat", () => {
     );
   });
 
-  it("ends the stream with an error event when the model fails mid-turn", async () => {
+  it("ends the stream with an error event when the model fails mid-answer", async () => {
     const { url } = await startWith([
       { text: "Let me", error: new ModelUnavailableError("overloaded") },
     ]);

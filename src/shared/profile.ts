@@ -59,7 +59,7 @@ export type PracticeSource = { label: string; href: string };
  * One "how I run agents" bullet (#43). State only what a public source backs:
  * this repo, or approved copy already on the page. Never link a private repo.
  */
-export type AgentPractice = {
+export type Practice = {
   title: string;
   text: string;
   sources: PracticeSource[];
@@ -118,7 +118,7 @@ const ticketing = "An online event ticketing platform";
 
 const repo = "https://github.com/acarbonellb/acb-landing-public";
 
-export const agents: AgentProject[] = [
+export const agentProjects: AgentProject[] = [
   {
     slug: "fraud-detection-agent",
     name: "Fraud Detection Agent",
@@ -162,7 +162,7 @@ export const agents: AgentProject[] = [
   },
 ];
 
-export const agentPractices: AgentPractice[] = [
+export const practices: Practice[] = [
   {
     title: "Offline evals before shipping",
     text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",

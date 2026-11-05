@@ -9,7 +9,7 @@ import {
   type Usage,
 } from "./model";
 
-export type ScriptedTurn = {
+export type ScriptedResponse = {
   text?: string;
   toolCalls?: ToolCall[];
   stopReason?: ModelStopReason;
@@ -38,11 +38,11 @@ function abortOf(signal: AbortSignal | undefined): Promise<never> {
 }
 
 /**
- * Plays `script` one turn per call. A function entry decides from the
+ * Plays `script` one response per model call. A function entry decides from the
  * request. Text is streamed word by word. Running past the script throws.
  */
 export function createFakeModel(
-  script: (ScriptedTurn | ((request: ModelRequest) => ScriptedTurn))[],
+  script: (ScriptedResponse | ((request: ModelRequest) => ScriptedResponse))[],
 ): FakeModel {
   const requests: ModelRequest[] = [];
   return {
@@ -50,23 +50,23 @@ export function createFakeModel(
     async *stream(request): AsyncIterable<ModelStreamEvent> {
       requests.push({ ...request, messages: structuredClone(request.messages) });
       const entry = script[requests.length - 1];
-      if (!entry) throw new Error(`Fake model has no turn #${requests.length}`);
-      const turn = typeof entry === "function" ? entry(request) : entry;
-      const text = turn.text ?? "";
-      const usage = turn.usage ?? { inputTokens: 100, outputTokens: 10 };
+      if (!entry) throw new Error(`Fake model has no response #${requests.length}`);
+      const scripted = typeof entry === "function" ? entry(request) : entry;
+      const text = scripted.text ?? "";
+      const usage = scripted.usage ?? { inputTokens: 100, outputTokens: 10 };
       yield { type: "input_usage", ...inputOf(usage) };
       for (const word of text.match(/\S+\s*/g) ?? []) {
         yield { type: "text_delta", text: word };
       }
-      if (turn.error) throw turn.error;
-      if (turn.hang) await abortOf(request.signal);
-      const toolCalls = turn.toolCalls ?? [];
+      if (scripted.error) throw scripted.error;
+      if (scripted.hang) await abortOf(request.signal);
+      const toolCalls = scripted.toolCalls ?? [];
       yield {
-        type: "turn_end",
-        turn: {
+        type: "response_end",
+        response: {
           text,
           toolCalls,
-          stopReason: turn.stopReason ?? (toolCalls.length ? "tool_use" : "end_turn"),
+          stopReason: scripted.stopReason ?? (toolCalls.length ? "tool_use" : "end_turn"),
           usage,
         },
       };

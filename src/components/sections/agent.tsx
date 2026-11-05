@@ -1,7 +1,7 @@
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
 import { agentComingSoonNote } from "@/shared/site-copy";
 import { AgentChat } from "../agent-chat";
-import { AgentStats } from "../agent-stats";
+import { UsageLine } from "../usage-line";
 import { Section, Window } from "../ui";
 
 // The live chat with the agent service, or a "coming soon" note when the
@@ -33,7 +33,7 @@ export function Agent({
       </Window>
       {endpoints && (
         <div className="mt-3">
-          <AgentStats url={endpoints.stats} />
+          <UsageLine url={endpoints.stats} />
         </div>
       )}
     </Section>

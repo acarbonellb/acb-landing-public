@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createChatAgent, type ChatEvent } from "./chat";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
-import { createFakeModel, type ScriptedTurn } from "./fake-model";
+import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { meteredChat } from "./metered-chat";
 import { createStoreSpendCap, spendCollection } from "./spend-cap";
 import { createToolset } from "./tools";
@@ -26,7 +26,7 @@ function flakyStore() {
 }
 
 /** Runs one metered chat over memory adapters and a fake model. */
-async function run(script: ScriptedTurn[], { failSettle = false } = {}) {
+async function run(script: ScriptedResponse[], { failSettle = false } = {}) {
   const store = flakyStore();
   const spendCap = createStoreSpendCap({ store, budgetUsd: 10, pricing });
   const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing });
