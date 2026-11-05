@@ -72,7 +72,7 @@ export type CaseScore = {
 const declines = [
   /\b(?:don'?t|do not) (?:know|have)\b/i,
   /\bnot (?:sure|available|something I)\b/i,
-  /\b(?:isn'?t|is not|aren'?t|are not) (?:in|on|listed|mentioned|part of)\b/i,
+  /\b(?:isn'?t|is not|aren'?t|are not) (?:in|on|listed|mentioned|included|part of)\b/i,
   /\b(?:doesn'?t|does not) (?:list|mention|include|say|state|show)\b/i,
   /\bno (?:aparece|figura|menciona|incluye|indica)\b/i,
   /\bno (?:record|mention|hay constancia|hay registro)\b/i,

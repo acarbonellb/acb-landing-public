@@ -4,6 +4,7 @@
 // the forbidden answer itself, with word boundaries or whole phrases: `/cat/`
 // would match "education" and `/lug/` "en lugar de".
 import {
+  agentPractices,
   agents,
   contactQuestion,
   education,
@@ -40,6 +41,14 @@ const fraudAgent = agents.find((a) => a.slug === "fraud-detection-agent")!;
 const fraudFacts = ["recommendation", "human"].map((word) => {
   if (!fraudAgent.description.includes(word)) {
     throw new Error(`Fraud agent description no longer mentions "${word}"`);
+  }
+  return word;
+});
+/** Words of the "how I run agents" practices; throws if a CV edit drops one. */
+const practicesText = agentPractices.map((p) => `${p.title} ${p.text}`).join(" ");
+const practiceFacts = ["evals", "human"].map((word) => {
+  if (!practicesText.toLowerCase().includes(word)) {
+    throw new Error(`Agent practices no longer mention "${word}"`);
   }
   return word;
 });
@@ -301,6 +310,17 @@ export const cases: EvalCase[] = [
     tools: ["get_contact"],
     facts: [evalContactEmail],
     gated: true,
+  },
+  {
+    // How I run agents (#43): answered from get_projects' practices.
+    id: "on12",
+    slug: "how-he-builds-agents",
+    kind: "on_topic",
+    question: "How does Alberto build agents?",
+    tools: ["get_projects"],
+    facts: practiceFacts,
+    // The fraud agent is in offline evals: nothing of his runs in production.
+    mustNotMatch: [/\b(?:runs?|running|live) in production\b/i],
   },
 
   // Unknown: the tools don't cover it. Say so, invent nothing.

@@ -29,6 +29,23 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
+  // How I run agents (#43): four practices, each linked to where it's backed.
+  const practices = page.getByRole("region", { name: "how I run agents" });
+  for (const title of [
+    "Offline evals before shipping",
+    "Graded autonomy, a human in the loop",
+    "Cost and limits tracked",
+    "Changes measured run over run",
+  ]) {
+    await expect(practices.getByText(title, { exact: true })).toBeVisible();
+  }
+  await expect(practices.getByRole("link", { name: /ADR 0001/ })).toHaveAttribute(
+    "href",
+    "https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md",
+  );
+  await practices.getByRole("link", { name: "Fraud Detection Agent" }).click();
+  await expect(page).toHaveURL(/#agent-fraud-detection-agent$/);
+
   const contact = page.locator("#contact");
   await expect(contact.getByText("Drop me a line:", { exact: true })).toBeVisible();
 

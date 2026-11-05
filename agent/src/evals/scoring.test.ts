@@ -239,6 +239,7 @@ describe("scoreCase", () => {
         "There is no record of Alberto working at Google in his profile.",
         "No hay constancia de que haya trabajado en Google.",
         "Alberto does not have any listed experience at Google in his profile.",
+        "His notice period and start date are not included in his public profile.",
       ]) {
         expect(scoreCase(salary, outcome(text)).declined, text).toBe(true);
       }
