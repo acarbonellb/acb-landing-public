@@ -84,6 +84,14 @@ _Avoid_: scorecard, stats
 A hash of a recording set's recordings, stored in each history entry. CI checks the latest entry by it, not by recomputing metrics, so scoring changes don't force a live run.
 _Avoid_: checksum, version
 
+**Request identity**:
+A hash of what every agent request shares: the system prompt and the tool definitions. Stored in each recording and history entry, so a prompt or tool change shows. Older history entries hold a hash of the system prompt alone.
+_Avoid_: prompt hash, prompt version
+
+**Model settings**:
+What a recording states it was made with beyond the request: the effort and the parameters the model client adds to every request. CI flags recordings whose settings differ from the agent's.
+_Avoid_: config, options
+
 **Re-run**:
 A second live run of a recording set at a commit that already has one. Refused unless asked for with `--rerun`, then marked as such in the history.
 _Avoid_: retry, re-record

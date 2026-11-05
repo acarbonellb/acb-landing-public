@@ -2,7 +2,7 @@
 // real client and keeps every call's events; CI replays them in order, so the
 // chat loop and the tools run for real while no model is ever called.
 import { createHash } from "node:crypto";
-import type { ModelClient, ModelRequest, ModelStreamEvent } from "../model";
+import type { ModelClient, ModelRequest, ModelStreamEvent, ModelTool } from "../model";
 import { byString } from "./format";
 
 /** One model call as it happened: what was asked (hashed) and what came back. */
@@ -21,6 +21,15 @@ export function canonicalJson(value: unknown): string {
         )
       : v,
   );
+}
+
+/**
+ * The request identity: SHA-256 of what every request of the agent shares,
+ * its system prompt and its tool definitions as the model sees them. A change
+ * to either changes it, so a history entry says what the agent asked with.
+ */
+export function requestIdentity(system: string, tools: ModelTool[]): string {
+  return createHash("sha256").update(canonicalJson({ system, tools })).digest("hex");
 }
 
 /** SHA-256 of everything that reaches the model; never the abort signal. */

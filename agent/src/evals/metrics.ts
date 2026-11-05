@@ -1,6 +1,6 @@
 // A recording set's metrics and cost: what the report shows and the history
 // stores. Pure; changes only when what is measured, or how it's priced, does.
-import type { Usage } from "../model";
+import type { Effort, Usage } from "../model";
 import { listPrices, usageCostUsd, type Pricing } from "../pricing";
 import type { Ratio, SetId } from "./format";
 import { leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
@@ -15,12 +15,21 @@ export type CaseResult = {
   latencyMs: number;
 };
 
+/** The model settings a recording was made with (`modelSettings` in the runner). */
+export type ModelSettings = {
+  effort: Effort;
+  /** What the model client adds to every request, beyond the request itself. */
+  requestParams: Record<string, unknown>;
+};
+
 /** The results of one provider/model recording set. */
 export type SetResult = SetId & {
-  /** SHA-256 of the system prompt the set was recorded with. */
-  promptHash: string;
+  /** The request identity the agent asks with now (system prompt and tools). */
+  requestIdentity: string;
   /** Hash of the set's recordings (`recordingsFingerprint`). */
   fingerprint: string;
+  /** The settings its recordings state; absent when they differ. */
+  settings?: ModelSettings;
   results: CaseResult[];
 };
 

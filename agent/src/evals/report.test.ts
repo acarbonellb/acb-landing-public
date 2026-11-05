@@ -87,8 +87,9 @@ describe("renderReport", () => {
   const set: SetResult = {
     provider: "lmstudio",
     model: "qwen/qwen3.5-9b",
-    promptHash: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    requestIdentity: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
     fingerprint: "f".repeat(64),
+    settings: { effort: "low", requestParams: { output_config: { effort: "low" } } },
     results,
   };
 
@@ -107,7 +108,9 @@ One row per recording set. Cost per case is the mean of each case's tokens at th
 
 ## lmstudio / qwen/qwen3.5-9b
 
-System prompt \`0123456789ab\` · 4 cases
+Model settings: effort \`low\` · request parameters \`{"output_config":{"effort":"low"}}\`
+
+Request identity (system prompt and tools) \`0123456789ab\` · 4 cases
 
 | Metric | Value |
 | --- | --- |

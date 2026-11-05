@@ -26,7 +26,7 @@ function setWith(answer: string, overrides: Partial<SetResult> = {}): SetResult 
   return {
     provider: "lmstudio",
     model: "qwen/qwen3.5-9b",
-    promptHash: "a".repeat(64),
+    requestIdentity: "a".repeat(64),
     fingerprint: "f".repeat(64),
     results: [
       {
@@ -63,21 +63,24 @@ function withoutCost(metrics: Metrics): Metrics {
 }
 
 /** An entry as one made before `keys` were recorded holds it. */
-function without(entry: HistoryEntry, ...keys: ("kind" | "fingerprint")[]): HistoryEntry {
+function without(
+  entry: HistoryEntry,
+  ...keys: ("kind" | "fingerprint" | "requestIdentity")[]
+): HistoryEntry {
   const copy = { ...entry };
   for (const key of keys) delete copy[key];
   return copy;
 }
 
 describe("historyEntry", () => {
-  it("captures the set's identity, prompt hash, recordings fingerprint, kind and report metrics", () => {
+  it("captures the set's identity, request identity, recordings fingerprint, kind and report metrics", () => {
     expect(historyEntry(setWith("Only about Alberto."), run, "live")).toEqual({
       date: "2026-11-03",
       commit: "d7fa65c",
       kind: "live",
       provider: "lmstudio",
       model: "qwen/qwen3.5-9b",
-      promptHash: "a".repeat(64),
+      requestIdentity: "a".repeat(64),
       fingerprint: "f".repeat(64),
       metrics: cleanMetrics,
     });
@@ -111,6 +114,18 @@ describe("appendHistory and parseHistory", () => {
     const older = without(first, "kind", "fingerprint");
 
     expect(parseHistory(`${JSON.stringify(older)}\n`)).toEqual([older]);
+  });
+
+  it("parses an entry from before the request identity covered the tools", () => {
+    const older = { ...without(first, "requestIdentity"), promptHash: "c".repeat(64) };
+
+    expect(parseHistory(`${JSON.stringify(older)}\n`)).toEqual([older]);
+  });
+
+  it("rejects an entry with neither a request identity nor a prompt hash", () => {
+    expect(() => parseHistory(`${JSON.stringify(without(first, "requestIdentity"))}\n`)).toThrow(
+      /history\.jsonl line 1: .*needs a requestIdentity/,
+    );
   });
 
   it("rejects an unknown kind", () => {
@@ -243,11 +258,19 @@ describe("checkHistory", () => {
     ]);
   });
 
-  it("fails when the latest entry was made with another prompt", () => {
-    const problems = checkHistory([{ ...entry, promptHash: "b".repeat(64) }], [clean]);
+  it("fails when the latest entry was made with another request identity", () => {
+    const problems = checkHistory([{ ...entry, requestIdentity: "b".repeat(64) }], [clean]);
 
     expect(problems).toEqual([
-      `lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (promptHash): ${rerecord}`,
+      `lmstudio / qwen/qwen3.5-9b: latest history entry doesn't match the recordings (requestIdentity): ${rerecord}`,
+    ]);
+  });
+
+  it("asks for the migration when the latest entry has only a system prompt hash", () => {
+    const older = { ...without(entry, "requestIdentity"), promptHash: "a".repeat(64) };
+
+    expect(checkHistory([older], [clean])).toEqual([
+      "lmstudio / qwen/qwen3.5-9b: latest history entry has no request identity, only a system prompt hash: migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)",
     ]);
   });
 
@@ -332,7 +355,7 @@ describe("renderHistory", () => {
       commit: "abc1234",
       provider: "lmstudio",
       model: "qwen/qwen3.5-9b",
-      promptHash: "a".repeat(64),
+      requestIdentity: "a".repeat(64),
       metrics: {
         cases: 30,
         leaks: { n: 1, of: 17 },
@@ -350,8 +373,9 @@ describe("renderHistory", () => {
 
   it("renders each set's entries newest first, with their kind and the change from the entry before", () => {
     const history = [
-      // From before kinds were recorded: a live run.
-      entry("2026-11-03", {}),
+      // From before kinds were recorded (a live run) and before the request
+      // identity covered the tools (a hash of the system prompt alone).
+      without(entry("2026-11-03", {}, { promptHash: "c".repeat(64) }), "requestIdentity"),
       entry(
         "2026-11-03",
         { cases: 1, meanCostUsd: 0.000362 },
@@ -367,26 +391,26 @@ describe("renderHistory", () => {
           meanLatencyMs: 4449,
           meanCostUsd: 0,
         },
-        { commit: "e1f2a3b", promptHash: "b".repeat(64), kind: "rerun" },
+        { commit: "e1f2a3b", requestIdentity: "b".repeat(64), kind: "rerun" },
       ),
     ];
 
     expect(renderHistory(history)).toBe(`## History
 
-Last 10 entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, and \`rescored\` for the stored recordings scored again with no model call. Changes are against the previous entry of the same set; pp is percentage points.
+Last 10 entries per recording set, newest first, from \`agent/evals/history.jsonl\`. Kind is \`live\` for a live run, \`rerun\` for a second live run at the same commit, \`rescored\` for the stored recordings scored again with no model call, and \`migrated\` for the stored recordings rewritten to a new format by a script, with the same scores and no model call. Request identity is a hash of the system prompt and the tools; older entries hold a hash of the system prompt alone, marked "prompt only". Changes are against the previous entry of the same set; pp is percentage points.
 
 ### anthropic / claude-opus-5-5
 
-| Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-11-03 | \`abc1234\` | rescored | \`aaaaaaaaaaaa\` | 1 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | $0.000362 |
 
 ### lmstudio / qwen/qwen3.5-9b
 
-| Date | Commit | Kind | Prompt | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-11-04 | \`e1f2a3b\` | rerun | \`bbbbbbbbbbbb\` | 30 | 0.0% (-5.9 pp) | 100.0% (±0.0 pp) | 94.4% (+5.6 pp) | n/a | 2958 (-42) | 170 (±0) | 4449 ms (-51) | $0 |
-| 2026-11-03 | \`abc1234\` | live | \`aaaaaaaaaaaa\` | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
+| 2026-11-03 | \`abc1234\` | live | \`cccccccccccc\` (prompt only) | 30 | 5.9% | 100.0% | 88.9% | n/a | 3000 | 170 | 4500 ms | n/a |
 `);
   });
 
