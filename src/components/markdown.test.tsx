@@ -47,14 +47,15 @@ describe("Markdown", () => {
     expect(screen.queryByRole("emphasis")).toBeNull();
   });
 
-  it("renders http(s) links that open safely in a new tab, and mailto links in place", () => {
+  it("renders links to the hosts the tools return in a new tab, and mailto links in place", () => {
     renderMarkdown(
-      "See [GitHub](https://github.com/acarbonellb), [**mail**](mailto:a@b.example) or [old](http://example.com).",
+      "See [GitHub](https://github.com/acarbonellb), [**mail**](mailto:a@b.example), [LinkedIn](https://www.linkedin.com/in/someone/) or [the site](https://albertocarbonell.dev/#agent).",
     );
 
     for (const [name, href] of [
       ["GitHub", "https://github.com/acarbonellb"],
-      ["old", "http://example.com"],
+      ["LinkedIn", "https://www.linkedin.com/in/someone/"],
+      ["the site", "https://albertocarbonell.dev/#agent"],
     ]) {
       const link = screen.getByRole("link", { name });
       expect(link).toHaveAttribute("href", href);
@@ -92,6 +93,15 @@ describe("Markdown", () => {
 
     expect(screen.queryAllByRole("link")).toEqual([]);
     expect(root.textContent).toBe("click x d r");
+  });
+
+  it("renders a link to any other host as its label, as plain text", () => {
+    const root = renderMarkdown(
+      "[a](https://evil.example/login) [b](https://github.com.evil.example/x) [c](https://github.com@evil.example/) [d](http://github.com/acarbonellb) [e](https://github.com:8443/x) [f](https://gist.github.com/x)",
+    );
+
+    expect(screen.queryAllByRole("link")).toEqual([]);
+    expect(root.textContent).toBe("a b c d e f");
   });
 
   it("shows raw HTML from the model as text, never as elements", () => {
