@@ -23,6 +23,14 @@ describe("loadConfig", () => {
     expect(loadConfig({ CONTACT_EMAIL: "" }).contactEmail).toBeUndefined();
   });
 
+  it("trims CONTACT_EMAIL, so a secret saved with a trailing newline still works", () => {
+    expect(loadConfig({ CONTACT_EMAIL: "ada@example.com\n" }).contactEmail).toBe("ada@example.com");
+    expect(loadConfig({ CONTACT_EMAIL: "  ada@example.com \r\n" }).contactEmail).toBe(
+      "ada@example.com",
+    );
+    expect(loadConfig({ CONTACT_EMAIL: "\n" }).contactEmail).toBeUndefined();
+  });
+
   it("rejects a CONTACT_EMAIL that isn't an address, without echoing it", () => {
     expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).toThrow(/CONTACT_EMAIL/);
     expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).not.toThrow(/not-an-address/);

@@ -411,7 +411,8 @@ export function AgentChat({
           maxLength={MAX_CHARS}
           autoComplete="off"
           placeholder="ask about my experience, projects, stack…"
-          className="min-w-0 flex-1 bg-transparent text-fg outline-none placeholder:text-comment"
+          // 16px on phones: iOS Safari zooms in on focus into any smaller field.
+          className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
         <button
           type="submit"

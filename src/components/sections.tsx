@@ -2,6 +2,7 @@ import {
   type AgentPractice,
   type AgentProject,
   type AgentStatus,
+  type PracticeSource,
   type Profile,
   type Role,
   type SkillGroup,
@@ -210,15 +211,7 @@ export function Projects({
                 // Above the card's stretched link, so each stays clickable.
                 <p className="relative z-10 mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs">
                   {a.links.map((l) => (
-                    <a
-                      key={l.href}
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-blue underline-offset-4 hover:underline"
-                    >
-                      {l.label} ↗
-                    </a>
+                    <SourceLink key={l.href} source={l} />
                   ))}
                 </p>
               )}
@@ -228,6 +221,26 @@ export function Projects({
       </div>
       <Practices practices={practices} />
     </Section>
+  );
+}
+
+/** A link to a section of this page (`#...`), as opposed to another site. */
+const isOnPage = (href: string) => href.startsWith("#");
+
+/**
+ * A card's or a practice's link: one to this page stays in the tab; one to
+ * another site opens a new tab and says so with ↗.
+ */
+function SourceLink({ source: { label, href } }: { source: PracticeSource }) {
+  const className = "text-blue underline-offset-4 hover:underline";
+  return isOnPage(href) ? (
+    <a href={href} className={className}>
+      {label}
+    </a>
+  ) : (
+    <a href={href} target="_blank" rel="noreferrer" className={className}>
+      {label} ↗
+    </a>
   );
 }
 
@@ -247,27 +260,9 @@ function Practices({ practices }: { practices: AgentPractice[] }) {
             <p className="font-bold text-fg">{p.title}</p>
             <p className="mt-1 font-sans text-sm leading-relaxed">{p.text}</p>
             <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
-              {p.sources.map((s) =>
-                s.href.startsWith("#") ? (
-                  <a
-                    key={s.href}
-                    href={s.href}
-                    className="text-blue underline-offset-4 hover:underline"
-                  >
-                    {s.label}
-                  </a>
-                ) : (
-                  <a
-                    key={s.href}
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue underline-offset-4 hover:underline"
-                  >
-                    {s.label} ↗
-                  </a>
-                ),
-              )}
+              {p.sources.map((s) => (
+                <SourceLink key={s.href} source={s} />
+              ))}
             </p>
           </li>
         ))}

@@ -1,37 +1,37 @@
 import { describe, expect, it } from "vitest";
-import { googleOwnedCheck, parseGoogleRanges } from "./google-ranges";
+import { fetcherCheck, isUserTriggeredFetcher, parseFetcherRanges } from "./google-ranges";
 
 const list = (prefixes: object[]) => ({
-  syncToken: "1",
-  creationTime: "2026-11-04T12:08:41.147787",
+  creationTime: "2026-11-04T15:46:00.000000",
   prefixes,
 });
 
-describe("Google's IP ranges", () => {
-  const ranges = parseGoogleRanges(
-    list([{ ipv4Prefix: "34.0.0.0/15" }, { ipv4Prefix: "66.249.64.0/19" }, { ipv6Prefix: "2001:4860::/32" }]),
-    list([{ ipv4Prefix: "34.1.208.0/20", service: "Google Cloud", scope: "africa-south1" }]),
+describe("Google's user-triggered fetchers ranges", () => {
+  const isFetcher = fetcherCheck(
+    parseFetcherRanges(list([{ ipv4Prefix: "66.249.93.0/24" }, { ipv6Prefix: "2001:4860:4801:4004::/64" }])),
   );
-  const isGoogleOwned = googleOwnedCheck(ranges);
 
-  it("counts addresses in goog.json that aren't in cloud.json as Google's own", () => {
-    expect(isGoogleOwned("66.249.93.229")).toBe(true);
-    expect(isGoogleOwned("34.0.0.1")).toBe(true);
-    expect(isGoogleOwned("2001:4860::8888")).toBe(true);
+  it("counts addresses in the published prefixes", () => {
+    expect(isFetcher("66.249.93.229")).toBe(true);
+    expect(isFetcher("2001:4860:4801:4004::1")).toBe(true);
   });
 
-  it("doesn't count Google Cloud customer addresses, other addresses or non-addresses", () => {
-    expect(isGoogleOwned("34.1.208.10")).toBe(false);
-    expect(isGoogleOwned("198.51.100.1")).toBe(false);
-    expect(isGoogleOwned("2001:db8::1")).toBe(false);
-    expect(isGoogleOwned("unknown")).toBe(false);
+  it("doesn't count other addresses or non-addresses", () => {
+    expect(isFetcher("66.249.64.1")).toBe(false);
+    expect(isFetcher("2001:db8::1")).toBe(false);
+    expect(isFetcher("unknown")).toBe(false);
   });
 
   it("rejects a download that isn't a list of prefixes", () => {
-    expect(() => parseGoogleRanges(list([]), list([{ ipv4Prefix: "1.2.3.0/24" }]))).toThrow();
-    expect(() =>
-      parseGoogleRanges(list([{ ipv4Prefix: "not-a-prefix" }]), list([{ ipv4Prefix: "1.2.3.0/24" }])),
-    ).toThrow();
-    expect(() => parseGoogleRanges("<html>", list([{ ipv4Prefix: "1.2.3.0/24" }]))).toThrow();
+    expect(() => parseFetcherRanges(list([]))).toThrow();
+    expect(() => parseFetcherRanges(list([{ ipv4Prefix: "not-a-prefix" }]))).toThrow();
+    expect(() => parseFetcherRanges("<html>")).toThrow();
+  });
+
+  it("has Hosting's peers from #36 in the committed snapshot, and not other Google addresses", () => {
+    expect(isUserTriggeredFetcher("66.249.93.229")).toBe(true);
+    expect(isUserTriggeredFetcher("66.249.93.199")).toBe(true);
+    expect(isUserTriggeredFetcher("66.249.64.1")).toBe(false);
+    expect(isUserTriggeredFetcher("8.8.8.8")).toBe(false);
   });
 });

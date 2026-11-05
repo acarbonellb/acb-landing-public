@@ -47,7 +47,7 @@ None found. Item by item:
 - **Getting an IP that can't be spoofed while `run.app` stays public** (my inference from the above):
   - Any header Hosting adds can be forged by a client that calls `run.app` directly.
   - Hosting can't add a secret request header (`headers` sets response headers only), so the backend can't authenticate "came through Hosting".
-  - The only value an attacker can't forge is the entry Google's frontend appends to `X-Forwarded-For`: the right-most entry, which is the peer that connected to Cloud Run. That's what `TRUSTED_PROXY_HOPS=1` already uses.
+  - The only value an attacker can't forge is the entry Google's frontend appends to `X-Forwarded-For`: the right-most entry, which is the peer that connected to Cloud Run. That's what `TRUSTED_PROXY_HOPS=1` used at the time (since replaced by the rule in `agent/src/client-ip.ts`).
   - So: take the right-most entry. If it's a Hosting peer, trust one more hop to the left; otherwise use the right-most entry.
   - The desk-research guess was that the peer would be a Fastly egress IP. **The measurement disproved it**: the peer is a Google IP (see **Measurements**).
   - Never trust `Fastly-Client-IP` alone.

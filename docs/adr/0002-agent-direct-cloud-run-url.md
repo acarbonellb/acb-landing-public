@@ -11,7 +11,7 @@ We looked again for a way to make the rewrite stream ([research notes](../resear
 - **Streaming**: the Firebase docs say nothing about it. A Firebase engineer said Hosting "does not currently support streaming responses" and that the whole response is buffered in the CDN layer. No header, padding, protocol or method is documented or reported to change that.
 - **60 s limit**: fixed for every rewrite. Because Hosting buffers, the whole response has to fit in it.
 - **Retries**: undocumented and can't be turned off. Measured: a `GET` that got a `503` reached the service twice; a `POST` (failed or not) reached it once. MCP calls are `POST`, so `/mcp` runs once per call.
-- **Client IP**: Hosting replaces `X-Forwarded-For` with `<visitor>,<hosting>`, dropping forged values, and its peer is a Google-owned address (in `goog.json`, not in `cloud.json`). The rate limiter takes the right-most entry, or the one to its left when the right-most is Google-owned, so the per-IP limit keys on the visitor whether the request comes through the rewrite or straight to `run.app`.
+- **Client IP**: Hosting replaces `X-Forwarded-For` with `<visitor>,<hosting>`, dropping forged values, and its peer is in Google's user-triggered fetchers ranges. On `/mcp` the rate limiter takes the right-most entry, or the one to its left when the right-most is in those ranges, so the per-IP limit keys on the visitor whether the request comes through the rewrite or straight to `run.app`. `/chat` and `/stats` are never behind Hosting and always take the right-most entry.
 
 ## Considered options
 
@@ -23,4 +23,4 @@ We looked again for a way to make the rewrite stream ([research notes](../resear
 
 - `/chat` needs CORS, restricted to `ALLOWED_ORIGINS`. `/mcp` allows any origin because it's a public, read-only MCP server.
 - The agent's base URL is inlined into the site at build time, so changing it (e.g. to a custom domain) needs a rebuild.
-- Recognising Hosting's hop depends on a committed snapshot of Google's published ranges (`agent/src/google-ranges.json`, refreshed with `pnpm agent:ranges`). If Hosting moves to an address outside it, visitors through the rewrite share Hosting's IP as their rate-limit key until the snapshot is refreshed: the limit gets stricter, never bypassable.
+- Recognising Hosting's hop depends on a committed snapshot of Google's user-triggered fetchers ranges (`agent/src/google-ranges.json`, refreshed with `pnpm agent:ranges`). If Hosting moves to an address outside it, visitors through the rewrite share Hosting's IP as their rate-limit key until the snapshot is refreshed. The hop is trusted only for that range and only on `/mcp`: a caller that can send requests from that range could still choose its `/mcp` key by forging the entry to its left.

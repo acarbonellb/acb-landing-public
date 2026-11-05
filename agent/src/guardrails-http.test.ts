@@ -80,6 +80,16 @@ describe("chat rate limit", () => {
     expect((await chat(url, "10.0.0.99, 198.51.100.1")).status).toBe(429);
     expect((await chat(url, "198.51.100.2")).status).toBe(200);
   });
+
+  it("keys on the right-most entry even after a Hosting peer (the chat is never behind Hosting)", async () => {
+    const url = await start({
+      modelClient: createFakeModel([{ text: "a" }, { text: "b" }]),
+      chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+
+    expect((await chat(url, "198.51.100.1, 66.249.93.229")).status).toBe(200);
+    expect((await chat(url, "198.51.100.2, 66.249.93.229")).status).toBe(429);
+  });
 });
 
 describe("MCP rate limit", () => {
@@ -143,6 +153,26 @@ describe("MCP rate limit", () => {
     expect((await listTools(`${hosting("198.51.100.9")}, 198.51.100.1`)).status).toBe(429);
     // Other visitors through the rewrite each have their own limit.
     expect((await listTools(hosting("198.51.100.2"))).status).toBe(200);
+  });
+
+  it("doesn't skip a Google-owned address outside the user-triggered fetchers ranges", async () => {
+    const url = await start({
+      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+    const listTools = (forwardedFor: string) =>
+      fetch(new URL(paths.mcp, url), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json, text/event-stream",
+          "X-Forwarded-For": forwardedFor,
+        },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+      });
+    // A direct caller from a Google-owned, non-fetcher IP (66.249.64.1),
+    // forging the entry to its left: keyed on its own IP, so no fresh limit.
+    expect((await listTools("198.51.100.1, 66.249.64.1")).status).toBe(200);
+    expect((await listTools("198.51.100.2, 66.249.64.1")).status).toBe(429);
   });
 
   it("is counted apart from the chat limit", async () => {

@@ -106,6 +106,15 @@ test.describe("'ask my agent' on a phone", () => {
   // iPhone XS size; the WebKit project sets this (and touch) on its own.
   test.use({ viewport: { width: 375, height: 812 }, hasTouch: true });
 
+  test("the chat input's text is at least 16px, so iOS Safari doesn't zoom in on focus", async ({
+    page,
+  }) => {
+    await page.goto("/#agent");
+    const input = page.getByRole("textbox", { name: /ask the agent/i });
+    const fontSize = await input.evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+    expect(fontSize).toBeGreaterThanOrEqual(16);
+  });
+
   test("a tap scrolls to the chat, sends the question and the answer's mailto: link is tappable", async ({
     page,
     hasTouch,

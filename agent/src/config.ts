@@ -17,8 +17,12 @@ const usdFromEnv = z.coerce.number().nonnegative();
 const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
   // The address get_contact gives out. Secret Manager in production, never
-  // the repo; unset, the tools offer LinkedIn and GitHub only.
-  CONTACT_EMAIL: z.email().optional(),
+  // the repo; unset, the tools offer LinkedIn and GitHub only. Trimmed first:
+  // a secret saved with a trailing newline must not stop the service starting.
+  CONTACT_EMAIL: z.preprocess(
+    (value) => (typeof value === "string" ? value.trim() || undefined : value),
+    z.email().optional(),
+  ),
   AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
