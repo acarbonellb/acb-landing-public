@@ -166,6 +166,36 @@ describe("createStoreSpendCap", () => {
     expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
   });
 
+  it("logs a settle the store can't take instead of throwing, and drops its hold once it expires", async () => {
+    const clock = fakeClock("2026-11-04T10:00:00Z");
+    const memory = createMemoryDocumentStore();
+    let down = false;
+    const store: DocumentStore = {
+      update: (path, change) =>
+        down ? Promise.reject(new Error("unreachable")) : memory.update(path, change),
+    };
+    const cap = createStoreSpendCap({
+      store,
+      budgetUsd: 10,
+      pricing,
+      now: clock.now,
+      holdTtlMs: 15 * 60_000,
+    });
+    const status = await cap.reserve(sixDollars);
+    if (status.exhausted) throw new Error("expected room");
+
+    down = true;
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    await expect(status.reservation.settle()).resolves.toBeUndefined();
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+    down = false;
+
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
+    clock.set("2026-11-04T10:16:00Z");
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(false);
+  });
+
   it("budgets each UTC month separately", async () => {
     const clock = fakeClock("2026-12-31T23:59:59Z");
     const store = createMemoryDocumentStore();
