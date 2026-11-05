@@ -21,6 +21,7 @@ import { checkHistory, rescoreHistory, type HistoryEntry, type LiveRun } from ".
 import type { CaseResult, SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
+import { renderSummaryJson } from "./summary";
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
 export type Recording = SetId & {
@@ -191,9 +192,10 @@ export async function rescore({
 }
 
 /**
- * What `pnpm agent:eval:replay` runs: `replaySets`, then the report. Given a
- * `history`, it also fails on a set whose latest entry doesn't match its
- * recordings, and adds the history to the report.
+ * What `pnpm agent:eval:replay` runs: `replaySets`, then the report and the
+ * summary (`summary.json`). Given a `history`, it also fails on a set whose
+ * latest entry doesn't match its recordings, and adds the history to the
+ * report. The summary is made from the replayed recordings alone.
  */
 export async function evaluate({
   history,
@@ -207,9 +209,38 @@ export async function evaluate({
   sets: SetResult[];
   problems: string[];
   report: string;
+  summary: string;
 }> {
   const { sets, problems } = await replaySets(input);
   if (history) problems.push(...checkHistory(history, sets));
   const historySection = history?.length ? `\n${renderHistory(history)}` : "";
-  return { sets, problems, report: renderReport(sets) + historySection };
+  return {
+    sets,
+    problems,
+    report: renderReport(sets) + historySection,
+    summary: renderSummaryJson(sets),
+  };
+}
+
+/** The files `evaluate` generates, as text. */
+export type GeneratedFiles = { report: string; summary: string };
+
+const generatedPaths: Record<keyof GeneratedFiles, string> = {
+  report: "agent/evals/report.md",
+  summary: "agent/evals/summary.json",
+};
+
+/**
+ * `--check`'s comparison: one problem per committed file (`undefined` when
+ * missing) that differs from the one just generated.
+ */
+export function staleFiles(
+  generated: GeneratedFiles,
+  committed: Record<keyof GeneratedFiles, string | undefined>,
+): string[] {
+  return (Object.keys(generatedPaths) as (keyof GeneratedFiles)[]).flatMap((file) =>
+    committed[file] === generated[file]
+      ? []
+      : [`${generatedPaths[file]} differs from the recordings: run \`pnpm agent:eval:replay\` and commit it`],
+  );
 }
