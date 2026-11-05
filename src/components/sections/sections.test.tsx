@@ -394,7 +394,7 @@ describe("Agent", () => {
         latency: { p50Ms: 3000, p95Ms: 5000 },
         firstText: { p50Ms: 1000, p95Ms: 2000 },
       },
-      mcp: { requests: 0 },
+      mcp: { requests: 0, unknownGoogleHops: 0 },
     });
     const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
     vi.stubGlobal("fetch", fetch);

@@ -28,6 +28,10 @@ const envSchema = z.object({
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
+  // Global ceilings, all keys together, so rotating keys can't multiply what
+  // one source gets. Sized well above the per-IP limits and /stats traffic.
+  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(60),
+  RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
@@ -119,6 +123,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     guardrails: {
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
+      chatGlobalRequestsPerMinute: e.RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE,
+      mcpGlobalRequestsPerMinute: e.RATE_LIMIT_MCP_GLOBAL_PER_MINUTE,
       monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
       dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,

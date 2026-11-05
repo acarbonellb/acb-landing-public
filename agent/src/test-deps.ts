@@ -3,7 +3,7 @@
 // The guardrails are wired by the composition root, as in production with no
 // shared store.
 import type { AppDeps } from "./app";
-import { mcpRateLimitKey, rateLimitKey } from "./client-ip";
+import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import { createGuardrails } from "./compose";
 import { loadConfig } from "./config";
 import { createFakeModel } from "./fake-model";
@@ -25,6 +25,7 @@ export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     ...createGuardrails(null, defaults),
     rateLimitKey,
     mcpRateLimitKey,
+    isUnknownGoogleHop: mcpUnknownGoogleHop,
     ...overrides,
   };
 }

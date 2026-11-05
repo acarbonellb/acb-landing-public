@@ -11,7 +11,7 @@ import type { DailyQuota } from "./daily-quota";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
-import type { RateLimiter } from "./rate-limit";
+import type { RateLimitDecision, RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
 import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
@@ -35,6 +35,7 @@ export const httpErrorMessages = {
   rateLimited: "Too many requests. Please wait a moment and try again.",
   dailyQuota:
     "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
+  statsUnavailable: "Usage stats are unavailable.",
   spendCap:
     "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
 } as const;
@@ -67,6 +68,11 @@ export type AppDeps = {
   rateLimitKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
   mcpRateLimitKey: (c: Context) => string;
+  /**
+   * Whether a `/mcp` request's right-most hop is a Google address outside the
+   * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
+   */
+  isUnknownGoogleHop: (c: Context) => boolean;
 };
 
 const jsonError = (
@@ -76,16 +82,32 @@ const jsonError = (
 ) => c.json<HttpErrorBody>({ error }, status);
 
 /**
+ * What a route does when its store fails: `open` keeps answering without the
+ * guardrail, `closed` refuses (the error reaches `app.onError`, which answers
+ * in the route's error contract).
+ */
+type StoreFailurePolicy = "open" | "closed";
+
+/**
  * Per-client rate limit: lets the request through, or sets `Retry-After` and
- * answers with `refuse` (each endpoint words the refusal in its protocol).
+ * answers with `refuse` (each endpoint words the refusal in its protocol). If
+ * the limiter's store fails, `onStoreFailure` decides.
  */
 function rateLimit(
   limiter: RateLimiter,
   rateLimitKey: (c: Context) => string,
+  onStoreFailure: StoreFailurePolicy,
   refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
-    const decision = await limiter.hit(rateLimitKey(c));
+    let decision: RateLimitDecision;
+    try {
+      decision = await limiter.hit(rateLimitKey(c));
+    } catch (error) {
+      if (onStoreFailure === "closed") throw error;
+      console.error(`Rate limit: store failed, letting ${c.req.path} through`, error);
+      return next();
+    }
     if (decision.allowed) return next();
     c.header("Retry-After", String(decision.retryAfterSeconds));
     return refuse(c, decision.retryAfterSeconds);
@@ -126,6 +148,7 @@ export function createApp(deps: AppDeps): Hono {
     usage,
     rateLimitKey,
     mcpRateLimitKey,
+    isUnknownGoogleHop,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -141,7 +164,7 @@ export function createApp(deps: AppDeps): Hono {
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(mcpRateLimiter, rateLimitKey, (c) =>
+    rateLimit(mcpRateLimiter, rateLimitKey, "open", (c) =>
       jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
     ),
     async (c) => {
@@ -151,7 +174,10 @@ export function createApp(deps: AppDeps): Hono {
         return c.json(body);
       } catch (error) {
         console.error("Usage: could not read the stats", error);
-        return jsonError(c, 503, { code: "unavailable", message: "Usage stats are unavailable." });
+        return jsonError(c, 503, {
+          code: "unavailable",
+          message: httpErrorMessages.statsUnavailable,
+        });
       }
     },
   );
@@ -172,10 +198,17 @@ export function createApp(deps: AppDeps): Hono {
     }),
   );
 
+  // Counted before the limit: if Hosting's peer has left the fetchers ranges,
+  // its visitors share one key, so most of them are refused. Only the count.
+  app.use(paths.mcp, async (c, next) => {
+    if (isUnknownGoogleHop(c)) usage.countUnknownGoogleHop();
+    await next();
+  });
+
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, mcpRateLimitKey, (c, retryAfterSeconds) =>
+    rateLimit(mcpRateLimiter, mcpRateLimitKey, "open", (c, retryAfterSeconds) =>
       c.json(
         {
           jsonrpc: "2.0",
@@ -201,8 +234,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    const [response] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
-    return response;
+    // Not awaited: the answer doesn't wait on the weekly document, which every
+    // request writes. The recorder never throws.
+    void usage.recordMcp();
+    return transport.handleRequest(c.req.raw);
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -223,7 +258,7 @@ export function createApp(deps: AppDeps): Hono {
     paths.chat,
     markChatStart,
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, rateLimitKey, async (c, retryAfterSeconds) => {
+    rateLimit(chatRateLimiter, rateLimitKey, "closed", async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
       return jsonError(c, 429, {
         code: "rate_limited",
@@ -298,6 +333,30 @@ export function createApp(deps: AppDeps): Hono {
       });
     },
   );
+
+  // Whatever a route didn't handle (a store failing where the route fails
+  // closed, or a bug) is answered in that route's error contract, never as
+  // Hono's plain-text 500. The CORS headers set before the error stay on.
+  app.onError((error, c) => {
+    console.error(`Unhandled error on ${c.req.method} ${c.req.path}`, error);
+    if (c.req.path === paths.mcp) {
+      return c.json(
+        {
+          jsonrpc: "2.0",
+          id: null,
+          error: {
+            code: -32603,
+            message: errorMessages.unavailable,
+            data: { code: "unavailable" satisfies HttpErrorCode },
+          },
+        },
+        503,
+      );
+    }
+    const message =
+      c.req.path === paths.stats ? httpErrorMessages.statsUnavailable : errorMessages.unavailable;
+    return jsonError(c, 503, { code: "unavailable", message });
+  });
 
   return app;
 }
