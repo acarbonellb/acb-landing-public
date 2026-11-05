@@ -60,6 +60,36 @@ export function parseGoogleRanges(lists: Record<RangeList, unknown>): GoogleRang
   };
 }
 
+const lists = Object.keys(rangeSources) as RangeList[];
+
+function samePrefixes(a: string[], b: string[]): boolean {
+  const set = new Set(a);
+  return set.size === new Set(b).size && b.every((p) => set.has(p));
+}
+
+/**
+ * A refresh of `previous` from freshly downloaded lists: the new snapshot,
+ * and whether any list's prefixes changed. Publication times and order alone
+ * are not a change (Google republishes `goog.json` and `cloud.json` daily).
+ */
+export function refreshGoogleRanges(
+  previous: GoogleRanges,
+  downloads: Record<RangeList, unknown>,
+): { ranges: GoogleRanges; changed: boolean } {
+  const ranges = parseGoogleRanges(downloads);
+  // A list that shrank this much is a broken or partial download, not Google
+  // retiring most of its addresses in a week.
+  for (const name of lists) {
+    if (ranges[name].length * 2 < previous[name].length) {
+      throw new Error(
+        `${name}: ${ranges[name].length} prefixes, down from ${previous[name].length}; refusing the refresh`,
+      );
+    }
+  }
+  const changed = lists.some((name) => !samePrefixes(previous[name], ranges[name]));
+  return { ranges, changed };
+}
+
 /** Whether an address is in `prefixes`. Anything that isn't an IP address is not. */
 function prefixCheck(prefixes: string[]): (address: string) => boolean {
   const list = new BlockList();
