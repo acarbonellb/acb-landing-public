@@ -7,6 +7,7 @@ import {
   type ChatErrorCode,
   type ChatEvent,
   type ChatMessage,
+  type ChatRequest,
   type ChatStopReason,
 } from "../../src/shared/chat-contract";
 import {
@@ -52,7 +53,7 @@ You: "I can only answer questions about Alberto. Would you like to know about hi
 - Refer to him as "Alberto" in the third person.`;
 
 /** What the browser sends: the visible conversation, ending with the new question. */
-export const chatRequestSchema: z.ZodType<{ messages: ChatMessage[] }> = z
+export const chatRequestSchema: z.ZodType<ChatRequest> = z
   .object({
     messages: z
       .array(

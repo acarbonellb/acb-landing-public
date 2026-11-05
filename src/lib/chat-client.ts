@@ -6,6 +6,7 @@ import type {
   ChatErrorCode,
   ChatEvent,
   ChatMessage,
+  ChatRequest,
   ChatStopReason,
   HttpErrorBody,
   HttpErrorCode,
@@ -129,12 +130,13 @@ export async function* streamChat(
 ): AsyncGenerator<ChatClientEvent> {
   const doFetch = options.fetch ?? globalThis.fetch.bind(globalThis);
 
+  const request: ChatRequest = { messages };
   let res: Response;
   try {
     res = await doFetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages }),
+      body: JSON.stringify(request),
       signal: options.signal,
     });
   } catch {
