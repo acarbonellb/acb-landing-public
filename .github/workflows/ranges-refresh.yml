@@ -32,11 +32,11 @@ jobs:
       BASE: ${{ github.ref_name }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
           cache: pnpm
@@ -71,6 +71,7 @@ jobs:
           else
             gh pr create --head "$BRANCH" --base "$BASE" --title "$title" --body "$body"
           fi
-          # The PR runs the normal CI (deploy.yml's test job; its deploy jobs
-          # only run on main).
+          # The PR runs the normal CI: deploy.yml's test job (a dispatch, so
+          # neither rehearse-deploy, which is PR-only, nor the deploy jobs,
+          # which are main-only, run).
           gh workflow run deploy.yml --ref "$BRANCH"
