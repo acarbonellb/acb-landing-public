@@ -221,7 +221,7 @@ describe("Anthropic model client", () => {
   });
 
   it.each([429, 500, 529])(
-    "turns an upstream %i into ModelUnavailableError",
+    "turns an upstream %i into ModelUnavailableError, for capacity",
     async (status) => {
       const { fetch } = fakeFetch(
         () =>
@@ -237,9 +237,9 @@ describe("Anthropic model client", () => {
         fetch,
         maxRetries: 0,
       });
-      await expect(collect(client.stream(request))).rejects.toBeInstanceOf(
-        ModelUnavailableError,
-      );
+      const error = await collect(client.stream(request)).catch((e: unknown) => e);
+      expect(error).toBeInstanceOf(ModelUnavailableError);
+      expect(error).toMatchObject({ reason: "capacity" });
     },
   );
 
@@ -272,7 +272,7 @@ describe("Anthropic model client", () => {
     ],
   ];
 
-  it.each(providerLimits)("turns %s into ModelUnavailableError", async (_, status, error) => {
+  it.each(providerLimits)("turns %s into ModelUnavailableError, for the provider limit", async (_, status, error) => {
     const { fetch } = fakeFetch(
       () =>
         new Response(JSON.stringify({ type: "error", error }), {
@@ -287,9 +287,9 @@ describe("Anthropic model client", () => {
       fetch,
       maxRetries: 0,
     });
-    await expect(collect(client.stream(request))).rejects.toBeInstanceOf(
-      ModelUnavailableError,
-    );
+    const thrown = await collect(client.stream(request)).catch((e: unknown) => e);
+    expect(thrown).toBeInstanceOf(ModelUnavailableError);
+    expect(thrown).toMatchObject({ reason: "provider_limit" });
   });
 
   it("keeps any other 400 an internal error", async () => {

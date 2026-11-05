@@ -9,6 +9,7 @@ import type { Config } from "./config";
 import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
+import { createProviderLimitWatch } from "./provider-limit";
 import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
 import { createMemorySpendCap, createStoreSpendCap } from "./spend-cap";
 import { createToolset, siteContent } from "./tools";
@@ -38,7 +39,7 @@ function createModelClient(config: Config): ModelClient | null {
 export function createGuardrails(
   sharedStore: DocumentStore | null,
   { guardrails }: Config,
-): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {
+): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage" | "providerLimit"> {
   const { pricing } = guardrails;
   const store = sharedStore && withStoreHealthEvents(sharedStore);
   const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
@@ -50,6 +51,7 @@ export function createGuardrails(
       mcpRateLimiter: rateLimiter("mcp", guardrails.mcpRequestsPerMinute),
       spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
       usage: createUsageRecorder({ store, pricing }),
+      providerLimit: createProviderLimitWatch({ store }),
     };
   }
   const rateLimiter = (limit: number) => createMemoryRateLimiter({ limit, windowMs: minute });
@@ -58,6 +60,7 @@ export function createGuardrails(
     mcpRateLimiter: rateLimiter(guardrails.mcpRequestsPerMinute),
     spendCap: createMemorySpendCap(spendCapOptions),
     usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
+    providerLimit: createProviderLimitWatch({ store: createMemoryDocumentStore() }),
   };
 }
 

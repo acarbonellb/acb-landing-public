@@ -7,6 +7,8 @@ import { loadConfig } from "./config";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
+import { ModelUnavailableError } from "./model";
+import { createProviderLimitWatch } from "./provider-limit";
 import { listen, type RunningServer } from "./server";
 import { createStoreSpendCap } from "./spend-cap";
 import { testAppDeps } from "./test-deps";
@@ -295,6 +297,57 @@ describe("spend alert events", () => {
     expect(loggedEvents("spend_cap_reached").map((e) => e.resetsAt)).toEqual([
       "2026-12-01T00:00:00.000Z",
       "2027-01-01T00:00:00.000Z",
+    ]);
+  });
+});
+
+describe("provider limit events", () => {
+  const limited = (): ScriptedResponse => ({
+    error: new ModelUnavailableError("Claude is unavailable", { reason: "provider_limit" }),
+  });
+  const overloaded = (): ScriptedResponse => ({
+    error: new ModelUnavailableError("Claude is unavailable", { reason: "capacity" }),
+  });
+  const answered = (): ScriptedResponse => ({ text: "Hi.", usage: { inputTokens: 10, outputTokens: 2 } });
+
+  function startWatching(script: ScriptedResponse[], store = createMemoryDocumentStore()) {
+    const time = clock("2026-11-05T12:00:00Z");
+    return start({
+      chatRateLimiter: unlimited,
+      modelClient: createFakeModel(script),
+      providerLimit: createProviderLimitWatch({ store, now: time.now }),
+    });
+  }
+
+  it("logs provider_limit once while the limit lasts, and provider_limit_cleared once a call succeeds", async () => {
+    const url = await startWatching([limited(), limited(), overloaded(), answered(), answered(), limited()]);
+
+    const responses = [];
+    for (let i = 0; i < 6; i++) responses.push(await chat(url));
+
+    // The visitor still sees the stream's usual "unavailable" error.
+    expect(responses[0].body).toMatch(/"code":"unavailable"/);
+    const events = loggedEvents().filter((e) => String(e.event).startsWith("provider_limit"));
+    expect(events.map((e) => e.event)).toEqual(["provider_limit", "provider_limit_cleared", "provider_limit"]);
+    expect(events[0]).toMatchObject({
+      severity: "ERROR",
+      month: "2026-11",
+      requestId: responses[0].requestId,
+    });
+  });
+
+  it("holds across a cold start: the state is in the month's spend document", async () => {
+    const store = createMemoryDocumentStore();
+    await startWatching([limited()], store).then((url) => chat(url));
+    await server?.close();
+
+    const url = await startWatching([limited(), answered()], store);
+    await chat(url);
+    await chat(url);
+
+    expect(loggedEvents().filter((e) => String(e.event).startsWith("provider_limit")).map((e) => e.event)).toEqual([
+      "provider_limit",
+      "provider_limit_cleared",
     ]);
   });
 });

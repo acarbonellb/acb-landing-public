@@ -12,6 +12,7 @@ import { describeError, logEvent, withRequestId } from "./log";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
+import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
 import type { RateLimitDecision, RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
 import type { Toolset } from "./tools";
@@ -60,6 +61,8 @@ export type AppDeps = {
   spendCap: SpendCap;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
+  /** Notes the provider's own spend limit, for its alert event; in the same store (`provider-limit.ts`). */
+  providerLimit: ProviderLimitWatch;
   /** Key for the `/chat` and `/stats` rate limits: the client IP, or its `/64` for IPv6, in production. */
   rateLimitKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
@@ -156,13 +159,18 @@ export function createApp(deps: AppDeps): Hono {
     mcpRateLimiter,
     spendCap,
     usage,
+    providerLimit,
     rateLimitKey,
     mcpRateLimitKey,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
   const chatAgent = modelClient
-    ? createChatAgent({ model: modelClient, toolset, limits: chatLimits })
+    ? createChatAgent({
+        model: watchingProviderLimit(modelClient, providerLimit),
+        toolset,
+        limits: chatLimits,
+      })
     : null;
   const app = new Hono();
 
