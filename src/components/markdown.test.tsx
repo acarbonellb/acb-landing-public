@@ -64,6 +64,24 @@ describe("Markdown", () => {
     }
   });
 
+  it("links a bare email address to mailto:, keeping the sentence's punctuation out", () => {
+    const root = renderMarkdown(
+      "Email him at **ada.l+cv@example.co.uk**. Or `not@linked.dev` in code.",
+    );
+
+    const link = screen.getByRole("link", { name: "ada.l+cv@example.co.uk" });
+    expect(link).toHaveAttribute("href", "mailto:ada.l+cv@example.co.uk");
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(root.textContent).toBe("Email him at ada.l+cv@example.co.uk. Or not@linked.dev in code.");
+  });
+
+  it("does not link an address twice inside a mailto link's label", () => {
+    renderMarkdown("Write to [a@b.dev](mailto:a@b.dev).");
+
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(screen.getByRole("link")).toHaveAttribute("href", "mailto:a@b.dev");
+  });
+
   it("does not turn javascript:, data: or relative URLs into links", () => {
     const root = renderMarkdown(
       "[click](javascript:alert(1)) [x](JavaScript:alert(1)) [d](data:text/html,hi) [r](/admin)",

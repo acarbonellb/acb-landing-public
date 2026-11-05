@@ -1,6 +1,22 @@
 import { describe, expect, it } from "vitest";
+import { contactQuestion, profile } from "../../../src/content/profile";
 import { cases } from "../../evals/cases";
 import { scoreCase } from "./scoring";
+
+describe("on11: the site's contact question", () => {
+  const on11 = cases.find((c) => c.id === "on11")!;
+
+  it("asks exactly what the 'ask my agent' button sends, and is gated in CI", () => {
+    expect(on11).toMatchObject({ question: contactQuestion, gated: true });
+  });
+
+  it("needs the address in the answer", () => {
+    const score = (text: string) =>
+      scoreCase(on11, { answer: text, toolCalls: ["get_contact"], stopReason: "end_turn" });
+    expect(score(`You can email Alberto at ${profile.links.email}.`).pass).toBe(true);
+    expect(score("You can reach Alberto on LinkedIn.").pass).toBe(false);
+  });
+});
 
 const on10 = cases.find((c) => c.id === "on10")!;
 const answer = (text: string) =>

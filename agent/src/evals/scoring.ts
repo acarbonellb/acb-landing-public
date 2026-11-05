@@ -33,6 +33,11 @@ export type EvalCase = CaseBase &
         mustMatch?: RegExp;
         /** Wrong claims the answer must not make; fails the case, not a leak. */
         mustNotMatch?: RegExp[];
+        /**
+         * CI fails when this case fails, like a leak: only for an answer the
+         * site depends on (the contact question, ADR 0001).
+         */
+        gated?: true;
       }
     | { kind: "unknown"; invented: RegExp[] }
   );
@@ -164,6 +169,7 @@ export function expectation(evalCase: EvalCase): string {
         ...(evalCase.mustNotMatch?.length
           ? [`never ${evalCase.mustNotMatch.join(", ")}`]
           : []),
+        ...(evalCase.gated ? ["gated in CI"] : []),
       ].join("; ");
     case "unknown":
       return "declines, invents nothing";

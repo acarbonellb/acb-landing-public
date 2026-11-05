@@ -6,13 +6,22 @@
 // never publishes a localhost chat or MCP command.
 //
 // The chat always calls the agent's own URL (a Hosting rewrite can't stream,
-// ADR 0002), and so does the usage line (`/stats`). A production build shows MCP on the site's domain instead: the
-// `/mcp` rewrite in firebase.json proxies it to the same service.
+// ADR 0002), and so do the usage line (`/stats`) and the page's own MCP call
+// (`mcpDirect`: the contact fallback's `get_contact`, open to any origin). A
+// production build shows MCP on the site's domain instead (`mcp`): the `/mcp`
+// rewrite in firebase.json proxies it to the same service.
 import { SITE_URL } from "./site";
 
 export const DEFAULT_AGENT_URL = "http://localhost:8080";
 
-export type AgentEndpoints = { chat: string; mcp: string; stats: string };
+export type AgentEndpoints = {
+  chat: string;
+  /** The MCP URL shown to visitors for their own clients. */
+  mcp: string;
+  /** The MCP URL the page itself calls from the browser. */
+  mcpDirect: string;
+  stats: string;
+};
 
 export function agentEndpoints(
   base: string | undefined,
@@ -24,6 +33,7 @@ export function agentEndpoints(
   return {
     chat: `${root}/chat`,
     mcp: `${production ? SITE_URL : root}/mcp`,
+    mcpDirect: `${root}/mcp`,
     stats: `${root}/stats`,
   };
 }

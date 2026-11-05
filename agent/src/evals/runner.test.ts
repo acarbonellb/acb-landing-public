@@ -146,6 +146,25 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     ]);
   });
 
+  it("fails when a gated on-topic case fails, and only reports an ungated one", async () => {
+    const gated: EvalCase = { ...contact, id: "on02", slug: "contact-gated", gated: true };
+    const noEmail = () => createFakeModel([{ text: "Find him on LinkedIn." }]);
+    const recordings = [
+      (await recordCase(contact, noEmail(), meta)).recording,
+      (await recordCase(gated, noEmail(), meta)).recording,
+    ];
+
+    const { problems } = await evaluate({
+      cases: [contact, gated],
+      sets: [{ ...meta, recordings }],
+    });
+
+    expect(problems).toEqual([
+      "fake / scripted on02-contact-gated failed a gated case: called no tool, expected get_contact; missing fact: " +
+        profile.links.email,
+    ]);
+  });
+
   it("adds the history to the report and fails when its latest entry disagrees", async () => {
     const set = await setOf();
     const fresh = await evaluate({ cases: [contact, capital], sets: [set] });

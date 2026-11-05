@@ -50,7 +50,15 @@ function fakeFetch(...responses: Response[]) {
 }
 
 function renderChat(fetch: typeof globalThis.fetch) {
-  return render(<AgentChat chatUrl={CHAT_URL} mcpUrl={MCP_URL} fetch={fetch} />);
+  return render(
+    <AgentChat
+      chatUrl={CHAT_URL}
+      mcpUrl={MCP_URL}
+      mcpDirectUrl={MCP_URL}
+      linkedin="https://www.linkedin.com/in/ada/"
+      fetch={fetch}
+    />,
+  );
 }
 
 function input() {

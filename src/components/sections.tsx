@@ -6,10 +6,9 @@ import {
   type SkillGroup,
 } from "@/content/profile";
 import { type AgentEndpoints, agentUrls } from "@/lib/agent-endpoint";
-import { obfuscateEmail } from "@/lib/obfuscated-email";
 import { AgentChat } from "./agent-chat";
 import { AgentStats } from "./agent-stats";
-import { ContactEmail } from "./contact-email";
+import { ContactAsk } from "./contact-ask";
 import { ExperienceEntry } from "./experience-entry";
 import { heroTerminal } from "./hero-terminal";
 import { TypewriterTerminal } from "./typewriter-terminal";
@@ -211,15 +210,23 @@ export function Projects({ agents }: { agents: AgentProject[] }) {
 // The live chat with the agent service, or a "coming soon" note when the
 // build has no agent URL (see `agent-endpoint.ts`).
 export function Agent({
+  linkedin,
   endpoints = agentUrls,
 }: {
+  /** Where the contact fallback points when the agent can't be reached. */
+  linkedin: string;
   endpoints?: AgentEndpoints | null;
 }) {
   return (
     <Section id="agent" index="05" title="ask my agent">
       <Window title="agent — claude · tool use">
         {endpoints ? (
-          <AgentChat chatUrl={endpoints.chat} mcpUrl={endpoints.mcp} />
+          <AgentChat
+            chatUrl={endpoints.chat}
+            mcpUrl={endpoints.mcp}
+            mcpDirectUrl={endpoints.mcpDirect}
+            linkedin={linkedin}
+          />
         ) : (
           <p className="text-sm leading-relaxed">
             <span className="text-comment">[system]</span>{" "}
@@ -245,7 +252,7 @@ export function Contact({ profile }: { profile: Profile }) {
       <p className="max-w-2xl font-sans text-lg leading-relaxed">
         {profile.contactNote}
       </p>
-      <ContactEmail obfuscated={obfuscateEmail(profile.links.email)} />
+      <ContactAsk linkedin={profile.links.linkedin} />
     </Section>
   );
 }
