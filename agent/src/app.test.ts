@@ -7,6 +7,7 @@ import {
   profile,
   skillGroups,
 } from "../../src/content/profile";
+import { fetchContactEmail } from "../../src/lib/mcp-contact";
 import { createApp } from "./app";
 import { listen, type RunningServer } from "./server";
 import { createToolset, siteContent } from "./tools";
@@ -121,6 +122,26 @@ describe("agent service over HTTP", () => {
         github: profile.links.github,
         linkedin: profile.links.linkedin,
       });
+    });
+
+    // The site's contact fallback (#50): one bare `tools/call` from another
+    // origin, no session or `initialize` first.
+    it("answers the site's contact lookup from another origin, without a session", async () => {
+      const seen: Response[] = [];
+      const fetchFromSite: typeof fetch = async (url, init) => {
+        const headers = new Headers(init?.headers);
+        headers.set("Origin", "https://albertocarbonell.dev");
+        const res = await fetch(url, { ...init, headers });
+        seen.push(res);
+        return res;
+      };
+
+      const email = await fetchContactEmail(new URL("/mcp", server.url).href, {
+        fetch: fetchFromSite,
+      });
+
+      expect(email).toBe(profile.links.email);
+      expect(seen[0].headers.get("access-control-allow-origin")).toBe("*");
     });
 
     it("also returns the result as JSON text for clients without structured content", async () => {

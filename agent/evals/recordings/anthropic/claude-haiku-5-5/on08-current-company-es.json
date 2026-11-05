@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
-      "latencyMs": 714,
+      "latencyMs": 777,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_018et8nPCjwduayHdMMeZPFw",
+                "id": "toolu_01BYuh3Xz8D9mebvuVXb66ZJ",
                 "name": "get_experience",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_018et8nPCjwduayHdMMeZPFw",
+                "id": "toolu_01BYuh3Xz8D9mebvuVXb66ZJ",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -45,8 +45,8 @@
       ]
     },
     {
-      "requestHash": "c3af26e186eb911e8b6e9390897878cb7a400c772b804e9bdbd3e363364ca300",
-      "latencyMs": 1078,
+      "requestHash": "2c327d3a90960faf5032c87bc162aa52a1030b47eecadba0944071237e9d46da",
+      "latencyMs": 875,
       "events": [
         {
           "type": "input_usage",
@@ -78,31 +78,27 @@
         },
         {
           "type": "text_delta",
-          "text": " (desde 2019), una"
+          "text": " (Madrid / rem"
         },
         {
           "type": "text_delta",
-          "text": " plataforma ins"
+          "text": "oto), desde 2019"
         },
         {
           "type": "text_delta",
-          "text": "urtech en"
+          "text": ". C"
         },
         {
           "type": "text_delta",
-          "text": " Madrid /"
+          "text": "overWallet es una pl"
         },
         {
           "type": "text_delta",
-          "text": " remo"
+          "text": "ataforma ins"
         },
         {
           "type": "text_delta",
-          "text": "to que"
-        },
-        {
-          "type": "text_delta",
-          "text": " integra a"
+          "text": "urtech que integra a"
         },
         {
           "type": "text_delta",
@@ -123,17 +119,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto que integra aseguradoras externas en un único flujo de compra.",
+            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (Madrid / remoto), desde 2019. CoverWallet es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2175,
-              "outputTokens": 79
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto que integra aseguradoras externas en un único flujo de compra."
+                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (Madrid / remoto), desde 2019. CoverWallet es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra."
               }
             ]
           }

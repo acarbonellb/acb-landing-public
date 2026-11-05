@@ -4,6 +4,7 @@
 // would match "education" and `/lug/` "en lugar de".
 import {
   agents,
+  contactQuestion,
   education,
   experience,
   languages,
@@ -287,6 +288,17 @@ export const cases: EvalCase[] = [
     facts: fraudFacts,
     // The old, wrong description: it never blocks anything.
     mustNotMatch: [/\bblocks\b/i, /\bpurchases\b/i, /\borders\b/i],
+  },
+  {
+    // The site's "ask my agent" button sends exactly this (#50). The page no
+    // longer shows the address, so CI gates this case (ADR 0001).
+    id: "on11",
+    slug: "contact-button-question",
+    kind: "on_topic",
+    question: contactQuestion,
+    tools: ["get_contact"],
+    facts: [profile.links.email],
+    gated: true,
   },
 
   // Unknown: the tools don't cover it. Say so, invent nothing.

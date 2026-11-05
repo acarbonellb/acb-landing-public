@@ -242,6 +242,13 @@ export const languages: SpokenLanguage[] = [
 export const chatPrivacyNote =
   "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are then deleted. The agent and its MCP server share my contact email on purpose.";
 
+/**
+ * What the contact section's "ask my agent" button sends to the chat, as the
+ * visitor's message (#50). The eval case `on11` asks exactly this and is
+ * gated in CI (ADR 0001), as it's the site's contact path.
+ */
+export const contactQuestion = "I'd like to contact Alberto, what's his email address?";
+
 /** "2019 — now", "2016 — 2019". */
 export function formatPeriod({ from, to }: Period): string {
   return `${from} — ${to ?? "now"}`;

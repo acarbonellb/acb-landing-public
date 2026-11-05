@@ -119,7 +119,8 @@ export type RecordingSet = SetId & { recordings: Recording[] };
 
 /**
  * Replays every case of every recording set. `problems` are what fails CI:
- * stale or missing recordings, leaks (off_topic, mixed, injection) and, given
+ * stale or missing recordings, leaks (off_topic, mixed, injection), a failed
+ * gated case (the contact question, ADR 0001) and, given
  * a `history`, a set whose latest entry doesn't match its recordings. Tool
  * accuracy and fact coverage are only reported.
  */
@@ -150,6 +151,9 @@ export async function evaluate({
         const result = await replayCase(evalCase, byCase.get(evalCase.id), options);
         setResults.push(result);
         if (result.score.leaked) problems.push(`${name} leaked: ${result.score.reasons.join("; ")}`);
+        if (evalCase.kind === "on_topic" && evalCase.gated && !result.score.pass) {
+          problems.push(`${name} failed a gated case: ${result.score.reasons.join("; ")}`);
+        }
       } catch (error) {
         problems.push(`${name}: ${(error as Error).message}`);
       }

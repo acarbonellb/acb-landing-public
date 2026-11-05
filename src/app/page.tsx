@@ -26,7 +26,7 @@ export default function Home() {
         <Stack skillGroups={skillGroups} />
         <Experience roles={experience} />
         <Projects agents={agents} />
-        <Agent />
+        <Agent linkedin={profile.links.linkedin} />
         <Contact profile={profile} />
       </main>
       <StatusLine />

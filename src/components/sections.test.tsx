@@ -1,5 +1,4 @@
 import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
@@ -257,7 +256,7 @@ describe("Agent", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("is section 05, ask my agent", () => {
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     expect(
       screen.getByRole("heading", { level: 2, name: /^05\.\s*ask my agent$/ }),
@@ -265,7 +264,7 @@ describe("Agent", () => {
   });
 
   it("holds the chat, pointed at the local agent by default", () => {
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     expect(
       screen.getByRole("textbox", { name: /ask the agent/i }),
@@ -274,7 +273,7 @@ describe("Agent", () => {
   });
 
   it("says what happens to visitors' questions, right under the chat input", () => {
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     const note = screen.getByRole("note", { name: /privacy/i });
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
@@ -285,7 +284,7 @@ describe("Agent", () => {
   });
 
   it("shows no privacy note when there is no chat", () => {
-    render(<Agent endpoints={null} />);
+    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
 
     expect(screen.queryByRole("note", { name: /privacy/i })).not.toBeInTheDocument();
   });
@@ -309,7 +308,7 @@ describe("Agent", () => {
     });
     const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
     vi.stubGlobal("fetch", fetch);
-    render(<Agent />);
+    render(<Agent linkedin={profile.links.linkedin} />);
 
     expect(
       await screen.findByText("this week: 7 questions answered · p50 3 s · 0% errors · $0.50"),
@@ -318,7 +317,7 @@ describe("Agent", () => {
   });
 
   it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
-    render(<Agent endpoints={null} />);
+    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
 
     expect(screen.getByText(/agent coming soon/i)).toBeInTheDocument();
     expect(
@@ -338,24 +337,19 @@ describe("Contact", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows the contact note and links to the email once asked", async () => {
-    const user = userEvent.setup();
+  it("shows the contact note and, until the chat is there, a LinkedIn link", () => {
     render(<Contact profile={profile} />);
 
     expect(screen.getByText("Say hi.")).toBeInTheDocument();
-    expect(screen.queryByText("ada@example.com")).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "show email" }));
-
-    const link = screen.getByRole("link", { name: "ada@example.com" });
-    expect(link).toHaveAttribute("href", "mailto:ada@example.com");
-    expect(link).toHaveFocus();
+    expect(screen.getByRole("link", { name: /linkedin/i })).toHaveAttribute(
+      "href",
+      profile.links.linkedin,
+    );
   });
 
-  it("keeps the address out of the server-rendered HTML", () => {
+  it("never puts the address in the page (#50): the agent gives it out", () => {
     const html = renderToString(<Contact profile={profile} />);
 
-    expect(html).toContain("show email");
     expect(html).not.toContain("ada@example.com");
     expect(html).not.toContain("@");
   });

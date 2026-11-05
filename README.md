@@ -80,6 +80,8 @@ pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node
 | `GET /health` | Health check, returns `{"status":"ok"}` |
 | `GET /stats` | This and last week's usage aggregates, public JSON (see [Usage stats](#usage-stats)) |
 
+**Contact through the agent.** The page holds no email address. The contact section's "ask my agent" button scrolls to the chat and sends a canned question (`contactQuestion` in `src/content/profile.ts`); the agent answers through `get_contact`, and the chat links any address in an answer to `mailto:`. If `/chat` answers 503 or 429, or the stream ends in an error, the page calls `POST /mcp` `tools/call get_contact` on the agent's own URL instead (no model, no spend; open to any origin, under the MCP rate limit) and says so in the chat. If that fails too, or without JavaScript, it shows a LinkedIn link.
+
 ### Configuration
 
 Environment variables (none are required to run the MCP server; nothing secret is committed):
@@ -268,7 +270,7 @@ Each provider/model gets its own recording set and report section; the provider 
 
 **History.** Every live run appends one line per recording set to `agent/evals/history.jsonl`: date (UTC), the commit it started from, provider, model, system prompt hash, case count and the report's metrics. Replay never appends. The report's "History" section shows the last 10 runs per set, newest first, each metric with its change from the run before (pp = percentage points). A prompt hash that changes between rows means the system prompt changed; the same hash with different numbers means the model, tools or content did (or the model just answered differently). Small local models aren't deterministic, so a couple of points of fact coverage between identical runs is noise; any leak is not.
 
-**What CI gates.** `pnpm agent:eval:replay --check` runs in the `test` job and fails on a stale or missing recording, on any off-topic, mixed or injection case that leaks (the system prompt is the only defence, so a leak is a regression), when a set's latest history entry doesn't match its recordings (prompt hash and metrics, so a re-recording can't be committed without its history line), or when the regenerated `report.md` differs from the committed one. Tool accuracy, fact coverage and unknown handling are reported, not gated.
+**What CI gates.** `pnpm agent:eval:replay --check` runs in the `test` job and fails on a stale or missing recording, on any off-topic, mixed or injection case that leaks (the system prompt is the only defence, so a leak is a regression), when the gated case `on11` fails (the exact question the site's "ask my agent" button sends must get the address through `get_contact`: it's the site's contact path, [ADR 0001](docs/adr/0001-agent-evals-record-replay.md#amendment-50-the-contact-question-is-gated)), when a set's latest history entry doesn't match its recordings (prompt hash and metrics, so a re-recording can't be committed without its history line), or when the regenerated `report.md` differs from the committed one. Tool accuracy, fact coverage and unknown handling are reported, not gated.
 
 ## Roadmap
 
