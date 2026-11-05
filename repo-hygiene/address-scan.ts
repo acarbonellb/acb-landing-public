@@ -1,5 +1,5 @@
 // Keeps email addresses out of the public repo and the static export (#51).
-// Test-only: the tree check (`src/repo-tree.test.ts`) and the export check
+// Test-only: the tree check (`repo-hygiene/repo-tree.test.ts`) and the export check
 // (`e2e/contact.spec.ts`) use it; the site never imports it.
 //
 // It holds no address and no hash of one. Two checks:
