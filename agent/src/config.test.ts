@@ -36,13 +36,9 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ CONTACT_EMAIL: "not-an-address" })).not.toThrow(/not-an-address/);
   });
 
-  it("has no model client without an API key", () => {
-    expect(loadConfig({}).createModelClient()).toBeNull();
-  });
-
-  it("builds a model client when an API key is set (without calling the API)", () => {
-    const client = loadConfig({ ANTHROPIC_API_KEY: "test-key" }).createModelClient();
-    expect(client).not.toBeNull();
+  it("reads the API key from ANTHROPIC_API_KEY, and has none without it", () => {
+    expect(loadConfig({ ANTHROPIC_API_KEY: "test-key" }).anthropicApiKey).toBe("test-key");
+    expect(loadConfig({}).anthropicApiKey).toBeUndefined();
   });
 
   it("reads overrides from the environment", () => {
@@ -99,10 +95,17 @@ describe("loadConfig", () => {
     ).toBe(3000);
   });
 
-  it("keeps the guardrails' state in memory by default, with no cloud dependency", () => {
-    const config = loadConfig({});
-    expect(config.store).toEqual({ kind: "memory" });
-    expect(config.createDocumentStore()).toBeNull();
+  it("is plain data: no functions, nothing built", () => {
+    const config = loadConfig({
+      ANTHROPIC_API_KEY: "test-key",
+      AGENT_STORE: "firestore",
+      FIRESTORE_PROJECT_ID: "acb-landing",
+    });
+    expect(structuredClone(config)).toEqual(config);
+  });
+
+  it("keeps the guardrails' state in memory by default", () => {
+    expect(loadConfig({}).store).toEqual({ kind: "memory" });
   });
 
   it("selects the shared Firestore store, which needs the project", () => {
@@ -116,7 +119,6 @@ describe("loadConfig", () => {
       databaseId: "(default)",
       emulatorHost: undefined,
     });
-    expect(config.createDocumentStore()).not.toBeNull();
     expect(
       loadConfig({
         AGENT_STORE: "firestore",

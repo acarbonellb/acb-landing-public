@@ -5,10 +5,10 @@ import {
   checkHistory,
   historyEntry,
   parseHistory,
-  renderHistory,
   type HistoryEntry,
 } from "./history";
-import type { Metrics, SetResult } from "./report";
+import type { Metrics, SetResult } from "./metrics";
+import { renderHistory } from "./report";
 import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
 
 const capital: EvalCase = {

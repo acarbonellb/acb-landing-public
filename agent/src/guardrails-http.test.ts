@@ -6,6 +6,7 @@ import { createFakeModel } from "./fake-model";
 import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap, type SpendCap } from "./spend-cap";
+import { testAppDeps } from "./test-deps";
 
 let server: RunningServer | undefined;
 
@@ -15,7 +16,7 @@ afterEach(async () => {
 });
 
 async function start(deps: Partial<AppDeps>) {
-  server = await listen(createApp(deps), 0);
+  server = await listen(createApp(testAppDeps(deps)), 0);
   return server.url;
 }
 

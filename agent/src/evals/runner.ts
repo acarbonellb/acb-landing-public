@@ -14,8 +14,9 @@ import {
   type RecordedCall,
 } from "./recording";
 import { caseName, setLabel, type SetId } from "./format";
-import { checkHistory, renderHistory, type HistoryEntry } from "./history";
-import { renderReport, type CaseResult, type SetResult } from "./report";
+import { checkHistory, type HistoryEntry } from "./history";
+import type { CaseResult, SetResult } from "./metrics";
+import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
@@ -119,26 +120,19 @@ export async function replayCase(
 export type RecordingSet = SetId & { recordings: Recording[] };
 
 /**
- * Replays every case of every recording set. `problems` are what fails CI:
- * stale or missing recordings, leaks (off_topic, mixed, injection), a failed
- * gated case (the contact question, ADR 0001) and, given
- * a `history`, a set whose latest entry doesn't match its recordings. Tool
- * accuracy and fact coverage are only reported.
+ * Replays every case of every recording set: what both a live run (for its
+ * history line) and `evaluate` start from. `problems` are stale or missing
+ * recordings, leaks (off_topic, mixed, injection) and a failed gated case (the
+ * contact question, ADR 0001). Tool accuracy and fact coverage are only
+ * reported.
  */
-export async function evaluate({
+export async function replaySets({
   cases,
   sets,
-  history,
   ...options
-}: {
-  cases: EvalCase[];
-  sets: RecordingSet[];
-  /** The parsed `history.jsonl`; checked and rendered when given. */
-  history?: HistoryEntry[];
-} & RunOptions): Promise<{
+}: { cases: EvalCase[]; sets: RecordingSet[] } & RunOptions): Promise<{
   sets: SetResult[];
   problems: string[];
-  report: string;
 }> {
   const problems: string[] = [];
   const results: SetResult[] = [];
@@ -166,7 +160,29 @@ export async function evaluate({
       results: setResults,
     });
   }
-  if (history) problems.push(...checkHistory(history, results));
+  return { sets: results, problems };
+}
+
+/**
+ * What `pnpm agent:eval:replay` runs: `replaySets`, then the report. Given a
+ * `history`, it also fails on a set whose latest entry doesn't match its
+ * recordings, and adds the history to the report.
+ */
+export async function evaluate({
+  history,
+  ...input
+}: {
+  cases: EvalCase[];
+  sets: RecordingSet[];
+  /** The parsed `history.jsonl`; checked and rendered when given. */
+  history?: HistoryEntry[];
+} & RunOptions): Promise<{
+  sets: SetResult[];
+  problems: string[];
+  report: string;
+}> {
+  const { sets, problems } = await replaySets(input);
+  if (history) problems.push(...checkHistory(history, sets));
   const historySection = history?.length ? `\n${renderHistory(history)}` : "";
-  return { sets: results, problems, report: renderReport(results) + historySection };
+  return { sets, problems, report: renderReport(sets) + historySection };
 }
