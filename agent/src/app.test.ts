@@ -1,6 +1,6 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   agents,
   experience,
@@ -11,6 +11,9 @@ import { fetchContactEmail } from "../../src/lib/mcp-contact";
 import { createApp } from "./app";
 import { listen, type RunningServer } from "./server";
 import { createToolset, siteContent } from "./tools";
+
+// A placeholder: the real address is never in the repo (#51).
+const contactEmail = "ada@example.com";
 
 async function connectClient(baseUrl: string) {
   const client = new Client({ name: "test-client", version: "1.0.0" });
@@ -25,11 +28,14 @@ describe("agent service over HTTP", () => {
   let client: Client;
 
   beforeAll(async () => {
+    // Production config: the address comes from the environment.
+    vi.stubEnv("CONTACT_EMAIL", contactEmail);
     server = await listen(createApp(), 0);
     client = await connectClient(server.url);
   });
 
   afterAll(async () => {
+    vi.unstubAllEnvs();
     await client.close();
     await server.close();
   });
@@ -115,10 +121,10 @@ describe("agent service over HTTP", () => {
       });
     });
 
-    it("get_contact returns the landing's links", async () => {
+    it("get_contact returns the CONTACT_EMAIL address and the landing's links", async () => {
       const result = await client.callTool({ name: "get_contact" });
       expect(result.structuredContent).toMatchObject({
-        email: profile.links.email,
+        email: contactEmail,
         github: profile.links.github,
         linkedin: profile.links.linkedin,
       });
@@ -140,7 +146,7 @@ describe("agent service over HTTP", () => {
         fetch: fetchFromSite,
       });
 
-      expect(email).toBe(profile.links.email);
+      expect(email).toBe(contactEmail);
       expect(seen[0].headers.get("access-control-allow-origin")).toBe("*");
     });
 
@@ -174,6 +180,24 @@ describe("agent service over HTTP", () => {
         .catch((error: Error) => ({ isError: true, error }));
       expect(result.isError).toBe(true);
     });
+  });
+});
+
+describe("without CONTACT_EMAIL (local development)", () => {
+  it("get_contact gives no email, and the site's lookup falls back", async () => {
+    vi.stubEnv("CONTACT_EMAIL", "");
+    const server = await listen(createApp(), 0);
+    const client = await connectClient(server.url);
+    try {
+      const result = await client.callTool({ name: "get_contact" });
+      expect(result.structuredContent).not.toHaveProperty("email");
+      expect(result.structuredContent).toMatchObject({ linkedin: profile.links.linkedin });
+      expect(await fetchContactEmail(new URL("/mcp", server.url).href)).toBeNull();
+    } finally {
+      vi.unstubAllEnvs();
+      await client.close();
+      await server.close();
+    }
   });
 });
 

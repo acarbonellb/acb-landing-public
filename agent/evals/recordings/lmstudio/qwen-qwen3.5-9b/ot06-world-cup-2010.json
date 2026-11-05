@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "6b23549d753eff8d51912f683c0765363a9966ab5762adfa5542a4c0cbcb074b",
-      "latencyMs": 5066,
+      "latencyMs": 5113,
       "events": [
         {
           "type": "input_usage",
@@ -87,6 +87,14 @@
         },
         {
           "type": "text_delta",
+          "text": " él"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
           "text": " su"
         },
         {
@@ -120,10 +128,6 @@
         {
           "type": "text_delta",
           "text": " agentes"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
         },
         {
           "type": "text_delta",
@@ -212,17 +216,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre Alberto?",
+            "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre él: su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre Alberto?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2255,
-              "outputTokens": 199
+              "outputTokens": 195
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre Alberto?"
+                "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre él: su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre Alberto?"
               }
             ]
           }

@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "a09e076b7bcf0ad41f73be21cd6dc71c8cfca7eafc37a323ff64b3b875e0f329",
-      "latencyMs": 1671,
+      "latencyMs": 1769,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "iMscw5LkYEvF2qfPpdhwYosHSLvkD70S",
+                "id": "3mDpbtDUz8SuJU3haK0Dfy6W6wbfp8OV",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -34,7 +34,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "iMscw5LkYEvF2qfPpdhwYosHSLvkD70S",
+                "id": "3mDpbtDUz8SuJU3haK0Dfy6W6wbfp8OV",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,8 +46,8 @@
       ]
     },
     {
-      "requestHash": "029ad17ed2e2bfab414e88911d7dbd14026481b478b7710158c178363a201598",
-      "latencyMs": 1362,
+      "requestHash": "9e4cbdf7104e475231fec5c6fb4fa09b82611b321c022734bc11e1d93093dd79",
+      "latencyMs": 478,
       "events": [
         {
           "type": "input_usage",
@@ -67,31 +67,19 @@
         },
         {
           "type": "text_delta",
-          "text": " **"
+          "text": " TypeScript"
         },
         {
           "type": "text_delta",
-          "text": "Type"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "Script"
+          "text": " JavaScript"
         },
         {
           "type": "text_delta",
-          "text": "**,"
-        },
-        {
-          "type": "text_delta",
-          "text": " **"
-        },
-        {
-          "type": "text_delta",
-          "text": "JavaScript"
-        },
-        {
-          "type": "text_delta",
-          "text": "**,"
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -99,31 +87,7 @@
         },
         {
           "type": "text_delta",
-          "text": " **"
-        },
-        {
-          "type": "text_delta",
-          "text": "Ruby"
-        },
-        {
-          "type": "text_delta",
-          "text": "**"
-        },
-        {
-          "type": "text_delta",
-          "text": " as"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " programming"
-        },
-        {
-          "type": "text_delta",
-          "text": " languages"
+          "text": " Ruby"
         },
         {
           "type": "text_delta",
@@ -132,17 +96,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** as his programming languages.",
+            "text": "Alberto uses TypeScript, JavaScript, and Ruby.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2328,
-              "outputTokens": 50
+              "outputTokens": 13
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses **TypeScript**, **JavaScript**, and **Ruby** as his programming languages."
+                "text": "Alberto uses TypeScript, JavaScript, and Ruby."
               }
             ]
           }

@@ -64,7 +64,7 @@ describe("runChat", () => {
       id: "call_1",
       name: "get_contact",
       isError: false,
-      output: { location: profile.location, email: profile.links.email },
+      output: { location: profile.location, linkedin: profile.links.linkedin },
     });
     expect(textOf(events)).toBe("He works remotely from Spain.");
     expect(events.at(-1)).toEqual({

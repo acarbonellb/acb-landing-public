@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { runChat, systemPrompt, type ChatMessage } from "../chat";
 import type { ModelClient } from "../model";
 import { createToolset } from "../tools";
+import { evalContent } from "./content";
 import {
   createRecordingModelClient,
   createReplayModelClient,
@@ -47,7 +48,7 @@ async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: R
   const usage = { inputTokens: 0, outputTokens: 0 };
   for await (const event of runChat({
     model,
-    toolset: createToolset(),
+    toolset: createToolset(evalContent),
     system,
     messages: conversation(evalCase),
   })) {

@@ -14,7 +14,6 @@ const fixture: Content = {
     summary: ["First paragraph.", "Second paragraph."],
     contactNote: "Write to me.",
     links: {
-      email: "ada@example.com",
       github: "https://github.com/ada",
       linkedin: "https://www.linkedin.com/in/ada/",
     },
@@ -76,6 +75,7 @@ const fixture: Content = {
     },
   ],
   languages: [{ name: "English", level: "Native" }],
+  contactEmail: "ada@example.com",
 };
 
 const tools = createToolset(fixture);
@@ -240,6 +240,30 @@ describe("get_contact", () => {
       github: "https://github.com/ada",
       linkedin: "https://www.linkedin.com/in/ada/",
       location: "London",
+    });
+  });
+
+  // Local development: CONTACT_EMAIL unset, so no address to give (#51).
+  describe("without a contact email", () => {
+    const noEmail = createToolset({ ...fixture, contactEmail: undefined });
+    const contact = () => noEmail.list().find((t) => t.name === "get_contact")!;
+
+    it("returns GitHub and LinkedIn only, and says to message him on LinkedIn", () => {
+      const output = noEmail.call("get_contact", {});
+      expect(output).toEqual({
+        name: "Ada Lovelace",
+        note: "No email address is available here: message Ada Lovelace on LinkedIn.",
+        github: "https://github.com/ada",
+        linkedin: "https://www.linkedin.com/in/ada/",
+        location: "London",
+      });
+      expect(contact().outputSchema.safeParse(output).success).toBe(true);
+    });
+
+    it("leaves email out of its description", () => {
+      expect(contact().description).not.toMatch(/\bemail,/);
+      expect(contact().description).toMatch(/no email address/i);
+      expect(contact().description).toMatch(/LinkedIn/);
     });
   });
 });

@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "3309843820908be564bf3df3479c2fd7b8e01c6bd1230fa55df9a4484993f517",
-      "latencyMs": 1232,
+      "latencyMs": 783,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01GwPPH5ouQsKjaxgP8EWXds",
+                "id": "toolu_01TaGtFnjWpenDeBsEWBrwSX",
                 "name": "get_projects",
                 "input": {}
               }
@@ -32,7 +32,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01GwPPH5ouQsKjaxgP8EWXds",
+                "id": "toolu_01TaGtFnjWpenDeBsEWBrwSX",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -45,8 +45,8 @@
       ]
     },
     {
-      "requestHash": "93d2cfe437d5d44886e62bf0c776aecbda85b1b0b323044bd15e5afe7efbcdaf",
-      "latencyMs": 1646,
+      "requestHash": "667f5d0eacfd3722b2352395b59eea2cd6077a44c1b3ca1f0696463eb3501df3",
+      "latencyMs": 1762,
       "events": [
         {
           "type": "input_usage",
@@ -74,11 +74,7 @@
         },
         {
           "type": "text_delta",
-          "text": " then"
-        },
-        {
-          "type": "text_delta",
-          "text": " g"
+          "text": " then g"
         },
         {
           "type": "text_delta",
@@ -86,27 +82,27 @@
         },
         {
           "type": "text_delta",
-          "text": " admin an approve, reject"
+          "text": " admin an approve,"
         },
         {
           "type": "text_delta",
-          "text": ", or request-info recommend"
+          "text": " reject, or request-info rec"
         },
         {
           "type": "text_delta",
-          "text": "ation along"
+          "text": "ommendation along"
         },
         {
           "type": "text_delta",
-          "text": " with the reasons.\n\nIt"
+          "text": " with its reasons.\n\nIt"
         },
         {
           "type": "text_delta",
-          "text": " uses graded autonomy"
+          "text": " u"
         },
         {
           "type": "text_delta",
-          "text": ":"
+          "text": "ses graded autonomy:"
         },
         {
           "type": "text_delta",
@@ -134,63 +130,67 @@
         },
         {
           "type": "text_delta",
-          "text": " project is at"
+          "text": " project is currently in offline ev"
         },
         {
           "type": "text_delta",
-          "text": " the"
+          "text": "als,"
         },
         {
           "type": "text_delta",
-          "text": " offline-evals stage."
+          "text": " on"
         },
         {
           "type": "text_delta",
-          "text": " In 31 test"
+          "text": " 31 cases:"
         },
         {
           "type": "text_delta",
-          "text": " cases, the"
+          "text": "\n- On a local 9B"
         },
         {
           "type": "text_delta",
-          "text": " team"
+          "text": " model, approved fraud f"
         },
         {
           "type": "text_delta",
-          "text": " t"
+          "text": "ell from 54% to 8"
         },
         {
           "type": "text_delta",
-          "text": "ried"
+          "text": "% over twelve iterations"
         },
         {
           "type": "text_delta",
-          "text": " a"
+          "text": ", and fraud approved without"
         },
         {
           "type": "text_delta",
-          "text": " local 9B model and then"
+          "text": " a human f"
         },
         {
           "type": "text_delta",
-          "text": " ch"
+          "text": "ell from 27% to 0"
         },
         {
           "type": "text_delta",
-          "text": "ose Claude Haiku"
+          "text": "%.\n- For deployment"
         },
         {
           "type": "text_delta",
-          "text": " 5.5 for deploy"
+          "text": ", Claude Haiku"
         },
         {
           "type": "text_delta",
-          "text": "ment."
+          "text": " 5.5 was chos"
         },
         {
           "type": "text_delta",
-          "text": " Haiku re"
+          "text": "en."
+        },
+        {
+          "type": "text_delta",
+          "text": " It re"
         },
         {
           "type": "text_delta",
@@ -198,66 +198,90 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": " vers"
         },
         {
           "type": "text_delta",
-          "text": "vs."
+          "text": "us 71%"
         },
         {
           "type": "text_delta",
-          "text": " 71% for the local model),"
+          "text": " for the local model, and 1"
         },
         {
           "type": "text_delta",
-          "text": " appro"
+          "text": "% of fraud was"
         },
         {
           "type": "text_delta",
-          "text": "ved 1% of fraud"
+          "text": " approved versus 8%."
         },
         {
           "type": "text_delta",
-          "text": " c"
+          "text": " It costs about $0.002"
         },
         {
           "type": "text_delta",
-          "text": "ases (vs. 8%"
+          "text": " per review."
         },
         {
           "type": "text_delta",
-          "text": "), and costs about $0."
+          "text": " Haiku's"
         },
         {
           "type": "text_delta",
-          "text": "002 per review. The st"
+          "text": " fig"
         },
         {
           "type": "text_delta",
-          "text": "ack is TypeScript,"
+          "text": "ures are the"
         },
         {
           "type": "text_delta",
-          "text": " PostgreSQL and"
+          "text": " mean of "
         },
         {
           "type": "text_delta",
-          "text": " GCP."
+          "text": "3 runs;"
+        },
+        {
+          "type": "text_delta",
+          "text": " the local model had"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "1 run.\n\nThe stack"
+        },
+        {
+          "type": "text_delta",
+          "text": " is TypeScript, P"
+        },
+        {
+          "type": "text_delta",
+          "text": "ostgreSQL and G"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's Fraud Detection Agent is built for an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation along with the reasons.\n\nIt uses graded autonomy: it auto-approves only when the evidence is verified in code, and web sources can hold a decision back but can never approve one.\n\nThe project is at the offline-evals stage. In 31 test cases, the team tried a local 9B model and then chose Claude Haiku 5.5 for deployment. Haiku reached 86% accuracy (vs. 71% for the local model), approved 1% of fraud cases (vs. 8%), and costs about $0.002 per review. The stack is TypeScript, PostgreSQL and GCP.",
+            "text": "Alberto's Fraud Detection Agent is built for an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation along with its reasons.\n\nIt uses graded autonomy: it auto-approves only when the evidence is verified in code, and web sources can hold a decision back but can never approve one.\n\nThe project is currently in offline evals, on 31 cases:\n- On a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human fell from 27% to 0%.\n- For deployment, Claude Haiku 5.5 was chosen. It reached 86% accuracy versus 71% for the local model, and 1% of fraud was approved versus 8%. It costs about $0.002 per review. Haiku's figures are the mean of 3 runs; the local model had 1 run.\n\nThe stack is TypeScript, PostgreSQL and GCP.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2201,
-              "outputTokens": 250
+              "outputTokens": 314
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's Fraud Detection Agent is built for an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation along with the reasons.\n\nIt uses graded autonomy: it auto-approves only when the evidence is verified in code, and web sources can hold a decision back but can never approve one.\n\nThe project is at the offline-evals stage. In 31 test cases, the team tried a local 9B model and then chose Claude Haiku 5.5 for deployment. Haiku reached 86% accuracy (vs. 71% for the local model), approved 1% of fraud cases (vs. 8%), and costs about $0.002 per review. The stack is TypeScript, PostgreSQL and GCP."
+                "text": "Alberto's Fraud Detection Agent is built for an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation along with its reasons.\n\nIt uses graded autonomy: it auto-approves only when the evidence is verified in code, and web sources can hold a decision back but can never approve one.\n\nThe project is currently in offline evals, on 31 cases:\n- On a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human fell from 27% to 0%.\n- For deployment, Claude Haiku 5.5 was chosen. It reached 86% accuracy versus 71% for the local model, and 1% of fraud was approved versus 8%. It costs about $0.002 per review. Haiku's figures are the mean of 3 runs; the local model had 1 run.\n\nThe stack is TypeScript, PostgreSQL and GCP."
               }
             ]
           }

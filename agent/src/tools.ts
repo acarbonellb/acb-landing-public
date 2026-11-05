@@ -21,6 +21,11 @@ export type Content = {
   skillGroups: SkillGroup[];
   education: Education[];
   languages: SpokenLanguage[];
+  /**
+   * The address `get_contact` gives out. Not in the public repo: production
+   * reads it from `CONTACT_EMAIL` (`config.ts`); without it there's no email.
+   */
+  contactEmail?: string;
 };
 
 export const siteContent: Content = {
@@ -219,21 +224,24 @@ function buildTools(content: Content) {
     get_contact: defineTool({
       name: "get_contact",
       title: "Contact",
-      description:
-        "How to reach Alberto: email, GitHub and LinkedIn, plus where he works from.",
+      description: content.contactEmail
+        ? "How to reach Alberto: email, GitHub and LinkedIn, plus where he works from."
+        : "How to reach Alberto: GitHub and LinkedIn, plus where he works from. No email address is available here: point people to LinkedIn to message him.",
       inputSchema: z.object({}).strict(),
       outputSchema: z.object({
         name: z.string(),
         note: z.string(),
-        email: z.string(),
+        email: z.string().optional(),
         github: z.string(),
         linkedin: z.string(),
         location: z.string(),
       }),
       run: () => ({
         name: content.profile.name,
-        note: content.profile.contactNote,
-        email: content.profile.links.email,
+        note: content.contactEmail
+          ? content.profile.contactNote
+          : `No email address is available here: message ${content.profile.name} on LinkedIn.`,
+        ...(content.contactEmail ? { email: content.contactEmail } : {}),
         github: content.profile.links.github,
         linkedin: content.profile.links.linkedin,
         location: content.profile.location,

@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "c8eeee643b495cda1a64013fa51684ba90603088709c4be44ae8446ecf5decd5",
-      "latencyMs": 4419,
+      "latencyMs": 3993,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "z3Gyc0qx1uLrgxhZRGHwhdu9OR0bWPHo",
+                "id": "QRGHOtEKzS8ya11rIFICYotYwgw9kyNT",
                 "name": "get_profile",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2250,
-              "outputTokens": 174
+              "outputTokens": 148
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "z3Gyc0qx1uLrgxhZRGHwhdu9OR0bWPHo",
+                "id": "QRGHOtEKzS8ya11rIFICYotYwgw9kyNT",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "783d506ef04c6e86df2a7e5c019e37bf61b009eecf161857c4d484affa97c6e1",
-      "latencyMs": 982,
+      "requestHash": "9a77f8d05a881d66e6e59dc55d463d0739571e873d3cd280b9b55c7ef1ddaada",
+      "latencyMs": 1047,
       "events": [
         {
           "type": "input_usage",
@@ -119,11 +119,11 @@
         },
         {
           "type": "text_delta",
-          "text": " AI"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " agents"
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -131,11 +131,11 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " AI"
         },
         {
           "type": "text_delta",
-          "text": " experience"
+          "text": " agents"
         },
         {
           "type": "text_delta",
@@ -164,7 +164,7 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?",
+            "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
@@ -174,7 +174,7 @@
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?"
+                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?"
               }
             ]
           }

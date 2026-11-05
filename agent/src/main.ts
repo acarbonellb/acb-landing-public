@@ -10,6 +10,9 @@ console.log(`Chat endpoint: ${server.url}${paths.chat}`);
 if (!process.env.ANTHROPIC_API_KEY) {
   console.warn("ANTHROPIC_API_KEY is not set: the chat endpoint answers 503.");
 }
+if (!process.env.CONTACT_EMAIL) {
+  console.warn("CONTACT_EMAIL is not set: get_contact offers LinkedIn and GitHub only.");
+}
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
   process.once(signal, () => {

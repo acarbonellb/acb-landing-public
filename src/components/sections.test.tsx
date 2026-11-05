@@ -29,7 +29,6 @@ const profile: Profile = {
   summary: ["First about paragraph.", "Second about paragraph."],
   contactNote: "Say hi.",
   links: {
-    email: "ada@example.com",
     github: "https://github.com/ada",
     linkedin: "https://www.linkedin.com/in/ada/",
   },
@@ -350,7 +349,6 @@ describe("Contact", () => {
   it("never puts the address in the page (#50): the agent gives it out", () => {
     const html = renderToString(<Contact profile={profile} />);
 
-    expect(html).not.toContain("ada@example.com");
     expect(html).not.toContain("@");
   });
 });

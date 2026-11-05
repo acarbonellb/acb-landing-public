@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "5a424cd3d2de82f281d1896106d8067bd03e14d8c7d64d24e2ed3a1a1e0b3f79",
-      "latencyMs": 3629,
+      "latencyMs": 3067,
       "events": [
         {
           "type": "input_usage",
@@ -87,7 +87,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -99,38 +103,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
+            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or his work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2293,
-              "outputTokens": 139
+              "outputTokens": 110
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
+                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or his work experience?"
               }
             ]
           }

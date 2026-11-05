@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "03c932684ef930da7fe3d58c20b92754884e2abba16895ded98add6f375c4f35",
-      "latencyMs": 1420,
+      "latencyMs": 6815,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,12 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "y1d7U9ztbl2qhlG5LUe9Zs7hlMdXwmuH",
+                "id": "ycQSWIkDjsuE32BZksrqNrG0luWexuOG",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "3VAb8aLNQaQ6BQjvp445jP3i46kXpHtB",
                 "name": "get_contact",
                 "input": {}
               }
@@ -27,12 +32,18 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2249,
-              "outputTokens": 53
+              "outputTokens": 259
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "y1d7U9ztbl2qhlG5LUe9Zs7hlMdXwmuH",
+                "id": "ycQSWIkDjsuE32BZksrqNrG0luWexuOG",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "3VAb8aLNQaQ6BQjvp445jP3i46kXpHtB",
                 "name": "get_contact",
                 "input": {}
               }
@@ -42,12 +53,12 @@
       ]
     },
     {
-      "requestHash": "9b6e484a876b04ccdeda82f216bfa577a2ee648f83e11af08207365e01badf8b",
-      "latencyMs": 446,
+      "requestHash": "e26c96f767c9a6d1f69fcabcf6b05157f0d7672eac3d13f644787edb98604504",
+      "latencyMs": 587,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2352
+          "inputTokens": 2632
         },
         {
           "type": "text_delta",
@@ -96,7 +107,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2352,
+              "inputTokens": 2632,
               "outputTokens": 13
             },
             "providerContent": [

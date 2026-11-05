@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "87eb447673f79611abd38243d60f75f2ba69fea60f2f66e70e9fb3a4361698cb",
-      "latencyMs": 1001,
+      "latencyMs": 1329,
       "events": [
         {
           "type": "input_usage",
@@ -19,33 +19,51 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01WSWNeWrJzgZrfLLGKUdv1u",
+                "id": "toolu_017FvtKnyRpHk3EkQgd1sJVg",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
+                }
+              },
+              {
+                "id": "toolu_01JNdzav4ufi2Nu215gbPRNy",
+                "name": "get_experience",
+                "input": {
+                  "company": "go"
                 }
               }
             ],
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1605,
-              "outputTokens": 91
+              "outputTokens": 192
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQS2QUKEAgTGAI4AUIIdGhpbmtpbmcSDEhMUJqfFKOlleXE6xoMTPBcJXR7QQdG4YoxIjDTjTVWaAB8YXwormgjyYORpI6sAB9GA9wWD0ZK5bvbpG7fQq3nvj9YkTPgxUUIEUEq9gSK15PY6icKYnAD42K0iW3ZKK0AizNWZ/FME6l6VteTAMS5bOQLnhmwsom/xMPbX1a2KYfXDEdwM/W++usHR99dQsUsJGRYCVYThx0hybl7nBoBtWDRRpEIoGY8sfLY74d6rV+N9OoLBPHG98aNNjXO7Jy8UF3szkFxeMO36xa5RPRHZSD/cDjIC9tvHkofxSeRRvhJms1g0M5H1mS7XtEgU342nckMivIeOOTEVmgO2F5D80o1mc5JIxYTZco9D6rtgkLYClORXzsCV6cH3nteFPuFd4d4pF+eiXojjwnfvht4Po3RvNPznN22MoD2VUYvJPFN3k0qzGLVWjl+Z2qwaNhuGgR6LmF/Gx7BtmUbbdcXB5Jlm/548i1sbyu/VlgWyZ/ae4qsoNWF6BCd7U+cI+YPbNzn0dEMHe/9uM4KOLFL8r4gG1Bn8pHTuAve9hnxVbm/jqfIaUTRrl0NVNnD28m/JH0/4ioFnRDC4hjJ3SoCWYvZbp+Wdu08IPQ9Ilo8YBCJuiR7Mfj92LmKeSTF4CC9Hti5TA0zEiJRwlk4qIIcRZrCLwihpWn/h4by0MlvKFvSn2Xkv8Hpga4+Egd/9Cqpn0Z2unD2wKpA2bGefxzuolIj4PrgWMUYSTq3cxZUKXw+NpuU7CcJX6/uPYuas4t5cZ0YQlK+yYLpvGFmXzrAF42ZbtwI6rSTGwh2kZhyMV2cEo4cf3iU2g0skZAlZbdBtiyWw2A/566yPHPRWcw8efC7bYmCMXJpXQZoAB8h2fAPfBqhYXAO/8bYPY8D1bJGmVIIBx/bIIetKvMcHTKDIRh4PWvZtJXLuY4N3rj6RilpAWUYAQ=="
+                "signature": "CAQSiwcKEAgTGAI4AUIIdGhpbmtpbmcSDNPcBr3SmZU7lYC3sRoMlOGeJqf9FLyYy5gIIjDpSbxbfA4FC3dQF+A94YSPRvJ5AK28ITwILbS68NjdjC/1n3GH4JcrsE2o/EPPHsUqqAZIaihkJfEvbdPv4GEPciq864lW+lKlSYkIk/btxFjKd2c3sxph/a0y+jXLDkBvkjz1EGobLOQbYIxVfflqtY6uV50JYJCHKWKLQ3iE9vECbSmw/gN8xuKHVKhek0V68WyMoNq2gIQKGf32Vvg17OZHzi0OqvlI1MkUdwvOdFbLn00vzZ3yI+w4XjlEHcPqZW+eXiuPrRgt2IIyMtBGrPq7XVbaB1KcvH7yg8upL9Ri0uQeH3LCeKv9g/26jLqngLOwMNZieThjvIH+sW2ZIxZCtC/99vGlTln7STmVjD1BcrpznDrsr0/LxA3aUw2kECbbLOvUirHuocnO4kXsKg0vw40cnr+2HOL0aAjb5OCyGnpFXJzCDMRytwgs3zthENMjSrfN6Xyy0am+dPJTHaADaK1jT+5+0mruE3TSb/xv/sQ6QkTk4DQglDXVBTAqsseHXuohLAstheq9ei8zDNuZ0UgqOwHIG2L+VbzKtWzx+//GQU+WrEfyEJm4rZCkzkvVhIvi3uJmcxmNytJ6bypBg5oJyHwas+e00EGDRwCjwkboVF1Vv05m5dnGleB52vZcSg0VnCVcEbKJpeWP7JkPZGWE0iA6QTJesJ0hW0UL6e09+wPZGHyOUypdhdy7dXuV03/9Q5Fi24OluxkZLIfaawjin/6aYWtyBiWjN7RMFztWRCKVcoPEnQQCqDv/JBAafo/kZtFnEz6Lvv6IlxceyXoSzk6WAkrpLqAHTcE4JGV4YtodgcNLSPWz4bLyoSVd1IK4i5Dd0Gambzb88hOXx3VcgVzm0qUvjzHZo+bQyKLq1zs+UrSJ0IEQfwjrtQWc96l7ASa4SeuzdUXNMb0g9OJTqpjyf3GUXZ+4EzjfvJsePDXxhKH63reW+qn6+/o1mgHiSlIGjVHDvR/WMQnawKyo+GHb0o6lS0dxu4Ku+6j/cwL7dY8n2ZMVRxqHlLhODjOgwg3W86EThkWQ/WxZr7bxXqEsQIfSiWVZCL1zaIh1C7/pCSAX8SimW1TQqjuTnpUOrQ/6o7sxf+9WmCRT1AgmAY5RnxYzms4OKY3I1/ydpr1LDcIeGAE="
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01WSWNeWrJzgZrfLLGKUdv1u",
+                "id": "toolu_017FvtKnyRpHk3EkQgd1sJVg",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
                 },
                 "input": {
                   "group": "languages"
+                }
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01JNdzav4ufi2Nu215gbPRNy",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "go"
                 }
               }
             ]
@@ -54,120 +72,72 @@
       ]
     },
     {
-      "requestHash": "7a6731647183c4277eb7bdad88f10d70f62a7cb5f93bfedc33736b356d6f4dd7",
-      "latencyMs": 1291,
+      "requestHash": "c698518b35c8ec0c166c6406e014c536a8afc25317ada82dc759857470266fde",
+      "latencyMs": 1021,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1746
-        },
-        {
-          "type": "turn_end",
-          "turn": {
-            "text": "",
-            "toolCalls": [
-              {
-                "id": "toolu_01WryfYapS7CM7CHTpUEFqbH",
-                "name": "get_experience",
-                "input": {}
-              }
-            ],
-            "stopReason": "tool_use",
-            "usage": {
-              "inputTokens": 1746,
-              "outputTokens": 169
-            },
-            "providerContent": [
-              {
-                "type": "thinking",
-                "thinking": "",
-                "signature": "CAQS6ggKEAgTGAI4AUIIdGhpbmtpbmcSDHJG6iaUOtIlB91QPhoMXgriz4MN1KCVIToLIjBsUT3HYYdjswe8slbIb3lugeK+pa88fADOhhkoCR8gM8Kr63CXYps5eVe7sigSP8YqhwgeW0QVTlCEsUUhXUtGAeO1AB9fxGv4obFIsA68igXClRQVI+isxDaGNfmgXrRyB3JG6mbI/A+soQWT+O2f6jMIYZFfCJ/rfbbJRd5YylZEON/snsF9DCAGAnHWq0EttcLUSmxJ/qr5aAjz6xad6kQxmCMqDHhynb6Rr37vByYntYDGDb/JHBzkgYDn08ArtLleJOUMkO9EwxoSdZI5v/NUxz34ZoobpqD5WPj42E1/zJkC5i9XVbbk9Za7UWdEn69RpAzByt27KzTdy8QMT1/HAmcVAq+TYzQRKuv7oKXOby3ARRiTR644Cw40WEUDQVutzEAbxyUdBayCrKt2+HZLukIBIJ0HaS1IQq3c4VJl6ZF4k2WHGqg0e+8wwYEeHTIIO5sZHCJXc3eJ557IWdo8vwrK9JH7EyDCX2aVd0fm+JSFAWCK1L1CwXLImjE8/gXNaneaUxzujxNSFMfDhWaB3LrLIKBv8mr7BFujTxRlKOHAYY2CHTwhZxD/R/dan+NTPMKT97Jr7fqJEI5xPXu6QQUti+nB4R4+12EatDCiL9jGwd0C79CyAMorUin9sMOcU96pGaBeaP/kp6HyZ4m7avgZ+1mvVMmP3axd+bq4wD0LUKC62suvh7YVcbp+xnwxEVEfwVS3AsM2j3TsoZOMG99n1ssiclurEPkB4FejcmAW2XgTMLviSK+LZKLv1VoxIWKSab5pFSZLd/KRuOBmBodKwEkkh7BnJJl/ykefd30/wePjq4CmxlaGiZum0Se4YBGT0yTqdqIkjku825wtu0MeZ/ZcSa8dfP/m4f1hrB39kfSZtvL62uveXNzcrKm25HZyXG3mWClABOmKP+xrUCbDCPQogw7vQkMz3h5sGwFlTqMhSZnXjGBnWa0jgjQIYK7Y72X6+15acfxeF6CcRphxC4TJsds9nUa12/bkxUAgl0rv9saCbh4SV1DR07WV1KoxrD6NcBMw1XTNebaGzcaNyeNEZt7aGd6Y+HNl6GsvFq8HygWKDaDN/ydEm/XGLWyvMQpRHE+PChPKjxelswobj3iJL/buHY/5j2whmh/XlhH2UUkMiIam0pduVdadlwVpiuYdL16LGzUpklNhQdzvaeM4ioGK0bKgSBg4Zb2L5ik61+wUe0C9g2zvvPBAx36MLHjNvlXdgWxZbd6iyN0pVsLRzXxNhSagjH00OMaX9OblNvQeaPb8JQi7XAOLqd61B2imDsN6f6M8+FF0H+p/JifKmtquFwN4/SgcR7lXtFq20DdSQ00OlqPdH9oggvi0DD0aypBo/zKzQJNL34Ya4S3/pxFyqxsRmTgJEA8Z3LqwJd0fUbgHdcTf2zUSLw6roBRCi8i8Z/D0EvOJ9sCneypQuxgB"
-              },
-              {
-                "type": "tool_use",
-                "id": "toolu_01WryfYapS7CM7CHTpUEFqbH",
-                "name": "get_experience",
-                "caller": {
-                  "type": "direct"
-                },
-                "input": {}
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "requestHash": "ecb2a616f552a22ce1fa6d08e5d7915df4137e3bea6c01662440034009386f56",
-      "latencyMs": 996,
-      "events": [
-        {
-          "type": "input_usage",
-          "inputTokens": 2450
+          "inputTokens": 1908
         },
         {
           "type": "text_delta",
-          "text": "I don't have any"
+          "text": "Alberto's profile does"
         },
         {
           "type": "text_delta",
-          "text": " information about"
+          "text": "n't list Go."
         },
         {
           "type": "text_delta",
-          "text": " Alberto's Go exper"
+          "text": " His list"
         },
         {
           "type": "text_delta",
-          "text": "ience."
+          "text": "ed languages are TypeSc"
         },
         {
           "type": "text_delta",
-          "text": " Go"
+          "text": "ript, JavaScript and"
         },
         {
           "type": "text_delta",
-          "text": " isn't listed in his langu"
+          "text": " Ruby, and no role"
         },
         {
           "type": "text_delta",
-          "text": "ages ("
+          "text": " in"
         },
         {
           "type": "text_delta",
-          "text": "TypeScript, Jav"
+          "text": " his work history m"
         },
         {
           "type": "text_delta",
-          "text": "aScript, Ruby"
+          "text": "entions Go."
         },
         {
           "type": "text_delta",
-          "text": ")"
+          "text": " So I"
         },
         {
           "type": "text_delta",
-          "text": " or in his work history, so"
+          "text": " can"
         },
         {
           "type": "text_delta",
-          "text": " I can't say"
+          "text": "'t give you a number of years for"
         },
         {
           "type": "text_delta",
-          "text": " how many years he has with it."
+          "text": " it. You"
         },
         {
           "type": "text_delta",
-          "text": " You"
+          "text": " could"
         },
         {
           "type": "text_delta",
-          "text": " can "
-        },
-        {
-          "type": "text_delta",
-          "text": "ask him directly through"
+          "text": " ask him directly through"
         },
         {
           "type": "text_delta",
@@ -188,17 +158,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "I don't have any information about Alberto's Go experience. Go isn't listed in his languages (TypeScript, JavaScript, Ruby) or in his work history, so I can't say how many years he has with it. You can ask him directly through the contact details on his site.",
+            "text": "Alberto's profile doesn't list Go. His listed languages are TypeScript, JavaScript and Ruby, and no role in his work history mentions Go. So I can't give you a number of years for it. You could ask him directly through the contact details on his site.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2450,
-              "outputTokens": 83
+              "inputTokens": 1908,
+              "outputTokens": 82
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have any information about Alberto's Go experience. Go isn't listed in his languages (TypeScript, JavaScript, Ruby) or in his work history, so I can't say how many years he has with it. You can ask him directly through the contact details on his site."
+                "text": "Alberto's profile doesn't list Go. His listed languages are TypeScript, JavaScript and Ruby, and no role in his work history mentions Go. So I can't give you a number of years for it. You could ask him directly through the contact details on his site."
               }
             ]
           }
