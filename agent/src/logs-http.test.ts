@@ -213,7 +213,7 @@ function clock(iso: string) {
 
 describe("spend alert events", () => {
   // $1 per output token, nothing for input; each answer spends $2 of a $10
-  // budget, and reserves its worst case of $2 while it runs.
+  // spend cap, and reserves its worst case of $2 while it runs.
   const pricing = { inputUsdPerMTok: 0, outputUsdPerMTok: 1_000_000 };
   const chatLimits = { maxModelCalls: 1, maxTokens: 2, maxRequestTokens: 2 };
   const answer: ScriptedResponse = { text: "Hi.", usage: { inputTokens: 10, outputTokens: 2 } };
@@ -223,7 +223,7 @@ describe("spend alert events", () => {
       chatLimits,
       chatRateLimiter: unlimited,
       modelClient: createFakeModel(Array.from({ length: 20 }, () => answer)),
-      spendCap: createStoreSpendCap({ store, budgetUsd: 10, pricing, now: time.now }),
+      spendCap: createStoreSpendCap({ store, capUsd: 10, pricing, now: time.now }),
     });
   }
 
@@ -239,7 +239,7 @@ describe("spend alert events", () => {
         thresholdPercent: 50,
         month: "2026-11",
         spentUsd: 6,
-        budgetUsd: 10,
+        capUsd: 10,
       }),
       expect.objectContaining({ severity: "WARNING", thresholdPercent: 80, spentUsd: 8 }),
     ]);
@@ -258,7 +258,7 @@ describe("spend alert events", () => {
         severity: "ERROR",
         month: "2026-11",
         spentUsd: 10,
-        budgetUsd: 10,
+        capUsd: 10,
         resetsAt: "2026-12-01T00:00:00.000Z",
         requestId: refused[0].requestId,
       }),

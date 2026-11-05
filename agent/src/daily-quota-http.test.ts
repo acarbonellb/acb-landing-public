@@ -135,7 +135,7 @@ describe("daily spend quota", () => {
     const closed = await start({
       chatLimits,
       dailyQuota,
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing: outputOnly }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing: outputOnly }),
     });
     for (let i = 0; i < 3; i++) expect((await chat(closed, "198.51.100.1")).status).toBe(503);
 

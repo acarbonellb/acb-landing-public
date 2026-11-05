@@ -28,11 +28,11 @@ function flakyStore() {
 /** Runs one metered chat over memory adapters and a fake model. */
 async function run(script: ScriptedResponse[], { failSettle = false } = {}) {
   const store = flakyStore();
-  const spendCap = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+  const spendCap = createStoreSpendCap({ store, capUsd: 10, pricing });
   const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing });
   const agent = createChatAgent({ model: createFakeModel(script), toolset: createToolset() });
   const status = await spendCap.reserve({ inputTokens: 0, outputTokens: 0 });
-  if (status.exhausted) throw new Error("budget exhausted");
+  if (status.exhausted) throw new Error("spend cap reached");
   const reservation = failSettle
     ? {
         record: status.reservation.record,

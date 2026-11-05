@@ -152,7 +152,7 @@ describe("usage recording", () => {
   it("counts refusals before streaming: 429 and 503", async () => {
     const { url } = await start([], {
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
     expect((await chat(url)).status).toBe(503);
     expect((await chat(url)).status).toBe(429);
@@ -237,7 +237,7 @@ describe("usage recording", () => {
     const { url } = await start([], {
       usage,
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
 
     const statuses = [];
@@ -256,7 +256,7 @@ describe("usage recording", () => {
     const { url } = await start([], {
       usage: createUsageRecorder({ store, pricing }),
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
 
     counter.down = true;

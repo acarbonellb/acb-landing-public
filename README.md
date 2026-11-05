@@ -176,7 +176,7 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | 400 | `invalid_request` | Not JSON or fails validation (`message` says why), or an earlier answer is unsigned or doesn't match its signature (`message` says so and to reload the page) |
 | 413 | `invalid_request` | Body too large |
 | 429 | `rate_limited` | Too many requests from this IP, or its daily spend quota is used up; body adds `retryAfterSeconds`, header `Retry-After` (exposed to the browser via CORS), and for the daily quota `resetsAt`, the next UTC midnight |
-| 503 | `unavailable` | No model configured, or the monthly spend cap is reached (then body adds `resetsAt`, the ISO time the budget renews, and `message` says so) |
+| 503 | `unavailable` | No model configured, or the monthly spend cap is reached (then body adds `resetsAt`, the ISO time the spend cap renews, and `message` says so) |
 
 **Stream.** Otherwise `200` with `Content-Type: text/event-stream`. Each SSE frame has `event: <type>` and `data: <JSON>`, where the JSON also carries `type`. Use `fetch` and read the body (an `EventSource` can't `POST`). Events, in order of appearance:
 
@@ -227,12 +227,12 @@ With `AGENT_STORE=firestore` the rate limits and the spend cap live in Firestore
 - **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alert events](#logs-and-alert-events)). A reservation whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
 - **Daily quota**: one document per rate-limit key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (URL-encoded), shaped like the monthly spend document, with `expireAt`, the day's end, for the TTL policy below.
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](#usage-stats)).
-- **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining budget.
+- **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining room of a spend limit.
 - **Cost**: a chat request is about two writes for its rate limits (per IP, global), two to reserve (daily quota and spend cap), two per model call, two to settle and one for its usage stats; an MCP request is three (rate limits, usage). A request the refusal cache refuses costs no rate-limit read. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
 - **Failure**: every Firestore REST call (and the metadata server's token request) gives up after 3 s, so a hanging store fails fast instead of holding the request. Each route then follows its own policy (`agent/src/app.ts`):
   - `/mcp` **fails open**: a failed rate-limit check lets the request through, so `get_contact` keeps answering. It is the contact fallback when the chat is down, and it costs nothing.
   - `/stats` **fails open** on its rate limit too, and answers `503 unavailable` JSON if the aggregates can't be read; the page then hides its usage line.
-  - `/chat` **fails closed**: a failed rate-limit check or reservation (daily quota or spend cap) answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts unbudgeted, and the page falls back to `/mcp` for the contact.
+  - `/chat` **fails closed**: a failed rate-limit check or reservation (daily quota or spend cap) answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts without a reservation, and the page falls back to `/mcp` for the contact.
   - Any other error a route doesn't handle reaches the app's error handler, which answers in the route's contract (JSON on `/chat` and `/stats`, a JSON-RPC error `-32603` with `data.code: "unavailable"` on `/mcp`, both `503`), never a plain-text `500`; the CORS headers stay on.
   - If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's reservation stays until it expires, covering that call's cost. Recording usage stats is best effort everywhere.
   - Errors are logged with the collection only (`rateLimits`, `spend`, `dailySpend`, `usage`), never the document id, which can hold a client IP, nor Firestore's response body.
@@ -337,7 +337,7 @@ The agent logs one JSON object per line (`agent/src/log.ts`), which Cloud Loggin
 | `chat_request` | `INFO` | `outcome`, `inputTokens`, `outputTokens`, `costUsd`, `totalMs`, `firstTextMs`, `modelCalls` | Exactly once per `POST /chat` that reaches the route. `outcome` is the usage outcome (`end_turn`, `max_tokens`, `max_iterations`, `refusal`, `error:unavailable`, `error:internal`, `aborted`, `http_429`, `http_503`; see [Usage stats](#usage-stats)) or `http_400` / `http_413` for a malformed or oversized body, or `http_503` for one that failed closed on a store error (none of these three are in the usage stats). `http_429` covers the per-IP limit, the global ceiling and the daily quota alike. Tokens are all the request's model calls, estimated ones included (`0` when refused before streaming); `costUsd` is the estimate at list prices; `totalMs` / `firstTextMs` are ms from arrival to the end of the stream / the first text, `null` when there was none; `modelCalls` counts model calls (`0` when refused) |
 | `chat_failed` | `ERROR` | `error`, `stack` | A chat run hit a bug (the stream ends with `error:internal`) |
 | `unhandled_error` | `ERROR` | `method`, `route`, `error`, `stack` | An error no route handled (or a store failing where the route fails closed), answered `503` in the route's contract |
-| `store_error` | `ERROR` | `operation`, `error`, plus `route` (`rate_limit`), `budget` (`"Spend cap"` or `"Daily quota"`, on `spend_record` and `spend_settle`), `costUsd` (`spend_record`) | One store operation failed. `operation`: `rate_limit` (the route then fails open or closed), `usage_record` (a chat request, MCP request or batch of refusals), `usage_stats`, `spend_record`, `spend_settle`, `provider_limit`. One line per failure: for debugging, not alerting |
+| `store_error` | `ERROR` | `operation`, `error`, plus `route` (`rate_limit`), `guard` (`spend_cap` or `daily_quota`, on `spend_record` and `spend_settle`), `costUsd` (`spend_record`) | One store operation failed. `operation`: `rate_limit` (the route then fails open or closed), `usage_record` (a chat request, MCP request or batch of refusals), `usage_stats`, `spend_record`, `spend_settle`, `provider_limit`. One line per failure: for debugging, not alerting |
 
 `error` is always `"<Name>: <message>"`, with ` (cause: ...)` appended when the error has a cause.
 
@@ -345,8 +345,8 @@ The agent logs one JSON object per line (`agent/src/log.ts`), which Cloud Loggin
 
 | `event` | Severity | Fields | Fires | State kept in |
 | --- | --- | --- | --- | --- |
-| `spend_threshold` | `WARNING` | `thresholdPercent` (`50` or `80`), `month` (`YYYY-MM`), `spentUsd`, `budgetUsd` | When a model call's charge first brings the month's `spentUsd` to at least 50%, then 80%, of `MONTHLY_SPEND_CAP_USD` (never with a `0` cap). Once each per month | `spend/<YYYY-MM>`: `alerted.threshold_50`, `alerted.threshold_80` |
-| `spend_cap_reached` | `ERROR` | `month`, `spentUsd`, `budgetUsd`, `resetsAt` (ISO time the chat reopens: the next UTC month) | When the spend cap first refuses a chat request in the month. Once per month | `spend/<YYYY-MM>`: `alerted.refused` |
+| `spend_threshold` | `WARNING` | `thresholdPercent` (`50` or `80`), `month` (`YYYY-MM`), `spentUsd`, `capUsd` | When a model call's charge first brings the month's `spentUsd` to at least 50%, then 80%, of `MONTHLY_SPEND_CAP_USD` (never with a `0` cap). Once each per month | `spend/<YYYY-MM>`: `alerted.threshold_50`, `alerted.threshold_80` |
+| `spend_cap_reached` | `ERROR` | `month`, `spentUsd`, `capUsd`, `resetsAt` (ISO time the chat reopens: the next UTC month) | When the spend cap first refuses a chat request in the month. Once per month | `spend/<YYYY-MM>`: `alerted.refused` |
 | `provider_limit` | `ERROR` | `month` | When a model call is refused by the provider's own spend or credit limit (a 400 naming the usage limit, or a 402 `billing_error`) and the limit wasn't already noted. Fires again only after `provider_limit_cleared` | `spend/<YYYY-MM>`: `alerted.provider_limit` (`true` while limited) |
 | `provider_limit_cleared` | `INFO` | `month` | The next model call that succeeds after `provider_limit` | the same flag, set back to `false` |
 | `chat_error_rate` | `ERROR` | `week` (`YYYY-Www`), `windowMinutes` (`60`), `streamed`, `errors`, `errorRate` (0 to 1), `threshold` | When, as a streamed chat request ends, the last hour's `error:*` share of streamed requests (all but `http_429` / `http_503`) goes above `ALERT_CHAT_ERROR_RATE`, with at least `ALERT_CHAT_ERROR_MIN_REQUESTS` streamed requests in the hour. Fires again only after `chat_error_rate_recovered` | `usage/<YYYY-Www>`: `alerted.chat_error_rate` (`true` while above), and `errorWindow` |
@@ -369,8 +369,8 @@ or one request's lines: `jsonPayload.requestId="<id>"`.
 
 | Policy | Matches (`jsonPayload.event`) | Severity | The email shows |
 | --- | --- | --- | --- |
-| `Agent: spend_threshold` | `spend_threshold` | Warning | `thresholdPercent`, `month`, `spentUsd`, `budgetUsd` |
-| `Agent: spend_cap_reached` | `spend_cap_reached` | Error | `month`, `spentUsd`, `budgetUsd`, `resetsAt` |
+| `Agent: spend_threshold` | `spend_threshold` | Warning | `thresholdPercent`, `month`, `spentUsd`, `capUsd` |
+| `Agent: spend_cap_reached` | `spend_cap_reached` | Error | `month`, `spentUsd`, `capUsd`, `resetsAt` |
 | `Agent: provider_limit` | `provider_limit` | Error | `month` |
 | `Agent: chat_error_rate` | `chat_error_rate` | Error | `errorRate`, `errors`, `streamed`, `threshold`, `week` |
 | `Agent: store_unavailable` | `store_unavailable` | Error | `collection` |

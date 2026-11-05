@@ -41,7 +41,7 @@ const envSchema = z.object({
   RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(60),
   RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
-  // cap (and its "budget reached" message) is what the visitor meets first.
+  // cap (and its "used up for this month" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
   // The `chat_error_rate` alert event (README, "Logs and alert events"):
   // fires when more than this share of the last hour's streamed requests
@@ -145,7 +145,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
       chatGlobalRequestsPerMinute: e.RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE,
       mcpGlobalRequestsPerMinute: e.RATE_LIMIT_MCP_GLOBAL_PER_MINUTE,
-      monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
+      monthlySpendCapUsd: e.MONTHLY_SPEND_CAP_USD,
       dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,
     },

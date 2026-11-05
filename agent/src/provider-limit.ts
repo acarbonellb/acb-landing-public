@@ -10,7 +10,7 @@
 // instances and cold starts. Each instance also remembers the last state it
 // saw, so a model call that succeeds normally costs no store operation.
 import type { DocumentStore } from "./document-store";
-import { describeError, logEvent } from "./log";
+import { logEvent, logStoreError } from "./log";
 import { ModelUnavailableError, type ModelClient } from "./model";
 import { spendPath } from "./spend-cap";
 
@@ -35,45 +35,42 @@ export function createProviderLimitWatch({
   now = Date.now,
 }: ProviderLimitWatchOptions): ProviderLimitWatch {
   // The limit's state as last seen here; unknown after a cold start.
-  let limited: boolean | undefined;
+  let lastSeen: boolean | undefined;
 
-  /** Sets the month's flag to `to`; true if it changed. */
-  async function flip(to: boolean): Promise<{ changed: boolean; month: string } | undefined> {
+  /** Sets the month's flag to `limited`; `changed` if it wasn't already. */
+  async function setLimitFlag(limited: boolean): Promise<{ changed: boolean; month: string } | undefined> {
     const path = spendPath(now());
     try {
       const changed = await store.update(path, (doc) => {
         // The rest of the month's document is the spend cap's, kept as it is.
         const alerted = { ...(doc?.alerted as Record<string, boolean> | undefined) };
-        if (Boolean(alerted[flag]) === to) return { result: false };
-        return { doc: { ...doc, alerted: { ...alerted, [flag]: to } }, result: true };
+        if (Boolean(alerted[flag]) === limited) return { result: false };
+        return { doc: { ...doc, alerted: { ...alerted, [flag]: limited } }, result: true };
       });
-      limited = to;
+      lastSeen = limited;
       return { changed, month: path.split("/")[1] };
     } catch (error) {
-      logEvent("ERROR", "store_error", "Provider limit: could not note its state", {
-        operation: "provider_limit",
-        error: describeError(error),
-      });
+      logStoreError("provider_limit", "Provider limit: could not note its state", error);
       return undefined;
     }
   }
 
   return {
     async reached() {
-      if (limited === true) return;
-      const flipped = await flip(true);
-      if (flipped?.changed) {
+      if (lastSeen === true) return;
+      const set = await setLimitFlag(true);
+      if (set?.changed) {
         logEvent("ERROR", "provider_limit", "The model provider's spend or credit limit refused a call", {
-          month: flipped.month,
+          month: set.month,
         });
       }
     },
     async answered() {
-      if (limited === false) return;
-      const flipped = await flip(false);
-      if (flipped?.changed) {
+      if (lastSeen === false) return;
+      const set = await setLimitFlag(false);
+      if (set?.changed) {
         logEvent("INFO", "provider_limit_cleared", "The model provider answers again", {
-          month: flipped.month,
+          month: set.month,
         });
       }
     },

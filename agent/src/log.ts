@@ -49,3 +49,22 @@ export function logEvent(
   if (severity === "INFO") console.log(line);
   else console.error(line);
 }
+
+/** The store operations a `store_error` line names (README, "Logs and alert events"). */
+export type StoreOperation =
+  | "rate_limit"
+  | "usage_record"
+  | "usage_stats"
+  | "spend_record"
+  | "spend_settle"
+  | "provider_limit";
+
+/** Logs one failed store operation as `store_error`, with the error described. */
+export function logStoreError(
+  operation: StoreOperation,
+  message: string,
+  error: unknown,
+  fields: LogFields = {},
+): void {
+  logEvent("ERROR", "store_error", message, { operation, ...fields, error: describeError(error) });
+}

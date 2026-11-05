@@ -36,7 +36,7 @@ import type {
   WeekStats,
 } from "../../src/shared/stats-contract";
 import type { DocumentStore, StoreDocument } from "./document-store";
-import { describeError, logEvent } from "./log";
+import { logEvent, logStoreError } from "./log";
 import { usageCostUsd, type Pricing } from "./pricing";
 
 export type { ChatOutcome, StatsResponse, WeekStats };
@@ -53,6 +53,46 @@ export type ChatRecord = {
   /** Model calls the request made (none for a refusal before streaming). */
   modelCalls?: number;
 };
+
+/**
+ * What a `chat_request` line can report: a usage outcome, or a request the
+ * usage stats don't record (malformed `http_400`, oversized `http_413`; a
+ * store failure's `http_503` is a usage outcome already).
+ */
+export type ChatRequestOutcome = ChatOutcome | "http_400" | "http_413";
+
+/** The fields of one `chat_request` line (README, "Logs and alert events"). */
+type ChatRequestLog = {
+  outcome: ChatRequestOutcome;
+  inputTokens: number;
+  outputTokens: number;
+  costUsd: number;
+  totalMs: number | null;
+  firstTextMs: number | null;
+  modelCalls: number;
+};
+
+/**
+ * Logs one chat request as its `chat_request` line. `pricing` estimates the
+ * cost of its usage; a request with no usage costs nothing.
+ */
+export function logChatRequest(
+  { outcome, usage, totalMs, firstTextMs, modelCalls = 0 }: Omit<ChatRecord, "outcome"> & {
+    outcome: ChatRequestOutcome;
+  },
+  pricing?: Pricing,
+): void {
+  const fields: ChatRequestLog = {
+    outcome,
+    inputTokens: usage?.inputTokens ?? 0,
+    outputTokens: usage?.outputTokens ?? 0,
+    costUsd: usage && pricing ? usageCostUsd(usage, pricing) : 0,
+    totalMs: totalMs ?? null,
+    firstTextMs: firstTextMs ?? null,
+    modelCalls,
+  };
+  logEvent("INFO", "chat_request", `Chat request: ${outcome}`, fields);
+}
 
 export interface UsageRecorder {
   /**
@@ -296,10 +336,7 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
       });
       return true;
     } catch (error) {
-      logEvent("ERROR", "store_error", `Usage: could not record ${what}`, {
-        operation: "usage_record",
-        error: describeError(error),
-      });
+      logStoreError("usage_record", `Usage: could not record ${what}`, error);
       return false;
     }
   }
@@ -368,16 +405,9 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
   }
 
   return {
-    async recordChat({ outcome, usage, totalMs, firstTextMs, modelCalls = 0 }) {
-      logEvent("INFO", "chat_request", `Chat request: ${outcome}`, {
-        outcome,
-        inputTokens: usage?.inputTokens ?? 0,
-        outputTokens: usage?.outputTokens ?? 0,
-        costUsd: usage ? usageCostUsd(usage, pricing) : 0,
-        totalMs: totalMs ?? null,
-        firstTextMs: firstTextMs ?? null,
-        modelCalls,
-      });
+    async recordChat(record) {
+      const { outcome, usage, totalMs, firstTextMs } = record;
+      logChatRequest(record, pricing);
       if (refusedOutcomes.includes(outcome)) {
         add(thisWeeksBatch().refusals, outcome);
         return;
