@@ -10,6 +10,14 @@
 //
 // Recording is best effort: a failure is logged and swallowed, so it never
 // fails the request being recorded.
+//
+// The same document watches the chat's error rate for the `chat_error_rate`
+// alert event (README, "Logs and alert events"): streamed requests and their
+// errors are also counted in 10-minute buckets (`errorWindow`, pruned past
+// the hour), and the event fires once when the last hour's rate passes the
+// threshold (noted under `alerted`, in the same atomic update), then once
+// more as `chat_error_rate_recovered` when it's back under. The window starts
+// afresh with each week's document.
 import type { TokenUsage } from "../../src/shared/chat-contract";
 import type {
   ChatOutcome,
@@ -48,12 +56,28 @@ export interface UsageRecorder {
   stats(): Promise<StatsResponse>;
 }
 
+/** When the chat's error rate over the last hour logs `chat_error_rate`. */
+export type ErrorRateAlert = {
+  /** Share of streamed requests that ended in an error, above which it fires (0 to 1). */
+  threshold: number;
+  /** Streamed requests the hour needs before its rate is judged either way. */
+  minRequests: number;
+};
+
+/** The code default, overridden by configuration (`config.ts`). */
+export const defaultErrorRateAlert: ErrorRateAlert = { threshold: 0.2, minRequests: 5 };
+
 export type UsageOptions = {
   store: DocumentStore;
   pricing: Pricing;
   /** Injectable clock (ms since epoch); defaults to `Date.now`. */
   now?: () => number;
+  errorRateAlert?: ErrorRateAlert;
 };
+
+/** Size of the error-rate window's buckets, and the window (the current bucket and the 5 before). */
+const errorBucketMs = 10 * 60_000;
+const errorWindowMinutes = 60;
 
 /** Collection of the weekly usage documents. */
 export const usageCollection = "usage";
@@ -102,12 +126,18 @@ type WeekDoc = {
     firstTextMs: Histogram;
   };
   mcp: { requests: number };
+  /** Streamed chat requests and their errors per 10-minute bucket, keyed by its start (ms). */
+  errorWindow: Record<string, { streamed: number; errors: number }>;
+  /** Alert events in effect: `chat_error_rate` while the rate is above its threshold. */
+  alerted: Record<string, boolean>;
 };
 
 function readWeek(week: string, doc: StoreDocument | undefined): WeekDoc {
   const chat = (doc?.chat ?? {}) as Partial<WeekDoc["chat"]>;
   const mcp = (doc?.mcp ?? {}) as Partial<WeekDoc["mcp"]>;
   return {
+    errorWindow: { ...(doc?.errorWindow as WeekDoc["errorWindow"] | undefined) },
+    alerted: { ...(doc?.alerted as WeekDoc["alerted"] | undefined) },
     week,
     chat: {
       requests: Number(chat.requests ?? 0),
@@ -174,17 +204,54 @@ function summarize(doc: WeekDoc, startsAt: string): WeekStats {
   };
 }
 
-export function createUsageRecorder(options: UsageOptions): UsageRecorder {
-  const { store, pricing, now = Date.now } = options;
+/** What the error-rate watch saw when a streamed request was folded in. */
+type ErrorRateChange = {
+  crossed?: "above" | "below";
+  streamed: number;
+  errors: number;
+};
 
-  /** Applies `change` to the current week's document; logs and swallows failures. */
-  async function fold(what: string, change: (week: WeekDoc) => void): Promise<void> {
-    const { week } = isoWeek(now());
+/**
+ * Counts one streamed request in the week's error window, prunes buckets past
+ * the hour, and flips `alerted.chat_error_rate` if the hour's rate crossed
+ * the threshold either way.
+ */
+function countStreamed(week: WeekDoc, t: number, failed: boolean, alert: ErrorRateAlert): ErrorRateChange {
+  const bucket = Math.floor(t / errorBucketMs) * errorBucketMs;
+  const oldest = bucket - (errorWindowMinutes * 60_000 - errorBucketMs);
+  const window = Object.fromEntries(
+    Object.entries(week.errorWindow).filter(([start]) => Number(start) >= oldest),
+  );
+  const current = (window[String(bucket)] ??= { streamed: 0, errors: 0 });
+  current.streamed++;
+  if (failed) current.errors++;
+  week.errorWindow = window;
+
+  const counts = Object.values(window);
+  const streamed = counts.reduce((sum, b) => sum + b.streamed, 0);
+  const errors = counts.reduce((sum, b) => sum + b.errors, 0);
+  if (streamed < alert.minRequests) return { streamed, errors };
+  const above = errors / streamed > alert.threshold;
+  if (above === Boolean(week.alerted.chat_error_rate)) return { streamed, errors };
+  week.alerted = { ...week.alerted, chat_error_rate: above };
+  return { crossed: above ? "above" : "below", streamed, errors };
+}
+
+export function createUsageRecorder(options: UsageOptions): UsageRecorder {
+  const { store, pricing, now = Date.now, errorRateAlert = defaultErrorRateAlert } = options;
+
+  /**
+   * Applies `change` to the current week's document and returns what it
+   * returned; logs and swallows failures (`undefined`).
+   */
+  async function fold<R>(what: string, change: (week: WeekDoc, t: number) => R): Promise<R | undefined> {
+    const t = now();
+    const { week } = isoWeek(t);
     try {
-      await store.update(`${usageCollection}/${week}`, (doc) => {
+      return await store.update(`${usageCollection}/${week}`, (doc) => {
         const next = readWeek(week, doc);
-        change(next);
-        return { doc: next as unknown as StoreDocument, result: undefined };
+        const result = change(next, t);
+        return { doc: next as unknown as StoreDocument, result };
       });
     } catch (error) {
       // Not rethrown: monitoring must never fail the request it watches.
@@ -192,6 +259,24 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         operation: "usage_record",
         error: describeError(error),
       });
+      return undefined;
+    }
+  }
+
+  function logErrorRate(week: string, { crossed, streamed, errors }: ErrorRateChange) {
+    if (!crossed) return;
+    const fields = {
+      week,
+      windowMinutes: errorWindowMinutes,
+      streamed,
+      errors,
+      errorRate: errors / streamed,
+      threshold: errorRateAlert.threshold,
+    };
+    if (crossed === "above") {
+      logEvent("ERROR", "chat_error_rate", "Chat error rate over the last hour is above its threshold", fields);
+    } else {
+      logEvent("INFO", "chat_error_rate_recovered", "Chat error rate over the last hour is back under its threshold", fields);
     }
   }
 
@@ -202,7 +287,8 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
   }
 
   return {
-    recordChat({ outcome, usage, totalMs, firstTextMs, modelCalls = 0 }) {
+    async recordChat({ outcome, usage, totalMs, firstTextMs, modelCalls = 0 }) {
+      const { week } = isoWeek(now());
       logEvent("INFO", "chat_request", `Chat request: ${outcome}`, {
         outcome,
         inputTokens: usage?.inputTokens ?? 0,
@@ -212,7 +298,9 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         firstTextMs: firstTextMs ?? null,
         modelCalls,
       });
-      return fold(`a chat request (${outcome})`, ({ chat }) => {
+      const streamed = !refusedOutcomes.includes(outcome);
+      const change = await fold(`a chat request (${outcome})`, (week, t) => {
+        const { chat } = week;
         chat.requests++;
         add(chat.outcomes, outcome);
         if (usage) {
@@ -222,10 +310,12 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         }
         if (totalMs !== undefined) add(chat.totalMs, bucketOf(totalMs));
         if (firstTextMs !== undefined) add(chat.firstTextMs, bucketOf(firstTextMs));
+        return streamed ? countStreamed(week, t, outcome.startsWith("error:"), errorRateAlert) : undefined;
       });
+      if (change) logErrorRate(week, change);
     },
-    recordMcp() {
-      return fold("an MCP request", ({ mcp }) => {
+    async recordMcp() {
+      await fold("an MCP request", ({ mcp }) => {
         mcp.requests++;
       });
     },

@@ -143,6 +143,9 @@ describe("createUsageRecorder", () => {
         firstTextMs: { "500": 1 },
       },
       mcp: { requests: 1 },
+      // The error-rate alert's window: this 10-minute bucket, keyed by its start.
+      errorWindow: { [String(Date.parse("2026-11-04T10:00:00Z"))]: { streamed: 1, errors: 0 } },
+      alerted: {},
     });
   });
 

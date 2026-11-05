@@ -12,6 +12,7 @@ import { createProviderLimitWatch } from "./provider-limit";
 import { listen, type RunningServer } from "./server";
 import { createStoreSpendCap } from "./spend-cap";
 import { testAppDeps } from "./test-deps";
+import { createUsageRecorder } from "./usage";
 import { createToolset, siteContent } from "./tools";
 
 let server: RunningServer | undefined;
@@ -348,6 +349,119 @@ describe("provider limit events", () => {
     expect(loggedEvents().filter((e) => String(e.event).startsWith("provider_limit")).map((e) => e.event)).toEqual([
       "provider_limit",
       "provider_limit_cleared",
+    ]);
+  });
+});
+
+describe("chat error rate events", () => {
+  const ok = (): ScriptedResponse => ({ text: "Hi.", usage: { inputTokens: 10, outputTokens: 2 } });
+  const broken = (): ScriptedResponse => ({ error: new Error("boom") });
+  const pricing = { inputUsdPerMTok: 1, outputUsdPerMTok: 5 };
+
+  /** The app with a 20% error-rate alert over at least 5 streamed requests. */
+  function startCounting(script: ScriptedResponse[], time: ReturnType<typeof clock>, store = createMemoryDocumentStore()) {
+    return start({
+      chatRateLimiter: unlimited,
+      modelClient: createFakeModel(script),
+      usage: createUsageRecorder({
+        store,
+        pricing,
+        now: time.now,
+        errorRateAlert: { threshold: 0.2, minRequests: 5 },
+      }),
+    });
+  }
+
+  const rateEvents = () =>
+    loggedEvents().filter((e) => String(e.event).startsWith("chat_error_rate"));
+
+  it("logs chat_error_rate once when the last hour's error rate passes the threshold", async () => {
+    const time = clock("2026-11-05T12:00:00Z");
+    const url = await startCounting([ok(), ok(), ok(), ok(), broken(), broken(), broken(), broken()], time);
+
+    for (let i = 0; i < 5; i++) await chat(url); // 1 error in 5: 20%, not above
+    expect(rateEvents()).toEqual([]);
+
+    time.set("2026-11-05T12:20:00Z");
+    const crossing = await chat(url); // 2 in 6
+    await chat(url);
+    await chat(url);
+
+    expect(rateEvents()).toEqual([
+      expect.objectContaining({
+        event: "chat_error_rate",
+        severity: "ERROR",
+        requestId: crossing.requestId,
+        windowMinutes: 60,
+        streamed: 6,
+        errors: 2,
+        errorRate: 2 / 6,
+        threshold: 0.2,
+      }),
+    ]);
+  });
+
+  it("logs chat_error_rate_recovered once the rate is back under, then fires on the next crossing", async () => {
+    const time = clock("2026-11-05T12:00:00Z");
+    const store = createMemoryDocumentStore();
+    const script = [...Array.from({ length: 5 }, broken), ...Array.from({ length: 5 }, ok), ...Array.from({ length: 5 }, broken)];
+    let url = await startCounting(script.slice(0, 5), time, store);
+    for (let i = 0; i < 5; i++) await chat(url);
+
+    // A cold start mid-outage doesn't fire again: the state is in the week's document.
+    await server?.close();
+    url = await startCounting([broken(), ...script.slice(5)], time, store);
+    await chat(url);
+    expect(rateEvents().map((e) => e.event)).toEqual(["chat_error_rate"]);
+
+    // An hour later the errors are out of the window.
+    time.set("2026-11-05T13:10:00Z");
+    for (let i = 0; i < 5; i++) await chat(url);
+    for (let i = 0; i < 5; i++) await chat(url);
+
+    expect(rateEvents().map((e) => e.event)).toEqual([
+      "chat_error_rate",
+      "chat_error_rate_recovered",
+      "chat_error_rate",
+    ]);
+  });
+
+  it("counts only streamed requests: refusals before streaming don't move the rate", async () => {
+    const time = clock("2026-11-05T12:00:00Z");
+    server = await listen(
+      createApp(
+        testAppDeps({
+          chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+          modelClient: createFakeModel([ok()]),
+          usage: createUsageRecorder({
+            store: createMemoryDocumentStore(),
+            pricing,
+            now: time.now,
+            errorRateAlert: { threshold: 0.2, minRequests: 1 },
+          }),
+        }),
+      ),
+      0,
+    );
+    await chat(server.url);
+    for (let i = 0; i < 5; i++) expect((await chat(server.url)).status).toBe(429);
+
+    expect(rateEvents()).toEqual([]);
+  });
+});
+
+describe("the alert thresholds", () => {
+  it("come from the configuration, as production wires them", async () => {
+    const config = loadConfig({ ALERT_CHAT_ERROR_RATE: "0", ALERT_CHAT_ERROR_MIN_REQUESTS: "1" });
+    const url = await start({
+      ...createGuardrails(null, config),
+      modelClient: createFakeModel([{ error: new Error("boom") }]),
+    });
+
+    await chat(url);
+
+    expect(loggedEvents("chat_error_rate")).toEqual([
+      expect.objectContaining({ streamed: 1, errors: 1, threshold: 0 }),
     ]);
   });
 });
