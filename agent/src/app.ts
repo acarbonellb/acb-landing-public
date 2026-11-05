@@ -6,7 +6,7 @@ import { streamSSE } from "hono/streaming";
 import * as z from "zod";
 import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/lib/chat-contract";
 import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
-import { clientIp } from "./client-ip";
+import { clientIp, mcpClientIp } from "./client-ip";
 import { loadConfig } from "./config";
 import { createMemoryDocumentStore } from "./document-store";
 import { createMcpServer } from "./mcp";
@@ -61,8 +61,10 @@ export type AppDeps = {
   spendCap: SpendCap;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
-  /** Key for the rate limiters: the client IP by default. */
+  /** Key for the `/chat` and `/stats` rate limits: the client IP by default. */
   clientKey: (c: Context) => string;
+  /** Key for the `/mcp` rate limit: the client IP, through the Hosting rewrite too. */
+  mcpClientKey: (c: Context) => string;
 };
 
 const jsonError = (
@@ -111,6 +113,7 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
       ? createStoreSpendCap({ ...spendCapOptions, store })
       : createMemorySpendCap(spendCapOptions),
     clientKey = clientIp,
+    mcpClientKey = mcpClientIp,
     usage = createUsageRecorder({
       store: store ?? createMemoryDocumentStore(),
       pricing: config.guardrails.pricing,
@@ -163,7 +166,7 @@ export function createApp(deps: Partial<AppDeps> = {}): Hono {
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, clientKey, (c, retryAfterSeconds) =>
+    rateLimit(mcpRateLimiter, mcpClientKey, (c, retryAfterSeconds) =>
       c.json(
         {
           jsonrpc: "2.0",

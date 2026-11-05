@@ -68,6 +68,16 @@ describe("GET /stats", () => {
     expect(res.headers.get("retry-after")).toBe("60");
   });
 
+  it("keys its limit on the right-most X-Forwarded-For entry, even after a Hosting peer", async () => {
+    const { url } = await start([], {
+      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+    });
+    const get = (forwardedFor: string) =>
+      fetch(new URL(paths.stats, url), { headers: { "X-Forwarded-For": forwardedFor } });
+    expect((await get("198.51.100.1, 66.249.93.229")).status).toBe(200);
+    expect((await get("198.51.100.2, 66.249.93.229")).status).toBe(429);
+  });
+
   it("answers 503 when the aggregates can't be read", async () => {
     const broken: DocumentStore = {
       update: async () => {
