@@ -3,14 +3,12 @@
 import Anthropic from "@anthropic-ai/sdk";
 import {
   ModelUnavailableError,
+  type Effort,
   type ModelClient,
   type ModelMessage,
   type ModelStopReason,
   type ModelTurn,
 } from "./model";
-
-export const efforts = ["low", "medium", "high", "xhigh", "max"] as const;
-export type Effort = (typeof efforts)[number];
 
 /** Models that accept server-side refusal fallbacks (`fallbacks: "default"`). */
 const fallbackModels = new Set([

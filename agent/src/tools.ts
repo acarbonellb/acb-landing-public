@@ -26,7 +26,7 @@ export type Content = {
   languages: SpokenLanguage[];
   /**
    * The address `get_contact` gives out. Not in the public repo: production
-   * reads it from `CONTACT_EMAIL` (`config.ts`); without it there's no email.
+   * reads it from `CONTACT_EMAIL` (`config.ts`, wired in `compose.ts`); without it there's no email.
    */
   contactEmail?: string;
 };
