@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "604d4969dc1f513810566b9423b93191348da3d9f24d4197fe18988367f3b5d4",
-      "latencyMs": 3014,
+      "latencyMs": 2347,
       "events": [
         {
           "type": "input_usage",
@@ -40,14 +40,6 @@
         {
           "type": "text_delta",
           "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
         },
         {
           "type": "text_delta",
@@ -91,7 +83,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -103,38 +99,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?",
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2251,
-              "outputTokens": 114
+              "outputTokens": 90
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?"
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
               }
             ]
           }

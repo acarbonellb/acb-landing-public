@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "03c932684ef930da7fe3d58c20b92754884e2abba16895ded98add6f375c4f35",
-      "latencyMs": 1923,
+      "latencyMs": 1420,
       "events": [
         {
           "type": "input_usage",
@@ -19,21 +19,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "llQW3x8h1f4b8DbHa87j6GNobFdFIyi6",
-                "name": "get_profile",
+                "id": "y1d7U9ztbl2qhlG5LUe9Zs7hlMdXwmuH",
+                "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2249,
-              "outputTokens": 73
+              "outputTokens": 53
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "llQW3x8h1f4b8DbHa87j6GNobFdFIyi6",
-                "name": "get_profile",
+                "id": "y1d7U9ztbl2qhlG5LUe9Zs7hlMdXwmuH",
+                "name": "get_contact",
                 "input": {}
               }
             ]
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "adb352bcfad92a659360aa0d7860dcef78789a5df873e4370f2ad0eaa137b7d1",
-      "latencyMs": 542,
+      "requestHash": "9b6e484a876b04ccdeda82f216bfa577a2ee648f83e11af08207365e01badf8b",
+      "latencyMs": 446,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2558
+          "inputTokens": 2352
         },
         {
           "type": "text_delta",
@@ -96,7 +96,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2558,
+              "inputTokens": 2352,
               "outputTokens": 13
             },
             "providerContent": [

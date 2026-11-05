@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "7938216aefc7f5a5a5d6ed4b9b57e7346a967049f4ed04386ed8e006821bdffd",
-      "latencyMs": 7075,
+      "latencyMs": 3450,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "BN630kRXE5rh3rpD4GQtIFd2FFIruBsA",
+                "id": "KioMGrWQclWcD8kkayIADPslXKLgZx3W",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -29,12 +29,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2261,
-              "outputTokens": 274
+              "outputTokens": 134
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "BN630kRXE5rh3rpD4GQtIFd2FFIruBsA",
+                "id": "KioMGrWQclWcD8kkayIADPslXKLgZx3W",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,8 +46,8 @@
       ]
     },
     {
-      "requestHash": "194b683b7adeb7a7765f8bb1dc29532010b77610e42bdc23ea45edea2dad8f47",
-      "latencyMs": 4809,
+      "requestHash": "4b47e5e200e239da88d22d167ef8d42f59cda339f99783a7ae773f2d98f48d9c",
+      "latencyMs": 1103,
       "events": [
         {
           "type": "input_usage",
@@ -63,35 +63,15 @@
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
-        },
-        {
-          "type": "text_delta",
-          "text": " is"
-        },
-        {
-          "type": "text_delta",
-          "text": " listed"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
           "text": " Alberto"
         },
         {
           "type": "text_delta",
-          "text": "'s"
+          "text": " knows"
         },
         {
           "type": "text_delta",
-          "text": " languages"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
+          "text": " TypeScript"
         },
         {
           "type": "text_delta",
@@ -99,7 +79,27 @@
         },
         {
           "type": "text_delta",
-          "text": " However"
+          "text": " Regarding"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " boiling"
+        },
+        {
+          "type": "text_delta",
+          "text": " point"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " water"
         },
         {
           "type": "text_delta",
@@ -132,34 +132,6 @@
         {
           "type": "text_delta",
           "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " cannot"
-        },
-        {
-          "type": "text_delta",
-          "text": " provide"
-        },
-        {
-          "type": "text_delta",
-          "text": " information"
-        },
-        {
-          "type": "text_delta",
-          "text": " unrelated"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
         },
         {
           "type": "text_delta",
@@ -207,7 +179,7 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " or"
         },
         {
           "type": "text_delta",
@@ -219,38 +191,22 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, TypeScript is listed in Alberto's languages stack. However, I can only answer questions about Alberto and cannot provide information unrelated to him. Would you like to know more about his work experience, AI agents, or tech stack?",
+            "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience or AI agents?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2348,
-              "outputTokens": 188
+              "outputTokens": 38
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, TypeScript is listed in Alberto's languages stack. However, I can only answer questions about Alberto and cannot provide information unrelated to him. Would you like to know more about his work experience, AI agents, or tech stack?"
+                "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience or AI agents?"
               }
             ]
           }

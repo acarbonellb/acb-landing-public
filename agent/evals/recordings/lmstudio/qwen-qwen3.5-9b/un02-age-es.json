@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "a305301bd4280cb08e423fd075a69de1d5a9e2a9b48eb00de064a337e68291ec",
-      "latencyMs": 5584,
+      "latencyMs": 1492,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "vaBuqOMu4wCjeelt8jpNnA4rdK0n2gOb",
+                "id": "RmRpMU09l88XyWhwPxQcFjYpd66DCwFL",
                 "name": "get_profile",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2252,
-              "outputTokens": 218
+              "outputTokens": 56
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "vaBuqOMu4wCjeelt8jpNnA4rdK0n2gOb",
+                "id": "RmRpMU09l88XyWhwPxQcFjYpd66DCwFL",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "775caf151a1f624de0e133e28bb55795966174432d62e32438fd3d2152c81f6f",
-      "latencyMs": 1696,
+      "requestHash": "11f3cda1964538a1ba7f4b8df5456405d5aa24d1425e16105b8b2c61048002c8",
+      "latencyMs": 1761,
       "events": [
         {
           "type": "input_usage",
@@ -55,15 +55,15 @@
         },
         {
           "type": "text_delta",
-          "text": " se"
+          "text": " tengo"
         },
         {
           "type": "text_delta",
-          "text": " menc"
+          "text": " información"
         },
         {
           "type": "text_delta",
-          "text": "iona"
+          "text": " sobre"
         },
         {
           "type": "text_delta",
@@ -103,7 +103,7 @@
         },
         {
           "type": "text_delta",
-          "text": " sabemos"
+          "text": " sé"
         },
         {
           "type": "text_delta",
@@ -147,6 +147,22 @@
         },
         {
           "type": "text_delta",
+          "text": " como"
+        },
+        {
+          "type": "text_delta",
+          "text": " ingen"
+        },
+        {
+          "type": "text_delta",
+          "text": "iero"
+        },
+        {
+          "type": "text_delta",
+          "text": " senior"
+        },
+        {
+          "type": "text_delta",
           "text": " y"
         },
         {
@@ -155,15 +171,11 @@
         },
         {
           "type": "text_delta",
-          "text": " sus"
+          "text": " estudi"
         },
         {
           "type": "text_delta",
-          "text": " estudios"
-        },
-        {
-          "type": "text_delta",
-          "text": " fueron"
+          "text": "ó"
         },
         {
           "type": "text_delta",
@@ -223,15 +235,15 @@
         },
         {
           "type": "text_delta",
-          "text": " obtener"
+          "text": " detalles"
         },
         {
           "type": "text_delta",
-          "text": " información"
+          "text": " personales"
         },
         {
           "type": "text_delta",
-          "text": " sobre"
+          "text": " como"
         },
         {
           "type": "text_delta",
@@ -247,11 +259,15 @@
         },
         {
           "type": "text_delta",
-          "text": " sería"
+          "text": " te"
         },
         {
           "type": "text_delta",
-          "text": " necesario"
+          "text": " sug"
+        },
+        {
+          "type": "text_delta",
+          "text": "iero"
         },
         {
           "type": "text_delta",
@@ -276,17 +292,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "No se menciona la edad de Alberto en su perfil. Solo sabemos que tiene más de 10 años de experiencia y que sus estudios fueron entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar directamente con él.",
+            "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2564,
-              "outputTokens": 59
+              "outputTokens": 63
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No se menciona la edad de Alberto en su perfil. Solo sabemos que tiene más de 10 años de experiencia y que sus estudios fueron entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar directamente con él."
+                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él."
               }
             ]
           }

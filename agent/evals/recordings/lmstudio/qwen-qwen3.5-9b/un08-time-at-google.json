@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
-      "latencyMs": 1841,
+      "latencyMs": 2663,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "A7bxbf1utDkK5NHWDiM0AkWzXAgJWRD7",
+                "id": "Spw1Ddwkvv0ScaND5KL7VpThkxe176Dj",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -29,12 +29,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2253,
-              "outputTokens": 69
+              "outputTokens": 103
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "A7bxbf1utDkK5NHWDiM0AkWzXAgJWRD7",
+                "id": "Spw1Ddwkvv0ScaND5KL7VpThkxe176Dj",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -46,8 +46,8 @@
       ]
     },
     {
-      "requestHash": "c8a554c2cd4eb09b670772f673fd79a5e7014fac18c3b41efdb0489cfb82414f",
-      "latencyMs": 951,
+      "requestHash": "04d1ce2f36abeb099e634943123ff3af38373344deef8a95143a71bf75ee23a6",
+      "latencyMs": 829,
       "events": [
         {
           "type": "input_usage",
@@ -99,7 +99,7 @@
         },
         {
           "type": "text_delta",
-          "text": " profile"
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -135,31 +135,15 @@
         },
         {
           "type": "text_delta",
-          "text": " actual"
+          "text": " other"
         },
         {
           "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
+          "text": " roles"
         },
         {
           "type": "text_delta",
           "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " AI"
-        },
-        {
-          "type": "text_delta",
-          "text": " agent"
         },
         {
           "type": "text_delta",
@@ -176,17 +160,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "There is no record of Alberto working at Google in his profile. Would you like to know about his actual work experience or his AI agent projects instead?",
+            "text": "There is no record of Alberto working at Google in his experience. Would you like to know about his other roles or projects instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2315,
-              "outputTokens": 33
+              "outputTokens": 29
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "There is no record of Alberto working at Google in his profile. Would you like to know about his actual work experience or his AI agent projects instead?"
+                "text": "There is no record of Alberto working at Google in his experience. Would you like to know about his other roles or projects instead?"
               }
             ]
           }

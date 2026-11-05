@@ -7,7 +7,7 @@
   "calls": [
     {
       "requestHash": "248af2eacdc2bbc6393abf222e200d9b97badd8c4c1b083275e2a40fdc257c50",
-      "latencyMs": 3051,
+      "latencyMs": 4855,
       "events": [
         {
           "type": "input_usage",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "a1o2iACpXd9AnBggMh0bIwSP5cKoUjM1",
+                "id": "BIwodhqjUIzZ23lxkoZsBblmX6lQgfdK",
                 "name": "get_profile",
                 "input": {}
               }
@@ -27,12 +27,12 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2266,
-              "outputTokens": 118
+              "outputTokens": 191
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "a1o2iACpXd9AnBggMh0bIwSP5cKoUjM1",
+                "id": "BIwodhqjUIzZ23lxkoZsBblmX6lQgfdK",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,8 +42,8 @@
       ]
     },
     {
-      "requestHash": "f05461f9dd4ccdeaef947816efd50b53a520d597d26ee0b12aaf90402e421769",
-      "latencyMs": 1505,
+      "requestHash": "260318b98ee5d5fb6cb98a537a3e35b456adf41755e65ce20a5b52dcd08ea120",
+      "latencyMs": 1458,
       "events": [
         {
           "type": "input_usage",
@@ -63,14 +63,6 @@
         },
         {
           "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " España"
-        },
-        {
-          "type": "text_delta",
           "text": " de"
         },
         {
@@ -84,6 +76,14 @@
         {
           "type": "text_delta",
           "text": "ota"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " España"
         },
         {
           "type": "text_delta",
@@ -119,23 +119,27 @@
         },
         {
           "type": "text_delta",
-          "text": " el"
+          "text": " la"
         },
         {
           "type": "text_delta",
-          "text": " cálculo"
+          "text": " multiplic"
         },
         {
           "type": "text_delta",
-          "text": " matem"
+          "text": "ación"
         },
         {
           "type": "text_delta",
-          "text": "ático"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": ";"
+          "text": " ya"
+        },
+        {
+          "type": "text_delta",
+          "text": " que"
         },
         {
           "type": "text_delta",
@@ -147,7 +151,11 @@
         },
         {
           "type": "text_delta",
-          "text": " hablar"
+          "text": " proporcionar"
+        },
+        {
+          "type": "text_delta",
+          "text": " información"
         },
         {
           "type": "text_delta",
@@ -155,27 +163,39 @@
         },
         {
           "type": "text_delta",
-          "text": " su"
+          "text": " Alberto"
         },
         {
           "type": "text_delta",
-          "text": " perfil"
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " ¿"
         },
         {
           "type": "text_delta",
-          "text": " experiencia"
+          "text": "Te"
         },
         {
           "type": "text_delta",
-          "text": " laboral"
+          "text": " gustaría"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": " más"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " sus"
         },
         {
           "type": "text_delta",
@@ -191,70 +211,46 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " de"
         },
         {
           "type": "text_delta",
-          "text": " p"
+          "text": " IA"
         },
         {
           "type": "text_delta",
-          "text": "ila"
+          "text": " o"
         },
         {
           "type": "text_delta",
-          "text": " tecnológica"
+          "text": " su"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " experiencia"
         },
         {
           "type": "text_delta",
-          "text": " educación"
+          "text": " laboral"
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " idiomas"
-        },
-        {
-          "type": "text_delta",
-          "text": " y"
-        },
-        {
-          "type": "text_delta",
-          "text": " cómo"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": "arlo"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto trabaja en España de forma remota. No puedo responder a la pregunta sobre el cálculo matemático; solo puedo hablar sobre su perfil, experiencia laboral, proyectos de agentes, pila tecnológica, educación, idiomas y cómo contactarlo.",
+            "text": "Alberto trabaja de forma remota en España. No puedo responder a la pregunta sobre la multiplicación, ya que solo puedo proporcionar información sobre Alberto. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2592,
-              "outputTokens": 51
+              "outputTokens": 50
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja en España de forma remota. No puedo responder a la pregunta sobre el cálculo matemático; solo puedo hablar sobre su perfil, experiencia laboral, proyectos de agentes, pila tecnológica, educación, idiomas y cómo contactarlo."
+                "text": "Alberto trabaja de forma remota en España. No puedo responder a la pregunta sobre la multiplicación, ya que solo puedo proporcionar información sobre Alberto. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
               }
             ]
           }

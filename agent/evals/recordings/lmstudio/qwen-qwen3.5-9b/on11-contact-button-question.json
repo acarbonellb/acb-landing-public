@@ -1,0 +1,221 @@
+{
+  "caseId": "on11",
+  "slug": "contact-button-question",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "e99993f2f4a3e674c16cb8cf48d9f55e8d2ab8366d149f83bcccd35276d14861",
+      "latencyMs": 1190,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2257
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "XT3dCWnGkPJecF1LQoUd4pCnF96MSNed",
+                "name": "get_contact",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2257,
+              "outputTokens": 43
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "XT3dCWnGkPJecF1LQoUd4pCnF96MSNed",
+                "name": "get_contact",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "e601c96cdaa194fab63b1304c55ea87f780f876baad31ee91df701248b04fa73",
+      "latencyMs": 1126,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2368
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " email"
+        },
+        {
+          "type": "text_delta",
+          "text": " address"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " al"
+        },
+        {
+          "type": "text_delta",
+          "text": "berto"
+        },
+        {
+          "type": "text_delta",
+          "text": ".car"
+        },
+        {
+          "type": "text_delta",
+          "text": "bon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": ".be"
+        },
+        {
+          "type": "text_delta",
+          "text": "ce"
+        },
+        {
+          "type": "text_delta",
+          "text": "iro"
+        },
+        {
+          "type": "text_delta",
+          "text": "@gmail"
+        },
+        {
+          "type": "text_delta",
+          "text": ".com"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " also"
+        },
+        {
+          "type": "text_delta",
+          "text": " provides"
+        },
+        {
+          "type": "text_delta",
+          "text": " links"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " GitHub"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " LinkedIn"
+        },
+        {
+          "type": "text_delta",
+          "text": " profiles"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " notes"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " he"
+        },
+        {
+          "type": "text_delta",
+          "text": " works"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's email address is alberto.carbonell.beceiro@gmail.com. He also provides links to his GitHub and LinkedIn profiles, and notes that he works remotely from Spain.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2368,
+              "outputTokens": 40
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's email address is alberto.carbonell.beceiro@gmail.com. He also provides links to his GitHub and LinkedIn profiles, and notes that he works remotely from Spain."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
