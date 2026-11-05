@@ -81,7 +81,9 @@ jobs:
           workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
           service_account: ${{ vars.GCP_DEPLOY_SA }}
 
-      - run: pnpm dlx firebase-tools@15 deploy --only hosting --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
+      # `pnpm build` writes out/firebase.json: the committed config plus the
+      # CSP for this build's inline scripts and agent URL (#93).
+      - run: pnpm dlx firebase-tools@15 deploy --only hosting --config out/firebase.json --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
 
       # Fails the workflow if the live site is down or doesn't serve the real
       # page, or if a redirect host doesn't 301 to it. REDIRECT_HOSTS is

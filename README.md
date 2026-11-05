@@ -22,7 +22,7 @@ Tests check behaviour through accessible roles, text and the `data-theme` attrib
 | Suite | Command | What it covers |
 | --- | --- | --- |
 | Unit | `pnpm test` (`pnpm test:watch` while developing) | Components with Vitest + React Testing Library. Files sit next to the code: `src/**/*.test.tsx`. |
-| Browser | `NEXT_PUBLIC_AGENT_URL=http://localhost:8080 pnpm build && pnpm test:e2e` | Playwright against the static export in `out/`, served locally on port 4173. Files live in `e2e/*.spec.ts`. The `agent` fixture (`e2e/fixtures.ts`) stubs the agent's chat, MCP and stats endpoints, so build with an agent URL (otherwise the page shows "agent coming soon"). Axe runs once, in `a11y.spec.ts`; overflow checks live in `layout.spec.ts`. |
+| Browser | `NEXT_PUBLIC_AGENT_URL=http://localhost:8080 pnpm build && pnpm test:e2e` | Playwright against the static export in `out/`, served locally on port 4173. Files live in `e2e/*.spec.ts`. The `agent` fixture (`e2e/fixtures.ts`) stubs the agent's chat, MCP and stats endpoints, so build with an agent URL (otherwise the page shows "agent coming soon"). The `page` fixture serves pages with the headers from `out/firebase.json` (see [Security headers](#ci-and-deployment)) and fails a test on any CSP violation. Axe runs once, in `a11y.spec.ts`; overflow checks live in `layout.spec.ts`. |
 
 Browser tests need Chromium and WebKit: run `pnpm exec playwright install chromium webkit` once, or point `CHROMIUM_PATH` at an existing Chromium binary (it only applies to the Chromium project). WebKit runs `e2e/mobile-menu.spec.ts`, `e2e/contact-mobile.spec.ts` and `e2e/layout.spec.ts` on an iPhone profile with a touch screen; it needs system libraries Chromium doesn't, so on a bare Linux or WSL install run `sudo pnpm exec playwright install-deps webkit` too. Linux WebKit doesn't share every iOS Safari quirk (it focuses a tapped link, for one), so check menu changes on a real iPhone as well.
 
@@ -31,6 +31,8 @@ Browser tests need Chromium and WebKit: run `pnpm exec playwright install chromi
 `.github/workflows/deploy.yml` runs lint, unit tests, the agent evals (replayed, see [Evals](#evals)), build and browser tests on every push and pull request. A failing check blocks the deploy.
 
 `next build` produces a fully static site in `out/` (`output: "export"`), deployed to **Firebase Hosting** by the same workflow on every push to `main` once the checks pass. GitHub authenticates to GCP with Workload Identity Federation, so there are no service account keys.
+
+**Security headers.** Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site and the agent's origin). A static export can't use nonces, so the CSP allows each inline script by its hash: the theme script and the RSC payloads Next writes, which change with every build. So `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`, `src/lib/security-headers.ts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`. The deploy ships that file (`firebase deploy --config out/firebase.json`); the committed one has no CSP and isn't deployed on its own. The browser tests serve every page with those headers and fail on any CSP violation.
 
 The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, default URL https://acb-landing.web.app) and is served on **https://albertocarbonell.dev**. `www.albertocarbonell.dev`, `albertocarbonell.es` and `www.albertocarbonell.es` are Hosting custom domains that redirect (301) to it; their DNS is in GoDaddy (an `A` record to `199.36.158.100` plus a `hosting-site=acb-landing` `TXT` on each apex, which must stay for Firebase to keep verifying ownership, and `www` as a `CNAME` to `acb-landing.web.app`). The deploy job runs only on `main` and only once `GCP_PROJECT_ID` is set; it uses these repository variables:
 
@@ -44,7 +46,7 @@ The site lives in the GCP project `acb-landing` (Firebase site `acb-landing`, de
 
 The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds two roles: Firebase Hosting Admin, and Service Usage Viewer (firebase-tools checks the Hosting API is enabled before deploying). It has no keys.
 
-After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell", and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
+After deploying, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell" and the security headers above, and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
 
 `AGENT_URL` (optional) is passed to the build as `NEXT_PUBLIC_AGENT_URL`; without it the deployed page shows "agent coming soon" instead of the chat.
 
