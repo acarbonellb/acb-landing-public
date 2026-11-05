@@ -18,7 +18,7 @@ const fixture: Content = {
       linkedin: "https://www.linkedin.com/in/ada/",
     },
   },
-  agents: [
+  agentProjects: [
     {
       slug: "engine",
       name: "Engine Agent",
@@ -43,7 +43,7 @@ const fixture: Content = {
       stack: ["Jacquard"],
     },
   ],
-  agentPractices: [
+  practices: [
     {
       title: "Tables checked twice",
       text: "Every table is recomputed by hand.",

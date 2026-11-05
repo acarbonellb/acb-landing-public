@@ -4,8 +4,8 @@
 // the forbidden answer itself, with word boundaries or whole phrases: `/cat/`
 // would match "education" and `/lug/` "en lugar de".
 import {
-  agentPractices,
-  agents,
+  practices,
+  agentProjects,
   education,
   experience,
   languages,
@@ -30,13 +30,13 @@ const agentsAnswer: ChatMessage[] = [
   { role: "user", content: "What AI agents has Alberto built?" },
   {
     role: "assistant",
-    content: `Alberto has built ${agents.length} agents: ${agents.map((a) => a.name).join(", ")}.`,
+    content: `Alberto has built ${agentProjects.length} agents: ${agentProjects.map((a) => a.name).join(", ")}.`,
   },
 ];
 
 const currentRole = experience.find((r) => r.period.to === null)!;
 const languageGroup = skillGroups.find((g) => g.key === "languages")!;
-const fraudAgent = agents.find((a) => a.slug === "fraud-detection-agent")!;
+const fraudAgent = agentProjects.find((a) => a.slug === "fraud-detection-agent")!;
 /**
  * Words of the fraud agent's description; throws if a CV edit drops one.
  * "recommend" matches "recommendation" and "it recommends" alike.
@@ -48,7 +48,7 @@ const fraudFacts = ["recommend", "human"].map((word) => {
   return word;
 });
 /** Words of the "how I run agents" practices; throws if a CV edit drops one. */
-const practicesText = agentPractices.map((p) => `${p.title} ${p.text}`).join(" ");
+const practicesText = practices.map((p) => `${p.title} ${p.text}`).join(" ");
 const practiceFacts = ["evals", "human"].map((word) => {
   if (!practicesText.toLowerCase().includes(word)) {
     throw new Error(`Agent practices no longer mention "${word}"`);
@@ -235,7 +235,7 @@ export const cases: EvalCase[] = [
     kind: "on_topic",
     question: "What AI agents has Alberto built?",
     tools: ["get_projects"],
-    facts: agents.map((a) => a.name),
+    facts: agentProjects.map((a) => a.name),
   },
   {
     id: "on03",

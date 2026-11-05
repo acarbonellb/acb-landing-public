@@ -1,19 +1,19 @@
-import type { AgentPractice, AgentProject } from "@/shared/profile";
+import type { AgentProject, Practice } from "@/shared/profile";
 import { Section } from "../ui";
 import { AgentCard } from "./agent-card";
 import { Practices } from "./practices";
 
 export function Projects({
-  agents,
+  agentProjects,
   practices,
 }: {
-  agents: AgentProject[];
-  practices: AgentPractice[];
+  agentProjects: AgentProject[];
+  practices: Practice[];
 }) {
   return (
     <Section id="projects">
       <div className="grid gap-5 sm:grid-cols-2">
-        {agents.map((a) => (
+        {agentProjects.map((a) => (
           <AgentCard key={a.slug} agent={a} />
         ))}
       </div>

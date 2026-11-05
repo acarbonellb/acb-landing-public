@@ -2,8 +2,8 @@ import { render, screen, within } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type {
-  AgentPractice,
   AgentProject,
+  Practice,
   Profile,
   Role,
   SkillGroup,
@@ -44,7 +44,7 @@ const profile: Profile = {
   },
 };
 
-const agents: AgentProject[] = [
+const agentProjects: AgentProject[] = [
   {
     slug: "engine-agent",
     name: "Engine Agent",
@@ -93,7 +93,7 @@ const agents: AgentProject[] = [
   },
 ];
 
-const practices: AgentPractice[] = [
+const practices: Practice[] = [
   {
     title: "Tables checked twice",
     text: "Every table is recomputed by hand before printing.",
@@ -215,13 +215,13 @@ describe("Experience", () => {
 
 describe("Projects", () => {
   it("is headed with its registry number and title", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     expect(sectionHeading("projects")).toBeInTheDocument();
   });
 
   it("shows each agent with its context, description, status and stack", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const engine = within(
       screen.getByRole("article", { name: "./Engine Agent" }),
@@ -248,7 +248,7 @@ describe("Projects", () => {
   });
 
   it("shows the offline-evals and coming-soon badges", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
@@ -257,7 +257,7 @@ describe("Projects", () => {
   });
 
   it("shows a measured result and its detail only on agents that have one", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
     expect(
@@ -270,7 +270,7 @@ describe("Projects", () => {
   });
 
   it("links a card to its source and report, in a new tab, besides the card's own link", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const notes = within(screen.getByRole("article", { name: "./Notes Agent" }));
     const source = notes.getByRole("link", { name: /^source/ });
@@ -287,9 +287,9 @@ describe("Projects", () => {
 
   it("keeps a card's link to this page in the tab, like a practice's", () => {
     const withOnPageLink: AgentProject[] = [
-      { ...agents[0], links: [{ label: "try it", href: "#agent" }] },
+      { ...agentProjects[0], links: [{ label: "try it", href: "#agent" }] },
     ];
-    render(<Projects agents={withOnPageLink} practices={[]} />);
+    render(<Projects agentProjects={withOnPageLink} practices={[]} />);
 
     const link = screen.getByRole("link", { name: "try it" });
     expect(link).toHaveAttribute("href", "#agent");
@@ -297,7 +297,7 @@ describe("Projects", () => {
   });
 
   it("says how the agents are run, each practice with its sources (#43)", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const block = within(
       screen.getByRole("region", { name: "how I run agents" }),
@@ -325,7 +325,7 @@ describe("Projects", () => {
   });
 
   it("gives each agent card's heading the id its practice links point to", () => {
-    render(<Projects agents={agents} practices={practices} />);
+    render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     expect(
       screen.getByRole("heading", { name: "./Gear Agent" }),

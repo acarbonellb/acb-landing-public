@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import * as content from "./profile";
 import {
-  agentPractices,
-  agents,
+  practices,
+  agentProjects,
   education,
   experience,
   languages,
@@ -30,7 +30,7 @@ describe("content module", () => {
   });
 
   it("lists the three agents, each with an accurate status", () => {
-    expect(agents.map((a) => [a.name, a.status])).toEqual([
+    expect(agentProjects.map((a) => [a.name, a.status])).toEqual([
       ["Fraud Detection Agent", "offline-evals"],
       ["Organizer Support Agent", "coming-soon"],
       ["Portfolio Agent", "personal-project"],
@@ -38,7 +38,7 @@ describe("content module", () => {
   });
 
   it("describes the fraud agent and its measured result with the approved copy", () => {
-    const fraud = agents.find((a) => a.slug === "fraud-detection-agent");
+    const fraud = agentProjects.find((a) => a.slug === "fraud-detection-agent");
     expect(fraud?.description).toBe(
       "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
     );
@@ -52,7 +52,7 @@ describe("content module", () => {
 
   it("links the portfolio agent to its chat, its source and its eval report (#44)", () => {
     const repo = "https://github.com/acarbonellb/acb-landing-public";
-    const portfolio = agents.find((a) => a.slug === "portfolio-agent");
+    const portfolio = agentProjects.find((a) => a.slug === "portfolio-agent");
     expect(portfolio?.href).toBe("#agent");
     expect(portfolio?.links).toEqual([
       { label: "source", href: `${repo}/tree/main/agent` },
@@ -61,10 +61,10 @@ describe("content module", () => {
   });
 
   it("names no ticketing platform and claims no ownership or order blocking", () => {
-    const text = JSON.stringify(agents);
+    const text = JSON.stringify(agentProjects);
     expect(text).not.toMatch(/found(?:ed|er)|purchases|orders/i);
     expect(
-      agents
+      agentProjects
         .filter((a) => a.slug !== "portfolio-agent")
         .map((a) => a.context),
     ).toEqual([
@@ -75,7 +75,7 @@ describe("content module", () => {
 
   it("says how Alberto runs agents, each practice backed by this public repo or the page (#43)", () => {
     const repo = "https://github.com/acarbonellb/acb-landing-public";
-    expect(agentPractices).toEqual([
+    expect(practices).toEqual([
       {
         title: "Offline evals before shipping",
         text: "This site's agent records its eval cases against a real model and replays them in CI, with no model or network: a stale recording or an off-topic leak fails the build.",
@@ -110,7 +110,7 @@ describe("content module", () => {
   });
 
   it("links only to this repo or to a card on the page, never to another repo", () => {
-    for (const { href } of agentPractices.flatMap((p) => p.sources)) {
+    for (const { href } of practices.flatMap((p) => p.sources)) {
       expect(href).toMatch(
         /^(?:https:\/\/github\.com\/acarbonellb\/acb-landing-public(?:[/#]|$)|#agent-)/,
       );

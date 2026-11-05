@@ -1,4 +1,4 @@
-// The one tool layer of the portfolio agent. The MCP server serves these tools
+// The one tool layer of the Portfolio Agent. The MCP server serves these tools
 // as-is and the chat endpoint hands them to the model, so both interfaces
 // answer from the same data. Read-only and public by design: every tool only
 // reads the shared content module.
@@ -6,9 +6,9 @@ import * as z from "zod";
 import { formatPeriod } from "../../src/shared/format";
 import * as shared from "../../src/shared/profile";
 import type {
-  AgentPractice,
   AgentProject,
   Education,
+  Practice,
   Profile,
   Role,
   SkillGroup,
@@ -18,9 +18,9 @@ import type {
 /** Everything the tools read. Defaults to the landing's content module. */
 export type Content = {
   profile: Profile;
-  agents: AgentProject[];
+  agentProjects: AgentProject[];
   /** How he runs agents (#43), served with the projects. */
-  agentPractices: AgentPractice[];
+  practices: Practice[];
   experience: Role[];
   skillGroups: SkillGroup[];
   education: Education[];
@@ -34,8 +34,8 @@ export type Content = {
 
 export const siteContent: Content = {
   profile: shared.profile,
-  agents: shared.agents,
-  agentPractices: shared.agentPractices,
+  agentProjects: shared.agentProjects,
+  practices: shared.practices,
   experience: shared.experience,
   skillGroups: shared.skillGroups,
   education: shared.education,
@@ -196,7 +196,7 @@ function buildTools(content: Content) {
         ),
       }),
       run: ({ status }) => ({
-        projects: content.agents
+        projects: content.agentProjects
           .filter((a) => !status || a.status === status)
           .map((a) => {
             const links = offPageLinks(a.links ?? []);
@@ -211,7 +211,7 @@ function buildTools(content: Content) {
               ...(links.length ? { links } : {}),
             };
           }),
-        practices: content.agentPractices.map(({ title, text, sources }) => {
+        practices: content.practices.map(({ title, text, sources }) => {
           const links = offPageLinks(sources);
           return { title, text, ...(links.length ? { sources: links } : {}) };
         }),

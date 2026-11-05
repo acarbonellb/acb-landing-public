@@ -13,8 +13,8 @@ import { StatusLine } from "@/components/status-line";
 import { withEvalResults } from "@/lib/eval-results";
 import { type SectionId, sections } from "@/lib/sections";
 import {
-  agentPractices,
-  agents,
+  practices,
+  agentProjects,
   experience,
   profile,
   skillGroups,
@@ -30,7 +30,7 @@ export default async function Home() {
     stack: <Stack skillGroups={skillGroups} />,
     experience: <Experience roles={experience} />,
     projects: (
-      <Projects agents={withEvalResults(agents, { history, report })} practices={agentPractices} />
+      <Projects agentProjects={withEvalResults(agentProjects, { history, report })} practices={practices} />
     ),
     agent: <Agent linkedin={profile.links.linkedin} />,
     contact: <Contact profile={profile} />,
