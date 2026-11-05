@@ -6,56 +6,570 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "965d83b246ae93de18700e31851a2faa1ac2285d86666a62bd559136a0c9ec94",
-      "latencyMs": 1938,
+      "requestHash": "c279abdf5d6a749aee3893e68ed602b16dc5da6c35ac6d87ac92260e2deac61e",
+      "latencyMs": 1784,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1964
+          "inputTokens": 2012
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01DSWQYaL2nVdbRwfJxgmE2u",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "toolu_016B4fnKTAfPDHqiBh39a7Eg",
+                "name": "get_experience",
+                "input": {}
+              },
+              {
+                "id": "toolu_01DzF4rdnYhMA7kD1ze2rrbS",
+                "name": "get_projects",
+                "input": {}
+              },
+              {
+                "id": "toolu_01BzTw36nHJ86XBbgwinCDoD",
+                "name": "get_stack",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2012,
+              "outputTokens": 275
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSnQkKEAgTGAI4AUIIdGhpbmtpbmcSDCzAKLmakm8Cmm/y5RoMBMsjO6xyUjOLQacyIjChbi0dhNNJIgNnuhrvv0AOzgkMKfp6gNOkT6FO/JYWwTsj3kbBaS7r5URBG/MocAIqugjOPxumcjxrp+qwvTEHR2NJCLF6kV/JuZQFz9p/q7xUnNfx0V7ZwwFENROwG8eKK1Pmj7LO0H4mIMAgZchGVLaxQHf6lmhNB86z4cPidn7N5WGwaFIDli6CLj9Ifi+sSbFVv/zBF8lyd4CuCzW3s4hqnXPVE+e8zsnh4fJtuI++jKxvc8pYvETN9Wtp8nJ+pCrYGwvqfKDkx0ccJ5IsC0OCiKjBxB5eaav4DPqWuGLuv2HYRnmGoZ+wCLq5vBECdZZPTwbeXEA1prYepV7d7gmS7NeKaaOC10TqIvZdMxSxfHbctQ/NAcMkHL5NTtVmXigUe+SaOJhn8ZdZcZVBrNkkOMKuf35mjOVoOo6xVhozwQvE6djjRdJgGLdGVnJ8NZNeiqzrAz92+AiQeI8eqTkdUTvNbcIgChSYvuehnAf5U/5hmQk26DuOstB1kf+OnIiMSEoPWO6nLJ9j7B+bVCHXPt1FZAs1GSRp6PnZiNZ+OkorfoBK+hRPgk3IrWQhBXnZpnaikTGMQATNxCQNwbXFP1WkSyjW6J+1H9JiIpQM8JQDArAut6hLAgKAMCX7iaRkPbBWNAJct0FShhi3Uy3vmhXeP0lC6CemRsFGqnleqqEP7NJpOTvp13NXugXCs1Rv+PzJhSmCyzbLDCBF9XFgy6+K0cUt1e0qrjPOKzLQMeFwde3MWtJGjajitjMz6jnflt17O1rWsi3MQcJ4WvoPoJ+5TEFi+ViUikkRKsOVvQuji4ESkgP6BkNrX58jubpRsv9oFm0u+P6cz7Uv/Xh3uMClAgk8risVPEZMQQ2nM7DHquVqhHIzz6PpsridPyCuyPNhHjnmD+QlSRZw3eiei4MEazsRw+Q52XbMZywfo/Ngwc2oUuX1afDW8ZE3f0tiZ8K37iWzKC1eLoo8utajJ5Rje1hdAgW3TyD1ZP+GcpphG82I68ev43WEMFXAz6Idrd1A6pmXMhDKdejV+yM4S0AYPYB1z6jxGrENyTVm04OsvPAgA5f3w2t6v2AepHXZAiTcFejF0sB7atGmwIgcRU9ilvrEEaZxz6JMkJaXFu7P0HbSVpmOA/EF5GJ1u4+b8l69Li3qPsEF6jkkOAM29UEwyjfYXjdl6yEgURNFDFlNjIiD4t+tenQ5/D6O8iRwvLiQJ1hrS0gQv2d/86MFZSfR5+BifCphPvkrzYRWAQn2U0RBEqA/8wnbkJjwkffLUJ0M25MkwW+6aOjcyCbRv8PwAFHxlVjhu5X3j9SCEp5CdwYNLX8CPInYQcYqpGb3BOXvjnFlK2oP2D4Z5HCVkGPy5F3uTtX3CNIHZJkWLh8/ckzD0hLz+QB+rymj92/oWW2SK1+5DG3jIes6LUWP1k2zHmqQnRiWl9NxLkEs89AZx+kGarGxzg1VhzvMw7BBrWustqk6bfe/BATbNFzRdx8a6i2/InAlxRgB"
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01DSWQYaL2nVdbRwfJxgmE2u",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_016B4fnKTAfPDHqiBh39a7Eg",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01DzF4rdnYhMA7kD1ze2rrbS",
+                "name": "get_projects",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01BzTw36nHJ86XBbgwinCDoD",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f37f4416cf823eba5e5f229d2f44bd1a3e50912669c25b9310c136079fe27da5",
+      "latencyMs": 3017,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 4674
         },
         {
           "type": "text_delta",
-          "text": "I can't repe"
+          "text": "I can't repeat the t"
         },
         {
           "type": "text_delta",
-          "text": "at t"
+          "text": "ool calls over"
         },
         {
           "type": "text_delta",
-          "text": "ool calls in"
+          "text": " and over, so I called"
         },
         {
           "type": "text_delta",
-          "text": " a loop, but I can answ"
+          "text": " each one once and here"
         },
         {
           "type": "text_delta",
-          "text": "er questions about Alberto"
+          "text": "'s the"
         },
         {
           "type": "text_delta",
-          "text": ". I"
+          "text": " overview."
         },
         {
           "type": "text_delta",
-          "text": " can"
+          "text": "\n\n**Prof"
         },
         {
           "type": "text_delta",
-          "text": " c"
+          "text": "ile:"
         },
         {
           "type": "text_delta",
-          "text": "over his profile, work"
+          "text": "** Al"
         },
         {
           "type": "text_delta",
-          "text": " experience, AI agent"
+          "text": "berto Carbonell is"
         },
         {
           "type": "text_delta",
-          "text": " projects, tech stack,"
+          "text": " a Senior Software Eng"
+        },
+        {
+          "type": "text_delta",
+          "text": "ineer (AI Agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " & Full-Stack T"
+        },
+        {
+          "type": "text_delta",
+          "text": "ypeScript) based in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain, working"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely. He has 10"
+        },
+        {
+          "type": "text_delta",
+          "text": "+ years with"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript, Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js and PostgreS"
+        },
+        {
+          "type": "text_delta",
+          "text": "QL, and l"
+        },
+        {
+          "type": "text_delta",
+          "text": "ately builds AI agents that"
+        },
+        {
+          "type": "text_delta",
+          "text": " handle real work end to end."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n**Experience:**"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **CoverWallet"
+        },
+        {
+          "type": "text_delta",
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " (2019 – now"
+        },
+        {
+          "type": "text_delta",
+          "text": "):"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior Software Engine"
+        },
+        {
+          "type": "text_delta",
+          "text": "er. Integrates ins"
+        },
+        {
+          "type": "text_delta",
+          "text": "urance carrier APIs"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " introduced"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI agents into the team"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s engineering workflow."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **M&GT"
+        },
+        {
+          "type": "text_delta",
+          "text": " Consulting** (2016 "
+        },
+        {
+          "type": "text_delta",
+          "text": "– 2019): Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Developer. RE"
+        },
+        {
+          "type": "text_delta",
+          "text": "ST APIs,"
+        },
+        {
+          "type": "text_delta",
+          "text": " web/mobile apps,"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Hyperledger Fab"
+        },
+        {
+          "type": "text_delta",
+          "text": "ric/Ethereum sol"
+        },
+        {
+          "type": "text_delta",
+          "text": "utions.\n- **Ind"
+        },
+        {
+          "type": "text_delta",
+          "text": "ra** (2015 – "
+        },
+        {
+          "type": "text_delta",
+          "text": "2016): Software Developer"
+        },
+        {
+          "type": "text_delta",
+          "text": ". Java/Spring and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Oracle PL/S"
+        },
+        {
+          "type": "text_delta",
+          "text": "QL for telecom clients"
+        },
+        {
+          "type": "text_delta",
+          "text": ".\n\n**Ag"
+        },
+        {
+          "type": "text_delta",
+          "text": "ent projects:**\n- **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Fraud Detection"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent** (offline evals"
+        },
+        {
+          "type": "text_delta",
+          "text": "): re"
+        },
+        {
+          "type": "text_delta",
+          "text": "views new"
+        },
+        {
+          "type": "text_delta",
+          "text": " events for"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " online"
+        },
+        {
+          "type": "text_delta",
+          "text": " ticketing platform and rec"
+        },
+        {
+          "type": "text_delta",
+          "text": "ommends appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ve/reject/request-info"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " a human admin. Claude"
+        },
+        {
+          "type": "text_delta",
+          "text": " Haiku 5.5"
+        },
+        {
+          "type": "text_delta",
+          "text": " was chosen for deploy"
+        },
+        {
+          "type": "text_delta",
+          "text": "ment, with 86% accu"
+        },
+        {
+          "type": "text_delta",
+          "text": "racy vs 71%"
+        },
+        {
+          "type": "text_delta",
+          "text": " for the local model."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **Organizer"
+        },
+        {
+          "type": "text_delta",
+          "text": " Support Agent** (coming"
+        },
+        {
+          "type": "text_delta",
+          "text": " soon): answers organizers"
+        },
+        {
+          "type": "text_delta",
+          "text": "' questions using"
+        },
+        {
+          "type": "text_delta",
+          "text": " live data."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **Portfolio"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent** (personal project"
+        },
+        {
+          "type": "text_delta",
+          "text": "): the"
+        },
+        {
+          "type": "text_delta",
+          "text": " ass"
+        },
+        {
+          "type": "text_delta",
+          "text": "istant you"
+        },
+        {
+          "type": "text_delta",
+          "text": "'re using"
+        },
+        {
+          "type": "text_delta",
+          "text": " now"
+        },
+        {
+          "type": "text_delta",
+          "text": ", also exposed as an M"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP server.\n\n**St"
+        },
+        {
+          "type": "text_delta",
+          "text": "ack:** TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": ", J"
+        },
+        {
+          "type": "text_delta",
+          "text": "avaScript, "
+        },
+        {
+          "type": "text_delta",
+          "text": "Ruby;"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node.js, NestJ"
+        },
+        {
+          "type": "text_delta",
+          "text": "S, Next"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js, PostgreS"
+        },
+        {
+          "type": "text_delta",
+          "text": "QL; Claude, M"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP, tool calling;"
+        },
+        {
+          "type": "text_delta",
+          "text": " Docker, Kubernet"
+        },
+        {
+          "type": "text_delta",
+          "text": "es, GCP; React,"
+        },
+        {
+          "type": "text_delta",
+          "text": " React Native,"
+        },
+        {
+          "type": "text_delta",
+          "text": " Angular.\n\n**Education"
+        },
+        {
+          "type": "text_delta",
+          "text": ":** C"
+        },
+        {
+          "type": "text_delta",
+          "text": "FGS di"
+        },
+        {
+          "type": "text_delta",
+          "text": "plomas in Web Development"
+        },
+        {
+          "type": "text_delta",
+          "text": ", Multiplatform"
+        },
+        {
+          "type": "text_delta",
+          "text": " Development and Systems Administration"
+        },
+        {
+          "type": "text_delta",
+          "text": " (C"
+        },
+        {
+          "type": "text_delta",
+          "text": "IFP Rodolf"
+        },
+        {
+          "type": "text_delta",
+          "text": "o Ucha Piñ"
+        },
+        {
+          "type": "text_delta",
+          "text": "eiro, "
+        },
+        {
+          "type": "text_delta",
+          "text": "2010–2015).\n\n**"
+        },
+        {
+          "type": "text_delta",
+          "text": "Languages:** Span"
+        },
+        {
+          "type": "text_delta",
+          "text": "ish (native), English ("
+        },
+        {
+          "type": "text_delta",
+          "text": "C1).\n\nFor avail"
+        },
+        {
+          "type": "text_delta",
+          "text": "ability, p"
+        },
+        {
+          "type": "text_delta",
+          "text": "ay, or an"
+        },
+        {
+          "type": "text_delta",
+          "text": "ything else not"
+        },
+        {
+          "type": "text_delta",
+          "text": " list"
+        },
+        {
+          "type": "text_delta",
+          "text": "ed here, contact"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto directly."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you like more"
+        },
+        {
+          "type": "text_delta",
+          "text": " det"
+        },
+        {
+          "type": "text_delta",
+          "text": "ail on any project"
         },
         {
           "type": "text_delta",
@@ -63,43 +577,26 @@
         },
         {
           "type": "text_delta",
-          "text": " how"
+          "text": " role"
         },
         {
           "type": "text_delta",
-          "text": " to contact him."
-        },
-        {
-          "type": "text_delta",
-          "text": " Which would"
-        },
-        {
-          "type": "text_delta",
-          "text": " you like to start"
-        },
-        {
-          "type": "text_delta",
-          "text": " with?"
+          "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can't repeat tool calls in a loop, but I can answer questions about Alberto. I can cover his profile, work experience, AI agent projects, tech stack, or how to contact him. Which would you like to start with?",
+            "text": "I can't repeat the tool calls over and over, so I called each one once and here's the overview.\n\n**Profile:** Alberto Carbonell is a Senior Software Engineer (AI Agents & Full-Stack TypeScript) based in Spain, working remotely. He has 10+ years with TypeScript, Node.js and PostgreSQL, and lately builds AI agents that handle real work end to end.\n\n**Experience:**\n- **CoverWallet** (2019 – now): Senior Software Engineer. Integrates insurance carrier APIs and introduced AI agents into the team's engineering workflow.\n- **M&GT Consulting** (2016 – 2019): Software Developer. REST APIs, web/mobile apps, and Hyperledger Fabric/Ethereum solutions.\n- **Indra** (2015 – 2016): Software Developer. Java/Spring and Oracle PL/SQL for telecom clients.\n\n**Agent projects:**\n- **Fraud Detection Agent** (offline evals): reviews new events for an online ticketing platform and recommends approve/reject/request-info to a human admin. Claude Haiku 5.5 was chosen for deployment, with 86% accuracy vs 71% for the local model.\n- **Organizer Support Agent** (coming soon): answers organizers' questions using live data.\n- **Portfolio Agent** (personal project): the assistant you're using now, also exposed as an MCP server.\n\n**Stack:** TypeScript, JavaScript, Ruby; Node.js, NestJS, Next.js, PostgreSQL; Claude, MCP, tool calling; Docker, Kubernetes, GCP; React, React Native, Angular.\n\n**Education:** CFGS diplomas in Web Development, Multiplatform Development and Systems Administration (CIFP Rodolfo Ucha Piñeiro, 2010–2015).\n\n**Languages:** Spanish (native), English (C1).\n\nFor availability, pay, or anything else not listed here, contact Alberto directly. Would you like more detail on any project or role?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1964,
-              "outputTokens": 258
+              "inputTokens": 4674,
+              "outputTokens": 682
             },
             "providerContent": [
               {
-                "type": "thinking",
-                "thinking": "",
-                "signature": "CAQSpwkKEAgTGAI4AUIIdGhpbmtpbmcSDCrrOgfUlJywenMgSxoMS7i9be6G2DC1G1WnIjA08zsTe/pPvG6PgRgPevJurgD8Sz9cXI8GD1+W6mkHE3xqCD4H/eTm6oTJqjyuS8sqxAjq6SZDVCw49mjKDqVP41nH2G0HWY3HrYY70st/nhrkh+h13MnkoAeHE8uD7UU0cF753/oUIjPUCWqUZxmEs/Qx7bqSENrFOsdxcHgd7dmxQy3/Aaxs7YytRzO5xtHDKMb7a4YP5BbJJwGWLsBmsXMOGlXiBCtrbZJxb5RjYgc8Az59kg9PG2lfXeKZsS1zTvIHiEqVND6KfsKVatQCDJpGSCfCQkk3L2T4WWSIfr2w7UPRSpapuMIL7n9aCJZtyO1ZqrKQSY5gfTlD5/jHYImF4+uKx8y6IvxcXPD54XQjPhw8aZCcpigI3WNMFjW2JhwdM8CHxByUAsJvgqaWajUHaQfs5C8QwgyQtQPX5a7VJcdu2XuPJtvRSEoxHrGpByDE8OceSCF6KkWCxdH14rRnnnkalbMGz5b0rMQcAbtf8faYuQoqKZ1AfZ4rdfftjVNaE0rh0uDnVjdFZrPTyfXT3yHfn6NFXIcCOvQy0mTJ12YpjXvEg7OMhIKTwK+6Bao1S1seMHBQIQJ+JWEo+Q/Ou2M7qUg0q6ErKQtQkntudEiICDU95nM/KqDEDukCzSTMJdB6nqzeHekl0R95tH/OwPdrHk9yS9s1gCoHVdt0IUW6IRfGul7MMBfrohDgsCxtf6BLzP3JF2Sxy6AVDUy2cFWCHGnRUgT/vkQLrDuEYYjsjcWf7awsi5cG5nNAexsAjvKOOLFWgF15aqSmXOCzgIAM4Jqugb08kD2U9Ter0mGCuLvGc8fVAI6cSRjpeLlDYsddvXqXXAdoWITiH7Yh6y2dPwP9a8f7YQyJo5WHZm4eVg2UlOET+l+XoznrsuvQF7NCDxo938LHfdVRhKt0TGEeRZkEusoHUM56VrCrVz9WcfdM8fOc2CpYwjUuXgnDXPTQlbByGbhRWWcfJZjHaRLhXYr2vageue81ekKgg5qMnT+nVooqPqORKnCrPj8Q5zxw0e2BecvpnrPbrZDCygYWLwGvMKCckItUbn+zhvgUFEg+G+RPnMy5ILQGe4S1jV0nvgesVYtWZ8GQRQF8Cud7xK07qTrK6eCwU2uS5vV0D+6FFEZhbTW+bBsldlU1EAUeWdDJaHQ3pqtUjWLwSor7Hhf5p2/alMkRv4U1S73Z5wGSO9cR/av6k7wNp+xq8OB2WOR9nh24WY7TJSP/7a5OEyKjOWOK4VhDDAlIi8Md7OE3LWn2cXK35l2lC2orF/o3K7tosse7RdA2Xx8oDWc3wqA+lbBBPVjJahsCFEBVU22HqbFp2jhgpW4xUBTYQbi+TItWw5Pj/WjZscgN2F/ktHUyuZvxf5ItcPH/Kwzq0B9lmxWeEsxnO4GpfyVjHlYzb8BtRs1YuGplNJ1/kKHJoUj5SKRjcM2hSUd0hFWlpOnQa2HnKiGEoK12YNxy51l08hz/yQexU1zGeNuA3nww0046g4uTsNasxo4ooLT+w0sYAQ=="
-              },
-              {
                 "type": "text",
-                "text": "I can't repeat tool calls in a loop, but I can answer questions about Alberto. I can cover his profile, work experience, AI agent projects, tech stack, or how to contact him. Which would you like to start with?"
+                "text": "I can't repeat the tool calls over and over, so I called each one once and here's the overview.\n\n**Profile:** Alberto Carbonell is a Senior Software Engineer (AI Agents & Full-Stack TypeScript) based in Spain, working remotely. He has 10+ years with TypeScript, Node.js and PostgreSQL, and lately builds AI agents that handle real work end to end.\n\n**Experience:**\n- **CoverWallet** (2019 – now): Senior Software Engineer. Integrates insurance carrier APIs and introduced AI agents into the team's engineering workflow.\n- **M&GT Consulting** (2016 – 2019): Software Developer. REST APIs, web/mobile apps, and Hyperledger Fabric/Ethereum solutions.\n- **Indra** (2015 – 2016): Software Developer. Java/Spring and Oracle PL/SQL for telecom clients.\n\n**Agent projects:**\n- **Fraud Detection Agent** (offline evals): reviews new events for an online ticketing platform and recommends approve/reject/request-info to a human admin. Claude Haiku 5.5 was chosen for deployment, with 86% accuracy vs 71% for the local model.\n- **Organizer Support Agent** (coming soon): answers organizers' questions using live data.\n- **Portfolio Agent** (personal project): the assistant you're using now, also exposed as an MCP server.\n\n**Stack:** TypeScript, JavaScript, Ruby; Node.js, NestJS, Next.js, PostgreSQL; Claude, MCP, tool calling; Docker, Kubernetes, GCP; React, React Native, Angular.\n\n**Education:** CFGS diplomas in Web Development, Multiplatform Development and Systems Administration (CIFP Rodolfo Ucha Piñeiro, 2010–2015).\n\n**Languages:** Spanish (native), English (C1).\n\nFor availability, pay, or anything else not listed here, contact Alberto directly. Would you like more detail on any project or role?"
               }
             ]
           }

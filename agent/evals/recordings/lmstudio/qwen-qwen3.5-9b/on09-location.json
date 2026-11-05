@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "03c932684ef930da7fe3d58c20b92754884e2abba16895ded98add6f375c4f35",
-      "latencyMs": 6815,
+      "requestHash": "ceaef4ed97c64908ad886ef77c6a5ffc8a2cf9a4920d951b137d1ce369d7e081",
+      "latencyMs": 1680,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2249
+          "inputTokens": 2319
         },
         {
           "type": "turn_end",
@@ -19,32 +19,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ycQSWIkDjsuE32BZksrqNrG0luWexuOG",
+                "id": "4LDhnerOdRVJX16IRB4DzZUzAQJDAOVV",
                 "name": "get_profile",
-                "input": {}
-              },
-              {
-                "id": "3VAb8aLNQaQ6BQjvp445jP3i46kXpHtB",
-                "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2249,
-              "outputTokens": 259
+              "inputTokens": 2319,
+              "outputTokens": 62
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ycQSWIkDjsuE32BZksrqNrG0luWexuOG",
+                "id": "4LDhnerOdRVJX16IRB4DzZUzAQJDAOVV",
                 "name": "get_profile",
-                "input": {}
-              },
-              {
-                "type": "tool_use",
-                "id": "3VAb8aLNQaQ6BQjvp445jP3i46kXpHtB",
-                "name": "get_contact",
                 "input": {}
               }
             ]
@@ -53,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "e26c96f767c9a6d1f69fcabcf6b05157f0d7672eac3d13f644787edb98604504",
-      "latencyMs": 587,
+      "requestHash": "d8f77f065ea3555ea1e3878e54022f44bcdc93a734d52fd055848dff9a221f60",
+      "latencyMs": 548,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2632
+          "inputTokens": 2628
         },
         {
           "type": "text_delta",
@@ -107,7 +96,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2632,
+              "inputTokens": 2628,
               "outputTokens": 13
             },
             "providerContent": [

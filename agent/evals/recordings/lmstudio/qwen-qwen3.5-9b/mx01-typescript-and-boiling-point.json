@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "7938216aefc7f5a5a5d6ed4b9b57e7346a967049f4ed04386ed8e006821bdffd",
-      "latencyMs": 3496,
+      "requestHash": "6a40512bcac3eb522d8ffaaa04a23eb0bb061f672c34a9ce776d6a27688f4636",
+      "latencyMs": 4340,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2261
+          "inputTokens": 2331
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ggDvWbAV1dWOuhxcqByKIcgGM8i0vf3b",
+                "id": "AGcZre4HIXJCTywo4pQPwBs7MSfqQJeI",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2261,
-              "outputTokens": 131
+              "inputTokens": 2331,
+              "outputTokens": 168
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ggDvWbAV1dWOuhxcqByKIcgGM8i0vf3b",
+                "id": "AGcZre4HIXJCTywo4pQPwBs7MSfqQJeI",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "3cb2b28c63d12c315d47db873a16a01fe8100f6e547950762e5889498b23b6b1",
-      "latencyMs": 1079,
+      "requestHash": "30fb020864141c74971821db943a69733e605def6b5bd16895e2d688040b59e5",
+      "latencyMs": 3643,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2348
+          "inputTokens": 2418
         },
         {
           "type": "text_delta",
@@ -63,6 +63,50 @@
         },
         {
           "type": "text_delta",
+          "text": " according"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " one"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
           "text": " Alberto"
         },
         {
@@ -71,15 +115,35 @@
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
+          "text": " ("
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": "along"
         },
         {
           "type": "text_delta",
-          "text": " Regarding"
+          "text": "side"
+        },
+        {
+          "type": "text_delta",
+          "text": " JavaScript"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby"
+        },
+        {
+          "type": "text_delta",
+          "text": ")."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nRegarding"
         },
         {
           "type": "text_delta",
@@ -171,14 +235,6 @@
         },
         {
           "type": "text_delta",
-          "text": " projects"
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
           "text": " work"
         },
         {
@@ -187,22 +243,50 @@
         },
         {
           "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his projects or work experience?",
+            "text": "Yes, according to his profile, TypeScript is one of the languages Alberto knows (alongside JavaScript and Ruby).\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2348,
-              "outputTokens": 37
+              "inputTokens": 2418,
+              "outputTokens": 140
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his projects or work experience?"
+                "text": "Yes, according to his profile, TypeScript is one of the languages Alberto knows (alongside JavaScript and Ruby).\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?"
               }
             ]
           }

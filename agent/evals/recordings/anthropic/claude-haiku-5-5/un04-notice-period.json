@@ -6,79 +6,163 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "e62179aea0206d2c5367b5db156f1745338364f0554833d72973ff537550402b",
-      "latencyMs": 1178,
+      "requestHash": "d5d754c56f02e970b1f7b21e6f77260ff95161f8b34c04323a280a299e5e46ad",
+      "latencyMs": 1250,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1610
-        },
-        {
-          "type": "text_delta",
-          "text": "I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can't answ"
-        },
-        {
-          "type": "text_delta",
-          "text": "er that from his profile."
-        },
-        {
-          "type": "text_delta",
-          "text": " Availability, notice period and start"
-        },
-        {
-          "type": "text_delta",
-          "text": " d"
-        },
-        {
-          "type": "text_delta",
-          "text": "ates a"
-        },
-        {
-          "type": "text_delta",
-          "text": "ren't cov"
-        },
-        {
-          "type": "text_delta",
-          "text": "ered there"
-        },
-        {
-          "type": "text_delta",
-          "text": ", so please re"
-        },
-        {
-          "type": "text_delta",
-          "text": "ach out to Alberto direct"
-        },
-        {
-          "type": "text_delta",
-          "text": "ly. I can share"
-        },
-        {
-          "type": "text_delta",
-          "text": " his contact details if you'"
-        },
-        {
-          "type": "text_delta",
-          "text": "d like."
+          "inputTokens": 1658
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can't answer that from his profile. Availability, notice period and start dates aren't covered there, so please reach out to Alberto directly. I can share his contact details if you'd like.",
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01Ke4rLAz3prUhXbgKXo8ZV3",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1658,
+              "outputTokens": 153
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS2gcKEAgTGAI4AUIIdGhpbmtpbmcSDCEHhRhGRm8aCUOeuBoMf2zHWo7upr1MwcfFIjBm0dkM+Jbni9xZIBCpmFmSGiQdRV6Nr6GqWF/hQ2QT3Hes/v74VbVuS/VhBQFPGqQq9wbcq0Pd6VItvjFxGsnU+egEDsclz1Vz2OW0392WXb8WmPL56Q6EDcfPAD1u4pz8JTLcc93BoPkDcGYXN4dxh1C+ofLrU4mf1IhCD5L8Qn5qUjrA7p0M2IbMc/uZzI1e31l29IB5qceJAxtXs+nRfTEsE8qYl+excKJrTezM1clAUSBwUiSsuFBK8u8eO8JP8SJeuMOoY0DNxl1BVyT3Djig3BltXKfHZ+jqloob/NKUBrfY5nP+UfTqZoPNS486osCZJ633oc2YXhao09YtvoSRg7R5aLBqF5aFA5ObVe/n0ozxpJffVhGxw09zj4etXdF8EVIFTYAX5SeUX4Pl561cAe8E6VNQVZ6Jwz1NXzNfRWHrC6Ba+SfEZt46BdAM2XPyuRE72OstBAAYSrrfTHlezWUwOo3MG70S2F7pZ8LW9dMxtaG/cjOQku3oL0ShUnWgFmLhRtoQaPCWmKBC7Mu6HYWTTnd1m7Wl6kzaBVLest/LuDf+KhLYGSvLy6t8Rh5u055Vqzm6oi2N4Y/xmrwvjGC1DeioVSJ+O7GtJIg5lHBGIrPJtR2rAPpBbHlHiP5F86k0WOnTYm4ms4Bfxf9vpVVCHUCIACyWkHNQrNDIyd0gn9XLH8i7HrSbS+p3rljccjaf85EACy4vPM9JeZLZ1Vu8svy+NQXtNEtYHxUDaMZr2kNGBwXI1SIg8qBEazOJYAIo73jgsscr/sFyBbPSY16VFRZ5QBgXW+CJEWVWHgVFcxxPwfoBwkv1JmL9IyIFrcaXWBpHJWjbZ34xYxWxylW7mIVPA4XlO28DZLn9B4NfgsakRkyXXmZiCSOpHGETXY35qUng48DHqIDB6uEL1jk5bzpbRIneob4qYEn7OF7n/MTVGwBaqeSUML3Rwj7HhCLegAnR2uKA/7+6v688h2kTi347sb6jjBByjhdUWVASD4MCGijwSqeqnqIgNb3G5DECRczLSvXPO02hbtmpO058HutFC7G/iwyfPB2hdg6u8X7qiAWU7z4HFL5krwINq1K9smZj+LdoqFkjFPb8E35rvaFV8kgHLeSbUNNBZadekYqwxJ2qTP8xbs5z74AAdx/x919DWs316amC0hqYVfV5BpuRWqG3ai3f34xfe/gS8OE+z1TEQ1qpU/0Aliq1lO+QhgBHNvg3/bj/sgpXtAorGEx/YRgB"
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01Ke4rLAz3prUhXbgKXo8ZV3",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "00712d9fee9ea63b9fc5e0c55656aaa032b3bed40594f0f1d04cb5ecf6063d77",
+      "latencyMs": 1110,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2257
+        },
+        {
+          "type": "text_delta",
+          "text": "I don"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t have information"
+        },
+        {
+          "type": "text_delta",
+          "text": " about Alberto's availability"
+        },
+        {
+          "type": "text_delta",
+          "text": ", notice period, or start"
+        },
+        {
+          "type": "text_delta",
+          "text": " date in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile. For"
+        },
+        {
+          "type": "text_delta",
+          "text": " that, please contact him directly"
+        },
+        {
+          "type": "text_delta",
+          "text": ". You"
+        },
+        {
+          "type": "text_delta",
+          "text": " can find"
+        },
+        {
+          "type": "text_delta",
+          "text": " his email"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " LinkedIn with"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "act details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " site, or I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can share"
+        },
+        {
+          "type": "text_delta",
+          "text": " them"
+        },
+        {
+          "type": "text_delta",
+          "text": " here"
+        },
+        {
+          "type": "text_delta",
+          "text": " if you'd like."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "I don't have information about Alberto's availability, notice period, or start date in his profile. For that, please contact him directly. You can find his email and LinkedIn with the contact details on his site, or I can share them here if you'd like.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1610,
-              "outputTokens": 57
+              "inputTokens": 2257,
+              "outputTokens": 71
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can't answer that from his profile. Availability, notice period and start dates aren't covered there, so please reach out to Alberto directly. I can share his contact details if you'd like."
+                "text": "I don't have information about Alberto's availability, notice period, or start date in his profile. For that, please contact him directly. You can find his email and LinkedIn with the contact details on his site, or I can share them here if you'd like."
               }
             ]
           }

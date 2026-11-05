@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "c8eeee643b495cda1a64013fa51684ba90603088709c4be44ae8446ecf5decd5",
-      "latencyMs": 3993,
+      "requestHash": "5b80966b3b9c2061f7719e7464c4a50710d10bc825271634e728f0ca4c4e7683",
+      "latencyMs": 4254,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2250
+          "inputTokens": 2320
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "QRGHOtEKzS8ya11rIFICYotYwgw9kyNT",
+                "id": "eiQf6SpDbchDBu9NlYclJxejuDFB97Lo",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2250,
-              "outputTokens": 148
+              "inputTokens": 2320,
+              "outputTokens": 165
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "QRGHOtEKzS8ya11rIFICYotYwgw9kyNT",
+                "id": "eiQf6SpDbchDBu9NlYclJxejuDFB97Lo",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "9a77f8d05a881d66e6e59dc55d463d0739571e873d3cd280b9b55c7ef1ddaada",
-      "latencyMs": 1047,
+      "requestHash": "f79a129633d477a0123eb5de78cff3b3b784b5312444327293c010c23ca1a19e",
+      "latencyMs": 985,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2560
+          "inputTokens": 2630
         },
         {
           "type": "text_delta",
@@ -119,11 +119,11 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " AI"
         },
         {
           "type": "text_delta",
-          "text": " experience"
+          "text": " agents"
         },
         {
           "type": "text_delta",
@@ -131,11 +131,11 @@
         },
         {
           "type": "text_delta",
-          "text": " AI"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " agents"
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -164,17 +164,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?",
+            "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2560,
+              "inputTokens": 2630,
               "outputTokens": 31
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?"
+                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?"
               }
             ]
           }

@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "a09e076b7bcf0ad41f73be21cd6dc71c8cfca7eafc37a323ff64b3b875e0f329",
-      "latencyMs": 1077,
+      "requestHash": "3f3b13bb4bd090738622d4a85999b7ba7b4224114842113d5a654f5c28ab1fa3",
+      "latencyMs": 782,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1605
+          "inputTokens": 1653
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01J88ZS8rwjyhHud9S9zcBge",
+                "id": "toolu_01Xjuz1UnKCwuKsFpWFCwQSb",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1605,
+              "inputTokens": 1653,
               "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01J88ZS8rwjyhHud9S9zcBge",
+                "id": "toolu_01Xjuz1UnKCwuKsFpWFCwQSb",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -49,12 +49,12 @@
       ]
     },
     {
-      "requestHash": "67e1c79dbe3c3b67bcd7008320602c872ae4c738221511b35d838bb96a84a76b",
-      "latencyMs": 782,
+      "requestHash": "a5b460f9dc4a784f677030247f410c5279203aadb66ffaad677a2d880b674db8",
+      "latencyMs": 663,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1704
+          "inputTokens": 1752
         },
         {
           "type": "text_delta",
@@ -79,7 +79,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1704,
+              "inputTokens": 1752,
               "outputTokens": 29
             },
             "providerContent": [

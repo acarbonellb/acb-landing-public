@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "49acf88406321f1f65720ae29a8ada294c6125d9460351f38eae310868d477bf",
-      "latencyMs": 5429,
+      "requestHash": "af9d0294d6a74a2c9b4e90fbfcba038cc22382147c02e7c6ba76aebe8a887462",
+      "latencyMs": 12088,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2254
+          "inputTokens": 2324
         },
         {
           "type": "text_delta",
@@ -27,15 +27,15 @@
         },
         {
           "type": "text_delta",
-          "text": " answer"
+          "text": " share"
         },
         {
           "type": "text_delta",
-          "text": " questions"
+          "text": " information"
         },
         {
           "type": "text_delta",
-          "text": " about"
+          "text": " from"
         },
         {
           "type": "text_delta",
@@ -55,55 +55,71 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " which"
         },
         {
           "type": "text_delta",
-          "text": " experience"
+          "text": " doesn"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": "'t"
         },
         {
           "type": "text_delta",
-          "text": " agent"
+          "text": " include"
         },
         {
           "type": "text_delta",
-          "text": " projects"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " personal"
         },
         {
           "type": "text_delta",
-          "text": " tech"
+          "text": " opinions"
         },
         {
           "type": "text_delta",
-          "text": " stack"
+          "text": " about"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " companies"
         },
         {
           "type": "text_delta",
-          "text": " education"
+          "text": " like"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " Google"
         },
         {
           "type": "text_delta",
-          "text": " languages"
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " For"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " views"
         },
         {
           "type": "text_delta",
@@ -111,7 +127,23 @@
         },
         {
           "type": "text_delta",
-          "text": " how"
+          "text": " preferences"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": "'d"
+        },
+        {
+          "type": "text_delta",
+          "text": " need"
         },
         {
           "type": "text_delta",
@@ -127,11 +159,15 @@
         },
         {
           "type": "text_delta",
+          "text": " directly"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "text_delta",
-          "text": " Would"
+          "text": "\n\nWould"
         },
         {
           "type": "text_delta",
@@ -151,15 +187,51 @@
         },
         {
           "type": "text_delta",
-          "text": " any"
+          "text": " about"
         },
         {
           "type": "text_delta",
-          "text": " of"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": " those"
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -172,17 +244,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages, or how to contact him. Would you like to know any of those instead?",
+            "text": "I can only share information from Alberto's profile, which doesn't include his personal opinions about companies like Google. For questions about his views or preferences, you'd need to contact him directly.\n\nWould you like to know about his work experience, AI agent projects, or tech stack instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2254,
-              "outputTokens": 203
+              "inputTokens": 2324,
+              "outputTokens": 477
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages, or how to contact him. Would you like to know any of those instead?"
+                "text": "I can only share information from Alberto's profile, which doesn't include his personal opinions about companies like Google. For questions about his views or preferences, you'd need to contact him directly.\n\nWould you like to know about his work experience, AI agent projects, or tech stack instead?"
               }
             ]
           }

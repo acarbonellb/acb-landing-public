@@ -6,12 +6,12 @@
   "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "e99993f2f4a3e674c16cb8cf48d9f55e8d2ab8366d149f83bcccd35276d14861",
-      "latencyMs": 1478,
+      "requestHash": "014898e12a6e2404fb2090048d3767b1452ecfd630810ed23df8fa0a645b952a",
+      "latencyMs": 1121,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2257
+          "inputTokens": 2327
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "nsg3ENFPgyclFinNcIAJnpIqJ6WGxUf1",
+                "id": "VshPBzHttU5a8UN1Ued4EcYQiI2xMNfp",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2257,
-              "outputTokens": 52
+              "inputTokens": 2327,
+              "outputTokens": 40
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "nsg3ENFPgyclFinNcIAJnpIqJ6WGxUf1",
+                "id": "VshPBzHttU5a8UN1Ued4EcYQiI2xMNfp",
                 "name": "get_contact",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "dced060ec8d35af24f258d028ef8b14bc6f1781e4e7921b1bdd19ea8f61e730e",
-      "latencyMs": 1552,
+      "requestHash": "c1306d30eb50e3bcffa05e669a80c568703a60837e94db90c8e974c0e668600d",
+      "latencyMs": 687,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2362
+          "inputTokens": 2432
         },
         {
           "type": "text_delta",
@@ -91,139 +91,11 @@
         },
         {
           "type": "text_delta",
-          "text": " You"
-        },
-        {
-          "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " also"
-        },
-        {
-          "type": "text_delta",
-          "text": " find"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
-          "text": " on"
-        },
-        {
-          "type": "text_delta",
-          "text": " GitHub"
-        },
-        {
-          "type": "text_delta",
-          "text": " at"
-        },
-        {
-          "type": "text_delta",
-          "text": " https"
-        },
-        {
-          "type": "text_delta",
-          "text": "://"
-        },
-        {
-          "type": "text_delta",
-          "text": "github"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/ac"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": "b"
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " on"
-        },
-        {
-          "type": "text_delta",
-          "text": " LinkedIn"
-        },
-        {
-          "type": "text_delta",
-          "text": " at"
-        },
-        {
-          "type": "text_delta",
-          "text": " https"
-        },
-        {
-          "type": "text_delta",
-          "text": "://"
-        },
-        {
-          "type": "text_delta",
-          "text": "www"
-        },
-        {
-          "type": "text_delta",
-          "text": ".linkedin"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/in"
-        },
-        {
-          "type": "text_delta",
-          "text": "/al"
-        },
-        {
-          "type": "text_delta",
-          "text": "bert"
-        },
-        {
-          "type": "text_delta",
-          "text": "oc"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": "/."
-        },
-        {
-          "type": "text_delta",
           "text": " He"
         },
         {
           "type": "text_delta",
-          "text": " is"
+          "text": "'s"
         },
         {
           "type": "text_delta",
@@ -256,17 +128,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "You can reach Alberto at alberto@example.com. You can also find him on GitHub at https://github.com/acarbonellb or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/. He is based in Spain and works remotely.",
+            "text": "You can reach Alberto at alberto@example.com. He's based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2362,
-              "outputTokens": 54
+              "inputTokens": 2432,
+              "outputTokens": 22
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto at alberto@example.com. You can also find him on GitHub at https://github.com/acarbonellb or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/. He is based in Spain and works remotely."
+                "text": "You can reach Alberto at alberto@example.com. He's based in Spain and works remotely."
               }
             ]
           }
