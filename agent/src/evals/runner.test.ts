@@ -178,7 +178,8 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     const outdated = await evaluate({
       cases: [contact, capital],
       sets: [set],
-      history: [{ ...entry, metrics: { ...entry.metrics, meanLatencyMs: 1 } }],
+      // Always differs from the measured latency (a fast run can measure 1 ms).
+      history: [{ ...entry, metrics: { ...entry.metrics, meanLatencyMs: entry.metrics.meanLatencyMs + 1000 } }],
     });
 
     expect(matching.problems).toEqual([]);
