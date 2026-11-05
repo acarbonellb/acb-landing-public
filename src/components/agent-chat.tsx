@@ -14,11 +14,12 @@ import {
   type ChatMessage,
   streamChat,
 } from "@/lib/chat-client";
-import { chatPrivacyNote, contactQuestion } from "@/shared/profile";
+import { chatPrivacyNote, contactQuestion } from "@/shared/site-copy";
 import { connectChat } from "@/components/chat-bridge";
 import { chatRequestLimits } from "@/shared/chat-contract";
 import { fetchContactEmail } from "@/shared/mcp-contact";
 import { Markdown } from "./markdown";
+import { ExternalLink, TerminalButton } from "./ui";
 
 const { maxMessages: MAX_MESSAGES, maxMessageChars: MAX_CHARS } = chatRequestLimits;
 
@@ -340,14 +341,12 @@ export function AgentChat({
               <p className="text-fg-dark">
                 <span className="text-comment">[system]</span> The agent can&apos;t be
                 reached right now. You can message me on{" "}
-                <a
+                <ExternalLink
                   href={linkedin}
-                  target="_blank"
-                  rel="noreferrer"
                   className="text-blue underline underline-offset-2 hover:text-cyan"
                 >
                   LinkedIn
-                </a>
+                </ExternalLink>
                 .
               </p>
             )}
@@ -414,13 +413,13 @@ export function AgentChat({
           // 16px on phones: iOS Safari zooms in on focus into any smaller field.
           className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
-        <button
+        <TerminalButton
           type="submit"
           disabled={busy}
-          className="shrink-0 rounded border border-border px-2 py-0.5 text-xs text-fg-dark transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue disabled:opacity-50"
+          className="shrink-0 px-2 py-0.5 text-fg-dark disabled:opacity-50"
         >
           send ↵
-        </button>
+        </TerminalButton>
       </form>
 
       <p
@@ -447,14 +446,10 @@ export function AgentChat({
           <code className="min-w-0 flex-1 break-words whitespace-pre-wrap text-fg">
             {command}
           </code>
-          <button
-            type="button"
-            onClick={copyCommand}
-            className="shrink-0 rounded border border-border px-2 py-0.5 text-xs text-fg-dark transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue"
-          >
+          <TerminalButton onClick={copyCommand} className="shrink-0 px-2 py-0.5 text-fg-dark">
             {copied ? "copied" : "copy"}
             <span className="sr-only"> MCP command</span>
-          </button>
+          </TerminalButton>
         </div>
       </div>
     </div>

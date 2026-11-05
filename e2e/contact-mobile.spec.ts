@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page, type Route, test } from "@playwright/test";
-import { contactQuestion, profile } from "../src/shared/profile";
+import { profile } from "../src/shared/profile";
+import { contactQuestion } from "../src/shared/site-copy";
 
 // "ask my agent" on a phone (#49). Runs on the iPhone (WebKit) profile in CI,
 // and at the same size on Chromium. The agent is stubbed with route

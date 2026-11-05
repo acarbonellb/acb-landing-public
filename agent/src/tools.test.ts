@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { chatPrivacyNote } from "../../src/shared/profile";
+import { chatPrivacyNote } from "../../src/shared/site-copy";
 import { systemPrompt } from "./chat";
 import { createToolset, type Content } from "./tools";
 

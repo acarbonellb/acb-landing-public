@@ -3,6 +3,7 @@
 // answer from the same data. Read-only and public by design: every tool only
 // reads the shared content module.
 import * as z from "zod";
+import { formatPeriod } from "../../src/shared/format";
 import * as shared from "../../src/shared/profile";
 import type {
   AgentPractice,
@@ -63,7 +64,6 @@ function defineTool<I extends ObjectSchema, O extends ObjectSchema>(
 }
 
 const period = z.string().describe('Year range, e.g. "2019 — now"');
-const { formatPeriod } = shared;
 
 /** Links that work off the page: one to a card on it means nothing to an MCP client. */
 const offPageLinks = (links: shared.PracticeSource[]) =>
