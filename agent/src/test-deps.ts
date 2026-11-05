@@ -36,8 +36,8 @@ export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     }),
     spendCap: createMemorySpendCap({ budgetUsd: guardrails.monthlyBudgetUsd, pricing }),
     usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
-    clientKey: clientIp,
-    mcpClientKey: mcpClientIp,
+    rateLimitKey: clientIp,
+    mcpRateLimitKey: mcpClientIp,
     ...overrides,
   };
 }

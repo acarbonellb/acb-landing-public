@@ -68,7 +68,7 @@ export function composeAppDeps(config: Config): AppDeps {
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
     ...createGuardrails(createDocumentStore(config.store), config),
-    clientKey: clientIp,
-    mcpClientKey: mcpClientIp,
+    rateLimitKey: clientIp,
+    mcpRateLimitKey: mcpClientIp,
   };
 }

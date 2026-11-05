@@ -58,9 +58,9 @@ export type AppDeps = {
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
   /** Key for the `/chat` and `/stats` rate limits: the client IP in production. */
-  clientKey: (c: Context) => string;
+  rateLimitKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP, through the Hosting rewrite too. */
-  mcpClientKey: (c: Context) => string;
+  mcpRateLimitKey: (c: Context) => string;
 };
 
 const jsonError = (
@@ -75,11 +75,11 @@ const jsonError = (
  */
 function rateLimit(
   limiter: RateLimiter,
-  clientKey: (c: Context) => string,
+  rateLimitKey: (c: Context) => string,
   refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
-    const decision = await limiter.hit(clientKey(c));
+    const decision = await limiter.hit(rateLimitKey(c));
     if (decision.allowed) return next();
     c.header("Retry-After", String(decision.retryAfterSeconds));
     return refuse(c, decision.retryAfterSeconds);
@@ -117,8 +117,8 @@ export function createApp(deps: AppDeps): Hono {
     mcpRateLimiter,
     spendCap,
     usage,
-    clientKey,
-    mcpClientKey,
+    rateLimitKey,
+    mcpRateLimitKey,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -134,7 +134,7 @@ export function createApp(deps: AppDeps): Hono {
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(mcpRateLimiter, clientKey, (c) =>
+    rateLimit(mcpRateLimiter, rateLimitKey, (c) =>
       jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
     ),
     async (c) => {
@@ -168,7 +168,7 @@ export function createApp(deps: AppDeps): Hono {
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, mcpClientKey, (c, retryAfterSeconds) =>
+    rateLimit(mcpRateLimiter, mcpRateLimitKey, (c, retryAfterSeconds) =>
       c.json(
         {
           jsonrpc: "2.0",
@@ -216,7 +216,7 @@ export function createApp(deps: AppDeps): Hono {
     paths.chat,
     markChatStart,
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, clientKey, async (c, retryAfterSeconds) => {
+    rateLimit(chatRateLimiter, rateLimitKey, async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
       return jsonError(c, 429, {
         code: "rate_limited",
