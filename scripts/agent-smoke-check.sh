@@ -52,6 +52,18 @@ check_chat_cors() {
   [[ "$allowed" == "$origin" ]] || { echo "  /chat doesn't allow $origin (got '$allowed')"; return 1; }
 }
 
+# /stats: the weekly usage JSON, readable from any origin (only reads Firestore).
+check_stats() {
+  local response allowed body
+  response=$(curl -fsS --max-time 20 -D - -H "origin: $origin" "$agent/stats" | tr -d '\r') ||
+    { echo "  /stats failed"; return 1; }
+  allowed=$(awk -F': ' 'tolower($1) == "access-control-allow-origin" { print $2 }' <<<"$response")
+  [[ "$allowed" == "*" ]] || { echo "  /stats doesn't allow any origin (got '$allowed')"; return 1; }
+  body=$(tail -n 1 <<<"$response")
+  grep -q '"current":{"week":"' <<<"$body" && grep -q '"previous":{"week":"' <<<"$body" ||
+    { echo "  /stats answered $body"; return 1; }
+}
+
 check_chat_validation() {
   local status
   status=$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' "$agent/chat" \
@@ -59,7 +71,7 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-for check in check_health check_mcp_tools check_site_mcp_tools check_chat_cors check_chat_validation; do
+for check in check_health check_mcp_tools check_site_mcp_tools check_stats check_chat_cors check_chat_validation; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi
 done
 

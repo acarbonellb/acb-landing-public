@@ -6,13 +6,13 @@
 // never publishes a localhost chat or MCP command.
 //
 // The chat always calls the agent's own URL (a Hosting rewrite can't stream,
-// ADR 0002). A production build shows MCP on the site's domain instead: the
+// ADR 0002), and so does the usage line (`/stats`). A production build shows MCP on the site's domain instead: the
 // `/mcp` rewrite in firebase.json proxies it to the same service.
 import { SITE_URL } from "./site";
 
 export const DEFAULT_AGENT_URL = "http://localhost:8080";
 
-export type AgentEndpoints = { chat: string; mcp: string };
+export type AgentEndpoints = { chat: string; mcp: string; stats: string };
 
 export function agentEndpoints(
   base: string | undefined,
@@ -21,7 +21,11 @@ export function agentEndpoints(
   const production = nodeEnv === "production";
   if (!base && production) return null;
   const root = (base || DEFAULT_AGENT_URL).replace(/\/+$/, "");
-  return { chat: `${root}/chat`, mcp: `${production ? SITE_URL : root}/mcp` };
+  return {
+    chat: `${root}/chat`,
+    mcp: `${production ? SITE_URL : root}/mcp`,
+    stats: `${root}/stats`,
+  };
 }
 
 // Must be referenced literally so Next can inline them into the client bundle.

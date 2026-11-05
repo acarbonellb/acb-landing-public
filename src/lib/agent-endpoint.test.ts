@@ -6,6 +6,7 @@ describe("agentEndpoints", () => {
     const local = {
       chat: "http://localhost:8080/chat",
       mcp: "http://localhost:8080/mcp",
+      stats: "http://localhost:8080/stats",
     };
     expect(agentEndpoints(undefined, "development")).toEqual(local);
     expect(agentEndpoints("", "test")).toEqual(local);
@@ -15,6 +16,8 @@ describe("agentEndpoints", () => {
     const deployed = {
       chat: "https://agent.example.dev/chat",
       mcp: "https://albertocarbonell.dev/mcp",
+      // Read straight from the agent, like the chat: no rewrite for it.
+      stats: "https://agent.example.dev/stats",
     };
     expect(agentEndpoints("https://agent.example.dev", "production")).toEqual(deployed);
     expect(agentEndpoints("https://agent.example.dev/", "production")).toEqual(deployed);
@@ -24,6 +27,7 @@ describe("agentEndpoints", () => {
     expect(agentEndpoints("http://localhost:9000/", "development")).toEqual({
       chat: "http://localhost:9000/chat",
       mcp: "http://localhost:9000/mcp",
+      stats: "http://localhost:9000/stats",
     });
   });
 
