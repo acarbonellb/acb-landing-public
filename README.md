@@ -133,6 +133,8 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE` | `60` | Requests per minute to `/chat` from all clients together (the global ceiling) |
 | `RATE_LIMIT_MCP_GLOBAL_PER_MINUTE` | `600` | Requests per minute to `/mcp` and `/stats` from all clients together |
 | `MONTHLY_SPEND_CAP_USD` | `4` | Estimated model spend per UTC month before the chat closes (`0` turns it off). Keep it under the provider's spend limit (see Guardrails) |
+| `ALERT_CHAT_ERROR_RATE` | `0.2` | The `chat_error_rate` alert event fires when more than this share (0 to 1) of the last hour's streamed chat requests ended in an error (see [Logs and alert events](#logs-and-alert-events)) |
+| `ALERT_CHAT_ERROR_MIN_REQUESTS` | `5` | Streamed chat requests the last hour needs before its error rate fires or clears the alert |
 | `DAILY_SPEND_QUOTA_USD` | `0.1` | Estimated model spend per rate-limit key per UTC day before that key's chat requests are refused with `429` until midnight UTC (`0` refuses them all). See Guardrails |
 | `AGENT_PRICE_INPUT_USD_PER_MTOK` | `AGENT_MODEL`'s list price | Input price used to estimate spend. Unset, it comes from `listPrices` in `agent/src/pricing.ts` (Claude Haiku 5.5: `0.1`, prompts up to 100K tokens); required for a model missing there, or the agent won't start. Cache writes are charged at 1.25x the input price and cache reads at the model's cache-hit price |
 | `AGENT_PRICE_OUTPUT_USD_PER_MTOK` | `AGENT_MODEL`'s list price | Output price used to estimate spend (Claude Haiku 5.5: `0.5`); same rules as the input price |
@@ -198,7 +200,7 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 - **Per-request token cap**: one output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model calls of a request; when it runs out the request ends with `stopReason: "max_tokens"`.
 - **Monthly spend cap** (`agent/src/spend-cap.ts`): before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
 - **Daily spend quota** (`agent/src/daily-quota.ts`): each rate-limit key may spend `DAILY_SPEND_QUOTA_USD` (default $0.10) of estimated model cost per UTC day on `/chat`, so a few sources can't spend the month's cap in minutes. It counts spend, not requests, with the same reservation as the spend cap: each chat request reserves its worst case against the key's quota first, then against the spend cap, so a long conversation counts for what it may cost. One that doesn't fit is refused like a rate limit: `429 rate_limited` with `Retry-After` and `retryAfterSeconds` until midnight UTC, plus `resetsAt`; the chat shows when the visitor can ask again. If the spend cap then refuses the request, the quota's reservation is released. The default comes from `/stats`: about $0.0004 per answer measured in week 45, so $0.10 is some 250 short answers or a few dozen long ones, far beyond a real visitor, and still above a maximal request's worst case (about $0.02 on Claude Haiku 5.5; a short question reserves about $0.01). Forty keys a day are needed to spend the $4 cap.
-- **Provider spend limit**: the Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices from `agent/src/pricing.ts`, at the requested model's rates) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. The provider limit is the backstop if the estimate is ever off; if it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage and the stream ends with `unavailable`, not `internal`. Raise both together, keeping the code cap under the provider's.
+- **Provider spend limit**: the Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices from `agent/src/pricing.ts`, at the requested model's rates) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. The provider limit is the backstop if the estimate is ever off; if it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage and the stream ends with `unavailable`, not `internal`. Raise both together, keeping the code cap under the provider's. Hitting the provider limit logs the `provider_limit` alert event, since it means the two have drifted apart.
 - They sit behind interfaces injected through `AppDeps` (`RateLimiter`, `DailyQuota`, `SpendCap`, with an injectable clock), each with two implementations: in memory (local development and tests) and over a shared document store (production). `AGENT_STORE` picks one, in the production composer (`agent/src/compose.ts`).
 
 #### Shared store
@@ -206,7 +208,7 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 With `AGENT_STORE=firestore` the rate limits and the spend cap live in Firestore, so they are shared by every Cloud Run instance and survive cold starts: the month's spend no longer starts again at $0 when the service scales to zero. The agent talks to Firestore's REST API with plain `fetch` and the service account's token from the metadata server, so the bundle stays self-contained ([ADR 0003](docs/adr/0003-agent-firestore-over-rest.md)).
 
 - **Rate limits**: one document per limiter and client, `rateLimits/<chat|mcp>:<key>` (the rate-limit key, URL-encoded), holding the current one-minute window (`start`, `count`) and `expireAt`, its end. Each endpoint's global ceiling is the document `rateLimits/<chat|mcp>:*`, written once per request the per-IP limit allows; once the ceiling is reached, the refusal cache stops further writes to it until the window ends.
-- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd` and the `holds` of the requests running (each reservation's worst case and `expireAt`). A reservation whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
+- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alert events](#logs-and-alert-events)). A reservation whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
 - **Daily quota**: one document per rate-limit key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (URL-encoded), shaped like the monthly spend document, with `expireAt`, the day's end, for the TTL policy below.
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](#usage-stats)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining budget.
@@ -270,11 +272,13 @@ The agent keeps weekly aggregates of its own traffic (`agent/src/usage.ts`) and 
     "totalMs": { "2000": 14, "3000": 8, "7500": 3 },
     "firstTextMs": { "1000": 20, "2000": 4 }
   },
-  "mcp": { "requests": 12, "unknownGoogleHops": 0 }
+  "mcp": { "requests": 12, "unknownGoogleHops": 0 },
+  "errorWindow": { "1793872800000": { "streamed": 3, "errors": 0 } },
+  "alerted": { "chat_error_rate": false }
 }
 ```
 
-Histogram keys are bucket upper bounds in ms (`inf` past the last).
+Histogram keys are bucket upper bounds in ms (`inf` past the last). `errorWindow` and `alerted` serve the `chat_error_rate` alert event: streamed requests and errors per 10-minute bucket (keyed by its start, ms since epoch), pruned past the hour, and whether the alert is in effect. `/stats` doesn't serve them.
 
 **`GET /stats`** answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under the `/mcp` rate limit (the same per-IP count); `503 unavailable` if the store can't be read. The types are `StatsResponse` in `src/shared/stats-contract.ts`:
 
@@ -296,6 +300,54 @@ Histogram keys are bucket upper bounds in ms (`inf` past the last).
 `answered` counts the four `stopReason` outcomes. `errorRate` is `error:*` outcomes over the requests that streamed (all but `http_429` and `http_503`), `null` if none did. Percentiles are the upper bound of the bucket they fall in (an upper estimate), `null` with no samples or past the last bucket.
 
 **Cost**: one more Firestore write per chat request that streams and per MCP request, one per batch of refusals (at most one per instance every 10 seconds, plus one before each `/stats` read when a batch is waiting), and two document reads per `/stats` call (cached by browsers for 5 minutes). Every chat and MCP request in a week writes the same document; at this site's traffic that is far below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.
+
+### Logs and alert events
+
+The agent logs one JSON object per line (`agent/src/log.ts`), which Cloud Logging parses natively: `severity` becomes the entry's severity, `message` its summary, and every other field lands in `jsonPayload`. `INFO` lines go to stdout, `WARNING` and `ERROR` to stderr. **No line carries message content, a client IP or the contact email**: only counts, ids, outcomes, months and weeks, and error messages that are scrubbed where they're made (Firestore errors name the collection, never the document id, which can hold a client IP; `agent/src/firestore.ts`). The startup banner (`main.ts`) is plain text.
+
+**Fields on every line**
+
+| Field | Type | What |
+| --- | --- | --- |
+| `severity` | `"INFO"` \| `"WARNING"` \| `"ERROR"` | Cloud Logging severity |
+| `event` | string | Stable event name (the tables below). Alerts and queries match on this, never on `message` |
+| `message` | string | Human-readable summary; wording may change |
+| `requestId` | string (UUID) | Set on every line logged while serving a request, absent otherwise. Each request gets a fresh one, also sent back as the `X-Request-Id` response header, so a chat's stream, its store writes and its alert events can be tied together |
+
+**Request events**
+
+| `event` | Severity | Fields | When |
+| --- | --- | --- | --- |
+| `chat_request` | `INFO` | `outcome`, `inputTokens`, `outputTokens`, `costUsd`, `totalMs`, `firstTextMs`, `modelCalls` | Exactly once per `POST /chat` that reaches the route. `outcome` is the usage outcome (`end_turn`, `max_tokens`, `max_iterations`, `refusal`, `error:unavailable`, `error:internal`, `aborted`, `http_429`, `http_503`; see [Usage stats](#usage-stats)) or `http_400` / `http_413` for a malformed or oversized body, or `http_503` for one that failed closed on a store error (none of these three are in the usage stats). `http_429` covers the per-IP limit, the global ceiling and the daily quota alike. Tokens are all the request's model calls, estimated ones included (`0` when refused before streaming); `costUsd` is the estimate at list prices; `totalMs` / `firstTextMs` are ms from arrival to the end of the stream / the first text, `null` when there was none; `modelCalls` counts model calls (`0` when refused) |
+| `chat_failed` | `ERROR` | `error`, `stack` | A chat run hit a bug (the stream ends with `error:internal`) |
+| `unhandled_error` | `ERROR` | `method`, `route`, `error`, `stack` | An error no route handled (or a store failing where the route fails closed), answered `503` in the route's contract |
+| `store_error` | `ERROR` | `operation`, `error`, plus `route` (`rate_limit`), `budget` (`"Spend cap"` or `"Daily quota"`, on `spend_record` and `spend_settle`), `costUsd` (`spend_record`) | One store operation failed. `operation`: `rate_limit` (the route then fails open or closed), `usage_record` (a chat request, MCP request or batch of refusals), `usage_stats`, `spend_record`, `spend_settle`, `provider_limit`. One line per failure: for debugging, not alerting |
+
+`error` is always `"<Name>: <message>"`, with ` (cause: ...)` appended when the error has a cause.
+
+**Alert events.** Each fires **once per crossing**, not once per request; the state lives in the shared store, so it holds across instances and cold starts (in memory, per instance). These are what the Cloud Monitoring log-based alerts match on (#91):
+
+| `event` | Severity | Fields | Fires | State kept in |
+| --- | --- | --- | --- | --- |
+| `spend_threshold` | `WARNING` | `thresholdPercent` (`50` or `80`), `month` (`YYYY-MM`), `spentUsd`, `budgetUsd` | When a model call's charge first brings the month's `spentUsd` to at least 50%, then 80%, of `MONTHLY_SPEND_CAP_USD` (never with a `0` cap). Once each per month | `spend/<YYYY-MM>`: `alerted.threshold_50`, `alerted.threshold_80` |
+| `spend_cap_reached` | `ERROR` | `month`, `spentUsd`, `budgetUsd`, `resetsAt` (ISO time the chat reopens: the next UTC month) | When the spend cap first refuses a chat request in the month. Once per month | `spend/<YYYY-MM>`: `alerted.refused` |
+| `provider_limit` | `ERROR` | `month` | When a model call is refused by the provider's own spend or credit limit (a 400 naming the usage limit, or a 402 `billing_error`) and the limit wasn't already noted. Fires again only after `provider_limit_cleared` | `spend/<YYYY-MM>`: `alerted.provider_limit` (`true` while limited) |
+| `provider_limit_cleared` | `INFO` | `month` | The next model call that succeeds after `provider_limit` | the same flag, set back to `false` |
+| `chat_error_rate` | `ERROR` | `week` (`YYYY-Www`), `windowMinutes` (`60`), `streamed`, `errors`, `errorRate` (0 to 1), `threshold` | When, as a streamed chat request ends, the last hour's `error:*` share of streamed requests (all but `http_429` / `http_503`) goes above `ALERT_CHAT_ERROR_RATE`, with at least `ALERT_CHAT_ERROR_MIN_REQUESTS` streamed requests in the hour. Fires again only after `chat_error_rate_recovered` | `usage/<YYYY-Www>`: `alerted.chat_error_rate` (`true` while above), and `errorWindow` |
+| `chat_error_rate_recovered` | `INFO` | same as `chat_error_rate` | When the hour's rate is back at or under the threshold (again with the minimum of requests) | the same flag, set back to `false` |
+| `store_unavailable` | `ERROR` | `collection` (`rateLimits`, `spend` or `usage`), `error` | When a store update fails after the last one succeeded (or at the first). Fires again only after `store_recovered` | this instance's memory: the store can't record its own outage |
+| `store_recovered` | `INFO` | `collection` | The next store update that succeeds after `store_unavailable` | the same |
+
+"The last hour" is the current 10-minute bucket (UTC) and the five before it, so 50 to 60 minutes; the buckets live in the week's document, so the window starts afresh each Monday 00:00 UTC. `spentUsd` is the month's charged spend, rounded to the micro-dollar; reservations of running requests aren't in it. Spend and provider-limit state start afresh each UTC month, with the month's document. The daily quota's documents (`dailySpend/...`) share the spend cap's reservation code (`agent/src/spend-holds.ts`) but have no alert events.
+
+Querying them in Cloud Logging, e.g. every alert event of the agent:
+
+```
+resource.type="cloud_run_revision" AND resource.labels.service_name="agent"
+jsonPayload.event=("spend_threshold" OR "spend_cap_reached" OR "provider_limit" OR "chat_error_rate" OR "store_unavailable")
+```
+
+or one request's lines: `jsonPayload.requestId="<id>"`.
 
 ### Evals
 

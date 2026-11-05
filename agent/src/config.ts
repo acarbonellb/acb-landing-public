@@ -6,6 +6,7 @@ import * as z from "zod";
 import { chatLimits } from "./chat";
 import { efforts } from "./model";
 import { resolvePricing } from "./pricing";
+import { defaultErrorRateAlert } from "./usage";
 
 const defaultModel = "claude-haiku-5-5";
 
@@ -35,6 +36,11 @@ const envSchema = z.object({
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
+  // The `chat_error_rate` alert event (README, "Logs and alert events"):
+  // fires when more than this share of the last hour's streamed requests
+  // ended in an error, once the hour has at least that many of them.
+  ALERT_CHAT_ERROR_RATE: z.coerce.number().min(0).max(1).default(defaultErrorRateAlert.threshold),
+  ALERT_CHAT_ERROR_MIN_REQUESTS: intFromEnv.default(defaultErrorRateAlert.minRequests),
   // Per rate-limit key and UTC day. /stats measured about $0.0004 per answer
   // (W45), so this is ~250 short answers, or a few dozen long conversations,
   // and still fits a maximal request's worst case (~$0.02 on the default
@@ -128,6 +134,12 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
       dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,
+    },
+    alerts: {
+      chatErrorRate: {
+        threshold: e.ALERT_CHAT_ERROR_RATE,
+        minRequests: e.ALERT_CHAT_ERROR_MIN_REQUESTS,
+      },
     },
     store,
   };

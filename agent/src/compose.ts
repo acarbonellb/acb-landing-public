@@ -7,9 +7,10 @@ import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
 import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
-import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
+import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
+import { createProviderLimitWatch } from "./provider-limit";
 import {
   createMemoryRateLimiter,
   createStoreRateLimiter,
@@ -42,10 +43,14 @@ function createModelClient(config: Config): ModelClient | null {
  * one is configured, else all in memory, per instance.
  */
 export function createGuardrails(
-  store: DocumentStore | null,
-  { guardrails }: Config,
-): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "dailyQuota" | "usage"> {
+  sharedStore: DocumentStore | null,
+  { guardrails, alerts }: Config,
+): Pick<
+  AppDeps,
+  "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
+> {
   const { pricing } = guardrails;
+  const store = sharedStore && withStoreHealthEvents(sharedStore);
   const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
   const dailyQuotaOptions = { quotaUsd: guardrails.dailyQuotaUsd, pricing };
   const limits = {
@@ -67,7 +72,8 @@ export function createGuardrails(
       mcpRateLimiter: rateLimiter("mcp"),
       spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
       dailyQuota: createStoreDailyQuota({ ...dailyQuotaOptions, store }),
-      usage: createUsageRecorder({ store, pricing }),
+      usage: createUsageRecorder({ store, pricing, errorRateAlert: alerts.chatErrorRate }),
+      providerLimit: createProviderLimitWatch({ store }),
     };
   }
   const rateLimiter = (name: keyof typeof limits) => {
@@ -81,7 +87,12 @@ export function createGuardrails(
     mcpRateLimiter: rateLimiter("mcp"),
     spendCap: createMemorySpendCap(spendCapOptions),
     dailyQuota: createMemoryDailyQuota(dailyQuotaOptions),
-    usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
+    usage: createUsageRecorder({
+      store: createMemoryDocumentStore(),
+      pricing,
+      errorRateAlert: alerts.chatErrorRate,
+    }),
+    providerLimit: createProviderLimitWatch({ store: createMemoryDocumentStore() }),
   };
 }
 

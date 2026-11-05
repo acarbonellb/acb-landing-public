@@ -33,11 +33,13 @@ export async function* meteredChat(
   let outcome: ChatOutcome = "aborted";
   let firstTextMs: number | undefined;
   const spent: TokenUsage = { inputTokens: 0, outputTokens: 0 };
+  let modelCalls = 0;
   try {
     for await (const event of agent.run(messages, { signal })) {
       if (event.type === "usage") {
         await reservation.record(event);
         addUsage(spent, event);
+        modelCalls = Math.max(modelCalls, event.iteration);
       }
       if (event.type === "text") firstTextMs ??= elapsed();
       if (event.type === "done") outcome = event.stopReason;
@@ -46,6 +48,6 @@ export async function* meteredChat(
     }
   } finally {
     await reservation.settle();
-    await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs });
+    await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs, modelCalls });
   }
 }

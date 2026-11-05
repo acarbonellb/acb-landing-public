@@ -46,6 +46,14 @@ _Avoid_: status, result
 Who a rate limit counts requests for: the visitor's IP address, or its /64 prefix for IPv6.
 _Avoid_: client id, user, session
 
+**Alert event**:
+A log line, named by its `event` field, that tells the owner money or errors moved (a spend threshold, the spend cap or the provider limit reached, a high error rate, the store down). It fires once per crossing, not once per request.
+_Avoid_: alert (that is the Cloud Monitoring policy that matches it), notification, alarm
+
+**Request ID**:
+The id each request to the agent gets, on every log line written while serving it and in its `X-Request-Id` header, so a chat request's stream and its store writes can be tied together.
+_Avoid_: trace id, correlation id, session id
+
 ### Agent evals
 
 **Eval case**:
