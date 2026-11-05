@@ -170,7 +170,13 @@ With `AGENT_STORE=firestore` the rate limits and the spend cap live in Firestore
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](#usage-stats)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining budget.
 - **Cost**: a chat request is about one write for its rate limit, one to reserve, one per model call, one to settle and one for its usage stats; an MCP request is two (rate limit, usage). That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
-- **Failure**: if Firestore can't be reached, the rate-limit check or the reservation fails and the request answers `500`, so the chat never starts unbudgeted. If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's reservation stays until it expires, covering that call's cost.
+- **Failure**: every Firestore REST call (and the metadata server's token request) gives up after 3 s, so a hanging store fails fast instead of holding the request. Each route then follows its own policy (`agent/src/app.ts`):
+  - `/mcp` **fails open**: a failed rate-limit check lets the request through, so `get_contact` keeps answering. It is the contact fallback when the chat is down, and it costs nothing.
+  - `/stats` **fails open** on its rate limit too, and answers `503 unavailable` JSON if the aggregates can't be read; the page then hides its usage line.
+  - `/chat` **fails closed**: a failed rate-limit check or reservation answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts unbudgeted, and the page falls back to `/mcp` for the contact.
+  - Any other error a route doesn't handle reaches the app's error handler, which answers in the route's contract (JSON on `/chat` and `/stats`, a JSON-RPC error `-32603` with `data.code: "unavailable"` on `/mcp`, both `503`), never a plain-text `500`; the CORS headers stay on.
+  - If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's reservation stays until it expires, covering that call's cost. Recording usage stats is best effort everywhere.
+  - Errors are logged with the collection only (`rateLimits`, `spend`, `usage`), never the document id, which can hold a client IP, nor Firestore's response body.
 
 Setting it up (once, by hand; `PROJECT=acb-landing`):
 
