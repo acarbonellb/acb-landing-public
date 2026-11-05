@@ -125,7 +125,7 @@ function upstreamMessage(error: InstanceType<typeof Anthropic.APIError>): unknow
 /**
  * Capacity, network and the provider's own limits are "try again later", not
  * bugs. The tier spend cap is a 429, covered by `RateLimitError`; no credit is
- * a 402 `billing_error`.
+ * a 402 `billing_error`. Overload and rate limits also count when streamed.
  */
 function isUnavailable(error: unknown): boolean {
   if (
@@ -137,6 +137,9 @@ function isUnavailable(error: unknown): boolean {
   }
   if (!(error instanceof Anthropic.APIError)) return false;
   if (error.status === 402 || error.type === "billing_error") return true;
+  // Mid-stream, after a 200, an SSE `error` event comes through as a plain
+  // APIError with no status: only the body's error type says what it was.
+  if (error.type === "overloaded_error" || error.type === "rate_limit_error") return true;
   const message = upstreamMessage(error);
   return (
     error instanceof Anthropic.BadRequestError &&
