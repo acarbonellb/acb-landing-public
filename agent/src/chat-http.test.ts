@@ -88,6 +88,7 @@ describe("POST /chat", () => {
       type: "done",
       stopReason: "end_turn",
       usage: { inputTokens: 200, outputTokens: 20 },
+      signature: expect.any(String),
     });
   });
 

@@ -66,7 +66,7 @@ describe("streamChat", () => {
       { type: "text", delta: "He built " },
       { type: "usage", iteration: 1, inputTokens: 1, outputTokens: 1 },
       { type: "text", delta: "agents." },
-      done(),
+      done("end_turn", "sig-1"),
     );
     const chunks = [body.slice(0, 7), body.slice(7, 90), body.slice(90)];
     const { fetch } = fakeFetch(streamed(chunks));
@@ -77,7 +77,7 @@ describe("streamChat", () => {
       { type: "tool_call", id: "t1", name: "get_projects", input: {} },
       { type: "text", delta: "He built " },
       { type: "text", delta: "agents." },
-      { type: "done", stopReason: "end_turn" },
+      { type: "done", stopReason: "end_turn", signature: "sig-1" },
     ]);
   });
 

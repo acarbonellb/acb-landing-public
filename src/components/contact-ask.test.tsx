@@ -71,7 +71,7 @@ describe("ask my agent", () => {
   it("appends the question to an open conversation", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      chatStream({ type: "text", delta: "Hi!" }, done()),
+      chatStream({ type: "text", delta: "Hi!" }, done("end_turn", "sig-hi")),
       contactReply(),
     );
     renderPage(fetch);
@@ -84,7 +84,7 @@ describe("ask my agent", () => {
     expect(requests[1].body).toEqual({
       messages: [
         { role: "user", content: "hello" },
-        { role: "assistant", content: "Hi!" },
+        { role: "assistant", content: "Hi!", signature: "sig-hi" },
         { role: "user", content: contactQuestion },
       ],
     });

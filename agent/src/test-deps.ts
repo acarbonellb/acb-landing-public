@@ -2,12 +2,16 @@
 // same limits production has by default, whatever the shell's environment.
 // The guardrails are wired by the composition root, as in production with no
 // shared store.
+import { createAnswerSigner } from "./answer-signing";
 import type { AppDeps } from "./app";
 import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import { createGuardrails } from "./compose";
 import { loadConfig } from "./config";
 import { createFakeModel } from "./fake-model";
 import { createToolset } from "./tools";
+
+/** The fixed key the tests' answers are signed with. */
+export const testSigningKey = "test-answer-signing-key-0123456789abcdef";
 
 /** The configuration with no environment: the code defaults. */
 const defaults = loadConfig({});
@@ -22,6 +26,7 @@ export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     modelClient: createFakeModel([]),
     allowedOrigins: defaults.allowedOrigins,
     chatLimits: defaults.chatLimits,
+    answerSigner: createAnswerSigner(testSigningKey),
     ...createGuardrails(null, defaults),
     rateLimitKey,
     mcpRateLimitKey,

@@ -19,7 +19,7 @@ function answered(id: number, question: string, answer: string): Turn {
   return fold(
     startTurn(id, question),
     { type: "text", delta: answer },
-    { type: "done", stopReason: "end_turn" },
+    { type: "done", stopReason: "end_turn", signature: `sig-${id}` },
   );
 }
 
@@ -52,14 +52,14 @@ describe("folding chat events into a turn", () => {
     expect(turn.status).toEqual({ kind: "streaming" });
   });
 
-  it("is answered with the stop reason when the stream is done", () => {
+  it("is answered with the stop reason and the answer's signature when the stream is done", () => {
     const turn = fold(
       startTurn(0, "What?"),
       { type: "text", delta: "Cut" },
-      { type: "done", stopReason: "max_tokens" },
+      { type: "done", stopReason: "max_tokens", signature: "sig" },
     );
 
-    expect(turn.status).toEqual({ kind: "answered", stopReason: "max_tokens" });
+    expect(turn.status).toEqual({ kind: "answered", stopReason: "max_tokens", signature: "sig" });
   });
 
   it("fails with the error's notice and keeps the partial answer", () => {
@@ -142,20 +142,33 @@ describe("the history sent with the next question", () => {
     expect(historyFor([], "Who?")).toEqual([{ role: "user", content: "Who?" }]);
   });
 
-  it("carries the answered exchanges before the new question, trimmed", () => {
+  it("carries the answered exchanges before the new question, trimmed, each answer with its signature", () => {
     const turns = [
       fold(
         startTurn(0, "Who?"),
         { type: "text", delta: "  Let me look. " },
         { type: "tool_call", id: "t1", name: "get_profile", input: {} },
         { type: "text", delta: "Alberto.  " },
-        { type: "done", stopReason: "end_turn" },
+        { type: "done", stopReason: "end_turn", signature: "sig-0" },
       ),
     ];
 
     expect(historyFor(turns, "Remote?")).toEqual([
       { role: "user", content: "Who?" },
-      { role: "assistant", content: "Let me look. Alberto." },
+      { role: "assistant", content: "Let me look. Alberto.", signature: "sig-0" },
+      { role: "user", content: "Remote?" },
+    ]);
+  });
+
+  it("leaves out an answer that came without a signature, which the agent would refuse", () => {
+    const turns = [
+      fold(startTurn(0, "Old"), { type: "text", delta: "Unsigned." }, { type: "done", stopReason: "end_turn" }),
+      answered(1, "Who?", "Alberto."),
+    ];
+
+    expect(historyFor(turns, "Remote?")).toEqual([
+      { role: "user", content: "Who?" },
+      { role: "assistant", content: "Alberto.", signature: "sig-1" },
       { role: "user", content: "Remote?" },
     ]);
   });
@@ -165,13 +178,13 @@ describe("the history sent with the next question", () => {
       fold(startTurn(0, "Failed"), { type: "text", delta: "Half" }, { type: "error", kind: "error" }),
       endTurn(fold(startTurn(1, "Aborted"), { type: "text", delta: "Half" })),
       answerWithFallback(startTurn(2, "Email?"), { kind: "linkedin", url: "https://www.linkedin.com/in/ada/" }),
-      fold(startTurn(3, "Empty"), { type: "done", stopReason: "refusal" }),
+      fold(startTurn(3, "Empty"), { type: "done", stopReason: "refusal", signature: "sig-3" }),
       answered(4, "Who?", "Alberto."),
     ];
 
     expect(historyFor(turns, "Remote?")).toEqual([
       { role: "user", content: "Who?" },
-      { role: "assistant", content: "Alberto." },
+      { role: "assistant", content: "Alberto.", signature: "sig-4" },
       { role: "user", content: "Remote?" },
     ]);
   });
@@ -185,7 +198,11 @@ describe("the history sent with the next question", () => {
 
     expect(history).toHaveLength(19);
     expect(history[0]).toEqual({ role: "user", content: "Q4" });
-    expect(history.at(-2)).toEqual({ role: "assistant", content: "x".repeat(2000) });
+    expect(history.at(-2)).toEqual({
+      role: "assistant",
+      content: "x".repeat(2000),
+      signature: "sig-12",
+    });
     expect(history.at(-1)).toEqual({ role: "user", content: "Next" });
   });
 });

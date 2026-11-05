@@ -5,7 +5,7 @@ import {
   createChatAgent,
   errorMessages,
   refusalText,
-  type ChatEvent,
+  type ChatRunEvent,
   type ChatLimits,
 } from "./chat";
 import { createFakeModel, type ScriptedResponse } from "./fake-model";
@@ -20,14 +20,14 @@ async function collect(
 ) {
   const model = createFakeModel(script);
   const agent = createChatAgent({ model, toolset: createToolset(), limits });
-  const events: ChatEvent[] = [];
+  const events: ChatRunEvent[] = [];
   for await (const event of agent.run([{ role: "user", content: question }])) {
     events.push(event);
   }
   return { events, model };
 }
 
-const textOf = (events: ChatEvent[]) =>
+const textOf = (events: ChatRunEvent[]) =>
   events.flatMap((e) => (e.type === "text" ? [e.delta] : [])).join("");
 
 describe("ChatAgent.run", () => {
@@ -158,7 +158,7 @@ describe("ChatAgent.run", () => {
     const model = createFakeModel([
       { text: "He works", hang: true, usage: { inputTokens: 300, outputTokens: 0 } },
     ]);
-    const events: ChatEvent[] = [];
+    const events: ChatRunEvent[] = [];
     const agent = createChatAgent({ model, toolset: createToolset(), limits: { maxTokens: 500 } });
     for await (const event of agent.run([{ role: "user", content: "Stack?" }], {
       signal: controller.signal,
@@ -242,7 +242,7 @@ describe("ChatAgent.run", () => {
 
   it("keeps the earlier conversation in order", async () => {
     const model = createFakeModel([{ text: "Yes." }]);
-    const events: ChatEvent[] = [];
+    const events: ChatRunEvent[] = [];
     for await (const e of createChatAgent({ model, toolset: createToolset() }).run([
       { role: "user", content: "Who is Alberto?" },
       { role: "assistant", content: "A senior engineer." },

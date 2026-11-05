@@ -2,6 +2,7 @@
 // the configuration (`config.ts`). The only place that picks adapters; the
 // router (`app.ts`) takes them all as given, and tests build theirs with
 // `testAppDeps` (`test-deps.ts`).
+import { createAnswerSigner, ephemeralSigningKey } from "./answer-signing";
 import { createAnthropicModelClient } from "./anthropic";
 import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
@@ -103,6 +104,7 @@ export function composeAppDeps(config: Config): AppDeps {
     modelClient: createModelClient(config),
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
+    answerSigner: createAnswerSigner(config.answerSigningKey ?? ephemeralSigningKey()),
     ...createGuardrails(createDocumentStore(config.store), config),
     rateLimitKey,
     mcpRateLimitKey,

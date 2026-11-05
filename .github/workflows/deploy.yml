@@ -202,6 +202,8 @@ jobs:
       # sight, and stays under the Anthropic workspace's own $5/month hard
       # limit (README, Guardrails). The contact email is a secret too, so the
       # address never passes through GitHub: the repo and its logs are public.
+      # So is the answer signing key (README, Signed answers), which the agent
+      # needs in production to start.
       # `^@^` makes `@` the separator, as ALLOWED_ORIGINS may hold commas.
       # `--no-traffic` keeps every request on the serving revision.
       - name: Deploy to Cloud Run with no traffic
@@ -212,7 +214,7 @@ jobs:
           gcloud run deploy agent --quiet --no-traffic --tag candidate
           --project "$PROJECT" --region "$REGION" --image "$IMAGE_DIGEST"
           --service-account "agent-runtime@$PROJECT.iam.gserviceaccount.com"
-          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,CONTACT_EMAIL=contact-email:latest
+          --set-secrets ANTHROPIC_API_KEY=anthropic-api-key:latest,CONTACT_EMAIL=contact-email:latest,ANSWER_SIGNING_KEY=answer-signing-key:latest
           --set-env-vars "^@^ALLOWED_ORIGINS=$SITE_URL@AGENT_STORE=$AGENT_STORE@FIRESTORE_PROJECT_ID=$PROJECT@MONTHLY_SPEND_CAP_USD=4"
           --min-instances 0 --max-instances 1 --cpu 1 --memory 512Mi
 
