@@ -4,7 +4,7 @@ import { createFakeModel } from "../fake-model";
 import { historyEntry } from "./history";
 import { StaleRecordingError } from "./recording";
 import { evalContactEmail } from "./content";
-import { evaluate, recordCase, replayCase, RecordingFailedError } from "./runner";
+import { evaluate, recordCase, replayCase, replaySets, RecordingFailedError } from "./runner";
 import type { EvalCase } from "./scoring";
 
 const contact: EvalCase = {
@@ -187,5 +187,18 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     expect(outdated.problems).toEqual([
       expect.stringMatching(/^fake \/ scripted: latest history entry doesn't match the recordings \(meanLatencyMs\)/),
     ]);
+  });
+});
+
+describe("replaySets (what a live run's history line is computed from)", () => {
+  it("gives the same sets and problems as evaluate, with no report or history", async () => {
+    const { a, b } = await recordBoth();
+    const input = { cases: [contact, capital], sets: [{ ...meta, recordings: [a.recording, b.recording] }] };
+
+    const replayed = await replaySets(input);
+    const { report, ...evaluated } = await evaluate(input);
+
+    expect(replayed).toEqual(evaluated);
+    expect(report).toContain("## fake / scripted");
   });
 });
