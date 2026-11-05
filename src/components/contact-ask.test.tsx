@@ -3,6 +3,16 @@ import userEvent from "@testing-library/user-event";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { contactQuestion } from "@/shared/site-copy";
+import {
+  chatError,
+  chatStream,
+  contactAnswer,
+  done,
+  fakeFetch,
+  json,
+  mcpContact,
+  toResponse,
+} from "@/testing/agent-fakes";
 import { AgentChat } from "./agent-chat";
 import { ContactAsk } from "./contact-ask";
 
@@ -14,52 +24,14 @@ const MCP_URL = "https://site.test/mcp";
 const MCP_DIRECT_URL = "http://agent.test/mcp";
 const LINKEDIN = "https://www.linkedin.com/in/ada/";
 
-function sse(...events: object[]): string {
-  return events
-    .map((e) => `event: ${(e as { type: string }).type}\ndata: ${JSON.stringify(e)}\n\n`)
-    .join("");
-}
-
-function answer(...events: object[]): Response {
-  return new Response(sse(...events), {
-    headers: { "Content-Type": "text/event-stream" },
-  });
-}
-
-const contactAnswer = () =>
-  answer(
-    { type: "tool_call", id: "t1", name: "get_contact", input: {} },
-    { type: "text", delta: "You can email Alberto at ada@example.com." },
-    { type: "done", stopReason: "end_turn", usage: {} },
-  );
-
-const mcpContact = () =>
-  Response.json({
-    jsonrpc: "2.0",
-    id: 1,
-    result: { structuredContent: { email: "ada@example.com" } },
-  });
+const contactReply = () => contactAnswer("ada@example.com");
+const mcpReply = () => mcpContact("ada@example.com");
 
 // A response the test releases later, to look at the UI mid-answer.
 function pending() {
   let resolve!: (res: Response) => void;
   const promise = new Promise<Response>((r) => (resolve = r));
   return { promise, resolve };
-}
-
-type Reply = Response | Error | Promise<Response>;
-
-// Serves the queued replies in order; records each request's URL and body.
-function fakeFetch(...replies: Reply[]) {
-  const requests: { url: string; body: unknown }[] = [];
-  const fetch = async (url: RequestInfo | URL, init?: RequestInit) => {
-    requests.push({ url: String(url), body: JSON.parse(String(init?.body)) });
-    const next = replies.shift();
-    if (!next) throw new Error("unexpected request");
-    if (next instanceof Error) throw next;
-    return next;
-  };
-  return { fetch: fetch as typeof globalThis.fetch, requests };
 }
 
 function renderPage(fetch: typeof globalThis.fetch) {
@@ -88,7 +60,7 @@ const askButton = () => screen.getByRole("button", { name: "ask my agent" });
 describe("ask my agent", () => {
   it("sends the canned question to the chat, focuses it and links the answer's address", async () => {
     const user = userEvent.setup();
-    const { fetch, requests } = fakeFetch(contactAnswer());
+    const { fetch, requests } = fakeFetch(contactReply());
     renderPage(fetch);
 
     await user.click(askButton());
@@ -105,11 +77,8 @@ describe("ask my agent", () => {
   it("appends the question to an open conversation", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      answer(
-        { type: "text", delta: "Hi!" },
-        { type: "done", stopReason: "end_turn", usage: {} },
-      ),
-      contactAnswer(),
+      chatStream({ type: "text", delta: "Hi!" }, done()),
+      contactReply(),
     );
     renderPage(fetch);
     await user.type(input(), "hello{Enter}");
@@ -136,7 +105,7 @@ describe("ask my agent", () => {
     await user.type(input(), "hello{Enter}");
 
     expect(askButton()).toBeDisabled();
-    reply.resolve(contactAnswer());
+    reply.resolve(toResponse(contactReply()));
     await within(log()).findByText(/ada@example.com/);
     // The address shows before the stream ends; the button comes back after.
     await waitFor(() => expect(askButton()).toBeEnabled());
@@ -145,31 +114,26 @@ describe("ask my agent", () => {
   it.each([
     [
       "the spend cap (503)",
-      () =>
-        Response.json(
-          { error: { code: "unavailable", message: "Resting.", resetsAt: "2026-12-01T00:00:00Z" } },
-          { status: 503 },
-        ),
+      () => chatError({ code: "unavailable", message: "Resting.", resetsAt: "2026-12-01T00:00:00Z" }),
       /the model is unavailable; here's the answer straight from my tools/i,
     ],
     [
       "the rate limit (429)",
       () =>
-        Response.json(
-          { error: { code: "rate_limited", message: "Too many.", retryAfterSeconds: 30 } },
-          { status: 429, headers: { "Retry-After": "30" } },
+        chatError(
+          { code: "rate_limited", message: "Too many.", retryAfterSeconds: 30 },
+          { headers: { "Retry-After": "30" } },
         ),
       /rate limit was reached; here's the answer straight from my tools/i,
     ],
     [
       "a stream that ends in an unavailable error",
-      () =>
-        answer({ type: "error", code: "unavailable", message: "The agent is unavailable." }),
+      () => chatStream({ type: "error", code: "unavailable", message: "The agent is unavailable." }),
       /the model is unavailable; here's the answer straight from my tools/i,
     ],
   ])("answers from the MCP get_contact tool after %s", async (_, chat, notice) => {
     const user = userEvent.setup();
-    const { fetch, requests } = fakeFetch(chat(), mcpContact());
+    const { fetch, requests } = fakeFetch(chat(), mcpReply());
     renderPage(fetch);
 
     await user.click(askButton());
@@ -193,7 +157,8 @@ describe("ask my agent", () => {
 
   it.each([
     ["is unreachable", new TypeError("offline")],
-    ["is rate limited too", Response.json({ error: { code: -32000 } }, { status: 429 })],
+    // A JSON-RPC error, not the chat's error body.
+    ["is rate limited too", json(429, { error: { code: -32000 } })],
   ])("links to LinkedIn when the MCP server %s as well", async (_, mcp) => {
     const user = userEvent.setup();
     const { fetch } = fakeFetch(new TypeError("offline"), mcp);
@@ -209,7 +174,7 @@ describe("ask my agent", () => {
   it("keeps the usual notice for a question typed by the visitor", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      Response.json({ error: { code: "unavailable", message: "Resting." } }, { status: 503 }),
+      chatError({ code: "unavailable", message: "Resting." }),
     );
     renderPage(fetch);
 
