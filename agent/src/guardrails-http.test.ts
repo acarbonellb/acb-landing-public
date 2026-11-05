@@ -2,8 +2,11 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { afterEach, describe, expect, it } from "vitest";
 import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
+import { createGuardrails } from "./compose";
+import { loadConfig } from "./config";
+import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
-import { createMemoryRateLimiter } from "./rate-limit";
+import { createMemoryRateLimiter, rateLimitCollection } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap, type SpendCap } from "./spend-cap";
 import { testAppDeps } from "./test-deps";
@@ -236,6 +239,118 @@ describe("MCP rate limit", () => {
     const result = await client.callTool({ name: "get_profile", arguments: {} });
     expect(result.isError).toBeFalsy();
     await client.close();
+  });
+});
+
+/** The production guardrails, in memory, with these environment overrides. */
+function guardrails(env: Record<string, string>) {
+  return createGuardrails(null, loadConfig(env));
+}
+
+function listTools(url: string, ip: string) {
+  return fetch(new URL(paths.mcp, url), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json, text/event-stream",
+      "X-Forwarded-For": ip,
+    },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+  });
+}
+
+describe("global rate-limit ceilings", () => {
+  it("refuses /chat from many keys together past the global ceiling, with the same 429 as the per-IP limit", async () => {
+    const model = createFakeModel([{ text: "a" }, { text: "b" }]);
+    const url = await start({
+      modelClient: model,
+      ...guardrails({ RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: "2" }),
+    });
+
+    expect((await chat(url, "198.51.100.1")).status).toBe(200);
+    expect((await chat(url, "198.51.100.2")).status).toBe(200);
+    const res = await chat(url, "198.51.100.3");
+
+    expect(res.status).toBe(429);
+    expect(res.headers.get("retry-after")).toBe("60");
+    expect(res.headers.get("access-control-allow-origin")).toBe(origin);
+    expect(await res.json()).toEqual({
+      error: {
+        code: "rate_limited",
+        message: httpErrorMessages.rateLimited,
+        retryAfterSeconds: 60,
+      },
+    });
+    expect(model.requests).toHaveLength(2);
+  });
+
+  it("refuses /mcp from many keys together past the global ceiling, with the same JSON-RPC error and Retry-After", async () => {
+    const url = await start(guardrails({ RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "2" }));
+
+    expect((await listTools(url, "198.51.100.1")).status).toBe(200);
+    expect((await listTools(url, "198.51.100.2")).status).toBe(200);
+    const res = await listTools(url, "198.51.100.3");
+
+    expect(res.status).toBe(429);
+    expect(res.headers.get("retry-after")).toBe("60");
+    expect(res.headers.get("access-control-expose-headers")).toMatch(/retry-after/i);
+    expect(await res.json()).toEqual({
+      jsonrpc: "2.0",
+      id: null,
+      error: {
+        code: -32000,
+        message: httpErrorMessages.rateLimited,
+        data: { code: "rate_limited", retryAfterSeconds: 60 },
+      },
+    });
+  });
+
+  it("counts toward the ceiling only requests the per-IP limit let through", async () => {
+    const url = await start({
+      modelClient: createFakeModel([{ text: "a" }, { text: "b" }]),
+      ...guardrails({ RATE_LIMIT_CHAT_PER_MINUTE: "1", RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: "2" }),
+    });
+
+    expect((await chat(url, "198.51.100.1")).status).toBe(200);
+    // Refused by its own limit: doesn't use up the global ceiling.
+    expect((await chat(url, "198.51.100.1")).status).toBe(429);
+    expect((await chat(url, "198.51.100.2")).status).toBe(200);
+  });
+});
+
+describe("local refusal cache over the shared store", () => {
+  /** A memory store that counts the rate-limit windows it reads. */
+  function countingStore() {
+    const inner = createMemoryDocumentStore();
+    const counter = { rateLimitReads: 0 };
+    const store: DocumentStore = {
+      update(path, change) {
+        if (path.startsWith(`${rateLimitCollection}/`)) counter.rateLimitReads++;
+        return inner.update(path, change);
+      },
+    };
+    return { store, counter };
+  }
+
+  it("refuses a key again with no store read once the store has refused it, until its window ends", async () => {
+    const { store, counter } = countingStore();
+    const url = await start(
+      createGuardrails(store, loadConfig({ RATE_LIMIT_MCP_PER_MINUTE: "1" })),
+    );
+
+    expect((await listTools(url, "198.51.100.1")).status).toBe(200);
+    const refused = await listTools(url, "198.51.100.1");
+    expect(refused.status).toBe(429);
+    const readsAtFirstRefusal = counter.rateLimitReads;
+
+    for (let i = 0; i < 3; i++) {
+      const res = await listTools(url, "198.51.100.1");
+      expect(res.status).toBe(429);
+      expect(Number(res.headers.get("retry-after"))).toBeGreaterThan(0);
+    }
+    expect(counter.rateLimitReads).toBe(readsAtFirstRefusal);
+    // Another key is still asked about, and allowed.
+    expect((await listTools(url, "198.51.100.2")).status).toBe(200);
   });
 });
 
