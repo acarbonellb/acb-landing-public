@@ -14,10 +14,10 @@ import {
   type ChatMessage,
   streamChat,
 } from "@/lib/chat-client";
-import { chatPrivacyNote, contactQuestion } from "@/content/profile";
-import { connectChat } from "@/lib/chat-bridge";
-import { chatRequestLimits } from "@/lib/chat-contract";
-import { fetchContactEmail } from "@/lib/mcp-contact";
+import { chatPrivacyNote, contactQuestion } from "@/shared/profile";
+import { connectChat } from "@/components/chat-bridge";
+import { chatRequestLimits } from "@/shared/chat-contract";
+import { fetchContactEmail } from "@/shared/mcp-contact";
 import { Markdown } from "./markdown";
 
 const { maxMessages: MAX_MESSAGES, maxMessageChars: MAX_CHARS } = chatRequestLimits;

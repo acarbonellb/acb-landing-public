@@ -4,7 +4,7 @@
 // the eval report (`agent/evals/report.md`, regenerated in CI). Only what the
 // line needs is read here, so the site depends on no agent code. Pure: the
 // page reads the files and hands their text in.
-import type { AgentProject } from "@/content/profile";
+import type { AgentProject } from "@/shared/profile";
 
 /**
  * The recording set of the model the deployed agent runs on: the agent's

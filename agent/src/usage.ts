@@ -10,13 +10,13 @@
 //
 // Recording is best effort: a failure is logged and swallowed, so it never
 // fails the request being recorded.
-import type { TokenUsage } from "../../src/lib/chat-contract";
+import type { TokenUsage } from "../../src/shared/chat-contract";
 import type {
   ChatOutcome,
   LatencyPercentiles,
   StatsResponse,
   WeekStats,
-} from "../../src/lib/stats-contract";
+} from "../../src/shared/stats-contract";
 import type { DocumentStore, StoreDocument } from "./document-store";
 import { usageCostUsd, type Pricing } from "./spend-cap";
 

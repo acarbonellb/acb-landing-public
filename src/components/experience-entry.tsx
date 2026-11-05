@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { formatPeriod, type Role } from "@/content/profile";
+import { formatPeriod, type Role } from "@/shared/profile";
 
 // One commit in the `git log` experience timeline. Collapsed it shows the
 // commit line and summary; the `git show` button discloses the role's stack and

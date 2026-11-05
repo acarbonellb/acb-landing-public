@@ -12,7 +12,7 @@ import {
   languages,
   profile,
   skillGroups,
-} from "../../../src/content/profile";
+} from "../../../src/shared/profile";
 import type { ChatMessage } from "../../src/chat";
 import { evalContactEmail } from "../../src/evals/content";
 import type { EvalCase } from "../../src/evals/scoring";

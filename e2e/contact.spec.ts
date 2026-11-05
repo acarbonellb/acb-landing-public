@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, type Route, test } from "@playwright/test";
-import { contactQuestion, profile } from "../src/content/profile";
-import { addressForms, findAddresses, maskAddress } from "../src/lib/address-scan";
+import { contactQuestion, profile } from "../src/shared/profile";
+import { addressForms, findAddresses, maskAddress } from "../repo-hygiene/address-scan";
 
 // Contact goes through the agent (#50): "ask my agent" sends a canned question
 // to the chat, with the MCP tools and then LinkedIn as fallbacks. The agent is

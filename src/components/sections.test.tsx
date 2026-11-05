@@ -7,7 +7,7 @@ import type {
   Profile,
   Role,
   SkillGroup,
-} from "@/content/profile";
+} from "@/shared/profile";
 import {
   About,
   Agent,

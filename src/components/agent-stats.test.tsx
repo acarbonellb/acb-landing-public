@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { WeekStats } from "@/lib/stats-contract";
+import type { WeekStats } from "@/shared/stats-contract";
 import { AgentStats } from "./agent-stats";
 
 const STATS_URL = "http://agent.test/stats";

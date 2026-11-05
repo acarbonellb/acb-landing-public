@@ -7,7 +7,7 @@ import {
   findAddresses,
   isPublicSafeAddress,
   maskAddress,
-} from "./lib/address-scan";
+} from "./address-scan";
 
 // The repo is public, so the contact address lives only in Secret Manager
 // (#51). This scans every file git would publish: tracked, plus untracked
@@ -30,7 +30,7 @@ describe("the repo tree", () => {
 
   it("is scanned whole", () => {
     expect(files.map((f) => f.path)).toEqual(
-      expect.arrayContaining(["src/content/profile.ts", "agent/evals/report.md", "README.md"]),
+      expect.arrayContaining(["src/shared/profile.ts", "agent/evals/report.md", "README.md"]),
     );
   });
 

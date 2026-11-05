@@ -1,6 +1,6 @@
 "use client";
 
-import { useChatBridge } from "@/lib/chat-bridge";
+import { useChatBridge } from "@/components/chat-bridge";
 
 const linkStyle =
   "mt-6 inline-block max-w-full text-lg font-bold break-all text-blue underline decoration-border underline-offset-8 transition-colors hover:decoration-blue sm:text-2xl";

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { profile } from "../../src/content/profile";
+import { profile } from "../../src/shared/profile";
 import { createAnthropicModelClient } from "./anthropic";
 import { createApp, paths, type AppDeps } from "./app";
 import type { ChatEvent } from "./chat";

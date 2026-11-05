@@ -1,4 +1,4 @@
-import type { Profile } from "@/content/profile";
+import type { Profile } from "@/shared/profile";
 import type { Segment } from "./typewriter-terminal";
 
 // The hero's fake shell session, typed out on load by TypewriterTerminal.

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import type { AgentProject } from "@/content/profile";
+import type { AgentProject } from "@/shared/profile";
 import { deployedSet, evalResultsLine, withEvalResults } from "./eval-results";
 
 function line(entry: {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contactQuestion } from "../../../src/content/profile";
+import { contactQuestion } from "../../../src/shared/profile";
 import { cases } from "../../evals/cases";
 import { evalContactEmail } from "./content";
 import { scoreCase } from "./scoring";
