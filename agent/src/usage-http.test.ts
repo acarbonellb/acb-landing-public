@@ -88,19 +88,9 @@ describe("GET /stats", () => {
     expect(body.current.chat.requests).toBe(0);
   });
 
-  it("is under the MCP rate limit", async () => {
-    const { url } = await start([], {
-      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-    });
-    expect((await fetch(new URL(paths.stats, url))).status).toBe(200);
-    const res = await fetch(new URL(paths.stats, url));
-    expect(res.status).toBe(429);
-    expect(res.headers.get("retry-after")).toBe("60");
-  });
-
   it("keys its limit on the right-most X-Forwarded-For entry, even after a Hosting peer", async () => {
     const { url } = await start([], {
-      mcpRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
+      statsRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
     });
     const get = (forwardedFor: string) =>
       fetch(new URL(paths.stats, url), { headers: { "X-Forwarded-For": forwardedFor } });
@@ -152,7 +142,7 @@ describe("usage recording", () => {
   it("counts refusals before streaming: 429 and 503", async () => {
     const { url } = await start([], {
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
     expect((await chat(url)).status).toBe(503);
     expect((await chat(url)).status).toBe(429);
@@ -237,7 +227,7 @@ describe("usage recording", () => {
     const { url } = await start([], {
       usage,
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
 
     const statuses = [];
@@ -256,7 +246,7 @@ describe("usage recording", () => {
     const { url } = await start([], {
       usage: createUsageRecorder({ store, pricing }),
       chatRateLimiter: createMemoryRateLimiter({ limit: 1, windowMs: 60_000 }),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
 
     counter.down = true;

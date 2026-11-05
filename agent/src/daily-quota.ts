@@ -1,6 +1,6 @@
 // Daily quota: the estimated model spend one rate-limit key may use per UTC
 // day, on top of the per-minute rate limit and the monthly spend cap, so one
-// source can't drain the month's budget. It counts spend, not requests: each
+// source can't use up the month's spend cap. It counts spend, not requests: each
 // chat request reserves its worst-case cost here too (it grows with the
 // conversation sent), its model calls are charged, and the rest is released,
 // with the spend cap's reservation mechanics (`spend-holds.ts`). A request
@@ -63,13 +63,13 @@ export function createStoreDailyQuota(
       const reservation = await reserveSpend({
         store,
         path: `${dailySpendCollection}/${day}:${encodeURIComponent(key)}`,
-        budgetUsd: quotaUsd,
+        limitUsd: quotaUsd,
         costUsd: worstCaseCostUsd(worstCase, pricing),
         pricing,
-        t,
+        arrivedAt: t,
         reservationTtlMs,
         expireAt: resetsAt,
-        label: "Daily quota",
+        guard: "daily_quota",
       });
       if (reservation) return { exceeded: false, reservation };
       return {

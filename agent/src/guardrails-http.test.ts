@@ -319,6 +319,45 @@ describe("global rate-limit ceilings", () => {
   });
 });
 
+function getStats(url: string, ip: string) {
+  return fetch(new URL(paths.stats, url), { headers: { "X-Forwarded-For": ip } });
+}
+
+describe("/stats rate limits", () => {
+  it("refuses an IP past its own per-IP limit, with the stats' JSON 429", async () => {
+    const url = await start(guardrails({ RATE_LIMIT_STATS_PER_MINUTE: "2" }));
+
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    const res = await getStats(url, "198.51.100.1");
+
+    expect(res.status).toBe(429);
+    expect(res.headers.get("retry-after")).toBe("60");
+    expect(await res.json()).toEqual({
+      error: { code: "rate_limited", message: httpErrorMessages.rateLimited },
+    });
+    expect((await getStats(url, "198.51.100.2")).status).toBe(200);
+  });
+
+  it("refuses many keys together past its own global ceiling", async () => {
+    const url = await start(guardrails({ RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "2" }));
+
+    expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.2")).status).toBe(200);
+    expect((await getStats(url, "198.51.100.3")).status).toBe(429);
+  });
+
+  it("doesn't use up /mcp's per-IP limit or global ceiling", async () => {
+    const url = await start(
+      guardrails({ RATE_LIMIT_MCP_PER_MINUTE: "1", RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "1" }),
+    );
+
+    for (let i = 0; i < 3; i++) expect((await getStats(url, "198.51.100.1")).status).toBe(200);
+
+    expect((await listTools(url, "198.51.100.1")).status).toBe(200);
+  });
+});
+
 describe("local refusal cache over the shared store", () => {
   /** A memory store that counts the rate-limit windows it reads. */
   function countingStore() {
@@ -356,12 +395,12 @@ describe("local refusal cache over the shared store", () => {
 });
 
 describe("monthly spend cap", () => {
-  it("answers 503 unavailable with a friendly message, without calling the model, once the budget is spent", async () => {
+  it("answers 503 unavailable with a friendly message, without calling the model, once the spend cap is reached", async () => {
     const model = createFakeModel([]);
     const url = await start({
       modelClient: model,
       spendCap: createMemorySpendCap({
-        budgetUsd: 0,
+        capUsd: 0,
         pricing,
         now: () => Date.parse("2026-11-15T10:00:00Z"),
       }),
@@ -380,8 +419,8 @@ describe("monthly spend cap", () => {
     expect(model.requests).toHaveLength(0);
   });
 
-  it("records the tokens each chat spends and closes the chat when they reach the budget", async () => {
-    // $4 input + $2 output = $6 per call against a $10 budget.
+  it("records the tokens each chat spends and closes the chat when they reach the spend cap", async () => {
+    // $4 input + $2 output = $6 per call against a $10 spend cap.
     const usage = { inputTokens: 1_000_000, outputTokens: 100_000 };
     const model = createFakeModel([
       { text: "One.", usage },
@@ -390,7 +429,7 @@ describe("monthly spend cap", () => {
     ]);
     const url = await start({
       modelClient: model,
-      spendCap: createMemorySpendCap({ budgetUsd: 10, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 10, pricing }),
       dailyQuota: createMemoryDailyQuota({ quotaUsd: 100, pricing }),
     });
 
@@ -405,7 +444,7 @@ describe("monthly spend cap", () => {
 
   it("charges input written to the prompt cache at its price, 1.25x the input price", async () => {
     // 1M input tokens, all written to the cache: $5 per call, not $4. Two
-    // calls spend the $10 budget; at the base price, $2 would be left.
+    // calls spend the $10 cap; at the base price, $2 would be left.
     const usage = { inputTokens: 1_000_000, cacheWriteInputTokens: 1_000_000, outputTokens: 0 };
     const model = createFakeModel([
       { text: "One.", usage },
@@ -413,7 +452,7 @@ describe("monthly spend cap", () => {
     ]);
     const url = await start({
       modelClient: model,
-      spendCap: createMemorySpendCap({ budgetUsd: 10, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 10, pricing }),
       dailyQuota: createMemoryDailyQuota({ quotaUsd: 100, pricing }),
     });
 
@@ -425,13 +464,13 @@ describe("monthly spend cap", () => {
     expect((await chat(url)).status).toBe(503);
   });
 
-  describe("with a request's worst case of $0.02 (1,000 output tokens) against a $0.03 budget", () => {
+  describe("with a request's worst case of $0.02 (1,000 output tokens) against a $0.03 spend cap", () => {
     const outputOnly = { inputUsdPerMTok: 0, outputUsdPerMTok: 20 };
     const chatLimits = { maxModelCalls: 1, maxTokens: 1000, maxRequestTokens: 1000 };
 
     /** A memory spend cap that tells when a request has settled. */
     function observedCap() {
-      const cap = createMemorySpendCap({ budgetUsd: 0.03, pricing: outputOnly });
+      const cap = createMemorySpendCap({ capUsd: 0.03, pricing: outputOnly });
       let settled!: () => void;
       const settledOnce = new Promise<void>((resolve) => (settled = resolve));
       const spendCap: SpendCap = {
@@ -466,7 +505,7 @@ describe("monthly spend cap", () => {
       return res;
     }
 
-    it("holds a running chat's worst case, so a concurrent chat can't overshoot the budget", async () => {
+    it("holds a running chat's worst case, so a concurrent chat can't overshoot the spend cap", async () => {
       const { spendCap } = observedCap();
       const model = createFakeModel([{ text: "Thinking it over", hang: true }]);
       const url = await start({ modelClient: model, spendCap, chatLimits });
@@ -495,10 +534,10 @@ describe("monthly spend cap", () => {
     });
   });
 
-  it("keeps the MCP tools working when the chat budget is spent", async () => {
+  it("keeps the MCP tools working when the chat's spend cap is reached", async () => {
     const url = await start({
       modelClient: createFakeModel([]),
-      spendCap: createMemorySpendCap({ budgetUsd: 0, pricing }),
+      spendCap: createMemorySpendCap({ capUsd: 0, pricing }),
     });
     const client = await mcpClient(url);
     const result = await client.callTool({ name: "get_contact", arguments: {} });

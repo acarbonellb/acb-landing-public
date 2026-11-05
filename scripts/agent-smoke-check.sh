@@ -67,7 +67,7 @@ check_chat_cors() {
   [[ "$allowed" == "$origin" ]] || { echo "  /chat doesn't allow $origin (got '$allowed')"; return 1; }
 }
 
-# /stats: the weekly usage JSON, readable from any origin (only reads Firestore).
+# /stats: the weekly usage JSON, readable from any origin (reads Firestore; writes only its rate limit).
 check_stats() {
   local response allowed body
   response=$(curl -fsS --max-time 20 -D - -H "origin: $origin" "$agent/stats" | tr -d '\r') ||

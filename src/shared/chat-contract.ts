@@ -21,7 +21,7 @@ export type ChatMessage = { role: ChatRole; content: string };
 /**
  * An earlier answer sent back with the conversation, with the `signature` its
  * `done` event carried. The agent refuses a chat request whose earlier answers
- * are unsigned or were changed (README, "Signed answers").
+ * are unsigned, were changed or were moved (README, "Signed answers").
  */
 export type SignedAnswer = { role: "assistant"; content: string; signature: string };
 
@@ -96,7 +96,7 @@ export type HttpErrorCode = "invalid_request" | "rate_limited" | "unavailable";
  * Body of every non-streamed chat error. `rate_limited` adds
  * `retryAfterSeconds` (also sent as the `Retry-After` header), and `resetsAt`
  * (the next UTC midnight) when the key's daily quota refused it; `unavailable`
- * because of the monthly spend cap adds `resetsAt` (ISO time the budget
+ * because of the monthly spend cap adds `resetsAt` (ISO time the spend cap
  * renews). `message` is user-facing and safe to show as-is.
  */
 export type HttpErrorBody = {

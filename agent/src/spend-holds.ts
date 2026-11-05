@@ -1,9 +1,9 @@
 // The reservation mechanics shared by the monthly spend cap (`spend-cap.ts`)
-// and the daily quota (`daily-quota.ts`): one spend document per budget and
+// and the daily quota (`daily-quota.ts`): one spend document per limit and
 // period, holding what was charged (`spentUsd`) and the reservations of the
 // requests running (`holds`, each with its worst case and `expireAt`).
 //
-// A chat request RESERVES its worst-case cost if it fits under the budget,
+// A chat request RESERVES its worst-case cost if it fits under the limit,
 // its model calls RECORD their actual usage against the reservation, and
 // `settle` releases whatever was reserved but not spent. Actual usage is
 // always charged in full, even past the reservation (the worst-case input is
@@ -11,14 +11,14 @@
 // instance died before settling doesn't keep its worst case reserved; what it
 // spent stays charged.
 //
-// A budget can also have alert events (`SpendAlerts`; the spend cap's, README,
-// "Logs and alert events"): a share of the budget first reached, and its first
+// A limit can also have alert events (`SpendAlerts`; the spend cap's, README,
+// "Logs and alert events"): a share of the limit first reached, and its first
 // refusal. Each fires once per document (so per period): it is noted under
 // `alerted`, in the same atomic update that crossed it, so it holds across
 // instances and cold starts.
 import { randomUUID } from "node:crypto";
 import type { DocumentStore, StoreChange, StoreDocument } from "./document-store";
-import { describeError, logEvent } from "./log";
+import { logStoreError } from "./log";
 import type { Usage } from "./model";
 import { usageCostUsd, type Pricing } from "./pricing";
 
@@ -53,11 +53,11 @@ function readSpend(doc: StoreDocument | undefined): Spend {
 }
 
 /**
- * Alert events of a budget, each logged once per document. Noted under
+ * Alert events of a limit, each logged once per document. Noted under
  * `alerted` as `threshold_<percent>` and `refused`.
  */
 export type SpendAlerts = {
-  /** Shares of the budget, in percent, whose first crossing calls `onThreshold`. */
+  /** Shares of the limit, in percent, whose first crossing calls `onThreshold`. */
   thresholdsPercent: readonly number[];
   /** Called once the update that crossed `percent` is written. */
   onThreshold(percent: number, spentUsd: number): void;
@@ -68,39 +68,45 @@ export type SpendAlerts = {
 /** Sums of small floats, without the binary noise. */
 export const roundUsd = (usd: number) => Math.round(usd * 1e6) / 1e6;
 
+/** The two spend limits a reservation is held against, as log lines name them. */
+export type SpendGuard = "spend_cap" | "daily_quota";
+
+const guardNames: Record<SpendGuard, string> = { spend_cap: "Spend cap", daily_quota: "Daily quota" };
+
 export type ReserveOptions = {
   store: DocumentStore;
-  /** The spend document of this budget and period. */
+  /** The spend document of this limit and period. */
   path: string;
-  budgetUsd: number;
+  /** The most the period may spend, in USD. */
+  limitUsd: number;
   /** The request's worst-case cost. */
   costUsd: number;
   pricing: Pricing;
   /** When the request arrived (ms since epoch). */
-  t: number;
+  arrivedAt: number;
   reservationTtlMs: number;
   /** Written on the document, for a Firestore TTL policy to delete it once its period is over. */
   expireAt?: Date;
-  /** Names the budget in log lines. */
-  label: string;
+  /** Which limit this is, in log lines. */
+  guard: SpendGuard;
   alerts?: SpendAlerts;
 };
 
 /**
- * Reserves `costUsd` if it fits in what's left of `budgetUsd` (what was spent
+ * Reserves `costUsd` if it fits in what's left of `limitUsd` (what was spent
  * plus the live holds); `null` if it doesn't.
  */
 export async function reserveSpend(options: ReserveOptions): Promise<SpendReservation | null> {
-  const { store, path, budgetUsd, costUsd, t, reservationTtlMs, expireAt, alerts } = options;
+  const { store, path, limitUsd, costUsd, arrivedAt, reservationTtlMs, expireAt, alerts } = options;
   const id = randomUUID();
   type Reserved = { reservation: SpendReservation | null; firstRefusal?: { spentUsd: number } };
   const reserved = await store.update(path, (doc): StoreChange<Reserved> => {
     const spend = readSpend(doc);
     const holds = Object.fromEntries(
-      Object.entries(spend.holds).filter(([, hold]) => hold.expireAt.getTime() > t),
+      Object.entries(spend.holds).filter(([, hold]) => hold.expireAt.getTime() > arrivedAt),
     );
     const committed = spend.spentUsd + Object.values(holds).reduce((sum, hold) => sum + hold.usd, 0);
-    if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
+    if (committed >= limitUsd || committed + costUsd > limitUsd) {
       // Only the first refusal writes: to note its alert.
       if (!alerts || spend.alerted.refused) return { result: { reservation: null } };
       return {
@@ -108,7 +114,7 @@ export async function reserveSpend(options: ReserveOptions): Promise<SpendReserv
         result: { reservation: null, firstRefusal: { spentUsd: spend.spentUsd } },
       };
     }
-    holds[id] = { usd: costUsd, expireAt: new Date(t + reservationTtlMs) };
+    holds[id] = { usd: costUsd, expireAt: new Date(arrivedAt + reservationTtlMs) };
     return {
       doc: { ...doc, spentUsd: spend.spentUsd, holds, ...(expireAt && { expireAt }) },
       result: { reservation: reservation(options, id) },
@@ -118,17 +124,17 @@ export async function reserveSpend(options: ReserveOptions): Promise<SpendReserv
   return reserved.reservation;
 }
 
-/** The shares of `budgetUsd` that `spentUsd` reaches and `alerted` doesn't note yet. */
-function crossedThresholds(spend: Spend, budgetUsd: number, alerts: SpendAlerts | undefined): number[] {
-  if (!alerts || budgetUsd <= 0) return [];
+/** The shares of `limitUsd` that `spentUsd` reaches and `alerted` doesn't note yet. */
+function crossedThresholds(spend: Spend, limitUsd: number, alerts: SpendAlerts | undefined): number[] {
+  if (!alerts || limitUsd <= 0) return [];
   return alerts.thresholdsPercent.filter(
     (percent) =>
-      spend.spentUsd >= (budgetUsd * percent) / 100 && !spend.alerted[`threshold_${percent}`],
+      spend.spentUsd >= (limitUsd * percent) / 100 && !spend.alerted[`threshold_${percent}`],
   );
 }
 
 function reservation(
-  { store, path, pricing, label, budgetUsd, alerts }: ReserveOptions,
+  { store, path, pricing, guard, limitUsd, alerts }: ReserveOptions,
   id: string,
 ): SpendReservation {
   let settled = false;
@@ -145,7 +151,7 @@ function reservation(
           const hold = spend.holds[id];
           if (hold) hold.usd = Math.max(0, hold.usd - usd);
           spend.spentUsd += usd;
-          const crossed = crossedThresholds(spend, budgetUsd, alerts);
+          const crossed = crossedThresholds(spend, limitUsd, alerts);
           for (const percent of crossed) spend.alerted[`threshold_${percent}`] = true;
           return {
             doc: {
@@ -161,11 +167,9 @@ function reservation(
       } catch (error) {
         // Not rethrown: the visitor's answer is already streaming.
         unrecorded = true;
-        logEvent("ERROR", "store_error", `${label}: could not record $${usd} of usage`, {
-          operation: "spend_record",
-          budget: label,
+        logStoreError("spend_record", `${guardNames[guard]}: could not record $${usd} of usage`, error, {
+          guard,
           costUsd: usd,
-          error: describeError(error),
         });
       }
     },
@@ -181,17 +185,15 @@ function reservation(
         });
       } catch (error) {
         // Not rethrown, like `record`: the reservation is released when it expires.
-        logEvent("ERROR", "store_error", `${label}: could not settle a reservation`, {
-          operation: "spend_settle",
-          budget: label,
-          error: describeError(error),
+        logStoreError("spend_settle", `${guardNames[guard]}: could not settle a reservation`, error, {
+          guard,
         });
       }
     },
   };
 }
 
-/** One reservation over several budgets: each call is recorded, and the request settled, in all of them. */
+/** One reservation over several limits: each call is recorded, and the request settled, in all of them. */
 export function combineReservations(...reservations: SpendReservation[]): SpendReservation {
   return {
     async record(usage) {

@@ -4,7 +4,7 @@
 // `testAppDeps` (`test-deps.ts`).
 import { createAnswerSigner, ephemeralSigningKey } from "./answer-signing";
 import { createAnthropicModelClient } from "./anthropic";
-import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
+import { createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
 import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
@@ -17,8 +17,9 @@ import {
   createStoreRateLimiter,
   withGlobalCeiling,
   withRefusalCache,
+  type RateLimiter,
 } from "./rate-limit";
-import { createMemorySpendCap, createStoreSpendCap } from "./spend-cap";
+import { createStoreSpendCap } from "./spend-cap";
 import { createToolset, siteContent } from "./tools";
 import { createUsageRecorder } from "./usage";
 
@@ -48,52 +49,43 @@ export function createGuardrails(
   { guardrails, alerts }: Config,
 ): Pick<
   AppDeps,
-  "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
+  "chatRateLimiter" | "mcpRateLimiter" | "statsRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
 > {
   const { pricing } = guardrails;
-  const store = sharedStore && withStoreHealthEvents(sharedStore);
-  const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
-  const dailyQuotaOptions = { quotaUsd: guardrails.dailyQuotaUsd, pricing };
-  const limits = {
-    chat: [guardrails.chatRequestsPerMinute, guardrails.chatGlobalRequestsPerMinute],
-    mcp: [guardrails.mcpRequestsPerMinute, guardrails.mcpGlobalRequestsPerMinute],
-  } as const;
-  if (store) {
-    // Each window's refusals are remembered locally, so a flood that is
-    // already refused costs no store reads. The ceiling's window is
-    // `rateLimits/<name>:*`.
-    const rateLimiter = (name: keyof typeof limits) => {
-      const [perKey, global] = limits[name].map((limit) =>
-        withRefusalCache(createStoreRateLimiter({ store, name, limit, windowMs: minute })),
-      );
-      return withGlobalCeiling(perKey, global);
-    };
-    return {
-      chatRateLimiter: rateLimiter("chat"),
-      mcpRateLimiter: rateLimiter("mcp"),
-      spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
-      dailyQuota: createStoreDailyQuota({ ...dailyQuotaOptions, store }),
-      usage: createUsageRecorder({ store, pricing, errorRateAlert: alerts.chatErrorRate }),
-      providerLimit: createProviderLimitWatch({ store }),
-    };
-  }
-  const rateLimiter = (name: keyof typeof limits) => {
-    const [perKey, global] = limits[name].map((limit) =>
-      createMemoryRateLimiter({ limit, windowMs: minute }),
-    );
-    return withGlobalCeiling(perKey, global);
-  };
+  const shared = sharedStore && withStoreHealthEvents(sharedStore);
+  // Without a shared store every guardrail keeps its documents in this
+  // process: the same code over a memory store.
+  const store = shared ?? createMemoryDocumentStore();
+  // One window of `limit` requests per minute, the only part that differs.
+  // Over the shared store, each window's refusals are also remembered
+  // locally, so a flood that is already refused costs no store reads; the
+  // ceiling's window is `rateLimits/<name>:*`.
+  const window: (name: string, limit: number) => RateLimiter = shared
+    ? (name, limit) =>
+        withRefusalCache(createStoreRateLimiter({ store: shared, name, limit, windowMs: minute }))
+    : (_name, limit) => createMemoryRateLimiter({ limit, windowMs: minute });
+  const rateLimiter = (name: string, perKey: number, global: number) =>
+    withGlobalCeiling(window(name, perKey), window(name, global));
   return {
-    chatRateLimiter: rateLimiter("chat"),
-    mcpRateLimiter: rateLimiter("mcp"),
-    spendCap: createMemorySpendCap(spendCapOptions),
-    dailyQuota: createMemoryDailyQuota(dailyQuotaOptions),
-    usage: createUsageRecorder({
-      store: createMemoryDocumentStore(),
-      pricing,
-      errorRateAlert: alerts.chatErrorRate,
-    }),
-    providerLimit: createProviderLimitWatch({ store: createMemoryDocumentStore() }),
+    chatRateLimiter: rateLimiter(
+      "chat",
+      guardrails.chatRequestsPerMinute,
+      guardrails.chatGlobalRequestsPerMinute,
+    ),
+    mcpRateLimiter: rateLimiter(
+      "mcp",
+      guardrails.mcpRequestsPerMinute,
+      guardrails.mcpGlobalRequestsPerMinute,
+    ),
+    statsRateLimiter: rateLimiter(
+      "stats",
+      guardrails.statsRequestsPerMinute,
+      guardrails.statsGlobalRequestsPerMinute,
+    ),
+    spendCap: createStoreSpendCap({ store, capUsd: guardrails.monthlySpendCapUsd, pricing }),
+    dailyQuota: createStoreDailyQuota({ store, quotaUsd: guardrails.dailyQuotaUsd, pricing }),
+    usage: createUsageRecorder({ store, pricing, errorRateAlert: alerts.chatErrorRate }),
+    providerLimit: createProviderLimitWatch({ store }),
   };
 }
 

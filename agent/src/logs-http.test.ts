@@ -213,7 +213,7 @@ function clock(iso: string) {
 
 describe("spend alert events", () => {
   // $1 per output token, nothing for input; each answer spends $2 of a $10
-  // budget, and reserves its worst case of $2 while it runs.
+  // spend cap, and reserves its worst case of $2 while it runs.
   const pricing = { inputUsdPerMTok: 0, outputUsdPerMTok: 1_000_000 };
   const chatLimits = { maxModelCalls: 1, maxTokens: 2, maxRequestTokens: 2 };
   const answer: ScriptedResponse = { text: "Hi.", usage: { inputTokens: 10, outputTokens: 2 } };
@@ -223,7 +223,7 @@ describe("spend alert events", () => {
       chatLimits,
       chatRateLimiter: unlimited,
       modelClient: createFakeModel(Array.from({ length: 20 }, () => answer)),
-      spendCap: createStoreSpendCap({ store, budgetUsd: 10, pricing, now: time.now }),
+      spendCap: createStoreSpendCap({ store, capUsd: 10, pricing, now: time.now }),
     });
   }
 
@@ -239,7 +239,7 @@ describe("spend alert events", () => {
         thresholdPercent: 50,
         month: "2026-11",
         spentUsd: 6,
-        budgetUsd: 10,
+        capUsd: 10,
       }),
       expect.objectContaining({ severity: "WARNING", thresholdPercent: 80, spentUsd: 8 }),
     ]);
@@ -258,7 +258,7 @@ describe("spend alert events", () => {
         severity: "ERROR",
         month: "2026-11",
         spentUsd: 10,
-        budgetUsd: 10,
+        capUsd: 10,
         resetsAt: "2026-12-01T00:00:00.000Z",
         requestId: refused[0].requestId,
       }),
@@ -428,6 +428,40 @@ describe("chat error rate events", () => {
       "chat_error_rate",
       "chat_error_rate_recovered",
       "chat_error_rate",
+    ]);
+  });
+
+  it("keeps the last hour across the week's boundary (Monday 00:00 UTC)", async () => {
+    const time = clock("2026-11-08T23:55:00Z"); // Sunday, ISO week 45
+    const url = await startCounting(Array.from({ length: 5 }, broken), time);
+    for (let i = 0; i < 4; i++) await chat(url); // 4 of the 5 requests the hour needs
+    expect(rateEvents()).toEqual([]);
+
+    time.set("2026-11-09T00:05:00Z"); // Monday, week 46
+    await chat(url);
+
+    expect(rateEvents()).toEqual([
+      expect.objectContaining({ event: "chat_error_rate", week: "2026-W46", streamed: 5, errors: 5 }),
+    ]);
+  });
+
+  it("doesn't fire again for an outage that goes on past the week's boundary, and recovers in the new week", async () => {
+    const time = clock("2026-11-08T23:50:00Z");
+    const url = await startCounting(
+      [...Array.from({ length: 6 }, broken), ...Array.from({ length: 30 }, ok)],
+      time,
+    );
+    for (let i = 0; i < 5; i++) await chat(url);
+    expect(rateEvents().map((e) => e.event)).toEqual(["chat_error_rate"]);
+
+    time.set("2026-11-09T00:05:00Z");
+    await chat(url); // still failing: the alert is already in effect
+    expect(rateEvents().map((e) => e.event)).toEqual(["chat_error_rate"]);
+
+    for (let i = 0; i < 30; i++) await chat(url); // 6 errors in 36: under 20%
+    expect(rateEvents().map((e) => e.event)).toEqual([
+      "chat_error_rate",
+      "chat_error_rate_recovered",
     ]);
   });
 

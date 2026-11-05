@@ -1,5 +1,5 @@
 // Monthly spend cap on model usage. When the month's estimated spend reaches
-// the budget, the chat answers `503 unavailable` without calling the model;
+// the cap, the chat answers `503 unavailable` without calling the model;
 // MCP tools (no model cost) keep working.
 //
 // Check and record race: a chat request streams for seconds, and its cost is
@@ -19,7 +19,7 @@
 // charged. (The store keeps the reservations under `holds`.)
 //
 // Alert events (README, "Logs and alert events"): `spend_threshold` when the
-// month's spend first reaches 50% and 80% of the budget, `spend_cap_reached`
+// month's spend first reaches 50% and 80% of the cap, `spend_cap_reached`
 // when the cap first refuses a request. Each fires once per month, noted in
 // the month's document (`spend-holds.ts`).
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
@@ -48,8 +48,8 @@ export interface SpendCap {
 }
 
 export type SpendCapOptions = {
-  /** Monthly budget in USD; 0 disables the chat. */
-  budgetUsd: number;
+  /** Estimated spend allowed per UTC month, in USD; 0 disables the chat. */
+  capUsd: number;
   pricing: Pricing;
   /** Injectable clock (ms since epoch); defaults to `Date.now`. */
   now?: () => number;
@@ -74,11 +74,11 @@ export const spendCollection = "spend";
 /** The `spend/<YYYY-MM>` document of the month containing `t`. */
 export const spendPath = (t: number) => `${spendCollection}/${monthKey(t)}`;
 
-/** Shares of the budget whose crossing logs `spend_threshold`, in percent. */
+/** Shares of the cap whose crossing logs `spend_threshold`, in percent. */
 export const spendThresholdsPercent = [50, 80] as const;
 
 /** The spend cap's alert events, for the month starting at `month`. */
-function spendAlerts(month: string, budgetUsd: number, resetsAt: string): SpendAlerts {
+function spendAlerts(month: string, capUsd: number, resetsAt: string): SpendAlerts {
   return {
     thresholdsPercent: spendThresholdsPercent,
     onThreshold(percent, spentUsd) {
@@ -86,25 +86,25 @@ function spendAlerts(month: string, budgetUsd: number, resetsAt: string): SpendA
         thresholdPercent: percent,
         month,
         spentUsd,
-        budgetUsd,
+        capUsd,
       });
     },
     onFirstRefusal(spentUsd) {
       logEvent("ERROR", "spend_cap_reached", "Spend cap reached: the chat is closed until the month ends", {
         month,
         spentUsd,
-        budgetUsd,
+        capUsd,
         resetsAt,
       });
     },
   };
 }
 
-/** Spend cap over a shared store: every instance draws on the same monthly budget. */
+/** Spend cap over a shared store: every instance draws on the same monthly cap. */
 export function createStoreSpendCap(
   options: SpendCapOptions & { store: DocumentStore },
 ): SpendCap {
-  const { store, budgetUsd, pricing, now = Date.now, reservationTtlMs = defaultReservationTtlMs } = options;
+  const { store, capUsd, pricing, now = Date.now, reservationTtlMs = defaultReservationTtlMs } = options;
 
   return {
     async reserve(worstCase) {
@@ -113,13 +113,13 @@ export function createStoreSpendCap(
       const reservation = await reserveSpend({
         store,
         path: spendPath(t),
-        budgetUsd,
+        limitUsd: capUsd,
         costUsd: worstCaseCostUsd(worstCase, pricing),
         pricing,
-        t,
+        arrivedAt: t,
         reservationTtlMs,
-        label: "Spend cap",
-        alerts: spendAlerts(monthKey(t), budgetUsd, resetsAt),
+        guard: "spend_cap",
+        alerts: spendAlerts(monthKey(t), capUsd, resetsAt),
       });
       return reservation ? { exhausted: false, reservation } : { exhausted: true, resetsAt };
     },

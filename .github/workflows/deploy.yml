@@ -94,10 +94,12 @@ jobs:
   # Pull requests run everything a deploy does short of touching GCP: the
   # artifacts round-trip and match by hash, the agent image builds on the
   # pinned base and holds the tested bundle, and the pinned firebase-tools
-  # installs from its lockfile.
+  # installs from its lockfile. So does a manual dispatch on any branch but
+  # main: the ranges refresh dispatches one on its branch, as its PR (opened
+  # with GITHUB_TOKEN) starts no workflow of its own.
   rehearse-deploy:
     needs: test
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

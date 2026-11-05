@@ -65,18 +65,22 @@ describe("loadConfig", () => {
       mcpRequestsPerMinute: 60,
       chatGlobalRequestsPerMinute: 60,
       mcpGlobalRequestsPerMinute: 600,
-      monthlyBudgetUsd: 4,
+      statsRequestsPerMinute: 30,
+      statsGlobalRequestsPerMinute: 300,
+      monthlySpendCapUsd: 4,
       dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
     });
   });
 
-  it("reads guardrail overrides; a zero budget is allowed (chat off)", () => {
+  it("reads guardrail overrides; a zero spend cap is allowed (chat off)", () => {
     const config = loadConfig({
       RATE_LIMIT_CHAT_PER_MINUTE: "5",
       RATE_LIMIT_MCP_PER_MINUTE: "100",
       RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: "30",
       RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "300",
+      RATE_LIMIT_STATS_PER_MINUTE: "6",
+      RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "90",
       MONTHLY_SPEND_CAP_USD: "0",
       DAILY_SPEND_QUOTA_USD: "0.25",
       AGENT_PRICE_INPUT_USD_PER_MTOK: "2",
@@ -87,7 +91,9 @@ describe("loadConfig", () => {
       mcpRequestsPerMinute: 100,
       chatGlobalRequestsPerMinute: 30,
       mcpGlobalRequestsPerMinute: 300,
-      monthlyBudgetUsd: 0,
+      statsRequestsPerMinute: 6,
+      statsGlobalRequestsPerMinute: 90,
+      monthlySpendCapUsd: 0,
       dailyQuotaUsd: 0.25,
       pricing: { inputUsdPerMTok: 2, outputUsdPerMTok: 10 },
     });

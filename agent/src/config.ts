@@ -36,12 +36,16 @@ const envSchema = z.object({
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
+  // The page reads /stats once per load (and caches it 5 minutes), so a few
+  // per minute per IP is plenty.
+  RATE_LIMIT_STATS_PER_MINUTE: intFromEnv.default(30),
   // Global ceilings, all keys together, so rotating keys can't multiply what
-  // one source gets. Sized well above the per-IP limits and /stats traffic.
+  // one source gets. Sized well above the per-IP limits.
   RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(60),
   RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
+  RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: intFromEnv.default(300),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
-  // cap (and its "budget reached" message) is what the visitor meets first.
+  // cap (and its "used up for this month" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
   // The `chat_error_rate` alert event (README, "Logs and alert events"):
   // fires when more than this share of the last hour's streamed requests
@@ -145,7 +149,9 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
       chatGlobalRequestsPerMinute: e.RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE,
       mcpGlobalRequestsPerMinute: e.RATE_LIMIT_MCP_GLOBAL_PER_MINUTE,
-      monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
+      statsRequestsPerMinute: e.RATE_LIMIT_STATS_PER_MINUTE,
+      statsGlobalRequestsPerMinute: e.RATE_LIMIT_STATS_GLOBAL_PER_MINUTE,
+      monthlySpendCapUsd: e.MONTHLY_SPEND_CAP_USD,
       dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,
     },
