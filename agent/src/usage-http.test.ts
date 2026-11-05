@@ -175,7 +175,9 @@ describe("usage recording", () => {
     const res = await chat(url);
     expect(res.status).toBe(200);
     expect(res.body).toMatch(/event: done/);
-    expect(error).toHaveBeenCalledWith(expect.stringMatching(/usage/i), expect.any(Error));
+    expect(error).toHaveBeenCalledWith(
+      expect.stringMatching(/"event":"store_error".*Usage: could not record.*Firestore down/),
+    );
     error.mockRestore();
   });
 });

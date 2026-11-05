@@ -18,8 +18,15 @@
 // `reservationTtlMs`, so a request whose instance died before settling doesn't
 // keep its worst case reserved for the rest of the month; what it spent stays
 // charged. (The store keeps the reservations under `holds`.)
+//
+// Alert events (README, "Logs and alert events"): `spend_threshold` when the
+// month's spend first reaches 50% and 80% of the budget, `spend_cap_reached`
+// when the cap first refuses a request. Each fires once per month: the month's
+// document notes it under `alerted`, in the same atomic update that crossed
+// it, so it holds across instances and cold starts.
 import { randomUUID } from "node:crypto";
 import { createMemoryDocumentStore, type DocumentStore, type StoreChange, type StoreDocument } from "./document-store";
+import { describeError, logEvent } from "./log";
 import type { Usage } from "./model";
 import { usageCostUsd, worstCaseCostUsd, type Pricing } from "./pricing";
 
@@ -60,6 +67,9 @@ export type SpendCapOptions = {
   reservationTtlMs?: number;
 };
 
+/** Sums of small floats, without the binary noise. */
+const roundUsd = (usd: number) => Math.round(usd * 1e6) / 1e6;
+
 /** `YYYY-MM` of the UTC month containing `t`. */
 const monthKey = (t: number) => new Date(t).toISOString().slice(0, 7);
 
@@ -71,15 +81,30 @@ const nextMonthStart = (t: number) => {
 /** Collection of the monthly spend documents. */
 export const spendCollection = "spend";
 
-/** A month's spend: what was charged, plus the reservations of the requests running (`holds`). */
-type MonthSpend = { spentUsd: number; holds: Record<string, { usd: number; expireAt: Date }> };
+/** Shares of the budget whose crossing logs `spend_threshold`, in percent. */
+export const spendThresholdsPercent = [50, 80] as const;
 
-function readMonth(doc: StoreDocument | undefined): MonthSpend {
+/**
+ * A month's spend: what was charged, the reservations of the requests running
+ * (`holds`), and the alert events already logged this month (`alerted`, also
+ * written by the provider-limit watch).
+ */
+export type MonthSpend = {
+  spentUsd: number;
+  holds: Record<string, { usd: number; expireAt: Date }>;
+  alerted: Record<string, boolean>;
+};
+
+export function readMonth(doc: StoreDocument | undefined): MonthSpend {
   return {
     spentUsd: Number(doc?.spentUsd ?? 0),
     holds: (doc?.holds ?? {}) as MonthSpend["holds"],
+    alerted: { ...(doc?.alerted as MonthSpend["alerted"] | undefined) },
   };
 }
+
+/** The `spend/<YYYY-MM>` document of the month containing `t`. */
+export const spendPath = (t: number) => `${spendCollection}/${monthKey(t)}`;
 
 /** Spend cap over a shared store: every instance draws on the same monthly budget. */
 export function createStoreSpendCap(
@@ -88,13 +113,15 @@ export function createStoreSpendCap(
   const { store, budgetUsd, pricing, now = Date.now, reservationTtlMs = 15 * 60_000 } = options;
 
   return {
-    reserve(worstCase) {
+    async reserve(worstCase) {
       const t = now();
-      const path = `${spendCollection}/${monthKey(t)}`;
+      const path = spendPath(t);
       const id = randomUUID();
       const costUsd = worstCaseCostUsd(worstCase, pricing);
+      const resetsAt = nextMonthStart(t).toISOString();
 
-      return store.update(path, (doc): StoreChange<SpendCapStatus> => {
+      type Reserved = SpendCapStatus & { firstRefusal?: { spentUsd: number } };
+      const status = await store.update(path, (doc): StoreChange<Reserved> => {
         const month = readMonth(doc);
         const holds = Object.fromEntries(
           Object.entries(month.holds).filter(([, hold]) => hold.expireAt.getTime() > t),
@@ -102,16 +129,30 @@ export function createStoreSpendCap(
         const committed =
           month.spentUsd + Object.values(holds).reduce((sum, hold) => sum + hold.usd, 0);
         if (committed >= budgetUsd || committed + costUsd > budgetUsd) {
+          const refused = { exhausted: true as const, resetsAt };
+          // Only the first refusal of the month writes: to note the alert.
+          if (month.alerted.spend_cap_reached) return { result: refused };
           return {
-            result: { exhausted: true, resetsAt: nextMonthStart(t).toISOString() },
+            doc: { ...month, alerted: { ...month.alerted, spend_cap_reached: true } },
+            result: { ...refused, firstRefusal: { spentUsd: month.spentUsd } },
           };
         }
         holds[id] = { usd: costUsd, expireAt: new Date(t + reservationTtlMs) };
         return {
-          doc: { spentUsd: month.spentUsd, holds },
+          doc: { ...month, holds },
           result: { exhausted: false, reservation: reservation(path, id) },
         };
       });
+      if (!status.exhausted) return status;
+      if (status.firstRefusal) {
+        logEvent("ERROR", "spend_cap_reached", "Spend cap reached: the chat is closed until the month ends", {
+          month: monthKey(t),
+          spentUsd: roundUsd(status.firstRefusal.spentUsd),
+          budgetUsd,
+          resetsAt,
+        });
+      }
+      return { exhausted: true, resetsAt };
     },
   };
 
@@ -125,16 +166,37 @@ export function createStoreSpendCap(
       async record(usage) {
         const usd = usageCostUsd(usage, pricing);
         try {
-          await store.update(path, (doc) => {
+          const crossed = await store.update(path, (doc) => {
             const month = readMonth(doc);
             const hold = month.holds[id];
             if (hold) hold.usd = Math.max(0, hold.usd - usd);
-            return { doc: { spentUsd: month.spentUsd + usd, holds: month.holds }, result: undefined };
+            const spentUsd = month.spentUsd + usd;
+            const crossed = spendThresholdsPercent.filter(
+              (percent) =>
+                budgetUsd > 0 &&
+                spentUsd >= (budgetUsd * percent) / 100 &&
+                !month.alerted[`spend_threshold_${percent}`],
+            );
+            const alerted = { ...month.alerted };
+            for (const percent of crossed) alerted[`spend_threshold_${percent}`] = true;
+            return { doc: { ...month, spentUsd, alerted }, result: { crossed, spentUsd } };
           });
+          for (const percent of crossed.crossed) {
+            logEvent("WARNING", "spend_threshold", `Spend reached ${percent}% of the monthly cap`, {
+              thresholdPercent: percent,
+              month: path.slice(spendCollection.length + 1),
+              spentUsd: roundUsd(crossed.spentUsd),
+              budgetUsd,
+            });
+          }
         } catch (error) {
           // Not rethrown: the visitor's answer is already streaming.
           unrecorded = true;
-          console.error(`Spend cap: could not record $${usd} of usage`, error);
+          logEvent("ERROR", "store_error", `Spend cap: could not record $${usd} of usage`, {
+            operation: "spend_record",
+            costUsd: usd,
+            error: describeError(error),
+          });
         }
       },
       async settle() {
@@ -149,7 +211,10 @@ export function createStoreSpendCap(
           });
         } catch (error) {
           // Not rethrown, like `record`: the reservation is released when it expires.
-          console.error("Spend cap: could not settle a reservation", error);
+          logEvent("ERROR", "store_error", "Spend cap: could not settle a reservation", {
+            operation: "spend_settle",
+            error: describeError(error),
+          });
         }
       },
     };

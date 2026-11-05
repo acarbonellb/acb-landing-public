@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { Hono, type Context, type MiddlewareHandler } from "hono";
 import { bodyLimit } from "hono/body-limit";
@@ -7,6 +8,7 @@ import { streamSSE } from "hono/streaming";
 import * as z from "zod";
 import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
+import { describeError, logEvent, withRequestId } from "./log";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
@@ -94,7 +96,11 @@ function rateLimit(
       decision = await limiter.hit(rateLimitKey(c));
     } catch (error) {
       if (onStoreFailure === "closed") throw error;
-      console.error(`Rate limit: store failed, letting ${c.req.path} through`, error);
+      logEvent("ERROR", "store_error", `Rate limit: store failed, letting ${c.req.path} through`, {
+        operation: "rate_limit",
+        route: c.req.path,
+        error: describeError(error),
+      });
       return next();
     }
     if (decision.allowed) return next();
@@ -108,6 +114,22 @@ const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>
   c.set("chatStartedAt", performance.now());
   await next();
 });
+
+/**
+ * Logs a chat request refused as invalid (`400`, `413`), which isn't recorded
+ * in the usage stats: every other one is logged as it's recorded (`usage.ts`).
+ */
+function logInvalidChat(status: number) {
+  logEvent("INFO", "chat_request", `Chat request: http_${status}`, {
+    outcome: `http_${status}`,
+    inputTokens: 0,
+    outputTokens: 0,
+    costUsd: 0,
+    totalMs: null,
+    firstTextMs: null,
+    modelCalls: 0,
+  });
+}
 
 /** The chat request in the body, or the `400` that refuses it. */
 async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
@@ -144,6 +166,14 @@ export function createApp(deps: AppDeps): Hono {
     : null;
   const app = new Hono();
 
+  // Every request gets an id, echoed in `X-Request-Id`, that tags each line
+  // logged while serving it (`log.ts`), its stream and store writes included.
+  app.use(async (c, next) => {
+    const requestId = randomUUID();
+    c.header("X-Request-Id", requestId);
+    await withRequestId(requestId, next);
+  });
+
   app.get(paths.health, (c) => c.json({ status: "ok" }));
 
   // Public usage aggregates (no content, no IPs), read by the site from any
@@ -160,7 +190,10 @@ export function createApp(deps: AppDeps): Hono {
         c.header("Cache-Control", "public, max-age=300");
         return c.json(body);
       } catch (error) {
-        console.error("Usage: could not read the stats", error);
+        logEvent("ERROR", "store_error", "Usage: could not read the stats", {
+          operation: "usage_stats",
+          error: describeError(error),
+        });
         return jsonError(c, 503, {
           code: "unavailable",
           message: httpErrorMessages.statsUnavailable,
@@ -246,12 +279,17 @@ export function createApp(deps: AppDeps): Hono {
     }),
     bodyLimit({
       maxSize: maxChatBodyBytes,
-      onError: (c) =>
-        jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." }),
+      onError: (c) => {
+        logInvalidChat(413);
+        return jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." });
+      },
     }),
     async (c) => {
       const request = await parseChatRequest(c);
-      if (request instanceof Response) return request;
+      if (request instanceof Response) {
+        logInvalidChat(request.status);
+        return request;
+      }
       if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
@@ -300,7 +338,12 @@ export function createApp(deps: AppDeps): Hono {
   // closed, or a bug) is answered in that route's error contract, never as
   // Hono's plain-text 500. The CORS headers set before the error stay on.
   app.onError((error, c) => {
-    console.error(`Unhandled error on ${c.req.method} ${c.req.path}`, error);
+    logEvent("ERROR", "unhandled_error", `Unhandled error on ${c.req.method} ${c.req.path}`, {
+      method: c.req.method,
+      route: c.req.path,
+      error: describeError(error),
+      stack: error.stack,
+    });
     if (c.req.path === paths.mcp) {
       return c.json(
         {

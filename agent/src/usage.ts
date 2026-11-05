@@ -18,6 +18,7 @@ import type {
   WeekStats,
 } from "../../src/shared/stats-contract";
 import type { DocumentStore, StoreDocument } from "./document-store";
+import { describeError, logEvent } from "./log";
 import { usageCostUsd, type Pricing } from "./pricing";
 
 export type { ChatOutcome, StatsResponse, WeekStats };
@@ -31,10 +32,15 @@ export type ChatRecord = {
   totalMs?: number;
   /** From arrival to the first text of the answer, if any came. */
   firstTextMs?: number;
+  /** Model calls the request made (none for a refusal before streaming). */
+  modelCalls?: number;
 };
 
 export interface UsageRecorder {
-  /** Folds one chat request into this week's aggregates. Never throws. */
+  /**
+   * Logs one chat request (`chat_request`) and folds it into this week's
+   * aggregates. Never throws.
+   */
   recordChat(record: ChatRecord): Promise<void>;
   /** Counts one MCP request. Never throws. */
   recordMcp(): Promise<void>;
@@ -182,7 +188,10 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
       });
     } catch (error) {
       // Not rethrown: monitoring must never fail the request it watches.
-      console.error(`Usage: could not record ${what}`, error);
+      logEvent("ERROR", "store_error", `Usage: could not record ${what}`, {
+        operation: "usage_record",
+        error: describeError(error),
+      });
     }
   }
 
@@ -193,7 +202,16 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
   }
 
   return {
-    recordChat({ outcome, usage, totalMs, firstTextMs }) {
+    recordChat({ outcome, usage, totalMs, firstTextMs, modelCalls = 0 }) {
+      logEvent("INFO", "chat_request", `Chat request: ${outcome}`, {
+        outcome,
+        inputTokens: usage?.inputTokens ?? 0,
+        outputTokens: usage?.outputTokens ?? 0,
+        costUsd: usage ? usageCostUsd(usage, pricing) : 0,
+        totalMs: totalMs ?? null,
+        firstTextMs: firstTextMs ?? null,
+        modelCalls,
+      });
       return fold(`a chat request (${outcome})`, ({ chat }) => {
         chat.requests++;
         add(chat.outcomes, outcome);

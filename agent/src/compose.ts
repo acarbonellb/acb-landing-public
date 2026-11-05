@@ -6,7 +6,7 @@ import { createAnthropicModelClient } from "./anthropic";
 import type { AppDeps } from "./app";
 import { mcpRateLimitKey, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
-import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
+import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
 import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
@@ -36,10 +36,11 @@ function createModelClient(config: Config): ModelClient | null {
  * one is configured, else all in memory, per instance.
  */
 export function createGuardrails(
-  store: DocumentStore | null,
+  sharedStore: DocumentStore | null,
   { guardrails }: Config,
 ): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {
   const { pricing } = guardrails;
+  const store = sharedStore && withStoreHealthEvents(sharedStore);
   const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
   if (store) {
     const rateLimiter = (name: string, limit: number) =>
