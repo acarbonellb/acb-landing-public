@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from "react";
+import { linkHosts } from "@/lib/link-hosts";
 
 type Block =
   | { kind: "paragraph"; lines: string[] }
@@ -44,15 +45,14 @@ function blocks(text: string): Block[] {
 const span =
   /`([^`]+)`|\[([^\]]+)\]\(([^()\s]*(?:\([^()\s]*\)[^()\s]*)*)\)|\*\*(\S(?:.*?\S)?)\*\*|__(\S(?:.*?\S)?)__|\*(\S(?:.*?\S)?)\*|(?<!\w)_(\S(?:.*?\S)?)_(?!\w)|(?<![\w.+-])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/;
 
-const safeProtocols = new Set(["http:", "https:", "mailto:"]);
-
-/** Only absolute http(s) and mailto URLs become links; anything else is text. */
+/**
+ * Only mailto: links and https: links to an allowed host become links (#92);
+ * anything else (another host, http:, javascript:, a relative URL) is text.
+ */
 function isSafeUrl(href: string): boolean {
-  try {
-    return safeProtocols.has(new URL(href).protocol);
-  } catch {
-    return false;
-  }
+  if (!URL.canParse(href)) return false;
+  const url = new URL(href);
+  return url.protocol === "mailto:" || (url.protocol === "https:" && linkHosts.has(url.host));
 }
 
 // Web links open in a new tab so the chat stays put; a mailto: link just
