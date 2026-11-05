@@ -4,7 +4,7 @@
 // `testAppDeps` (`test-deps.ts`).
 import { createAnthropicModelClient } from "./anthropic";
 import type { AppDeps } from "./app";
-import { clientIp, mcpClientIp } from "./client-ip";
+import { mcpRateLimitKey, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
@@ -89,7 +89,7 @@ export function composeAppDeps(config: Config): AppDeps {
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
     ...createGuardrails(createDocumentStore(config.store), config),
-    rateLimitKey: clientIp,
-    mcpRateLimitKey: mcpClientIp,
+    rateLimitKey,
+    mcpRateLimitKey,
   };
 }

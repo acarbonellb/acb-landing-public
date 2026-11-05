@@ -14,3 +14,9 @@ export const themeNames: Record<Theme, string> = {
   night: "Tokyo Night",
   light: "Tokyo Light",
 };
+
+/**
+ * Applies the saved theme before first paint to avoid a flash. Inlined in the
+ * page's head by layout.tsx; the CSP allows it by hash (security-headers.ts).
+ */
+export const themeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(${JSON.stringify(THEMES)}.indexOf(t)>=0)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
