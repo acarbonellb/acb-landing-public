@@ -86,7 +86,18 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation)
+# An earlier answer without its signature is refused before the chat runs:
+# the revision signs answers (and has its signing key, or it wouldn't start).
+check_chat_signed_answers() {
+  local body
+  body=$(curl -sS --max-time 20 -w '\n%{http_code}' "$agent/chat" -H 'content-type: application/json' \
+    -d '{"messages":[{"role":"user","content":"Hi"},{"role":"assistant","content":"Hello."},{"role":"user","content":"Hi"}]}')
+  [[ "$(tail -n 1 <<<"$body")" == 400 ]] && grep -q 'signature' <<<"$body" ||
+    { echo "  /chat didn't refuse an unsigned earlier answer"; return 1; }
+}
+
+checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
+  check_chat_signed_answers)
 $site_mcp && checks+=(check_site_mcp_tools)
 
 for check in "${checks[@]}"; do

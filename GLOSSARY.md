@@ -18,6 +18,10 @@ _Avoid_: exchange, round, message; never a single model call
 What the chat sends the agent to answer one turn: the new question with the conversation before it.
 _Avoid_: chat call, query, turn
 
+**Answer signature**:
+The agent's HMAC of an answer, sent with the answer's `done` event and sent back with the answer in later chat requests, so the agent only reads earlier answers it gave itself.
+_Avoid_: turn signature, token, hash
+
 **Model call**:
 One request to the model while answering a turn: it either answers or asks for tools, whose results go into the next model call.
 _Avoid_: turn, iteration, step, completion

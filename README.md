@@ -56,13 +56,13 @@ After deploying, `deploy-site` checks the live page is the tested build, then a 
 
 The agent service (below) runs as a separate Cloud Run service that the browser calls directly at `AGENT_URL`, not through a Firebase Hosting rewrite. The rewrite buffers the stream and retries long requests: [ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md).
 
-**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It takes the tested bundle, builds `agent/Dockerfile` (just the bundle on a pinned `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys it by digest to the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` and `CONTACT_EMAIL` from the secret `contact-email` (both readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
+**Agent deploy.** The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It takes the tested bundle, builds `agent/Dockerfile` (just the bundle on a pinned `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys it by digest to the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](#guardrails)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key` `CONTACT_EMAIL` from the secret `contact-email` and `ANSWER_SIGNING_KEY` from the secret `answer-signing-key` (all readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
 
 The rollout keeps the serving revision until the new one has passed:
 
 1. It records the revision serving 100% of traffic (a split stops the job before anything changes).
 2. It deploys the new revision with `--no-traffic` under the tag `candidate`, which gives it its own URL.
-3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL: `/health`, that `/mcp` lists the five tools, that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) and rejects an invalid request with 400. It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving.
+3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL: `/health`, that `/mcp` lists the five tools, that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers). It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving.
 4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the full smoke check runs on `AGENT_URL`, adding `/mcp` on the site's domain (through the Hosting rewrite). If that fails, traffic goes back to the recorded revision.
 5. The `candidate` tag is removed, pass or fail, so no extra public URL outlives the job.
 
@@ -121,6 +121,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | Variable | Default | What |
 | --- | --- | --- |
 | `ANTHROPIC_API_KEY` | unset | Claude API key. Unset: `POST /chat` answers `503 unavailable`. |
+| `ANSWER_SIGNING_KEY` | unset | Key that signs the chat's answers (see [Signed answers](#signed-answers)), at least 32 characters; Secret Manager in production. Required with `NODE_ENV=production`, where the agent refuses to start without it. Unset elsewhere: each process makes its own, so a restart refuses the answers it signed before. |
 | `CONTACT_EMAIL` | unset | The address `get_contact` gives out. It's in no repo file (Secret Manager in production). Unset: `get_contact` returns LinkedIn and GitHub only and says there's no email, so the agent points to LinkedIn. |
 | `AGENT_MODEL` | `claude-haiku-5-5` | Claude model for the chat (Haiku 5.5: the cheapest current model) |
 | `AGENT_EFFORT` | `low` | `low` / `medium` / `high` / `xhigh` / `max` |
@@ -154,23 +155,23 @@ curl -N localhost:8080/chat -H 'content-type: application/json' \
 
 The model client is an injected interface (`agent/src/model.ts`): production uses Claude (`agent/src/anthropic.ts`), tests use a scripted fake (`agent/src/fake-model.ts`), and other providers can be added behind the same interface. The loop (`agent/src/chat.ts`) keeps the agent on topic and grounded in the tools through its system prompt, caps output tokens per model call and per request (one budget shared by all the request's calls) and model calls per request, and returns invalid tool input to the model as an error result. The wire types and limits below live in `src/shared/chat-contract.ts`, imported by both the site and the agent.
 
-**Request.** `POST /chat` with `Content-Type: application/json`. The conversation is stateless: the browser sends what it shows, ending with the new question.
+**Request.** `POST /chat` with `Content-Type: application/json`. The conversation is stateless: the browser sends what it shows, ending with the new question, and each earlier answer with the `signature` its `done` event carried (see [Signed answers](#signed-answers)).
 
 ```json
 { "messages": [
   { "role": "user", "content": "Who is Alberto?" },
-  { "role": "assistant", "content": "A senior software engineer..." },
+  { "role": "assistant", "content": "A senior software engineer...", "signature": "Zm9v..." },
   { "role": "user", "content": "Is he remote?" }
 ] }
 ```
 
-Roles alternate, start and end with `user`; at most 20 messages of 1–2000 characters; no other fields; body at most 64 KB.
+Roles alternate, start and end with `user`; at most 20 messages of 1–2000 characters; no other fields (`signature` only on `assistant` messages); body at most 64 KB.
 
 **Errors before streaming** are JSON `{"error":{"code","message"}}`:
 
 | Status | `code` | When |
 | --- | --- | --- |
-| 400 | `invalid_request` | Not JSON or fails validation (`message` says why) |
+| 400 | `invalid_request` | Not JSON or fails validation (`message` says why), or an earlier answer is unsigned or doesn't match its signature (`message` says so and to reload the page) |
 | 413 | `invalid_request` | Body too large |
 | 429 | `rate_limited` | Too many requests from this IP, or its daily spend quota is used up; body adds `retryAfterSeconds`, header `Retry-After` (exposed to the browser via CORS), and for the daily quota `resetsAt`, the next UTC midnight |
 | 503 | `unavailable` | No model configured, or the monthly spend cap is reached (then body adds `resetsAt`, the ISO time the budget renews, and `message` says so) |
@@ -183,10 +184,25 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `tool_call` | `id`, `name`, `input` | The agent calls a tool, e.g. `get_projects({"status":"in-progress"})` |
 | `tool_result` | `id`, `name`, `isError`, `output` | That tool's result (`output` is the tool's JSON, or `{error}`) |
 | `usage` | `iteration`, `inputTokens`, `outputTokens`, `cacheWriteInputTokens?`, `cacheReadInputTokens?`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap). `inputTokens` counts all input; the optional cache fields say how many of those were written to or read from the prompt cache (absent: none) |
-| `done` | `stopReason`, `usage` | Last event of a chat request that answered; `usage` is the request's total, with the same token fields (cache fields included) as a `usage` event |
+| `done` | `stopReason`, `usage`, `signature` | Last event of a chat request that answered; `usage` is the request's total, with the same token fields (cache fields included) as a `usage` event; `signature` signs the answer the `text` events streamed, to send back with it |
 | `error` | `code`, `message` | Last event of a chat request that failed; `message` is safe to show |
 
 `stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream, unreachable, or the provider's spend or billing limit reached: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.
+
+### Signed answers
+
+The agent keeps no conversation, so a chat request could otherwise carry answers the agent never gave, e.g. a made-up one telling it to ignore its instructions. So it signs every answer it gives ([ADR 0004](docs/adr/0004-signed-answers.md)): the `done` event's `signature` is an HMAC-SHA256 (base64url) of the answer, keyed by `ANSWER_SIGNING_KEY`, over its text as it goes back in the conversation (`answerForHistory` in `src/shared/chat-contract.ts`: the `text` deltas joined, trimmed, cut to 2,000 characters, trimmed again). The site keeps it with the answer and sends both back; an answer that ended in an `error` event has no signature and isn't sent. The agent checks every earlier answer before the request counts against the daily quota or spend cap, and refuses the request with `400 invalid_request` if one is unsigned or doesn't match, without calling the model. What is signed is the answer alone, not its question or its place in the conversation, which the visitor writes anyway. Only the HTTP layer signs and checks (`agent/src/answer-signing.ts`); the model never sees a signature, and the eval runner, which calls the chat agent directly, is unaffected. Tests sign with a fixed key (`agent/src/test-deps.ts`).
+
+**Deploys.** The agent ships first, then the site (the pipeline's order). From the agent's deploy, a tab opened before it fails its next follow-up question once with that 400, whose message says to reload the page; a new question in a fresh page works. Changing the key (a new version of the `answer-signing-key` secret, picked up on the next deploy) does the same to every open conversation.
+
+**Creating the key** (once, by the owner): generate it locally without printing it, store it in Secret Manager and let only `agent-runtime` read it:
+
+```sh
+openssl rand -base64 48 | tr -d '\n' |
+  gcloud secrets create answer-signing-key --project acb-landing --replication-policy automatic --data-file=-
+gcloud secrets add-iam-policy-binding answer-signing-key --project acb-landing \
+  --member serviceAccount:agent-runtime@acb-landing.iam.gserviceaccount.com --role roles/secretmanager.secretAccessor
+```
 
 ### Guardrails
 
