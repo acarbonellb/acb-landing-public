@@ -28,7 +28,7 @@ function noticeDetail(notice: Notice): string {
   return rest || noticeFallback[notice.kind];
 }
 
-// The budget renews at 00:00 UTC on the 1st: show that day, in UTC, so it
+// The spend cap resets at 00:00 UTC on the 1st: show that day, in UTC, so it
 // doesn't read as the last day of the month west of Greenwich.
 function renewalDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {

@@ -45,7 +45,7 @@ async function recordBoth() {
 const editedPrompt = systemPrompt.replace("concise", "brief");
 
 describe("the eval runner", () => {
-  it("records cases through the real chat loop and replays them to identical outcomes", async () => {
+  it("records cases through the real chat loop and replays them to identical responses", async () => {
     const { a, b, model } = await recordBoth();
 
     expect(a.recording).toMatchObject({
@@ -58,7 +58,7 @@ describe("the eval runner", () => {
     expect(b.recording.calls).toHaveLength(1);
     // The prior turns reach the model before the new question.
     expect(model.requests[2].messages.map((m) => m.role)).toEqual(["user", "assistant", "user"]);
-    expect(a.result.outcome).toEqual({
+    expect(a.result.response).toEqual({
       answer: `Email him at ${evalContactEmail}.`,
       toolCalls: ["get_contact"],
       stopReason: "end_turn",

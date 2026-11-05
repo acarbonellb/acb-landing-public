@@ -133,7 +133,7 @@ describe("the conversation's notice and busy state", () => {
 
   it("shows no notice for an aborted turn or a fallback answer", () => {
     expect(noticeOf([endTurn(startTurn(0, "Q"))])).toBeNull();
-    expect(noticeOf([answerWithFallback(startTurn(0, "Q"), { kind: "linkedin" })])).toBeNull();
+    expect(noticeOf([answerWithFallback(startTurn(0, "Q"), { kind: "linkedin", url: "https://www.linkedin.com/in/ada/" })])).toBeNull();
   });
 });
 
@@ -164,7 +164,7 @@ describe("the history sent with the next question", () => {
     const turns = [
       fold(startTurn(0, "Failed"), { type: "text", delta: "Half" }, { type: "error", kind: "error" }),
       endTurn(fold(startTurn(1, "Aborted"), { type: "text", delta: "Half" })),
-      answerWithFallback(startTurn(2, "Email?"), { kind: "linkedin" }),
+      answerWithFallback(startTurn(2, "Email?"), { kind: "linkedin", url: "https://www.linkedin.com/in/ada/" }),
       fold(startTurn(3, "Empty"), { type: "done", stopReason: "refusal" }),
       answered(4, "Who?", "Alberto."),
     ];

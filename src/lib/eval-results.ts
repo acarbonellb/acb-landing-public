@@ -5,6 +5,7 @@
 // line needs is read here, so the site depends on no agent code. Pure: the
 // page reads the files and hands their text in.
 import type { AgentProject } from "@/shared/profile";
+import { isNumber } from "./is-number";
 
 /**
  * The recording set of the model the deployed agent runs on: the agent's
@@ -24,7 +25,6 @@ type Entry = {
   metrics: { cases: number; leaks: { n: number; of: number }; meanCostUsd?: number };
 };
 
-const isNumber = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
 
 function isEntry(v: unknown): v is Entry {
   const e = v as Entry | null;

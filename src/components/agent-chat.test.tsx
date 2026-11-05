@@ -18,8 +18,6 @@ function renderChat(fetch: typeof globalThis.fetch) {
     <AgentChat
       chatUrl={CHAT_URL}
       mcpUrl={MCP_URL}
-      mcpDirectUrl={MCP_URL}
-      linkedin="https://www.linkedin.com/in/ada/"
       fetch={fetch}
     />,
   );

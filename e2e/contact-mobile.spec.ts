@@ -1,14 +1,15 @@
 import type { Locator, Page } from "@playwright/test";
 import { chatError, contactAnswer, mcpContact } from "../src/testing/agent-fakes";
 import { contactQuestion } from "../src/shared/site-copy";
-import { conversation, expect, horizontalOverflow, test } from "./fixtures";
+import { conversation, expect, test } from "./fixtures";
 
 // "ask my agent" on a phone (#49). Runs on the iPhone (WebKit) profile in CI,
 // and at the same size on Chromium. Of the contact fallback matrix (unit-tested
 // in src/components/contact-ask.test.tsx), each browser runs the happy path
 // and one fallback: the spend cap's 503, answered by the MCP get_contact tool.
-// Each stubbed reply is held until the test lets it go, so the page can be
-// measured before and after the answer lands.
+// Each stubbed reply is held until the test lets it go, so the chat's place
+// can be measured before and after the answer lands. That the page doesn't
+// scroll sideways in these states is checked once, in layout.spec.ts.
 const EMAIL = "ada@example.test";
 
 const tap = (target: Locator, hasTouch: boolean) => (hasTouch ? target.tap() : target.click());
@@ -71,17 +72,15 @@ test.describe("'ask my agent' on a phone", () => {
     await askMyAgent(page, hasTouch);
 
     await expect(page.locator("#agent")).toBeInViewport();
-    expect(await horizontalOverflow(page)).toBe(0);
 
     chat.release();
     const link = conversation(page).getByRole("link", { name: EMAIL });
     await expect(link).toHaveAttribute("href", `mailto:${EMAIL}`);
     await expectTappable(page, link);
-    expect(await horizontalOverflow(page)).toBe(0);
     expect(chat.requests).toEqual([{ messages: [{ role: "user", content: contactQuestion }] }]);
   });
 
-  test("the MCP fallback answer lands without shifting the chat or scrolling sideways", async ({
+  test("the MCP fallback answer lands without shifting the chat", async ({
     page,
     hasTouch,
     agent,
@@ -105,7 +104,6 @@ test.describe("'ask my agent' on a phone", () => {
     await expect(link).toHaveAttribute("href", `mailto:${EMAIL}`);
 
     expect(await chatTop(page)).toBeCloseTo(before, 0);
-    expect(await horizontalOverflow(page)).toBe(0);
     await expectTappable(page, link);
     expect(mcp.requests).toEqual([
       {

@@ -346,13 +346,13 @@ describe("Agent", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("is headed with its registry number and title", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     expect(sectionHeading("agent")).toBeInTheDocument();
   });
 
   it("holds the chat, pointed at the local agent by default", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     expect(
       screen.getByRole("textbox", { name: /ask the agent/i }),
@@ -361,7 +361,7 @@ describe("Agent", () => {
   });
 
   it("says what happens to visitors' questions, right under the chat input", () => {
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     const note = screen.getByRole("note", { name: /privacy/i });
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
@@ -374,7 +374,7 @@ describe("Agent", () => {
   });
 
   it("shows no privacy note when there is no chat", () => {
-    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
+    render(<Agent endpoints={null} />);
 
     expect(screen.queryByRole("note", { name: /privacy/i })).not.toBeInTheDocument();
   });
@@ -398,7 +398,7 @@ describe("Agent", () => {
     });
     const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
     vi.stubGlobal("fetch", fetch);
-    render(<Agent linkedin={profile.links.linkedin} />);
+    render(<Agent />);
 
     expect(
       await screen.findByText("this week: 7 questions answered · p50 3 s · 0% errors · $0.50"),
@@ -407,7 +407,7 @@ describe("Agent", () => {
   });
 
   it("says the agent is coming soon when none is configured, without a chat or MCP command", () => {
-    render(<Agent linkedin={profile.links.linkedin} endpoints={null} />);
+    render(<Agent endpoints={null} />);
 
     expect(screen.getByText(/agent coming soon/i)).toBeInTheDocument();
     expect(

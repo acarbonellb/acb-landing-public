@@ -35,7 +35,7 @@ function createModelClient(config: Config): ModelClient | null {
  * The rate limits, spend cap and usage stats: all in the shared store when
  * one is configured, else all in memory, per instance.
  */
-function createGuardrails(
+export function createGuardrails(
   store: DocumentStore | null,
   { guardrails }: Config,
 ): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {

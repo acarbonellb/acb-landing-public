@@ -47,7 +47,6 @@ export const serverSideFallbackModels: ReadonlySet<string> = new Set([
   "claude-opus-5-5",
   "claude-opus-5",
   "claude-fable-5-1",
-  "claude-fable-5",
   "claude-sonnet-5-5",
 ]);
 
@@ -90,6 +89,22 @@ export function usageCostUsd(usage: Usage, pricing: Pricing): number {
       usage.outputTokens * pricing.outputUsdPerMTok) /
     1_000_000
   );
+}
+
+/**
+ * The most `usage` can cost once recorded: a worst case doesn't know which of
+ * its input tokens the model will write to or read from the prompt cache, so
+ * each one is priced at the highest of the input, cache-write and cache-read
+ * rates. What the spend cap reserves for a request.
+ */
+export function worstCaseCostUsd(usage: Usage, pricing: Pricing): number {
+  const input = pricing.inputUsdPerMTok;
+  const inputRate = Math.max(
+    input,
+    input * cacheWriteMultiplier,
+    pricing.cacheReadUsdPerMTok ?? input * cacheReadMultiplier,
+  );
+  return (usage.inputTokens * inputRate + usage.outputTokens * pricing.outputUsdPerMTok) / 1_000_000;
 }
 
 /** Adds `usage` to `total` in place, cache fields only when there are any. */

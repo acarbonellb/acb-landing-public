@@ -24,7 +24,7 @@ const envSchema = z.object({
   AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
-  AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
+  AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxModelCalls),
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
@@ -91,7 +91,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {
-      maxIterations: e.AGENT_MAX_ITERATIONS,
+      maxModelCalls: e.AGENT_MAX_ITERATIONS,
       maxTokens: e.AGENT_MAX_TOKENS,
       maxRequestTokens: e.AGENT_MAX_REQUEST_TOKENS,
     },

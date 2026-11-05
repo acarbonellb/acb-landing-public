@@ -31,8 +31,8 @@ export type { ChatErrorCode, ChatEvent, ChatMessage, ChatStopReason };
 
 export const chatLimits = {
   ...chatRequestLimits,
-  /** Most model calls (tool-use iterations) in one chat request. */
-  maxIterations: 5,
+  /** Most model calls in one chat request (each one after the first reads tool results). */
+  maxModelCalls: 5,
   /** Output-token cap per model call (thinking included). */
   maxTokens: 4096,
   /**
@@ -66,7 +66,7 @@ export const chatRequestSchema: z.ZodType<ChatRequest> = z
   .strict();
 
 /** The run limits of one chat request; `chatLimits` holds the defaults. */
-export type ChatLimits = Pick<typeof chatLimits, "maxIterations" | "maxTokens" | "maxRequestTokens">;
+export type ChatLimits = Pick<typeof chatLimits, "maxModelCalls" | "maxTokens" | "maxRequestTokens">;
 
 export type ChatAgentOptions = {
   model: ModelClient;
@@ -102,7 +102,7 @@ export function createChatAgent({
   system = systemPrompt,
 }: ChatAgentOptions): ChatAgent {
   const resolved: ChatLimits = {
-    maxIterations: limits.maxIterations ?? chatLimits.maxIterations,
+    maxModelCalls: limits.maxModelCalls ?? chatLimits.maxModelCalls,
     maxTokens: limits.maxTokens ?? chatLimits.maxTokens,
     maxRequestTokens: limits.maxRequestTokens ?? chatLimits.maxRequestTokens,
   };
@@ -114,7 +114,7 @@ export function createChatAgent({
         fixedPromptChars + messages.reduce((sum, m) => sum + m.content.length, 0);
       const perCallInput = Math.ceil(promptChars / 2) + resolved.maxRequestTokens;
       return {
-        inputTokens: resolved.maxIterations * perCallInput,
+        inputTokens: resolved.maxModelCalls * perCallInput,
         outputTokens: resolved.maxRequestTokens,
       };
     },
@@ -153,7 +153,7 @@ type ChatRun = ChatLimits & {
 };
 
 async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
-  const { model, toolset, tools, system, maxIterations, maxTokens, maxRequestTokens, signal } =
+  const { model, toolset, tools, system, maxModelCalls, maxTokens, maxRequestTokens, signal } =
     options;
   const messages: ModelMessage[] = options.messages.map((m) =>
     m.role === "user"
@@ -163,16 +163,16 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
   const total: Usage = { inputTokens: 0, outputTokens: 0 };
   // The model call in progress, to price it if it never reports its usage.
   let inFlight:
-    | { iteration: number; maxTokens: number; input?: InputUsage }
+    | { callNumber: number; maxTokens: number; input?: InputUsage }
     | undefined;
   let lastInputTokens = 0;
 
   try {
-    for (let iteration = 1; ; iteration++) {
+    for (let callNumber = 1; ; callNumber++) {
       let response;
       let streamed = false;
       const call = {
-        iteration,
+        callNumber,
         maxTokens: Math.min(maxTokens, maxRequestTokens - total.outputTokens),
       };
       inFlight = call;
@@ -202,7 +202,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
       const wantsTools = response.stopReason === "tool_use" && response.toolCalls.length > 0;
       // Running tools needs another model call to read their results.
       const budgetLeft = total.outputTokens < maxRequestTokens;
-      const canRunTools = wantsTools && iteration < maxIterations && budgetLeft;
+      const canRunTools = wantsTools && callNumber < maxModelCalls && budgetLeft;
 
       const results: ToolResult[] = [];
       if (canRunTools) {
@@ -213,7 +213,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
           yield event;
         }
       }
-      yield { type: "usage", iteration, ...response.usage };
+      yield { type: "usage", iteration: callNumber, ...response.usage };
 
       if (!wantsTools) {
         if (response.stopReason === "refusal" && !streamed) {
@@ -249,7 +249,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
     if (inFlight && billed) {
       yield {
         type: "usage",
-        iteration: inFlight.iteration,
+        iteration: inFlight.callNumber,
         ...(inFlight.input ?? { inputTokens: lastInputTokens }),
         outputTokens: inFlight.maxTokens,
         estimated: true,

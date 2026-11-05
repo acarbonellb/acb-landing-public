@@ -1,10 +1,9 @@
 "use client";
 
 import { type FormEvent, useEffect, useEffectEvent, useId, useRef, useState } from "react";
-import { contactFallback } from "@/lib/contact-fallback";
 import { chatRequestLimits } from "@/shared/chat-contract";
-import { chatPrivacyNote, contactQuestion } from "@/shared/site-copy";
-import { connectChat } from "./chat-bridge";
+import { chatPrivacyNote } from "@/shared/site-copy";
+import { type BridgeAsk, connectChat } from "./chat-bridge";
 import { ChatNotice } from "./chat-notice";
 import { ChatTranscript } from "./chat-transcript";
 import { McpConnect } from "./mcp-connect";
@@ -14,17 +13,11 @@ import { useAgentChat } from "./use-agent-chat";
 export function AgentChat({
   chatUrl,
   mcpUrl,
-  mcpDirectUrl,
-  linkedin,
   fetch,
 }: {
   chatUrl: string;
   /** Shown to visitors for their own MCP clients. */
   mcpUrl: string;
-  /** Called by the page itself: the contact fallback's `get_contact`. */
-  mcpDirectUrl: string;
-  /** The last resort when neither the chat nor the MCP tools answer. */
-  linkedin: string;
   fetch?: typeof globalThis.fetch;
 }) {
   const { turns, notice, busy, ask } = useAgentChat({ chatUrl, fetch });
@@ -47,18 +40,18 @@ export function AgentChat({
     void ask(question);
   }
 
-  // "ask my agent" (contact section): bring the chat into view, focus it and
-  // send the contact question as the visitor's message. A failure is answered
-  // by the contact fallback instead of a notice.
-  const askForContact = useEffectEvent(() => {
+  // A question from outside the chat ("ask my agent" in the contact section):
+  // bring the chat into view, focus it and send the question as the visitor's
+  // message. A failure is answered by the caller's fallback instead of a notice.
+  const askFromBridge = useEffectEvent<BridgeAsk>((question, options) => {
     if (busy) return;
     logRef.current?.closest("section")?.scrollIntoView?.({ block: "start" });
     inputRef.current?.focus({ preventScroll: true });
-    void ask(contactQuestion, { fallback: contactFallback(mcpDirectUrl, { fetch }) });
+    void ask(question, options);
   });
 
   useEffect(() => {
-    const connection = connectChat(() => askForContact());
+    const connection = connectChat((question, options) => askFromBridge(question, options));
     bridge.current = connection;
     return () => {
       connection.disconnect();
@@ -72,7 +65,7 @@ export function AgentChat({
 
   return (
     <div className="space-y-6">
-      <ChatTranscript ref={logRef} turns={turns} busy={busy} linkedin={linkedin} />
+      <ChatTranscript ref={logRef} turns={turns} busy={busy} />
 
       {notice && <ChatNotice notice={notice} mcpUrl={mcpUrl} />}
 

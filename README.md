@@ -94,7 +94,7 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `AGENT_EFFORT` | `low` | `low` / `medium` / `high` / `xhigh` / `max` |
 | `AGENT_MAX_TOKENS` | `4096` | Output-token cap per model call |
 | `AGENT_MAX_REQUEST_TOKENS` | `8192` | Output-token budget for a whole chat request, shared by all its model calls (each gets the smaller of `AGENT_MAX_TOKENS` and what's left) |
-| `AGENT_MAX_ITERATIONS` | `5` | Max model calls (tool-use iterations) per chat request |
+| `AGENT_MAX_ITERATIONS` | `5` | Max model calls per chat request (each one after the first reads tool results) |
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
 | `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
 | `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |
@@ -146,8 +146,8 @@ Roles alternate, start and end with `user`; at most 20 messages of 1–2000 char
 | `text` | `delta` | A piece of the answer; append it |
 | `tool_call` | `id`, `name`, `input` | The agent calls a tool, e.g. `get_projects({"status":"in-progress"})` |
 | `tool_result` | `id`, `name`, `isError`, `output` | That tool's result (`output` is the tool's JSON, or `{error}`) |
-| `usage` | `iteration`, `inputTokens`, `outputTokens`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap) |
-| `done` | `stopReason`, `usage` | Last event of a chat request that answered; `usage` is the request's total |
+| `usage` | `iteration`, `inputTokens`, `outputTokens`, `cacheWriteInputTokens?`, `cacheReadInputTokens?`, `estimated?` | Tokens spent by one model call (`estimated: true` when the call was cut off and is charged at its cap). `inputTokens` counts all input; the optional cache fields say how many of those were written to or read from the prompt cache (absent: none) |
+| `done` | `stopReason`, `usage` | Last event of a chat request that answered; `usage` is the request's total, with the same token fields (cache fields included) as a `usage` event |
 | `error` | `code`, `message` | Last event of a chat request that failed; `message` is safe to show |
 
 `stopReason` is `end_turn` (answered), `max_tokens` (answer cut by the per-call cap, or the request's token budget ran out), `max_iterations` (too many tool calls; no final answer) or `refusal` (declined; a polite `text` was sent). Stream `error` codes are `unavailable` (Claude overloaded, rate-limited upstream, unreachable, or the provider's spend or billing limit reached: retry later) and `internal`. Every stream ends with exactly one `done` or `error`. CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin.

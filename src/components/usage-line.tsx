@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { isNumber } from "@/lib/is-number";
 import type { StatsResponse, WeekStats } from "@/shared/stats-contract";
 
 // The usage line: a one-line summary of the agent's usage, read from its public `GET /stats`
 // in the browser (the static page can't know it at build time). Anything
 // short of a valid answer with at least one question answered shows nothing.
 
-const isNumber = (value: unknown): value is number => typeof value === "number";
 const isNumberOrNull = (value: unknown) => value === null || isNumber(value);
 
 // Checks every field `usageLine` reads, so a malformed body hides the line

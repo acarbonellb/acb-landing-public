@@ -22,7 +22,7 @@ export type Notice = {
   kind: ChatErrorKind;
   message?: string;
   retryAfterSeconds?: number;
-  /** ISO time the monthly budget renews, when the spend cap closed the chat. */
+  /** ISO time the spend cap resets (next UTC month), when it closed the chat. */
   resetsAt?: string;
 };
 
@@ -112,7 +112,7 @@ function answerText(turn: Turn): string {
 }
 
 /**
- * The conversation the endpoint sees: exchanges the chat answered with text,
+ * The conversation the endpoint sees: turns the chat answered with text,
  * most recent first to survive the message cap, then the new question.
  */
 export function historyFor(turns: Turn[], question: string): ChatMessage[] {

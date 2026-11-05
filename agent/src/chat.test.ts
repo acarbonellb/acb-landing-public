@@ -30,7 +30,7 @@ async function collect(
 const textOf = (events: ChatEvent[]) =>
   events.flatMap((e) => (e.type === "text" ? [e.delta] : [])).join("");
 
-describe("runChat", () => {
+describe("ChatAgent.run", () => {
   it("calls a tool, feeds the result back and streams the final answer", async () => {
     const { events, model } = await collect([
       { toolCalls: [{ id: "call_1", name: "get_contact", input: {} }] },
@@ -100,12 +100,12 @@ describe("runChat", () => {
     }
   });
 
-  it("stops at the iteration cap without running more tools", async () => {
+  it("stops at the model-call cap without running more tools", async () => {
     const loop: ScriptedResponse = {
       toolCalls: [{ id: "call", name: "get_profile", input: {} }],
     };
     const { events, model } = await collect([loop, loop, loop, loop], {
-      maxIterations: 3,
+      maxModelCalls: 3,
     });
     expect(model.requests).toHaveLength(3);
     expect(events.filter((e) => e.type === "tool_result")).toHaveLength(2);
@@ -288,7 +288,7 @@ describe("runChat", () => {
 
 describe("the chat agent", () => {
   const messages = [{ role: "user" as const, content: "Stack?" }];
-  const limits = { maxIterations: 2, maxRequestTokens: 1000 };
+  const limits = { maxModelCalls: 2, maxRequestTokens: 1000 };
   const customPrompt = systemPrompt + "x".repeat(2000);
 
   it("estimates the worst case with the system prompt it runs with", async () => {

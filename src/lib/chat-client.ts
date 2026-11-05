@@ -25,7 +25,7 @@ export type ChatClientEvent =
       kind: ChatErrorKind;
       message?: string;
       retryAfterSeconds?: number;
-      /** ISO time the monthly budget renews, when the spend cap closed the chat. */
+      /** ISO time the spend cap resets (next UTC month), when it closed the chat. */
       resetsAt?: string;
     };
 

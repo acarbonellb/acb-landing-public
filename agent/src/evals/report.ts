@@ -4,7 +4,7 @@
 import { byString, caseName, percent, setLabel, type Ratio } from "./format";
 import type { HistoryEntry } from "./history";
 import { setMetrics, type SetResult } from "./metrics";
-import { expectation, type CaseOutcome } from "./scoring";
+import { expectation, type CaseResponse } from "./scoring";
 
 /** "$0.000362"; "$0" for a free model; "n/a" without a price. */
 export function formatUsd(usd: number | undefined): string {
@@ -28,7 +28,7 @@ function excerpt(answer: string): string {
   return flat.length > maxExcerpt ? `${flat.slice(0, maxExcerpt - 1)}…` : flat;
 }
 
-function actual({ answer, toolCalls, error }: CaseOutcome): string {
+function actual({ answer, toolCalls, error }: CaseResponse): string {
   return [
     ...(toolCalls.length ? [toolCalls.join(", ")] : []),
     ...(error ? [`error: ${error}`] : []),
@@ -40,12 +40,12 @@ function renderSet(set: SetResult): string {
   const m = setMetrics(set);
   const rows = [...set.results]
     .sort((a, b) => byString(a.evalCase.id, b.evalCase.id))
-    .map(({ evalCase, outcome, score }) =>
+    .map(({ evalCase, response, score }) =>
       [
         caseName(evalCase),
         evalCase.kind,
         expectation(evalCase),
-        actual(outcome),
+        actual(response),
         score.pass ? "pass" : `FAIL: ${score.reasons.join("; ")}`,
       ]
         .map(cell)

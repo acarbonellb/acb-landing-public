@@ -260,7 +260,7 @@ describe("monthly spend cap", () => {
 
   describe("with a request's worst case of $0.02 (1,000 output tokens) against a $0.03 budget", () => {
     const outputOnly = { inputUsdPerMTok: 0, outputUsdPerMTok: 20 };
-    const chatLimits = { maxIterations: 1, maxTokens: 1000, maxRequestTokens: 1000 };
+    const chatLimits = { maxModelCalls: 1, maxTokens: 1000, maxRequestTokens: 1000 };
 
     /** A memory spend cap that tells when a request has settled. */
     function observedCap() {

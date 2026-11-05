@@ -34,7 +34,7 @@ export type TokenUsage = {
 
 /**
  * Why the answer to a chat request ended: answered (`end_turn`), cut by a token cap
- * (`max_tokens`), cut by the iteration cap (`max_iterations`), or the model
+ * (`max_tokens`), cut by the model-call cap (`max_iterations`), or the model
  * declined (`refusal`).
  */
 export type ChatStopReason = "end_turn" | "max_tokens" | "max_iterations" | "refusal";
@@ -55,6 +55,7 @@ export type ChatEvent =
     }
   | ({
       type: "usage";
+      /** Which model call of the request this is, counting from 1. */
       iteration: number;
       /** Set when the call never reported its usage and this is an upper bound. */
       estimated?: true;

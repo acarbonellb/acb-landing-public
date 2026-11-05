@@ -237,14 +237,14 @@ export function createApp(deps: AppDeps): Hono {
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
       const { messages } = request;
-      // Hold the most this request can cost while it runs (see spend-cap.ts).
-      const budget = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
-      if (budget.exhausted) {
+      // Reserve the most this request can cost while it runs (see spend-cap.ts).
+      const spend = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
+      if (spend.exhausted) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
           message: httpErrorMessages.spendCap,
-          resetsAt: budget.resetsAt,
+          resetsAt: spend.resetsAt,
         });
       }
 
@@ -255,7 +255,7 @@ export function createApp(deps: AppDeps): Hono {
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
       const events = meteredChat(messages, {
         agent: chatAgent,
-        reservation: budget.reservation,
+        reservation: spend.reservation,
         usage,
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
