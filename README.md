@@ -349,6 +349,28 @@ jsonPayload.event=("spend_threshold" OR "spend_cap_reached" OR "provider_limit" 
 
 or one request's lines: `jsonPayload.requestId="<id>"`.
 
+**Alerts (Cloud Monitoring).** Each alert event above with severity `WARNING` or `ERROR` has a log-based alert policy that emails the owner; the `INFO` ones (`_cleared`, `_recovered`) only log. They are GCP resources made by hand, not by the deploy, with `scripts/monitoring-alerts.sh` (which needs gcloud's beta component, `gcloud components install beta`, for notification channels):
+
+| Policy | Matches (`jsonPayload.event`) | Severity | The email shows |
+| --- | --- | --- | --- |
+| `Agent: spend_threshold` | `spend_threshold` | Warning | `thresholdPercent`, `month`, `spentUsd`, `budgetUsd` |
+| `Agent: spend_cap_reached` | `spend_cap_reached` | Error | `month`, `spentUsd`, `budgetUsd`, `resetsAt` |
+| `Agent: provider_limit` | `provider_limit` | Error | `month` |
+| `Agent: chat_error_rate` | `chat_error_rate` | Error | `errorRate`, `errors`, `streamed`, `threshold`, `week` |
+| `Agent: store_unavailable` | `store_unavailable` | Error | `collection` |
+
+Each matches `resource.type="cloud_run_revision" AND resource.labels.service_name="agent" AND jsonPayload.event="<event>"` (exact match, so `provider_limit_cleared` doesn't trigger `provider_limit`), sends at most one email per 5 minutes and closes its incident after 30 minutes without a match. All notify one email channel, `Agent alerts (email)`. The email shows only the fields above (label extractors), never `error` or `requestId`, plus what to do and a link to this section.
+
+```bash
+scripts/monitoring-alerts.sh setup --dry-run acb-landing "$ALERT_EMAIL"  # prints every gcloud command and file; runs nothing
+scripts/monitoring-alerts.sh setup acb-landing "$ALERT_EMAIL"            # creates them, or updates them in place
+scripts/monitoring-alerts.sh test acb-landing [event]                     # one synthetic alert event (default store_unavailable)
+```
+
+`setup` is idempotent: it enables the Monitoring API, then looks up the channel and each policy by display name and creates it, or replaces it with the script's version (two with the same name stop it: delete the extra). Re-run it after changing an alert event, the policies or the address, or to recreate them all in a rebuilt project. The email address is only an argument: it reaches gcloud in a temporary file (mode 600, deleted on exit), never on a command line, and the script never prints it (the dry run shows `<email>`); it is in no repo file, variable or workflow, like the contact address. Nothing in CI runs this script; `scripts/monitoring-alerts.test.ts` runs it against a fake `gcloud`.
+
+`test` writes one log entry (`gcloud logging write`, log `agent-alert-test`) shaped like the agent's line for that event, on the `agent` Cloud Run service's resource, with `"test": true` and `"test"` as each field's value: its policy opens an incident and emails the channel within a few minutes. Close the incident in the console, or let it close itself after 30 minutes.
+
 ### Evals
 
 The unit tests use a scripted fake model, so they prove the loop and tools work, not that a real model follows the system prompt. The evals check that: about 40 eval cases (`agent/evals/cases/index.ts`) of five kinds: off-topic (trivia, maths, coding help, also after a friendly turn), mixed (a question about me plus an unrelated one), injection (including long, repetitive input that tries to make it loop through tools), on-topic and unknown (things the tools don't cover, including anything it would have to say on my behalf: availability, opinions, offers, relocation, experience I don't have). They run through the real chat loop and tools; only the model is swapped, and `get_contact` gives out the placeholder `alberto@example.com` (`agent/src/evals/content.ts`), never the real address, so recordings stay deterministic and the address stays out of them. Why record/replay: [ADR 0001](docs/adr/0001-agent-evals-record-replay.md).
