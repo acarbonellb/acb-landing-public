@@ -3,12 +3,12 @@
 import type { Usage } from "../model";
 import { listPrices, usageCostUsd, type Pricing } from "../pricing";
 import type { Ratio, SetId } from "./format";
-import { leakKinds, type CaseOutcome, type CaseScore, type EvalCase } from "./scoring";
+import { leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
 
 /** One case replayed from its recording. */
 export type CaseResult = {
   evalCase: EvalCase;
-  outcome: CaseOutcome;
+  response: CaseResponse;
   score: CaseScore;
   /** Summed over the case's model calls. */
   usage: Usage;

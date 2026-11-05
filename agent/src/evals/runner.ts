@@ -19,7 +19,7 @@ import { caseName, setLabel, type SetId } from "./format";
 import { checkHistory, type HistoryEntry } from "./history";
 import type { CaseResult, SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
-import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
+import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
 export type Recording = SetId & {
@@ -47,29 +47,29 @@ function conversation(evalCase: EvalCase): ChatMessage[] {
 }
 
 async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: RunOptions) {
-  const outcome: CaseOutcome = { answer: "", toolCalls: [] };
+  const response: CaseResponse = { answer: "", toolCalls: [] };
   const usage: Usage = { inputTokens: 0, outputTokens: 0 };
   const agent = createChatAgent({ model, toolset: createToolset(evalContent), system });
   for await (const event of agent.run(conversation(evalCase))) {
-    if (event.type === "text") outcome.answer += event.delta;
-    else if (event.type === "tool_call") outcome.toolCalls.push(event.name);
+    if (event.type === "text") response.answer += event.delta;
+    else if (event.type === "tool_call") response.toolCalls.push(event.name);
     else if (event.type === "usage") addUsage(usage, event);
-    else if (event.type === "done") outcome.stopReason = event.stopReason;
-    else if (event.type === "error") outcome.error = event.code;
+    else if (event.type === "done") response.stopReason = event.stopReason;
+    else if (event.type === "error") response.error = event.code;
   }
-  outcome.answer = outcome.answer.trim();
-  return { outcome, usage };
+  response.answer = response.answer.trim();
+  return { response, usage };
 }
 
 function scoredResult(
   evalCase: EvalCase,
-  { outcome, usage }: Awaited<ReturnType<typeof runChatCase>>,
+  { response, usage }: Awaited<ReturnType<typeof runChatCase>>,
   calls: RecordedCall[],
 ): CaseResult {
   return {
     evalCase,
-    outcome,
-    score: scoreCase(evalCase, outcome),
+    response,
+    score: scoreCase(evalCase, response),
     usage,
     latencyMs: calls.reduce((sum, c) => sum + c.latencyMs, 0),
   };
@@ -84,9 +84,9 @@ export async function recordCase(
 ): Promise<{ recording: Recording; result: CaseResult }> {
   const recorder = createRecordingModelClient(model);
   const ran = await runChatCase(evalCase, recorder, options);
-  if (ran.outcome.error) {
+  if (ran.response.error) {
     throw new RecordingFailedError(
-      `${caseName(evalCase)}: chat ended in error "${ran.outcome.error}"`,
+      `${caseName(evalCase)}: chat ended in error "${ran.response.error}"`,
     );
   }
   const recording: Recording = {

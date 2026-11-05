@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { computeMetrics, setPricing, type CaseResult, type SetResult } from "./metrics";
 import { renderReport } from "./report";
-import { scoreCase, type CaseOutcome, type EvalCase } from "./scoring";
+import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
 
 function result(
   evalCase: EvalCase,
-  outcome: Partial<CaseOutcome>,
+  response: Partial<CaseResponse>,
   usage = { inputTokens: 1000, outputTokens: 100 },
   latencyMs = 2000,
 ): CaseResult {
-  const full: CaseOutcome = { answer: "", toolCalls: [], stopReason: "end_turn", ...outcome };
-  return { evalCase, outcome: full, score: scoreCase(evalCase, full), usage, latencyMs };
+  const full: CaseResponse = { answer: "", toolCalls: [], stopReason: "end_turn", ...response };
+  return { evalCase, response: full, score: scoreCase(evalCase, full), usage, latencyMs };
 }
 
 const results: CaseResult[] = [
