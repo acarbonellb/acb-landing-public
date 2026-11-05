@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Post-deploy smoke check: the site answers 200 with the real page, and every
-# redirect host answers 301 (over http and https) and ends on the site.
+# Post-deploy smoke check: the site answers 200 with the real page and its
+# security headers, and every redirect host answers 301 (over http and https)
+# and ends on the site.
 # Usage: scripts/smoke-check.sh <site-url> [redirect-host...]
 set -uo pipefail
 
@@ -24,9 +25,16 @@ retry() {
 }
 
 check_site() {
-  local page
-  page=$(curl -fsS "${browser[@]}" --max-time 20 "$site/") || { echo "  $site/ is down"; return 1; }
-  grep -q "Alberto Carbonell" <<<"$page" || { echo "  $site/ doesn't contain the expected content"; return 1; }
+  local page headers
+  headers=$(mktemp)
+  page=$(curl -fsS "${browser[@]}" -D "$headers" --max-time 20 "$site/") || { echo "  $site/ is down"; rm -f "$headers"; return 1; }
+  grep -q "Alberto Carbonell" <<<"$page" || { echo "  $site/ doesn't contain the expected content"; rm -f "$headers"; return 1; }
+  # The headers from out/firebase.json (#93).
+  local header
+  for header in "content-security-policy: .*frame-ancestors 'none'" "x-content-type-options: nosniff" "referrer-policy: "; do
+    grep -qi "^$header" "$headers" || { echo "  $site/ lacks the header '${header%%:*}'"; rm -f "$headers"; return 1; }
+  done
+  rm -f "$headers"
 }
 
 check_redirect() {
