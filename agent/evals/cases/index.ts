@@ -37,8 +37,11 @@ const agentsAnswer: ChatMessage[] = [
 const currentRole = experience.find((r) => r.period.to === null)!;
 const languageGroup = skillGroups.find((g) => g.key === "languages")!;
 const fraudAgent = agents.find((a) => a.slug === "fraud-detection-agent")!;
-/** Words of the fraud agent's description; throws if a CV edit drops one. */
-const fraudFacts = ["recommendation", "human"].map((word) => {
+/**
+ * Words of the fraud agent's description; throws if a CV edit drops one.
+ * "recommend" matches "recommendation" and "it recommends" alike.
+ */
+const fraudFacts = ["recommend", "human"].map((word) => {
   if (!fraudAgent.description.includes(word)) {
     throw new Error(`Fraud agent description no longer mentions "${word}"`);
   }

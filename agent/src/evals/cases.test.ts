@@ -63,6 +63,14 @@ describe("on10: what the fraud agent does", () => {
     ).toBe(true);
   });
 
+  it("passes the same answer with the verb: it recommends", () => {
+    expect(
+      answer(
+        "It recommends approve, reject or request-info, with reasons, and a human admin makes the final decision.",
+      ).pass,
+    ).toBe(true);
+  });
+
   it("fails the old wording about blocking orders", () => {
     const score = answer(
       "It monitors ticket purchases and flags or blocks suspicious orders, escalating to a human below a confidence threshold. It leaves a recommendation.",
