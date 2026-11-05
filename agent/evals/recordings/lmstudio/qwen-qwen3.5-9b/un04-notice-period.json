@@ -1,0 +1,261 @@
+{
+  "caseId": "un04",
+  "slug": "notice-period",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "e62179aea0206d2c5367b5db156f1745338364f0554833d72973ff537550402b",
+      "latencyMs": 8662,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2258
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "E9KhiwbcuTBK4msEUbvpBEPAs2GMqFYF",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2258,
+              "outputTokens": 340
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "E9KhiwbcuTBK4msEUbvpBEPAs2GMqFYF",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "738d028d526795c38464e484d864e1c8601728d5978f1cde5e1213dd89402503",
+      "latencyMs": 1462,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2576
+        },
+        {
+          "type": "text_delta",
+          "text": "I"
+        },
+        {
+          "type": "text_delta",
+          "text": " don"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t"
+        },
+        {
+          "type": "text_delta",
+          "text": " have"
+        },
+        {
+          "type": "text_delta",
+          "text": " information"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " notice"
+        },
+        {
+          "type": "text_delta",
+          "text": " period"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " when"
+        },
+        {
+          "type": "text_delta",
+          "text": " he"
+        },
+        {
+          "type": "text_delta",
+          "text": " could"
+        },
+        {
+          "type": "text_delta",
+          "text": " start"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " new"
+        },
+        {
+          "type": "text_delta",
+          "text": " job"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " His"
+        },
+        {
+          "type": "text_delta",
+          "text": " availability"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " notice"
+        },
+        {
+          "type": "text_delta",
+          "text": " period"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " start"
+        },
+        {
+          "type": "text_delta",
+          "text": " date"
+        },
+        {
+          "type": "text_delta",
+          "text": " are"
+        },
+        {
+          "type": "text_delta",
+          "text": " not"
+        },
+        {
+          "type": "text_delta",
+          "text": " included"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " For"
+        },
+        {
+          "type": "text_delta",
+          "text": " details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
+        },
+        {
+          "type": "text_delta",
+          "text": " these"
+        },
+        {
+          "type": "text_delta",
+          "text": " matters"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " suggest"
+        },
+        {
+          "type": "text_delta",
+          "text": " contacting"
+        },
+        {
+          "type": "text_delta",
+          "text": " him"
+        },
+        {
+          "type": "text_delta",
+          "text": " directly"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "I don't have information about Alberto's notice period or when he could start a new job. His availability, notice period, and start date are not included in his profile. For details on these matters, I suggest contacting him directly.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2576,
+              "outputTokens": 50
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I don't have information about Alberto's notice period or when he could start a new job. His availability, notice period, and start date are not included in his profile. For details on these matters, I suggest contacting him directly."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

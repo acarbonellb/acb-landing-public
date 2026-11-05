@@ -3,15 +3,15 @@
   "slug": "typescript-and-boiling-point",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "03a1fe85a2d3ea9bbf5d6b89a5c1f2df220573df710335d8c3cac6b7096226f4",
-      "latencyMs": 5624,
+      "requestHash": "7938216aefc7f5a5a5d6ed4b9b57e7346a967049f4ed04386ed8e006821bdffd",
+      "latencyMs": 7075,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2055
+          "inputTokens": 2261
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ickdMDWDlltnbsEBzNTCARazHIJ7a8WD",
+                "id": "BN630kRXE5rh3rpD4GQtIFd2FFIruBsA",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2055,
-              "outputTokens": 210
+              "inputTokens": 2261,
+              "outputTokens": 274
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ickdMDWDlltnbsEBzNTCARazHIJ7a8WD",
+                "id": "BN630kRXE5rh3rpD4GQtIFd2FFIruBsA",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "54de1da7a5995c90e2db566c872d0ce92fede909b6c415c97b788a56c88d1cbf",
-      "latencyMs": 3207,
+      "requestHash": "194b683b7adeb7a7765f8bb1dc29532010b77610e42bdc23ea45edea2dad8f47",
+      "latencyMs": 4809,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2142
+          "inputTokens": 2348
         },
         {
           "type": "text_delta",
@@ -63,27 +63,19 @@
         },
         {
           "type": "text_delta",
-          "text": " according"
+          "text": " TypeScript"
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": " is"
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": " listed"
         },
         {
           "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
+          "text": " in"
         },
         {
           "type": "text_delta",
@@ -91,11 +83,15 @@
         },
         {
           "type": "text_delta",
-          "text": " knows"
+          "text": "'s"
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -139,23 +135,23 @@
         },
         {
           "type": "text_delta",
-          "text": "—"
+          "text": " and"
         },
         {
           "type": "text_delta",
-          "text": "so"
+          "text": " cannot"
         },
         {
           "type": "text_delta",
-          "text": " I"
+          "text": " provide"
         },
         {
           "type": "text_delta",
-          "text": "'ll"
+          "text": " information"
         },
         {
           "type": "text_delta",
-          "text": " have"
+          "text": " unrelated"
         },
         {
           "type": "text_delta",
@@ -163,27 +159,7 @@
         },
         {
           "type": "text_delta",
-          "text": " skip"
-        },
-        {
-          "type": "text_delta",
-          "text": " the"
-        },
-        {
-          "type": "text_delta",
-          "text": " boiling"
-        },
-        {
-          "type": "text_delta",
-          "text": " point"
-        },
-        {
-          "type": "text_delta",
-          "text": " of"
-        },
-        {
-          "type": "text_delta",
-          "text": " water"
+          "text": " him"
         },
         {
           "type": "text_delta",
@@ -223,14 +199,6 @@
         },
         {
           "type": "text_delta",
-          "text": " projects"
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
           "text": " work"
         },
         {
@@ -239,7 +207,31 @@
         },
         {
           "type": "text_delta",
-          "text": " instead"
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -248,17 +240,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I can only answer questions about Alberto—so I'll have to skip the boiling point of water. Would you like to know more about his projects or work experience instead?",
+            "text": "Yes, TypeScript is listed in Alberto's languages stack. However, I can only answer questions about Alberto and cannot provide information unrelated to him. Would you like to know more about his work experience, AI agents, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2142,
-              "outputTokens": 122
+              "inputTokens": 2348,
+              "outputTokens": 188
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, according to his tech stack, Alberto knows TypeScript. However, I can only answer questions about Alberto—so I'll have to skip the boiling point of water. Would you like to know more about his projects or work experience instead?"
+                "text": "Yes, TypeScript is listed in Alberto's languages stack. However, I can only answer questions about Alberto and cannot provide information unrelated to him. Would you like to know more about his work experience, AI agents, or tech stack?"
               }
             ]
           }

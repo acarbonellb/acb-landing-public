@@ -1,0 +1,177 @@
+{
+  "caseId": "un06",
+  "slug": "opinion-of-a-company",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "49acf88406321f1f65720ae29a8ada294c6125d9460351f38eae310868d477bf",
+      "latencyMs": 1186,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1606
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01Sz9yf819QjPWntw7nynz8v",
+                "name": "get_experience",
+                "input": {
+                  "company": "google"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1606,
+              "outputTokens": 158
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSwQcKEAgTGAI4AUIIdGhpbmtpbmcSDHHiK36aTF+2AGKzHxoMORhVna91GfjSqK/RIjDyRsI6DO29zlsZE4ZePioRAVWmHrkQZzSWH9w4wIu8NTPp1QT6itW+h16wKdm+LQIq3gaxkSRay0kBjytCqfzRSXZZbrmLurn547tCr3xCOuUoloHH6Uuul2D9gyiQ0RW6iZ5/hapAPVz93yerPsCKQE8zEzu63u4aBlUF2Aq/3RVQefCxIKXK1tEEDUwvV0g38nHq2PN0VyQOehs5sTO35TZ96GZRfWMIR9ohOq3/Gx2Vqy5lEG8LBcUIT7QaIpSJ2SjrN4rwqNGYyfXG1UgPQrN7DWwstHm7FYa59Ji9QYHMjm8V0fb+ZAecz0tbuZoL4YGAfyVzEf2Y61DA6NEfulCjvdY7/X3g3Wq3wQbCVqmO2HzjhKkLO1Yy31HQQvlTQQqb3ORFKANJgPEwxTdnyCXZqL8GGFvj2u9yjVEUjDSAZKCQWzUXcazdl0hIPFzJSLFvyqF0NVLPdMMfKdZ2yZVaUIu30LM1kl9J3ss+un7hr4LTSwHcu21bs9n7FjhgNc9r746PIBNEYKiOo5DK0no9veyHC1WzWp2/j0dVZ51fgieYKEYyU8iCWmty8wZsJ7DUCfmUvfzFfTQoFnIFjjjn/5f3ievf5znvK3VN8AP+mNGg2a2nNdEPjH+hJL5nEbvNAfWY+5rZrrFbzdv0JfRFfg3LBETddRgr/7AxMrf11RoQyD1GWceHkxyuvFI8d9l9q4UDDSAkS59i9PDMlwEJlbqswk/SgdjE3PWT3DVvE8AM/Fid4UWvdw+z3m/W7vSLmtrbjoTnscaHTWCwBKpvxe3FzPspU9z3UJbDs2+aZ53QiK5siiIqn3HFItplNVeRcJK4OjrYoxoz4J2ynZzJwP18x7lBY04IVZFlzcayz5/bMFB4nrpzIcr9VmaIuClCO171ARrH7zLea7nSqgPhKN1F/sex6R8SoJwasfKFSEwqlDk/GXwM4YV28ZTtpvWqt1700qavppR16ptpO2Pe2S8Is7Xid02ftSOuc/7VceZR9UvbYVUxl/HZjsFPK3YRlNP7Uhroi+Rz+ozTXSKfDUAgkiD57n6XPiRHLtyFzQ/kvFXVe8cqPip2jNwchBs4DTU19kK+my3v0CtQhJSFS6ywtbnkZWermeu1mu6TZVp2havb172eNYXkNwyhlBQ2kuWf5t1b6/0WNfWx9NIhvd1XCAbxM8TlEnQLP1/t1zr3MT1gDdIjJUYp77+QGAE="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01Sz9yf819QjPWntw7nynz8v",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "google"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "aa76b434d50520f45de1a762c1a5cd0d056c2e0a836090da975f08207bb56040",
+      "latencyMs": 1090,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1777
+        },
+        {
+          "type": "text_delta",
+          "text": "I don't have information"
+        },
+        {
+          "type": "text_delta",
+          "text": " about Alberto's opin"
+        },
+        {
+          "type": "text_delta",
+          "text": "ions of"
+        },
+        {
+          "type": "text_delta",
+          "text": " companies, and his profile do"
+        },
+        {
+          "type": "text_delta",
+          "text": "esn't list any"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience at"
+        },
+        {
+          "type": "text_delta",
+          "text": " Google. If"
+        },
+        {
+          "type": "text_delta",
+          "text": " you're"
+        },
+        {
+          "type": "text_delta",
+          "text": " cur"
+        },
+        {
+          "type": "text_delta",
+          "text": "ious, you can reach him direct"
+        },
+        {
+          "type": "text_delta",
+          "text": "ly through"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on his site"
+        },
+        {
+          "type": "text_delta",
+          "text": ". I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can also t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell you about his work exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience, A"
+        },
+        {
+          "type": "text_delta",
+          "text": "I agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects, or t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ech stack."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "I don't have information about Alberto's opinions of companies, and his profile doesn't list any work experience at Google. If you're curious, you can reach him directly through the contact details on his site. I can also tell you about his work experience, AI agent projects, or tech stack.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1777,
+              "outputTokens": 84
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I don't have information about Alberto's opinions of companies, and his profile doesn't list any work experience at Google. If you're curious, you can reach him directly through the contact details on his site. I can also tell you about his work experience, AI agent projects, or tech stack."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

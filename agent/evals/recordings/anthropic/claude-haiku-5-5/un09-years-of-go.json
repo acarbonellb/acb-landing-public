@@ -1,0 +1,221 @@
+{
+  "caseId": "un09",
+  "slug": "years-of-go",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "87eb447673f79611abd38243d60f75f2ba69fea60f2f66e70e9fb3a4361698cb",
+      "latencyMs": 1017,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1605
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01E23EvtdkBPxxLcyC7pGK46",
+                "name": "get_stack",
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1605,
+              "outputTokens": 97
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS4gUKEAgTGAI4AUIIdGhpbmtpbmcSDKjFnTs5CaUZda7QmxoMUQK4EeH5Cxu8I69TIjB8YhJjg+S/qb7S7uTx2PZC93D69fX5tE6bSc9PwEv2pY3c2VxtbgK+uOfReurFqLgq/wRL+zshkwD1UV5asmyWWEe9wPqLgoxLr25D1CRP8uaIa7ix7bCylKYrfGuYpyEMvmnXkRtRAEZPxr7rEpA+g6Gn9oPYLGBK2DavqtU0mKrUhBaoT4cMgogESm4+6yf5r18lsvzmq5qCQW3AVnsOiSm8t6FtcivIe3Bgwm3Q4v/RO3pXAKIDkOug62mehUybKS15qJvujB0q9WKY02yChldl+sadey2SxdmKgWWX4L3BtXVQRsbzkXqXF385l3Ykfwwymp9BxXnN9RB6YpFBUM7vG3zR1yrsaaFP6cwm6g+iFAPjmyxSIwKLN2UBrg7tJDAKKvNOyOHjAetNNYfP10h9m0AQd0OosN0wEnHfDiEQ3p+T40DliAGeGtx7sGd2PkGuUp1XKnmnaOYUQgV+qtwebFzhFhCIN/LkSpauYZ+g44m6dZ/yiRPqrQWgxOGM+bQzy75Dpa8Scq6b/rFbLuxLy4fun0rDpZDj75K/bOtlvFiZ1b15SVFUy4reyrWHKBBhgCCB6SvJQasjZ51zM5bKLfiFQWnYCs3Ur8BgmNOY+Hoii8jNwhbdYpSw9B+jKB0ai3Magklw06i230TbPD2k4jO0B1Lx5nE0nIrrnnIlQac3evHbCv2oGObbXx0XqCEbwdpfAdFcVLKejp9w+TARubuCkI20k0cpV47Y8/h/w3BhzVa88KKf43kHuAQEkk06mOzQAq6l+IAgCETeVhAYq805dqB4qDPk3QBxcBrT9231rzBuu3LmRgidHNuEUVjvVr/tehC+NSvu0TuDCuWi+980LJeqeCmWWVi9yG2MxUR6LVj2euDxdAqBxgKEQGnUjGegPCL1ZGiYJEx2QjsYAQ=="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01E23EvtdkBPxxLcyC7pGK46",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "languages"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "96e19227f2850132d58f0b8549ffea5c19d92212fc4fe1eec2e0a0ee524758e2",
+      "latencyMs": 1514,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1752
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01EdqJjf3aKSLHFFZu3p2Cnk",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1752,
+              "outputTokens": 194
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS1QgKEAgTGAI4AUIIdGhpbmtpbmcSDFyoybcbPjYvuuyWMBoM2K8htwBBiXDP1mMwIjBKbHTA5hYbIsZji0mSGfjzvjJ34D+Z/x+Qv16huLpN5CMyUeHeQTHJhuyHUgcrulEq8gfORIjxb2ce+LbY5kZKWoUTDTEsuIEZyPDjTP+0n6GJ6EdDNNSTVrxc9/sTE+7GPpIMF9zRFzNNM7WV0L0Ef8i/nmQ2c6fBFwPrDXGm5ysR6+HCGUCtNESiH6vJuMJ7QgnG+EfRc83WPMGlwVwyhZENPPXmO5qgel2FHUi4leEpt0LR8mfTZNQXb3d0ymLgGPCXZBuUlfvN1y3s1NFtsuJmakMAZNX7Ufn19tWRfoGRIKNfnoVO8ohrbvKT6jIMAikHmzSWVxk4oSTY6dvRKCYghZC6OjJaEOVT9ZXSJWgnhpkpENoDehpUzudA2eoq89pxNcLYSKYnV8AOqSvW3zfwIk8n4V7pZUiTW+8+tx8ecaRDZJ3T8PZSzKCP7O4IthXCq/oSsmtfT0T47/IrdevvJkZDsRTl7AjJEmtur0B+jRm8GJK6Pb/9q1auNNfxT2nvXE7asY8UnjeKC6i/OTaOSx3iGXAwFddjEVG5rRMxXhvMP4BuB58m8QZ284HRPPOFM3VlaR2T8fGZg1JW6jSVF2OgvaiACJj0ouIj3vi+EXIPjKWZCvHGjkW2mtDlBRfisueHAMvNYVnh70V3kgEG5AtmZ/ZrAQ6AAw2fhbc9WMj1cnaWq0j0oDRU9x5i3ohEnhMFULQXHklJznBGNqOoYwSraGAk8IZ+x0ZJ0/uO+tXGtesVu6pdZytU+DF5ULsUHZ6+odacv4GB/dJRYCXHwNeTIC/NIFi80rt00gw4ibZwlrHAD5vIMCH51wTw6c8Tty0UavdLKWqo9pDo/PHjT497QDx39DBCKSCuofdYQR8XGWUndLYWAHjs4a3o+bTWYV8D+pFLUnUGQ9ybfZZC6494HlHrbJK0rh7CLHVCzRwPDKTxtj/FRveJwMUeqa8b0biKW6QcdzhaFQmNPQhEDe0cMUMOmOtPA36Hxx1e4AvZexH3eGm6ots8DTPdwkjnU6krSzNSRhnDoZ3PC+UyTiXCGN1BLDrlYD47ikxv3BogUbcL+mVGGBBhLkSne/ZQAfSaYB7fBlOZkSohk+33p29Y40G+kbT9MdNKzWv/paVEAlumFNA306xJ8PH9dxs4PG60Oo5Vswi4f31lBP2dMvWx4qzoAHlrP4FvZ+thzEhVhQ6elCPrPVIrYT1FxeBPpJtj468vV2vcS6oEmrzaIuZJmSJBwbYKAQtAd23ti8fgZmW7DjiM+HoyNJqhQuKEnyuzpCQ/KjYd4nzp7HX0f0Np9EW6rVw+wWv6zDTDJjIVVz7VCQRImWsi7II9vwXm/y2LcGX5/GGCJ+UzkclbXYnIYZ9RxVnbUAnbQl3f5+5YAG4YgF+gs/4gc7vc7GQZzBgB"
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01EdqJjf3aKSLHFFZu3p2Cnk",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "74578e82c2b617ea856871676e2fba7fb3d6aabbf4f0826b7178dff68be604ab",
+      "latencyMs": 1005,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2022
+        },
+        {
+          "type": "text_delta",
+          "text": "Go"
+        },
+        {
+          "type": "text_delta",
+          "text": " isn't listed in Al"
+        },
+        {
+          "type": "text_delta",
+          "text": "berto's profile."
+        },
+        {
+          "type": "text_delta",
+          "text": " His list"
+        },
+        {
+          "type": "text_delta",
+          "text": "ed languages are TypeSc"
+        },
+        {
+          "type": "text_delta",
+          "text": "ript, JavaScript and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Ruby, and his back"
+        },
+        {
+          "type": "text_delta",
+          "text": "end stack includes Node."
+        },
+        {
+          "type": "text_delta",
+          "text": "js, NestJS,"
+        },
+        {
+          "type": "text_delta",
+          "text": " Express, Next.js, RE"
+        },
+        {
+          "type": "text_delta",
+          "text": "ST, GraphQL,"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL and"
+        },
+        {
+          "type": "text_delta",
+          "text": " MongoDB. I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can't say"
+        },
+        {
+          "type": "text_delta",
+          "text": " how many years of"
+        },
+        {
+          "type": "text_delta",
+          "text": " Go he has, so you"
+        },
+        {
+          "type": "text_delta",
+          "text": " may want to "
+        },
+        {
+          "type": "text_delta",
+          "text": "ask him directly through"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " contact details"
+        },
+        {
+          "type": "text_delta",
+          "text": " on his site"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Go isn't listed in Alberto's profile. His listed languages are TypeScript, JavaScript and Ruby, and his backend stack includes Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL and MongoDB. I can't say how many years of Go he has, so you may want to ask him directly through the contact details on his site.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2022,
+              "outputTokens": 122
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Go isn't listed in Alberto's profile. His listed languages are TypeScript, JavaScript and Ruby, and his backend stack includes Node.js, NestJS, Express, Next.js, REST, GraphQL, PostgreSQL and MongoDB. I can't say how many years of Go he has, so you may want to ask him directly through the contact details on his site."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

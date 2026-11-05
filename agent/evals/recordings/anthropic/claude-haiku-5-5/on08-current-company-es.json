@@ -3,15 +3,15 @@
   "slug": "current-company-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9ec1d87a1f495a54ef14f5ece819ffc906e1972030c1d4f1f81cabb5dc615657",
-      "latencyMs": 732,
+      "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
+      "latencyMs": 714,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1465
+          "inputTokens": 1613
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_011K79bSBoCs4F6awBZrvGic",
+                "id": "toolu_018et8nPCjwduayHdMMeZPFw",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1465,
+              "inputTokens": 1613,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_011K79bSBoCs4F6awBZrvGic",
+                "id": "toolu_018et8nPCjwduayHdMMeZPFw",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "df53d81cae0c72c4658dfaea2e82202d13932e22c0ce31ed78aae4a37a1d9a6d",
-      "latencyMs": 1053,
+      "requestHash": "c3af26e186eb911e8b6e9390897878cb7a400c772b804e9bdbd3e363364ca300",
+      "latencyMs": 1078,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2027
+          "inputTokens": 2175
         },
         {
           "type": "text_delta",
@@ -70,19 +70,15 @@
         },
         {
           "type": "text_delta",
-          "text": "er en"
+          "text": "er en CoverWallet"
         },
         {
           "type": "text_delta",
-          "text": " CoverWallet**"
+          "text": "**"
         },
         {
           "type": "text_delta",
-          "text": " (desde 2019),"
-        },
-        {
-          "type": "text_delta",
-          "text": " una"
+          "text": " (desde 2019), una"
         },
         {
           "type": "text_delta",
@@ -94,74 +90,50 @@
         },
         {
           "type": "text_delta",
-          "text": " Madrid / rem"
+          "text": " Madrid /"
         },
         {
           "type": "text_delta",
-          "text": "oto. All"
+          "text": " remo"
         },
         {
           "type": "text_delta",
-          "text": "í l"
+          "text": "to que"
         },
         {
           "type": "text_delta",
-          "text": "id"
+          "text": " integra a"
         },
         {
           "type": "text_delta",
-          "text": "era pro"
+          "text": "seguradoras extern"
         },
         {
           "type": "text_delta",
-          "text": "yectos trans"
+          "text": "as en un"
         },
         {
           "type": "text_delta",
-          "text": "versales, integra AP"
+          "text": " único flujo de comp"
         },
         {
           "type": "text_delta",
-          "text": "Is de a"
-        },
-        {
-          "type": "text_delta",
-          "text": "seguradoras y ha"
-        },
-        {
-          "type": "text_delta",
-          "text": " introducido ag"
-        },
-        {
-          "type": "text_delta",
-          "text": "entes de IA en el fl"
-        },
-        {
-          "type": "text_delta",
-          "text": "ujo de "
-        },
-        {
-          "type": "text_delta",
-          "text": "ingeniería del"
-        },
-        {
-          "type": "text_delta",
-          "text": " equipo."
+          "text": "ra."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto. Allí lidera proyectos transversales, integra APIs de aseguradoras y ha introducido agentes de IA en el flujo de ingeniería del equipo.",
+            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto que integra aseguradoras externas en un único flujo de compra.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2027,
-              "outputTokens": 113
+              "inputTokens": 2175,
+              "outputTokens": 79
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto. Allí lidera proyectos transversales, integra APIs de aseguradoras y ha introducido agentes de IA en el flujo de ingeniería del equipo."
+                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto que integra aseguradoras externas en un único flujo de compra."
               }
             ]
           }

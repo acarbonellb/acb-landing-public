@@ -3,15 +3,15 @@
   "slug": "current-company-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "9ec1d87a1f495a54ef14f5ece819ffc906e1972030c1d4f1f81cabb5dc615657",
-      "latencyMs": 1481,
+      "requestHash": "ddfa63204469bf83d78761f0e04cae513b6466beb527b77edb327b7ca88c2f22",
+      "latencyMs": 1429,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2046
+          "inputTokens": 2252
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "GLKG7pxkckAZHsjPqh305raazwLkdfxV",
+                "id": "dOnTkHOwKUpOWpfH296OCYVc0IllQVN7",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2046,
-              "outputTokens": 54
+              "inputTokens": 2252,
+              "outputTokens": 53
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "GLKG7pxkckAZHsjPqh305raazwLkdfxV",
+                "id": "dOnTkHOwKUpOWpfH296OCYVc0IllQVN7",
                 "name": "get_experience",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "8c400cf6a4e826b61ff28eefe8e7a6d510d496587fea0a1ead4873c82b51e7ce",
-      "latencyMs": 1011,
+      "requestHash": "05e776a6ef1542e5373078dbb2659679bacca8f4bd225f3c4ff86830312d076b",
+      "latencyMs": 1004,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2396
+          "inputTokens": 2602
         },
         {
           "type": "text_delta",
@@ -172,7 +172,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2396,
+              "inputTokens": 2602,
               "outputTokens": 32
             },
             "providerContent": [

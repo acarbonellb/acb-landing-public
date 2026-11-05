@@ -3,15 +3,15 @@
   "slug": "translate-good-morning",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "636fb35731f92b354d0382fdcb134a8993b4a7fd5f03d61a5379304a6dd954f5",
-      "latencyMs": 946,
+      "requestHash": "6b9fdbf837d2fd5ceb846f7423acf10e090ec51cb04cf91125970cc894e728c2",
+      "latencyMs": 858,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1456
+          "inputTokens": 1604
         },
         {
           "type": "text_delta",
@@ -27,42 +27,54 @@
         },
         {
           "type": "text_delta",
-          "text": " Carbonell and"
+          "text": " Carbonell, his work,"
         },
         {
           "type": "text_delta",
-          "text": " his work. Would you like to"
+          "text": " proj"
         },
         {
           "type": "text_delta",
-          "text": " know about"
+          "text": "ects, st"
         },
         {
           "type": "text_delta",
-          "text": " his AI agents, exper"
+          "text": "ack, education"
         },
         {
           "type": "text_delta",
-          "text": "ience, or how to contact him"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "?"
+          "text": " languages and contact details"
+        },
+        {
+          "type": "text_delta",
+          "text": ". Would you like to know about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his AI agents or his exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, experience, or how to contact him?",
+            "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, education, languages and contact details. Would you like to know about his AI agents or his experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1456,
-              "outputTokens": 46
+              "inputTokens": 1604,
+              "outputTokens": 55
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, experience, or how to contact him?"
+                "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, education, languages and contact details. Would you like to know about his AI agents or his experience?"
               }
             ]
           }

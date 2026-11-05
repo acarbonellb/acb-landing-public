@@ -3,59 +3,15 @@
   "slug": "salary",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "d7581855ad6a7b3debdf0413462d1714a875aab0f2a5a1943177a2bd14926d34",
-      "latencyMs": 1308,
+      "requestHash": "1a0cfaafb8cf3f149a0bd8e61e163ae633c12b3bda58418f7e6d4cf5562a9cfc",
+      "latencyMs": 1006,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1454
-        },
-        {
-          "type": "turn_end",
-          "turn": {
-            "text": "",
-            "toolCalls": [
-              {
-                "id": "toolu_01YTXiUmFPNtbWnHdX8LZyKT",
-                "name": "get_profile",
-                "input": {}
-              }
-            ],
-            "stopReason": "tool_use",
-            "usage": {
-              "inputTokens": 1454,
-              "outputTokens": 167
-            },
-            "providerContent": [
-              {
-                "type": "thinking",
-                "thinking": "",
-                "signature": "CAQS9gcKEAgTGAI4AUIIdGhpbmtpbmcSDMlE9LYvZ4p3Hr3uqBoM7qDqWMvG2QzjUP/OIjBUgkL24lUqBV/jMVD0Xulw4ubIAlGKlx6G0To38wMI8DZpFwaSvMkVAEyfZUttPfcqkwcfhSxQQYIrMLFQuO3QfGwP83vklh/SWNes9xCLdtEEOMkLBP9GjMZdzab9Yo3c0PT/e/Ls5KADKPyN2TIjY3zijvYyd1Z1G7sPrMz+bx4EBKWkCNmnlKQPV+828LMBXJqADFTzTzeYeVyXhDPWqJx+CEG7qCh7NngrgLsz5/0ymWSv8Cg5ZxttIv5+HiK2aiXPDDhFiHDVvimjLosdH1sdlG1btefur8k0gl5VNDZS70Hd6RdPMyCwvgo3WdnPzcdJF285wNq9sitYcnsujeW7fK2f1ezDrte1DTmWWULnE424TRyzQJW3Q8Hs6xsYDVpGP3B+1kgjMyUWLSk4Au2e5umkzWZmavoyqV6beML7HOVfgFIh0YH9R9w9tPXMyLZN/1cLFKHrQbIyVQOojGZWOGa9EjTt12C+zeqAN3xNbtJeMmC4bOAvPmc/tP5Dt8K1Bok5+QhUcpxWoXaSNCc05msjUAO9Dk/hNTbxLNCDOHS9X8b5Aw6AcX1ZvHumfT205z59eXHwZrUqLJiHGckfT/kEiwrzzA30kzwnthgKeWgVpNjNezpof9QwrEdWU1odttumKlB4STUj1ge1w0bUo0TWPrtcsvklb48X+Y7gcFrnnPNqSd0dLG/KVKyBk3vEHMXi1by3HX2AhEEJnGOypaDCLgZjclIpXrzoAN2rvc1dbishhXOQOdrcyHFbPGDxrvxjUA+KbeMIFYhnNZi+wskxSo2sWK9jfGGLsYNZT4G3XG+TEw6RtWVRzUa0E1EbnQqfy4aW/E9vy0tDE01BodfQckMshXFluGC42faMHzcZTJANb5gjoVUDkaRvb+g+5NGPFi2Yt11YfUPjFMnCYPqDug9dh/9N++WhPJ/tlQv/eWsR5rEzH6mgCDpd23r4pD3FWUn2K1N+0f97QC532lCysIrRXpXtUtVCJWfZrRaGnMwBxLtOB6i9S1Qfh2sHTtf6hNgjAhQ3bao2VUVz/mYLWpIa4j3Dxe85ehWEt6+v6AFvx3uDTSmPZr8tTcpj7XHkRoT7MTeGzpZDbIMRD+t+r6Fg556R+1fxBsxExwGZODkUV1ngfjnpZw3TA3VPvMjEDFftDJYxOiIF4sF0/hA0qjg3kzzyUc4zwuVUaXbETszHNGFGCfj7IP2UKt6tSgMYV5GpNa09EWXXisRfbG7JB2M+YBzk1eiQcriGDRHf8UgzP54udPFO73y69soMRBQYAQ=="
-              },
-              {
-                "type": "tool_use",
-                "id": "toolu_01YTXiUmFPNtbWnHdX8LZyKT",
-                "name": "get_profile",
-                "caller": {
-                  "type": "direct"
-                },
-                "input": {}
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "requestHash": "266f5b4b68dd1c22e14b68f554cdea6c8f76da4baca2d51eeceacc3689ee9009",
-      "latencyMs": 954,
-      "events": [
-        {
-          "type": "input_usage",
-          "inputTokens": 2067
+          "inputTokens": 1602
         },
         {
           "type": "text_delta",
@@ -63,51 +19,51 @@
         },
         {
           "type": "text_delta",
-          "text": "'t have any information about Alber"
+          "text": "'t have information"
         },
         {
           "type": "text_delta",
-          "text": "to's salary or compensation"
+          "text": " about Alberto's salary"
         },
         {
           "type": "text_delta",
-          "text": ", and I can"
+          "text": " or pay expectations, since"
         },
         {
           "type": "text_delta",
-          "text": "'t find"
+          "text": " those a"
         },
         {
           "type": "text_delta",
-          "text": " it in his"
+          "text": "ren't part"
         },
         {
           "type": "text_delta",
-          "text": " portfolio. For"
+          "text": " of his public"
         },
         {
           "type": "text_delta",
-          "text": " that"
+          "text": " profile. You"
         },
         {
           "type": "text_delta",
-          "text": ", you"
+          "text": " can "
         },
         {
           "type": "text_delta",
-          "text": "'d need"
+          "text": "ask him directly at the"
         },
         {
           "type": "text_delta",
-          "text": " to cont"
+          "text": " contact details"
         },
         {
           "type": "text_delta",
-          "text": "act him"
+          "text": " on his site"
         },
         {
           "type": "text_delta",
-          "text": " directly. I"
+          "text": ", or I"
         },
         {
           "type": "text_delta",
@@ -115,7 +71,11 @@
         },
         {
           "type": "text_delta",
-          "text": "ell you about his experience, A"
+          "text": "ell you about his exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience, A"
         },
         {
           "type": "text_delta",
@@ -127,30 +87,22 @@
         },
         {
           "type": "text_delta",
-          "text": "ech stack, or share"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact details."
+          "text": "ech stack."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "I don't have any information about Alberto's salary or compensation, and I can't find it in his portfolio. For that, you'd need to contact him directly. I can tell you about his experience, AI agent projects, or tech stack, or share his contact details.",
+            "text": "I don't have information about Alberto's salary or pay expectations, since those aren't part of his public profile. You can ask him directly at the contact details on his site, or I can tell you about his experience, AI agent projects, or tech stack.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2067,
-              "outputTokens": 78
+              "inputTokens": 1602,
+              "outputTokens": 74
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have any information about Alberto's salary or compensation, and I can't find it in his portfolio. For that, you'd need to contact him directly. I can tell you about his experience, AI agent projects, or tech stack, or share his contact details."
+                "text": "I don't have information about Alberto's salary or pay expectations, since those aren't part of his public profile. You can ask him directly at the contact details on his site, or I can tell you about his experience, AI agent projects, or tech stack."
               }
             ]
           }
