@@ -3,7 +3,15 @@
 // CI can compare the regenerated report with the committed one.
 import { byString, caseName, percent, setLabel, type Ratio } from "./format";
 import type { HistoryEntry } from "./history";
-import { setMetrics, type ModelSettings, type SetResult } from "./metrics";
+import {
+  isFlaky,
+  runScores,
+  setMetrics,
+  type CaseResult,
+  type ModelSettings,
+  type PassAtK,
+  type SetResult,
+} from "./metrics";
 import { canonicalJson } from "./recording";
 import { expectation, type CaseResponse } from "./scoring";
 
@@ -42,17 +50,37 @@ function settingsLine(settings: ModelSettings | undefined): string {
   return `Model settings: effort \`${settings.effort}\` · request parameters \`${canonicalJson(settings.requestParams)}\``;
 }
 
+/** The first run's verdict; with k runs, also how many of them passed. */
+function verdict(result: CaseResult): string {
+  const { score } = result;
+  const first = score.pass ? "pass" : `FAIL: ${score.reasons.join("; ")}`;
+  const runs = runScores(result);
+  return runs.length > 1 ? `${first} · ${runs.filter((s) => s.pass).length}/${runs.length} runs` : first;
+}
+
+/** "pass@3 (every run passes)": the metric's name for its k. */
+const passAtKName = ({ k }: PassAtK) => `pass@${k} (every run passes)`;
+
+function flakyCell(set: SetResult, flaky: Ratio): string {
+  const names = set.results
+    .filter(isFlaky)
+    .map((r) => caseName(r.evalCase))
+    .sort(byString);
+  return names.length ? `${flaky.n} (${names.join(", ")})` : String(flaky.n);
+}
+
 function renderSet(set: SetResult): string {
   const m = setMetrics(set);
+  const passAtK = m.passAtK!;
   const rows = [...set.results]
     .sort((a, b) => byString(a.evalCase.id, b.evalCase.id))
-    .map(({ evalCase, response, score }) =>
+    .map((result) =>
       [
-        caseName(evalCase),
-        evalCase.kind,
-        expectation(evalCase),
-        actual(response),
-        score.pass ? "pass" : `FAIL: ${score.reasons.join("; ")}`,
+        caseName(result.evalCase),
+        result.evalCase.kind,
+        expectation(result.evalCase),
+        actual(result.response),
+        verdict(result),
       ]
         .map(cell)
         .join(" | "),
@@ -69,6 +97,8 @@ Request identity (system prompt and tools) \`${set.requestIdentity.slice(0, 12)}
 | On-topic tool accuracy | ${formatRatio(m.toolAccuracy)} |
 | Fact coverage | ${formatRatio(m.factCoverage)} |
 | Unknown handling | ${formatRatio(m.unknownHandling)} |
+| ${passAtKName(passAtK)} | ${formatRatio(passAtK)} |
+| Flaky cases | ${flakyCell(set, m.flaky!)} |
 | Mean input tokens per case | ${m.meanInputTokens} |
 | Mean output tokens per case | ${m.meanOutputTokens} |
 | Mean latency per case | ${m.meanLatencyMs} ms |
@@ -92,6 +122,8 @@ function renderSummary(sets: SetResult[]): string {
       formatRatio(m.toolAccuracy),
       formatRatio(m.factCoverage),
       formatRatio(m.unknownHandling),
+      `pass@${m.passAtK!.k} ${formatRatio(m.passAtK!)}`,
+      String(m.flaky!.n),
       String(m.meanInputTokens),
       String(m.meanOutputTokens),
       `${m.meanLatencyMs} ms`,
@@ -102,10 +134,10 @@ function renderSummary(sets: SetResult[]): string {
   });
   return `## Summary
 
-One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's too, in \`agent/src/pricing.ts\`); a local model costs $0.
+One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's too, in \`agent/src/pricing.ts\`); a local model costs $0. A live run records each case k times: pass@k is the share of cases that passed every one of their first k runs (k is the fewest runs any case has; 1 for one-run recordings), and Flaky counts the cases that passed some of their runs but not all. Every other metric is the first run's, the one CI replays.
 
-| Model | Provider | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Model | Provider | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 `;
 }
@@ -145,6 +177,12 @@ function countCell(now: number, before: number | undefined, unit = ""): string {
   return `${now}${unit}${delta}`;
 }
 
+/** "pass@3 93.3% (+3.3 pp)": the change only against an entry of the same k. */
+function passAtKCell(now: PassAtK | undefined, before: PassAtK | undefined): string {
+  if (!now) return "n/a";
+  return `pass@${now.k} ${ratioCell(now, before?.k === now.k ? before : undefined)}`;
+}
+
 /** The entry's request identity; an older entry's system prompt hash, marked as such. */
 function identityCell({ requestIdentity, promptHash }: HistoryEntry): string {
   if (requestIdentity) return `\`${requestIdentity.slice(0, 12)}\``;
@@ -165,6 +203,8 @@ function historyRow(entry: HistoryEntry, previous: HistoryEntry | undefined): st
     ratioCell(m.toolAccuracy, p?.toolAccuracy),
     ratioCell(m.factCoverage, p?.factCoverage),
     ratioCell(m.unknownHandling, p?.unknownHandling),
+    passAtKCell(m.passAtK, p?.passAtK),
+    m.flaky ? countCell(m.flaky.n, p?.flaky?.n) : "n/a",
     countCell(m.meanInputTokens, p?.meanInputTokens),
     countCell(m.meanOutputTokens, p?.meanOutputTokens),
     countCell(m.meanLatencyMs, p?.meanLatencyMs, " ms"),
@@ -189,8 +229,8 @@ export function renderHistory(entries: HistoryEntry[]): string {
       .map((e) => `- ${e.date} \`${e.commit}\` ${e.kind ?? "live"}: ${e.note}`);
     return `### ${label}
 
-| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 ${notes.length ? `\nNotes:\n\n${notes.join("\n")}\n` : ""}`;
   });

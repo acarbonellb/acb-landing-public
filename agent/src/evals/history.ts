@@ -6,6 +6,7 @@
 import * as z from "zod";
 import { sameSet, setLabel, type SetId } from "./format";
 import { setMetrics, type Metrics, type SetResult } from "./metrics";
+import { canonicalJson } from "./recording";
 
 /** When and from where a live run was made. */
 export type LiveRun = {
@@ -67,6 +68,9 @@ const entrySchema = z
         meanLatencyMs: z.number(),
         // Absent from entries made before costs were recorded.
         meanCostUsd: z.number().optional(),
+        // Absent from entries made before pass@k was recorded.
+        passAtK: ratio.extend({ k: z.number().int().positive() }).strict().optional(),
+        flaky: ratio.optional(),
       })
       .strict(),
   })
@@ -150,13 +154,15 @@ export function appendHistory(text: string, entries: HistoryEntry[]): string {
   return base + entries.map((e) => `${JSON.stringify(e)}\n`).join("");
 }
 
-/** The metrics that differ between an entry and the set's current scores. */
+/**
+ * The metrics that differ between an entry and the set's current scores, by
+ * value: a parsed entry's keys come back in the schema's order.
+ */
 function changedMetrics(entry: HistoryEntry, set: SetResult): string[] {
   const now = setMetrics(set);
   return Object.keys(now).filter(
     (k) =>
-      JSON.stringify(entry.metrics[k as keyof Metrics]) !==
-      JSON.stringify(now[k as keyof Metrics]),
+      canonicalJson(entry.metrics[k as keyof Metrics]) !== canonicalJson(now[k as keyof Metrics]),
   );
 }
 

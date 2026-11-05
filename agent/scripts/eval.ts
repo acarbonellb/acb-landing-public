@@ -1,8 +1,9 @@
 // Agent evals (README, "Evals"; docs/adr/0001-agent-evals-record-replay.md).
 //
-//   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun]
-//     Live: runs every case against the configured model, records each one
-//     that completes, appends the set's metrics to history.jsonl, then
+//   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun] [--runs k]
+//     Live: runs every case k times (default 3, pass@k) against the configured
+//     model, records each case whose k runs all complete (every run in its
+//     recording; CI replays the first), appends the set's metrics to history.jsonl, then
 //     regenerates the report and summary. Defaults to LM Studio on localhost; any other
 //     server is a paid provider and needs --paid. Refused at a commit that
 //     already has a live run of the set, unless --rerun (marked `rerun`).
@@ -33,6 +34,7 @@ import {
   type LiveRun,
 } from "../src/evals/history";
 import { liveRunConfig } from "../src/evals/live-run";
+import { runScores } from "../src/evals/metrics";
 import {
   evaluate,
   recordCase,
@@ -58,6 +60,8 @@ const { positionals, values } = parseArgs({
     paid: { type: "boolean", default: false },
     rerun: { type: "boolean", default: false },
     only: { type: "string" },
+    // k for pass@k: how many times a live run runs each case.
+    runs: { type: "string", default: "3" },
     provider: { type: "string" },
     note: { type: "string" },
   },
@@ -134,6 +138,11 @@ async function record(): Promise<number> {
     return 1;
   }
   const { baseURL, local, provider, model, effort, apiKey } = config;
+  const runs = Number(values.runs);
+  if (!Number.isInteger(runs) || runs < 1) {
+    console.error(`--runs must be a whole number of at least 1, not "${values.runs}".`);
+    return 1;
+  }
   if (!local && !values.paid) {
     console.error(
       `${baseURL} is a paid provider. Only record against it with the owner's go-ahead, then pass --paid.`,
@@ -156,17 +165,18 @@ async function record(): Promise<number> {
   const selected = cases.filter((c) => !only || only.includes(c.id));
 
   console.log(
-    `Recording ${selected.length} cases with ${setLabel({ provider, model })} (effort ${effort}) at ${baseURL}`,
+    `Recording ${selected.length} cases × ${runs} runs with ${setLabel({ provider, model })} (effort ${effort}) at ${baseURL}`,
   );
   let failed = 0;
   for (const evalCase of selected) {
     const name = caseName(evalCase);
     try {
-      const { recording, result } = await recordCase(evalCase, client, { provider, model }, { effort });
+      const { recording, result } = await recordCase(evalCase, client, { provider, model }, { effort, runs });
       // Only now: a run that fails half-way never overwrites a good recording.
       await saveRecording(recording);
       const verdict = result.score.pass ? "pass" : `FAIL: ${result.score.reasons.join("; ")}`;
-      console.log(`  ${name}: ${verdict} (${result.latencyMs} ms)`);
+      const passed = runScores(result).filter((s) => s.pass).length;
+      console.log(`  ${name}: ${verdict} (${result.latencyMs} ms; ${passed}/${runs} runs passed)`);
     } catch (error) {
       failed++;
       console.error(`  ${name}: not recorded: ${(error as Error).message}`);
@@ -224,7 +234,7 @@ const modes = {
 } as const;
 const mode = positionals[0];
 if (mode !== "record" && mode !== "rescore" && mode !== "replay") {
-  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] | rescore [--note text] | replay [--check]");
+  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] [--runs k] | rescore [--note text] | replay [--check]");
   process.exit(2);
 }
 process.exitCode = await modes[mode]();

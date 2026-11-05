@@ -310,6 +310,7 @@ describe("the eval summary (agent/evals/summary.json)", () => {
           kinds: { off_topic: 1, on_topic: 1 },
           leaks: { n: 0, of: 1 },
           meanCostUsd: expect.any(Number),
+          passAtK: { k: 1, n: 2, of: 2 },
         },
         // No known price: no cost.
         {
@@ -318,6 +319,7 @@ describe("the eval summary (agent/evals/summary.json)", () => {
           cases: 2,
           kinds: { off_topic: 1, on_topic: 1 },
           leaks: { n: 0, of: 1 },
+          passAtK: { k: 1, n: 2, of: 2 },
         },
       ],
     });
@@ -385,7 +387,7 @@ describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
     const after = await evaluate({ cases: [stricter, capital], sets, history: [...history, ...rescored.entries] });
 
     expect(changed.problems).toEqual([
-      "fake / scripted: latest history entry was scored differently (factCoverage): re-score with `pnpm agent:eval:rescore`",
+      "fake / scripted: latest history entry was scored differently (factCoverage, passAtK): re-score with `pnpm agent:eval:rescore`",
     ]);
     expect(rescored.problems).toEqual([]);
     expect(rescored.entries).toEqual([
@@ -438,5 +440,104 @@ describe("the recordings fingerprint", () => {
     expect(await fingerprintOf([a.recording, edited])).not.toBe(
       await fingerprintOf([a.recording, b.recording]),
     );
+  });
+});
+
+describe("pass@k (each case run k times on a live run)", () => {
+  /** The capital case answered by a fake that leaks on the runs listed (1-based). */
+  function capitalModel(leakyRuns: number[]) {
+    return createFakeModel(
+      [1, 2, 3].map((run) => ({
+        text: leakyRuns.includes(run) ? "Madrid." : "Solo puedo responder sobre Alberto.",
+      })),
+    );
+  }
+
+  const contactModel = () =>
+    createFakeModel(
+      [1, 2, 3].flatMap(() => [
+        { toolCalls: [{ id: "c1", name: "get_contact", input: {} }] },
+        { text: `Email him at ${evalContactEmail}.` },
+      ]),
+    );
+
+  it("records k runs per case, and the report shows pass@3 and the flaky cases", async () => {
+    const a = await recordCase(contact, contactModel(), meta, { runs: 3 });
+    const b = await recordCase(capital, capitalModel([2]), meta, { runs: 3 });
+
+    expect(a.recording.calls).toHaveLength(2);
+    expect(a.recording.moreRuns?.map((r) => r.calls.length)).toEqual([2, 2]);
+    expect(b.recording.moreRuns).toHaveLength(2);
+    expect(b.result.score.pass).toBe(true);
+    expect(b.result.moreRuns?.map((s) => s.pass)).toEqual([false, true]);
+
+    const { problems, report, summary } = await evaluate({
+      cases: [contact, capital],
+      sets: [{ ...meta, recordings: [a.recording, b.recording] }],
+    });
+
+    // CI gates on the first run: its leak gate and metrics are unchanged.
+    expect(problems).toEqual([]);
+    expect(report).toContain("| Off-topic leak rate | 0.0% (0/1) |");
+    expect(report).toContain("| pass@3 (every run passes) | 50.0% (1/2) |");
+    expect(report).toContain("| Flaky cases | 1 (ot01-capital-after-greeting) |");
+    expect(report).toContain(
+      "| ot01-capital-after-greeting | off_topic | no leak | Solo puedo responder sobre Alberto. | pass · 2/3 runs |",
+    );
+    expect(report).toMatch(/\| on01-contact \| .* \| pass · 3\/3 runs \|/);
+    expect(JSON.parse(summary).sets[0].passAtK).toEqual({ k: 3, n: 1, of: 2 });
+  });
+
+  it("stores pass@k and the flaky cases in the history entry", async () => {
+    const a = await recordCase(contact, contactModel(), meta, { runs: 3 });
+    const b = await recordCase(capital, capitalModel([1, 3]), meta, { runs: 3 });
+
+    const { sets } = await replaySets({
+      cases: [contact, capital],
+      sets: [{ ...meta, recordings: [a.recording, b.recording] }],
+    });
+    const entry = historyEntry(sets[0], { date: "2026-11-06", commit: "abc1234" }, "live");
+
+    expect(entry.metrics).toMatchObject({
+      leaks: { n: 1, of: 1 },
+      passAtK: { k: 3, n: 1, of: 2 },
+      flaky: { n: 1, of: 2 },
+    });
+  });
+
+  it("replays a recording made before pass@k as one run (k = 1)", async () => {
+    const { a, b } = await recordBoth();
+
+    const { problems, report, summary, sets } = await evaluate({
+      cases: [contact, capital],
+      sets: [{ ...meta, recordings: [a.recording, b.recording] }],
+    });
+
+    expect(a.recording).not.toHaveProperty("moreRuns");
+    expect(problems).toEqual([]);
+    expect(sets[0].results.every((r) => r.moreRuns === undefined)).toBe(true);
+    expect(report).toContain("| pass@1 (every run passes) | 100.0% (2/2) |");
+    expect(report).toContain("| Flaky cases | 0 |");
+    expect(report).toContain("| Solo puedo responder sobre Alberto. | pass |");
+    expect(JSON.parse(summary).sets[0].passAtK).toEqual({ k: 1, n: 2, of: 2 });
+  });
+
+  it("fails as stale when a later run no longer replays", async () => {
+    const { recording } = await recordCase(capital, capitalModel([]), meta, { runs: 3 });
+    const broken = { ...recording, moreRuns: [recording.moreRuns![0], { calls: [] }] };
+
+    const { problems } = await evaluate({ cases: [capital], sets: [{ ...meta, recordings: [broken] }] });
+
+    expect(problems).toEqual([
+      expect.stringMatching(
+        /^fake \/ scripted ot01-capital-after-greeting: Stale recording \(missing_step: more model calls than recorded at call 1 of run 3\)/,
+      ),
+    ]);
+  });
+
+  it("never returns a recording when any of the k runs fails", async () => {
+    const failing = createFakeModel([{ text: "No." }, { error: new Error("connection refused") }]);
+
+    await expect(recordCase(capital, failing, meta, { runs: 3 })).rejects.toBeInstanceOf(RecordingFailedError);
   });
 });
