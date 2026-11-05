@@ -108,6 +108,29 @@ test("shows the rate-limit state", async ({ page, agent }) => {
   await expect(alert).toContainText("Too many questions. Try again in 30s.");
 });
 
+test("shows the daily quota like a rate limit, with when it resets", async ({ page, agent }) => {
+  await agent.chat(
+    chatError(
+      {
+        code: "rate_limited",
+        message: "You've asked a lot today.",
+        retryAfterSeconds: 7200,
+        resetsAt: "2026-11-16T00:00:00.000Z",
+      },
+      { headers: { "Retry-After": "7200" } },
+    ),
+  );
+  await page.goto("/#agent");
+
+  await ask(page, "Hi");
+
+  const alert = agentSection(page).getByRole("alert");
+  await expect(alert).toContainText("Rate limit reached.");
+  await expect(alert).toContainText(
+    "You've asked a lot today. Try again from 00:00 UTC on November 16, 2026.",
+  );
+});
+
 test("shows the unavailable state", async ({ page, agent }) => {
   await agent.chat(
     chatError({

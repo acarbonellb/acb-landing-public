@@ -30,8 +30,12 @@ _Avoid_: function, endpoint, skill, action
 The monthly budget of estimated model spend. Once it is reached the chat stops until the next month; the tools over MCP keep working, as they cost nothing.
 _Avoid_: quota, billing limit, budget
 
+**Daily quota**:
+The estimated model spend one rate-limit key may use on the chat in a UTC day. A key over it is refused like a rate limit until midnight UTC; other keys go on.
+_Avoid_: daily limit, daily cap, allowance
+
 **Reservation**:
-The worst-case cost of one chat request, held against the spend cap while it runs so concurrent requests can't overshoot it, and settled to the actual cost when it ends.
+The worst-case cost of one chat request, held against the daily quota and the spend cap while it runs so concurrent requests can't overshoot them, and settled to the actual cost when it ends.
 _Avoid_: lock, booking, pre-authorization
 
 **Outcome**:
