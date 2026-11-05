@@ -55,19 +55,7 @@ test.describe("mobile navigation menu", () => {
     await expect(menu).toBeFocused();
   });
 
-  test("fits the header without horizontal scroll while open", async ({
-    page,
-  }) => {
-    await page.goto("/");
-    await page.getByRole("button", { name: "Section menu" }).click();
-
-    const overflow = await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth -
-        document.documentElement.clientWidth,
-    );
-    expect(overflow).toBe(0);
-  });
+  // The open menu fits the header without horizontal scroll: layout.spec.ts.
 });
 
 test.describe("at desktop width", () => {
