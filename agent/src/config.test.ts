@@ -57,13 +57,14 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, global ceilings well above them, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
+  it("defaults the guardrails: per-IP limits, global ceilings well above them, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
       chatGlobalRequestsPerMinute: 60,
       mcpGlobalRequestsPerMinute: 600,
       monthlyBudgetUsd: 4,
+      dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
     });
   });
@@ -75,6 +76,7 @@ describe("loadConfig", () => {
       RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: "30",
       RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "300",
       MONTHLY_SPEND_CAP_USD: "0",
+      DAILY_SPEND_QUOTA_USD: "0.25",
       AGENT_PRICE_INPUT_USD_PER_MTOK: "2",
       AGENT_PRICE_OUTPUT_USD_PER_MTOK: "10",
     });
@@ -84,9 +86,11 @@ describe("loadConfig", () => {
       chatGlobalRequestsPerMinute: 30,
       mcpGlobalRequestsPerMinute: 300,
       monthlyBudgetUsd: 0,
+      dailyQuotaUsd: 0.25,
       pricing: { inputUsdPerMTok: 2, outputUsdPerMTok: 10 },
     });
     expect(() => loadConfig({ MONTHLY_SPEND_CAP_USD: "-1" })).toThrow(/MONTHLY_SPEND_CAP_USD/);
+    expect(() => loadConfig({ DAILY_SPEND_QUOTA_USD: "-1" })).toThrow(/DAILY_SPEND_QUOTA_USD/);
   });
 
   it("defaults the prices to the configured model's list prices", () => {

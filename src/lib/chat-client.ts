@@ -25,7 +25,10 @@ export type ChatClientEvent =
       kind: ChatErrorKind;
       message?: string;
       retryAfterSeconds?: number;
-      /** ISO time the spend cap resets (next UTC month), when it closed the chat. */
+      /**
+       * ISO time the limit that refused the chat resets: the spend cap (next
+       * UTC month, `unavailable`) or the daily quota (next UTC day, `rate_limited`).
+       */
       resetsAt?: string;
     };
 

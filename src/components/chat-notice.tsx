@@ -28,13 +28,26 @@ function noticeDetail(notice: Notice): string {
   return rest || noticeFallback[notice.kind];
 }
 
-// The spend cap resets at 00:00 UTC on the 1st: show that day, in UTC, so it
-// doesn't read as the last day of the month west of Greenwich.
+// The spend cap resets at 00:00 UTC on the 1st, the daily quota at 00:00 UTC
+// the next day: show that day, in UTC, so it doesn't read as the day before
+// west of Greenwich.
 function renewalDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-US", {
     timeZone: "UTC",
     dateStyle: "long",
   });
+}
+
+// When to ask again. A rate limit with `resetsAt` is the daily quota: hours
+// away, so the reset time reads better than a countdown in seconds.
+function retryHint(notice: Notice): string {
+  if (notice.resetsAt !== undefined) {
+    return notice.kind === "rate_limited"
+      ? ` Try again from 00:00 UTC on ${renewalDate(notice.resetsAt)}.`
+      : ` It's back on ${renewalDate(notice.resetsAt)} (UTC).`;
+  }
+  if (notice.retryAfterSeconds !== undefined) return ` Try again in ${notice.retryAfterSeconds}s.`;
+  return "";
 }
 
 /** Why the last question failed, and when to try again. */
@@ -47,10 +60,7 @@ export function ChatNotice({ notice, mcpUrl }: { notice: Notice; mcpUrl: string 
       <p className="font-bold">{noticeTitle[notice.kind]}</p>
       <p className="text-fg-dark">
         {noticeDetail(notice)}
-        {notice.retryAfterSeconds !== undefined &&
-          ` Try again in ${notice.retryAfterSeconds}s.`}
-        {notice.resetsAt !== undefined &&
-          ` It's back on ${renewalDate(notice.resetsAt)} (UTC).`}
+        {retryHint(notice)}
       </p>
       {/* The MCP tools don't use the model, so they outlive the chat. */}
       {notice.kind === "unavailable" && (
