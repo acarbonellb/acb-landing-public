@@ -168,7 +168,14 @@ describe("an error no route handled", () => {
     server = await listen(
       createApp(
         testAppDeps({
-          usage: { ...usage, recordMcp: () => Promise.reject(new Error("store unreachable")) },
+          // `recordMcp` isn't awaited, so fail the one usage call that is.
+          isUnknownGoogleHop: () => true,
+          usage: {
+            ...usage,
+            countUnknownGoogleHop: () => {
+              throw new Error("store unreachable");
+            },
+          },
         }),
       ),
       0,

@@ -5,7 +5,8 @@ import { listen } from "./server";
 
 const config = loadConfig();
 const port = Number(process.env.PORT ?? 8080);
-const server = await listen(createApp(composeAppDeps(config)), port);
+const deps = composeAppDeps(config);
+const server = await listen(createApp(deps), port);
 
 console.log(`Agent service listening on ${server.url}`);
 console.log(`MCP endpoint: ${server.url}${paths.mcp}`);
@@ -19,6 +20,12 @@ if (!config.contactEmail) {
 
 for (const signal of ["SIGINT", "SIGTERM"] as const) {
   process.once(signal, () => {
-    void server.close().then(() => process.exit(0));
+    // The batched usage counts first, in case closing outlasts Cloud Run's
+    // shutdown grace; then what arrived while the server closed.
+    void deps.usage
+      .flush()
+      .then(() => server.close())
+      .then(() => deps.usage.close())
+      .then(() => process.exit(0));
   });
 }

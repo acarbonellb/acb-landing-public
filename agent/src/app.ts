@@ -62,6 +62,11 @@ export type AppDeps = {
   rateLimitKey: (c: Context) => string;
   /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
   mcpRateLimitKey: (c: Context) => string;
+  /**
+   * Whether a `/mcp` request's right-most hop is a Google address outside the
+   * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
+   */
+  isUnknownGoogleHop: (c: Context) => boolean;
 };
 
 const jsonError = (
@@ -136,6 +141,7 @@ export function createApp(deps: AppDeps): Hono {
     usage,
     rateLimitKey,
     mcpRateLimitKey,
+    isUnknownGoogleHop,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -185,6 +191,13 @@ export function createApp(deps: AppDeps): Hono {
     }),
   );
 
+  // Counted before the limit: if Hosting's peer has left the fetchers ranges,
+  // its visitors share one key, so most of them are refused. Only the count.
+  app.use(paths.mcp, async (c, next) => {
+    if (isUnknownGoogleHop(c)) usage.countUnknownGoogleHop();
+    await next();
+  });
+
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
@@ -214,8 +227,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    const [response] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
-    return response;
+    // Not awaited: the answer doesn't wait on the weekly document, which every
+    // request writes. The recorder never throws.
+    void usage.recordMcp();
+    return transport.handleRequest(c.req.raw);
   });
 
   // The chat spends model tokens, so only the site's own origins may call it

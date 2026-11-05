@@ -2,7 +2,7 @@
 import { isIP } from "node:net";
 import { getConnInfo } from "@hono/node-server/conninfo";
 import type { Context } from "hono";
-import { isUserTriggeredFetcher } from "./google-ranges";
+import { isUnknownGoogleAddress, isUserTriggeredFetcher } from "./google-ranges";
 
 const forwardedEntries = (forwardedFor: string | undefined) =>
   (forwardedFor ?? "")
@@ -94,4 +94,13 @@ export function rateLimitKey(c: Context): string {
 /** The `/mcp` rate-limit key: the visitor's IP, or its `/64`, through the rewrite too. */
 export function mcpRateLimitKey(c: Context): string {
   return rateLimitKeyFor(mcpClientIpFrom(c.req.header("x-forwarded-for"), remoteAddress(c)));
+}
+
+/**
+ * Whether a `/mcp` request's right-most hop is a Google address outside the
+ * user-triggered fetchers ranges, where Hosting's peer would show up if it
+ * moved. For counting only, never for keying.
+ */
+export function mcpUnknownGoogleHop(c: Context): boolean {
+  return isUnknownGoogleAddress(clientIpFrom(c.req.header("x-forwarded-for"), remoteAddress(c)));
 }

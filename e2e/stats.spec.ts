@@ -17,7 +17,7 @@ const week = (name: string, answered: number) => ({
     latency: { p50Ms: 3000, p95Ms: 7500 },
     firstText: { p50Ms: 1000, p95Ms: 2000 },
   }),
-  mcp: { requests: 4 },
+  mcp: { requests: 4, unknownGoogleHops: 0 },
 });
 
 function agentSection(page: Page) {
