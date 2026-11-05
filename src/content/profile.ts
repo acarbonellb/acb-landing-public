@@ -40,7 +40,10 @@ export type AgentProject = {
   /** Secondary line under the result: caveats, cost, run counts. */
   resultDetail?: string;
   stack: string[];
+  /** Where the whole card points: e.g. the chat on this page. */
   href?: string;
+  /** Extra links on the card, e.g. its source and eval report. */
+  links?: PracticeSource[];
 };
 
 /** Where a practice can be checked: this public repo or a card on the page. */
@@ -107,6 +110,8 @@ export const profile: Profile = {
 
 const ticketing = "An online event ticketing platform";
 
+const repo = "https://github.com/acarbonellb/acb-landing-public";
+
 export const agents: AgentProject[] = [
   {
     slug: "fraud-detection-agent",
@@ -139,10 +144,13 @@ export const agents: AgentProject[] = [
       "Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it.",
     stack: ["TypeScript", "Claude", "MCP"],
     href: "#agent",
+    // Its eval results line is generated at build time (src/lib/eval-results.ts).
+    links: [
+      { label: "source", href: `${repo}/tree/main/agent` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ],
   },
 ];
-
-const repo = "https://github.com/acarbonellb/acb-landing-public";
 
 export const agentPractices: AgentPractice[] = [
   {
@@ -163,7 +171,7 @@ export const agentPractices: AgentPractice[] = [
   },
   {
     title: "Cost and limits tracked",
-    text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens and latency per case.",
+    text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.",
     sources: [
       { label: "guardrails", href: `${repo}#guardrails` },
       { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },

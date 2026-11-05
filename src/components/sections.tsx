@@ -206,6 +206,22 @@ export function Projects({
                   <Tag key={t}>{t}</Tag>
                 ))}
               </div>
+              {a.links && (
+                // Above the card's stretched link, so each stays clickable.
+                <p className="relative z-10 mt-4 flex flex-wrap gap-x-4 gap-y-1 text-xs">
+                  {a.links.map((l) => (
+                    <a
+                      key={l.href}
+                      href={l.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-blue underline-offset-4 hover:underline"
+                    >
+                      {l.label} ↗
+                    </a>
+                  ))}
+                </p>
+              )}
             </article>
           );
         })}

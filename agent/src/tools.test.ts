@@ -27,6 +27,10 @@ const fixture: Content = {
       description: "Computes Bernoulli numbers.",
       stack: ["Punch cards"],
       href: "#agent",
+      links: [
+        { label: "source", href: "https://example.com/engine" },
+        { label: "the chat", href: "#agent" },
+      ],
     },
     {
       slug: "loom",
@@ -192,6 +196,7 @@ describe("get_projects", () => {
           context: "Personal project",
           description: "Computes Bernoulli numbers.",
           stack: ["Punch cards"],
+          links: [{ label: "source", url: "https://example.com/engine" }],
         },
         {
           name: "Loom Agent",

@@ -52,6 +52,10 @@ const agents: AgentProject[] = [
     description: "Answers questions about the notes.",
     stack: ["Ink"],
     href: "#agent",
+    links: [
+      { label: "source", href: "https://example.com/notes-agent" },
+      { label: "eval report", href: "https://example.com/notes-agent/report.md" },
+    ],
   },
   {
     slug: "loom-agent",
@@ -228,7 +232,7 @@ describe("Projects", () => {
     );
     expect(notes.queryByText("in progress")).not.toBeInTheDocument();
     expect(notes.getByText("personal project")).toBeInTheDocument();
-    expect(notes.getByRole("link")).toHaveAttribute("href", "#agent");
+    expect(notes.getByRole("link", { name: "./Notes Agent" })).toHaveAttribute("href", "#agent");
 
     // No status claimed: no badge at all.
     const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
@@ -256,6 +260,22 @@ describe("Projects", () => {
 
     const loom = within(screen.getByRole("article", { name: "./Loom Agent" }));
     expect(loom.queryByText(/offline evals|runs/i)).not.toBeInTheDocument();
+  });
+
+  it("links a card to its source and report, in a new tab, besides the card's own link", () => {
+    render(<Projects agents={agents} practices={practices} />);
+
+    const notes = within(screen.getByRole("article", { name: "./Notes Agent" }));
+    const source = notes.getByRole("link", { name: /^source/ });
+    expect(source).toHaveAttribute("href", "https://example.com/notes-agent");
+    expect(source).toHaveAttribute("target", "_blank");
+    expect(notes.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
+      "href",
+      "https://example.com/notes-agent/report.md",
+    );
+
+    const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
+    expect(gear.queryByRole("link")).not.toBeInTheDocument();
   });
 
   it("says how the agents are run, each practice with its sources (#43)", () => {

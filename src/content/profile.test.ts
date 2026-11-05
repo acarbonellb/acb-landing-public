@@ -50,6 +50,16 @@ describe("content module", () => {
     );
   });
 
+  it("links the portfolio agent to its chat, its source and its eval report (#44)", () => {
+    const repo = "https://github.com/acarbonellb/acb-landing-public";
+    const portfolio = agents.find((a) => a.slug === "portfolio-agent");
+    expect(portfolio?.href).toBe("#agent");
+    expect(portfolio?.links).toEqual([
+      { label: "source", href: `${repo}/tree/main/agent` },
+      { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
+    ]);
+  });
+
   it("names no ticketing platform and claims no ownership or order blocking", () => {
     const text = JSON.stringify(agents);
     expect(text).not.toMatch(/found(?:ed|er)|purchases|orders/i);
@@ -83,7 +93,7 @@ describe("content module", () => {
       },
       {
         title: "Cost and limits tracked",
-        text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens and latency per case.",
+        text: "A token budget per request, per-IP rate limits and a monthly spend cap on this site's agent; every eval report shows mean tokens, latency and cost per case.",
         sources: [
           { label: "guardrails", href: `${repo}#guardrails` },
           { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },

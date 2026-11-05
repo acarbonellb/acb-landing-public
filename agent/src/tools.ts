@@ -65,6 +65,10 @@ function defineTool<I extends ObjectSchema, O extends ObjectSchema>(
 const period = z.string().describe('Year range, e.g. "2019 — now"');
 const { formatPeriod } = shared;
 
+/** Links that work off the page: one to a card on it means nothing to an MCP client. */
+const offPageLinks = (links: shared.PracticeSource[]) =>
+  links.filter((l) => l.href.startsWith("https://")).map((l) => ({ label: l.label, url: l.href }));
+
 function buildTools(content: Content) {
   const groupKeys = content.skillGroups.map((g) => g.key);
 
@@ -159,7 +163,7 @@ function buildTools(content: Content) {
       name: "get_projects",
       title: "Agent projects",
       description:
-        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, offline evals with deployment next, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one) and stack. Also how he builds and runs agents: evals, human in the loop, cost and limits, measuring changes, each with links to public sources where they exist. Optionally filter the projects by status.",
+        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, offline evals with deployment next, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one), stack and links (e.g. its source code, where public). Also how he builds and runs agents: evals, human in the loop, cost and limits, measuring changes, each with links to public sources where they exist. Optionally filter the projects by status.",
       inputSchema: z
         .object({
           status: z
@@ -178,6 +182,7 @@ function buildTools(content: Content) {
             result: z.string().optional(),
             resultDetail: z.string().optional(),
             stack: z.array(z.string()),
+            links: z.array(z.object({ label: z.string(), url: z.string() })).optional(),
           }),
         ),
         practices: z.array(
@@ -193,20 +198,21 @@ function buildTools(content: Content) {
       run: ({ status }) => ({
         projects: content.agents
           .filter((a) => !status || a.status === status)
-          .map((a) => ({
-            name: a.name,
-            status: a.status,
-            context: a.context,
-            description: a.description,
-            ...(a.result ? { result: a.result } : {}),
-            ...(a.resultDetail ? { resultDetail: a.resultDetail } : {}),
-            stack: a.stack,
-          })),
+          .map((a) => {
+            const links = offPageLinks(a.links ?? []);
+            return {
+              name: a.name,
+              status: a.status,
+              context: a.context,
+              description: a.description,
+              ...(a.result ? { result: a.result } : {}),
+              ...(a.resultDetail ? { resultDetail: a.resultDetail } : {}),
+              stack: a.stack,
+              ...(links.length ? { links } : {}),
+            };
+          }),
         practices: content.agentPractices.map(({ title, text, sources }) => {
-          // Links to a card on the page mean nothing to an MCP client.
-          const links = sources
-            .filter((s) => s.href.startsWith("https://"))
-            .map((s) => ({ label: s.label, url: s.href }));
+          const links = offPageLinks(sources);
           return { title, text, ...(links.length ? { sources: links } : {}) };
         }),
       }),

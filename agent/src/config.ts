@@ -7,6 +7,9 @@ import { chatLimits } from "./chat";
 import type { DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
+import { listPrices } from "./spend-cap";
+
+const defaultModel = "claude-haiku-5-5";
 
 const intFromEnv = z.coerce.number().int().positive();
 const usdFromEnv = z.coerce.number().nonnegative();
@@ -16,7 +19,7 @@ const envSchema = z.object({
   // The address get_contact gives out. Secret Manager in production, never
   // the repo; unset, the tools offer LinkedIn and GitHub only.
   CONTACT_EMAIL: z.email().optional(),
-  AGENT_MODEL: z.string().min(1).default("claude-haiku-5-5"),
+  AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxIterations),
@@ -26,10 +29,9 @@ const envSchema = z.object({
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "budget reached" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
-  // Claude Haiku 5.5 list prices (prompts up to 100K tokens, far above a
-  // chat request); change them with AGENT_MODEL.
-  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(0.1),
-  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(0.5),
+  // The default model's list prices (spend-cap.ts); change them with AGENT_MODEL.
+  AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].inputUsdPerMTok),
+  AGENT_PRICE_OUTPUT_USD_PER_MTOK: usdFromEnv.default(listPrices[defaultModel].outputUsdPerMTok),
   ALLOWED_ORIGINS: z
     .string()
     .default("http://localhost:3000,https://albertocarbonell.dev")
