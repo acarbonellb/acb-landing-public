@@ -3,15 +3,15 @@
   "slug": "programming-languages",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "bc51575bc0fd9a1a0a0dd768daa0904d8ac1d927d29c56fc0608e44e91f9a39a",
-      "latencyMs": 2166,
+      "requestHash": "a09e076b7bcf0ad41f73be21cd6dc71c8cfca7eafc37a323ff64b3b875e0f329",
+      "latencyMs": 1732,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2045
+          "inputTokens": 2251
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "kEPd8OGeqNB3IZP0pi4Aaq7MQ6nwhr7Q",
+                "id": "qcZJjRVX3Ho8cD4HbjAz7T5DS83RGtMW",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2045,
-              "outputTokens": 73
+              "inputTokens": 2251,
+              "outputTokens": 65
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "kEPd8OGeqNB3IZP0pi4Aaq7MQ6nwhr7Q",
+                "id": "qcZJjRVX3Ho8cD4HbjAz7T5DS83RGtMW",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -46,12 +46,12 @@
       ]
     },
     {
-      "requestHash": "ab364b0617259ec7f5e7651a18d145264cf6692f0ca8b89d68da93147e37d323",
-      "latencyMs": 684,
+      "requestHash": "29f90ba7fc81dce20cce04afadb842554e41a35c462f7aaafa33ade8cc9dace1",
+      "latencyMs": 446,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2122
+          "inputTokens": 2328
         },
         {
           "type": "text_delta",
@@ -100,7 +100,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2122,
+              "inputTokens": 2328,
               "outputTokens": 13
             },
             "providerContent": [

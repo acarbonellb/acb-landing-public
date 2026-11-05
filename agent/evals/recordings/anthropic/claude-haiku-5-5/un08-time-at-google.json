@@ -1,0 +1,156 @@
+{
+  "caseId": "un08",
+  "slug": "time-at-google",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
+      "latencyMs": 767,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1607
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01QXrL89eRv6CRV23jEQEiAF",
+                "name": "get_experience",
+                "input": {
+                  "company": "google"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1607,
+              "outputTokens": 48
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01QXrL89eRv6CRV23jEQEiAF",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "google"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "434aa94cde401b788aa141611518b8f937e4faa60436775b0daab62eb3181569",
+      "latencyMs": 959,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1668
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's prof"
+        },
+        {
+          "type": "text_delta",
+          "text": "ile doesn't list any work"
+        },
+        {
+          "type": "text_delta",
+          "text": " at Google. His exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience records"
+        },
+        {
+          "type": "text_delta",
+          "text": " have"
+        },
+        {
+          "type": "text_delta",
+          "text": " no ro"
+        },
+        {
+          "type": "text_delta",
+          "text": "les mat"
+        },
+        {
+          "type": "text_delta",
+          "text": "ching that"
+        },
+        {
+          "type": "text_delta",
+          "text": " company. If you'd like,"
+        },
+        {
+          "type": "text_delta",
+          "text": " I can go"
+        },
+        {
+          "type": "text_delta",
+          "text": " through"
+        },
+        {
+          "type": "text_delta",
+          "text": " his other"
+        },
+        {
+          "type": "text_delta",
+          "text": " ro"
+        },
+        {
+          "type": "text_delta",
+          "text": "les,"
+        },
+        {
+          "type": "text_delta",
+          "text": " or you"
+        },
+        {
+          "type": "text_delta",
+          "text": " can contact him directly to "
+        },
+        {
+          "type": "text_delta",
+          "text": "ask about his"
+        },
+        {
+          "type": "text_delta",
+          "text": " background"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "Alberto's profile doesn't list any work at Google. His experience records have no roles matching that company. If you'd like, I can go through his other roles, or you can contact him directly to ask about his background.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1668,
+              "outputTokens": 63
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's profile doesn't list any work at Google. His experience records have no roles matching that company. If you'd like, I can go through his other roles, or you can contact him directly to ask about his background."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

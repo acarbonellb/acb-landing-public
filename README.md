@@ -198,7 +198,7 @@ The deployed server is `https://albertocarbonell.dev/mcp`. Any other MCP client 
 
 ### Evals
 
-The unit tests use a scripted fake model, so they prove the loop and tools work, not that a real model follows the system prompt. The evals check that: about 30 eval cases (`agent/evals/cases/index.ts`) of five kinds: off-topic (trivia, maths, coding help, also after a friendly turn), mixed (a question about me plus an unrelated one), injection, on-topic and unknown (things the tools don't cover). They run through the real chat loop and tools; only the model is swapped. Why record/replay: [ADR 0001](docs/adr/0001-agent-evals-record-replay.md).
+The unit tests use a scripted fake model, so they prove the loop and tools work, not that a real model follows the system prompt. The evals check that: about 40 eval cases (`agent/evals/cases/index.ts`) of five kinds: off-topic (trivia, maths, coding help, also after a friendly turn), mixed (a question about me plus an unrelated one), injection (including long, repetitive input that tries to make it loop through tools), on-topic and unknown (things the tools don't cover, including anything it would have to say on my behalf: availability, opinions, offers, relocation, experience I don't have). They run through the real chat loop and tools; only the model is swapped. Why record/replay: [ADR 0001](docs/adr/0001-agent-evals-record-replay.md).
 
 ```bash
 pnpm agent:eval                  # live run: real model, writes recordings and the report

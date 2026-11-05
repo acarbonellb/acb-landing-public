@@ -3,15 +3,15 @@
   "slug": "hobbies",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "5e6f5449cc7e38b582d5f89a8458348a304ae83200514d87d661881c2c5adac4",
-      "latencyMs": 4408,
+      "requestHash": "c8eeee643b495cda1a64013fa51684ba90603088709c4be44ae8446ecf5decd5",
+      "latencyMs": 4403,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2044
+          "inputTokens": 2250
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "z2pBGkPoPLgeeWLvECGb8HCAhY7bj1R7",
+                "id": "ZIgjpVoB9Onefz9OUnZiesw6qrK3OlUr",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2044,
-              "outputTokens": 170
+              "inputTokens": 2250,
+              "outputTokens": 171
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "z2pBGkPoPLgeeWLvECGb8HCAhY7bj1R7",
+                "id": "ZIgjpVoB9Onefz9OUnZiesw6qrK3OlUr",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,40 +42,28 @@
       ]
     },
     {
-      "requestHash": "d85b16b6e0d123eaa8e775f4c89b49c7439b21a2ee1f2437ba0f01abd547da69",
-      "latencyMs": 1563,
+      "requestHash": "452e75655491043bdb85afb4910e2b2ec5579a901d192d365d8a0b81cf708730",
+      "latencyMs": 995,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2354
+          "inputTokens": 2560
         },
         {
           "type": "text_delta",
-          "text": "The"
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
         },
         {
           "type": "text_delta",
           "text": " profile"
-        },
-        {
-          "type": "text_delta",
-          "text": " information"
-        },
-        {
-          "type": "text_delta",
-          "text": " I"
-        },
-        {
-          "type": "text_delta",
-          "text": " have"
-        },
-        {
-          "type": "text_delta",
-          "text": " access"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
         },
         {
           "type": "text_delta",
@@ -87,83 +75,15 @@
         },
         {
           "type": "text_delta",
-          "text": " include"
+          "text": " list"
         },
         {
           "type": "text_delta",
-          "text": " details"
-        },
-        {
-          "type": "text_delta",
-          "text": " about"
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": "'s"
+          "text": " any"
         },
         {
           "type": "text_delta",
           "text": " hobbies"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " It"
-        },
-        {
-          "type": "text_delta",
-          "text": " covers"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " professional"
-        },
-        {
-          "type": "text_delta",
-          "text": " background"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " education"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " languages"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -191,15 +111,23 @@
         },
         {
           "type": "text_delta",
-          "text": " more"
-        },
-        {
-          "type": "text_delta",
           "text": " about"
         },
         {
           "type": "text_delta",
           "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -215,6 +143,10 @@
         },
         {
           "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
           "text": " tech"
         },
         {
@@ -223,27 +155,7 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " how"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
+          "text": " instead"
         },
         {
           "type": "text_delta",
@@ -252,17 +164,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "The profile information I have access to doesn't include details about Alberto's hobbies. It covers his professional background, education, languages, and work experience. Would you like to know more about his AI agents, tech stack, or how to contact him?",
+            "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2354,
-              "outputTokens": 53
+              "inputTokens": 2560,
+              "outputTokens": 31
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "The profile information I have access to doesn't include details about Alberto's hobbies. It covers his professional background, education, languages, and work experience. Would you like to know more about his AI agents, tech stack, or how to contact him?"
+                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?"
               }
             ]
           }

@@ -3,15 +3,15 @@
   "slug": "location",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "229368aad6403fd7cac9ab3d323d6b50fcfec61373ee382e8f6e3a798e7c086c",
-      "latencyMs": 825,
+      "requestHash": "03c932684ef930da7fe3d58c20b92754884e2abba16895ded98add6f375c4f35",
+      "latencyMs": 792,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1453
+          "inputTokens": 1601
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01ULRvN6RcKxA2pn5Rdj4v6r",
+                "id": "toolu_0148jAEz69e8PHM37h3GCdcF",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1453,
+              "inputTokens": 1601,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01ULRvN6RcKxA2pn5Rdj4v6r",
+                "id": "toolu_0148jAEz69e8PHM37h3GCdcF",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "3327f4ef1e2a9b4acaad80c08a95b6a6188f4e6731161d3c83fc7e0df0b2e888",
-      "latencyMs": 680,
+      "requestHash": "2d7caf35505abc796a6e1320f00d80aee0a8809ab66409798acbe3696feebcb3",
+      "latencyMs": 614,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1926
+          "inputTokens": 2074
         },
         {
           "type": "text_delta",
@@ -71,7 +71,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1926,
+              "inputTokens": 2074,
               "outputTokens": 18
             },
             "providerContent": [

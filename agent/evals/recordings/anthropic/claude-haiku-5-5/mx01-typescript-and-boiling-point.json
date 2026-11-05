@@ -3,15 +3,15 @@
   "slug": "typescript-and-boiling-point",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "03a1fe85a2d3ea9bbf5d6b89a5c1f2df220573df710335d8c3cac6b7096226f4",
-      "latencyMs": 1030,
+      "requestHash": "7938216aefc7f5a5a5d6ed4b9b57e7346a967049f4ed04386ed8e006821bdffd",
+      "latencyMs": 1110,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1471
+          "inputTokens": 1619
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_0163moJ78tRRUzZ7TWv6YHVp",
+                "id": "toolu_01WzR42jiGibouo41QTCCxx7",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,18 +28,18 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1471,
-              "outputTokens": 117
+              "inputTokens": 1619,
+              "outputTokens": 106
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQSmgYKEAgTGAI4AUIIdGhpbmtpbmcSDGOT8d188J9gfYe3dhoMNIfu/muNb13e0DyeIjBh8VYZbamvEV3FjR1YF7HU8KuRYFYFfIv2vuR78gDG3T/Cbt0UPJ6pGAuS4WW7akUqtwViOJGTbVcrglOphJsrITKuQHxtiZnXMtQshZRkELG/V1UL6P5VUyRXkKJSp5hzg0xPrtxDR+ULCy+Q+UpIt8Is6XR7ps2EDsQ8ekgxZDy0JCSkxmH/PgLxMu6eNZRXtHj4yWBLL9t6PMUJf0notE7Jlh21uN9KY0ms5lbi4BahmvvAUg40bakxjK/3byAW7cdmZNATj1+wnWRWRgKVbvTprfsoBJP4DlxP2iO2rfRBKhH1sgH39+ilqtf0GGLSsTnQLa8Do2pn6mssNLbxAaCgdmiRxqrbRtlKBd6n5E9GxYnFG9NNObCIjCB+YZfWjtBW1ZNC0sJo8PgZbYBBeb918OPfMKbQ+Me4Wc+V5u0hplIUfVDMYdAev4+p4JxmYHeSI6h2LJ2v7vDWmUA6Bzay/MEAvcabp9icZ0im26Wd5aS8bADCgaWbQN6LmTx/d0hmGrjpUfdKGML7/jVbuqZA3JKxfAEKAwP7W5my6rVXMqVwK0g/eFGjTdr8vsuS9csvdBA3nBjHvTnrDg1r+ABvNlIhp9/qQMujLD6Bp127fZC4CYUBZhKH+ERuLOypFmpJLb8Mk0gQcvK4rI2vOD9SeRa/paX7sqUCpaUvHh+1Y0cbCIC7ecY0sI3BIL9oE76FQ+4w8moRusbQYb2Fsi0t+2NLCIvobG02J0l3cAEcxQOvsbMqYd3QKKqZ/kP1PMYlqD1eGeZnE6KHrsX4Kg2a3k43dyPOHP7xoSTmQTmTDRyFpW4XlceIqlbjjDsQbovLdvOU7h3dLNL+l2hijjWRcEPENPlWNPLIBNLeBpuMEPMGhcwJax4a3LFJ/OQV11SuYna86WvOHb5DtOBqwnCKcdkdsttlpamL5C4D8JPx8nvbcjVOa79FoT3n4Niy747zDX9KSP1Xt7xyMjIX8vvF/YacBC5rHxgB"
+                "signature": "CAQShQYKEAgTGAI4AUIIdGhpbmtpbmcSDKaXT/Sw9jWUkMHBBBoMlAXd1YYAhlEfTOu/IjA93cN9EJWFt1Q/gRoLaKyBb/YeNSw6hr775xaWx0IFjsX6O1z9z8+SFOmqgxQdhB4qogWzZzNvoGtYnaaRA++O3DiuOjrDKU6d88YXojzOdpNMAcpSnBESHB9LTf0KXDbM31Nun9jO6zemrb2gwVrs4AT5Rr6CLfR4K8N2OvWhjnKNjWzRBKJb+Su/gkGb121B4A36YSzS/05nsoEFc9eT62hm+A09HZj1qFwGI/HM07UWf4GGim7ye9ftdNFbAGHDXPjWNfPW2vcpvx1u3ghWjs+01znSKxk4qnIoqibHmD/MFhAVyGCg+a/woNmyXyvos3KqFym3eTB79ivmqB0ew5Dulx16/Sk5B8pcB3dSGq5IHmHUpDoGdE25wL+hkoVL4oDTGtpFIk8yU9CXTEyBSOS21ih7TsHxNjudqIaK4ViAZyjuXr+l4UhENNMRs3EhQl6X9UZCad544Uty4r9917B3QkdVhbiRoQc/GBg7Cm3uSeCrwnqfpc4TILppg2k0roE/qCOqQDbhOZLSuOIrcSSuKUT5E06kHD3Cny9t7yvtT6X1Cpw1pqUCoaBF+KjbmVghDpO4oipgjR2Lp9lx6DNXDtux5JH8T1AHUd8qKdjlDsMA1B29LMg2qArsoOjbi6BgI/Lj8WPct6UPLjQiu13D9RKyYdvEs38r6o8quA5JdQtIkRcm5+F815fMfxn/AeUwAs0hJDjxSCE3c130CHDRZu5MnJwQioORkTHIuxG4Sd8TzlhGzQDtBbOVfsM7mCmndc19LhPd29vmG3QNVa5FLAmpoXcyrlyCKT81revyC4sozj6/4V4CKF7I7uzstv0UfBGvUFxK9rsxjGU/JQ4JhcExnWEZz+N9Aa3CNSt98xuBZQA8FhsHH30UhN9kqYGn3tTQHsGHA3Ki4h3yV12MceCq2/GtACcDYKmleknQMRtk7hsNzflI4CxNd7biRro/OxgB"
               },
               {
                 "type": "tool_use",
-                "id": "toolu_0163moJ78tRRUzZ7TWv6YHVp",
+                "id": "toolu_01WzR42jiGibouo41QTCCxx7",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -54,12 +54,12 @@
       ]
     },
     {
-      "requestHash": "65aeab1f8672046e5093bda18fc76f100716667efb714a9c81b9c1e4cfdcd58d",
-      "latencyMs": 1008,
+      "requestHash": "13e534f8ce4c34d298dd7e7ae1064edf2a28af64b60f0deec63943be9a15defb",
+      "latencyMs": 847,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1638
+          "inputTokens": 1775
         },
         {
           "type": "text_delta",
@@ -67,90 +67,58 @@
         },
         {
           "type": "text_delta",
-          "text": "ypeScript is one of"
+          "text": "ypeScript is list"
         },
         {
           "type": "text_delta",
-          "text": " Alberto's list"
+          "text": "ed in Alberto's language"
         },
         {
           "type": "text_delta",
-          "text": "ed languages,"
+          "text": " sk"
         },
         {
           "type": "text_delta",
-          "text": " alongside JavaScript"
+          "text": "ills, alongside Java"
         },
         {
           "type": "text_delta",
-          "text": " and Ruby."
+          "text": "Script and Ruby."
         },
         {
           "type": "text_delta",
-          "text": "\n\nI can't help"
+          "text": "\n\nI can only"
         },
         {
           "type": "text_delta",
-          "text": " with the boiling point question"
+          "text": " answer questions about Alber"
         },
         {
           "type": "text_delta",
-          "text": ", since"
+          "text": "to,"
         },
         {
           "type": "text_delta",
-          "text": " I only answer questions about"
+          "text": " so I can't help with the"
         },
         {
           "type": "text_delta",
-          "text": " Alberto and his work. I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " t"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell you about his back"
-        },
-        {
-          "type": "text_delta",
-          "text": "end and"
-        },
-        {
-          "type": "text_delta",
-          "text": " fr"
-        },
-        {
-          "type": "text_delta",
-          "text": "ontend stack or"
-        },
-        {
-          "type": "text_delta",
-          "text": " his AI agent"
-        },
-        {
-          "type": "text_delta",
-          "text": " projects if you'd like."
+          "text": " boiling point of water."
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "Yes, TypeScript is one of Alberto's listed languages, alongside JavaScript and Ruby.\n\nI can't help with the boiling point question, since I only answer questions about Alberto and his work. I can tell you about his backend and frontend stack or his AI agent projects if you'd like.",
+            "text": "Yes, TypeScript is listed in Alberto's language skills, alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto, so I can't help with the boiling point of water.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1638,
-              "outputTokens": 96
+              "inputTokens": 1775,
+              "outputTokens": 66
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, TypeScript is one of Alberto's listed languages, alongside JavaScript and Ruby.\n\nI can't help with the boiling point question, since I only answer questions about Alberto and his work. I can tell you about his backend and frontend stack or his AI agent projects if you'd like."
+                "text": "Yes, TypeScript is listed in Alberto's language skills, alongside JavaScript and Ruby.\n\nI can only answer questions about Alberto, so I can't help with the boiling point of water."
               }
             ]
           }

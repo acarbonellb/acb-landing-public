@@ -1,0 +1,197 @@
+{
+  "caseId": "un08",
+  "slug": "time-at-google",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "calls": [
+    {
+      "requestHash": "f82d9ec9a4cde53b0356dc0982291a2f8bfee79690a0f72d5d597262927b9eff",
+      "latencyMs": 1841,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2253
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "A7bxbf1utDkK5NHWDiM0AkWzXAgJWRD7",
+                "name": "get_experience",
+                "input": {
+                  "company": "Google"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2253,
+              "outputTokens": 69
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "A7bxbf1utDkK5NHWDiM0AkWzXAgJWRD7",
+                "name": "get_experience",
+                "input": {
+                  "company": "Google"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "c8a554c2cd4eb09b670772f673fd79a5e7014fac18c3b41efdb0489cfb82414f",
+      "latencyMs": 951,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2315
+        },
+        {
+          "type": "text_delta",
+          "text": "There"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " no"
+        },
+        {
+          "type": "text_delta",
+          "text": " record"
+        },
+        {
+          "type": "text_delta",
+          "text": " of"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " working"
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " Google"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " actual"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " instead"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "turn_end",
+          "turn": {
+            "text": "There is no record of Alberto working at Google in his profile. Would you like to know about his actual work experience or his AI agent projects instead?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2315,
+              "outputTokens": 33
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "There is no record of Alberto working at Google in his profile. Would you like to know about his actual work experience or his AI agent projects instead?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

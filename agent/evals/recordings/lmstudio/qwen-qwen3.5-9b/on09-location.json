@@ -3,15 +3,15 @@
   "slug": "location",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "229368aad6403fd7cac9ab3d323d6b50fcfec61373ee382e8f6e3a798e7c086c",
-      "latencyMs": 2504,
+      "requestHash": "03c932684ef930da7fe3d58c20b92754884e2abba16895ded98add6f375c4f35",
+      "latencyMs": 1923,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2043
+          "inputTokens": 2249
         },
         {
           "type": "turn_end",
@@ -19,32 +19,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "04UjxFoKqkZEhptl2ArPTDsDTRETowWP",
+                "id": "llQW3x8h1f4b8DbHa87j6GNobFdFIyi6",
                 "name": "get_profile",
-                "input": {}
-              },
-              {
-                "id": "LDPfLJTkohXnyASdY1NlzBeeUScVIv1G",
-                "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2043,
-              "outputTokens": 95
+              "inputTokens": 2249,
+              "outputTokens": 73
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "04UjxFoKqkZEhptl2ArPTDsDTRETowWP",
+                "id": "llQW3x8h1f4b8DbHa87j6GNobFdFIyi6",
                 "name": "get_profile",
-                "input": {}
-              },
-              {
-                "type": "tool_use",
-                "id": "LDPfLJTkohXnyASdY1NlzBeeUScVIv1G",
-                "name": "get_contact",
                 "input": {}
               }
             ]
@@ -53,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "05f1875729dac5057ee87ddeea983205fd093581a9e7db85ad6fbc6c97f9bcb1",
-      "latencyMs": 553,
+      "requestHash": "adb352bcfad92a659360aa0d7860dcef78789a5df873e4370f2ad0eaa137b7d1",
+      "latencyMs": 542,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2432
+          "inputTokens": 2558
         },
         {
           "type": "text_delta",
@@ -107,7 +96,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2432,
+              "inputTokens": 2558,
               "outputTokens": 13
             },
             "providerContent": [

@@ -3,15 +3,15 @@
   "slug": "spoken-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "b6908f32134549c740519c5b63706cae5635350cc320f4ee1369c93daccda6df",
-      "latencyMs": 819,
+      "requestHash": "9fdefbf28738a24540381a4c343e80432bda0537c0768911807527aa482ca637",
+      "latencyMs": 785,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1455
+          "inputTokens": 1603
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01597WxmqBDsNdho8Dfx3xQg",
+                "id": "toolu_01LPB9Rwh3vHFYUmUbwjBw5s",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1455,
+              "inputTokens": 1603,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01597WxmqBDsNdho8Dfx3xQg",
+                "id": "toolu_01LPB9Rwh3vHFYUmUbwjBw5s",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -45,12 +45,12 @@
       ]
     },
     {
-      "requestHash": "297ce5f1980961d11520fdaad3a37dbcb611c20315441a55efa84fb1706809db",
-      "latencyMs": 696,
+      "requestHash": "2054ada0ac7a9a31987ce3d14e77d53d33be5aee4865ede1d492182ec6a3ae65",
+      "latencyMs": 639,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1928
+          "inputTokens": 2076
         },
         {
           "type": "text_delta",
@@ -75,7 +75,7 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1928,
+              "inputTokens": 2076,
               "outputTokens": 28
             },
             "providerContent": [

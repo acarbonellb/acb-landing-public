@@ -3,54 +3,15 @@
   "slug": "greeting-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "730a79fd210cde7e27bfedd7c6c594f92ce12075dd7ec53dbd55a4dc66e24730",
-      "latencyMs": 789,
+      "requestHash": "a11c56b7bc58c4429d0a18ba3b06e3ed63347354682b9f561956b5fbed111655",
+      "latencyMs": 1207,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1446
-        },
-        {
-          "type": "turn_end",
-          "turn": {
-            "text": "",
-            "toolCalls": [
-              {
-                "id": "toolu_01WUkw15mdgzwoJoCMdrHmpD",
-                "name": "get_profile",
-                "input": {}
-              }
-            ],
-            "stopReason": "tool_use",
-            "usage": {
-              "inputTokens": 1446,
-              "outputTokens": 27
-            },
-            "providerContent": [
-              {
-                "type": "tool_use",
-                "id": "toolu_01WUkw15mdgzwoJoCMdrHmpD",
-                "name": "get_profile",
-                "caller": {
-                  "type": "direct"
-                },
-                "input": {}
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "requestHash": "75111a6ed8897bea673613cf5e01742f3a89220cd9986ff994b066feeeb9fd81",
-      "latencyMs": 1153,
-      "events": [
-        {
-          "type": "input_usage",
-          "inputTokens": 1919
+          "inputTokens": 1594
         },
         {
           "type": "text_delta",
@@ -58,130 +19,94 @@
         },
         {
           "type": "text_delta",
-          "text": "y el"
+          "text": "y el ag"
         },
         {
           "type": "text_delta",
-          "text": " as"
+          "text": "ente del"
         },
         {
           "type": "text_delta",
-          "text": "istente de"
+          "text": " portfolio de Alber"
         },
         {
           "type": "text_delta",
-          "text": " Alberto Carbonell"
+          "text": "to Carbonell."
         },
         {
           "type": "text_delta",
-          "text": ". Es"
+          "text": " Puedo cont"
         },
         {
           "type": "text_delta",
-          "text": " "
+          "text": "arte sobre su perf"
         },
         {
           "type": "text_delta",
-          "text": "ingeniero de"
+          "text": "il, su experiencia la"
         },
         {
           "type": "text_delta",
-          "text": " software senior (TypeSc"
+          "text": "boral, los"
         },
         {
           "type": "text_delta",
-          "text": "ript, Node.js y P"
+          "text": " agentes de"
         },
         {
           "type": "text_delta",
-          "text": "ostgreSQL) espec"
+          "text": " IA que ha construido,"
         },
         {
           "type": "text_delta",
-          "text": "ializado en ag"
+          "text": " su stack tecnológico"
         },
         {
           "type": "text_delta",
-          "text": "entes de"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " IA que"
+          "text": " su"
         },
         {
           "type": "text_delta",
-          "text": " real"
+          "text": " formación,"
         },
         {
           "type": "text_delta",
-          "text": "izan trabajo real de"
+          "text": " idiomas o"
         },
         {
           "type": "text_delta",
-          "text": " princip"
+          "text": " c"
         },
         {
           "type": "text_delta",
-          "text": "io a fin. "
+          "text": "ómo contactarlo."
         },
         {
           "type": "text_delta",
-          "text": "¿Te"
+          "text": " ¿Qué te g"
         },
         {
           "type": "text_delta",
-          "text": " inter"
-        },
-        {
-          "type": "text_delta",
-          "text": "esa saber s"
-        },
-        {
-          "type": "text_delta",
-          "text": "obre su experiencia la"
-        },
-        {
-          "type": "text_delta",
-          "text": "boral, sus proyect"
-        },
-        {
-          "type": "text_delta",
-          "text": "os de agentes,"
-        },
-        {
-          "type": "text_delta",
-          "text": " su st"
-        },
-        {
-          "type": "text_delta",
-          "text": "ack t"
-        },
-        {
-          "type": "text_delta",
-          "text": "ecnológico o c"
-        },
-        {
-          "type": "text_delta",
-          "text": "ómo contactarle"
-        },
-        {
-          "type": "text_delta",
-          "text": "?"
+          "text": "ustaría saber?"
         },
         {
           "type": "turn_end",
           "turn": {
-            "text": "¡Hola! Soy el asistente de Alberto Carbonell. Es ingeniero de software senior (TypeScript, Node.js y PostgreSQL) especializado en agentes de IA que realizan trabajo real de principio a fin. ¿Te interesa saber sobre su experiencia laboral, sus proyectos de agentes, su stack tecnológico o cómo contactarle?",
+            "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, su experiencia laboral, los agentes de IA que ha construido, su stack tecnológico, su formación, idiomas o cómo contactarlo. ¿Qué te gustaría saber?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1919,
-              "outputTokens": 133
+              "inputTokens": 1594,
+              "outputTokens": 108
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "¡Hola! Soy el asistente de Alberto Carbonell. Es ingeniero de software senior (TypeScript, Node.js y PostgreSQL) especializado en agentes de IA que realizan trabajo real de principio a fin. ¿Te interesa saber sobre su experiencia laboral, sus proyectos de agentes, su stack tecnológico o cómo contactarle?"
+                "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, su experiencia laboral, los agentes de IA que ha construido, su stack tecnológico, su formación, idiomas o cómo contactarlo. ¿Qué te gustaría saber?"
               }
             ]
           }

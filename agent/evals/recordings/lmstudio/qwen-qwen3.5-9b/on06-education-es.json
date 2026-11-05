@@ -3,15 +3,15 @@
   "slug": "education-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "c08f099c1c1de6b954dead79d43e8adab74d00040470adc09fabdf391ca3c374",
-      "latencyMs": 1537,
+      "requestHash": "2d03dffa6291994ed27f396ff182781b69ea306d20ddcb5ad156550f7655de79",
+      "latencyMs": 1465,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2044
+          "inputTokens": 2250
         },
         {
           "type": "turn_end",
@@ -19,20 +19,20 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "31fIgqFynSACtd4JLWnrTvbHgfMA9uCT",
+                "id": "0gT3hAycOa2J6IpCh631bHmouxzpbOAV",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2044,
-              "outputTokens": 52
+              "inputTokens": 2250,
+              "outputTokens": 54
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "31fIgqFynSACtd4JLWnrTvbHgfMA9uCT",
+                "id": "0gT3hAycOa2J6IpCh631bHmouxzpbOAV",
                 "name": "get_profile",
                 "input": {}
               }
@@ -42,12 +42,12 @@
       ]
     },
     {
-      "requestHash": "ff9de61ea1f40a2e5525ad1da64e83dfd2582cb393b351e48c9bcc0d73bb13c6",
-      "latencyMs": 1571,
+      "requestHash": "a4027dabc02efd70ed98553b466015434a6f97f14a8dae8286a20feb456305d5",
+      "latencyMs": 1693,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2354
+          "inputTokens": 2560
         },
         {
           "type": "text_delta",
@@ -84,6 +84,34 @@
         {
           "type": "text_delta",
           "text": "iores"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Formación"
+        },
+        {
+          "type": "text_delta",
+          "text": " Profesional"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "CF"
+        },
+        {
+          "type": "text_delta",
+          "text": "GS"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
         },
         {
           "type": "text_delta",
@@ -252,17 +280,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto estudió dos Diplomas Superiores en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015.",
+            "text": "Alberto estudió dos Diplomas Superiores de Formación Profesional (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2354,
-              "outputTokens": 53
+              "inputTokens": 2560,
+              "outputTokens": 60
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto estudió dos Diplomas Superiores en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015."
+                "text": "Alberto estudió dos Diplomas Superiores de Formación Profesional (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015."
               }
             ]
           }

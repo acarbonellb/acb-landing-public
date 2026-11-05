@@ -3,15 +3,15 @@
   "slug": "programming-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "31dac056b0c9686d0593a960641464fe610c8c998b56386311a76399774168ab",
+  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
   "calls": [
     {
-      "requestHash": "bc51575bc0fd9a1a0a0dd768daa0904d8ac1d927d29c56fc0608e44e91f9a39a",
-      "latencyMs": 933,
+      "requestHash": "a09e076b7bcf0ad41f73be21cd6dc71c8cfca7eafc37a323ff64b3b875e0f329",
+      "latencyMs": 836,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1457
+          "inputTokens": 1605
         },
         {
           "type": "turn_end",
@@ -19,7 +19,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01TU7UCJeCpV8mzmChCMbhGp",
+                "id": "toolu_015B9bBeME1VKZ14cdUJcY5Y",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -28,13 +28,13 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1457,
+              "inputTokens": 1605,
               "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01TU7UCJeCpV8mzmChCMbhGp",
+                "id": "toolu_015B9bBeME1VKZ14cdUJcY5Y",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -49,24 +49,20 @@
       ]
     },
     {
-      "requestHash": "2e6ff5ffc6f318b66ba3292f15b2f50df86c1b9fbcc4f9a597a06c49852e382b",
-      "latencyMs": 684,
+      "requestHash": "68af0cbfaf05d08dcbfc18811cca9e44a28f359a02748ab26567e212bcd34091",
+      "latencyMs": 793,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1556
+          "inputTokens": 1704
         },
         {
           "type": "text_delta",
-          "text": "Alberto works"
+          "text": "Alberto's"
         },
         {
           "type": "text_delta",
-          "text": " with three"
-        },
-        {
-          "type": "text_delta",
-          "text": " programming languages: Type"
+          "text": " programming languages are Type"
         },
         {
           "type": "text_delta",
@@ -83,17 +79,17 @@
         {
           "type": "turn_end",
           "turn": {
-            "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby.",
+            "text": "Alberto's programming languages are TypeScript, JavaScript, and Ruby.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1556,
-              "outputTokens": 32
+              "inputTokens": 1704,
+              "outputTokens": 30
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby."
+                "text": "Alberto's programming languages are TypeScript, JavaScript, and Ruby."
               }
             ]
           }
