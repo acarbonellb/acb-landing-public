@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { DEFAULT_THEME, THEMES, themeNames, type Theme } from "../src/lib/theme";
 
 // The theme the toggle switches to from the default one.
