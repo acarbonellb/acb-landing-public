@@ -1,6 +1,7 @@
 "use client";
 
 import { useChatBridge } from "@/components/chat-bridge";
+import { ExternalLink } from "./ui";
 
 const linkStyle =
   "mt-6 inline-block max-w-full text-lg font-bold break-all text-blue underline decoration-border underline-offset-8 transition-colors hover:decoration-blue sm:text-2xl";
@@ -17,9 +18,9 @@ export function ContactAsk({ linkedin }: { linkedin: string }) {
 
   if (state === "absent") {
     return (
-      <a href={linkedin} target="_blank" rel="noreferrer" className={linkStyle}>
+      <ExternalLink href={linkedin} className={linkStyle}>
         message me on LinkedIn ↗
-      </a>
+      </ExternalLink>
     );
   }
 

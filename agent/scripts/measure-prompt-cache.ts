@@ -11,8 +11,9 @@
 // five minutes already wrote the same prefix, which also means it triggers.
 import { parseArgs } from "node:util";
 import { createAnthropicModelClient } from "../src/anthropic";
-import { modelTools, systemPrompt } from "../src/chat";
+import { modelTools } from "../src/chat";
 import { loadConfig } from "../src/config";
+import { systemPrompt } from "../src/system-prompt";
 import { createToolset, siteContent } from "../src/tools";
 
 const { values } = parseArgs({ options: { paid: { type: "boolean", default: false } } });

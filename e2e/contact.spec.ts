@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, type Page, type Route, test } from "@playwright/test";
-import { contactQuestion, profile } from "../src/shared/profile";
+import { profile } from "../src/shared/profile";
+import { contactQuestion } from "../src/shared/site-copy";
 import { addressForms, findAddresses, maskAddress } from "../repo-hygiene/address-scan";
 
 // Contact goes through the agent (#50): "ask my agent" sends a canned question

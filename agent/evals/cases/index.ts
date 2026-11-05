@@ -6,13 +6,13 @@
 import {
   agentPractices,
   agents,
-  contactQuestion,
   education,
   experience,
   languages,
   profile,
   skillGroups,
 } from "../../../src/shared/profile";
+import { contactQuestion } from "../../../src/shared/site-copy";
 import type { ChatMessage } from "../../src/chat";
 import { evalContactEmail } from "../../src/evals/content";
 import type { EvalCase } from "../../src/evals/scoring";

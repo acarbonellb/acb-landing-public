@@ -1,5 +1,11 @@
-// Single source of truth for the CV. The landing sections render it and the
-// portfolio agent reads it, so keep it plain data: no JSX, no formatting.
+// The CV as the portfolio agent serves it: its tools (agent/src/tools.ts) read
+// these values and the landing sections render the same ones, so the page and
+// the agent never disagree. Keep it plain data: no JSX, no formatting.
+//
+// Editing a value here changes what the tools return to the model, which makes
+// every eval recording stale (ADR 0001): only a new live run fixes it. Copy the
+// page shows but the model never reads goes in `site-copy.ts`; formatting
+// helpers go in `format.ts`.
 
 /** A year range; `to: null` means "present". */
 export type Period = { from: number; to: number | null };
@@ -144,7 +150,11 @@ export const agents: AgentProject[] = [
       "Agent on my portfolio site that answers visitors' questions about my experience and projects in natural language. Also exposed as an MCP server so external agents can query it.",
     stack: ["TypeScript", "Claude", "MCP"],
     href: "#agent",
-    // Its eval results line is generated at build time (src/lib/eval-results.ts).
+    // No `result` here, on purpose: the page adds the eval results line at
+    // build time (src/lib/eval-results.ts), from the eval history a live run
+    // writes. Served through a tool, the line would be in the recordings, so
+    // every live run would change the tool output and make its own recordings
+    // stale: a re-record loop. It stays page-only.
     links: [
       { label: "source", href: `${repo}/tree/main/agent` },
       { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },
@@ -289,24 +299,3 @@ export const languages: SpokenLanguage[] = [
   { name: "Spanish", level: "Native" },
   { name: "English", level: "C1" },
 ];
-
-/**
- * Shown under the chat input. Each claim is checked against the agent's code
- * and the GCP config (PR for #46): re-check it when logging, the store or the
- * model provider changes. Site-only: no tool, tool description or system
- * prompt reads it, so it never reaches the model.
- */
-export const chatPrivacyNote =
-  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days, and per-IP rate-limit counters expire after a minute and are deleted within a day. The agent and its MCP server share my contact email on purpose.";
-
-/**
- * What the contact section's "ask my agent" button sends to the chat, as the
- * visitor's message (#50). The eval case `on11` asks exactly this and is
- * gated in CI (ADR 0001), as it's the site's contact path.
- */
-export const contactQuestion = "I'd like to contact Alberto, what's his email address?";
-
-/** "2019 — now", "2016 — 2019". */
-export function formatPeriod({ from, to }: Period): string {
-  return `${from} — ${to ?? "now"}`;
-}

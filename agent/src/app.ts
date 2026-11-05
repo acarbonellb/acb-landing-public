@@ -5,7 +5,7 @@ import { cors } from "hono/cors";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
 import type { HttpErrorBody, HttpErrorCode, TokenUsage } from "../../src/shared/chat-contract";
-import { chatRequestSchema, errorMessages, runChat, worstCaseUsage } from "./chat";
+import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { createMcpServer } from "./mcp";
 import type { ModelClient } from "./model";
 import { addUsage } from "./pricing";
@@ -45,7 +45,7 @@ export type AppDeps = {
   modelClient: ModelClient | null;
   /** Browser origins allowed to call the chat endpoint. */
   allowedOrigins: string[];
-  chatLimits: { maxIterations: number; maxTokens: number; maxRequestTokens: number };
+  chatLimits: ChatLimits;
   /**
    * Per-IP limits: in the shared store when `AGENT_STORE` selects one, else
    * in memory, per instance (`rate-limit.ts`).
@@ -98,6 +98,11 @@ export function createApp(deps: AppDeps): Hono {
     clientKey,
     mcpClientKey,
   } = deps;
+  // One agent for every chat request: its estimate and its run share the
+  // toolset, limits and system prompt.
+  const chatAgent = modelClient
+    ? createChatAgent({ model: modelClient, toolset, limits: chatLimits })
+    : null;
   const app = new Hono();
   // When each chat request arrived, for its latency (`usage.ts`).
   const chatStartedAt = new WeakMap<Request, number>();
@@ -224,13 +229,13 @@ export function createApp(deps: AppDeps): Hono {
           message: z.prettifyError(parsed.error),
         });
       }
-      if (!modelClient) {
+      if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
       const { messages } = parsed.data;
       // Hold the most this request can cost while it runs (see spend-cap.ts).
-      const budget = await spendCap.reserve(worstCaseUsage(toolset, messages, chatLimits));
+      const budget = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
       if (budget.exhausted) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
@@ -255,13 +260,7 @@ export function createApp(deps: AppDeps): Hono {
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         try {
-          for await (const event of runChat({
-            model: modelClient,
-            toolset,
-            messages,
-            ...chatLimits,
-            signal: abort.signal,
-          })) {
+          for await (const event of chatAgent.run(messages, { signal: abort.signal })) {
             // Every model call is paid for, even if the visitor has left: keep
             // draining after an abort, as the cut-off call still reports its
             // (estimated) usage.
