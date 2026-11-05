@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { section, type SectionId } from "@/lib/sections";
 
 // Retro window chrome: title bar with traffic-light dots and a file name.
 export function Window({
@@ -25,17 +26,9 @@ export function Window({
   );
 }
 
-export function Section({
-  id,
-  index,
-  title,
-  children,
-}: {
-  id: string;
-  index: string;
-  title: string;
-  children: ReactNode;
-}) {
+/** A section of the page: its number and title come from the registry. */
+export function Section({ id, children }: { id: SectionId; children: ReactNode }) {
+  const { number, title } = section(id);
   return (
     <section
       id={id}
@@ -47,7 +40,7 @@ export function Section({
         className="mb-8 flex items-baseline gap-3 text-2xl font-bold text-fg sm:text-3xl"
       >
         <span className="font-sans font-semibold text-blue">
-          {index}.
+          {number}.
         </span>
         <span>{title}</span>
         <span
@@ -65,5 +58,40 @@ export function Tag({ children }: { children: ReactNode }) {
     <span className="rounded border border-border bg-bg px-2 py-0.5 text-xs text-cyan">
       {children}
     </span>
+  );
+}
+
+/** A link to another site: opens in a new tab, without a referrer. */
+export function ExternalLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <a href={href} target="_blank" rel="noreferrer" className={className}>
+      {children}
+    </a>
+  );
+}
+
+/**
+ * A small bordered button in the terminal style, lit blue on hover and focus.
+ * `className` adds spacing, layout and the resting text colour.
+ */
+export function TerminalButton({
+  className = "",
+  type = "button",
+  ...props
+}: ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      type={type}
+      className={`rounded border border-border text-xs transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue ${className}`}
+      {...props}
+    />
   );
 }

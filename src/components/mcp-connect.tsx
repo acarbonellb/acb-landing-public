@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TerminalButton } from "./ui";
 
 /** How to connect your own agent to the MCP server, with a command to copy. */
 export function McpConnect({ mcpUrl }: { mcpUrl: string }) {
@@ -33,14 +34,10 @@ export function McpConnect({ mcpUrl }: { mcpUrl: string }) {
         <code className="min-w-0 flex-1 break-words whitespace-pre-wrap text-fg">
           {command}
         </code>
-        <button
-          type="button"
-          onClick={copyCommand}
-          className="shrink-0 rounded border border-border px-2 py-0.5 text-xs text-fg-dark transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue"
-        >
+        <TerminalButton onClick={copyCommand} className="shrink-0 px-2 py-0.5 text-fg-dark">
           {copied ? "copied" : "copy"}
           <span className="sr-only"> MCP command</span>
-        </button>
+        </TerminalButton>
       </div>
     </div>
   );

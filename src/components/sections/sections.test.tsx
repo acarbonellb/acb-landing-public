@@ -8,18 +8,27 @@ import type {
   Role,
   SkillGroup,
 } from "@/shared/profile";
-import {
-  About,
-  Agent,
-  Contact,
-  Experience,
-  Hero,
-  Projects,
-  Stack,
-} from "./sections";
+import { section, type SectionId } from "@/lib/sections";
+import { About } from "./about";
+import { Agent } from "./agent";
+import { Contact } from "./contact";
+import { Experience } from "./experience";
+import { Hero } from "./hero";
+import { Projects } from "./projects";
+import { Stack } from "./stack";
 
 // Sections render the content they receive, so these tests pass small
-// fixtures and assert on them: no dependency on the real CV text.
+// fixtures and assert on them: no dependency on the real CV text. Numbers and
+// titles come from the section registry.
+
+/** A section's heading ("04. projects"), numbered and titled by the registry. */
+function sectionHeading(id: SectionId) {
+  const { number, title } = section(id);
+  return screen.getByRole("heading", {
+    level: 2,
+    name: (name) => name.replace(/\s+/g, "") === `${number}.${title}`.replace(/\s+/g, ""),
+  });
+}
 
 const profile: Profile = {
   name: "Ada Lovelace",
@@ -205,12 +214,10 @@ describe("Experience", () => {
 });
 
 describe("Projects", () => {
-  it("is section 04, agents I've built", () => {
+  it("is headed with its registry number and title", () => {
     render(<Projects agents={agents} practices={practices} />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^04\.\s*agents I've built$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("projects")).toBeInTheDocument();
   });
 
   it("shows each agent with its context, description, status and stack", () => {
@@ -338,12 +345,10 @@ describe("Agent", () => {
   });
   afterEach(() => vi.unstubAllGlobals());
 
-  it("is section 05, ask my agent", () => {
+  it("is headed with its registry number and title", () => {
     render(<Agent linkedin={profile.links.linkedin} />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^05\.\s*ask my agent$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("agent")).toBeInTheDocument();
   });
 
   it("holds the chat, pointed at the local agent by default", () => {
@@ -414,12 +419,10 @@ describe("Agent", () => {
 });
 
 describe("Contact", () => {
-  it("is section 06, contact", () => {
+  it("is headed with its registry number and title", () => {
     render(<Contact profile={profile} />);
 
-    expect(
-      screen.getByRole("heading", { level: 2, name: /^06\.\s*contact$/ }),
-    ).toBeInTheDocument();
+    expect(sectionHeading("contact")).toBeInTheDocument();
   });
 
   it("shows the contact note and, until the chat is there, a LinkedIn link", () => {

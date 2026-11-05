@@ -3,11 +3,12 @@
 import { type FormEvent, useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { contactFallback } from "@/lib/contact-fallback";
 import { chatRequestLimits } from "@/shared/chat-contract";
-import { chatPrivacyNote, contactQuestion } from "@/shared/profile";
+import { chatPrivacyNote, contactQuestion } from "@/shared/site-copy";
 import { connectChat } from "./chat-bridge";
 import { ChatNotice } from "./chat-notice";
 import { ChatTranscript } from "./chat-transcript";
 import { McpConnect } from "./mcp-connect";
+import { TerminalButton } from "./ui";
 import { useAgentChat } from "./use-agent-chat";
 
 export function AgentChat({
@@ -97,13 +98,13 @@ export function AgentChat({
           // 16px on phones: iOS Safari zooms in on focus into any smaller field.
           className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
-        <button
+        <TerminalButton
           type="submit"
           disabled={busy}
-          className="shrink-0 rounded border border-border px-2 py-0.5 text-xs text-fg-dark transition-colors hover:border-blue hover:text-blue focus-visible:border-blue focus-visible:text-blue disabled:opacity-50"
+          className="shrink-0 px-2 py-0.5 text-fg-dark disabled:opacity-50"
         >
           send ↵
-        </button>
+        </TerminalButton>
       </form>
 
       <p

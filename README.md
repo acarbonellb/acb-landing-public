@@ -11,7 +11,7 @@ pnpm install
 pnpm dev
 ```
 
-Content lives in `src/shared/profile.ts`.
+Content lives in `src/shared/`: `profile.ts` is what the agent's tools serve (editing it makes the eval recordings stale), `site-copy.ts` is copy only the page shows, and `format.ts` holds the formatting helpers both use. The page's sections are listed once, in order, in `src/lib/sections.ts`.
 
 The "ask my agent" chat calls the agent service (below) straight from the browser. Its base URL is inlined at build time from `NEXT_PUBLIC_AGENT_URL`; the chat uses `<base>/chat`. A production build shows `https://albertocarbonell.dev/mcp` as the public MCP endpoint: `firebase.json` rewrites `/mcp` on the site to the Cloud Run service `agent`. The chat can't go through that rewrite, because Hosting buffers streamed responses ([ADR 0002](docs/adr/0002-agent-direct-cloud-run-url.md)); `next dev` shows `<base>/mcp`. For example `NEXT_PUBLIC_AGENT_URL=https://agent.example.run.app pnpm build`. `next dev` defaults to `http://localhost:8080` (the local `pnpm agent:dev`); a production build without it shows an "agent coming soon" note instead of the chat, so the site never publishes a localhost endpoint.
 
@@ -80,7 +80,7 @@ pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node
 | `GET /health` | Health check, returns `{"status":"ok"}` |
 | `GET /stats` | This and last week's usage aggregates, public JSON (see [Usage stats](#usage-stats)) |
 
-**Contact through the agent.** The page holds no email address, and neither does the repo: the agent reads it from `CONTACT_EMAIL`. `pnpm test` fails on any address in a repo file outside reserved test domains (`example.com`, `.test`, ...) and listed third parties; run it with `CONTACT_EMAIL` set in your shell to also search for the real address's scrambled forms (CI never has it). The contact section's "ask my agent" button scrolls to the chat and sends a canned question (`contactQuestion` in `src/shared/profile.ts`); the agent answers through `get_contact`, and the chat links any address in an answer to `mailto:`. If `/chat` answers 503 or 429, or the stream ends in an error, the page calls `POST /mcp` `tools/call get_contact` on the agent's own URL instead (no model, no spend; open to any origin, under the MCP rate limit) and says so in the chat. If that fails too, or without JavaScript, it shows a LinkedIn link.
+**Contact through the agent.** The page holds no email address, and neither does the repo: the agent reads it from `CONTACT_EMAIL`. `pnpm test` fails on any address in a repo file outside reserved test domains (`example.com`, `.test`, ...) and listed third parties; run it with `CONTACT_EMAIL` set in your shell to also search for the real address's scrambled forms (CI never has it). The contact section's "ask my agent" button scrolls to the chat and sends a canned question (`contactQuestion` in `src/shared/site-copy.ts`); the agent answers through `get_contact`, and the chat links any address in an answer to `mailto:`. If `/chat` answers 503 or 429, or the stream ends in an error, the page calls `POST /mcp` `tools/call get_contact` on the agent's own URL instead (no model, no spend; open to any origin, under the MCP rate limit) and says so in the chat. If that fails too, or without JavaScript, it shows a LinkedIn link.
 
 ### Configuration
 

@@ -1,5 +1,6 @@
 import type { ChatErrorKind } from "@/lib/chat-client";
 import type { ContactFallback } from "@/lib/contact-fallback";
+import { ExternalLink } from "./ui";
 
 const fallbackReason: Record<ChatErrorKind, string> = {
   rate_limited: "The chat's rate limit was reached",
@@ -20,14 +21,12 @@ export function ContactFallbackAnswer({
       <p className="text-fg-dark">
         <span className="text-comment">[system]</span> The agent can&apos;t be
         reached right now. You can message me on{" "}
-        <a
+        <ExternalLink
           href={linkedin}
-          target="_blank"
-          rel="noreferrer"
           className="text-blue underline underline-offset-2 hover:text-cyan"
         >
           LinkedIn
-        </a>
+        </ExternalLink>
         .
       </p>
     );
