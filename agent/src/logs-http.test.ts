@@ -431,6 +431,40 @@ describe("chat error rate events", () => {
     ]);
   });
 
+  it("keeps the last hour across the week's boundary (Monday 00:00 UTC)", async () => {
+    const time = clock("2026-11-08T23:55:00Z"); // Sunday, ISO week 45
+    const url = await startCounting(Array.from({ length: 5 }, broken), time);
+    for (let i = 0; i < 4; i++) await chat(url); // 4 of the 5 requests the hour needs
+    expect(rateEvents()).toEqual([]);
+
+    time.set("2026-11-09T00:05:00Z"); // Monday, week 46
+    await chat(url);
+
+    expect(rateEvents()).toEqual([
+      expect.objectContaining({ event: "chat_error_rate", week: "2026-W46", streamed: 5, errors: 5 }),
+    ]);
+  });
+
+  it("doesn't fire again for an outage that goes on past the week's boundary, and recovers in the new week", async () => {
+    const time = clock("2026-11-08T23:50:00Z");
+    const url = await startCounting(
+      [...Array.from({ length: 6 }, broken), ...Array.from({ length: 30 }, ok)],
+      time,
+    );
+    for (let i = 0; i < 5; i++) await chat(url);
+    expect(rateEvents().map((e) => e.event)).toEqual(["chat_error_rate"]);
+
+    time.set("2026-11-09T00:05:00Z");
+    await chat(url); // still failing: the alert is already in effect
+    expect(rateEvents().map((e) => e.event)).toEqual(["chat_error_rate"]);
+
+    for (let i = 0; i < 30; i++) await chat(url); // 6 errors in 36: under 20%
+    expect(rateEvents().map((e) => e.event)).toEqual([
+      "chat_error_rate",
+      "chat_error_rate_recovered",
+    ]);
+  });
+
   it("counts only streamed requests: refusals before streaming don't move the rate", async () => {
     const time = clock("2026-11-05T12:00:00Z");
     server = await listen(

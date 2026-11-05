@@ -296,7 +296,7 @@ The agent keeps weekly aggregates of its own traffic (`agent/src/usage.ts`) and 
 }
 ```
 
-Histogram keys are bucket upper bounds in ms (`inf` past the last). `errorWindow` and `alerted` serve the `chat_error_rate` alert event: streamed requests and errors per 10-minute bucket (keyed by its start, ms since epoch), pruned past the hour, and whether the alert is in effect. `/stats` doesn't serve them.
+Histogram keys are bucket upper bounds in ms (`inf` past the last). `errorWindow` and `alerted` serve the `chat_error_rate` alert event: streamed requests and errors per 10-minute bucket (keyed by its start, ms since epoch), pruned past the hour, and whether the alert is in effect; `errorWindow` is absent until the week's first streamed request, which copies the previous week's last hour into it. `/stats` doesn't serve them.
 
 **`GET /stats`** answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under its own per-IP limit and global ceiling (`RATE_LIMIT_STATS_PER_MINUTE`, `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`; see Guardrails); `503 unavailable` if the store can't be read. The types are `StatsResponse` in `src/shared/stats-contract.ts`:
 
@@ -356,7 +356,7 @@ The agent logs one JSON object per line (`agent/src/log.ts`), which Cloud Loggin
 | `store_unavailable` | `ERROR` | `collection` (`rateLimits`, `spend` or `usage`), `error` | When a store update fails after the last one succeeded (or at the first). Fires again only after `store_recovered` | this instance's memory: the store can't record its own outage |
 | `store_recovered` | `INFO` | `collection` | The next store update that succeeds after `store_unavailable` | the same |
 
-"The last hour" is the current 10-minute bucket (UTC) and the five before it, so 50 to 60 minutes; the buckets live in the week's document, so the window starts afresh each Monday 00:00 UTC. `spentUsd` is the month's charged spend, rounded to the micro-dollar; reservations of running requests aren't in it. Spend and provider-limit state start afresh each UTC month, with the month's document. The daily quota's documents (`dailySpend/...`) share the spend cap's reservation code (`agent/src/spend-holds.ts`) but have no alert events.
+"The last hour" is the current 10-minute bucket (UTC) and the five before it, so 50 to 60 minutes; the buckets live in the week's document, and a week's first streamed request starts its window, and the alert's state, from the end of the previous week's, so the hour runs on across Monday 00:00 UTC (each instance reads the previous week's document once a week for it). `spentUsd` is the month's charged spend, rounded to the micro-dollar; reservations of running requests aren't in it. Spend and provider-limit state start afresh each UTC month, with the month's document. The daily quota's documents (`dailySpend/...`) share the spend cap's reservation code (`agent/src/spend-holds.ts`) but have no alert events.
 
 Querying them in Cloud Logging, e.g. every alert event of the agent:
 

@@ -24,8 +24,9 @@
 // errors are also counted in 10-minute buckets (`errorWindow`, pruned past
 // the hour), and the event fires once when the last hour's rate passes the
 // threshold (noted under `alerted`, in the same atomic update), then once
-// more as `chat_error_rate_recovered` when it's back under. The window starts
-// afresh with each week's document.
+// more as `chat_error_rate_recovered` when it's back under. The hour doesn't
+// end with the week: a week's document starts its window (and the alert's
+// state) from the previous week's, which each instance reads once a week.
 //
 // Every chat request recorded is also logged, as one `chat_request` line.
 import type { TokenUsage } from "../../src/shared/chat-contract";
@@ -191,8 +192,12 @@ type WeekDoc = {
     firstTextMs: Histogram;
   };
   mcp: { requests: number; unknownGoogleHops: number };
-  /** Streamed chat requests and their errors per 10-minute bucket, keyed by its start (ms). */
-  errorWindow: Record<string, { streamed: number; errors: number }>;
+  /**
+   * Streamed chat requests and their errors per 10-minute bucket, keyed by
+   * its start (ms). Absent until the week's first streamed request, which
+   * starts it from the previous week's (`ErrorWindowTail`).
+   */
+  errorWindow?: Record<string, { streamed: number; errors: number }>;
   /** Alert events in effect: `chat_error_rate` while the rate is above its threshold. */
   alerted: Record<string, boolean>;
 };
@@ -220,10 +225,15 @@ function readWeek(week: string, doc: StoreDocument | undefined): WeekDoc {
       requests: Number(mcp.requests ?? 0),
       unknownGoogleHops: Number(mcp.unknownGoogleHops ?? 0),
     },
-    errorWindow: { ...(doc?.errorWindow as WeekDoc["errorWindow"] | undefined) },
+    ...(doc?.errorWindow !== undefined && {
+      errorWindow: { ...(doc.errorWindow as WeekDoc["errorWindow"]) },
+    }),
     alerted: { ...(doc?.alerted as WeekDoc["alerted"] | undefined) },
   };
 }
+
+/** What a week's error window starts from: the end of the previous week's. */
+type ErrorWindowTail = Pick<WeekDoc, "errorWindow"> & { alerted: boolean };
 
 const add = (counts: Record<string, number>, key: string, n = 1) => {
   counts[key] = (counts[key] ?? 0) + n;
@@ -284,11 +294,22 @@ type ErrorRateChange = {
 };
 
 /**
- * Counts one streamed request in the week's error window, prunes buckets past
- * the hour, and flips `alerted.chat_error_rate` if the hour's rate crossed
- * the threshold either way.
+ * Counts one streamed request in the week's error window (started from
+ * `tail` if the week has none yet), prunes buckets past the hour, and flips
+ * `alerted.chat_error_rate` if the hour's rate crossed the threshold either
+ * way.
  */
-function countStreamed(week: WeekDoc, t: number, failed: boolean, alert: ErrorRateAlert): ErrorRateChange {
+function countStreamed(
+  week: WeekDoc,
+  t: number,
+  failed: boolean,
+  alert: ErrorRateAlert,
+  tail: ErrorWindowTail,
+): ErrorRateChange {
+  if (week.errorWindow === undefined) {
+    week.errorWindow = { ...tail.errorWindow };
+    if (tail.alerted) week.alerted = { ...week.alerted, chat_error_rate: true };
+  }
   const bucket = Math.floor(t / errorBucketMs) * errorBucketMs;
   const oldest = bucket - (errorWindowMinutes * 60_000 - errorBucketMs);
   const window = Object.fromEntries(
@@ -369,6 +390,24 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
 
   const thisWeeksBatch = () => batchOf(isoWeek(now()).week);
 
+  /** The previous week's error window, per week: read once by each instance. */
+  const tails = new Map<string, Promise<ErrorWindowTail>>();
+
+  function tailBefore(week: string, t: number): Promise<ErrorWindowTail> {
+    let tail = tails.get(week);
+    if (!tail) {
+      const previous = isoWeek(t - 7 * day).week;
+      tail = store
+        .update(`${usageCollection}/${previous}`, (doc) => ({ result: readWeek(previous, doc) }))
+        .then(({ errorWindow, alerted }) => ({ errorWindow, alerted: Boolean(alerted.chat_error_rate) }));
+      tails.clear(); // only this week's is ever needed again
+      tails.set(week, tail);
+      // Not kept when it fails: the next request tries again.
+      tail.catch(() => tails.delete(week));
+    }
+    return tail;
+  }
+
   async function flush(): Promise<void> {
     const pending = [...batches];
     batches.clear();
@@ -414,6 +453,14 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
       }
       const t = now();
       const { week } = isoWeek(t);
+      let tail: ErrorWindowTail;
+      try {
+        tail = await tailBefore(week, t);
+      } catch {
+        // The window then starts afresh, as with no previous week. Not logged:
+        // a store that fails this read fails the update below, which is.
+        tail = { alerted: false };
+      }
       // What the error-rate watch saw, in the update that was written.
       let rate: ErrorRateChange | undefined;
       const written = await fold(`a chat request (${outcome})`, (doc) => {
@@ -427,7 +474,7 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         }
         if (totalMs !== undefined) add(chat.totalMs, bucketOf(totalMs));
         if (firstTextMs !== undefined) add(chat.firstTextMs, bucketOf(firstTextMs));
-        rate = countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert);
+        rate = countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert, tail);
       }, week);
       if (written && rate) logErrorRate(week, rate);
     },
