@@ -76,6 +76,10 @@ _Avoid_: jailbreak, failure
 The metrics of every live run, re-run and re-score, one entry per recording set, oldest first. Each entry has its kind and the recordings fingerprint it was made from.
 _Avoid_: log, changelog, trend
 
+**Eval summary**:
+The machine-readable eval results (`summary.json`), one entry per recording set: cases, case kinds, leaks and cost per case. Regenerated with the report from the replayed recordings; the results line reads it.
+_Avoid_: scorecard, stats
+
 **Recordings fingerprint**:
 A hash of a recording set's recordings, stored in each history entry. CI checks the latest entry by it, not by recomputing metrics, so scoring changes don't force a live run.
 _Avoid_: checksum, version
@@ -107,7 +111,7 @@ One way Alberto builds and runs agents (evals, human in the loop, cost and limit
 _Avoid_: principle, best practice, rule
 
 **Results line**:
-The Portfolio Agent card's result: the deployed model's latest eval metrics, taken from the eval history when the site is built. It is shown on the page only, never served to the model.
+The Portfolio Agent card's result: the deployed model's eval metrics, taken from the eval summary when the site is built. It is shown on the page only, never served to the model.
 _Avoid_: eval badge, score
 
 **Usage line**:

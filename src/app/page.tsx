@@ -22,15 +22,14 @@ import {
 
 export default async function Home() {
   // Read at build time: the Portfolio Agent card shows its latest eval results.
-  const evalFile = (name: string) => readFile(join(process.cwd(), "agent/evals", name), "utf8");
-  const [history, report] = await Promise.all([evalFile("history.jsonl"), evalFile("report.md")]);
+  const evalSummary = await readFile(join(process.cwd(), "agent/evals/summary.json"), "utf8");
   // Each registered section's content; the registry sets the order.
   const content: Record<SectionId, ReactNode> = {
     about: <About summary={profile.summary} />,
     stack: <Stack skillGroups={skillGroups} />,
     experience: <Experience roles={experience} />,
     projects: (
-      <Projects agentProjects={withEvalResults(agentProjects, { history, report })} practices={practices} />
+      <Projects agentProjects={withEvalResults(agentProjects, evalSummary)} practices={practices} />
     ),
     agent: <Agent />,
     contact: <Contact profile={profile} />,
