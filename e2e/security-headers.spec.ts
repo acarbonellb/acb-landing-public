@@ -5,7 +5,7 @@ import { contactQuestion } from "../src/shared/site-copy";
 import { themeScript } from "../src/lib/theme";
 import { ask, conversation, cspViolations, expect, hostingPageHeaders, test } from "./fixtures";
 
-// The site's security headers (#93) live in out/firebase.json, written by
+// The site's security headers live in out/firebase.json, written by
 // `pnpm build`. The `page` fixture serves every page with them, so every spec
 // runs under the real CSP; this one checks the headers themselves and walks
 // the page's cross-origin calls (chat, stats, contact fallback) under them.

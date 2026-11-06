@@ -1,4 +1,4 @@
-// The contact fallback (#50): when the chat can't answer the contact
+// The contact fallback: when the chat can't answer the contact
 // question, the page answers it without the model, with the address from the
 // MCP `get_contact` tool, or, when that fails too, with a LinkedIn link. The
 // contact section builds it and hands it to the chat's `ask` as a strategy;

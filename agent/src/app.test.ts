@@ -15,7 +15,7 @@ import { listen, type RunningServer } from "./server";
 import { testAppDeps } from "./test-deps";
 import { createToolset, siteContent } from "./tools";
 
-// A placeholder: the real address is never in the repo (#51).
+// A placeholder: the repo is public, so the real address is never in it.
 const contactEmail = "ada@example.com";
 
 async function connectClient(baseUrl: string) {
@@ -131,8 +131,8 @@ describe("agent service over HTTP", () => {
       });
     });
 
-    // The site's contact fallback (#50): one bare `tools/call` from another
-    // origin, no session or `initialize` first.
+    // The site's contact fallback, for when the chat can't answer: one bare
+    // `tools/call` from another origin, no session or `initialize` first.
     it("answers the site's contact lookup from another origin, without a session", async () => {
       const seen: Response[] = [];
       const fetchFromSite: typeof fetch = async (url, init) => {

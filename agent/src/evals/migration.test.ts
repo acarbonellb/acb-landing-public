@@ -18,7 +18,7 @@ const contact: EvalCase = {
 const meta = { provider: "fake", model: "scripted" };
 const run = { date: "2026-11-06", commit: "e1f2a3b" };
 
-/** A recording as stored before #98: a system prompt hash, no settings. */
+/** A recording as stored before the request identity: a system prompt hash, no settings. */
 function legacy(recording: Recording): StoredRecording {
   const { caseId, slug, provider, model, calls, moreRuns } = recording;
   return {
@@ -47,7 +47,8 @@ async function legacySet(runs = 1) {
     ...historyEntry(sets[0], { date: "2026-11-05", commit: "509c11f" }, "rescored"),
     requestIdentity: undefined,
     promptHash: recordings[0].promptHash,
-    // What #97 fingerprinted: the recordings as stored then.
+    // What the entry's recordings fingerprint covered: the recordings as
+    // stored then.
     fingerprint: recordingsFingerprint(recordings),
   };
   delete entry.requestIdentity;

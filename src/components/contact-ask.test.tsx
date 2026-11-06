@@ -17,7 +17,8 @@ import { AgentChat } from "./agent-chat";
 import { ContactAsk } from "./contact-ask";
 
 // "ask my agent" in the contact section sends a canned question to the chat
-// in the agent section (#50). Both render here, as on the page.
+// in the agent section, so the page never shows the address. Both render
+// here, as on the page.
 
 const CHAT_URL = "http://agent.test/chat";
 const MCP_URL = "https://site.test/mcp";

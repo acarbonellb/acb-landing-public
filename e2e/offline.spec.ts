@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures";
 
 // CI tests the build it deploys, so the page under test is built with the
-// production agent URL (#94). Nothing a test leaves unstubbed may reach it:
+// production agent URL. Nothing a test leaves unstubbed may reach it:
 // the page only ever talks to the local server.
 
 test("never reaches a server other than the site, even an endpoint no test stubbed", async ({

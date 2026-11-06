@@ -1,4 +1,4 @@
-// One-off migration (#98; ADR 0001): rewrites recordings stored with a system
+// One-off migration (ADR 0001): rewrites recordings stored with a system
 // prompt hash and no settings into the current format (request identity of the
 // system prompt and tools, plus the model settings), appends one `migrated`
 // history entry per set it changed, then regenerates the report. No model, no

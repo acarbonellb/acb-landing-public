@@ -21,7 +21,7 @@ export type Profile = {
   summary: string[];
   /** Short call to action above the contact link ("ask my agent", or LinkedIn). */
   contactNote: string;
-  /** No email: the repo is public. The agent reads it from its environment (#51). */
+  /** No email: the repo is public. The agent reads it from its environment. */
   links: { github: string; linkedin: string };
 };
 
@@ -56,7 +56,7 @@ export type AgentProject = {
 export type PracticeSource = { label: string; href: string };
 
 /**
- * One "how I run agents" bullet (#43). State only what a public source backs:
+ * One "how I run agents" bullet. State only what a public source backs:
  * this repo, or approved copy already on the page. Never link a private repo.
  */
 export type Practice = {
@@ -174,7 +174,7 @@ export const practices: Practice[] = [
     ],
   },
   {
-    // Backed only by the fraud agent's approved copy above (#41).
+    // Backed only by the fraud agent's card copy above, which the owner approved.
     title: "Graded autonomy, a human in the loop",
     text: "The fraud detection agent recommends and a human admin decides; it approves on its own only on evidence verified in code.",
     sources: [{ label: "Fraud Detection Agent", href: "#agent-fraud-detection-agent" }],

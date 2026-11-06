@@ -1,5 +1,5 @@
 // Writes out/firebase.json after `next build`: the committed firebase.json with
-// the CSP for this build's inline scripts and agent URL (#93). The deploy uses
+// the CSP for this build's inline scripts and agent URL. The deploy uses
 // it (`firebase deploy --config out/firebase.json`), and the browser tests
 // serve the page with its headers (e2e/fixtures.ts). Run by `pnpm build`,
 // whose flag keeps Node quiet about parsing the imported .ts as an ES module.

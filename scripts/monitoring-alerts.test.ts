@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
-// The Cloud Monitoring setup for the agent's alert events (#91), run against a
+// The Cloud Monitoring setup for the agent's alert events, run against a
 // fake `gcloud` on PATH: it records every call and answers lookups from the
 // state each test gives it, so no test touches GCP.
 const script = resolve(__dirname, "monitoring-alerts.sh");

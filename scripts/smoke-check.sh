@@ -11,7 +11,7 @@ shift
 failures=0
 
 # Ask like a browser: the CDN caches one copy per Accept-Encoding, and a stale
-# copy can sit behind exactly the value browsers send (#11).
+# copy can sit behind exactly the value browsers send.
 browser=(--compressed -H "accept-encoding: gzip, deflate, br, zstd")
 
 # retry CMD...: runs CMD up to 5 times, 10 s apart, until it succeeds.
@@ -29,7 +29,7 @@ check_site() {
   headers=$(mktemp)
   page=$(curl -fsS "${browser[@]}" -D "$headers" --max-time 20 "$site/") || { echo "  $site/ is down"; rm -f "$headers"; return 1; }
   grep -q "Alberto Carbonell" <<<"$page" || { echo "  $site/ doesn't contain the expected content"; rm -f "$headers"; return 1; }
-  # The headers from out/firebase.json (#93).
+  # The security headers from out/firebase.json.
   local header
   for header in "content-security-policy: .*frame-ancestors 'none'" "x-content-type-options: nosniff" "referrer-policy: "; do
     grep -qi "^$header" "$headers" || { echo "  $site/ lacks the header '${header%%:*}'"; rm -f "$headers"; return 1; }

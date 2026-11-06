@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Cloud Monitoring alerts on the agent's alert events (#91): one email
+# Cloud Monitoring alerts on the agent's alert events: one email
 # notification channel and one log-based alert policy per alert event
 # (docs/logs-and-alerts.md). Run by the owner, by hand; never in CI.
 #

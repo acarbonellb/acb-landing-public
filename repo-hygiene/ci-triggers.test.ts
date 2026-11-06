@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 // Which CI jobs run for which trigger (`.github/workflows/deploy.yml`): every
 // change gets the PR checks, the ranges refresh's dispatched run included
-// (#65, story 14: GITHUB_TOKEN's pushes start no workflows, so that PR only
+// (GITHUB_TOKEN's pushes start no workflows, so that PR only
 // gets checks from the run it dispatches), and only `main` deploys.
 const root = resolve(__dirname, "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");

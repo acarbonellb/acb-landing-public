@@ -14,7 +14,7 @@ env:
   SITE_URL: ${{ vars.SITE_URL || format('https://{0}.web.app', vars.GCP_PROJECT_ID) }}
   REGION: europe-southwest1
 
-# Deploy what was tested (#94): `test` builds the site and the agent bundle
+# Deploy what was tested: `test` builds the site and the agent bundle
 # once, with production settings, and tests that build; the deploy jobs ship
 # those same artifacts, checked by hash. Actions are pinned by commit SHA,
 # firebase-tools by deploy/firebase-tools/package-lock.json and the agent's
@@ -134,7 +134,7 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund --prefix deploy/firebase-tools
       - run: deploy/firebase-tools/node_modules/.bin/firebase --version
       # The Hosting config the deploy ships: `pnpm build` writes it into the
-      # export, with the CSP for this build (#93).
+      # export, with the Content Security Policy for this build.
       - run: jq -e '.hosting.public == "." and (.hosting.headers | length > 0)' out/firebase.json
 
   # The agent goes first, with no traffic: the new revision gets a `candidate`
@@ -294,7 +294,7 @@ jobs:
 
       # `pnpm build` wrote out/firebase.json into the tested export: the
       # committed config plus the CSP for this build's inline scripts and
-      # agent URL (#93), so it ships with the artifact and is hashed with it.
+      # agent URL, so it ships with the artifact and is hashed with it.
       - run: deploy/firebase-tools/node_modules/.bin/firebase deploy --only hosting --config out/firebase.json --project "${{ vars.GCP_PROJECT_ID }}" --non-interactive
 
       # The page the site now serves is the tested one, byte for byte.

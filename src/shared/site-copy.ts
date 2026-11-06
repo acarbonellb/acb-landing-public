@@ -24,7 +24,7 @@ export const agentComingSoonNote =
 
 /**
  * Shown under the chat input. Each claim is checked against the agent's code
- * and the GCP config (PR for #46): re-check it when logging, the store or the
+ * and the GCP config: re-check it when logging, the store or the
  * model provider changes. The agent's tests check that no tool serves it.
  */
 export const chatPrivacyNote =
@@ -32,7 +32,7 @@ export const chatPrivacyNote =
 
 /**
  * What the contact section's "ask my agent" button sends to the chat, as the
- * visitor's message (#50). The eval case `on11` asks exactly this and is
+ * visitor's message. The eval case `on11` asks exactly this and is
  * gated in CI (ADR 0001), as it's the site's contact path.
  */
 export const contactQuestion = "I'd like to contact Alberto, what's his email address?";

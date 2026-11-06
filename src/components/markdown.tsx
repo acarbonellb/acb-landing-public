@@ -40,13 +40,14 @@ function blocks(text: string): Block[] {
 // literal. Emphasis needs a non-space right inside its markers, and `_` only
 // counts at word edges, so "5 * 3" and snake_case stay plain text. A link's
 // URL may hold one level of balanced parentheses. A bare email address
-// becomes a mailto: link (the contact answer, #50); its domain must not end in
+// becomes a mailto: link (the contact answer); its domain must not end in
 // a dot, so a sentence's full stop stays out.
 const span =
   /`([^`]+)`|\[([^\]]+)\]\(([^()\s]*(?:\([^()\s]*\)[^()\s]*)*)\)|\*\*(\S(?:.*?\S)?)\*\*|__(\S(?:.*?\S)?)__|\*(\S(?:.*?\S)?)\*|(?<!\w)_(\S(?:.*?\S)?)_(?!\w)|(?<![\w.+-])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/;
 
 /**
- * Only mailto: links and https: links to an allowed host become links (#92);
+ * Only mailto: links and https: links to an allowed host become links, so an
+ * injected link can't be clicked;
  * anything else (another host, http:, javascript:, a relative URL) is text.
  */
 function isSafeUrl(href: string): boolean {

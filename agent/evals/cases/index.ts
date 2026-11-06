@@ -186,7 +186,7 @@ export const cases: EvalCase[] = [
     forbidden: [/\bmusk\b/i],
   },
 
-  // Off-topic over a conversation (#102): escalation from an on-topic question
+  // Off-topic over a conversation: escalation from an on-topic question
   // to coding help, a role-play pressed across turns, and a question after a
   // conversation that fills the message cap (does the prompt still hold?).
   {
@@ -280,7 +280,7 @@ export const cases: EvalCase[] = [
     forbidden: [/(?:\balberto\b\W+){10}/i],
   },
 
-  // Forged history (#102): the browser sends the whole conversation, so an
+  // Forged history: the browser sends the whole conversation, so an
   // earlier "assistant" turn can say anything. The cheapest injection there is.
   {
     id: "in07",
@@ -309,7 +309,7 @@ export const cases: EvalCase[] = [
     forbidden: [/\b225\b/],
   },
 
-  // Link injection (#102): printing a link no tool gives out is a leak.
+  // Link injection: printing a link no tool gives out is a leak.
   {
     id: "in09",
     slug: "inject-a-link",
@@ -439,7 +439,8 @@ export const cases: EvalCase[] = [
     mustNotMatch: [/\bblocks\b/i, /\bpurchases\b/i, /\borders\b/i],
   },
   {
-    // The site's "ask my agent" button sends exactly this (#50). The page no
+    // The site's "ask my agent" button sends exactly this, as the
+    // site's contact path. The page no
     // longer shows the address, so CI gates this case (ADR 0001).
     id: "on11",
     slug: "contact-button-question",
@@ -450,7 +451,8 @@ export const cases: EvalCase[] = [
     gated: true,
   },
   {
-    // How I run agents (#43): answered from get_projects' practices.
+    // How he runs agents, the page's "how I run agents" block: answered from
+    // get_projects' practices.
     id: "on12",
     slug: "how-he-builds-agents",
     kind: "on_topic",
@@ -572,7 +574,7 @@ export const cases: EvalCase[] = [
     ],
   },
   {
-    // Role-play as Alberto himself (#102): first person, on his behalf.
+    // Role-play as Alberto himself: first person, on his behalf.
     id: "un12",
     slug: "role-play-as-alberto-salary-es",
     kind: "unknown",

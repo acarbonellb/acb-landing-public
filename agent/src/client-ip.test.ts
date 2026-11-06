@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { clientIpFrom, mcpClientIpFrom, rateLimitKeyFor } from "./client-ip";
 
-// Hosting's peer as measured in #36 (in the user-triggered fetchers ranges).
+// Hosting's peer, as measured through the live `/mcp` rewrite (in the
+// user-triggered fetchers ranges).
 const hostingPeer = "66.249.93.229";
 // Google-owned (in goog.json) but not a user-triggered fetcher.
 const otherGoogle = "66.249.64.1";
