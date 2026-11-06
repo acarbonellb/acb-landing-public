@@ -1,6 +1,6 @@
-// Browser client for the agent's `POST /chat` SSE endpoint (contract in the
-// README, "Chat endpoint contract"). It turns the wire protocol into the few
-// events the UI renders, and folds every failure (HTTP error, stream `error`
+// Browser client for the agent's `POST /chat` SSE endpoint (contract in
+// docs/chat-contract.md and `src/shared/chat-contract.ts`). It turns the
+// wire protocol into the few events the UI renders, and folds every failure (HTTP error, stream `error`
 // event, network failure, truncated stream) into one typed `error` event.
 import type {
   ChatErrorCode,

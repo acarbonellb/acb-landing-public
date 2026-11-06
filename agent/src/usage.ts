@@ -1,5 +1,5 @@
 // Usage monitoring: weekly aggregates of chat and MCP requests, served
-// publicly by `GET /stats` (README, "Usage stats").
+// publicly by `GET /stats` (docs/usage-stats.md).
 //
 // One document per ISO week (`usage/<YYYY-Www>`) in the same `DocumentStore`
 // as the guardrails (Firestore in production, memory locally). Each chat
@@ -20,7 +20,7 @@
 // the next one.
 //
 // The same document watches the chat's error rate for the `chat_error_rate`
-// alert event (README, "Logs and alert events"): streamed requests and their
+// alert event (docs/logs-and-alerts.md): streamed requests and their
 // errors are also counted in 10-minute buckets (`errorWindow`, pruned past
 // the hour), and the event fires once when the last hour's rate passes the
 // threshold (noted under `alerted`, in the same atomic update), then once
@@ -62,7 +62,7 @@ export type ChatRecord = {
  */
 export type ChatRequestOutcome = ChatOutcome | "http_400" | "http_413";
 
-/** The fields of one `chat_request` line (README, "Logs and alert events"). */
+/** The fields of one `chat_request` line (docs/logs-and-alerts.md). */
 type ChatRequestLog = {
   outcome: ChatRequestOutcome;
   inputTokens: number;

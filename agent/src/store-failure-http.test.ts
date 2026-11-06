@@ -1,5 +1,5 @@
 // The store-failure policy, over HTTP: with the shared store down, `/mcp` and
-// `/stats` fail open and `/chat` fails closed (README, "Shared store").
+// `/stats` fail open and `/chat` fails closed (docs/guardrails.md, "When the store fails").
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchContactEmail } from "../../src/shared/mcp-contact";
 import { createApp, httpErrorMessages, paths } from "./app";

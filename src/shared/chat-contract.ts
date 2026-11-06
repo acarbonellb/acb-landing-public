@@ -1,5 +1,6 @@
-// The wire contract of the agent's `POST /chat` endpoint (README, "Chat
-// endpoint contract"): request limits, message and event shapes, error codes.
+// The wire contract of the agent's `POST /chat` endpoint: request limits,
+// message and event shapes, error codes. docs/chat-contract.md describes the
+// protocol around them and links here for the shapes.
 // Both sides import this one module: the site's chat client and UI, and the
 // agent service (`agent/`, which bundles it like `src/shared/profile.ts`).
 // Types, plain constants and pure functions only, so it is safe in either
@@ -21,7 +22,7 @@ export type ChatMessage = { role: ChatRole; content: string };
 /**
  * An earlier answer sent back with the conversation, with the `signature` its
  * `done` event carried. The agent refuses a chat request whose earlier answers
- * are unsigned, were changed or were moved (README, "Signed answers").
+ * are unsigned, were changed or were moved (docs/chat-contract.md, "Signed answers").
  */
 export type SignedAnswer = { role: "assistant"; content: string; signature: string };
 

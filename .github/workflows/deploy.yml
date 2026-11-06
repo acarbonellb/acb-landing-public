@@ -202,9 +202,9 @@ jobs:
       # start and which the agent refuses in production unless
       # AGENT_ALLOW_MEMORY_STORE=true. The monthly spend cap is set here, in
       # sight, and stays under the Anthropic workspace's own $5/month hard
-      # limit (README, Guardrails). The contact email is a secret too, so the
+      # limit (docs/guardrails.md). The contact email is a secret too, so the
       # address never passes through GitHub: the repo and its logs are public.
-      # So is the answer signing key (README, Signed answers), which the agent
+      # So is the answer signing key (docs/chat-contract.md, Signed answers), which the agent
       # needs in production to start.
       # `^@^` makes `@` the separator, as ALLOWED_ORIGINS may hold commas.
       # `--no-traffic` keeps every request on the serving revision.

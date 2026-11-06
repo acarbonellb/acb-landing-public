@@ -18,7 +18,7 @@
 // keep its worst case reserved for the rest of the month; what it spent stays
 // charged. (The store keeps the reservations under `holds`.)
 //
-// Alert events (README, "Logs and alert events"): `spend_threshold` when the
+// Alert events (docs/logs-and-alerts.md): `spend_threshold` when the
 // month's spend first reaches 50% and 80% of the cap, `spend_cap_reached`
 // when the cap first refuses a request. Each fires once per month, noted in
 // the month's document (`spend-holds.ts`).

@@ -1,4 +1,4 @@
-// Agent evals (README, "Evals"; docs/adr/0001-agent-evals-record-replay.md).
+// Agent evals (docs/evals.md; docs/adr/0001-agent-evals-record-replay.md).
 //
 //   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun] [--runs k]
 //     Live: runs every case k times (default 3, pass@k) against the configured

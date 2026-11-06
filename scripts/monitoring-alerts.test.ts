@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from "vitest";
 // fake `gcloud` on PATH: it records every call and answers lookups from the
 // state each test gives it, so no test touches GCP.
 const script = resolve(__dirname, "monitoring-alerts.sh");
-const readme = readFileSync(resolve(__dirname, "../README.md"), "utf8");
+const alertDocs = readFileSync(resolve(__dirname, "../docs/logs-and-alerts.md"), "utf8");
 const email = "owner@example.com";
 const project = "demo-project";
 
@@ -84,9 +84,9 @@ describe("monitoring-alerts.sh setup --dry-run", () => {
   });
 });
 
-/** The alert events the README documents as alerting (WARNING or ERROR rows), from its "Alert events" table. */
+/** The alert events the docs list as alerting (WARNING or ERROR rows), from the "Alert events" table of docs/logs-and-alerts.md. */
 function documentedAlertEvents(): { event: string; severity: string }[] {
-  const table = readme.slice(readme.indexOf("**Alert events.**")).split("\n\n")[1];
+  const table = alertDocs.slice(alertDocs.indexOf("\n## Alert events\n")).split("\n\n")[2];
   return table
     .split("\n")
     .map((line) => line.match(/^\| `([a-z_]+)` \| `(WARNING|ERROR)` \|/))
