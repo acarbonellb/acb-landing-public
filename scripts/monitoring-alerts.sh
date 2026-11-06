@@ -213,5 +213,5 @@ if $dry_run; then
   echo "# Done (dry run). Run without --dry-run to apply it, then: monitoring-alerts.sh test $project"
 else
   echo "Set up: channel \"$channel_name\" and ${#alerts[@]} alert policies in $project." >&2
-  echo "Next: scripts/monitoring-alerts.sh test $project, and check the inbox." >&2
+  echo "Next: wait about 10 minutes (a new policy takes a few to start matching), then scripts/monitoring-alerts.sh test $project, and check the inbox." >&2
 fi
