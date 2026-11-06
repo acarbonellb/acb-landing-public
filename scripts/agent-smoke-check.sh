@@ -15,10 +15,6 @@ origin="${2:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin
 tools=(get_profile get_experience get_projects get_stack get_contact)
 failures=0
 
-# ROLLBACK DRILL (#94): fail only the live check, after traffic has moved.
-# Revert this commit right after the drill.
-if $site_mcp; then echo "  rollback drill: deliberate failure"; exit 1; fi
-
 # retry CMD...: runs CMD up to 5 times, 10 s apart (covers a cold start).
 retry() {
   local attempt
