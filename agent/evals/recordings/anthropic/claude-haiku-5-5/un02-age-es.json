@@ -3,7 +3,7 @@
   "slug": "age-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "bb9133ed956a878b9089cbac7d62386b34f564e43b00f78d50536449bc56d3ff",
+      "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
       "latencyMs": 940,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1668
+          "inputTokens": 1668,
+          "cacheWriteInputTokens": 1664
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Jkmb1R17nDJF5PkNxocoCP",
+                "id": "toolu_0135A5Suz8wiHXbtJRao7hND",
                 "name": "get_profile",
                 "input": {}
               }
@@ -38,17 +39,18 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1668,
-              "outputTokens": 71
+              "cacheWriteInputTokens": 1664,
+              "outputTokens": 59
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQS1AUKEAgTGAI4AUIIdGhpbmtpbmcSDCz8ppSEJIXNzABPNRoMh7S5MX+Ukctn3MU8IjDslvzDd9Tf081OPJuxLtOv0wNAXetV0xQ9gdQVmFpY4HVyeOjiBMk5NKobSmIpVHEq8QSMn6KTR9smxjcJZA6PFOlm14lftylNYB74e5xRawDdUbODeOLnUYD/Zy0GQAFXcAdbd8ss0X8tI+P2Qm6FUO0K9+mEBQcxAb4lPDSvWotWowi3gz77ykJ1zxlK76NaH4i0SsSS+xqrILatt0O4Ibm0q2wpDUoWfVAMp09I3w/B+GpOUv2uy/v7vZLyOLYF5l0a1gu260f4nwnVUOBy7tMJ0PuJkcUWmL0JEYGEs2ernrnzFo+p5P0OKgt0jkWdx48rrw8MZdcRlKpGG6B6CKH33Qodd1iB8QaA0J5g/+MT6kA3YdgkJw3GGG3usfyJDTDcFbI5zrH23WyD9+GiwoxBTdF2BKPaY+Nf93K40xayfl+ofwsfRy4luh+IZdDdY3FWUac+O436iaDEr/qxBgJ9hLifvrmlsQAjfAooK5zPlr6KSytqbzmT3MNJer2pqO/gijx3KDmJFOWdw0rUINfdW0vcVW52V5OIW6+co7lcU621d+/Rj+lYnAVryGU28IO/901xjalaXRp5hIiIRLy+ABVL7zizhyNNDYrclfwNk6AGx+du/Zepqn39WHXQuisMY6ND8UQdoAt8GvZOGbvWbDPsfBUemQ9qNXMXfTUFNF8klJZY4cbbYSGJYdaJNPWpGKzJ4FfKFHofamtjXjZ2x2t1Y4LdD2Yyr1bWNKBeh6L4g78zAt17EhWicxdBbgDnrNi2de9TzMyQkiO3F9rhitWFaPM23NLpRxXVJB/TRnFO1kqhg78jbQNXAdtphatENNCuHPoytta+JFF13PFNSJ2ftkFuxmHaaV5gkwCIuE4y5DCi+RC4Lmy8MQLPNSUXGAE="
+                "signature": "CAQSuAUKEAgTGAI4AUIIdGhpbmtpbmcSDPd9qqFGv+sFWuYPqBoMM7GGPqs95Ypphi+ZIjDyz3xFd9+KhnwWKvPKkUcy4MOmINXgbz7Ah1+0O6bwOHkBNmldrooH/1ncEL9S7SQq1QQtahgj4ag1GEI8tND3UgFjK6hNIFcZPULOl0+LnaSpU+vkqaMaOAUZ1m04LyRz3q8efQHbt2eLG3gsT2C2yhas8hiLxpAerkxIZKoBzvXQ+AdApv9LHwQps1ONnQ3VupnG9KRwzi22uQqXF9Q4URD9/jDY6s1x9bCbZTr8F5kbLq/zg1m1Pc4NmE0PKrMjMhtIuiFY0TUQYyHO7D+mr9fnQWvw8DRmB+21HUI68FPKJIF9pdgU1G/Tjx1Jr/gbLA+cQg6NqgHWCNrZyNPoD376MCkOBzs0b3C0S68YTmCh+/XILOJMiLwUwMmbqjoEnSXi0LfAUtjnpCjq7E+1z6OAaAQd/ZcL61Dq9MVaU7s5MkSzHfUKobOgQAxrMjLrfN3shPDd4ym2FvC6ozOECBD0520mStuuv+rkayjDDulFV6rPPZeltW3pB1kGQ0Nnu+jNxObRwHcn2NmYk2jCkRXRHna2ETjBmK/5gb3Lyl0/P2XkZ0TaEecOKslDf7Ihhrlm/5K0DaezfnaG00LOA8TMWVU7EvxKYM4KJdpKwlj7JEhWi8t0UxsQIgJcT5yl5RdoaR3EOqmvdCuhoXU5OMJbjaLxQOe9af+/45sRCuKfdZhV5JaflMDvXeTKNITcVx/HHg93ZVJz7TvNIqDEXdipYXa2trJEO/3zWLxcbhFhECuzjSryALK4VDllcdIYEGFaCaE8lJHe2NBfFHnLnuNleE92D0GA6zLuB4Tc/ZVAWn/f1oJbRCba4KF4S1ZHpxMeb3nQxtso9FwvyhH0ZqNV2/vY4mkYAQ=="
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01Jkmb1R17nDJF5PkNxocoCP",
+                "id": "toolu_0135A5Suz8wiHXbtJRao7hND",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -61,20 +63,30 @@
       ]
     },
     {
-      "requestHash": "ba25d4f4342d87fc379d264264f54cc0f4737ea1ce6bcb0047eabc867488900e",
-      "latencyMs": 1148,
+      "requestHash": "416a67203c1f9e2c2c7f7c776b1ff183c7b7f63babedf95d05eed4e1342dfe92",
+      "latencyMs": 974,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2185
+          "inputTokens": 2173,
+          "cacheWriteInputTokens": 507,
+          "cacheReadInputTokens": 1664
         },
         {
           "type": "text_delta",
-          "text": "Lo si"
+          "text": "No"
         },
         {
           "type": "text_delta",
-          "text": "ento, en"
+          "text": " pu"
+        },
+        {
+          "type": "text_delta",
+          "text": "edo "
+        },
+        {
+          "type": "text_delta",
+          "text": "ver su edad en"
         },
         {
           "type": "text_delta",
@@ -82,121 +94,525 @@
         },
         {
           "type": "text_delta",
-          "text": " perfil no a"
+          "text": " perfil, así"
         },
         {
           "type": "text_delta",
-          "text": "parece la"
+          "text": " que no pu"
         },
         {
           "type": "text_delta",
-          "text": " edad de Alberto."
+          "text": "edo confirmarla."
         },
         {
           "type": "text_delta",
-          "text": " L"
+          "text": " Si qu"
         },
         {
           "type": "text_delta",
-          "text": "o que sí puedo dec"
+          "text": "ieres saber más, pued"
         },
         {
           "type": "text_delta",
-          "text": "irte es"
+          "text": "es contactarle directamente"
         },
         {
           "type": "text_delta",
-          "text": " que t"
+          "text": ". Pu"
         },
         {
           "type": "text_delta",
-          "text": "iene más"
+          "text": "edo cont"
         },
         {
           "type": "text_delta",
-          "text": " de 10 años de experi"
+          "text": "arte sobre su exper"
         },
         {
           "type": "text_delta",
-          "text": "encia como"
+          "text": "iencia profesional, s"
         },
         {
           "type": "text_delta",
-          "text": " "
+          "text": "us agentes de"
         },
         {
           "type": "text_delta",
-          "text": "ingeniero de software, con"
+          "text": " IA o su st"
         },
         {
           "type": "text_delta",
-          "text": " T"
-        },
-        {
-          "type": "text_delta",
-          "text": "ypeScript, Node."
-        },
-        {
-          "type": "text_delta",
-          "text": "js y PostgreSQ"
-        },
-        {
-          "type": "text_delta",
-          "text": "L,"
-        },
-        {
-          "type": "text_delta",
-          "text": " y que está basado en España"
-        },
-        {
-          "type": "text_delta",
-          "text": " ("
-        },
-        {
-          "type": "text_delta",
-          "text": "remoto). Si qu"
-        },
-        {
-          "type": "text_delta",
-          "text": "ieres saber su"
-        },
-        {
-          "type": "text_delta",
-          "text": " edad u"
-        },
-        {
-          "type": "text_delta",
-          "text": " otros"
-        },
-        {
-          "type": "text_delta",
-          "text": " detalles personales, pued"
-        },
-        {
-          "type": "text_delta",
-          "text": "es contactarlo directam"
-        },
-        {
-          "type": "text_delta",
-          "text": "ente."
+          "text": "ack tecnológico."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Lo siento, en su perfil no aparece la edad de Alberto. Lo que sí puedo decirte es que tiene más de 10 años de experiencia como ingeniero de software, con TypeScript, Node.js y PostgreSQL, y que está basado en España (remoto). Si quieres saber su edad u otros detalles personales, puedes contactarlo directamente.",
+            "text": "No puedo ver su edad en su perfil, así que no puedo confirmarla. Si quieres saber más, puedes contactarle directamente. Puedo contarte sobre su experiencia profesional, sus agentes de IA o su stack tecnológico.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2185,
-              "outputTokens": 126
+              "inputTokens": 2173,
+              "cacheWriteInputTokens": 507,
+              "cacheReadInputTokens": 1664,
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Lo siento, en su perfil no aparece la edad de Alberto. Lo que sí puedo decirte es que tiene más de 10 años de experiencia como ingeniero de software, con TypeScript, Node.js y PostgreSQL, y que está basado en España (remoto). Si quieres saber su edad u otros detalles personales, puedes contactarlo directamente."
+                "text": "No puedo ver su edad en su perfil, así que no puedo confirmarla. Si quieres saber más, puedes contactarle directamente. Puedo contarte sobre su experiencia profesional, sus agentes de IA o su stack tecnológico."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
+          "latencyMs": 935,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_012FibPeeLpWTRPeCzYz3mVr",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 74
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS2QUKEAgTGAI4AUIIdGhpbmtpbmcSDHGXLBJrQs3UkoNxURoMr4AXTYMQf8ILFsZMIjD+O7ejPr7jJks86YfXvo+5vgWwd1IvVbL4bVTqatDM31AbTHcC7CoMQAcCVRWJoa8q9gT2m4j4tn784+jJG7SYjCxjZS765yYviIkNN1yfb6K32aAgp5oCwyvxKFHqIubi65vLUU2NCpbt8i5fC5V3kY0E2L0N9hmE1zqRObDZf8wSSWyFII1DbCT9vB4AI8uQZe1k2+YqclYhtWqi1tAy9ur93Dyb9CvGJ9jSfuOaK6gCLBANoBVbQYKq0e4sMh09bY19zmdUZTJY5gH02C+HDVhHDEv42pZ6kDLd+0FjksxA5lEsZCoZIjZJJNQOUnqbDcDYztCO0h/7rlEq77KHMp1wWa1L6CcHxxW4cvCUgR2ZM6fQgU4f496+BBRRIkTmOl2884lBvoY0l3TEuMrRF1BZBDacd09vczF29zD9bE4sF2Ph1mb2I58HUbKzVZBe9PGDcn8H/7/2B1nDfzJoQNaYOWyCMj+Lfu0wZbWjkERIqxZIhAdTEw8GfQ+TByreAsaQpAsINJl0oi0A/eUZh7oILV82Lr/jYCThrJ8/vcyFn4360xDql9pj0CoSEH1VQ1gyRKFtTgfgkoZpFVbq0w8HD5h5bVkK78/2XW+/Bbg7xfF4sypK7u5ZE+Fp8HDTZwdZiY3gw9vSTPaHwo/ZqGyKDd93d8+yw78jii6/ZJVeCV3q4XaO6BDws40XZFVFIdqHkcMNUoOkNdZsM5zs/mm0Y6+8qKcCIPetLssX5/+TV2Nw0L6ZxKwLylGjm7mECtciBAdLzUFh2Z5rAWBsD/B6bEyBDM1TIS5wFM7FzNCSvoRDfI155hCkQffl16VRzbtTGwWqVkZYCBuk5z+d3MCwYVPhtg2DxGrHK9psQTRD5ZtdeOlBVeIUp73f3ZV5lhudccBJ41oYAQ=="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_012FibPeeLpWTRPeCzYz3mVr",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "d2797c36f4ebada6cfefd04d527e104409fdc400768a502df0f352968142bae1",
+          "latencyMs": 1196,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2188,
+              "cacheWriteInputTokens": 522,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "text_delta",
+              "text": "No"
+            },
+            {
+              "type": "text_delta",
+              "text": " t"
+            },
+            {
+              "type": "text_delta",
+              "text": "eng"
+            },
+            {
+              "type": "text_delta",
+              "text": "o su"
+            },
+            {
+              "type": "text_delta",
+              "text": " edad en su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil,"
+            },
+            {
+              "type": "text_delta",
+              "text": " así que no puedo conf"
+            },
+            {
+              "type": "text_delta",
+              "text": "irmarla. Lo"
+            },
+            {
+              "type": "text_delta",
+              "text": " que sí puedo decir"
+            },
+            {
+              "type": "text_delta",
+              "text": "te es que Alberto es"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "ingeniero de"
+            },
+            {
+              "type": "text_delta",
+              "text": " software senior en"
+            },
+            {
+              "type": "text_delta",
+              "text": " España"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "remoto), con más de "
+            },
+            {
+              "type": "text_delta",
+              "text": "10 años de experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " en TypeScript,"
+            },
+            {
+              "type": "text_delta",
+              "text": " Node.js y Postgre"
+            },
+            {
+              "type": "text_delta",
+              "text": "SQL. Si qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres saber su"
+            },
+            {
+              "type": "text_delta",
+              "text": " edad, puedes pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntárs"
+            },
+            {
+              "type": "text_delta",
+              "text": "ela directamente. "
+            },
+            {
+              "type": "text_delta",
+              "text": "¿Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " interesa algo más sob"
+            },
+            {
+              "type": "text_delta",
+              "text": "re su tray"
+            },
+            {
+              "type": "text_delta",
+              "text": "ectoria o sus ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "No tengo su edad en su perfil, así que no puedo confirmarla. Lo que sí puedo decirte es que Alberto es ingeniero de software senior en España (remoto), con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL. Si quieres saber su edad, puedes preguntársela directamente. ¿Te interesa algo más sobre su trayectoria o sus agentes de IA?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2188,
+                  "cacheWriteInputTokens": 522,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 147
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "No tengo su edad en su perfil, así que no puedo confirmarla. Lo que sí puedo decirte es que Alberto es ingeniero de software senior en España (remoto), con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL. Si quieres saber su edad, puedes preguntársela directamente. ¿Te interesa algo más sobre su trayectoria o sus agentes de IA?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
+          "latencyMs": 938,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_014DmPrDhYdGaxSE5f6b6Cij",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 78
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS6gUKEAgTGAI4AUIIdGhpbmtpbmcSDCsyYXSI5kDRCrPUFhoMzy8W9IePJH7KpxyJIjCH/h1vIBVlShneW+J2jWl706YKItoPXAKfFqFKP4E8RsSSvJfQVb0+YUmqYQoKq4wqhwWHk0rdYEsRXAKvtMGctt+87EFyTd8iPrcSycONsuIr7PzlM88klNiMIODT6fXtmecpr9u3WFPT2FSIqaca4xbUurH4K0Oq2LT7v5JlQ1ZzkrDhdH08Vx0yEQ4fhKsicEaTR6RSYochHdbslQK/uNQaZspzv6XPvg34G0YiVQDei48yw0DCDJ1ofMEqYJTeg31/WCEktMfIXWNeyw3lq7KKf3pVSuPfxnXo9jf+idFZDse/rB3Z9lWgZj95V1DkaTvvxgVHjfyS7XYIlc5/ChHc/yYJS5/2LTJE0OF55DOFKTNBggr3hNIRmgYr0Zq7/+0R5obehvk+b4e6ZiqzLxZmyoC3N1Wy8eAnQOFFRSR2qS1pGAoPAy3+Wp4deD1vGXZlvsKfsx2e56nd0QWK2tDjJKrZcbCxCxgeGbhGPFjGlQwCdf4tS9IooOINFtpnfc4eivydaK9xvBYgM96y5zLstCzCpfy+Ta+VQSoAXt6riEcJ5KvfqrlxlAzq9KgLbtv54l2qalwU1bzWIUZvTUVXsXFfDaTN11TejVmWrI5T11XaEWt+AD19Z/9p3Or6y4iL0jdCyPm0H9eFiXm5wHQJ2URVUAzh6MExNVM1+5BYKZEuXe/BJb3tKW8wI/8f9yCPwsfTzdHqqRdXYUT9ybfm2dIUud0+CsOzaudm9nf3tEkJjOZNnyDi30T08uqjiv/jsQ7gn4ayKc/kWZO3hGjDMEc2ywXUskbZ+dbCDq5TgeVROz++XL4hqVHSZyRGgXyQAdrHvk0fBsg7sOcthjzZSUUaUJG6eIgasob6lWOf2uqt4VlmzY4/DdxS6J1ZFUHb+dEVK5iDoH2rt0S5JDCgrzHXQTK3FxgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_014DmPrDhYdGaxSE5f6b6Cij",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "6d1ba80e0c6521641cc75358720d58308d319df27145d88690e917ee3ef7eb0c",
+          "latencyMs": 1499,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2192,
+              "cacheWriteInputTokens": 526,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "text_delta",
+              "text": "No"
+            },
+            {
+              "type": "text_delta",
+              "text": " pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo ver su edad en"
+            },
+            {
+              "type": "text_delta",
+              "text": " su perfil,"
+            },
+            {
+              "type": "text_delta",
+              "text": " así que no"
+            },
+            {
+              "type": "text_delta",
+              "text": " te"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo dar "
+            },
+            {
+              "type": "text_delta",
+              "text": "ese d"
+            },
+            {
+              "type": "text_delta",
+              "text": "ato. Si"
+            },
+            {
+              "type": "text_delta",
+              "text": " qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres saber"
+            },
+            {
+              "type": "text_delta",
+              "text": "lo, puedes contact"
+            },
+            {
+              "type": "text_delta",
+              "text": "arlo directamente ("
+            },
+            {
+              "type": "text_delta",
+              "text": "pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo dar"
+            },
+            {
+              "type": "text_delta",
+              "text": "te s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us dat"
+            },
+            {
+              "type": "text_delta",
+              "text": "os de contacto)."
+            },
+            {
+              "type": "text_delta",
+              "text": " L"
+            },
+            {
+              "type": "text_delta",
+              "text": "o que sí s"
+            },
+            {
+              "type": "text_delta",
+              "text": "é: Alberto es "
+            },
+            {
+              "type": "text_delta",
+              "text": "ingeniero de"
+            },
+            {
+              "type": "text_delta",
+              "text": " software senior en"
+            },
+            {
+              "type": "text_delta",
+              "text": " España"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "remoto), con más de "
+            },
+            {
+              "type": "text_delta",
+              "text": "10 años de experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript, Node"
+            },
+            {
+              "type": "text_delta",
+              "text": ".js y PostgreS"
+            },
+            {
+              "type": "text_delta",
+              "text": "QL, y se d"
+            },
+            {
+              "type": "text_delta",
+              "text": "edica s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre tod"
+            },
+            {
+              "type": "text_delta",
+              "text": "o a construir agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿Te c"
+            },
+            {
+              "type": "text_delta",
+              "text": "uento"
+            },
+            {
+              "type": "text_delta",
+              "text": " más"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre al"
+            },
+            {
+              "type": "text_delta",
+              "text": "guno de sus proyect"
+            },
+            {
+              "type": "text_delta",
+              "text": "os o su experiencia?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "No puedo ver su edad en su perfil, así que no te puedo dar ese dato. Si quieres saberlo, puedes contactarlo directamente (puedo darte sus datos de contacto). Lo que sí sé: Alberto es ingeniero de software senior en España (remoto), con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL, y se dedica sobre todo a construir agentes de IA. ¿Te cuento más sobre alguno de sus proyectos o su experiencia?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2192,
+                  "cacheWriteInputTokens": 526,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 178
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "No puedo ver su edad en su perfil, así que no te puedo dar ese dato. Si quieres saberlo, puedes contactarlo directamente (puedo darte sus datos de contacto). Lo que sí sé: Alberto es ingeniero de software senior en España (remoto), con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL, y se dedica sobre todo a construir agentes de IA. ¿Te cuento más sobre alguno de sus proyectos o su experiencia?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

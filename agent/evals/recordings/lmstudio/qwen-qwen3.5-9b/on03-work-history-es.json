@@ -3,7 +3,7 @@
   "slug": "work-history-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "7392f6ae9d2b9f4c3b7d7f0e9824fa7a42c8b2c813e2ea22758e3c88e65b0c85",
-      "latencyMs": 1630,
+      "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
+      "latencyMs": 1360,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342
+          "inputTokens": 2342,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "6GzoZ1L6ud2FUfIH8GR6i934ijkCmjvv",
+                "id": "PGknGHiZwZNI0pUmh3GPe6hHoz2juixp",
                 "name": "get_experience",
                 "input": {}
               }
@@ -38,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2342,
-              "outputTokens": 59
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "6GzoZ1L6ud2FUfIH8GR6i934ijkCmjvv",
+                "id": "PGknGHiZwZNI0pUmh3GPe6hHoz2juixp",
                 "name": "get_experience",
                 "input": {}
               }
@@ -53,12 +55,13 @@
       ]
     },
     {
-      "requestHash": "f7a6f8917d550a374d31979f4d6eff49ba472627d022a3fa09fd4c42de117dd0",
-      "latencyMs": 2454,
+      "requestHash": "6fc64ede740cfaf652e977070a8e9c0f1999baecfdcd65a47d0acc69ce7b17f3",
+      "latencyMs": 2428,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2690
+          "inputTokens": 2690,
+          "cacheReadInputTokens": 1175
         },
         {
           "type": "text_delta",
@@ -122,6 +125,30 @@
         },
         {
           "type": "text_delta",
+          "text": "Madrid"
+        },
+        {
+          "type": "text_delta",
+          "text": " /"
+        },
+        {
+          "type": "text_delta",
+          "text": " Rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "oto"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
           "text": "2"
         },
         {
@@ -162,30 +189,6 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " trabajando"
-        },
-        {
-          "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " Madrid"
-        },
-        {
-          "type": "text_delta",
-          "text": " /"
-        },
-        {
-          "type": "text_delta",
-          "text": " remoto"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
@@ -219,6 +222,18 @@
         {
           "type": "text_delta",
           "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "Madrid"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " "
         },
         {
           "type": "text_delta",
@@ -274,18 +289,6 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " Madrid"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
@@ -311,6 +314,26 @@
         {
           "type": "text_delta",
           "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "A"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cor"
+        },
+        {
+          "type": "text_delta",
+          "text": "uña"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " "
         },
         {
           "type": "text_delta",
@@ -366,45 +389,812 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " A"
-        },
-        {
-          "type": "text_delta",
-          "text": " Cor"
-        },
-        {
-          "type": "text_delta",
-          "text": "uña"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (2019 — ahora): Senior Software Engineer, trabajando en Madrid / remoto.\n- **M&GT Consulting** (2016 — 2019): Software Developer, en Madrid.\n- **Indra** (2015 — 2016): Software Developer, en A Coruña.",
+            "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (Madrid / Remoto, 2019 — ahora): Senior Software Engineer.\n- **M&GT Consulting** (Madrid, 2016 — 2019): Software Developer.\n- **Indra** (A Coruña, 2015 — 2016): Software Developer.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2690,
+              "cacheReadInputTokens": 1175,
               "outputTokens": 88
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (2019 — ahora): Senior Software Engineer, trabajando en Madrid / remoto.\n- **M&GT Consulting** (2016 — 2019): Software Developer, en Madrid.\n- **Indra** (2015 — 2016): Software Developer, en A Coruña."
+                "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (Madrid / Remoto, 2019 — ahora): Senior Software Engineer.\n- **M&GT Consulting** (Madrid, 2016 — 2019): Software Developer.\n- **Indra** (A Coruña, 2015 — 2016): Software Developer."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
+          "latencyMs": 1402,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "vyK3EObyRuFfObdVksV16rFKleYNkBFf",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 52
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "vyK3EObyRuFfObdVksV16rFKleYNkBFf",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "ab3a401b67a68236631a2b4303dd891ecdff71b564e30cff196fdb599a633a36",
+          "latencyMs": 2340,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2690,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " ha"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabajado"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " las"
+            },
+            {
+              "type": "text_delta",
+              "text": " siguientes"
+            },
+            {
+              "type": "text_delta",
+              "text": " empresas"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " ahora"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " /"
+            },
+            {
+              "type": "text_delta",
+              "text": " remoto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "M"
+            },
+            {
+              "type": "text_delta",
+              "text": "&"
+            },
+            {
+              "type": "text_delta",
+              "text": "GT"
+            },
+            {
+              "type": "text_delta",
+              "text": " Consulting"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Ind"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (2019 — ahora): Senior Software Engineer en Madrid / remoto.\n- **M&GT Consulting** (2016 — 2019): Software Developer en Madrid.\n- **Indra** (2015 — 2016): Software Developer en A Coruña.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2690,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 84
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (2019 — ahora): Senior Software Engineer en Madrid / remoto.\n- **M&GT Consulting** (2016 — 2019): Software Developer en Madrid.\n- **Indra** (2015 — 2016): Software Developer en A Coruña."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
+          "latencyMs": 1240,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "PqYBI0fjoG5VD3ERiHOyPdcC3oaV1c8t",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 46
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "PqYBI0fjoG5VD3ERiHOyPdcC3oaV1c8t",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "8ced867c329ce5e9f52e86b63781729c5f31ab79e148eb6d6d399e7a8c3f6450",
+          "latencyMs": 2455,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2690,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " ha"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabajado"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " las"
+            },
+            {
+              "type": "text_delta",
+              "text": " siguientes"
+            },
+            {
+              "type": "text_delta",
+              "text": " empresas"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " /"
+            },
+            {
+              "type": "text_delta",
+              "text": " Rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " ahora"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "M"
+            },
+            {
+              "type": "text_delta",
+              "text": "&"
+            },
+            {
+              "type": "text_delta",
+              "text": "GT"
+            },
+            {
+              "type": "text_delta",
+              "text": " Consulting"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Ind"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (Madrid / Remoto, 2019 — ahora): Senior Software Engineer.\n- **M&GT Consulting** (Madrid, 2016 — 2019): Software Developer.\n- **Indra** (A Coruña, 2015 — 2016): Software Developer.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2690,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 88
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto ha trabajado en las siguientes empresas:\n\n- **CoverWallet** (Madrid / Remoto, 2019 — ahora): Senior Software Engineer.\n- **M&GT Consulting** (Madrid, 2016 — 2019): Software Developer.\n- **Indra** (A Coruña, 2015 — 2016): Software Developer."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

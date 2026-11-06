@@ -3,7 +3,7 @@
   "slug": "salary",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,60 +17,41 @@
   },
   "calls": [
     {
-      "requestHash": "d2569cc92676aae1ecc249c24d8b8c6d0a04fa9e8b33f8c53b5ada9fa131edc4",
-      "latencyMs": 1043,
+      "requestHash": "84ae48a45d631fad4e048a1367ef603df2be9de756a5cf0de3591f7fd3541bb4",
+      "latencyMs": 841,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1662
+          "inputTokens": 1662,
+          "cacheWriteInputTokens": 1658
         },
         {
           "type": "text_delta",
-          "text": "I don"
+          "text": "I can't answer that."
         },
         {
           "type": "text_delta",
-          "text": "'t have information"
+          "text": " Sal"
         },
         {
           "type": "text_delta",
-          "text": " about Alberto's salary"
+          "text": "ary and pay expectations a"
         },
         {
           "type": "text_delta",
-          "text": " or pay expectations in"
+          "text": "ren't in Alberto's"
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": " profile, so please"
         },
         {
           "type": "text_delta",
-          "text": " profile. For"
+          "text": " cont"
         },
         {
           "type": "text_delta",
-          "text": " that"
-        },
-        {
-          "type": "text_delta",
-          "text": ", please cont"
-        },
-        {
-          "type": "text_delta",
-          "text": "act him directly through the"
-        },
-        {
-          "type": "text_delta",
-          "text": " details"
-        },
-        {
-          "type": "text_delta",
-          "text": " on his site"
-        },
-        {
-          "type": "text_delta",
-          "text": ". I"
+          "text": "act him directly. I"
         },
         {
           "type": "text_delta",
@@ -78,53 +59,296 @@
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": " his cont"
         },
         {
           "type": "text_delta",
-          "text": " work exper"
+          "text": "act details"
         },
         {
           "type": "text_delta",
-          "text": "ience, A"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "I agent"
+          "text": " or"
         },
         {
           "type": "text_delta",
-          "text": " projects, or t"
+          "text": " t"
         },
         {
           "type": "text_delta",
-          "text": "ech stack if that"
+          "text": "ell you about his exper"
         },
         {
           "type": "text_delta",
-          "text": " hel"
+          "text": "ience and proj"
         },
         {
           "type": "text_delta",
-          "text": "ps."
+          "text": "ects if that"
+        },
+        {
+          "type": "text_delta",
+          "text": " helps."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I don't have information about Alberto's salary or pay expectations in his profile. For that, please contact him directly through the details on his site. I can share his work experience, AI agent projects, or tech stack if that helps.",
+            "text": "I can't answer that. Salary and pay expectations aren't in Alberto's profile, so please contact him directly. I can share his contact details, or tell you about his experience and projects if that helps.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1662,
-              "outputTokens": 67
+              "cacheWriteInputTokens": 1658,
+              "outputTokens": 62
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have information about Alberto's salary or pay expectations in his profile. For that, please contact him directly through the details on his site. I can share his work experience, AI agent projects, or tech stack if that helps."
+                "text": "I can't answer that. Salary and pay expectations aren't in Alberto's profile, so please contact him directly. I can share his contact details, or tell you about his experience and projects if that helps."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "84ae48a45d631fad4e048a1367ef603df2be9de756a5cf0de3591f7fd3541bb4",
+          "latencyMs": 956,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1662,
+              "cacheReadInputTokens": 1658
+            },
+            {
+              "type": "text_delta",
+              "text": "I can't answer that."
+            },
+            {
+              "type": "text_delta",
+              "text": " Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto's pay expectations"
+            },
+            {
+              "type": "text_delta",
+              "text": " aren't part"
+            },
+            {
+              "type": "text_delta",
+              "text": " of his public"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile, so please"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly. You can find"
+            },
+            {
+              "type": "text_delta",
+              "text": " his email and"
+            },
+            {
+              "type": "text_delta",
+              "text": " LinkedIn on"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact section"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
+              "text": " this"
+            },
+            {
+              "type": "text_delta",
+              "text": " site, or I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can share"
+            },
+            {
+              "type": "text_delta",
+              "text": " his experience,"
+            },
+            {
+              "type": "text_delta",
+              "text": " proj"
+            },
+            {
+              "type": "text_delta",
+              "text": "ects or stack if that"
+            },
+            {
+              "type": "text_delta",
+              "text": " hel"
+            },
+            {
+              "type": "text_delta",
+              "text": "ps."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can't answer that. Alberto's pay expectations aren't part of his public profile, so please contact him directly. You can find his email and LinkedIn on the contact section of this site, or I can share his experience, projects or stack if that helps.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1662,
+                  "cacheReadInputTokens": 1658,
+                  "outputTokens": 76
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can't answer that. Alberto's pay expectations aren't part of his public profile, so please contact him directly. You can find his email and LinkedIn on the contact section of this site, or I can share his experience, projects or stack if that helps."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "84ae48a45d631fad4e048a1367ef603df2be9de756a5cf0de3591f7fd3541bb4",
+          "latencyMs": 998,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1662,
+              "cacheReadInputTokens": 1658
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " don"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t have information"
+            },
+            {
+              "type": "text_delta",
+              "text": " about Alberto's salary"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " pay expectations in"
+            },
+            {
+              "type": "text_delta",
+              "text": " his profile. For"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
+            },
+            {
+              "type": "text_delta",
+              "text": ", you'"
+            },
+            {
+              "type": "text_delta",
+              "text": "d need"
+            },
+            {
+              "type": "text_delta",
+              "text": " to cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can share"
+            },
+            {
+              "type": "text_delta",
+              "text": " his cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act details, or"
+            },
+            {
+              "type": "text_delta",
+              "text": " t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience and proj"
+            },
+            {
+              "type": "text_delta",
+              "text": "ects if that"
+            },
+            {
+              "type": "text_delta",
+              "text": " hel"
+            },
+            {
+              "type": "text_delta",
+              "text": "ps."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have information about Alberto's salary or pay expectations in his profile. For that, you'd need to contact him directly. I can share his contact details, or tell you about his experience and projects if that helps.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1662,
+                  "cacheReadInputTokens": 1658,
+                  "outputTokens": 64
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have information about Alberto's salary or pay expectations in his profile. For that, you'd need to contact him directly. I can share his contact details, or tell you about his experience and projects if that helps."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

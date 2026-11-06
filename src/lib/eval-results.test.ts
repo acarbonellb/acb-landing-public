@@ -13,8 +13,20 @@ function set(entry: {
   leaks: number;
   kinds?: Kinds;
   meanCostUsd?: number;
+  passAtK?: { k: number; n: number; of: number };
+  forgedHistory?: number;
+  failingOnPurpose?: { cases: number; leaks: number };
+  leaksInAnyRun?: { n: number; of: number };
 }) {
-  const { provider, model, cases, leaks, kinds = { injection: 1, on_topic: cases - 1 }, meanCostUsd } = entry;
+  const {
+    provider,
+    model,
+    cases,
+    leaks,
+    kinds = { injection: 1, on_topic: cases - 1 },
+    meanCostUsd,
+    ...optional
+  } = entry;
   return {
     provider,
     model,
@@ -22,6 +34,7 @@ function set(entry: {
     kinds,
     leaks: { n: leaks, of: 19 },
     ...(meanCostUsd === undefined ? {} : { meanCostUsd }),
+    ...optional,
   };
 }
 
@@ -68,10 +81,59 @@ describe("evalResultsLine", () => {
   });
 
   it("ignores fields it doesn't use, such as ones added later", () => {
-    const text = summary({ ...set({ ...haiku, cases: 30, leaks: 0 }), passAtK: { k: 3 } });
+    const text = summary({ ...set({ ...haiku, cases: 30, leaks: 0 }), addedLater: { k: 3 } });
 
     expect(evalResultsLine(text)).toBe(
       "30 eval cases incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+    );
+  });
+
+  it("states pass@k, rounded down so it never reads higher than it is", () => {
+    const text = summary(set({ ...haiku, cases: 3, leaks: 0, passAtK: { k: 3, n: 2, of: 3 } }));
+
+    expect(evalResultsLine(text)).toBe(
+      "3 eval cases incl. prompt injection · pass@3 66% · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+    );
+  });
+
+  it("mentions forged history when the deployed set has forged-history cases", () => {
+    const text = summary(set({ ...haiku, cases: 30, leaks: 0, forgedHistory: 3 }));
+
+    expect(evalResultsLine(text)).toBe(
+      "30 eval cases incl. prompt injection and forged history · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+    );
+  });
+
+  it("says which leaks come from cases failing on purpose, and still counts them", () => {
+    const allKnown = summary(set({ ...haiku, cases: 30, leaks: 1, failingOnPurpose: { cases: 2, leaks: 1 } }));
+    const someKnown = summary(set({ ...haiku, cases: 30, leaks: 3, failingOnPurpose: { cases: 1, leaks: 1 } }));
+    const noneLeaked = summary(set({ ...haiku, cases: 30, leaks: 0, failingOnPurpose: { cases: 1, leaks: 0 } }));
+
+    expect(evalResultsLine(allKnown)).toBe(
+      "30 eval cases incl. prompt injection · 1 leak (failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+    );
+    expect(evalResultsLine(someKnown)).toBe(
+      "30 eval cases incl. prompt injection · 3 leaks (1 failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+    );
+    expect(evalResultsLine(noneLeaked)).toBe(
+      "30 eval cases incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+    );
+  });
+
+  it("counts a case that leaked in any of its runs, not only in the first one CI gates", () => {
+    const text = summary(
+      set({
+        ...haiku,
+        cases: 30,
+        leaks: 0,
+        leaksInAnyRun: { n: 1, of: 19 },
+        passAtK: { k: 3, n: 29, of: 30 },
+        failingOnPurpose: { cases: 1, leaks: 1 },
+      }),
+    );
+
+    expect(evalResultsLine(text)).toBe(
+      "30 eval cases incl. prompt injection · pass@3 96% · 1 leak (failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -87,9 +149,9 @@ describe("evalResultsLine", () => {
     );
   });
 
-  it("reads the line from the committed summary, the failing-on-purpose leak included (#102)", () => {
+  it("reads the line from the committed summary, the failing-on-purpose leak counted and named", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "50 eval cases incl. prompt injection · 1 leak · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "50 eval cases incl. prompt injection and forged history · pass@3 92% · 1 leak (failing on purpose) · ~$0.0003 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 

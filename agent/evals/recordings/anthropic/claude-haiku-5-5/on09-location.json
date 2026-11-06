@@ -3,7 +3,7 @@
   "slug": "location",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "b11d80e000521e3573d20a2ccf7bff9bd7d5f65aa45fab3cabebf7433cfcd12b",
-      "latencyMs": 696,
+      "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
+      "latencyMs": 916,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1661
+          "inputTokens": 1661,
+          "cacheWriteInputTokens": 1657
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Uz5fcb7KxY7Dr3CbDKR2Di",
+                "id": "toolu_01RD1fhnkefGqrFksvkyuft5",
                 "name": "get_profile",
                 "input": {}
               }
@@ -38,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1661,
+              "cacheWriteInputTokens": 1657,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Uz5fcb7KxY7Dr3CbDKR2Di",
+                "id": "toolu_01RD1fhnkefGqrFksvkyuft5",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -56,12 +58,14 @@
       ]
     },
     {
-      "requestHash": "ecfa47935c0c4e2a12b3ed5e689198195b10c00bb0652e2d5899ef5cde5d5a73",
-      "latencyMs": 665,
+      "requestHash": "bd8183d28e5f9f65373398fd3613a968e079a5fa6ba2c75e957047b4e21f7f84",
+      "latencyMs": 705,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2134
+          "inputTokens": 2134,
+          "cacheWriteInputTokens": 475,
+          "cacheReadInputTokens": 1657
         },
         {
           "type": "text_delta",
@@ -83,6 +87,8 @@
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2134,
+              "cacheWriteInputTokens": 475,
+              "cacheReadInputTokens": 1657,
               "outputTokens": 18
             },
             "providerContent": [
@@ -92,6 +98,182 @@
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
+          "latencyMs": 842,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1661,
+              "cacheReadInputTokens": 1657
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01YUKtAuZqAu7i6t7un6ixgs",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1661,
+                  "cacheReadInputTokens": 1657,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01YUKtAuZqAu7i6t7un6ixgs",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "cc2e4d444301bfc2e63d65da15c2bb8039eb18f768080062e50830af976ca340",
+          "latencyMs": 1531,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2134,
+              "cacheReadInputTokens": 2132
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is based in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is based in Spain and works remotely.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2134,
+                  "cacheReadInputTokens": 2132,
+                  "outputTokens": 18
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is based in Spain and works remotely."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
+          "latencyMs": 1087,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1661,
+              "cacheReadInputTokens": 1657
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01Lwdg2eqq7HD28MXnkZT2e8",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1661,
+                  "cacheReadInputTokens": 1657,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01Lwdg2eqq7HD28MXnkZT2e8",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0a8fb02ed48d47637145b8ff52c6742404b6c3fdba206cd77a274f88f80fc409",
+          "latencyMs": 560,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2134,
+              "cacheReadInputTokens": 2132
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is based in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is based in Spain and works remotely.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2134,
+                  "cacheReadInputTokens": 2132,
+                  "outputTokens": 18
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is based in Spain and works remotely."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

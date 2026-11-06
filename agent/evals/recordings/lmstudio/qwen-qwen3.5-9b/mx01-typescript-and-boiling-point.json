@@ -3,7 +3,7 @@
   "slug": "typescript-and-boiling-point",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "9a3970d13d9dfc1daccac361523cc4045e598ca4fbe429bedbdb67dfcb059e96",
-      "latencyMs": 3943,
+      "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
+      "latencyMs": 3490,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2353
+          "inputTokens": 2353,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "unsUViQF0nW5QDbHIuetHg0uXpqJR8Qg",
+                "id": "iyAfxndt4bd1ZMCxQZL3VLcOTJPRWGQ2",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -40,12 +41,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2353,
-              "outputTokens": 150
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 134
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "unsUViQF0nW5QDbHIuetHg0uXpqJR8Qg",
+                "id": "iyAfxndt4bd1ZMCxQZL3VLcOTJPRWGQ2",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -57,12 +59,13 @@
       ]
     },
     {
-      "requestHash": "1af158c6c31ef1749dcb637c0c1154242d029432e1406fffa86634fad65c51b5",
-      "latencyMs": 3726,
+      "requestHash": "6f327a7c9db64b720a31ac820fd2681c22f113928fb9e9da7525cf25109189ee",
+      "latencyMs": 4657,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2440
+          "inputTokens": 2440,
+          "cacheReadInputTokens": 1186
         },
         {
           "type": "text_delta",
@@ -74,46 +77,6 @@
         },
         {
           "type": "text_delta",
-          "text": " according"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " profile"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " TypeScript"
-        },
-        {
-          "type": "text_delta",
-          "text": " is"
-        },
-        {
-          "type": "text_delta",
-          "text": " among"
-        },
-        {
-          "type": "text_delta",
-          "text": " the"
-        },
-        {
-          "type": "text_delta",
-          "text": " languages"
-        },
-        {
-          "type": "text_delta",
           "text": " Alberto"
         },
         {
@@ -122,35 +85,83 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": " TypeScript"
         },
         {
           "type": "text_delta",
-          "text": "along"
+          "text": "—it"
         },
         {
           "type": "text_delta",
-          "text": " with"
+          "text": "'s"
         },
         {
           "type": "text_delta",
-          "text": " JavaScript"
+          "text": " listed"
         },
         {
           "type": "text_delta",
-          "text": " and"
+          "text": " in"
         },
         {
           "type": "text_delta",
-          "text": " Ruby"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": ")."
+          "text": " languages"
         },
         {
           "type": "text_delta",
-          "text": "\n\nRegarding"
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " However"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " general"
+        },
+        {
+          "type": "text_delta",
+          "text": " facts"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
         },
         {
           "type": "text_delta",
@@ -174,7 +185,7 @@
         },
         {
           "type": "text_delta",
-          "text": ":"
+          "text": ";"
         },
         {
           "type": "text_delta",
@@ -190,11 +201,11 @@
         },
         {
           "type": "text_delta",
-          "text": " answer"
+          "text": " provide"
         },
         {
           "type": "text_delta",
-          "text": " questions"
+          "text": " information"
         },
         {
           "type": "text_delta",
@@ -203,6 +214,42 @@
         {
           "type": "text_delta",
           "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " profile"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " skills"
         },
         {
           "type": "text_delta",
@@ -238,47 +285,7 @@
         },
         {
           "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " AI"
-        },
-        {
-          "type": "text_delta",
-          "text": " agents"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
-          "text": " instead"
+          "text": " him"
         },
         {
           "type": "text_delta",
@@ -287,20 +294,591 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Yes, according to his profile, TypeScript is among the languages Alberto knows (along with JavaScript and Ruby).\n\nRegarding the boiling point of water: I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack instead?",
+            "text": "Yes, Alberto knows TypeScript—it's listed in his languages stack. However, I can't answer questions about general facts like the boiling point of water; I can only provide information about Alberto's profile, experience, projects, or skills. Would you like to know more about him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2440,
-              "outputTokens": 141
+              "cacheReadInputTokens": 1186,
+              "outputTokens": 181
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, according to his profile, TypeScript is among the languages Alberto knows (along with JavaScript and Ruby).\n\nRegarding the boiling point of water: I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack instead?"
+                "text": "Yes, Alberto knows TypeScript—it's listed in his languages stack. However, I can't answer questions about general facts like the boiling point of water; I can only provide information about Alberto's profile, experience, projects, or skills. Would you like to know more about him?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
+          "latencyMs": 2758,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2376,
+              "cacheReadInputTokens": 1186
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "ltM1LAQpMn0P9jqbGOhoU63ohlRhwVAF",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2376,
+                  "cacheReadInputTokens": 1186,
+                  "outputTokens": 107
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "ltM1LAQpMn0P9jqbGOhoU63ohlRhwVAF",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "c67ae3c4c7e6c99400316a9ce03af0e6f94c976545c8df5a737f33b62f9d2a83",
+          "latencyMs": 8773,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1186
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " according"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " knows"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript"
+            },
+            {
+              "type": "text_delta",
+              "text": "—it"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " listed"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " languages"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " along"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " JavaScript"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nI"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, according to his profile, Alberto knows TypeScript—it's listed in his languages stack along with JavaScript and Ruby.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or how to contact him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1186,
+                  "outputTokens": 345
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, according to his profile, Alberto knows TypeScript—it's listed in his languages stack along with JavaScript and Ruby.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or how to contact him?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
+          "latencyMs": 8416,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2376,
+              "cacheReadInputTokens": 1186
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "yiQ29zkM64O0v9vPVBQdYK3yafdrQNeb",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2376,
+                  "cacheReadInputTokens": 1186,
+                  "outputTokens": 333
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "yiQ29zkM64O0v9vPVBQdYK3yafdrQNeb",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "7050ba37a1cc39acfd6cbdac40e0d1f2c01eb54fd5993f42424078a1d0b2a5ad",
+          "latencyMs": 7390,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1186
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " according"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " knows"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " He"
+            },
+            {
+              "type": "text_delta",
+              "text": " also"
+            },
+            {
+              "type": "text_delta",
+              "text": " has"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " JavaScript"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nRegarding"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " boiling"
+            },
+            {
+              "type": "text_delta",
+              "text": " point"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
+              "text": " water"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, according to his profile, Alberto knows TypeScript. He also has experience with JavaScript and Ruby.\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1186,
+                  "outputTokens": 290
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, according to his profile, Alberto knows TypeScript. He also has experience with JavaScript and Ruby.\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

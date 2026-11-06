@@ -3,7 +3,7 @@
   "slug": "capital-of-france",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "f5870ae73b78a60e40d86d7646486c3c0c8e9a80b80321e8eb29798ef4d295b1",
-      "latencyMs": 850,
+      "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+      "latencyMs": 796,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1660
+          "inputTokens": 1660,
+          "cacheWriteInputTokens": 1656
         },
         {
           "type": "text_delta",
@@ -30,49 +31,172 @@
         },
         {
           "type": "text_delta",
-          "text": "ions about Alberto."
+          "text": "ions about Alberto and"
         },
         {
           "type": "text_delta",
-          "text": " Would you like to know about his A"
+          "text": " his work. Would you like to"
         },
         {
           "type": "text_delta",
-          "text": "I agents, work"
+          "text": " know about his AI agents,"
         },
         {
           "type": "text_delta",
-          "text": " experience, or how"
+          "text": " exper"
         },
         {
           "type": "text_delta",
-          "text": " to get"
+          "text": "ience, or t"
         },
         {
           "type": "text_delta",
-          "text": " in touch with"
-        },
-        {
-          "type": "text_delta",
-          "text": " him?"
+          "text": "ech stack?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?",
+            "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1660,
-              "outputTokens": 42
+              "cacheWriteInputTokens": 1656,
+              "outputTokens": 40
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?"
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+          "latencyMs": 878,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer quest"
+            },
+            {
+              "type": "text_delta",
+              "text": "ions about Alberto and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work. Would you like to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know about his AI agents,"
+            },
+            {
+              "type": "text_delta",
+              "text": " exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience, or t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech stack?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
+                  "outputTokens": 40
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+          "latencyMs": 823,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer quest"
+            },
+            {
+              "type": "text_delta",
+              "text": "ions about Alberto and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work. Would you like to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know about his AI agents,"
+            },
+            {
+              "type": "text_delta",
+              "text": " exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience, or t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech stack?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
+                  "outputTokens": 40
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

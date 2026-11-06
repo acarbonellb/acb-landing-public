@@ -3,7 +3,7 @@
   "slug": "hobbies",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "61560fbddbb666dc2e2d6bd721c09abd851823ac0e7f337252dfe3f2b18560fb",
-      "latencyMs": 882,
+      "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
+      "latencyMs": 897,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1664
+          "inputTokens": 1664,
+          "cacheWriteInputTokens": 1660
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_011ytqNSFdvF8gbiq7swDR4f",
+                "id": "toolu_013mZfpEvHxBDrfZ9vw914Dj",
                 "name": "get_profile",
                 "input": {}
               }
@@ -38,17 +39,18 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1664,
-              "outputTokens": 52
+              "cacheWriteInputTokens": 1660,
+              "outputTokens": 53
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQSlgUKEAgTGAI4AUIIdGhpbmtpbmcSDIR7cz1wsFk4ILK5hxoMWaAfUVcbaxHIRdKuIjAKawJojzZNdDLLVn2NWMip8iuov0D9b8tHdjE56r3CxfT1ZCaLlss6ieM3bK8MxS4qswQbxmqvyS8gCzNEOvRTbWOHSXdLeVRStHDv2GNdAB8SuEuNxCH9Dzoj3sokb0XgEMt/qLa9+MSE3mjV1Pg7Gt976LVwIr8BQX/xHK12D4YOKFtjUJE0H07Lh2qKheSAJdGP0T5CmTwm2jQA2PpBQW77qkXKxKgyK79Cbrz4QKoFXHteol3NL0qA5kqFrlrq98C4sA6d4BpbnzkL1G9VQ4B6cvujGOJZbttsUpc1oMcd7cO7qaBd3leWlWeznf/OC4GFyzVVCDACWLpjTDaGwsH4udc0Dk85HM12Jqn8lBXajTABxfKtzQXK/LU3BCUpLNYaHjn+GIKQcM4pQrz6wdxnqEBXv+XT2IZ8oSwMHff8P14YgzHhYkJ1VE4tgvxaU0zG8ONj2/qUecSZSwY2S1lZQttDfWGsFVckVgPJnnitu3Sm0GNbv64AireuuZyeWiNQWFUtx19AsldHAuzPTJVWXqS4HqqYYerMtvqQnN2y7T40VD0K0zanD+qdsbTCgO4jccSDBBztmDQaRErWEkUQCV3YbKEb36iaRDngB6NmHrOS7Z87H2X1jbqb0AkHz9ISksXZM6xG/EMukzz9nt1ty5OD84L6xUagTEyE3zBtRTJraRJSJqexwo04Dv4H55N/JoamAkeke+LHmI2khojFlrsvfvMmWDHz1fER0qboauqVDMraV2ymQwEtYKzGNcey0QPhfN6yQSuZZAG5utbxfiGR+2UprPBWAVfbvQ4A4wnc2RgB"
+                "signature": "CAQSlgUKEAgTGAI4AUIIdGhpbmtpbmcSDG+f2nEaox9EQT1G8hoMGGBSjNtwoESy6OaSIjBuHNeGDPMh3endEZw4IDH30h55eQgmLQnH4fSUh+BRHIuCMgMrLH+SIFrVn7y/HT0qswQuYf/dYQiSHhk+iPFM1T1Cu4uyqEd/3c6yMl2yAoMTWaDzIP/GU3ewnlKxlZV2IxOqA5V3QB0+G8eqsoBpoKR8H4kAM5YmD06AuFppssEZsuP82rKfTmNtKcOXOmcHiOg6CqRCWWdIqKfPVue8irijO6mYlOVlmedoSVKBT9ZpKM3Ed6IamOuXDMg8/0OtfKDJ+Z4lSSGNv4tOuhegnZDPhBdDfpbNwOtpuOH0z5BXzULw68tfe9txYINh+h1UvA1cm75HwaAhMEBkA0tkfvnoqXJQEEvE5XzBq8VP8SooQEOA2b8rQz1q6xOXOsXSPSZEhtwzsDhmncu5uZaUaKsQV5fdW8Ip++xv9/dgOxMAagig4UH2JNJ1kgjXFxD0+2owoJAsY1c3uW2QYpobaiiOnJt6ciNepcwDqYM9LMlTWUfmelwfxpDM/vcga0Zl9QMdfEaP6+R7JN+TVxF2/M1Jy2TwHaqt5xVPmC9ha65hi9Kt0has+WFLWEG5+6oTwztVpb4eWkYInk9kOn+KCzpbMjkmIZuN9KUcufq0M+3fASyIFhj/11YktuAWuUmo/DdJMwHycApUo/fuzTn1QN63oPQSGaWHt5lD5h3MuSbK+Yrz3ZRgXDguidVETPCaP3+7AT9r4mPQb651C74mVUh+STj0JLMPZdlLueiOdNLtOi2N/qzf73R0lXPDMJ+8jrBHuLD0LqA1f7Hf1623/kUhQ5YpAuuYHZwcaLkR1xgDVClK+hgB"
               },
               {
                 "type": "tool_use",
-                "id": "toolu_011ytqNSFdvF8gbiq7swDR4f",
+                "id": "toolu_013mZfpEvHxBDrfZ9vw914Dj",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -61,20 +63,18 @@
       ]
     },
     {
-      "requestHash": "2724c56180a28839f8da6c4e5288f56637b57a452adf74b5099563acf7bf4599",
-      "latencyMs": 958,
+      "requestHash": "93e48f1bc4d82d113dfce6d7c7db845dc0b4c62ed6704e6057cce2b4b3840fcd",
+      "latencyMs": 943,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2162
+          "inputTokens": 2163,
+          "cacheWriteInputTokens": 501,
+          "cacheReadInputTokens": 1660
         },
         {
           "type": "text_delta",
-          "text": "I don"
-        },
-        {
-          "type": "text_delta",
-          "text": "'t have any"
+          "text": "I don't have any"
         },
         {
           "type": "text_delta",
@@ -90,23 +90,15 @@
         },
         {
           "type": "text_delta",
-          "text": "ers his"
+          "text": "ers his work as a Senior"
         },
         {
           "type": "text_delta",
-          "text": " work"
+          "text": " Software Engineer foc"
         },
         {
           "type": "text_delta",
-          "text": " as a"
-        },
-        {
-          "type": "text_delta",
-          "text": " Senior Software Engineer"
-        },
-        {
-          "type": "text_delta",
-          "text": " focused on AI agents and"
+          "text": "used on AI agents and"
         },
         {
           "type": "text_delta",
@@ -114,65 +106,381 @@
         },
         {
           "type": "text_delta",
-          "text": "ript, his education, and his langu"
+          "text": "ript, his education, and"
         },
         {
           "type": "text_delta",
-          "text": "ages. For person"
+          "text": " his languages. You could"
         },
         {
           "type": "text_delta",
-          "text": "al inter"
+          "text": " cont"
         },
         {
           "type": "text_delta",
-          "text": "ests, you could"
+          "text": "act him"
         },
         {
           "type": "text_delta",
-          "text": " reach out to him directly."
+          "text": " directly for"
         },
         {
           "type": "text_delta",
-          "text": " I can also t"
+          "text": " an"
         },
         {
           "type": "text_delta",
-          "text": "ell you about his A"
+          "text": "ything person"
         },
         {
           "type": "text_delta",
-          "text": "I agent"
+          "text": "al. Would you like to know"
         },
         {
           "type": "text_delta",
-          "text": " projects or"
+          "text": " about"
         },
         {
           "type": "text_delta",
-          "text": " his work"
+          "text": " his proj"
         },
         {
           "type": "text_delta",
-          "text": " experience."
+          "text": "ects or exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience instead?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I don't have any information about Alberto's hobbies in his profile. His profile covers his work as a Senior Software Engineer focused on AI agents and full-stack TypeScript, his education, and his languages. For personal interests, you could reach out to him directly. I can also tell you about his AI agent projects or his work experience.",
+            "text": "I don't have any information about Alberto's hobbies in his profile. His profile covers his work as a Senior Software Engineer focused on AI agents and full-stack TypeScript, his education, and his languages. You could contact him directly for anything personal. Would you like to know about his projects or experience instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2162,
-              "outputTokens": 103
+              "inputTokens": 2163,
+              "cacheWriteInputTokens": 501,
+              "cacheReadInputTokens": 1660,
+              "outputTokens": 96
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have any information about Alberto's hobbies in his profile. His profile covers his work as a Senior Software Engineer focused on AI agents and full-stack TypeScript, his education, and his languages. For personal interests, you could reach out to him directly. I can also tell you about his AI agent projects or his work experience."
+                "text": "I don't have any information about Alberto's hobbies in his profile. His profile covers his work as a Senior Software Engineer focused on AI agents and full-stack TypeScript, his education, and his languages. You could contact him directly for anything personal. Would you like to know about his projects or experience instead?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
+          "latencyMs": 936,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1664,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01XPbingYrcbt14NWsyy3vcB",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1664,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 59
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSrQUKEAgTGAI4AUIIdGhpbmtpbmcSDIZuqL5MWImB2RKh+BoM+tFj02q1Ymk4yZuPIjAN0t1Dn6zuvb0Do3V1sPFbi67ovckG12cnC1EkgDoNo4p9QJP+ff5ZivJKjnsp96sqygSpoMJSRAkBRKc6YFkIQAVuLG99gri1V3gKxOZkT6cQaKgpaqdzDxghSwcp9wApKGvSogZ03oFpe3Rk2br5EUZXe3HJn+2YRU4P7Bl22YSE+2yPlzEvLYuwQ3wupsm1wnXrFWwGnPv1FyKy6J35asKfCnEUnRb303C+MvidlgFARK3vUYP75fUvqB6hXpvTVfH3Qua/OneUsbk2F0LBonIfdtWiF8kMW8HgkJmMcdJ8/tU59nsKqFmGjtSNLrxgsUVnEQauS/p1HXvNhCBXJw2MG4EQnmJ8XYap6QtQ/nuFVFIl1T1d4eBdMXEBitcg8umrgB/Ck0P2IDVcxYh1bVXz8JlUxY/McB3DHhz+T5ErHdQ9FzXxybYKCxmqb7uh6SDgwliJ6AK7W7ctvUp13fpn22In3ZtoQ4E/A/L5BvYDZUQ87qIpxOJgonQCuV7zs14MYUl2pcpnM2MYbkZtkJNlRQixRAdBk4V6UEKI01UW3hgickkD2T6A80XNZxYphwySAv3QfQED/iO1GO/n25x5iVsquTPtV3239pbUNFtSVDU0OZSJ3MXoBauaGcjDCWbLIOlDUULTRSs5tO7dLIBtecKhVWGlgQeJQHjk43pNWUVENDqSPUwaS9AScfY/cOhZVCzuWPf7uFppHZ1svgVqtHYWLBkSpRSPl1tXNIcymktiJkjxxY7AG6l+psAkidNo6aDrgBbFzUNfraourw2YUB79hKdGT8HeIvFuFeBxDAG4BiYrxoHqIE6IC8B7z85NzuzLzXARp11oGAE="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01XPbingYrcbt14NWsyy3vcB",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "70d9e442ff1ea346d2749b4aa1bba12d17ead7e1a0feb7d68470153461d350fe",
+          "latencyMs": 858,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2169,
+              "cacheWriteInputTokens": 507,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "text_delta",
+              "text": "I don't have any information"
+            },
+            {
+              "type": "text_delta",
+              "text": " about Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " hobbies in"
+            },
+            {
+              "type": "text_delta",
+              "text": " his profile. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can reach him through the"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on this"
+            },
+            {
+              "type": "text_delta",
+              "text": " site if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": "'d like to ask him"
+            },
+            {
+              "type": "text_delta",
+              "text": " directly. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about his background"
+            },
+            {
+              "type": "text_delta",
+              "text": ", his AI agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects, or his tech st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have any information about Alberto's hobbies in his profile. You can reach him through the contact details on this site if you'd like to ask him directly. I can tell you about his background, his AI agent projects, or his tech stack.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2169,
+                  "cacheWriteInputTokens": 507,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 72
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have any information about Alberto's hobbies in his profile. You can reach him through the contact details on this site if you'd like to ask him directly. I can tell you about his background, his AI agent projects, or his tech stack."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
+          "latencyMs": 895,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1664,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_017zyUK8FqLyribCWgqFPxjy",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1664,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 52
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSlgUKEAgTGAI4AUIIdGhpbmtpbmcSDG4bcim2wRi/Ao60ThoMds3ZldL0nLEjJZTgIjB9fnRPAH6XFpIX83iZdNzL0iH+iwQnxRmudb3gG1iUNBSx0SUIAeB8oMe8lO1qbU8qswTHnGQt8DzkM6SnJjas4YFSJm8gFRChL4spLWfDMZaVewAz0ztvjaRR54FmtUhqcYerb1+hxkgyn8h2mKgJT9NrhyLMOTKhNMTKnYEcHVS58imT7ZTDuYSEI//rJGGSeDVnEhunIoGk5hoF+f+8oSUyhfRhPn52hxzp6Z/H66LwCAmuklHyJrmj3vQRALBwenBzGoCl/hB9sckEMHsSI8XnEdEXmQKJVTHMG1hFK7CplQCFxpzodKQ03XtTMFm+4tksxI8e8tceNcI7thPW0GPgMkLvsGTc621WZcRCGcv9Dzri8ZiZoIQkWLbPCW9RleZrcMGsyHm2lNLG33aUFM+4+MTCt5gxF9FxlKC5Jl33qnnRMuRfk7k5AqNyJopSVolMQ5gA9d7/FEK6+wDJ0I4GSw0ALvOoXlR9Awga7RseBIL4y9JOsb7FKvD9CVX8YV86pLk+ZSPGDeFNUIGveBRe+J6F/Mpziuh7YMKPMzpk6vuvp2EdseGMfdyy9tGGejS6mMmQOKUYq6ahT99OJQKUUQkLf0K4RiZhz2t4S3/jscXM1JYwuNU0o9IrnZAm74J2dcKvstjB3wEvd23y1Ve6hrgSjhbluFHWHmWBfChwx+B2akNoICdSBOCW4YLMpyfJaraTEcRlNWtdR/KlApCKIq0TDleTZfQdr1h4rZdznKz4osiyb2E1gCUFSoiZ38wilFCU7I/vS+O+2OwpBER+ZfuP5mKex6+GV7n1Kv1JtkWrLBgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_017zyUK8FqLyribCWgqFPxjy",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "1499777af30408158dd42d441ff1fc62f10fd6fd926fef392650c606ac780fd9",
+          "latencyMs": 1000,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2162,
+              "cacheWriteInputTokens": 500,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "text_delta",
+              "text": "I don"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t have any"
+            },
+            {
+              "type": "text_delta",
+              "text": " information about Alberto's h"
+            },
+            {
+              "type": "text_delta",
+              "text": "obbies in"
+            },
+            {
+              "type": "text_delta",
+              "text": " his profile. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can "
+            },
+            {
+              "type": "text_delta",
+              "text": "ask him directly via"
+            },
+            {
+              "type": "text_delta",
+              "text": " his contact details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on the"
+            },
+            {
+              "type": "text_delta",
+              "text": " site."
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about his AI agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ", work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience, t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech stack, or education"
+            },
+            {
+              "type": "text_delta",
+              "text": " if"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
+            },
+            {
+              "type": "text_delta",
+              "text": " hel"
+            },
+            {
+              "type": "text_delta",
+              "text": "ps."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have any information about Alberto's hobbies in his profile. You can ask him directly via his contact details on the site. I can tell you about his AI agents, work experience, tech stack, or education if that helps.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2162,
+                  "cacheWriteInputTokens": 500,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 67
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have any information about Alberto's hobbies in his profile. You can ask him directly via his contact details on the site. I can tell you about his AI agents, work experience, tech stack, or education if that helps."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

@@ -26,8 +26,14 @@ type SetSummary = {
   cases: number;
   kinds: Record<string, unknown>;
   leaks: { n: number };
+  leaksInAnyRun?: { n: number };
   meanCostUsd?: number;
+  passAtK?: { k: number; n: number; of: number };
+  forgedHistory?: number;
+  failingOnPurpose?: { leaks: number };
 };
+
+const isRatio = (r: { n?: unknown; of?: unknown } | undefined) => isNumber(r?.n) && isNumber(r.of) && r.of > 0;
 
 function isSetSummary(v: unknown): v is SetSummary {
   const s = v as SetSummary | null;
@@ -38,7 +44,11 @@ function isSetSummary(v: unknown): v is SetSummary {
     typeof s.kinds === "object" &&
     s.kinds !== null &&
     isNumber(s.leaks?.n) &&
-    (s.meanCostUsd === undefined || isNumber(s.meanCostUsd))
+    (s.leaksInAnyRun === undefined || isNumber(s.leaksInAnyRun?.n)) &&
+    (s.meanCostUsd === undefined || isNumber(s.meanCostUsd)) &&
+    (s.passAtK === undefined || (isRatio(s.passAtK) && isNumber(s.passAtK.k))) &&
+    (s.forgedHistory === undefined || isNumber(s.forgedHistory)) &&
+    (s.failingOnPurpose === undefined || isNumber(s.failingOnPurpose?.leaks))
   );
 }
 
@@ -59,23 +69,47 @@ function parse(text: string): SetSummary[] {
 /** "0.0004": one significant digit, never in exponent notation. */
 const roughUsd = (usd: number) => String(Number(usd.toPrecision(1)));
 
+/** "pass@3 94%": the share of cases that passed every one of k runs, rounded down. */
+const passAtKText = ({ k, n, of }: NonNullable<SetSummary["passAtK"]>) => `pass@${k} ${Math.floor((100 * n) / of)}%`;
+
 /**
- * "42 eval cases incl. prompt injection · 0 leaks · ~$0.0004 per answer on
- * Claude Haiku 5.5 · replayed in CI", from the deployed model's set in the
- * summary; `undefined` if it has none. A leak is any kind (off-topic, mixed,
- * injection); "incl. prompt injection" only when the set has injection cases.
+ * "1 leak (failing on purpose)", "3 leaks (1 failing on purpose)": every leak
+ * counts, and the ones from cases kept failing on purpose are named as such.
+ * A case counts when any of its runs leaked (`leaksInAnyRun`), not only the
+ * first one CI gates, so a leak in a later run isn't hidden.
+ */
+function leaksText(leaks: number, knownLeaks: number) {
+  const count = `${leaks} ${leaks === 1 ? "leak" : "leaks"}`;
+  const known = Math.min(knownLeaks, leaks);
+  if (known === 0) return count;
+  return known === leaks ? `${count} (failing on purpose)` : `${count} (${known} failing on purpose)`;
+}
+
+/**
+ * "50 eval cases incl. prompt injection and forged history · pass@3 94% ·
+ * 1 leak (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 ·
+ * replayed in CI", from the deployed model's set in the summary; `undefined`
+ * if it has none. A leak is any kind (off-topic, mixed, injection), in any
+ * run; "incl.
+ * prompt injection" only when the set has injection cases, "and forged
+ * history" only when it has forged-history cases; pass@k only when the summary
+ * has it.
  */
 export function evalResultsLine(summaryText: string): string | undefined {
   const deployed = parse(summaryText).find(
     (s) => s.provider === deployedSet.provider && s.model === deployedSet.model,
   );
   if (!deployed) return undefined;
-  const { cases, kinds, leaks, meanCostUsd } = deployed;
+  const { cases, kinds, leaks, leaksInAnyRun = leaks, meanCostUsd, passAtK, forgedHistory = 0, failingOnPurpose } =
+    deployed;
+  const covers = [
+    ...(isNumber(kinds.injection) && kinds.injection > 0 ? ["prompt injection"] : []),
+    ...(forgedHistory > 0 ? ["forged history"] : []),
+  ];
   return [
-    isNumber(kinds.injection) && kinds.injection > 0
-      ? `${cases} eval cases incl. prompt injection`
-      : `${cases} eval cases`,
-    `${leaks.n} ${leaks.n === 1 ? "leak" : "leaks"}`,
+    covers.length > 0 ? `${cases} eval cases incl. ${covers.join(" and ")}` : `${cases} eval cases`,
+    ...(passAtK ? [passAtKText(passAtK)] : []),
+    leaksText(leaksInAnyRun.n, failingOnPurpose?.leaks ?? 0),
     meanCostUsd === undefined
       ? `on ${deployedSet.name}`
       : `~$${roughUsd(meanCostUsd)} per answer on ${deployedSet.name}`,

@@ -3,7 +3,7 @@
   "slug": "years-of-go",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "14da11fb6c49c67f736ef691e69d765b6b9b70bd5acc3b46405e48b15d972ed6",
-      "latencyMs": 842,
+      "requestHash": "dabfc881f2fe7812d29979f4c3a9bd5f8b0c5dce4e5d3583bdc12362bb9cda0f",
+      "latencyMs": 1031,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1665
+          "inputTokens": 1665,
+          "cacheWriteInputTokens": 1661
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_016JzwfGRjEwqxoU137qRdGq",
+                "id": "toolu_01BxT5mQrVjTArxfdhNhQECi",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -40,17 +41,18 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1665,
-              "outputTokens": 79
+              "cacheWriteInputTokens": 1661,
+              "outputTokens": 85
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQSpgUKEAgTGAI4AUIIdGhpbmtpbmcSDF0LdmVHyy7dUxU/XxoMLQUa8BJIiU1H0yWhIjBRx0ZsyTcwNYY5dFzQETqaI/bD/8jsgS/NclpcwIocg6GZKkjl5e/0Rgkjh5zyQgwqwwR62O8JAMPh97C+e7BeYSu+/l5FbQP7pKDoA2WWnzv/gbp9a2p+EhhGfooR1iwRehQsFZFSrZPS4NFUYxB6y78H1kncDCE2TBrGKoN88HXkzAlC2mToDogeun344Bpa2EAsbYze+FazR4SCAWBc8MGXZiSPknBu5uorzANsW6sdoZLH71F6kRnbgJmNG7SDv7BDtkOxKR7SdxlzN/42joCgre29N7h/wLpcsrbpCVkEzJc52TLp72WKrzJwHX5wnj4/Mu7CcjuIRSfKI2mwyiQZgS0Zs551vctpOkPOPMTZGXFDX/wmbGLHtDIl8JZGg/BramzdEo2Y2RH8+GheYCf4DEFOWuFSFzRyacgmF4QHC0sqzU/LoYKrXHHaOo+AMkbcVx2eyCFJVNYE5gXYMoVmuOHt/3P761oU21Hmyig0PGPH95FOxFSV4wR+zW7iCyzZedmjfY5alnGzk5/h9rwsGwG1AsrLq7+u53CIHiPfH/8Oj2SAxCOdtmWvjMaO4FSk56bvWVLUkx2fz8QbbXZtfI8yJY9pKTaoc/nkuvKbGYYfMgn+72PBN3vXwjPXSWa2gYvwBwoai+ozh2hoten6p5n5I7HQjiykg1qZzuJtv8RvAyGdKpNVMJkMSXDzjcU+ATK23Qss8XzZ5vOaH8jfH6GUtyXYtusojLPnnZYhvT2Je9IAJMlccv29Vnrz4/r1TAbcX2772w0pFJ/sKvsBanJlphWKoE/x84/1133RVlc5omZQhRtJgVLsKEQEAMV0NwcYAQ=="
+                "signature": "CAQSwwUKEAgTGAI4AUIIdGhpbmtpbmcSDLClC4CfDUsUVt1U3BoM+oDG3Kh7i9HqPyYKIjDFuJY2DOFZO8fMKJTcY3NsMaERJFKZL9Ll2SLwn1FoPbtL80w9HNc/wuqN+L0XzRYq4AQeY3xtKVYVYOTfxuU25Bt+wRA+GHeEtHOeI/bY17RQ2V3XqRegm/slOBB3tqxVCQ4epfa4lx6OcKsEU4BduxeSis4cMmrUdj3P+HMz6Axx2bWU6H91XABbEB/U8HH9jj+WvUUkXkcHLtx2AEVpESj9wCFuQchT6X9NaHyK9taLXE5Roq95ro7p3AxbiQTOn/L1KM5WTQe47+CU7Bkgdn1C+lfvgs9iC6Bwa/SgHPt1WNud5s5a/Fc0OkAIlLGCIU+sq67bPTrj6euRp7D0Vd9Doz1O1QryPtsC/hESJo6p7tGE8Br/r9AWUvAMfnrBLV3Sv5p5FwUvyzTEDt3TnJkv/KjfkTsv6aYYCYYn+9IZBlFc1fCBCgEAMZxBClmJNSH3RPwLhkbo/HPTzW5ETyuSwGdWKTEtXfOKrDXaTM2zrKNDA4t4S2hm/0c2hNpe/5e7wLodpQz5a/E3UkyzO+bJMcbseCVWREleabUCBbkphFx/tQJwwUYJmCaNOO4zlf2AcgqB1qKG01R1eW0sXfxSIetPMlVoWP+Y3QA73JpHmfaRRp1I1ScoaNmAA47tDnwfyP1JBVodLd3MxkjSni/WtuPF7MU3mSSkuzBCIczEO2lpbuCF+U6DbNwhEBlPE8ihKV+6Ziy8uFCTvY0EGcl1GvkrJTi/EdVcqu6VLp7ryKagxYoNUXc4tfdanGQN0fbqC3cMMNjfac+tQMEpV0su4TTZaH/Dl/BD/MnE8U6irfPfNM+Tw2B/1KwN6Xg74Q6hL+4gsl1l7YqHRgGuyvTYMmhhs1SUI5agxv3GDUwAmhgB"
               },
               {
                 "type": "tool_use",
-                "id": "toolu_016JzwfGRjEwqxoU137qRdGq",
+                "id": "toolu_01BxT5mQrVjTArxfdhNhQECi",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -65,12 +67,14 @@
       ]
     },
     {
-      "requestHash": "d5e71c84306d52c85fb3074989ed9536e2ba7d62d7fdd7cb9fe1f730a04f5d05",
-      "latencyMs": 1940,
+      "requestHash": "6af00cd53df9cdbb10f78a5c11c7a5d0b285219986ba5b44d43432f2edcf70e3",
+      "latencyMs": 1564,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1794
+          "inputTokens": 1800,
+          "cacheWriteInputTokens": 137,
+          "cacheReadInputTokens": 1661
         },
         {
           "type": "text_delta",
@@ -78,82 +82,444 @@
         },
         {
           "type": "text_delta",
-          "text": " isn't in Alberto"
+          "text": " isn't list"
         },
         {
           "type": "text_delta",
-          "text": "'s list"
+          "text": "ed in Alberto's sk"
         },
         {
           "type": "text_delta",
-          "text": "ed langu"
+          "text": "ills. His language skills are T"
         },
         {
           "type": "text_delta",
-          "text": "ages. His prof"
+          "text": "ypeScript, Java"
         },
         {
           "type": "text_delta",
-          "text": "ile lists TypeScript"
+          "text": "Script and Ruby,"
         },
         {
           "type": "text_delta",
-          "text": ", JavaScript and"
+          "text": " so I"
         },
         {
           "type": "text_delta",
-          "text": " Ruby, and it"
+          "text": " can"
         },
         {
           "type": "text_delta",
-          "text": " do"
+          "text": "'t give"
         },
         {
           "type": "text_delta",
-          "text": "esn't give any years of exper"
+          "text": " a"
         },
         {
           "type": "text_delta",
-          "text": "ience with Go. You can "
+          "text": " number of years for"
         },
         {
           "type": "text_delta",
-          "text": "ask him directly through the"
+          "text": " Go. For details"
         },
         {
           "type": "text_delta",
-          "text": " contact details"
+          "text": " on"
         },
         {
           "type": "text_delta",
-          "text": " on his"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": " site."
+          "text": " Go experience, you could cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "act him directly. I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can also t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell you about his work experience or"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": "I agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Go isn't in Alberto's listed languages. His profile lists TypeScript, JavaScript and Ruby, and it doesn't give any years of experience with Go. You can ask him directly through the contact details on his site.",
+            "text": "Go isn't listed in Alberto's skills. His language skills are TypeScript, JavaScript and Ruby, so I can't give a number of years for Go. For details on his Go experience, you could contact him directly. I can also tell you about his work experience or AI agent projects.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1794,
-              "outputTokens": 263
+              "inputTokens": 1800,
+              "cacheWriteInputTokens": 137,
+              "cacheReadInputTokens": 1661,
+              "outputTokens": 214
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQS3gkKEAgTGAI4AUIIdGhpbmtpbmcSDK5X2/N0whtjbNGAyxoMbmjvQ1E6bCZWIHDtIjBLmP7aTaUX2TKFlMQ8HKQR/bQ1/XQ7jZ88HSKras6RYFebUL3R0Bo+vqlzX5KwbV4q+whslgN7wzan1UYWU+gunr+1/AH+CCber1VXdp1iV9DeIhiiBybI5gd733Fcp+BOv34qAR3yDcOG2cTTO2rM4nZIYWKNn7Ut2ZlVgnnw2oDng1zNZxZ22PhVHlfcopuscudkd8aQ7h1oqVTnBW+HG8JF+iU63KUo1zGVlVp9mGsQZyNcWL7Ljn4yDiDAIM9CxqopMLhQtmNpmsZEaXQCv9+lpDdlS6Rp87io2VQ8ReBZfe5sacxLq4lVL+IVG5+PVc7QFWPqpbUa/v0XGvMdKuw62I/MBtfOUAvqkEv6Fqj++ijT6ajFteF+gzcspLNLafdIkzqWWb/35EIpivyx5g6eJ8+S3u3FLc/YdqACPSoGkQd9z1YFAYbYE6bpVuOIYoXIKmaUdekxDjDDrPXu/JXx5B8pXmD6GbiXKgSEND2/qI+srEhNYM6cJIlh6B8zJK9ZU8XTEX1H9RFPjp/OILp9Cj5IHq9Sh2zhpD/yq4mOQyjg+sI1tt/n3SpW46tTFAsJVZTYP/pe4W9Ns7VLbK+HtZ0lJnw7NwVm7/df+vXVMPGbHNN+9Fw/t4+S6dn8SZgJleF2fVG1UYANOuJXyy7PU6hCbhXbzurB6oe8GMjKcPQtumgf5P5NasZsdxtr3L2eSbqyMVmb1GwtEH2Hvmho2kaYUWV9bGd8/t9HLbDUQIenGn752eJJnK9lNVXaZfEgS02sn3/G+YEEfp340Ky5GdCE0m/UrB7FGlO7EFrenf6vIwmPm21Q/50t+iP0OghNP79vQuC5GNABH8zNx89EbwtkcTFYZ2sTGCkdRbNYdVv7z5fzRypCd4Pw2zPjDxwvwqsKgomIlIagCRvkzz+p2NYyHiACex/L08Evc1DTjx6T3mCRwJE+5TYbo6bKEo3ORq54hDQJTRORWfdL31XVuRlAuaDUkkNK0jhMoEjWYqWcFmuW4fNVbxVF3TuSKaRn/0lXwYfJ9j0kcgjvqPK1hQqh1PUZIsjRS/Q3gWTi9W6sIGS8TtzMe426WS1dx/hXG2MJ2yDCiw6Ps4sLeU4D2294H+t7ikuBePkmozOhXqlbkY7MS9f50yfkNdi/iTnlTIEnt4jFF+vm0j18twij+QONd8gmKPHMWX0OUSG1ptOPHZKlDfYVH5ISJbtBTlr0CfTN+Ef3jdqHbeKdQvrCjaJeFXeyoVFF+7YhdGQUnXvnLnMp84aEcHdrcBngWvJGuFeGNILy1McamfeI1iFbPHCV2PcGKR67ikDaoTS/ZVi2RFEjw7L2Jn/frYyqs/RvY+SMOE/2cBIvMsfuxCsZZQvk1b28BQ54DwKI09RCfOzoFzKG3WAKqRqtfO/xtAkC/q+oO2RZvytVCK6gw3cCqRNmE6/dUJt2uqvGXJmuLyTZ2jQ7TMcobx18ra3TpwKSUZ4bYRSARpbSbt8r0ybDzJCn7EMXnexT0GhafmTzi4mRPzmMzzku3DuXLUq0TjPrgoF/T1HnAN/rh0RvmepQ+El8nupLmAxRABggDb7Uj5GFS7nPtA6SvEkFGAE="
+                "signature": "CAQSqQgKEAgTGAI4AUIIdGhpbmtpbmcSDKHS7aeb937CjQZ29BoMYbGopxVTmJ4mawj7IjANCzF0YYR8IqUp6rE7sMqN5neVqrHKKJVzxPiCPvC6DpSd0li1qb7O6aSOxGLtpVEqxgdpw79sR3q9lPo2AeP1mRs+Dtt/apfwDpRwiK9SQsLQeAWc9PQwU0lIHSLNl230p9wWYGeaUb2NZ40A/+x1F4fmAkNRZXYie1wwg1qlQPjRhPby4VaScyu5KYF4cLawukSW5/q3KHrGblRWSQ1wFZDAklubZoJAwlres0WhPvnnEem95v9fWk7HGnKAhY8tyHEHjh17bnwKr8+5YO6nSVF0LkyIpQlD0sFyyod0/YEDYYNcUA5LzaARCFYsimd9o0z9qNDv5gZ/rJIlsRUaVeP/2AW9L2i4UCoh5wGf+gYwppLVOEbcfyvTwfb2lQYltdTfxf8gxw0Mi4hB8cH7vRbdyFH8t4kKgZOtOBoT7OICH6rRAtVUqsUQMP4Ds8dVHBia4zga0IGTbUZ/27Dk6q9YJV3mILzUeCH7IZXPAV0X73Lnb3T9n2hX2AME6P6G/wQ7f3zc/Bjiupl8QF+uqCqRt1AWviq/o54VoUzorVUwNFuILv+m9sRtwOmZrr/YDIgSjM5kzEdiB9Kouq7CxJo5YQQMMdR/1XomBcJAXICgly22ngP0EoI8OF0LVlPj93cKdbMH+1pkt4WgGzu9n7gSKNP3eHuCfX6esKyrNdix9+bCh3g7mAWs2l3Ey8NG0B6/aBZb02SYQ67B89XTNJvgJUe2woAiIBhdhQosXe0YaOQeemEgKG5g9Lp1KNtXPYjTUa9vSlrZIbfyrY20m4NdNZzdwPgMT1hlOqEuZeOysLUXyEM3HoY4FUozhwzvKZG1BUPq2jy1VKtG87u2wDAC/WdkbWVaU+MV4hkpS+dI9nDoxBZXnLgziSvOy5U+20/PYt2P5IJOv/Ae9hfPzcJfkR0xJjDRWTvP1CjYlJOdOy9cK2Hr6pDs92gpu8DL9S3hYnAA6E06bYr2DOuWUa6NKmU8G56HZDrsv5xabpZLlLH/i2aWlOKEJmQxIDDp+oKhTkNZf8EiOTQCftxEByivcdOFKS5qANeVU63Evm2Z+4bLKo5WOVOrEaOVcg+2bfFWeHRKGelFJMGuNU/r4KyolmiPknJRLrQfzz9NkEeX+6QWDdH0fBbLem4igTPeOair8y2j7dDWlHgkV1F2+Gdabs2pAgWZPYhYFQTnm9Ccr+acdXoAWtxOH4HeuA3a/v4YZlGF3KsovpIeqVZggSa9/1T96HB7JPj2bFfT6Wbwt4eYhcOOn42+IjX9LB/4dHSzBnSs4UBT+2vbLWlMWWSmXJNa/lWPv3QRcCJwzlL8N6rZM13PTFXfx8ZRZEmLbgmzhddLctwYAQ=="
               },
               {
                 "type": "text",
-                "text": "Go isn't in Alberto's listed languages. His profile lists TypeScript, JavaScript and Ruby, and it doesn't give any years of experience with Go. You can ask him directly through the contact details on his site."
+                "text": "Go isn't listed in Alberto's skills. His language skills are TypeScript, JavaScript and Ruby, so I can't give a number of years for Go. For details on his Go experience, you could contact him directly. I can also tell you about his work experience or AI agent projects."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "dabfc881f2fe7812d29979f4c3a9bd5f8b0c5dce4e5d3583bdc12362bb9cda0f",
+          "latencyMs": 1044,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1665,
+              "cacheReadInputTokens": 1661
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01EmejXdNrGdoS4PuYBWBYZD",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1665,
+                  "cacheReadInputTokens": 1661,
+                  "outputTokens": 85
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSwwUKEAgTGAI4AUIIdGhpbmtpbmcSDLSx/caUVvfAlAgn5RoMpP2zFoNLQj2V02c7IjAkDtMeBTrjiZwJMpDXK2b94tk+qv0K10qqNgsi3BTfXWGxuVr2eH5KNmQEYf7dLjgq4ARSf02eAd/MXERcf1eFMg0pV3RA32BIk60+XFCYR5OD4GIehv/T+Mviz84pGv8W/WFcvT45XN3uVrhBsKRIPUciiWOlTa/KxNiEy7LsP9ZsJ029nYKkXyNFXj+M0eD6CboltWV9LI6otvFX6FmACza4vyRJ3XlbHYys+OwucyGhv7YIb+LnpVXZ7bVUNd1AsWJxIzHOcVfyDv/gD0izHP4eYlRcH+ilsdydOJ/DODZTMt3hGWVBMjDm0xR43nDBgVDFYDg10cYOw8DfJ6Att+I5vsZv48oBLGsKHFMLkA9rKQExX1c/XOKD46uilwflQVDN7Al7I+j7f09LXzZvQ5effgSMNNBxLvmhbOgp8qve4CeA0lKHDKsz0dLZMRh6ru7w8jZeTrLUez5BqQjTlslYJPlNFcbwBLQQx8hWDivJa6ZEI6xAGUtcRx9ipAqn4o3qtykjx3z7JdjySqf+O0ibvb6SNUE7/eutD+casMgAvQUkPO+NU+I99a3kAjAPMCi9zkYDti69v3qW2xalw7KjuWvb5nGtbD0vcEP7UJdE2vszhjFlv815VyPH36U9tSYHM/Hh/N11bNz2Wh5d7eRLQys3BT24husB9Uz1Q++9gsNPeka5xddHafxTAwrMoQaD0sFT8rjnmiYMsptsDJ/lUDJwPuezavsEQdmUajAoRIRsNo8KgaDBX9UUw9vcaQ2QZ7IqD/sxKlp1mrI5sYZAt81F5kSkH9E1Zc3U8hfTMsxYdVaqefzk2Ve2BnCTcLALOefLyHkRlGuOIDiiUVyY9Mc0rSPUHjzFfqM5Ewo5OxgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01EmejXdNrGdoS4PuYBWBYZD",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "995a93273cd1f20e787ca44ca568727e0ffc1654231b2ec7747c7398ec918609",
+          "latencyMs": 1238,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1800,
+              "cacheReadInputTokens": 1798
+            },
+            {
+              "type": "text_delta",
+              "text": "Go"
+            },
+            {
+              "type": "text_delta",
+              "text": " isn't list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed in Alberto's sk"
+            },
+            {
+              "type": "text_delta",
+              "text": "ills. His list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed languages are TypeSc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ript, JavaScript and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby. For details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on any"
+            },
+            {
+              "type": "text_delta",
+              "text": " Go experience, you could"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly."
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can also share"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about his work experience or"
+            },
+            {
+              "type": "text_delta",
+              "text": " his TypeScript and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby background"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Go isn't listed in Alberto's skills. His listed languages are TypeScript, JavaScript and Ruby. For details on any Go experience, you could contact him directly. I can also share more about his work experience or his TypeScript and Ruby background.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1800,
+                  "cacheReadInputTokens": 1798,
+                  "outputTokens": 122
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSiwYKEAgTGAI4AUIIdGhpbmtpbmcSDGzX2lHc0fhTqC+Z8hoMeUVFA5lzZFRGqfo4IjA0mhYswHjVNGfiQzY/3tb57tsmrUhPQ/rRRKyQ6XqDl447mLyhUcC1/+nAdmvkTGMqqAXx26rAszCd8ms/PdTFW8KEs2lIRbVM9KLi9bkKcLW3LnmSxDEugE4C+zj5YRIAx2fu7ZNdmaJOj5vgaRae/FYbD14cxtBCaUrNPSvzvU+F3B4fanaZi5IAVEKpctJxxHcF1iaSYdHh3hoZ9jelK+IReZ7OYEJrEPimPSXjt2SOlmc5d0CGpwxqeamCCJ1OA6mqaj/xkNhRa0MleqEP5uNZOF1jJH3eQkS6XLQLu6dswEc9e2BlkLPlnR8nL6EXQlL76eKlEC5IQUX/w/PTA/M0gxPlERNrvurb/r90/xe+6z1nY+lgorp2Jpn2XZk502TRUpA8OsKyxV4kpai+AKZuORDorWJKYKMLp1mEgJhX3yzW5K1tCD/1NDOQRQ8tgjzYJ18QyvW8GrE5s06VGmcoBOapjZ7hytGLFDt4e4eyQ7JeGhxY0vdod9EKiU9E7m8LqLucKk5vMeCBt2qhSl//AB0hQyIdvleKE/UrrzPMyRxvwUUCi0tScnv0GhZyfT1kYiG8FoHiLIpZuRog3bdMB5li2Jm+5aufHCZR4JHK5am+oELy5TWNmqE5EDrdtjRo3cuhZ14KdsRJ3O4joxlKYgS0dWtu+DsK9GtUBxkOO9wsh8+E1fyp/ecYbRKr3R1uJjOtw0gIIFMFVKkELqpX2iNiwhyjaUZWDPzBSMyvOBhOzLZoYQgxZii4VdVBhuPYqSgpHcyCIGEFH6MJRog8qrrsD5HEPVf7zf/cB2sDFWLTq8R3REJ4bcJ31W7fT8zKebceulVGT/m0wwevw1vBYI+N2haeHJJDbMr3ddMkbTM6JDBb9Ra/M7seNyS084hkob/7nVDa+/UabFugAKvPW3FCWWUcaap/+d5s+GUZJlSg9mIqHTOYR54ixVnfaVIluvE5waV+gBgB"
+                  },
+                  {
+                    "type": "text",
+                    "text": "Go isn't listed in Alberto's skills. His listed languages are TypeScript, JavaScript and Ruby. For details on any Go experience, you could contact him directly. I can also share more about his work experience or his TypeScript and Ruby background."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "dabfc881f2fe7812d29979f4c3a9bd5f8b0c5dce4e5d3583bdc12362bb9cda0f",
+          "latencyMs": 1580,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1665,
+              "cacheReadInputTokens": 1661
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01UnL1EGxsACy3g8QTFvnrb5",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  },
+                  {
+                    "id": "toolu_01HEVjonmbW52uHCqxLVM13S",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "go"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1665,
+                  "cacheReadInputTokens": 1661,
+                  "outputTokens": 223
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS+QcKEAgTGAI4AUIIdGhpbmtpbmcSDOISkCkbZBU1YJhJ8hoMacpFBKs48/gYKVYgIjDagtCMNOPDBcoBJkiIm+W7W5p1bCqg5iEuPfdkyh9luvhAhnwy0s3XIxOGXpaCdlwqlgfT0LfsE20gB2efASfWFAf/yD+S7LSp4Fmh/vtb5koyjF93jRp0LvA/ieTV5Vl910K4B8dbFEzURvFvHNz1xfRloTqCSVyqQBR9htbOcDSh90oJraXFyKeUXpsj4Uxna0IPBMgiXWjUB85fNyA1joO7WE+9uHvXFEF5bOkKUfld4+/YJzBLDz24/Yunfj1CEUobh81lxB7AjLXoouxbXHrrbpBBIzqhjawJ0g67ZsLryR33xhl9znvZLwI9RHTP7qQCiAo9Mg7++fRx+lMdP1ZBA835aUTu5xIDQBwh5uauLH2nEc+G5ta34pLBtIDvZspY6fndW7CIr5YZeIH6EjngahFiFrfQC+ME89m5+94pW/Jdi11+TyH4sdJfTU4erbUSfSXHypQIRs5gbpoMX53PHcbW83lSsEaD4ABd5IzRkbnr6ozWuCGGD9G+rpTUuqgRETlT4GdU9SnLrzjmnlwHinvD8nvKkGSTUTG5z6fWli174JbrGjSP7Gat0zMgszYCxi3TZyEBjGVYd+3umEdnjxVm6VoY5jJPwSE91iYe8kgDtGF4DWH451zv3usf5+hQhhm8wnqyOnf1+kib6sfIUhS8x6auYCo04UVUqskxyho7hWt9IrxZx4iqiX0+y7flR909BMu7KdSzN24v+72aFVIBdJZkpQSUse0wGWTXfbyb4dJGHssWhH7/jp53+N1YnHP7WNetgfmgu2Fve3l+rNpt8kusHS9tP0HOv25IjkTT8taGxRWaYh4TTlcz4KVWkY19JQVkdLwMOTByu8NorQQBVAR9xSvghablWTdSHSh2WkaHL3mQjbefhr+NfncO/Hfy+P+5szpK1FwZsf9xryhhb0Y2fcGK8rDdAgGd9BJP0DpxgO4NMXJDdDx6h1xdbq3XHuq6p+v77cXAs7UCXlAMeHQH/XbficY5Ya2XBxg7sdhiJjvPaZiCubPbAjEz4ZkZbiK3N5LPXjddokXa83Sy+mOOPiO1dXEWQHA6+UnldzK44VOQdFFpIfWzmy1H47C6nny62004M0xm9Pbyhfx69P4VsMtUUYoC8nMRSsiQ2MasddOsUIr6Wg2ZurdBoNhJAGEb0GYt471cRWA46KL+4kGL77AnkWgjLvhuuVWoQ/SF+D2vhWhfqgV21gjbsHa0L4HoXvdxEfLsRP8VJ2+FHPVDbO+WBu0ufEsggZZ80ZvpH7YJsJ/yfoRRr5Sy/GBJDtgYAQ=="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01UnL1EGxsACy3g8QTFvnrb5",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "languages"
+                    }
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01HEVjonmbW52uHCqxLVM13S",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "go"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "1fe307640bf7edf580d1d73f83966fa5395fc3865775756e1e6a4ddd423406c5",
+          "latencyMs": 1213,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1999,
+              "cacheWriteInputTokens": 336,
+              "cacheReadInputTokens": 1661
+            },
+            {
+              "type": "text_delta",
+              "text": "My profile does"
+            },
+            {
+              "type": "text_delta",
+              "text": "n't list Go among"
+            },
+            {
+              "type": "text_delta",
+              "text": " his sk"
+            },
+            {
+              "type": "text_delta",
+              "text": "ills,"
+            },
+            {
+              "type": "text_delta",
+              "text": " and no"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience m"
+            },
+            {
+              "type": "text_delta",
+              "text": "entions it. His list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed languages are TypeSc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ript, JavaScript and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby. For details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on any"
+            },
+            {
+              "type": "text_delta",
+              "text": " Go experience, you"
+            },
+            {
+              "type": "text_delta",
+              "text": " can contact"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto directly."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "My profile doesn't list Go among his skills, and no work experience mentions it. His listed languages are TypeScript, JavaScript and Ruby. For details on any Go experience, you can contact Alberto directly.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1999,
+                  "cacheWriteInputTokens": 336,
+                  "cacheReadInputTokens": 1661,
+                  "outputTokens": 98
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS/AUKEAgTGAI4AUIIdGhpbmtpbmcSDGv/OMrLqJEsmw0F/RoMnVMHBBaQkFNxxaHgIjBtXxGf29n2FZwvjhRcuvvZc/9MyHGB7//vcLjOzOtulX2Niq9p9Pd8eZ6HbEWVbIkqmQXlFD2nMNU8LHHfdum1AturVsCJW0PbtXNpVycn666QrykFXe9oOzOSx7nHxYBdUSeuWEyDeYUWiy2PsRjW7PZw7fG1S8lEyMwmOZlGs+U2F3I5XiAOigb1tEE7JAsssG/gtuqoqLMb2T8yB/3yAf2REO1ORd+AViO8gfw+xyaeMWygd+8BM1ZQY8h7tLNEPgUlqhu/sNA1LHkTKitFpjZluKi4kKNAhfapbJ6Ab/g6axsmv+KOLNNq0JYWKMLeQZPj0HeOubk/IeYKoDpTYfNXFpnugRFqy/hLGqngMKfJ5ffLIpxCwpWp982GtcfE7E5rHHXldnEJJPfc+grWXRiw6ZYjrvjeTRWyPjD+06R47tfvlva+ZjIPe0O8hYeIGZch2CB7oqS9FKKuYGVYJ0sJiK3cm0cSeagh0RwOLzYcTwxJW3f/5/KCXNBT7cXUYlmsSWhKZ6IUFAmNPxMwSAdMbJvd6GD0kGEqV6PlsrxSkCmwFsSBEnjLbGRqJr6mAFFutYJR9k3OviponExEOeq4XbOorQ+uLRW3pYLp2w2JURJ/z+OBfES9M3tHXWz6OsdgOqNrwpoDk1DTgT6GNjAvmBKv/PIP+aP91mfciwq4pNlsnmjGQ9cW9BdYpuwCxqoAV1VTSC2L3fQ5xdDkXSKYrhjCvaNR8t2h+PbwWuiqe2y1BAiayx+hGwqcamtWDIqEoJWHY9iUMq+zVvKXhCxHjGHviDNd57BmvF/IMu9vf8QWMjznSCHeh1uId7uaMW5CuQIxxluJ/sQOcC8z3dFOxa1+OW+nFXbDLGVyz01IrEV4Yh8t6+eQLG36wNFbVy2kl9v1JHMS7WQnqHzXhoHiYrr7cHtkvGUkLnmZK/07DqGFcG6JCPA8YBgB"
+                  },
+                  {
+                    "type": "text",
+                    "text": "My profile doesn't list Go among his skills, and no work experience mentions it. His listed languages are TypeScript, JavaScript and Ruby. For details on any Go experience, you can contact Alberto directly."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }
