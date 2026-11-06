@@ -382,12 +382,12 @@ Each matches `resource.type="cloud_run_revision" AND resource.labels.service_nam
 ```bash
 scripts/monitoring-alerts.sh setup --dry-run acb-landing "$ALERT_EMAIL"  # prints every gcloud command and file; runs nothing
 scripts/monitoring-alerts.sh setup acb-landing "$ALERT_EMAIL"            # creates them, or updates them in place
-scripts/monitoring-alerts.sh test acb-landing [event]                     # one synthetic alert event (default store_unavailable)
+scripts/monitoring-alerts.sh test acb-landing [event]                     # one synthetic alert event (default store_unavailable); wait ~10 min after a first setup
 ```
 
 `setup` is idempotent: it enables the Monitoring API, then looks up the channel and each policy by display name and creates it, or replaces it with the script's version (two with the same name stop it: delete the extra). Re-run it after changing an alert event, the policies or the address, or to recreate them all in a rebuilt project. The email address is only an argument: it reaches gcloud in a temporary file (mode 600, deleted on exit), never on a command line, and the script never prints it (the dry run shows `<email>`); it is in no repo file, variable or workflow, like the contact address. Nothing in CI runs this script; `scripts/monitoring-alerts.test.ts` runs it against a fake `gcloud`.
 
-`test` writes one log entry (`gcloud logging write`, log `agent-alert-test`) shaped like the agent's line for that event, on the `agent` Cloud Run service's resource, with `"test": true` and `"test"` as each field's value: its policy opens an incident and emails the channel within a few minutes. Close the incident in the console, or let it close itself after 30 minutes.
+`test` writes one log entry (`gcloud logging write`, log `agent-alert-test`) shaped like the agent's line for that event, on the `agent` Cloud Run service's resource, with `"test": true` and `"test"` as each field's value: its policy opens an incident and emails the channel within a few minutes. A newly created policy takes a few minutes to start matching, so after a first `setup` wait about 10 minutes before `test`: an entry written sooner is missed and sends nothing. Close the incident in the console, or let it close itself after 30 minutes.
 
 ### Evals
 
