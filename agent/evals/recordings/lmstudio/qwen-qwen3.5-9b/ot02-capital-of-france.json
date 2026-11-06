@@ -3,15 +3,27 @@
   "slug": "capital-of-france",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "f5870ae73b78a60e40d86d7646486c3c0c8e9a80b80321e8eb29798ef4d295b1",
-      "latencyMs": 3046,
+      "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+      "latencyMs": 2832,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2343
+          "inputTokens": 2343,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "text_delta",
@@ -40,14 +52,6 @@
         {
           "type": "text_delta",
           "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
         },
         {
           "type": "text_delta",
@@ -107,6 +111,10 @@
         },
         {
           "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
           "text": " tech"
         },
         {
@@ -115,49 +123,332 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " how"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " contact"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2343,
-              "outputTokens": 116
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 107
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or tech stack?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+          "latencyMs": 3836,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2356,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2356,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 149
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "33b01733482dc89fe2f076a8bced68c82897e5416c3c0ebc5b624b6abb95e797",
+          "latencyMs": 2958,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2356,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2356,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 114
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, tech stack, or how to contact him?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

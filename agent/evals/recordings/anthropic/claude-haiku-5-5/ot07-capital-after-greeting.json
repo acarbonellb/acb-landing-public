@@ -3,15 +3,27 @@
   "slug": "capital-after-greeting",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "bce56274b4409176e0d056ca21d9638e4827da359eafb9b4228faa899f2b3c5f",
-      "latencyMs": 934,
+      "requestHash": "ffef78aa698b5ef03c73d909496ae615c488b83e8204e78593a1eff4f2215fcc",
+      "latencyMs": 969,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1725
+          "inputTokens": 1725,
+          "cacheWriteInputTokens": 1721
         },
         {
           "type": "text_delta",
@@ -31,27 +43,23 @@
         },
         {
           "type": "text_delta",
-          "text": "berto y"
+          "text": "berto y su tr"
         },
         {
           "type": "text_delta",
-          "text": " su trabajo. "
+          "text": "abajo. ¿"
         },
         {
           "type": "text_delta",
-          "text": "¿Te inter"
+          "text": "Qu"
         },
         {
           "type": "text_delta",
-          "text": "esa saber s"
+          "text": "ieres saber sobre s"
         },
         {
           "type": "text_delta",
-          "text": "obre sus ag"
-        },
-        {
-          "type": "text_delta",
-          "text": "entes de"
+          "text": "us agentes de"
         },
         {
           "type": "text_delta",
@@ -59,11 +67,7 @@
         },
         {
           "type": "text_delta",
-          "text": " la"
-        },
-        {
-          "type": "text_delta",
-          "text": "boral o su stack t"
+          "text": " laboral o su stack t"
         },
         {
           "type": "text_delta",
@@ -72,20 +76,207 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?",
+            "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1725,
-              "outputTokens": 68
+              "cacheWriteInputTokens": 1721,
+              "outputTokens": 67
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?"
+                "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "ffef78aa698b5ef03c73d909496ae615c488b83e8204e78593a1eff4f2215fcc",
+          "latencyMs": 1025,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1725,
+              "cacheReadInputTokens": 1721
+            },
+            {
+              "type": "text_delta",
+              "text": "Sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o puedo responder pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abajo. ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te inter"
+            },
+            {
+              "type": "text_delta",
+              "text": "esa saber s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, su experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " prof"
+            },
+            {
+              "type": "text_delta",
+              "text": "esional o su stack t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ecnológico?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia profesional o su stack tecnológico?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1725,
+                  "cacheReadInputTokens": 1721,
+                  "outputTokens": 68
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia profesional o su stack tecnológico?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "ffef78aa698b5ef03c73d909496ae615c488b83e8204e78593a1eff4f2215fcc",
+          "latencyMs": 955,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1725,
+              "cacheReadInputTokens": 1721
+            },
+            {
+              "type": "text_delta",
+              "text": "Sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o puedo respon"
+            },
+            {
+              "type": "text_delta",
+              "text": "der pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su trabajo. "
+            },
+            {
+              "type": "text_delta",
+              "text": "¿Te inter"
+            },
+            {
+              "type": "text_delta",
+              "text": "esa sa"
+            },
+            {
+              "type": "text_delta",
+              "text": "ber sobre s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, su experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral o su stack t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ecnológico?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1725,
+                  "cacheReadInputTokens": 1721,
+                  "outputTokens": 68
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

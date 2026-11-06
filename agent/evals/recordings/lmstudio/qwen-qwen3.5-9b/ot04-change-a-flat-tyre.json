@@ -3,15 +3,27 @@
   "slug": "change-a-flat-tyre",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "f01f20aaa60a57dda1ce27676b1c2a4252bb61f8d5ff8da0d4e63b244e4a993b",
-      "latencyMs": 4287,
+      "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+      "latencyMs": 6476,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2347
+          "inputTokens": 2347,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "text_delta",
@@ -47,31 +59,19 @@
         },
         {
           "type": "text_delta",
-          "text": " de"
+          "text": " para"
         },
         {
           "type": "text_delta",
-          "text": " al"
+          "text": " Alberto"
         },
         {
           "type": "text_delta",
-          "text": "bert"
-        },
-        {
-          "type": "text_delta",
-          "text": "oc"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
+          "text": " Carbon"
         },
         {
           "type": "text_delta",
           "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": ".dev"
         },
         {
           "type": "text_delta",
@@ -96,14 +96,6 @@
         {
           "type": "text_delta",
           "text": " sobre"
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": ":"
         },
         {
           "type": "text_delta",
@@ -223,41 +215,444 @@
         },
         {
           "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " lugar"
-        },
-        {
-          "type": "text_delta",
-          "text": " de"
-        },
-        {
-          "type": "text_delta",
-          "text": " eso"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Soy el agente de portafolio de albertocarbonell.dev y solo puedo responder preguntas sobre Alberto: su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él en lugar de eso?",
+            "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2347,
-              "outputTokens": 161
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 252
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Soy el agente de portafolio de albertocarbonell.dev y solo puedo responder preguntas sobre Alberto: su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él en lugar de eso?"
+                "text": "Soy el agente de portafolio para Alberto Carbonell y solo puedo responder preguntas sobre su perfil, experiencia laboral, proyectos de agentes IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+          "latencyMs": 4271,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2364,
+              "cacheReadInputTokens": 1180
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2364,
+                  "cacheReadInputTokens": 1180,
+                  "outputTokens": 166
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto Carbonell. Would you like to know about his AI agents, work experience, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+          "latencyMs": 3957,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2364,
+              "cacheReadInputTokens": 1180
+            },
+            {
+              "type": "text_delta",
+              "text": "S"
+            },
+            {
+              "type": "text_delta",
+              "text": "oy"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " agente"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " port"
+            },
+            {
+              "type": "text_delta",
+              "text": "af"
+            },
+            {
+              "type": "text_delta",
+              "text": "olio"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " al"
+            },
+            {
+              "type": "text_delta",
+              "text": "bert"
+            },
+            {
+              "type": "text_delta",
+              "text": "oc"
+            },
+            {
+              "type": "text_delta",
+              "text": "arbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": ".dev"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " preguntas"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " agentes"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " tecnológico"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " educación"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " idiomas"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " cómo"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": "arlo"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": " algo"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " él"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " lugar"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " eso"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Soy el agente de portafolio de albertocarbonell.dev y solo puedo responder preguntas sobre Alberto Carbonell: su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él en lugar de eso?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2364,
+                  "cacheReadInputTokens": 1180,
+                  "outputTokens": 153
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Soy el agente de portafolio de albertocarbonell.dev y solo puedo responder preguntas sobre Alberto Carbonell: su perfil, experiencia laboral, proyectos de agentes de IA, stack tecnológico, educación, idiomas o cómo contactarlo. ¿Te gustaría saber algo sobre él en lugar de eso?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

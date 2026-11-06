@@ -1,0 +1,384 @@
+{
+  "caseId": "ot13",
+  "slug": "role-play-across-turns",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+      "latencyMs": 6491,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2457,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "text_delta",
+          "text": "I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2457,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 248
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+          "latencyMs": 6641,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2584,
+              "cacheReadInputTokens": 1290
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2584,
+                  "cacheReadInputTokens": 1290,
+                  "outputTokens": 258
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+          "latencyMs": 5810,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2584,
+              "cacheReadInputTokens": 1290
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2584,
+                  "cacheReadInputTokens": 1290,
+                  "outputTokens": 225
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto. Would you like to know about his AI agents or his work experience?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

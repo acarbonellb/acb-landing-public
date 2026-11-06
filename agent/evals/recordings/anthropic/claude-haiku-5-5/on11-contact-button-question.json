@@ -3,15 +3,27 @@
   "slug": "contact-button-question",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "590d137032abaada0911416830ec2e326db523ac54c5ec4f7140881c5083ba50",
-      "latencyMs": 776,
+      "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
+      "latencyMs": 843,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1670
+          "inputTokens": 1670,
+          "cacheWriteInputTokens": 1666
         },
         {
           "type": "response_end",
@@ -19,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
+                "id": "toolu_01UfqANbfLFUiqTeoonaGMYB",
                 "name": "get_contact",
                 "input": {}
               }
@@ -27,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1670,
+              "cacheWriteInputTokens": 1666,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01VcxxDzBCbpcr7kKW5vsmua",
+                "id": "toolu_01UfqANbfLFUiqTeoonaGMYB",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -45,12 +58,14 @@
       ]
     },
     {
-      "requestHash": "1af64254469af673404818d6217dd906563fa925c3cffd42ca71f3f97dc930e8",
-      "latencyMs": 888,
+      "requestHash": "a20bc37198bed940c2855be7cc5462a6c46dc48ec3e5e409deda37189084fba0",
+      "latencyMs": 1100,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1795
+          "inputTokens": 1795,
+          "cacheWriteInputTokens": 127,
+          "cacheReadInputTokens": 1666
         },
         {
           "type": "text_delta",
@@ -66,65 +81,323 @@
         },
         {
           "type": "text_delta",
-          "text": " can also reach him on"
+          "text": " can also reach him on Git"
         },
         {
           "type": "text_delta",
-          "text": " ["
+          "text": "Hub ("
         },
         {
           "type": "text_delta",
-          "text": "LinkedIn](https"
+          "text": "https"
         },
         {
           "type": "text_delta",
-          "text": "://www.linkedin."
+          "text": "://github.com/acarb"
         },
         {
           "type": "text_delta",
-          "text": "com/in/albertocar"
+          "text": "onellb) or Link"
         },
         {
           "type": "text_delta",
-          "text": "bonell/) or [G"
+          "text": "edIn (https://www."
         },
         {
           "type": "text_delta",
-          "text": "itHub](https://github."
+          "text": "linkedin.com/in"
         },
         {
           "type": "text_delta",
-          "text": "com/acarbonellb"
+          "text": "/albertocarbonell"
         },
         {
           "type": "text_delta",
-          "text": "). He's"
+          "text": "/). He's based in Sp"
         },
         {
           "type": "text_delta",
-          "text": " based in Spain and works rem"
-        },
-        {
-          "type": "text_delta",
-          "text": "otely."
+          "text": "ain and works remotely."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely.",
+            "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1795,
-              "outputTokens": 88
+              "cacheWriteInputTokens": 127,
+              "cacheReadInputTokens": 1666,
+              "outputTokens": 86
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's email address is alberto@example.com. You can also reach him on [LinkedIn](https://www.linkedin.com/in/albertocarbonell/) or [GitHub](https://github.com/acarbonellb). He's based in Spain and works remotely."
+                "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
+          "latencyMs": 817,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_0158CFfw79ChTyyS1MTGDAog",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_0158CFfw79ChTyyS1MTGDAog",
+                    "name": "get_contact",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "fd00835efa7247abe121d4298b4960c46e56ad5cfed7a8085986f51d56a5afee",
+          "latencyMs": 951,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1795,
+              "cacheReadInputTokens": 1793
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's email address"
+            },
+            {
+              "type": "text_delta",
+              "text": " is al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto@example.com. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can also reach him on Git"
+            },
+            {
+              "type": "text_delta",
+              "text": "Hub (https"
+            },
+            {
+              "type": "text_delta",
+              "text": "://github.com/acarb"
+            },
+            {
+              "type": "text_delta",
+              "text": "onellb) or Link"
+            },
+            {
+              "type": "text_delta",
+              "text": "edIn (https://www."
+            },
+            {
+              "type": "text_delta",
+              "text": "linkedin.com/in"
+            },
+            {
+              "type": "text_delta",
+              "text": "/albertocarbonell"
+            },
+            {
+              "type": "text_delta",
+              "text": "/). He is based in Sp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1795,
+                  "cacheReadInputTokens": 1793,
+                  "outputTokens": 86
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
+          "latencyMs": 814,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01JzumwgNMeqLwADWjqcFbVj",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01JzumwgNMeqLwADWjqcFbVj",
+                    "name": "get_contact",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "c9108eb3e1fe2ae1ccfa74b50545967bfead2ab6523573ba78b53153f99914aa",
+          "latencyMs": 939,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1795,
+              "cacheReadInputTokens": 1793
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's email address"
+            },
+            {
+              "type": "text_delta",
+              "text": " is al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto@example.com. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can also reach him on Git"
+            },
+            {
+              "type": "text_delta",
+              "text": "Hub ("
+            },
+            {
+              "type": "text_delta",
+              "text": "https"
+            },
+            {
+              "type": "text_delta",
+              "text": "://github.com/acarb"
+            },
+            {
+              "type": "text_delta",
+              "text": "onellb) or Link"
+            },
+            {
+              "type": "text_delta",
+              "text": "edIn (https://www."
+            },
+            {
+              "type": "text_delta",
+              "text": "linkedin.com/in"
+            },
+            {
+              "type": "text_delta",
+              "text": "/albertocarbonell"
+            },
+            {
+              "type": "text_delta",
+              "text": "/). He is"
+            },
+            {
+              "type": "text_delta",
+              "text": " based in Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1795,
+                  "cacheReadInputTokens": 1793,
+                  "outputTokens": 86
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

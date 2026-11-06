@@ -3,15 +3,27 @@
   "slug": "translate-good-morning",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "90129ae1828ce4af300f365e185aab399eee7091250db3d9cc6d859b98dc5bc3",
-      "latencyMs": 856,
+      "requestHash": "406795aedda8380d45f13055606ad4b19ed104c9d1267f870ed7627e8ccf2af6",
+      "latencyMs": 932,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1664
+          "inputTokens": 1664,
+          "cacheWriteInputTokens": 1660
         },
         {
           "type": "text_delta",
@@ -23,49 +35,188 @@
         },
         {
           "type": "text_delta",
-          "text": " Carbonell, his work"
+          "text": " Carbonell, his work,"
         },
         {
           "type": "text_delta",
-          "text": ", projects, st"
+          "text": " proj"
         },
         {
           "type": "text_delta",
-          "text": "ack, and how"
+          "text": "ects, st"
         },
         {
           "type": "text_delta",
-          "text": " to contact him. Would you"
+          "text": "ack, education"
         },
         {
           "type": "text_delta",
-          "text": " like to know about"
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " his AI agents or his exper"
+          "text": " languages and contact details"
         },
         {
           "type": "text_delta",
-          "text": "ience?"
+          "text": ". Would you like to know about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his AI agents or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, and how to contact him. Would you like to know about his AI agents or his experience?",
+            "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, education, languages and contact details. Would you like to know about his AI agents or his work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1664,
-              "outputTokens": 53
+              "cacheWriteInputTokens": 1660,
+              "outputTokens": 56
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, and how to contact him. Would you like to know about his AI agents or his experience?"
+                "text": "I can only answer questions about Alberto Carbonell, his work, projects, stack, education, languages and contact details. Would you like to know about his AI agents or his work experience?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "406795aedda8380d45f13055606ad4b19ed104c9d1267f870ed7627e8ccf2af6",
+          "latencyMs": 901,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1664,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer quest"
+            },
+            {
+              "type": "text_delta",
+              "text": "ions about Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbonell and his work."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would you like to know about his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects, his experience, or"
+            },
+            {
+              "type": "text_delta",
+              "text": " how to contact him?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agent projects, his experience, or how to contact him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1664,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agent projects, his experience, or how to contact him?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "406795aedda8380d45f13055606ad4b19ed104c9d1267f870ed7627e8ccf2af6",
+          "latencyMs": 1037,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1664,
+              "cacheReadInputTokens": 1660
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer quest"
+            },
+            {
+              "type": "text_delta",
+              "text": "ions about Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbonell and his work."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would you like to know about his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI agents, his experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ", or how to"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact him?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1664,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 47
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto Carbonell and his work. Would you like to know about his AI agents, his experience, or how to contact him?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

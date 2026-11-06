@@ -2,8 +2,8 @@
 // real client and keeps every call's events; CI replays them in order, so the
 // chat loop and the tools run for real while no model is ever called.
 import { createHash } from "node:crypto";
-import type { ModelClient, ModelRequest, ModelStreamEvent } from "../model";
-import { byString } from "./format";
+import type { ModelClient, ModelRequest, ModelStreamEvent, ModelTool } from "../model";
+import { byString, makeLiveRun } from "./format";
 
 /** One model call as it happened: what was asked (hashed) and what came back. */
 export type RecordedCall = {
@@ -13,7 +13,7 @@ export type RecordedCall = {
 };
 
 /** JSON with object keys sorted at every level, so key order never matters. */
-function canonicalJson(value: unknown): string {
+export function canonicalJson(value: unknown): string {
   return JSON.stringify(value, (_, v: unknown) =>
     v && typeof v === "object" && !Array.isArray(v)
       ? Object.fromEntries(
@@ -21,6 +21,15 @@ function canonicalJson(value: unknown): string {
         )
       : v,
   );
+}
+
+/**
+ * The request identity: SHA-256 of what every request of the agent shares,
+ * its system prompt and its tool definitions as the model sees them. A change
+ * to either changes it, so a history entry says what the agent asked with.
+ */
+export function requestIdentity(system: string, tools: ModelTool[]): string {
+  return createHash("sha256").update(canonicalJson({ system, tools })).digest("hex");
 }
 
 /** SHA-256 of everything that reaches the model; never the abort signal. */
@@ -65,15 +74,18 @@ const staleDetail: Record<StaleReason, string> = {
   missing_step: "more model calls than recorded",
 };
 
-/** The recording no longer answers what the code asks. Never re-recorded automatically. */
+/** The recording no longer answers what the code asks. Never replaced automatically: only a live run makes a new one. */
 export class StaleRecordingError extends Error {
   constructor(
     readonly reason: StaleReason,
-    /** 1-based model call within the case. */
+    /** 1-based model call within the run. */
     readonly call: number,
+    /** 1-based run of the case (pass@k); only named after the first. */
+    readonly run = 1,
   ) {
+    const where = run > 1 ? `call ${call} of run ${run}` : `call ${call}`;
     super(
-      `Stale recording (${reason}: ${staleDetail[reason]} at call ${call}): re-run \`pnpm agent:eval\` and commit`,
+      `Stale recording (${reason}: ${staleDetail[reason]} at ${where}): ${makeLiveRun} and commit`,
     );
     this.name = "StaleRecordingError";
   }
@@ -90,6 +102,8 @@ export type ReplayModelClient = ModelClient & {
 /** Plays `calls` back in order; `undefined` means the recording file is missing. */
 export function createReplayModelClient(
   calls: RecordedCall[] | undefined,
+  /** Which run of the case these calls are, for the stale error. */
+  run = 1,
 ): ReplayModelClient {
   let next = 0;
   const client: ReplayModelClient = {
@@ -103,7 +117,7 @@ export function createReplayModelClient(
           : recorded.requestHash !== requestHash(request)
             ? "request_changed"
             : undefined;
-      if (reason) throw (client.staleError = new StaleRecordingError(reason, call));
+      if (reason) throw (client.staleError = new StaleRecordingError(reason, call, run));
       yield* recorded!.events;
     },
   };

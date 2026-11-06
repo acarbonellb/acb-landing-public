@@ -3,15 +3,27 @@
   "slug": "current-company-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "356e8d0cdcec45835d73d26a404e0dcd0dd6d0dc00fd9b0ea2f66a68aec1ef62",
-      "latencyMs": 2195,
+      "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+      "latencyMs": 2024,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2344
+          "inputTokens": 2344,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -19,12 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
-                "name": "get_profile",
-                "input": {}
-              },
-              {
-                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
+                "id": "6dT6rsfjHQxruXVShmW6LHpL3PsVN6x0",
                 "name": "get_experience",
                 "input": {}
               }
@@ -32,18 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2344,
-              "outputTokens": 82
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 75
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "WZmMkNo8ZqkjPfWvzzelxaiWvvBD8v0b",
-                "name": "get_profile",
-                "input": {}
-              },
-              {
-                "type": "tool_use",
-                "id": "aiP3oFh6fMUJPlmyWgJI0omiy1yGlVqX",
+                "id": "6dT6rsfjHQxruXVShmW6LHpL3PsVN6x0",
                 "name": "get_experience",
                 "input": {}
               }
@@ -53,12 +55,13 @@
       ]
     },
     {
-      "requestHash": "8490f0f7da0319029077a887a362d44929a936049445793f558bde0d67d70844",
-      "latencyMs": 772,
+      "requestHash": "2c60ca960bcfc9d1df9af8483768d20d0dd7e96a770f7724da6b9da2092764a3",
+      "latencyMs": 587,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2980
+          "inputTokens": 2694,
+          "cacheReadInputTokens": 1177
         },
         {
           "type": "text_delta",
@@ -67,14 +70,6 @@
         {
           "type": "text_delta",
           "text": "o"
-        },
-        {
-          "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
         },
         {
           "type": "text_delta",
@@ -119,20 +114,302 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet.",
+            "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2980,
-              "outputTokens": 17
+              "inputTokens": 2694,
+              "cacheReadInputTokens": 1177,
+              "outputTokens": 15
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto Carbonell trabaja actualmente como Senior Software Engineer en CoverWallet."
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+          "latencyMs": 1967,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "11qHtHonelkHRKsy5YXzr0KiPuciEetW",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 74
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "11qHtHonelkHRKsy5YXzr0KiPuciEetW",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "de8c63c29883e6db96a0cd6de40a86cde85b74ff9eb0c9d6cff34261b5c89dfa",
+          "latencyMs": 774,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2694,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " desde"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, desde 2019.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2694,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 22
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, desde 2019."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+          "latencyMs": 2123,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "9KaxzGALssKR3XCBDkhL1mshjHgKh0eb",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "id": "RXBUBfuBDDVTYSql6TOUSXmY0aY5LL7N",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 81
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "9KaxzGALssKR3XCBDkhL1mshjHgKh0eb",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "RXBUBfuBDDVTYSql6TOUSXmY0aY5LL7N",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "a7886964dc7142acb39a8047d3a03bc9ff68a67af68405575c0906358a2767f0",
+          "latencyMs": 732,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2980,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2980,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 15
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

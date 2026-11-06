@@ -3,15 +3,27 @@
   "slug": "greeting-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "982f497e8f801d767f0277d821510ff7511619edb88d116e019beb28bedf1b1e",
-      "latencyMs": 1042,
+      "requestHash": "e6bdd0b258702b4705b82cec70a4db957d50cf78cf5bc4e2a0488ce81e82229b",
+      "latencyMs": 1144,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1654
+          "inputTokens": 1654,
+          "cacheWriteInputTokens": 1650
         },
         {
           "type": "text_delta",
@@ -23,7 +35,11 @@
         },
         {
           "type": "text_delta",
-          "text": "ente de portf"
+          "text": "ente del"
+        },
+        {
+          "type": "text_delta",
+          "text": " portf"
         },
         {
           "type": "text_delta",
@@ -39,11 +55,11 @@
         },
         {
           "type": "text_delta",
-          "text": "arte sobre su perf"
+          "text": "arte sobre su per"
         },
         {
           "type": "text_delta",
-          "text": "il, exper"
+          "text": "fil, exper"
         },
         {
           "type": "text_delta",
@@ -67,11 +83,19 @@
         },
         {
           "type": "text_delta",
-          "text": "ack tecnológico,"
+          "text": "ack tecnológico, form"
         },
         {
           "type": "text_delta",
-          "text": " idiomas y c"
+          "text": "ación,"
+        },
+        {
+          "type": "text_delta",
+          "text": " idiomas o"
+        },
+        {
+          "type": "text_delta",
+          "text": " c"
         },
         {
           "type": "text_delta",
@@ -88,20 +112,243 @@
         {
           "type": "response_end",
           "response": {
-            "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, idiomas y cómo contactarle. ¿Qué te gustaría saber?",
+            "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1654,
-              "outputTokens": 100
+              "cacheWriteInputTokens": 1650,
+              "outputTokens": 103
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, idiomas y cómo contactarle. ¿Qué te gustaría saber?"
+                "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e6bdd0b258702b4705b82cec70a4db957d50cf78cf5bc4e2a0488ce81e82229b",
+          "latencyMs": 1170,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1654,
+              "cacheReadInputTokens": 1650
+            },
+            {
+              "type": "text_delta",
+              "text": "¡Hola! So"
+            },
+            {
+              "type": "text_delta",
+              "text": "y el ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ente del portfolio de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto Carbonell"
+            },
+            {
+              "type": "text_delta",
+              "text": ". Puedo cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte sobre su per"
+            },
+            {
+              "type": "text_delta",
+              "text": "fil, exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "iencia la"
+            },
+            {
+              "type": "text_delta",
+              "text": "boral, agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA que "
+            },
+            {
+              "type": "text_delta",
+              "text": "ha constru"
+            },
+            {
+              "type": "text_delta",
+              "text": "ido, st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack tecnológico,"
+            },
+            {
+              "type": "text_delta",
+              "text": " form"
+            },
+            {
+              "type": "text_delta",
+              "text": "ación,"
+            },
+            {
+              "type": "text_delta",
+              "text": " idiomas o"
+            },
+            {
+              "type": "text_delta",
+              "text": " cómo contactarle"
+            },
+            {
+              "type": "text_delta",
+              "text": ". ¿Qué te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría saber?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1654,
+                  "cacheReadInputTokens": 1650,
+                  "outputTokens": 103
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "¡Hola! Soy el agente del portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e6bdd0b258702b4705b82cec70a4db957d50cf78cf5bc4e2a0488ce81e82229b",
+          "latencyMs": 1012,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1654,
+              "cacheReadInputTokens": 1650
+            },
+            {
+              "type": "text_delta",
+              "text": "¡Hola! So"
+            },
+            {
+              "type": "text_delta",
+              "text": "y el ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ente de portf"
+            },
+            {
+              "type": "text_delta",
+              "text": "olio de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto Carbonell"
+            },
+            {
+              "type": "text_delta",
+              "text": ". Puedo cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte sobre su per"
+            },
+            {
+              "type": "text_delta",
+              "text": "fil, exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "iencia la"
+            },
+            {
+              "type": "text_delta",
+              "text": "boral, ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA que "
+            },
+            {
+              "type": "text_delta",
+              "text": "ha construido, st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack tecnológico, form"
+            },
+            {
+              "type": "text_delta",
+              "text": "ación,"
+            },
+            {
+              "type": "text_delta",
+              "text": " idiomas o c"
+            },
+            {
+              "type": "text_delta",
+              "text": "ómo contactarle"
+            },
+            {
+              "type": "text_delta",
+              "text": ". ¿Qué te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría saber?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1654,
+                  "cacheReadInputTokens": 1650,
+                  "outputTokens": 103
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "¡Hola! Soy el agente de portfolio de Alberto Carbonell. Puedo contarte sobre su perfil, experiencia laboral, agentes de IA que ha construido, stack tecnológico, formación, idiomas o cómo contactarle. ¿Qué te gustaría saber?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

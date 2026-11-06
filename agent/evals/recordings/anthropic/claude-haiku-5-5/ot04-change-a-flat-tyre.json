@@ -3,43 +3,39 @@
   "slug": "change-a-flat-tyre",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "f01f20aaa60a57dda1ce27676b1c2a4252bb61f8d5ff8da0d4e63b244e4a993b",
-      "latencyMs": 996,
+      "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+      "latencyMs": 1017,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1677
+          "inputTokens": 1677,
+          "cacheWriteInputTokens": 1673
         },
         {
           "type": "text_delta",
-          "text": "No"
+          "text": "Sol"
         },
         {
           "type": "text_delta",
-          "text": " pu"
+          "text": "o puedo respon"
         },
         {
           "type": "text_delta",
-          "text": "edo ayudarte con"
-        },
-        {
-          "type": "text_delta",
-          "text": " eso, "
-        },
-        {
-          "type": "text_delta",
-          "text": "ya que sol"
-        },
-        {
-          "type": "text_delta",
-          "text": "o resp"
-        },
-        {
-          "type": "text_delta",
-          "text": "ondo pre"
+          "text": "der pre"
         },
         {
           "type": "text_delta",
@@ -59,11 +55,11 @@
         },
         {
           "type": "text_delta",
-          "text": "iencia, ag"
+          "text": "iencia, proyectos"
         },
         {
           "type": "text_delta",
-          "text": "entes de"
+          "text": " de agentes de"
         },
         {
           "type": "text_delta",
@@ -75,11 +71,15 @@
         },
         {
           "type": "text_delta",
-          "text": " formación y contacto. "
+          "text": " formación,"
         },
         {
           "type": "text_delta",
-          "text": "¿Te"
+          "text": " idiomas y contacto"
+        },
+        {
+          "type": "text_delta",
+          "text": ". ¿Te"
         },
         {
           "type": "text_delta",
@@ -87,41 +87,256 @@
         },
         {
           "type": "text_delta",
-          "text": "esa saber s"
+          "text": "esa sa"
         },
         {
           "type": "text_delta",
-          "text": "obre s"
+          "text": "ber algo de"
         },
         {
           "type": "text_delta",
-          "text": "us proyectos de"
-        },
-        {
-          "type": "text_delta",
-          "text": " agentes o su experienc"
-        },
-        {
-          "type": "text_delta",
-          "text": "ia profesional?"
+          "text": " eso?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "No puedo ayudarte con eso, ya que solo respondo preguntas sobre Alberto Carbonell, su perfil, experiencia, agentes de IA, stack tecnológico, formación y contacto. ¿Te interesa saber sobre sus proyectos de agentes o su experiencia profesional?",
+            "text": "Solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, proyectos de agentes de IA, stack tecnológico, formación, idiomas y contacto. ¿Te interesa saber algo de eso?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1677,
-              "outputTokens": 105
+              "cacheWriteInputTokens": 1673,
+              "outputTokens": 85
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No puedo ayudarte con eso, ya que solo respondo preguntas sobre Alberto Carbonell, su perfil, experiencia, agentes de IA, stack tecnológico, formación y contacto. ¿Te interesa saber sobre sus proyectos de agentes o su experiencia profesional?"
+                "text": "Solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, proyectos de agentes de IA, stack tecnológico, formación, idiomas y contacto. ¿Te interesa saber algo de eso?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+          "latencyMs": 1077,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1677,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "text_delta",
+              "text": "Sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o puedo respon"
+            },
+            {
+              "type": "text_delta",
+              "text": "der pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto Carbonell,"
+            },
+            {
+              "type": "text_delta",
+              "text": " su per"
+            },
+            {
+              "type": "text_delta",
+              "text": "fil, experiencia,"
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos de agentes"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ec"
+            },
+            {
+              "type": "text_delta",
+              "text": "nológico,"
+            },
+            {
+              "type": "text_delta",
+              "text": " formación,"
+            },
+            {
+              "type": "text_delta",
+              "text": " idiomas y contacto"
+            },
+            {
+              "type": "text_delta",
+              "text": ". ¿Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " inter"
+            },
+            {
+              "type": "text_delta",
+              "text": "esa sa"
+            },
+            {
+              "type": "text_delta",
+              "text": "ber algo de"
+            },
+            {
+              "type": "text_delta",
+              "text": " eso?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, proyectos de agentes de IA, stack tecnológico, formación, idiomas y contacto. ¿Te interesa saber algo de eso?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1677,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 85
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, proyectos de agentes de IA, stack tecnológico, formación, idiomas y contacto. ¿Te interesa saber algo de eso?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "c5d42d0175e8c58cf6551dc1cf401339ea316e1981cde552d6c38a89eb5777a5",
+          "latencyMs": 1010,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1677,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "text_delta",
+              "text": "L"
+            },
+            {
+              "type": "text_delta",
+              "text": "o siento,"
+            },
+            {
+              "type": "text_delta",
+              "text": " sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o puedo responder pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto Carbonell,"
+            },
+            {
+              "type": "text_delta",
+              "text": " su per"
+            },
+            {
+              "type": "text_delta",
+              "text": "fil prof"
+            },
+            {
+              "type": "text_delta",
+              "text": "esional, exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "iencia, proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, stack t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ecnológico o contacto"
+            },
+            {
+              "type": "text_delta",
+              "text": ". ¿Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " inter"
+            },
+            {
+              "type": "text_delta",
+              "text": "esa saber alg"
+            },
+            {
+              "type": "text_delta",
+              "text": "o de"
+            },
+            {
+              "type": "text_delta",
+              "text": " eso?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su perfil profesional, experiencia, proyectos de agentes de IA, stack tecnológico o contacto. ¿Te interesa saber algo de eso?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1677,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 85
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su perfil profesional, experiencia, proyectos de agentes de IA, stack tecnológico o contacto. ¿Te interesa saber algo de eso?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

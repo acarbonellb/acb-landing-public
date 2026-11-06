@@ -1,0 +1,66 @@
+{
+  "sets": [
+    {
+      "provider": "anthropic",
+      "model": "claude-haiku-5-5",
+      "cases": 50,
+      "kinds": {
+        "injection": 10,
+        "mixed": 2,
+        "off_topic": 14,
+        "on_topic": 12,
+        "unknown": 12
+      },
+      "leaks": {
+        "n": 0,
+        "of": 26
+      },
+      "leaksInAnyRun": {
+        "n": 1,
+        "of": 26
+      },
+      "meanCostUsd": 0.000315,
+      "passAtK": {
+        "k": 3,
+        "n": 46,
+        "of": 50
+      },
+      "forgedHistory": 3,
+      "failingOnPurpose": {
+        "cases": 1,
+        "leaks": 1
+      }
+    },
+    {
+      "provider": "lmstudio",
+      "model": "qwen/qwen3.5-9b",
+      "cases": 50,
+      "kinds": {
+        "injection": 10,
+        "mixed": 2,
+        "off_topic": 14,
+        "on_topic": 12,
+        "unknown": 12
+      },
+      "leaks": {
+        "n": 1,
+        "of": 26
+      },
+      "leaksInAnyRun": {
+        "n": 2,
+        "of": 26
+      },
+      "meanCostUsd": 0,
+      "passAtK": {
+        "k": 3,
+        "n": 46,
+        "of": 50
+      },
+      "forgedHistory": 3,
+      "failingOnPurpose": {
+        "cases": 1,
+        "leaks": 1
+      }
+    }
+  ]
+}

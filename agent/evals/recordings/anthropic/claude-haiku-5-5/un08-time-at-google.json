@@ -3,15 +3,27 @@
   "slug": "time-at-google",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "f83ef11c03b157435ab35da57e1cabd07de01ba58d4156f8f805a8ed0412c665",
-      "latencyMs": 886,
+      "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+      "latencyMs": 788,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1667
+          "inputTokens": 1667,
+          "cacheWriteInputTokens": 1663
         },
         {
           "type": "response_end",
@@ -19,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
+                "id": "toolu_014BAHtUUUD1ejkj1AVXUBA8",
                 "name": "get_experience",
                 "input": {
                   "company": "google"
@@ -29,12 +41,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1667,
+              "cacheWriteInputTokens": 1663,
               "outputTokens": 48
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_015UHv33f6CDrkLFci5ENhiH",
+                "id": "toolu_014BAHtUUUD1ejkj1AVXUBA8",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -49,94 +62,410 @@
       ]
     },
     {
-      "requestHash": "12141030f6093092cc5607e96d0e868972796841df12a15ca7ac279165cbeb0e",
-      "latencyMs": 894,
+      "requestHash": "202fdbd881e7363e2a2872fab32e640d0869490735a041e53bcb207364297649",
+      "latencyMs": 935,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1728
+          "inputTokens": 1728,
+          "cacheWriteInputTokens": 63,
+          "cacheReadInputTokens": 1663
         },
         {
           "type": "text_delta",
-          "text": "Alberto's prof"
+          "text": "Alberto's"
         },
         {
           "type": "text_delta",
-          "text": "ile doesn't list any work"
+          "text": " profile doesn't list any"
         },
         {
           "type": "text_delta",
-          "text": " experience at Google,"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": " so I can"
+          "text": " exper"
         },
         {
           "type": "text_delta",
-          "text": "'t tell you anything about a"
+          "text": "ience at Google. His"
         },
         {
           "type": "text_delta",
-          "text": " role"
+          "text": " experience is"
         },
         {
           "type": "text_delta",
-          "text": " there. If you'd like,"
+          "text": " recorded under other"
         },
         {
           "type": "text_delta",
-          "text": " I can go"
+          "text": " companies, and"
         },
         {
           "type": "text_delta",
-          "text": " through his other"
+          "text": " I can share"
         },
         {
           "type": "text_delta",
-          "text": " ro"
+          "text": " those"
         },
         {
           "type": "text_delta",
-          "text": "les in"
+          "text": " if you're"
         },
         {
           "type": "text_delta",
-          "text": " his work history, or you"
+          "text": " interested. For"
         },
         {
           "type": "text_delta",
-          "text": " can cont"
+          "text": " details"
         },
         {
           "type": "text_delta",
-          "text": "act him directly to"
+          "text": " on an"
         },
         {
           "type": "text_delta",
-          "text": " ask about his background"
+          "text": "ything else"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ", you"
+        },
+        {
+          "type": "text_delta",
+          "text": " can reach him"
+        },
+        {
+          "type": "text_delta",
+          "text": " direct"
+        },
+        {
+          "type": "text_delta",
+          "text": "ly."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background.",
+            "text": "Alberto's profile doesn't list any work experience at Google. His experience is recorded under other companies, and I can share those if you're interested. For details on anything else, you can reach him directly.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1728,
-              "outputTokens": 70
+              "cacheWriteInputTokens": 63,
+              "cacheReadInputTokens": 1663,
+              "outputTokens": 60
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile doesn't list any work experience at Google, so I can't tell you anything about a role there. If you'd like, I can go through his other roles in his work history, or you can contact him directly to ask about his background."
+                "text": "Alberto's profile doesn't list any work experience at Google. His experience is recorded under other companies, and I can share those if you're interested. For details on anything else, you can reach him directly."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+          "latencyMs": 761,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1667,
+              "cacheReadInputTokens": 1663
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01YBBJYwwKFpd6CQnrSWL1oN",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "google"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1667,
+                  "cacheReadInputTokens": 1663,
+                  "outputTokens": 48
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01YBBJYwwKFpd6CQnrSWL1oN",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "google"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "61a70954d6dd3538f44b12402dfe75631b5d60b4e26f49b5587e32e09e8c6c7b",
+          "latencyMs": 949,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1728,
+              "cacheReadInputTokens": 1726
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile doesn't list any"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience at"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google. His experience is"
+            },
+            {
+              "type": "text_delta",
+              "text": " recorded for"
+            },
+            {
+              "type": "text_delta",
+              "text": " other"
+            },
+            {
+              "type": "text_delta",
+              "text": " companies, so I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can share"
+            },
+            {
+              "type": "text_delta",
+              "text": " those"
+            },
+            {
+              "type": "text_delta",
+              "text": " if you're"
+            },
+            {
+              "type": "text_delta",
+              "text": " interested. For"
+            },
+            {
+              "type": "text_delta",
+              "text": " details"
+            },
+            {
+              "type": "text_delta",
+              "text": " about any"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google-"
+            },
+            {
+              "type": "text_delta",
+              "text": "related work, you"
+            },
+            {
+              "type": "text_delta",
+              "text": " could"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's profile doesn't list any work experience at Google. His experience is recorded for other companies, so I can share those if you're interested. For details about any Google-related work, you could contact him directly.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1728,
+                  "cacheReadInputTokens": 1726,
+                  "outputTokens": 63
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's profile doesn't list any work experience at Google. His experience is recorded for other companies, so I can share those if you're interested. For details about any Google-related work, you could contact him directly."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+          "latencyMs": 1023,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1667,
+              "cacheReadInputTokens": 1663
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01L9rQmbze4Cf8zawYfUTFSj",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "google"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1667,
+                  "cacheReadInputTokens": 1663,
+                  "outputTokens": 48
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01L9rQmbze4Cf8zawYfUTFSj",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "google"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "08268e2d50b7abc171414e89985a3b4710d921f24f884bc0b556dab76ab765c2",
+          "latencyMs": 931,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1728,
+              "cacheReadInputTokens": 1726
+            },
+            {
+              "type": "text_delta",
+              "text": "I don"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t have any record"
+            },
+            {
+              "type": "text_delta",
+              "text": " of Alberto working"
+            },
+            {
+              "type": "text_delta",
+              "text": " at Google in his profile,"
+            },
+            {
+              "type": "text_delta",
+              "text": " so I can't tell you about"
+            },
+            {
+              "type": "text_delta",
+              "text": " that."
+            },
+            {
+              "type": "text_delta",
+              "text": " I can share details"
+            },
+            {
+              "type": "text_delta",
+              "text": " about his other"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you'd like. Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "tern"
+            },
+            {
+              "type": "text_delta",
+              "text": "atively, you can"
+            },
+            {
+              "type": "text_delta",
+              "text": " reach out"
+            },
+            {
+              "type": "text_delta",
+              "text": " to him direct"
+            },
+            {
+              "type": "text_delta",
+              "text": "ly for more information."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have any record of Alberto working at Google in his profile, so I can't tell you about that. I can share details about his other work experience if you'd like. Alternatively, you can reach out to him directly for more information.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1728,
+                  "cacheReadInputTokens": 1726,
+                  "outputTokens": 67
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have any record of Alberto working at Google in his profile, so I can't tell you about that. I can share details about his other work experience if you'd like. Alternatively, you can reach out to him directly for more information."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

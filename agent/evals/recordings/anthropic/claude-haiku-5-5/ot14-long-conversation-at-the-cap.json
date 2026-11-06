@@ -1,0 +1,208 @@
+{
+  "caseId": "ot14",
+  "slug": "long-conversation-at-the-cap",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+      "latencyMs": 747,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2933,
+          "cacheWriteInputTokens": 2929
+        },
+        {
+          "type": "text_delta",
+          "text": "I can only answer questions about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto and"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work. Would you like to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his AI agents, exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience, or how to contact him"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or how to contact him?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2933,
+              "cacheWriteInputTokens": 2929,
+              "outputTokens": 41
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or how to contact him?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+          "latencyMs": 762,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2933,
+              "cacheReadInputTokens": 2929
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer questions about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work. Would you like to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his AI agents, exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience, or how to get"
+            },
+            {
+              "type": "text_delta",
+              "text": " in touch with him?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or how to get in touch with him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2933,
+                  "cacheReadInputTokens": 2929,
+                  "outputTokens": 44
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, experience, or how to get in touch with him?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+          "latencyMs": 800,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2933,
+              "cacheReadInputTokens": 2929
+            },
+            {
+              "type": "text_delta",
+              "text": "I can only answer questions about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto. Would you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like to know about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his AI agents, his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience,"
+            },
+            {
+              "type": "text_delta",
+              "text": " or how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to get"
+            },
+            {
+              "type": "text_delta",
+              "text": " in touch with him?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, his experience, or how to get in touch with him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2933,
+                  "cacheReadInputTokens": 2929,
+                  "outputTokens": 42
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, his experience, or how to get in touch with him?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

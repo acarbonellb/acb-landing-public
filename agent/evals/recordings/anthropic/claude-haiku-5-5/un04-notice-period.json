@@ -3,23 +3,31 @@
   "slug": "notice-period",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "1ec5984ea6d409b82c90d1696624eacb4f28ef6c8369a24ffa7cbc02d8cb0f02",
-      "latencyMs": 1126,
+      "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
+      "latencyMs": 1062,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1670
+          "inputTokens": 1670,
+          "cacheWriteInputTokens": 1666
         },
         {
           "type": "text_delta",
-          "text": "I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can't answ"
+          "text": "I can't answ"
         },
         {
           "type": "text_delta",
@@ -31,35 +39,35 @@
         },
         {
           "type": "text_delta",
-          "text": "ability, notice period and"
+          "text": "ability and"
         },
         {
           "type": "text_delta",
-          "text": " start d"
+          "text": " notice period a"
         },
         {
           "type": "text_delta",
-          "text": "ates a"
+          "text": "ren't part"
         },
         {
           "type": "text_delta",
-          "text": "ren't in Alberto's"
+          "text": " of Alberto's public"
         },
         {
           "type": "text_delta",
-          "text": " profile."
+          "text": " profile, so please"
         },
         {
           "type": "text_delta",
-          "text": " You"
+          "text": " cont"
         },
         {
           "type": "text_delta",
-          "text": " can"
+          "text": "act him directly. You"
         },
         {
           "type": "text_delta",
-          "text": " reach him directly through"
+          "text": " can reach him through"
         },
         {
           "type": "text_delta",
@@ -79,49 +87,292 @@
         },
         {
           "type": "text_delta",
-          "text": " I"
+          "text": " I can"
         },
         {
           "type": "text_delta",
-          "text": " can"
+          "text": " share"
         },
         {
           "type": "text_delta",
-          "text": " also t"
+          "text": " those"
         },
         {
           "type": "text_delta",
-          "text": "ell you about his exper"
+          "text": " if"
         },
         {
           "type": "text_delta",
-          "text": "ience or current"
-        },
-        {
-          "type": "text_delta",
-          "text": " projects in"
-        },
-        {
-          "type": "text_delta",
-          "text": " the meantime."
+          "text": " you'd like."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can't answer that. Availability, notice period and start dates aren't in Alberto's profile. You can reach him directly through the contact details on this site, and I can also tell you about his experience or current projects in the meantime.",
+            "text": "I can't answer that. Availability and notice period aren't part of Alberto's public profile, so please contact him directly. You can reach him through the contact details on this site, and I can share those if you'd like.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1670,
-              "outputTokens": 69
+              "cacheWriteInputTokens": 1666,
+              "outputTokens": 63
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can't answer that. Availability, notice period and start dates aren't in Alberto's profile. You can reach him directly through the contact details on this site, and I can also tell you about his experience or current projects in the meantime."
+                "text": "I can't answer that. Availability and notice period aren't part of Alberto's public profile, so please contact him directly. You can reach him through the contact details on this site, and I can share those if you'd like."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
+          "latencyMs": 1050,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "text_delta",
+              "text": "I can't answer that."
+            },
+            {
+              "type": "text_delta",
+              "text": " Avail"
+            },
+            {
+              "type": "text_delta",
+              "text": "ability and"
+            },
+            {
+              "type": "text_delta",
+              "text": " notice period a"
+            },
+            {
+              "type": "text_delta",
+              "text": "ren't part"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto's public"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile, so please"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can find"
+            },
+            {
+              "type": "text_delta",
+              "text": " his email,"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub and Link"
+            },
+            {
+              "type": "text_delta",
+              "text": "edIn on the"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " this"
+            },
+            {
+              "type": "text_delta",
+              "text": " site, and"
+            },
+            {
+              "type": "text_delta",
+              "text": " I can point"
+            },
+            {
+              "type": "text_delta",
+              "text": " you there"
+            },
+            {
+              "type": "text_delta",
+              "text": " if you'd like."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can't answer that. Availability and notice period aren't part of Alberto's public profile, so please contact him directly. You can find his email, GitHub and LinkedIn on the contact details on this site, and I can point you there if you'd like.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 76
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can't answer that. Availability and notice period aren't part of Alberto's public profile, so please contact him directly. You can find his email, GitHub and LinkedIn on the contact details on this site, and I can point you there if you'd like."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
+          "latencyMs": 1054,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " don"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t have that"
+            },
+            {
+              "type": "text_delta",
+              "text": " information."
+            },
+            {
+              "type": "text_delta",
+              "text": " Avail"
+            },
+            {
+              "type": "text_delta",
+              "text": "ability and"
+            },
+            {
+              "type": "text_delta",
+              "text": " notice period a"
+            },
+            {
+              "type": "text_delta",
+              "text": "ren't part"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto's profile, so"
+            },
+            {
+              "type": "text_delta",
+              "text": " please"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him directly. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can find"
+            },
+            {
+              "type": "text_delta",
+              "text": " his email,"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub and Link"
+            },
+            {
+              "type": "text_delta",
+              "text": "edIn on his site"
+            },
+            {
+              "type": "text_delta",
+              "text": ", and"
+            },
+            {
+              "type": "text_delta",
+              "text": " I can help with"
+            },
+            {
+              "type": "text_delta",
+              "text": " an"
+            },
+            {
+              "type": "text_delta",
+              "text": "ything else about his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience or"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have that information. Availability and notice period aren't part of Alberto's profile, so please contact him directly. You can find his email, GitHub and LinkedIn on his site, and I can help with anything else about his experience or projects.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 74
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have that information. Availability and notice period aren't part of Alberto's profile, so please contact him directly. You can find his email, GitHub and LinkedIn on his site, and I can help with anything else about his experience or projects."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

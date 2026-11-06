@@ -3,157 +3,448 @@
   "slug": "start-date-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "6b07f84839df565ba08dda5b9573c91b6ceba9f84ec9e691ec940383b8b4a423",
-      "latencyMs": 1232,
+      "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
+      "latencyMs": 1168,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1682
+          "inputTokens": 1682,
+          "cacheWriteInputTokens": 1678
         },
         {
           "type": "text_delta",
-          "text": "E"
+          "text": "No t"
         },
         {
           "type": "text_delta",
-          "text": "so no está en su"
+          "text": "engo información sobre su dis"
         },
         {
           "type": "text_delta",
-          "text": " perfil público"
+          "text": "ponibilidad, pl"
         },
         {
           "type": "text_delta",
-          "text": ", así que no"
+          "text": "azo de incorporación "
         },
         {
           "type": "text_delta",
-          "text": " puedo conf"
+          "text": "ni cond"
         },
         {
           "type": "text_delta",
-          "text": "irmarte"
+          "text": "iciones la"
         },
         {
           "type": "text_delta",
-          "text": " su disponibilidad "
+          "text": "borales, "
         },
         {
           "type": "text_delta",
-          "text": "ni c"
+          "text": "ya que e"
         },
         {
           "type": "text_delta",
-          "text": "uándo podría inc"
+          "text": "so no fig"
         },
         {
           "type": "text_delta",
-          "text": "orporarse. L"
+          "text": "ura en su"
         },
         {
           "type": "text_delta",
-          "text": "o m"
+          "text": " perfil. Te"
         },
         {
           "type": "text_delta",
-          "text": "ejor es que"
+          "text": " recomi"
         },
         {
           "type": "text_delta",
-          "text": " se"
+          "text": "endo contactarle directam"
         },
         {
           "type": "text_delta",
-          "text": " l"
+          "text": "ente; puedes cons"
         },
         {
           "type": "text_delta",
-          "text": "o pre"
+          "text": "ultar s"
         },
         {
           "type": "text_delta",
-          "text": "guntes directamente."
+          "text": "us dat"
         },
         {
           "type": "text_delta",
-          "text": " Puedes escribirle"
+          "text": "os de contacto si"
         },
         {
           "type": "text_delta",
-          "text": " a través"
+          "text": " quieres que"
         },
         {
           "type": "text_delta",
-          "text": " de los"
+          "text": " te"
         },
         {
           "type": "text_delta",
-          "text": " dat"
+          "text": " los"
         },
         {
           "type": "text_delta",
-          "text": "os de contacto de"
+          "text": " pase,"
         },
         {
           "type": "text_delta",
-          "text": " la web, o"
+          "text": " o pre"
         },
         {
           "type": "text_delta",
-          "text": " si qu"
+          "text": "guntar"
         },
         {
           "type": "text_delta",
-          "text": "ieres, te c"
+          "text": "me"
         },
         {
           "type": "text_delta",
-          "text": "uento s"
+          "text": " s"
         },
         {
           "type": "text_delta",
-          "text": "obre su experiencia prof"
+          "text": "obre su experiencia,"
         },
         {
           "type": "text_delta",
-          "text": "esional o sus proyect"
+          "text": " pro"
         },
         {
           "type": "text_delta",
-          "text": "os con"
+          "text": "yectos o st"
         },
         {
           "type": "text_delta",
-          "text": " ag"
+          "text": "ack téc"
         },
         {
           "type": "text_delta",
-          "text": "entes de"
-        },
-        {
-          "type": "text_delta",
-          "text": " IA."
+          "text": "nico."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Eso no está en su perfil público, así que no puedo confirmarte su disponibilidad ni cuándo podría incorporarse. Lo mejor es que se lo preguntes directamente. Puedes escribirle a través de los datos de contacto de la web, o si quieres, te cuento sobre su experiencia profesional o sus proyectos con agentes de IA.",
+            "text": "No tengo información sobre su disponibilidad, plazo de incorporación ni condiciones laborales, ya que eso no figura en su perfil. Te recomiendo contactarle directamente; puedes consultar sus datos de contacto si quieres que te los pase, o preguntarme sobre su experiencia, proyectos o stack técnico.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1682,
-              "outputTokens": 123
+              "cacheWriteInputTokens": 1678,
+              "outputTokens": 115
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Eso no está en su perfil público, así que no puedo confirmarte su disponibilidad ni cuándo podría incorporarse. Lo mejor es que se lo preguntes directamente. Puedes escribirle a través de los datos de contacto de la web, o si quieres, te cuento sobre su experiencia profesional o sus proyectos con agentes de IA."
+                "text": "No tengo información sobre su disponibilidad, plazo de incorporación ni condiciones laborales, ya que eso no figura en su perfil. Te recomiendo contactarle directamente; puedes consultar sus datos de contacto si quieres que te los pase, o preguntarme sobre su experiencia, proyectos o stack técnico."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
+          "latencyMs": 1201,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1682,
+              "cacheReadInputTokens": 1678
+            },
+            {
+              "type": "text_delta",
+              "text": "Lo siento,"
+            },
+            {
+              "type": "text_delta",
+              "text": " no t"
+            },
+            {
+              "type": "text_delta",
+              "text": "engo información sobre su dis"
+            },
+            {
+              "type": "text_delta",
+              "text": "ponibilidad, fec"
+            },
+            {
+              "type": "text_delta",
+              "text": "ha de inc"
+            },
+            {
+              "type": "text_delta",
+              "text": "orporación "
+            },
+            {
+              "type": "text_delta",
+              "text": "ni pl"
+            },
+            {
+              "type": "text_delta",
+              "text": "azos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de prea"
+            },
+            {
+              "type": "text_delta",
+              "text": "viso,"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "ya que e"
+            },
+            {
+              "type": "text_delta",
+              "text": "so no for"
+            },
+            {
+              "type": "text_delta",
+              "text": "ma parte de su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil. Para sa"
+            },
+            {
+              "type": "text_delta",
+              "text": "ber"
+            },
+            {
+              "type": "text_delta",
+              "text": "lo, pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edes contactarle directam"
+            },
+            {
+              "type": "text_delta",
+              "text": "ente. Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " d"
+            },
+            {
+              "type": "text_delta",
+              "text": "ejo sus datos de cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "acto si los"
+            },
+            {
+              "type": "text_delta",
+              "text": " nec"
+            },
+            {
+              "type": "text_delta",
+              "text": "esitas,"
+            },
+            {
+              "type": "text_delta",
+              "text": " o puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte sobre su experi"
+            },
+            {
+              "type": "text_delta",
+              "text": "encia profesional o s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us proyectos con"
+            },
+            {
+              "type": "text_delta",
+              "text": " agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Lo siento, no tengo información sobre su disponibilidad, fecha de incorporación ni plazos de preaviso, ya que eso no forma parte de su perfil. Para saberlo, puedes contactarle directamente. Te dejo sus datos de contacto si los necesitas, o puedo contarte sobre su experiencia profesional o sus proyectos con agentes de IA.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1682,
+                  "cacheReadInputTokens": 1678,
+                  "outputTokens": 130
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Lo siento, no tengo información sobre su disponibilidad, fecha de incorporación ni plazos de preaviso, ya que eso no forma parte de su perfil. Para saberlo, puedes contactarle directamente. Te dejo sus datos de contacto si los necesitas, o puedo contarte sobre su experiencia profesional o sus proyectos con agentes de IA."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
+          "latencyMs": 1004,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1682,
+              "cacheReadInputTokens": 1678
+            },
+            {
+              "type": "text_delta",
+              "text": "Lo siento,"
+            },
+            {
+              "type": "text_delta",
+              "text": " no t"
+            },
+            {
+              "type": "text_delta",
+              "text": "engo información sobre su dis"
+            },
+            {
+              "type": "text_delta",
+              "text": "ponibilidad, pl"
+            },
+            {
+              "type": "text_delta",
+              "text": "azo de incorporación "
+            },
+            {
+              "type": "text_delta",
+              "text": "ni cond"
+            },
+            {
+              "type": "text_delta",
+              "text": "iciones de cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "ratación,"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "ya que e"
+            },
+            {
+              "type": "text_delta",
+              "text": "so no a"
+            },
+            {
+              "type": "text_delta",
+              "text": "parece en su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil. Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " recomi"
+            },
+            {
+              "type": "text_delta",
+              "text": "endo cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "actarle directamente."
+            },
+            {
+              "type": "text_delta",
+              "text": " Puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " p"
+            },
+            {
+              "type": "text_delta",
+              "text": "asarte s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us dat"
+            },
+            {
+              "type": "text_delta",
+              "text": "os de contacto si qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Lo siento, no tengo información sobre su disponibilidad, plazo de incorporación ni condiciones de contratación, ya que eso no aparece en su perfil. Te recomiendo contactarle directamente. Puedo pasarte sus datos de contacto si quieres.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1682,
+                  "cacheReadInputTokens": 1678,
+                  "outputTokens": 94
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Lo siento, no tengo información sobre su disponibilidad, plazo de incorporación ni condiciones de contratación, ya que eso no aparece en su perfil. Te recomiendo contactarle directamente. Puedo pasarte sus datos de contacto si quieres."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

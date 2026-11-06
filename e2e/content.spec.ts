@@ -29,11 +29,13 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
-  // The Portfolio Agent card (#44): eval results from the history, and
+  // The Portfolio Agent card (#44): eval results from the summary, and
   // links to its source and report that stay clickable over the card's link.
   const portfolio = page.getByRole("article", { name: "./Portfolio Agent" });
   await expect(
-    portfolio.getByText(/^\d+ eval cases incl\. prompt injection · .* per answer on Claude Haiku 5\.5 · replayed in CI$/),
+    portfolio.getByText(
+      /^\d+ eval cases incl\. prompt injection and forged history · pass@3 \d+% · .* per answer on Claude Haiku 5\.5 · replayed in CI$/,
+    ),
   ).toBeVisible();
   await expect(portfolio.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
     "href",

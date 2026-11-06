@@ -69,8 +69,20 @@ Running the eval cases against a real model on the developer's machine, which ma
 _Avoid_: eval run, benchmark
 
 **Recording**:
-Every model call one eval case made during a live run: a hash of each request and the response events it got back.
+Every model call one eval case made during a live run, in each of its runs: a hash of each request and the response events it got back.
 _Avoid_: fixture, snapshot, cassette
+
+**Run** (of an eval case):
+One go at an eval case during a live run. A live run makes k runs of every case, and its recording keeps them all; CI replays and gates on the first.
+_Avoid_: attempt, sample, trial
+
+**pass@k**:
+The share of a recording set's cases that passed every one of k runs, so 100% means k out of k. Recordings made before pass@k have one run (k = 1).
+_Avoid_: pass rate, success rate
+
+**Flaky case**:
+An eval case that passed some of its runs but not all.
+_Avoid_: unstable, intermittent
 
 **Recording set**:
 The recordings of all eval cases for one provider and model.
@@ -89,8 +101,40 @@ Any part of the answer to an off-topic, mixed or injection question that the age
 _Avoid_: jailbreak, failure
 
 **Eval history**:
-The metrics of every live run, one entry per recording set, oldest first. Only live runs add to it.
+The metrics of every live run, re-run, re-score and migration (stored recordings rewritten to a new format by a script, same scores, no model call), one entry per recording set, oldest first. Each entry has its kind (`live`, `rerun`, `rescored` or `migrated`), the recordings fingerprint it was made from and the case count per kind.
 _Avoid_: log, changelog, trend
+
+**Eval summary**:
+The machine-readable eval results (`summary.json`), one entry per recording set: cases, case kinds, leaks, cost per case and pass@k. Regenerated with the report from the replayed recordings; the results line reads it.
+_Avoid_: scorecard, stats
+
+**Recordings fingerprint**:
+A hash of a recording set's recordings, stored in each history entry. CI checks the latest entry by it, not by recomputing metrics, so scoring changes don't force a live run.
+_Avoid_: checksum, version
+
+**Request identity**:
+A hash of what every agent request shares: the system prompt and the tool definitions. Stored in each recording and history entry, so a prompt or tool change shows. Older history entries hold a hash of the system prompt alone.
+_Avoid_: prompt hash, prompt version
+
+**Model settings**:
+What a recording states it was made with beyond the request: the effort and the parameters the model client adds to every request. CI flags recordings whose settings differ from the agent's.
+_Avoid_: config, options
+
+**Re-run**:
+A second live run of a recording set at a commit that already has one. Refused unless asked for with `--rerun`, then marked as such in the history.
+_Avoid_: retry, re-record
+
+**Re-score**:
+Scoring a set's stored recordings again with the current cases and scoring, and adding a history entry marked as such, with a note on the scoring change. No model is called.
+_Avoid_: re-run, re-evaluate
+
+**Decline**:
+What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer. Suggesting to contact him is not a decline on its own.
+_Avoid_: refusal (that's the model's stop reason), deflection
+
+**Failing on purpose**:
+An eval case marked as one the current system prompt is known not to pass, with why. It counts in every metric, but the leak gate skips it; CI fails once it passes every stored run in every recording set, so the mark gets removed.
+_Avoid_: known failure, skipped case, xfail
 
 **Gated case**:
 An eval case CI fails on when it fails, like a leak. Only the contact question is gated, because the site depends on its answer.
@@ -107,7 +151,7 @@ One way Alberto builds and runs agents (evals, human in the loop, cost and limit
 _Avoid_: principle, best practice, rule
 
 **Results line**:
-The Portfolio Agent card's result: the deployed model's latest eval metrics, taken from the eval history when the site is built. It is shown on the page only, never served to the model.
+The Portfolio Agent card's result: the deployed model's eval metrics, taken from the eval summary when the site is built. It is shown on the page only, never served to the model.
 _Avoid_: eval badge, score
 
 **Usage line**:

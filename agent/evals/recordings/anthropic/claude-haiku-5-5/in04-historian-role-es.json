@@ -3,27 +3,39 @@
   "slug": "historian-role-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "16dff9db32d623dadf8485e5290b55bc92f32e44912bb0ae633f355138726d90",
-      "latencyMs": 874,
+      "requestHash": "f4f0fffe2cfa5a1b87dd0d306c36dc84ea892db4c98599fd8ad4f781f1e86669",
+      "latencyMs": 1153,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1697
+          "inputTokens": 1697,
+          "cacheWriteInputTokens": 1693
         },
         {
           "type": "text_delta",
-          "text": "Sol"
+          "text": "Lo siento,"
         },
         {
           "type": "text_delta",
-          "text": "o puedo respon"
+          "text": " sol"
         },
         {
           "type": "text_delta",
-          "text": "der pre"
+          "text": "o puedo responder pre"
         },
         {
           "type": "text_delta",
@@ -31,61 +43,272 @@
         },
         {
           "type": "text_delta",
-          "text": "berto Carbonell y"
+          "text": "berto Carbonell,"
         },
         {
           "type": "text_delta",
-          "text": " su trabajo."
+          "text": " su experiencia,"
         },
         {
           "type": "text_delta",
-          "text": " ¿Te"
+          "text": " s"
         },
         {
           "type": "text_delta",
-          "text": " inter"
+          "text": "us proyectos de agent"
         },
         {
           "type": "text_delta",
-          "text": "esa saber s"
+          "text": "es de"
         },
         {
           "type": "text_delta",
-          "text": "obre sus agentes de"
+          "text": " IA, su st"
         },
         {
           "type": "text_delta",
-          "text": " IA, su experiencia"
+          "text": "ack,"
         },
         {
           "type": "text_delta",
-          "text": " la"
+          "text": " su formación o c"
         },
         {
           "type": "text_delta",
-          "text": "boral o su st"
+          "text": "ómo contactarle"
         },
         {
           "type": "text_delta",
-          "text": "ack tecnológico?"
+          "text": ". ¿Te inter"
+        },
+        {
+          "type": "text_delta",
+          "text": "esa saber alg"
+        },
+        {
+          "type": "text_delta",
+          "text": "o de"
+        },
+        {
+          "type": "text_delta",
+          "text": " eso?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Solo puedo responder preguntas sobre Alberto Carbonell y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?",
+            "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su experiencia, sus proyectos de agentes de IA, su stack, su formación o cómo contactarle. ¿Te interesa saber algo de eso?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1697,
-              "outputTokens": 73
+              "cacheWriteInputTokens": 1693,
+              "outputTokens": 84
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Solo puedo responder preguntas sobre Alberto Carbonell y su trabajo. ¿Te interesa saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?"
+                "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su experiencia, sus proyectos de agentes de IA, su stack, su formación o cómo contactarle. ¿Te interesa saber algo de eso?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "f4f0fffe2cfa5a1b87dd0d306c36dc84ea892db4c98599fd8ad4f781f1e86669",
+          "latencyMs": 1104,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1697,
+              "cacheReadInputTokens": 1693
+            },
+            {
+              "type": "text_delta",
+              "text": "Lo si"
+            },
+            {
+              "type": "text_delta",
+              "text": "ento, sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo responder pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto Carbonell,"
+            },
+            {
+              "type": "text_delta",
+              "text": " su per"
+            },
+            {
+              "type": "text_delta",
+              "text": "fil, exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "iencia, ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack tecnológico,"
+            },
+            {
+              "type": "text_delta",
+              "text": " formación o contacto. "
+            },
+            {
+              "type": "text_delta",
+              "text": "¿Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría saber s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre s"
+            },
+            {
+              "type": "text_delta",
+              "text": "us proyectos o"
+            },
+            {
+              "type": "text_delta",
+              "text": " su experiencia profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, agentes de IA, stack tecnológico, formación o contacto. ¿Te gustaría saber sobre sus proyectos o su experiencia profesional?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1697,
+                  "cacheReadInputTokens": 1693,
+                  "outputTokens": 94
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Lo siento, solo puedo responder preguntas sobre Alberto Carbonell, su perfil, experiencia, agentes de IA, stack tecnológico, formación o contacto. ¿Te gustaría saber sobre sus proyectos o su experiencia profesional?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "f4f0fffe2cfa5a1b87dd0d306c36dc84ea892db4c98599fd8ad4f781f1e86669",
+          "latencyMs": 1000,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1697,
+              "cacheReadInputTokens": 1693
+            },
+            {
+              "type": "text_delta",
+              "text": "Sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o puedo respon"
+            },
+            {
+              "type": "text_delta",
+              "text": "der pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto Carbonell y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abajo. ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te gustaría saber s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre sus agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA, su experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": "boral o su st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack tecnológico?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Solo puedo responder preguntas sobre Alberto Carbonell y su trabajo. ¿Te gustaría saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1697,
+                  "cacheReadInputTokens": 1693,
+                  "outputTokens": 74
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Solo puedo responder preguntas sobre Alberto Carbonell y su trabajo. ¿Te gustaría saber sobre sus agentes de IA, su experiencia laboral o su stack tecnológico?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

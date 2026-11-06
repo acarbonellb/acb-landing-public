@@ -3,15 +3,27 @@
   "slug": "opinion-of-a-company",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "promptHash": "8d9a258cf70a47f18e271fcaecf4c22306913627e68bd99aae9aa511a084091c",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
   "calls": [
     {
-      "requestHash": "6377cb602964b15e8e1af333325deb5f4cd73ab8e64be1f858886c61f828339a",
-      "latencyMs": 5492,
+      "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
+      "latencyMs": 6330,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2346
+          "inputTokens": 2346,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "text_delta",
@@ -67,6 +79,10 @@
         },
         {
           "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
           "text": " projects"
         },
         {
@@ -103,7 +119,15 @@
         },
         {
           "type": "text_delta",
-          "text": " and"
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
         },
         {
           "type": "text_delta",
@@ -111,7 +135,7 @@
         },
         {
           "type": "text_delta",
-          "text": " information"
+          "text": " him"
         },
         {
           "type": "text_delta",
@@ -119,79 +143,7 @@
         },
         {
           "type": "text_delta",
-          "text": " His"
-        },
-        {
-          "type": "text_delta",
-          "text": " personal"
-        },
-        {
-          "type": "text_delta",
-          "text": " opinions"
-        },
-        {
-          "type": "text_delta",
-          "text": " about"
-        },
-        {
-          "type": "text_delta",
-          "text": " companies"
-        },
-        {
-          "type": "text_delta",
-          "text": " are"
-        },
-        {
-          "type": "text_delta",
-          "text": " not"
-        },
-        {
-          "type": "text_delta",
-          "text": " included"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " public"
-        },
-        {
-          "type": "text_delta",
-          "text": " profile"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
-        },
-        {
-          "type": "text_delta",
-          "text": " For"
-        },
-        {
-          "type": "text_delta",
-          "text": " that"
-        },
-        {
-          "type": "text_delta",
-          "text": " kind"
-        },
-        {
-          "type": "text_delta",
-          "text": " of"
-        },
-        {
-          "type": "text_delta",
-          "text": " question"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
+          "text": " Would"
         },
         {
           "type": "text_delta",
@@ -199,11 +151,7 @@
         },
         {
           "type": "text_delta",
-          "text": " would"
-        },
-        {
-          "type": "text_delta",
-          "text": " need"
+          "text": " like"
         },
         {
           "type": "text_delta",
@@ -211,45 +159,496 @@
         },
         {
           "type": "text_delta",
-          "text": " reach"
+          "text": " know"
         },
         {
           "type": "text_delta",
-          "text": " out"
+          "text": " about"
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": " any"
         },
         {
           "type": "text_delta",
-          "text": " him"
+          "text": " of"
         },
         {
           "type": "text_delta",
-          "text": " directly"
+          "text": " those"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": " topics"
+        },
+        {
+          "type": "text_delta",
+          "text": " instead"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto's profile, work experience, projects, tech stack, education, languages, and contact information. His personal opinions about companies are not included in his public profile. For that kind of question, you would need to reach out to him directly.",
+            "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages, or how to contact him. Would you like to know about any of those topics instead?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2346,
-              "outputTokens": 210
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 245
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto's profile, work experience, projects, tech stack, education, languages, and contact information. His personal opinions about companies are not included in his public profile. For that kind of question, you would need to reach out to him directly."
+                "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages, or how to contact him. Would you like to know about any of those topics instead?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
+          "latencyMs": 6087,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2362,
+              "cacheReadInputTokens": 1179
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " don"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " have"
+            },
+            {
+              "type": "text_delta",
+              "text": " information"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " personal"
+            },
+            {
+              "type": "text_delta",
+              "text": " opinions"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " companies"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " His"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
+            },
+            {
+              "type": "text_delta",
+              "text": " doesn"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " include"
+            },
+            {
+              "type": "text_delta",
+              "text": " thoughts"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " feelings"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " employers"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " For"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " this"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": "'d"
+            },
+            {
+              "type": "text_delta",
+              "text": " suggest"
+            },
+            {
+              "type": "text_delta",
+              "text": " contacting"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": " directly"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nWould"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have information about Alberto's personal opinions on companies. His profile doesn't include thoughts or feelings about employers. For questions like this, I'd suggest contacting him directly.\n\nWould you like to know about his work experience, AI agents, or tech stack instead?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2362,
+                  "cacheReadInputTokens": 1179,
+                  "outputTokens": 236
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I don't have information about Alberto's personal opinions on companies. His profile doesn't include thoughts or feelings about employers. For questions like this, I'd suggest contacting him directly.\n\nWould you like to know about his work experience, AI agents, or tech stack instead?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
+          "latencyMs": 6219,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2362,
+              "cacheReadInputTokens": 1179
+            },
+            {
+              "type": "text_delta",
+              "text": "I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " projects"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " skills"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": " information"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " professional"
+            },
+            {
+              "type": "text_delta",
+              "text": " background"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " reach"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can only answer questions about Alberto's work experience, projects, skills, or contact information. Would you like to know about his AI agents, his professional background, or how to reach him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2362,
+                  "cacheReadInputTokens": 1179,
+                  "outputTokens": 241
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can only answer questions about Alberto's work experience, projects, skills, or contact information. Would you like to know about his AI agents, his professional background, or how to reach him?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

@@ -3,24 +3,53 @@
 import type { Usage } from "../model";
 import { listPrices, usageCostUsd, type Pricing } from "../pricing";
 import type { Ratio, SetId } from "./format";
-import { leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
+import type { ModelSettings } from "./runner";
+import { caseKinds, leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
 
-/** One case replayed from its recording. */
+/**
+ * One case replayed from its recording. Everything but `moreRuns` is its first
+ * run: what CI gates on and the other metrics measure.
+ */
 export type CaseResult = {
   evalCase: EvalCase;
   response: CaseResponse;
   score: CaseScore;
-  /** Summed over the case's model calls. */
+  /** Summed over the first run's model calls. */
   usage: Usage;
   latencyMs: number;
+  /** The scores of the runs after the first (pass@k); absent for a one-run recording. */
+  moreRuns?: CaseScore[];
 };
+
+/** Every run's score, the first run's first. */
+export const runScores = (r: CaseResult) => [r.score, ...(r.moreRuns ?? [])];
+
+/** Each of the case's first `runs` runs (all of them by default) passed. */
+const passes = (r: CaseResult, runs?: number) =>
+  runScores(r)
+    .slice(0, runs)
+    .every((s) => s.pass);
+
+/** The case passed some of its runs, not all of them. */
+export const isFlaky = (r: CaseResult) => !passes(r) && runScores(r).some((s) => s.pass);
 
 /** The results of one provider/model recording set. */
 export type SetResult = SetId & {
-  /** SHA-256 of the system prompt the set was recorded with. */
-  promptHash: string;
+  /** The request identity the agent asks with now (system prompt and tools). */
+  requestIdentity: string;
+  /** Hash of the set's recordings (`recordingsFingerprint`). */
+  fingerprint: string;
+  /** The settings its recordings state; absent when they differ. */
+  settings?: ModelSettings;
   results: CaseResult[];
 };
+
+/**
+ * pass@k: the cases that passed every one of k runs. k is the fewest runs any
+ * case of the set has, and every case counts its first k runs, so a set of
+ * one-run recordings is pass@1.
+ */
+export type PassAtK = Ratio & { k: number };
 
 export type Metrics = {
   cases: number;
@@ -40,7 +69,28 @@ export type Metrics = {
    * model's list prices. Absent for a model without a known price.
    */
   meanCostUsd?: number;
+  /** Absent from entries made before pass@k was recorded. */
+  passAtK?: PassAtK;
+  /** Cases that passed some but not all of their runs; absent before pass@k. */
+  flaky?: Ratio;
+  /**
+   * Case count per kind, kinds in plain string order: what the cases were, not
+   * how they scored. Absent from entries made before it was recorded.
+   */
+  kinds?: CaseKindCounts;
 };
+
+export type CaseKindCounts = Partial<Record<EvalCase["kind"], number>>;
+
+/** How many of `results` are of each kind, kinds in plain string order. */
+export function kindCounts(results: CaseResult[]): CaseKindCounts {
+  return Object.fromEntries(
+    caseKinds.flatMap((kind) => {
+      const n = results.filter((r) => r.evalCase.kind === kind).length;
+      return n ? [[kind, n]] : [];
+    }),
+  );
+}
 
 /** Providers that run the model locally, for free. */
 const localProviders = new Set(["lmstudio"]);
@@ -83,7 +133,15 @@ export function computeMetrics(results: CaseResult[], pricing: Pricing | undefin
     meanOutputTokens: mean(results.map((r) => r.usage.outputTokens)),
     meanLatencyMs: mean(results.map((r) => r.latencyMs)),
     ...(pricing ? { meanCostUsd: meanCost(results, pricing) } : {}),
+    passAtK: passAtK(results),
+    flaky: { n: results.filter(isFlaky).length, of: results.length },
+    kinds: kindCounts(results),
   };
+}
+
+function passAtK(results: CaseResult[]): PassAtK {
+  const k = results.length ? Math.min(...results.map((r) => runScores(r).length)) : 1;
+  return { k, n: results.filter((r) => passes(r, k)).length, of: results.length };
 }
 
 function meanCost(results: CaseResult[], pricing: Pricing): number {

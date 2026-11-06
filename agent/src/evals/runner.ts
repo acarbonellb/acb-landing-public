@@ -3,53 +3,95 @@
 // over the committed recording (CI). Nothing in the agent knows it's an eval.
 // Run limits are the loop's defaults, never the machine's env.
 import { createHash } from "node:crypto";
-import { createChatAgent, type ChatMessage } from "../chat";
-import type { ModelClient, Usage } from "../model";
+import { anthropicRequestParams } from "../anthropic";
+import { createChatAgent, modelTools, type ChatMessage } from "../chat";
+import { loadConfig } from "../config";
+import type { Effort, ModelClient, Usage } from "../model";
 import { addUsage } from "../pricing";
 import { systemPrompt } from "../system-prompt";
-import { createToolset } from "../tools";
+import { createToolset, type Toolset } from "../tools";
 import { evalContent } from "./content";
 import {
+  canonicalJson,
   createRecordingModelClient,
   createReplayModelClient,
+  requestIdentity,
   StaleRecordingError,
   type RecordedCall,
 } from "./recording";
-import { caseName, setLabel, type SetId } from "./format";
-import { checkHistory, type HistoryEntry } from "./history";
-import type { CaseResult, SetResult } from "./metrics";
+import { byString, caseName, makeLiveRun, recordingName, setLabel, type SetId } from "./format";
+import { checkHistory, rescoreHistory, type HistoryEntry, type LiveRun } from "./history";
+import { runScores, type CaseResult, type SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
+import { renderSummaryJson } from "./summary";
+
+/** The model settings a recording was made with (`modelSettings`). */
+export type ModelSettings = {
+  effort: Effort;
+  /** What the model client adds to every request, beyond the request itself. */
+  requestParams: Record<string, unknown>;
+};
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
 export type Recording = SetId & {
   caseId: string;
   slug: string;
-  /** SHA-256 of the system prompt it was recorded with, for the report. */
-  promptHash: string;
+  /** The request identity (system prompt and tools) it was recorded with. */
+  requestIdentity: string;
+  /** The model settings it was recorded with (`modelSettings`). */
+  settings: ModelSettings;
+  /** The first run's model calls: what CI replays and gates on. */
   calls: RecordedCall[];
+  /**
+   * The runs after the first, of a live run with k > 1 (pass@k): replayed only
+   * to score them. Absent from a one-run recording (k = 1).
+   */
+  moreRuns?: { calls: RecordedCall[] }[];
 };
 
 export type RunOptions = {
   /** Defaults to the shipped system prompt. */
   system?: string;
+  /** Defaults to the shipped tools over the eval content. */
+  toolset?: Toolset;
+  /**
+   * The effort the model client was made with; defaults to the agent's (its
+   * config schema's default), what replay expects every recording to state.
+   */
+  effort?: Effort;
 };
 
 /** The live run ended in an error: nothing may be written for it. */
 export class RecordingFailedError extends Error {}
 
-export function promptHash(system: string): string {
-  return createHash("sha256").update(system).digest("hex");
+const evalToolset = (options: RunOptions) => options.toolset ?? createToolset(evalContent);
+
+/**
+ * What a recording of `model` states it was made with: the effort and the
+ * parameters the model client adds to every request (`anthropicRequestParams`,
+ * the one adapter the agent and the evals use). Not in the request hash: the
+ * client adds them below the seam.
+ */
+export function modelSettings(model: string, effort: Effort): ModelSettings {
+  return { effort, requestParams: anthropicRequestParams({ model, effort }) };
+}
+
+const agentEffort = (options: RunOptions) => options.effort ?? loadConfig({}).effort;
+
+/** The request identity the agent asks with now (`requestIdentity`). */
+export function currentRequestIdentity(options: RunOptions = {}): string {
+  return requestIdentity(options.system ?? systemPrompt, modelTools(evalToolset(options)));
 }
 
 function conversation(evalCase: EvalCase): ChatMessage[] {
   return [...(evalCase.priorTurns ?? []), { role: "user", content: evalCase.question }];
 }
 
-async function runChatCase(evalCase: EvalCase, model: ModelClient, { system }: RunOptions) {
+async function runChatCase(evalCase: EvalCase, model: ModelClient, options: RunOptions) {
   const response: CaseResponse = { answer: "", toolCalls: [] };
   const usage: Usage = { inputTokens: 0, outputTokens: 0 };
-  const agent = createChatAgent({ model, toolset: createToolset(evalContent), system });
+  const agent = createChatAgent({ model, toolset: evalToolset(options), system: options.system });
   for await (const event of agent.run(conversation(evalCase))) {
     if (event.type === "text") response.answer += event.delta;
     else if (event.type === "tool_call") response.toolCalls.push(event.name);
@@ -75,31 +117,56 @@ function scoredResult(
   };
 }
 
-/** Live: runs the case against `model` and returns its recording. */
+/**
+ * Live: runs the case `runs` times (k, for pass@k; 1 by default) against
+ * `model` and returns its recording of every run. Any run ending in an error
+ * fails the whole case: no recording.
+ */
 export async function recordCase(
   evalCase: EvalCase,
   model: ModelClient,
   meta: SetId,
-  options: RunOptions = {},
+  { runs = 1, ...options }: RunOptions & { runs?: number } = {},
 ): Promise<{ recording: Recording; result: CaseResult }> {
-  const recorder = createRecordingModelClient(model);
-  const ran = await runChatCase(evalCase, recorder, options);
-  if (ran.response.error) {
-    throw new RecordingFailedError(
-      `${caseName(evalCase)}: chat ended in error "${ran.response.error}"`,
-    );
+  const recorded: { calls: RecordedCall[]; result: CaseResult }[] = [];
+  for (let run = 1; run <= runs; run++) {
+    const recorder = createRecordingModelClient(model);
+    const ran = await runChatCase(evalCase, recorder, options);
+    if (ran.response.error) {
+      const which = runs > 1 ? ` (run ${run} of ${runs})` : "";
+      throw new RecordingFailedError(
+        `${caseName(evalCase)}: chat ended in error "${ran.response.error}"${which}`,
+      );
+    }
+    recorded.push({ calls: recorder.calls, result: scoredResult(evalCase, ran, recorder.calls) });
   }
+  const [first, ...more] = recorded;
   const recording: Recording = {
     caseId: evalCase.id,
     slug: evalCase.slug,
     ...meta,
-    promptHash: promptHash(options.system ?? systemPrompt),
-    calls: recorder.calls,
+    requestIdentity: currentRequestIdentity(options),
+    settings: modelSettings(meta.model, agentEffort(options)),
+    calls: first.calls,
+    ...(more.length ? { moreRuns: more.map(({ calls }) => ({ calls })) } : {}),
   };
-  return { recording, result: scoredResult(evalCase, ran, recorder.calls) };
+  return { recording, result: withMoreRuns(first.result, more.map((r) => r.result.score)) };
 }
 
-/** Replay: the same run fed from `recording`; throws `StaleRecordingError`. */
+const withMoreRuns = (result: CaseResult, scores: CaseResult["score"][]): CaseResult =>
+  scores.length ? { ...result, moreRuns: scores } : result;
+
+async function replayRun(evalCase: EvalCase, calls: RecordedCall[], run: number, options: RunOptions) {
+  const replay = createReplayModelClient(calls, run);
+  const ran = await runChatCase(evalCase, replay, options);
+  if (replay.staleError) throw replay.staleError;
+  return scoredResult(evalCase, ran, calls);
+}
+
+/**
+ * Replay: the same run fed from `recording`, its first run's result, with the
+ * scores of the runs after it; throws `StaleRecordingError` if any run is stale.
+ */
 export async function replayCase(
   evalCase: EvalCase,
   recording: Recording | undefined,
@@ -107,19 +174,37 @@ export async function replayCase(
 ): Promise<CaseResult> {
   // Known before running: skip the loop (and its error log) altogether.
   if (!recording) throw new StaleRecordingError("missing_recording", 1);
-  const replay = createReplayModelClient(recording.calls);
-  const ran = await runChatCase(evalCase, replay, options);
-  if (replay.staleError) throw replay.staleError;
-  return scoredResult(evalCase, ran, recording.calls);
+  const first = await replayRun(evalCase, recording.calls, 1, options);
+  const more: CaseResult["score"][] = [];
+  for (const [i, { calls }] of (recording.moreRuns ?? []).entries()) {
+    more.push((await replayRun(evalCase, calls, i + 2, options)).score);
+  }
+  return withMoreRuns(first, more);
 }
 
 export type RecordingSet = SetId & { recordings: Recording[] };
 
+/** The settings every recording states; `undefined` when they differ (or there are none). */
+function sharedSettings(recordings: Recording[]): ModelSettings | undefined {
+  const all = new Set(recordings.map((r) => canonicalJson(r.settings)));
+  return all.size === 1 ? recordings[0].settings : undefined;
+}
+
+/**
+ * SHA-256 of a set's recordings: their content in case order, so neither the
+ * order they're listed in nor JSON key order matters. What the eval history
+ * checks recordings by, whatever their scores.
+ */
+export function recordingsFingerprint(recordings: { caseId: string }[]): string {
+  const ordered = [...recordings].sort((a, b) => byString(a.caseId, b.caseId));
+  return createHash("sha256").update(canonicalJson(ordered)).digest("hex");
+}
+
 /**
  * Replays every case of every recording set: what both a live run (for its
  * history line) and `evaluate` start from. `problems` are stale or missing
- * recordings, leaks (off_topic, mixed, injection) and a failed gated case (the
- * contact question, ADR 0001). Tool accuracy and fact coverage are only
+ * recordings, leaks (off_topic, mixed, injection; except in a case marked
+ * failing on purpose) and a failed gated case (the contact question, ADR 0001). Tool accuracy and fact coverage are only
  * reported.
  */
 export async function replaySets({
@@ -134,6 +219,24 @@ export async function replaySets({
   const results: SetResult[] = [];
   for (const set of sets) {
     const label = setLabel(set);
+    const identity = currentRequestIdentity(options);
+    const otherIdentity = set.recordings.filter((r) => r.requestIdentity !== identity).length;
+    if (otherIdentity) {
+      problems.push(
+        `${label}: ${otherIdentity} recording${otherIdentity === 1 ? " was" : "s were"} made with another request identity (the system prompt or the tools changed): ${makeLiveRun}`,
+      );
+    }
+    const settings = canonicalJson(modelSettings(set.model, agentEffort(options)));
+    const otherSettings = set.recordings.filter((r) => canonicalJson(r.settings) !== settings);
+    if (otherSettings.length) {
+      const which =
+        otherSettings.length === set.recordings.length && set.recordings.length > 1
+          ? `all ${set.recordings.length} recordings`
+          : otherSettings.map(recordingName).join(", ");
+      problems.push(
+        `${label}: recorded with other model settings than the agent's (${which}): ${makeLiveRun}`,
+      );
+    }
     const byCase = new Map(set.recordings.map((r) => [r.caseId, r]));
     const setResults: CaseResult[] = [];
     for (const evalCase of cases) {
@@ -141,7 +244,7 @@ export async function replaySets({
       try {
         const result = await replayCase(evalCase, byCase.get(evalCase.id), options);
         setResults.push(result);
-        if (result.score.leaked) problems.push(`${name} leaked: ${result.score.reasons.join("; ")}`);
+        if (result.score.leaked && !evalCase.failingOnPurpose) problems.push(`${name} leaked: ${result.score.reasons.join("; ")}`);
         if (evalCase.kind === "on_topic" && evalCase.gated && !result.score.pass) {
           problems.push(`${name} failed a gated case: ${result.score.reasons.join("; ")}`);
         }
@@ -152,17 +255,64 @@ export async function replaySets({
     results.push({
       provider: set.provider,
       model: set.model,
-      promptHash: set.recordings[0]?.promptHash ?? promptHash(options.system ?? systemPrompt),
+      requestIdentity: identity,
+      settings: sharedSettings(set.recordings),
+      fingerprint: recordingsFingerprint(set.recordings),
       results: setResults,
     });
   }
+  problems.push(...staleFailingOnPurpose(cases, results));
   return { sets: results, problems };
 }
 
 /**
- * What `pnpm agent:eval:replay` runs: `replaySets`, then the report. Given a
- * `history`, it also fails on a set whose latest entry doesn't match its
- * recordings, and adds the history to the report.
+ * Cases marked failing on purpose that no longer fail: every set replayed them
+ * and every run of each passed. The mark would hide the next regression of
+ * that case from the leak gate, so CI asks for it to be removed.
+ */
+function staleFailingOnPurpose(cases: EvalCase[], sets: SetResult[]): string[] {
+  if (!sets.length) return [];
+  return cases
+    .filter((c) => c.failingOnPurpose)
+    .filter((c) =>
+      sets.every((set) => {
+        const result = set.results.find((r) => r.evalCase.id === c.id);
+        return result !== undefined && runScores(result).every((s) => s.pass);
+      }),
+    )
+    .map(
+      (c) =>
+        `${caseName(c)} is marked failing on purpose but passed every run in every set: remove its \`failingOnPurpose\` mark`,
+    );
+}
+
+/**
+ * What `pnpm agent:eval:rescore` runs: the stored recordings replayed and
+ * scored by the current cases, and the `rescored` history entries that makes
+ * (see `rescoreHistory`). Replay only: no model is ever called.
+ */
+export async function rescore({
+  history,
+  run,
+  note,
+  ...input
+}: {
+  cases: EvalCase[];
+  sets: RecordingSet[];
+  history: HistoryEntry[];
+  run: LiveRun;
+  /** What the scoring change is; needed when scores changed (see `rescoreHistory`). */
+  note?: string;
+} & RunOptions): Promise<{ entries: HistoryEntry[]; problems: string[] }> {
+  const { sets } = await replaySets(input);
+  return rescoreHistory(history, sets, input.cases.length, run, note);
+}
+
+/**
+ * What `pnpm agent:eval:replay` runs: `replaySets`, then the report and the
+ * summary (`summary.json`). Given a `history`, it also fails on a set whose
+ * latest entry doesn't match its recordings, and adds the history to the
+ * report. The summary is made from the replayed recordings alone.
  */
 export async function evaluate({
   history,
@@ -176,9 +326,38 @@ export async function evaluate({
   sets: SetResult[];
   problems: string[];
   report: string;
+  summary: string;
 }> {
   const { sets, problems } = await replaySets(input);
   if (history) problems.push(...checkHistory(history, sets));
   const historySection = history?.length ? `\n${renderHistory(history)}` : "";
-  return { sets, problems, report: renderReport(sets) + historySection };
+  return {
+    sets,
+    problems,
+    report: renderReport(sets) + historySection,
+    summary: renderSummaryJson(sets),
+  };
+}
+
+/** The files `evaluate` generates, as text. */
+export type GeneratedFiles = { report: string; summary: string };
+
+const generatedPaths: Record<keyof GeneratedFiles, string> = {
+  report: "agent/evals/report.md",
+  summary: "agent/evals/summary.json",
+};
+
+/**
+ * `--check`'s comparison: one problem per committed file (`undefined` when
+ * missing) that differs from the one just generated.
+ */
+export function staleFiles(
+  generated: GeneratedFiles,
+  committed: Record<keyof GeneratedFiles, string | undefined>,
+): string[] {
+  return (Object.keys(generatedPaths) as (keyof GeneratedFiles)[]).flatMap((file) =>
+    committed[file] === generated[file]
+      ? []
+      : [`${generatedPaths[file]} differs from the recordings: run \`pnpm agent:eval:replay\` and commit it`],
+  );
 }
