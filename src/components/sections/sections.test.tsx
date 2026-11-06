@@ -296,7 +296,7 @@ describe("Projects", () => {
     expect(link).not.toHaveAttribute("target");
   });
 
-  it("says how the agents are run, each practice with its sources (#43)", () => {
+  it("says how the agents are run, each practice with its sources", () => {
     render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const block = within(
@@ -440,7 +440,7 @@ describe("Contact", () => {
     );
   });
 
-  it("never puts the address in the page (#50): the agent gives it out", () => {
+  it("never puts the address in the page: the agent gives it out", () => {
     const html = renderToString(<Contact profile={profile} />);
 
     expect(html).not.toContain("@");

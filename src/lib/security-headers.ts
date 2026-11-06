@@ -1,4 +1,4 @@
-// The site's Content Security Policy (#93), added to the Hosting config after
+// The site's Content Security Policy, added to the Hosting config after
 // `next build` by scripts/hosting-config.ts. Build-time only: the site never
 // imports this. It runs under plain Node (type stripping), so it imports
 // nothing but Node built-ins.

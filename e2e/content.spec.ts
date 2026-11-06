@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-// Literals from the owner's CV (ticket #4): the built page shows the real
+// Literals from the owner's CV: the built page shows the real
 // content, not placeholders.
 
 test("shows the real CV content", async ({ page }) => {
@@ -29,7 +29,7 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
-  // The Portfolio Agent card (#44): eval results from the summary, and
+  // The Portfolio Agent card: eval results from the summary, and
   // links to its source and report that stay clickable over the card's link.
   const portfolio = page.getByRole("article", { name: "./Portfolio Agent" });
   await expect(
@@ -52,7 +52,7 @@ test("shows the real CV content", async ({ page }) => {
   await source.close();
   await expect(page).not.toHaveURL(/#agent$/);
 
-  // How I run agents (#43): four practices, each linked to where it's backed.
+  // How I run agents: four practices, each linked to where it's backed.
   const practices = page.getByRole("region", { name: "how I run agents" });
   for (const title of [
     "Offline evals before shipping",

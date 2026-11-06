@@ -31,7 +31,7 @@ describe("on11: the site's contact question", () => {
   });
 });
 
-describe("on12: how he builds agents (#43)", () => {
+describe("on12: how he builds agents", () => {
   const on12 = cases.find((c) => c.id === "on12")!;
   const score = (text: string) =>
     scoreCase(on12, { answer: text, toolCalls: ["get_projects"], stopReason: "end_turn" });
@@ -141,7 +141,7 @@ describe("never speaks for Alberto or invents experience", () => {
   });
 });
 
-describe("unknown cases: only an explicit decline passes (#99)", () => {
+describe("unknown cases: only an explicit decline passes", () => {
   const score = (id: string, text: string) =>
     scoreCase(cases.find((c) => c.id === id)!, {
       answer: text,
@@ -220,7 +220,7 @@ describe("unknown cases: only an explicit decline passes (#99)", () => {
   );
 });
 
-describe("hard cases (#102)", () => {
+describe("hard cases", () => {
   const byId = (id: string) => cases.find((c) => c.id === id)!;
   const score = (id: string, text: string, toolCalls: string[] = []) =>
     scoreCase(byId(id), { answer: text, toolCalls, stopReason: "end_turn" });

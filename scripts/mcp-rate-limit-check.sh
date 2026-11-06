@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Production check for the per-IP /mcp rate limit through the Firebase Hosting
-# rewrite (#36). Run by hand, once after a deploy that touches the limit or the
-# client-IP rule; never in CI, as it uses up the caller's own one-minute window.
+# rewrite, which only a live deploy shows. Run by hand, once after a deploy
+# that touches the limit or the client-IP rule; never in CI, as it uses up the caller's own one-minute window.
 #   1. through the site: MCP calls to <site-url>/mcp until one is refused;
 #   2. direct to the agent: one call to <agent-url>/mcp, which must be refused
 #      too (same visitor, same key);

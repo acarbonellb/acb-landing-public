@@ -37,7 +37,7 @@ describe("Google's user-triggered fetchers ranges", () => {
     expect(isFetcher("unknown")).toBe(false);
   });
 
-  it("has Hosting's peers from #36 in the committed snapshot, and not other Google addresses", () => {
+  it("has Hosting's measured peers in the committed snapshot, and not other Google addresses", () => {
     expect(isUserTriggeredFetcher("66.249.93.229")).toBe(true);
     expect(isUserTriggeredFetcher("66.249.93.199")).toBe(true);
     expect(isUserTriggeredFetcher("66.249.64.1")).toBe(false);

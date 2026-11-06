@@ -9,8 +9,8 @@ import {
   maskAddress,
 } from "./address-scan";
 
-// The repo is public, so the contact address lives only in Secret Manager
-// (#51). This scans every file git would publish: tracked, plus untracked
+// The repo is public, so the contact address lives only in Secret Manager.
+// This scans every file git would publish: tracked, plus untracked
 // files that aren't ignored.
 const root = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
 

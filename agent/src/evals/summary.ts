@@ -1,7 +1,8 @@
 // The committed `agent/evals/summary.json`: the machine-readable eval results,
 // what the site's results line reads at build time instead of the report's
-// Markdown (#101). Generated with the report from the replayed recordings, so
-// it's pure and deterministic: same results, same bytes. Fields may be added
+// Markdown, so the site doesn't depend on the report's layout. Generated with
+// the report from the replayed recordings, so it's pure and deterministic:
+// same results, same bytes. Fields may be added
 // (all optional for a reader); none is renamed or removed without updating
 // `src/lib/eval-results.ts`.
 import { byString, setLabel, type Ratio, type SetId } from "./format";

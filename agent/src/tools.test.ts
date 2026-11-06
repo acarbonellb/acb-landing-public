@@ -208,7 +208,7 @@ describe("get_projects", () => {
           stack: ["Jacquard"],
         },
       ],
-      // How he runs agents (#43), with only the links that work off the page.
+      // How he runs agents, with only the links that work off the page.
       practices: [
         {
           title: "Tables checked twice",
@@ -284,7 +284,7 @@ describe("get_contact", () => {
     });
   });
 
-  // Local development: CONTACT_EMAIL unset, so no address to give (#51).
+  // Local development: CONTACT_EMAIL unset, so no address to give: the repo never holds it.
   describe("without a contact email", () => {
     const noEmail = createToolset({ ...fixture, contactEmail: undefined });
     const contact = () => noEmail.list().find((t) => t.name === "get_contact")!;
@@ -310,7 +310,7 @@ describe("get_contact", () => {
 });
 
 describe("the chat privacy note", () => {
-  // Site-only copy (#46): the model's request must not change because of it,
+  // The privacy note is site-only copy: the model's request must not change because of it,
   // so the recorded evals stay valid.
   it("is in no tool description, tool result or the system prompt", () => {
     const toolset = createToolset();

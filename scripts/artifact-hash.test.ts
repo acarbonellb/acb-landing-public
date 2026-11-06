@@ -5,7 +5,7 @@ import { dirname, join, resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
 // CI hashes the build it tested and the copy each deploy job ships; a match
-// means the deploy is byte-identical to what passed the tests (#94).
+// means the deploy is byte-identical to what passed the tests.
 const script = resolve(__dirname, "artifact-hash.sh");
 
 const dirs: string[] = [];

@@ -10,7 +10,7 @@ import {
   skillGroups,
 } from "./profile";
 
-// Expected values are literals from the owner's CV (spec #2 / ticket #4).
+// Expected values are literals from the owner's CV.
 
 describe("content module", () => {
   it("holds no lorem ipsum placeholder text", () => {
@@ -50,7 +50,7 @@ describe("content module", () => {
     );
   });
 
-  it("links the portfolio agent to its chat, its source and its eval report (#44)", () => {
+  it("links the portfolio agent to its chat, its source and its eval report", () => {
     const repo = "https://github.com/acarbonellb/acb-landing-public";
     const portfolio = agentProjects.find((a) => a.slug === "portfolio-agent");
     expect(portfolio?.href).toBe("#agent");
@@ -73,7 +73,7 @@ describe("content module", () => {
     ]);
   });
 
-  it("says how Alberto runs agents, each practice backed by this public repo or the page (#43)", () => {
+  it("says how Alberto runs agents, each practice backed by this public repo or the page", () => {
     const repo = "https://github.com/acarbonellb/acb-landing-public";
     expect(practices).toEqual([
       {
