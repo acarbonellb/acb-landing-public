@@ -109,7 +109,7 @@ The limit defaults to `RATE_LIMIT_MCP_PER_MINUTE`, else the code default; pass i
 
 1. **Through the site**: MCP `tools/list` calls to the site's `/mcp` until one is refused with `429`. Proves the rewrite's traffic is limited per visitor: if Hosting's peer weren't recognised, every visitor would share one key and the count would still stop, but phase 2 would then be allowed. Fewer allowed than the limit just means part of the window was already used. If the refusal comes in a window's last 10 s, it waits for the next window and starts again.
 2. **Direct to the agent**: one call to `$AGENT_URL/mcp`, which must be refused: the same visitor gets the same key through the rewrite and directly ([Client IP](guardrails.md#client-ip)).
-3. **Forged `X-Forwarded-For`**: five calls to each URL with made-up addresses (IPv4, IPv6 in a fresh `/64`, a two-entry chain), which must all be refused: forging the header doesn't buy a fresh window, because the key is the entry Cloud Run appends (#36's criterion, measured live).
+3. **Forged `X-Forwarded-For`**: five calls to each URL with made-up addresses (IPv4, IPv6 in a fresh `/64`, a two-entry chain), which must all be refused: forging the header doesn't buy a fresh window, because the key is the entry Cloud Run appends (measured live against the deployed service).
 
 Against a local agent (`PORT=8090 pnpm agent:dev`, memory store) phases 1 and 2 pass but phase 3 fails: with no Cloud Run front end appending the real address, the agent takes the forged value as the caller. `agent/src/mcp-rate-limit-check.test.ts` runs the script against a local agent behind a stand-in front end, in the agent tests.
 
