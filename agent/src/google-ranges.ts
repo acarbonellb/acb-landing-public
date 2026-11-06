@@ -2,8 +2,8 @@
 // `pnpm agent:ranges`:
 //
 // - the user-triggered fetchers ranges, to recognise the Firebase Hosting hop
-//   in front of `/mcp` (see `client-ip.ts`): the #36 probe saw Hosting's peer
-//   in them. The only list the rate-limit key depends on.
+//   in front of `/mcp` (see `client-ip.ts`): a probe through the live
+//   rewrite saw Hosting's peer in them. The only list the rate-limit key depends on.
 // - Google's own addresses (`goog.json` minus `cloud.json`, the part Google
 //   Cloud customers can rent), only to count `/mcp` requests whose hop is
 //   Google's but not a fetcher: the sign the fetchers snapshot is stale

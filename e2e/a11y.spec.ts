@@ -4,7 +4,7 @@ import { DEFAULT_THEME, THEME_STORAGE_KEY, THEMES, type Theme } from "../src/lib
 import { chatError, chatStream, done, mcpContact } from "../src/testing/agent-fakes";
 import { ask, conversation, expect, markdownAnswer, test } from "./fixtures";
 
-// Automated accessibility (#49), the one axe spec: axe over the whole page and
+// Automated accessibility, the one axe spec: axe over the whole page and
 // over the chat's states, in both themes (contrast, names, labels, landmarks),
 // plus the keyboard path through the chat and the contact button, which axe
 // can't judge.

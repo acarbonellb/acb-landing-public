@@ -3,7 +3,7 @@ import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 // The deploy pipeline ships what it tested, with nothing that can move under
-// it between runs (#94): actions by commit SHA, firebase-tools and every one of
+// it between runs: actions by commit SHA, firebase-tools and every one of
 // its dependencies by version and integrity, the agent's base image by version
 // and digest, and no deploy job cancelled halfway.
 const root = resolve(__dirname, "..");

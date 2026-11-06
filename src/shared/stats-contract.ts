@@ -1,5 +1,5 @@
-// The wire contract of the agent's `GET /stats` endpoint (README, "Usage
-// stats"): weekly usage aggregates, with no message content and no IPs.
+// The wire contract of the agent's `GET /stats` endpoint (docs/usage-stats.md):
+// weekly usage aggregates, with no message content and no IPs.
 // Shared by the agent (which serves it) and the site (which shows a line
 // from it). Types and plain constants only, so it is safe in either runtime.
 import type { ChatErrorCode, ChatStopReason } from "./chat-contract";

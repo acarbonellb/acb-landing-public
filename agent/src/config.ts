@@ -1,7 +1,8 @@
 // Runtime configuration, read from environment variables. No secrets live in
 // the repo: the API key and the contact email come from the environment
 // (Secret Manager in production, your shell locally). Plain data only: the
-// production composer (`compose.ts`) builds the adapters from it.
+// production composer (`compose.ts`) builds the adapters from it. Each
+// variable, its default and what it does (docs/agent.md, "Configuration").
 import * as z from "zod";
 import { chatLimits } from "./chat";
 import { efforts } from "./model";
@@ -47,7 +48,7 @@ const envSchema = z.object({
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "used up for this month" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
-  // The `chat_error_rate` alert event (README, "Logs and alert events"):
+  // The `chat_error_rate` alert event (docs/logs-and-alerts.md):
   // fires when more than this share of the last hour's streamed requests
   // ended in an error, once the hour has at least that many of them.
   ALERT_CHAT_ERROR_RATE: z.coerce.number().min(0).max(1).default(defaultErrorRateAlert.threshold),

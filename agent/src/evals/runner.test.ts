@@ -86,7 +86,8 @@ describe("the eval runner", () => {
       stopReason: "end_turn",
     });
     expect(a.result.score.pass).toBe(true);
-    // The tools run with the placeholder address, never the real one (#51).
+    // The tools run with the placeholder address, never the real one, which is
+    // in no repo file.
     expect(JSON.stringify(model.requests[1].messages)).toContain(
       '\\"email\\":\\"alberto@example.com\\"',
     );

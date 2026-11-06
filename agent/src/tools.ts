@@ -19,7 +19,7 @@ import type {
 export type Content = {
   profile: Profile;
   agentProjects: AgentProject[];
-  /** How he runs agents (#43), served with the projects. */
+  /** The Practices (the page's "how I run agents" block), served with the projects. */
   practices: Practice[];
   experience: Role[];
   skillGroups: SkillGroup[];

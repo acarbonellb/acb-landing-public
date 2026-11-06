@@ -1,7 +1,7 @@
-// The contact fallback's one MCP call (#50): when the chat can't answer the
+// The contact fallback's one MCP call: when the chat can't answer the
 // "ask my agent" question, the page asks the agent's MCP server for the
 // address straight from `get_contact`. No model, no spend; `/mcp` has its own
-// rate limit. The server is stateless (README, "Agent service"), so a single
+// rate limit. The server is stateless (docs/agent.md), so a single
 // `tools/call` needs no `initialize` or session. Shared with the agent's tests,
 // which run it against the real server.
 

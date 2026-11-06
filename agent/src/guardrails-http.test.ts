@@ -171,7 +171,7 @@ describe("MCP rate limit", () => {
         },
         body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
       });
-    // As measured in #36: Hosting sends `<visitor>,<its Google-owned peer>`.
+    // As measured through the live rewrite: Hosting sends `<visitor>,<its Google-owned peer>`.
     const hosting = (visitor: string) => `${visitor},66.249.93.229`;
 
     expect((await listTools(hosting("198.51.100.1"))).status).toBe(200);

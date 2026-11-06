@@ -66,7 +66,7 @@ type HostingConfig = {
 
 /**
  * The headers Hosting sends with every page (the `**` rule), from the config
- * `pnpm build` writes next to the export and the deploy ships (#93).
+ * `pnpm build` writes next to the export and the deploy ships.
  */
 export function hostingPageHeaders(): Record<string, string> {
   const config: HostingConfig = JSON.parse(readFileSync("out/firebase.json", "utf8"));
@@ -84,8 +84,8 @@ export async function cspViolations(page: Page): Promise<string[]> {
 }
 
 export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
-  // CI builds the page with the production agent URL (the build it deploys,
-  // #94), so every request off the local server is refused: an endpoint a
+  // CI builds the page with the production agent URL (it tests the build it
+  // deploys), so every request off the local server is refused: an endpoint a
   // test doesn't stub fails as if the agent were down, and never reaches it.
   // The `agent` stubs are page routes, which take precedence over this one.
   localOnly: [

@@ -2,7 +2,7 @@
 // organization spend limit, or no credit left: `anthropic.ts`). Hitting it
 // means the code's spend cap (`spend-cap.ts`) and the provider's limit have
 // drifted apart, so the owner is told with a `provider_limit` alert event
-// (README, "Logs and alert events").
+// (docs/logs-and-alerts.md).
 //
 // Once per crossing: the month's spend document notes the limit under
 // `alerted.provider_limit` when it's first hit, and clears it when a model

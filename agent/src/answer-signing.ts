@@ -1,7 +1,7 @@
 // Signed answers: the agent signs every answer it gives (an HMAC keyed by
 // `ANSWER_SIGNING_KEY`) and accepts earlier answers back only with a valid
 // signature, so a chat request can't put words in the agent's mouth while the
-// server stays stateless (README, "Signed answers"; ADR 0004).
+// server stays stateless (docs/chat-contract.md, "Signed answers"; ADR 0004).
 //
 // Each signature binds the answer to its place: the conversation it was given
 // in (a random id the conversation's first answer starts), its position there

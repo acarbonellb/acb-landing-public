@@ -1,7 +1,7 @@
 import type { Practice } from "@/shared/profile";
 import { SourceLink } from "./source-link";
 
-// "How I run agents" (#43): each practice links where it can be checked.
+// "How I run agents": each practice links where it can be checked.
 export function Practices({ practices }: { practices: Practice[] }) {
   return (
     <section aria-labelledby="practices-title" className="mt-10">

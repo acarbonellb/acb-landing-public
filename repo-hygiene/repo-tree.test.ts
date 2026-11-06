@@ -1,5 +1,4 @@
-import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -8,25 +7,17 @@ import {
   isPublicSafeAddress,
   maskAddress,
 } from "./address-scan";
+import { repoFiles, repoRoot } from "./repo-files";
 
-// The repo is public, so the contact address lives only in Secret Manager
-// (#51). This scans every file git would publish: tracked, plus untracked
+// The repo is public, so the contact address lives only in Secret Manager.
+// This scans every file git would publish: tracked, plus untracked
 // files that aren't ignored.
-const root = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
-
-function repoFiles(): { path: string; text: string }[] {
-  return execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], {
-    cwd: root,
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  })
-    .split("\0")
-    .filter((path) => path && existsSync(join(root, path)))
-    .map((path) => ({ path, text: readFileSync(join(root, path), "latin1") }));
+function publishedFiles(): { path: string; text: string }[] {
+  return repoFiles().map((path) => ({ path, text: readFileSync(join(repoRoot, path), "latin1") }));
 }
 
 describe("the repo tree", () => {
-  const files = repoFiles();
+  const files = publishedFiles();
 
   it("is scanned whole", () => {
     expect(files.map((f) => f.path)).toEqual(

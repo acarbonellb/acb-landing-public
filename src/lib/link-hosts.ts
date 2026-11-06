@@ -21,7 +21,7 @@ export function linkHostsIn(...values: unknown[]): Set<string> {
 }
 
 /**
- * The hosts the chat's answers may link to (#92): those of the URLs in the
+ * The hosts the chat's answers may link to: those of the URLs in the
  * content module the agent's tools serve, plus the site itself. Derived, not
  * hand-written, so a link added to the content is allowed with it. Anything
  * else the model writes, e.g. after a prompt injection, renders as text.

@@ -80,8 +80,8 @@ const eslintConfig = defineConfig([
     },
   },
   // Browser specs take `test` from e2e/fixtures.ts, which keeps the page off
-  // every server but the local one: CI tests a build that holds the
-  // production agent URL (#94).
+  // every server but the local one: CI tests the build it deploys, which
+  // holds the production agent URL.
   {
     files: ["e2e/**/*.spec.ts"],
     rules: {

@@ -3,8 +3,8 @@ import { chatError, contactAnswer, mcpContact } from "../src/testing/agent-fakes
 import { contactQuestion } from "../src/shared/site-copy";
 import { conversation, expect, test } from "./fixtures";
 
-// "ask my agent" on a phone (#49). Runs on the iPhone (WebKit) profile in CI,
-// and at the same size on Chromium. Of the contact fallback matrix (unit-tested
+// "ask my agent" on a phone, where taps and focus differ. Runs on the iPhone
+// (WebKit) profile in CI, and at the same size on Chromium. Of the contact fallback matrix (unit-tested
 // in src/components/contact-ask.test.tsx), each browser runs the happy path
 // and one fallback: the spend cap's 503, answered by the MCP get_contact tool.
 // Each stubbed reply is held until the test lets it go, so the chat's place

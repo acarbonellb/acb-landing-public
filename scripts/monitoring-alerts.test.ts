@@ -4,11 +4,11 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 
-// The Cloud Monitoring setup for the agent's alert events (#91), run against a
+// The Cloud Monitoring setup for the agent's alert events, run against a
 // fake `gcloud` on PATH: it records every call and answers lookups from the
 // state each test gives it, so no test touches GCP.
 const script = resolve(__dirname, "monitoring-alerts.sh");
-const readme = readFileSync(resolve(__dirname, "../README.md"), "utf8");
+const alertDocs = readFileSync(resolve(__dirname, "../docs/logs-and-alerts.md"), "utf8");
 const email = "owner@example.com";
 const project = "demo-project";
 
@@ -84,11 +84,14 @@ describe("monitoring-alerts.sh setup --dry-run", () => {
   });
 });
 
-/** The alert events the README documents as alerting (WARNING or ERROR rows), from its "Alert events" table. */
+/** The alert events the docs list as alerting: the WARNING or ERROR rows of the table (docs/logs-and-alerts.md, "Alert events"). */
 function documentedAlertEvents(): { event: string; severity: string }[] {
-  const table = readme.slice(readme.indexOf("**Alert events.**")).split("\n\n")[1];
+  const section = alertDocs.slice(alertDocs.indexOf("\n## Alert events\n") + 1).split("\n## ")[0].split("\n");
+  // The section's first table: the run of `|` lines after the prose.
+  const start = section.findIndex((line) => line.startsWith("|"));
+  const end = section.findIndex((line, i) => i > start && !line.startsWith("|"));
+  const table = section.slice(start, end === -1 ? undefined : end);
   return table
-    .split("\n")
     .map((line) => line.match(/^\| `([a-z_]+)` \| `(WARNING|ERROR)` \|/))
     .filter((m): m is RegExpMatchArray => m !== null)
     .map(([, event, severity]) => ({ event, severity }));

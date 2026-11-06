@@ -1,5 +1,5 @@
 // How the contact section's "ask my agent" button reaches the chat in the
-// agent section (#50): the two are separate client components, so the chat
+// agent section: the two are separate client components, so the chat
 // connects here while mounted and the button reads its state. The button
 // sends its own question and fallback strategy; the chat only asks them.
 // Without the chat (no JavaScript, or a build with no agent) the state stays

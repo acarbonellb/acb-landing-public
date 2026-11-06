@@ -1,4 +1,4 @@
-// The #98 migration of the stored recordings and the eval history, run by
+// The request-identity migration of the stored recordings and the eval history, run by
 // `scripts/migrate-request-identity.ts`: recordings made before the request
 // identity covered the tools held a system prompt hash and no settings. This
 // rewrites them with the request identity and the model settings the code

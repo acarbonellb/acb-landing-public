@@ -20,7 +20,7 @@ export type LiveRun = {
 /**
  * How an entry was made: a live run, a deliberate second live run at the same
  * commit (`--rerun`), the stored recordings scored again with no model call,
- * or the stored recordings rewritten to a new format by a script (#98), with
+ * or the stored recordings rewritten to a new format by a script (a migration), with
  * the same scores and no model call.
  */
 export const entryKinds = ["live", "rerun", "rescored", "migrated"] as const;
@@ -171,7 +171,7 @@ function changedMetrics(entry: HistoryEntry, set: SetResult): string[] {
 
 const rescore = "re-score with `pnpm agent:eval:rescore`";
 const migrate =
-  "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)";
+  "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001)";
 
 /**
  * What fails CI, for each recording set's latest history entry:

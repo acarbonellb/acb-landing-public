@@ -1,9 +1,9 @@
-// The Portfolio Agent card's results line (#44), generated at build time from
+// The Portfolio Agent card's results line, generated at build time from
 // the eval summary (`agent/evals/summary.json`, regenerated with the report by
 // `pnpm agent:eval:replay` and checked in CI; see `agent/src/evals/summary.ts`
 // for its full schema). Only what the line needs is read here, and fields it
 // doesn't know are ignored, so the site depends on no agent code and on no
-// report layout (#101). Pure: the page reads the file and hands its text in.
+// report layout. Pure: the page reads the file and hands its text in.
 import type { AgentProject } from "@/shared/profile";
 import { isNumber } from "./is-number";
 

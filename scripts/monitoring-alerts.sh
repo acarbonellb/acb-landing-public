@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Cloud Monitoring alerts on the agent's alert events (#91): one email
-# notification channel and one log-based alert policy per alert event (README,
-# "Logs and alert events"). Run by the owner, by hand; never in CI.
+# Cloud Monitoring alerts on the agent's alert events: one email
+# notification channel and one log-based alert policy per alert event
+# (docs/logs-and-alerts.md). Run by the owner, by hand; never in CI.
 #
 #   setup [--dry-run] <project-id> <email>
 #       Creates the channel and the policies, or updates them in place when
@@ -30,7 +30,7 @@ usage() {
 service=agent # the Cloud Run service whose logs the policies match
 region=europe-southwest1 # only used for the test entry's resource labels
 channel_name="Agent alerts (email)"
-docs_url="https://github.com/acarbonellb/acb-landing-public#logs-and-alert-events"
+docs_url="https://github.com/acarbonellb/acb-landing-public/blob/main/docs/logs-and-alerts.md#alert-events"
 rate_limit=300s # at most one email per policy per 5 minutes (the API's minimum)
 auto_close=1800s # an incident closes itself after 30 minutes without a match
 
@@ -42,7 +42,7 @@ alerts=(
   'spend_cap_reached|ERROR|The spend cap refused a chat request: chat is closed until next month|month=month spent_usd=spentUsd cap_usd=capUsd resets_at=resetsAt|Spent USD ${log.extracted_label.spent_usd} of ${log.extracted_label.cap_usd} in ${log.extracted_label.month}; chat reopens at ${log.extracted_label.resets_at}. Check the usage stats for unusual traffic; raise MONTHLY_SPEND_CAP_USD only on purpose.'
   'provider_limit|ERROR|The model provider refused a call on its own spend or credit limit|month=month|Chat fails until the provider account has credit or a higher limit. provider_limit_cleared is logged on the next successful model call.'
   'chat_error_rate|ERROR|Chat error rate above ${log.extracted_label.threshold} over the last hour|error_rate=errorRate errors=errors streamed=streamed threshold=threshold week=week|${log.extracted_label.errors} of ${log.extracted_label.streamed} streamed chat requests in the last hour ended in an error. Look at chat_failed and chat_request lines (outcome error:*) in Cloud Logging. chat_error_rate_recovered is logged once it is back under the threshold.'
-  'store_unavailable|ERROR|The agent'"'"'s shared store is failing (${log.extracted_label.collection})|collection=collection|Firestore updates fail: rate limits and the spend cap fail open or closed per route (README, Guardrails). Look at store_error lines in Cloud Logging. store_recovered is logged on the next successful update.'
+  'store_unavailable|ERROR|The agent'"'"'s shared store is failing (${log.extracted_label.collection})|collection=collection|Firestore updates fail: rate limits and the spend cap fail open or closed per route (docs/guardrails.md). Look at store_error lines in Cloud Logging. store_recovered is logged on the next successful update.'
 )
 
 dry_run=false
