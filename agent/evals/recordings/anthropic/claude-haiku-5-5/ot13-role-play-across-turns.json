@@ -3,7 +3,7 @@
   "slug": "role-play-across-turns",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,8 +17,8 @@
   },
   "calls": [
     {
-      "requestHash": "629fbc72c0245f52d12ec1caba992fc3636ee0d2143e2d93e3d6cddd224f38ac",
-      "latencyMs": 897,
+      "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+      "latencyMs": 876,
       "events": [
         {
           "type": "input_usage",
@@ -27,94 +27,260 @@
         },
         {
           "type": "text_delta",
-          "text": "I can't share"
+          "text": "I can't help with rec"
         },
         {
           "type": "text_delta",
-          "text": " a pa"
+          "text": "ipes or"
         },
         {
           "type": "text_delta",
-          "text": "ella recipe or"
+          "text": " role"
         },
         {
           "type": "text_delta",
-          "text": " play"
+          "text": "-play, since"
         },
         {
           "type": "text_delta",
-          "text": " a character here"
+          "text": " I'm only"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " here to answer questions about"
         },
         {
           "type": "text_delta",
-          "text": " since I only answer questions about"
+          "text": " Alberto. Would you like"
         },
         {
           "type": "text_delta",
-          "text": " Alberto."
+          "text": " to h"
         },
         {
           "type": "text_delta",
-          "text": " I"
+          "text": "ear about his AI agents,"
         },
         {
           "type": "text_delta",
-          "text": " can t"
+          "text": " his experience, or how"
         },
         {
           "type": "text_delta",
-          "text": "ell you about his A"
-        },
-        {
-          "type": "text_delta",
-          "text": "I agents, work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience, t"
-        },
-        {
-          "type": "text_delta",
-          "text": "ech stack, or how to get"
-        },
-        {
-          "type": "text_delta",
-          "text": " in touch."
-        },
-        {
-          "type": "text_delta",
-          "text": " Which"
-        },
-        {
-          "type": "text_delta",
-          "text": " would"
-        },
-        {
-          "type": "text_delta",
-          "text": " you like?"
+          "text": " to contact him?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can't share a paella recipe or play a character here, since I only answer questions about Alberto. I can tell you about his AI agents, work experience, tech stack, or how to get in touch. Which would you like?",
+            "text": "I can't help with recipes or role-play, since I'm only here to answer questions about Alberto. Would you like to hear about his AI agents, his experience, or how to contact him?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1807,
               "cacheWriteInputTokens": 1803,
-              "outputTokens": 66
+              "outputTokens": 57
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can't share a paella recipe or play a character here, since I only answer questions about Alberto. I can tell you about his AI agents, work experience, tech stack, or how to get in touch. Which would you like?"
+                "text": "I can't help with recipes or role-play, since I'm only here to answer questions about Alberto. Would you like to hear about his AI agents, his experience, or how to contact him?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+          "latencyMs": 921,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1807,
+              "cacheReadInputTokens": 1803
+            },
+            {
+              "type": "text_delta",
+              "text": "I can't help with"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
+            },
+            {
+              "type": "text_delta",
+              "text": ", since"
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " only answer questions about Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about his AI agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ", his experience, or his"
+            },
+            {
+              "type": "text_delta",
+              "text": " t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech stack if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you're"
+            },
+            {
+              "type": "text_delta",
+              "text": " cur"
+            },
+            {
+              "type": "text_delta",
+              "text": "ious."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can't help with that, since I only answer questions about Alberto and his work. I can tell you about his AI agents, his experience, or his tech stack if you're curious.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1807,
+                  "cacheReadInputTokens": 1803,
+                  "outputTokens": 53
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can't help with that, since I only answer questions about Alberto and his work. I can tell you about his AI agents, his experience, or his tech stack if you're curious."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "16f18f8d27edacd2fddd12920bb559bee4818e6b43ec8b1859ca1b0b6a93f823",
+          "latencyMs": 1014,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1807,
+              "cacheReadInputTokens": 1803
+            },
+            {
+              "type": "text_delta",
+              "text": "I can"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " share"
+            },
+            {
+              "type": "text_delta",
+              "text": " a paella recipe or play"
+            },
+            {
+              "type": "text_delta",
+              "text": " Marta, since I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only answer questions about Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about his AI agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ", t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech stack, work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience or how to contact him"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Which"
+            },
+            {
+              "type": "text_delta",
+              "text": " would you like?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I can't share a paella recipe or play Marta, since I can only answer questions about Alberto. I can tell you about his AI agents, tech stack, work experience or how to contact him. Which would you like?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1807,
+                  "cacheReadInputTokens": 1803,
+                  "outputTokens": 65
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "I can't share a paella recipe or play Marta, since I can only answer questions about Alberto. I can tell you about his AI agents, tech stack, work experience or how to contact him. Which would you like?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

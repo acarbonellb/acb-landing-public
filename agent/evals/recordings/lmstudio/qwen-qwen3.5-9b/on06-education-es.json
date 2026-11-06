@@ -3,7 +3,7 @@
   "slug": "education-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "9bd6c0bb69cd2bdb12317bfbdf94c63a414066e96eb9ecd7e016ddf011d80fa9",
-      "latencyMs": 1491,
+      "requestHash": "4e35f15bce1c59663d37bdab1929c9454213a1da5536bc062fa13c8d1d90e74d",
+      "latencyMs": 1478,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342
+          "inputTokens": 2342,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "1YHlfvTCr4IcwOhjxDfzYFSWRNoUqhxK",
+                "id": "QmssjAzfQmRiknafklij9xIdj9hcs5ao",
                 "name": "get_profile",
                 "input": {}
               }
@@ -38,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2342,
+              "cacheReadInputTokens": 1163,
               "outputTokens": 54
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "1YHlfvTCr4IcwOhjxDfzYFSWRNoUqhxK",
+                "id": "QmssjAzfQmRiknafklij9xIdj9hcs5ao",
                 "name": "get_profile",
                 "input": {}
               }
@@ -53,12 +55,13 @@
       ]
     },
     {
-      "requestHash": "cc8a859ac0a1f6fbdba4a0000bc16139b13ff9dd3603800d6f774b411c014b03",
-      "latencyMs": 1607,
+      "requestHash": "4f4aa7ed683f10c95c7f05ec55bc8afe6dccbff47be9cdaf76ba95ccd2d51bbe",
+      "latencyMs": 1732,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2652
+          "inputTokens": 2652,
+          "cacheReadInputTokens": 1175
         },
         {
           "type": "text_delta",
@@ -95,6 +98,34 @@
         {
           "type": "text_delta",
           "text": "iores"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " Formación"
+        },
+        {
+          "type": "text_delta",
+          "text": " Profesional"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "CF"
+        },
+        {
+          "type": "text_delta",
+          "text": "GS"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
         },
         {
           "type": "text_delta",
@@ -194,11 +225,11 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": " de"
         },
         {
           "type": "text_delta",
-          "text": "A"
+          "text": " A"
         },
         {
           "type": "text_delta",
@@ -207,10 +238,6 @@
         {
           "type": "text_delta",
           "text": "uña"
-        },
-        {
-          "type": "text_delta",
-          "text": ")"
         },
         {
           "type": "text_delta",
@@ -267,20 +294,623 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto estudió dos Diplomas Superiores en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro (A Coruña) entre 2010 y 2015.",
+            "text": "Alberto estudió dos Diplomas Superiores de Formación Profesional (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2652,
-              "outputTokens": 54
+              "cacheReadInputTokens": 1175,
+              "outputTokens": 60
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto estudió dos Diplomas Superiores en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro (A Coruña) entre 2010 y 2015."
+                "text": "Alberto estudió dos Diplomas Superiores de Formación Profesional (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "4e35f15bce1c59663d37bdab1929c9454213a1da5536bc062fa13c8d1d90e74d",
+          "latencyMs": 1488,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "WVnAeqdp8CtiVsaxU2V6niJAWNo9x92A",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 56
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "WVnAeqdp8CtiVsaxU2V6niJAWNo9x92A",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "3e389454d1d38e885f9617122fd9481067d7492ce08df360ed94cb886e39a842",
+          "latencyMs": 1680,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2652,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " estudi"
+            },
+            {
+              "type": "text_delta",
+              "text": "ó"
+            },
+            {
+              "type": "text_delta",
+              "text": " dos"
+            },
+            {
+              "type": "text_delta",
+              "text": " títulos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Formación"
+            },
+            {
+              "type": "text_delta",
+              "text": " Profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": " Superior"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "CF"
+            },
+            {
+              "type": "text_delta",
+              "text": "GS"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Desarrollo"
+            },
+            {
+              "type": "text_delta",
+              "text": " Web"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Desarrollo"
+            },
+            {
+              "type": "text_delta",
+              "text": " Multi"
+            },
+            {
+              "type": "text_delta",
+              "text": "pl"
+            },
+            {
+              "type": "text_delta",
+              "text": "ata"
+            },
+            {
+              "type": "text_delta",
+              "text": "forma"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " Administración"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Sistemas"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " CIF"
+            },
+            {
+              "type": "text_delta",
+              "text": "P"
+            },
+            {
+              "type": "text_delta",
+              "text": " Rod"
+            },
+            {
+              "type": "text_delta",
+              "text": "olfo"
+            },
+            {
+              "type": "text_delta",
+              "text": " U"
+            },
+            {
+              "type": "text_delta",
+              "text": "cha"
+            },
+            {
+              "type": "text_delta",
+              "text": " Pi"
+            },
+            {
+              "type": "text_delta",
+              "text": "ñ"
+            },
+            {
+              "type": "text_delta",
+              "text": "eiro"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": " entre"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto estudió dos títulos de Formación Profesional Superior (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2652,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 58
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto estudió dos títulos de Formación Profesional Superior (CFGS) en Desarrollo Web, Desarrollo Multiplataforma y Administración de Sistemas en el CIFP Rodolfo Ucha Piñeiro de A Coruña entre 2010 y 2015."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "4e35f15bce1c59663d37bdab1929c9454213a1da5536bc062fa13c8d1d90e74d",
+          "latencyMs": 1412,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "Ff9oN7PnOdN58kUEa4OPNCt9iolrIfD9",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 53
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "Ff9oN7PnOdN58kUEa4OPNCt9iolrIfD9",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "7ba3c78428c76b9fcdf3ed0157853233de9d2ee715eb5e11485dbc6d5b7aaf79",
+          "latencyMs": 1784,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2652,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " estudi"
+            },
+            {
+              "type": "text_delta",
+              "text": "ó"
+            },
+            {
+              "type": "text_delta",
+              "text": " dos"
+            },
+            {
+              "type": "text_delta",
+              "text": " títulos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Formación"
+            },
+            {
+              "type": "text_delta",
+              "text": " Profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "CF"
+            },
+            {
+              "type": "text_delta",
+              "text": "GS"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Desarrollo"
+            },
+            {
+              "type": "text_delta",
+              "text": " Web"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " Desarrollo"
+            },
+            {
+              "type": "text_delta",
+              "text": " Multi"
+            },
+            {
+              "type": "text_delta",
+              "text": "pl"
+            },
+            {
+              "type": "text_delta",
+              "text": "ata"
+            },
+            {
+              "type": "text_delta",
+              "text": "forma"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " además"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Administración"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Sistemas"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Los"
+            },
+            {
+              "type": "text_delta",
+              "text": " curs"
+            },
+            {
+              "type": "text_delta",
+              "text": "ó"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " CIF"
+            },
+            {
+              "type": "text_delta",
+              "text": "P"
+            },
+            {
+              "type": "text_delta",
+              "text": " Rod"
+            },
+            {
+              "type": "text_delta",
+              "text": "olfo"
+            },
+            {
+              "type": "text_delta",
+              "text": " U"
+            },
+            {
+              "type": "text_delta",
+              "text": "cha"
+            },
+            {
+              "type": "text_delta",
+              "text": " Pi"
+            },
+            {
+              "type": "text_delta",
+              "text": "ñ"
+            },
+            {
+              "type": "text_delta",
+              "text": "eiro"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": " entre"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto estudió dos títulos de Formación Profesional (CFGS): Desarrollo Web y Desarrollo Multiplataforma, además de Administración de Sistemas. Los cursó en el CIFP Rodolfo Ucha Piñeiro en A Coruña entre 2010 y 2015.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2652,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 62
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto estudió dos títulos de Formación Profesional (CFGS): Desarrollo Web y Desarrollo Multiplataforma, además de Administración de Sistemas. Los cursó en el CIFP Rodolfo Ucha Piñeiro en A Coruña entre 2010 y 2015."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

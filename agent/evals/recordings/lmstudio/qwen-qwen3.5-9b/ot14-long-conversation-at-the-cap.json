@@ -3,7 +3,7 @@
   "slug": "long-conversation-at-the-cap",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,8 +17,8 @@
   },
   "calls": [
     {
-      "requestHash": "a6ae373b62b46522e572a4974caaed121183db8ae8f6e3c00b810ed847abda5a",
-      "latencyMs": 3273,
+      "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+      "latencyMs": 2920,
       "events": [
         {
           "type": "input_usage",
@@ -99,7 +99,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
         },
         {
           "type": "text_delta",
@@ -111,39 +115,23 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " tech"
-        },
-        {
-          "type": "text_delta",
-          "text": " stack"
-        },
-        {
-          "type": "text_delta",
           "text": "?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
+            "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or his work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 3195,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 108
+              "outputTokens": 95
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
+                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or his work experience?"
               }
             ]
           }
@@ -155,8 +143,8 @@
     {
       "calls": [
         {
-          "requestHash": "a6ae373b62b46522e572a4974caaed121183db8ae8f6e3c00b810ed847abda5a",
-          "latencyMs": 2661,
+          "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+          "latencyMs": 3921,
           "events": [
             {
               "type": "input_usage",
@@ -276,7 +264,7 @@
                 "usage": {
                   "inputTokens": 4060,
                   "cacheReadInputTokens": 2028,
-                  "outputTokens": 101
+                  "outputTokens": 149
                 },
                 "providerContent": [
                   {
@@ -293,8 +281,8 @@
     {
       "calls": [
         {
-          "requestHash": "a6ae373b62b46522e572a4974caaed121183db8ae8f6e3c00b810ed847abda5a",
-          "latencyMs": 2890,
+          "requestHash": "e155247364a08d1af0fdbd742e882b948ac34a16202592d7989be3993916630a",
+          "latencyMs": 3183,
           "events": [
             {
               "type": "input_usage",
@@ -375,7 +363,7 @@
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " or"
             },
             {
               "type": "text_delta",
@@ -387,39 +375,23 @@
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " or"
-            },
-            {
-              "type": "text_delta",
-              "text": " tech"
-            },
-            {
-              "type": "text_delta",
-              "text": " stack"
-            },
-            {
-              "type": "text_delta",
               "text": "?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
+                "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or work experience?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 4060,
                   "cacheReadInputTokens": 2028,
-                  "outputTokens": 110
+                  "outputTokens": 120
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
+                    "text": "I can only answer questions about Alberto. Would you like to know more about his AI agents or work experience?"
                   }
                 ]
               }

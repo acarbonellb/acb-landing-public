@@ -3,7 +3,7 @@
   "slug": "maths-after-greeting",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "77b5066f5a32f44440e125b37105149865d07b19acfa35d85d03758daedc285e",
-      "latencyMs": 3101,
+      "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
+      "latencyMs": 2881,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2386
+          "inputTokens": 2386,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "text_delta",
@@ -82,7 +83,7 @@
         },
         {
           "type": "text_delta",
-          "text": " agentes"
+          "text": " proyectos"
         },
         {
           "type": "text_delta",
@@ -130,15 +131,15 @@
         },
         {
           "type": "text_delta",
-          "text": " sus"
+          "text": " cómo"
         },
         {
           "type": "text_delta",
-          "text": " habilidades"
+          "text": " contact"
         },
         {
           "type": "text_delta",
-          "text": " técnicas"
+          "text": "arlo"
         },
         {
           "type": "text_delta",
@@ -147,20 +148,363 @@
         {
           "type": "response_end",
           "response": {
-            "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los agentes de IA que ha construido, su experiencia laboral o sus habilidades técnicas?",
+            "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o cómo contactarlo?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2386,
-              "outputTokens": 116
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 107
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los agentes de IA que ha construido, su experiencia laboral o sus habilidades técnicas?"
+                "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o cómo contactarlo?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
+          "latencyMs": 3274,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2442,
+              "cacheReadInputTokens": 1219
+            },
+            {
+              "type": "text_delta",
+              "text": "S"
+            },
+            {
+              "type": "text_delta",
+              "text": "oy"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " agente"
+            },
+            {
+              "type": "text_delta",
+              "text": " del"
+            },
+            {
+              "type": "text_delta",
+              "text": " portfolio"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " preguntas"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " él"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus"
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " cómo"
+            },
+            {
+              "type": "text_delta",
+              "text": " contactar"
+            },
+            {
+              "type": "text_delta",
+              "text": " con"
+            },
+            {
+              "type": "text_delta",
+              "text": " él"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Soy el agente del portfolio de Alberto y solo puedo responder preguntas sobre él. ¿Te gustaría saber sobre sus proyectos de IA, su experiencia laboral o cómo contactar con él?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2442,
+                  "cacheReadInputTokens": 1219,
+                  "outputTokens": 125
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Soy el agente del portfolio de Alberto y solo puedo responder preguntas sobre él. ¿Te gustaría saber sobre sus proyectos de IA, su experiencia laboral o cómo contactar con él?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
+          "latencyMs": 2857,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2442,
+              "cacheReadInputTokens": 1219
+            },
+            {
+              "type": "text_delta",
+              "text": "No"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " preguntas"
+            },
+            {
+              "type": "text_delta",
+              "text": " matem"
+            },
+            {
+              "type": "text_delta",
+              "text": "áticas"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trivia"
+            },
+            {
+              "type": "text_delta",
+              "text": "les"
+            },
+            {
+              "type": "text_delta",
+              "text": " generales"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " los"
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA"
+            },
+            {
+              "type": "text_delta",
+              "text": " que"
+            },
+            {
+              "type": "text_delta",
+              "text": " ha"
+            },
+            {
+              "type": "text_delta",
+              "text": " constr"
+            },
+            {
+              "type": "text_delta",
+              "text": "uido"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus"
+            },
+            {
+              "type": "text_delta",
+              "text": " habilidades"
+            },
+            {
+              "type": "text_delta",
+              "text": " técnicas"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "No puedo responder preguntas matemáticas o triviales generales. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2442,
+                  "cacheReadInputTokens": 1219,
+                  "outputTokens": 108
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "No puedo responder preguntas matemáticas o triviales generales. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

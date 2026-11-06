@@ -3,7 +3,7 @@
   "slug": "current-company-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "356e8d0cdcec45835d73d26a404e0dcd0dd6d0dc00fd9b0ea2f66a68aec1ef62",
-      "latencyMs": 848,
+      "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+      "latencyMs": 868,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1673
+          "inputTokens": 1673,
+          "cacheWriteInputTokens": 1669
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01RcdMDJZGfqtrRdRXTgtEoQ",
+                "id": "toolu_011AuMwvQiVjJMt9afFAF6aN",
                 "name": "get_experience",
                 "input": {}
               }
@@ -38,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1673,
+              "cacheWriteInputTokens": 1669,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01RcdMDJZGfqtrRdRXTgtEoQ",
+                "id": "toolu_011AuMwvQiVjJMt9afFAF6aN",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -56,12 +58,14 @@
       ]
     },
     {
-      "requestHash": "6976e82debd7101bd45e727cc742fe31ad0f341c71a8449e10561a735d0e823d",
-      "latencyMs": 845,
+      "requestHash": "1e3004d4c8452a02d70909fdac1fdfc29aefef3528acc089d20a3f5e39156d47",
+      "latencyMs": 794,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2235
+          "inputTokens": 2235,
+          "cacheWriteInputTokens": 564,
+          "cacheReadInputTokens": 1669
         },
         {
           "type": "text_delta",
@@ -73,15 +77,23 @@
         },
         {
           "type": "text_delta",
-          "text": " Senior Software Engine"
+          "text": " **"
         },
         {
           "type": "text_delta",
-          "text": "er en C"
+          "text": "Senior Software Engine"
         },
         {
           "type": "text_delta",
-          "text": "overWallet, una"
+          "text": "er en"
+        },
+        {
+          "type": "text_delta",
+          "text": " CoverWallet**"
+        },
+        {
+          "type": "text_delta",
+          "text": " (desde 2019), una"
         },
         {
           "type": "text_delta",
@@ -89,49 +101,311 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " en"
         },
         {
           "type": "text_delta",
-          "text": " desde "
+          "text": " Madrid / rem"
         },
         {
           "type": "text_delta",
-          "text": "2019. Está"
-        },
-        {
-          "type": "text_delta",
-          "text": " bas"
-        },
-        {
-          "type": "text_delta",
-          "text": "ado en Madrid y"
-        },
-        {
-          "type": "text_delta",
-          "text": " trabaja también"
-        },
-        {
-          "type": "text_delta",
-          "text": " en remoto."
+          "text": "oto."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, una plataforma insurtech, desde 2019. Está basado en Madrid y trabaja también en remoto.",
+            "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2235,
-              "outputTokens": 68
+              "cacheWriteInputTokens": 564,
+              "cacheReadInputTokens": 1669,
+              "outputTokens": 59
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, una plataforma insurtech, desde 2019. Está basado en Madrid y trabaja también en remoto."
+                "text": "Alberto trabaja actualmente como **Senior Software Engineer en CoverWallet** (desde 2019), una plataforma insurtech en Madrid / remoto."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+          "latencyMs": 780,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1673,
+              "cacheReadInputTokens": 1669
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01HLskW24h6gW2xNHdKujdnC",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1673,
+                  "cacheReadInputTokens": 1669,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01HLskW24h6gW2xNHdKujdnC",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0f754f5154f61414516636c39a814fae8eb5f41293b5fba033e8dec03d9a5352",
+          "latencyMs": 829,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2235,
+              "cacheReadInputTokens": 2233
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja actualmente como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er en **CoverWall"
+            },
+            {
+              "type": "text_delta",
+              "text": "et**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto), desde 2019"
+            },
+            {
+              "type": "text_delta",
+              "text": ". Es"
+            },
+            {
+              "type": "text_delta",
+              "text": " una plataforma insurt"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech que integra a"
+            },
+            {
+              "type": "text_delta",
+              "text": "seguradoras extern"
+            },
+            {
+              "type": "text_delta",
+              "text": "as en un"
+            },
+            {
+              "type": "text_delta",
+              "text": " único flujo de comp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2235,
+                  "cacheReadInputTokens": 2233,
+                  "outputTokens": 81
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
+          "latencyMs": 1016,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1673,
+              "cacheReadInputTokens": 1669
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01CcKnQKPLtxzSWc5tpUdQcJ",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1673,
+                  "cacheReadInputTokens": 1669,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01CcKnQKPLtxzSWc5tpUdQcJ",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "e3fb665db1dcd325858ee294bb3136e0be4bf62f893eee90c48637e6f784cd87",
+          "latencyMs": 930,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2235,
+              "cacheReadInputTokens": 2233
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja actualmente como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er en **CoverWall"
+            },
+            {
+              "type": "text_delta",
+              "text": "et**, una"
+            },
+            {
+              "type": "text_delta",
+              "text": " plataforma insurtech"
+            },
+            {
+              "type": "text_delta",
+              "text": " que integra a"
+            },
+            {
+              "type": "text_delta",
+              "text": "seguradoras extern"
+            },
+            {
+              "type": "text_delta",
+              "text": "as en un único"
+            },
+            {
+              "type": "text_delta",
+              "text": " flujo de comp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra. Está"
+            },
+            {
+              "type": "text_delta",
+              "text": " desde 2019 y"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja desde Mad"
+            },
+            {
+              "type": "text_delta",
+              "text": "rid o"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " remoto."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet**, una plataforma insurtech que integra aseguradoras externas en un único flujo de compra. Está desde 2019 y trabaja desde Madrid o en remoto.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2235,
+                  "cacheReadInputTokens": 2233,
+                  "outputTokens": 89
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet**, una plataforma insurtech que integra aseguradoras externas en un único flujo de compra. Está desde 2019 y trabaja desde Madrid o en remoto."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

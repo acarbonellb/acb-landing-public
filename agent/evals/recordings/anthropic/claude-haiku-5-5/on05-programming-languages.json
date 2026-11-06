@@ -3,7 +3,7 @@
   "slug": "programming-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "f389220c326a1b6cf9809c170c62a2986bdbb42b2f3b90db529b62944689d571",
-      "latencyMs": 858,
+      "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
+      "latencyMs": 807,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1665
+          "inputTokens": 1665,
+          "cacheWriteInputTokens": 1661
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
+                "id": "toolu_015i2zwQKdSw7Ekv6ydgjWDp",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -40,12 +41,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 1665,
+              "cacheWriteInputTokens": 1661,
               "outputTokens": 49
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_019HaPzGUbi5xxfembxcUhJk",
+                "id": "toolu_015i2zwQKdSw7Ekv6ydgjWDp",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -60,54 +62,250 @@
       ]
     },
     {
-      "requestHash": "474bfe873d97cd076fbf758538d72f9225e522bacee625eb0b50623962e1d13d",
-      "latencyMs": 735,
+      "requestHash": "7cda9183f8e41cceb99f2d5a9a27e0dd86da7d5786281f798daf1496cfa8ad20",
+      "latencyMs": 699,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1764
+          "inputTokens": 1764,
+          "cacheWriteInputTokens": 101,
+          "cacheReadInputTokens": 1661
         },
         {
           "type": "text_delta",
-          "text": "Alberto works"
+          "text": "Alberto's"
         },
         {
           "type": "text_delta",
-          "text": " with three"
+          "text": " list"
         },
         {
           "type": "text_delta",
-          "text": " programming languages: Type"
+          "text": "ed programming languages are Typ"
         },
         {
           "type": "text_delta",
-          "text": "Script, JavaScript"
+          "text": "eScript, JavaSc"
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " and Ruby."
+          "text": "ript and Ruby."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby.",
+            "text": "Alberto's listed programming languages are TypeScript, JavaScript and Ruby.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1764,
-              "outputTokens": 32
+              "cacheWriteInputTokens": 101,
+              "cacheReadInputTokens": 1661,
+              "outputTokens": 31
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto works with three programming languages: TypeScript, JavaScript, and Ruby."
+                "text": "Alberto's listed programming languages are TypeScript, JavaScript and Ruby."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
+          "latencyMs": 822,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1665,
+              "cacheReadInputTokens": 1661
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01XY2M8EF3BVm3NsaZRS2547",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1665,
+                  "cacheReadInputTokens": 1661,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01XY2M8EF3BVm3NsaZRS2547",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0eb37799c4e0eee84bb1dea1e56f7bc04ac337abd65c29bdc4740401a91ac040",
+          "latencyMs": 619,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1764,
+              "cacheReadInputTokens": 1762
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto works"
+            },
+            {
+              "type": "text_delta",
+              "text": " with TypeScript, J"
+            },
+            {
+              "type": "text_delta",
+              "text": "avaScript and Ru"
+            },
+            {
+              "type": "text_delta",
+              "text": "by."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto works with TypeScript, JavaScript and Ruby.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1764,
+                  "cacheReadInputTokens": 1762,
+                  "outputTokens": 25
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto works with TypeScript, JavaScript and Ruby."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
+          "latencyMs": 800,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1665,
+              "cacheReadInputTokens": 1661
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01HFZvKfquBrxeapCE9dhSh9",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1665,
+                  "cacheReadInputTokens": 1661,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01HFZvKfquBrxeapCE9dhSh9",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "languages"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "5dca9baae64f2a3aedbe5959255be9338befa6dd117c217e0a9bd0a951a071f8",
+          "latencyMs": 707,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1764,
+              "cacheReadInputTokens": 1762
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto works"
+            },
+            {
+              "type": "text_delta",
+              "text": " with three"
+            },
+            {
+              "type": "text_delta",
+              "text": " programming languages: Type"
+            },
+            {
+              "type": "text_delta",
+              "text": "Script, JavaScript"
+            },
+            {
+              "type": "text_delta",
+              "text": " and Ruby."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto works with three programming languages: TypeScript, JavaScript and Ruby.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1764,
+                  "cacheReadInputTokens": 1762,
+                  "outputTokens": 31
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto works with three programming languages: TypeScript, JavaScript and Ruby."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

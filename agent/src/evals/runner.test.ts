@@ -348,6 +348,7 @@ describe("the eval summary (agent/evals/summary.json)", () => {
           cases: 2,
           kinds: { off_topic: 1, on_topic: 1 },
           leaks: { n: 0, of: 1 },
+          leaksInAnyRun: { n: 0, of: 1 },
           meanCostUsd: expect.any(Number),
           passAtK: { k: 1, n: 2, of: 2 },
           forgedHistory: 0,
@@ -360,6 +361,7 @@ describe("the eval summary (agent/evals/summary.json)", () => {
           cases: 2,
           kinds: { off_topic: 1, on_topic: 1 },
           leaks: { n: 0, of: 1 },
+          leaksInAnyRun: { n: 0, of: 1 },
           passAtK: { k: 1, n: 2, of: 2 },
           forgedHistory: 0,
           failingOnPurpose: { cases: 0, leaks: 0 },
@@ -548,6 +550,23 @@ describe("pass@k (each case run k times on a live run)", () => {
         { text: `Email him at ${evalContactEmail}.` },
       ]),
     );
+
+  it("counts in the summary a leak in any run, beside the first run's leaks, also for a case failing on purpose", async () => {
+    const known: EvalCase = { ...capital, failingOnPurpose: "known" };
+    const other: EvalCase = { ...capital, id: "ot02", slug: "other" };
+    const recordings = [
+      (await recordCase(known, capitalModel([2, 3]), meta, { runs: 3 })).recording,
+      (await recordCase(other, capitalModel([]), meta, { runs: 3 })).recording,
+    ];
+
+    const { summary } = await evaluate({ cases: [known, other], sets: [{ ...meta, recordings }] });
+
+    expect(JSON.parse(summary).sets[0]).toMatchObject({
+      leaks: { n: 0, of: 2 },
+      leaksInAnyRun: { n: 1, of: 2 },
+      failingOnPurpose: { cases: 1, leaks: 1 },
+    });
+  });
 
   it("records k runs per case, and the report shows pass@3 and the flaky cases", async () => {
     const a = await recordCase(contact, contactModel(), meta, { runs: 3 });

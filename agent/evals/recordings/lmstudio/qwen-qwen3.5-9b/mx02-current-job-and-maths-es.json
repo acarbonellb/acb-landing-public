@@ -3,7 +3,7 @@
   "slug": "current-job-and-maths-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "c655baed41f177087b7cd6c15ed7e29b2328641223f2ab3b83edb09ae3761571",
-      "latencyMs": 4639,
+      "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
+      "latencyMs": 4161,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2358
+          "inputTokens": 2358,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,12 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "1XGk5m6voFZEjMX91cRPqNmK0xOdOAbv",
+                "id": "IDXMVFSDekyfDfjnBzaXR5IY3U8YO9Jk",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "id": "4haevNajA8SjRrBAm7OwaPy9lhLzQyM6",
                 "name": "get_experience",
                 "input": {}
               }
@@ -38,12 +44,19 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2358,
-              "outputTokens": 178
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 161
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "1XGk5m6voFZEjMX91cRPqNmK0xOdOAbv",
+                "id": "IDXMVFSDekyfDfjnBzaXR5IY3U8YO9Jk",
+                "name": "get_profile",
+                "input": {}
+              },
+              {
+                "type": "tool_use",
+                "id": "4haevNajA8SjRrBAm7OwaPy9lhLzQyM6",
                 "name": "get_experience",
                 "input": {}
               }
@@ -53,12 +66,13 @@
       ]
     },
     {
-      "requestHash": "76225c4136d3e19c2ff41e1f625d1e478235e06bb996f424f4874f9c0d974cbb",
-      "latencyMs": 1552,
+      "requestHash": "1b17fb0d7dab3009b8439fbf2b88440f1bb4f527213f3612b341ade6144f6f7e",
+      "latencyMs": 3657,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2722
+          "inputTokens": 3008,
+          "cacheReadInputTokens": 1191
         },
         {
           "type": "text_delta",
@@ -106,23 +120,11 @@
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " ("
         },
         {
           "type": "text_delta",
-          "text": " con"
-        },
-        {
-          "type": "text_delta",
-          "text": " sede"
-        },
-        {
-          "type": "text_delta",
-          "text": " en"
-        },
-        {
-          "type": "text_delta",
-          "text": " Madrid"
+          "text": "Madrid"
         },
         {
           "type": "text_delta",
@@ -130,11 +132,11 @@
         },
         {
           "type": "text_delta",
-          "text": " remoto"
+          "text": " Remote"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ")."
         },
         {
           "type": "text_delta",
@@ -146,55 +148,11 @@
         },
         {
           "type": "text_delta",
-          "text": " la"
+          "text": " tu"
         },
         {
           "type": "text_delta",
-          "text": " multiplic"
-        },
-        {
-          "type": "text_delta",
-          "text": "ación"
-        },
-        {
-          "type": "text_delta",
-          "text": " "
-        },
-        {
-          "type": "text_delta",
-          "text": "9"
-        },
-        {
-          "type": "text_delta",
-          "text": " por"
-        },
-        {
-          "type": "text_delta",
-          "text": " "
-        },
-        {
-          "type": "text_delta",
-          "text": "8"
-        },
-        {
-          "type": "text_delta",
-          "text": ":"
-        },
-        {
-          "type": "text_delta",
-          "text": " no"
-        },
-        {
-          "type": "text_delta",
-          "text": " puedo"
-        },
-        {
-          "type": "text_delta",
-          "text": " responder"
-        },
-        {
-          "type": "text_delta",
-          "text": " esa"
+          "text": " segunda"
         },
         {
           "type": "text_delta",
@@ -206,15 +164,7 @@
         },
         {
           "type": "text_delta",
-          "text": " ya"
-        },
-        {
-          "type": "text_delta",
-          "text": " que"
-        },
-        {
-          "type": "text_delta",
-          "text": " solo"
+          "text": " no"
         },
         {
           "type": "text_delta",
@@ -222,11 +172,39 @@
         },
         {
           "type": "text_delta",
-          "text": " proporcionar"
+          "text": " ayudarte"
         },
         {
           "type": "text_delta",
-          "text": " información"
+          "text": " con"
+        },
+        {
+          "type": "text_delta",
+          "text": " eso"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " ¿"
+        },
+        {
+          "type": "text_delta",
+          "text": "Te"
+        },
+        {
+          "type": "text_delta",
+          "text": " gustaría"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": " más"
         },
         {
           "type": "text_delta",
@@ -234,11 +212,31 @@
         },
         {
           "type": "text_delta",
-          "text": " Alberto"
+          "text": " sus"
         },
         {
           "type": "text_delta",
-          "text": " y"
+          "text": " proyectos"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " agentes"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
         },
         {
           "type": "text_delta",
@@ -246,29 +244,575 @@
         },
         {
           "type": "text_delta",
-          "text": " trabajo"
+          "text": " experiencia"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": " laboral"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación 9 por 8: no puedo responder esa pregunta, ya que solo puedo proporcionar información sobre Alberto y su trabajo.",
+            "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet (Madrid / Remote).\n\nSobre tu segunda pregunta, no puedo ayudarte con eso. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2722,
-              "outputTokens": 52
+              "inputTokens": 3008,
+              "cacheReadInputTokens": 1191,
+              "outputTokens": 132
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación 9 por 8: no puedo responder esa pregunta, ya que solo puedo proporcionar información sobre Alberto y su trabajo."
+                "text": "Alberto actualmente trabaja como Senior Software Engineer en CoverWallet (Madrid / Remote).\n\nSobre tu segunda pregunta, no puedo ayudarte con eso. ¿Te gustaría saber más sobre sus proyectos de agentes de IA o su experiencia laboral?"
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
+          "latencyMs": 4398,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2386,
+              "cacheReadInputTokens": 1191
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "buUmQV86QWDRh0brlc59CLsf3oLeRXH3",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "id": "VABXzsJM1g5gm4NcL9fUgOnJOnZ5uVaa",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2386,
+                  "cacheReadInputTokens": 1191,
+                  "outputTokens": 172
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "buUmQV86QWDRh0brlc59CLsf3oLeRXH3",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "VABXzsJM1g5gm4NcL9fUgOnJOnZ5uVaa",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "d08099f5405e19d8c06fcdc05acdbbd84d0873cb429f9a44b1cfbb4f769438ac",
+          "latencyMs": 13726,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 3008,
+              "cacheReadInputTokens": 1191
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "desde"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " /"
+            },
+            {
+              "type": "text_delta",
+              "text": " Remote"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nS"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " operación"
+            },
+            {
+              "type": "text_delta",
+              "text": " matem"
+            },
+            {
+              "type": "text_delta",
+              "text": "ática"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " no"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " esa"
+            },
+            {
+              "type": "text_delta",
+              "text": " pregunta"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": " más"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus"
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " agentes"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " cómo"
+            },
+            {
+              "type": "text_delta",
+              "text": " contactar"
+            },
+            {
+              "type": "text_delta",
+              "text": " con"
+            },
+            {
+              "type": "text_delta",
+              "text": " él"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto Carbonell actualmente trabaja en **CoverWallet** como Senior Software Engineer (desde 2019, Madrid / Remote).\n\nSobre la operación matemática: no puedo responder esa pregunta. ¿Te gustaría saber más sobre sus proyectos de agentes AI, su experiencia laboral o cómo contactar con él?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 3008,
+                  "cacheReadInputTokens": 1191,
+                  "outputTokens": 531
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto Carbonell actualmente trabaja en **CoverWallet** como Senior Software Engineer (desde 2019, Madrid / Remote).\n\nSobre la operación matemática: no puedo responder esa pregunta. ¿Te gustaría saber más sobre sus proyectos de agentes AI, su experiencia laboral o cómo contactar con él?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
+          "latencyMs": 3067,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2386,
+              "cacheReadInputTokens": 1191
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "Et4wa2BuqmKLeOyODrC2gmMoQTi3b7Vv",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2386,
+                  "cacheReadInputTokens": 1191,
+                  "outputTokens": 119
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "Et4wa2BuqmKLeOyODrC2gmMoQTi3b7Vv",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "112117b461dcfbeb62a2c1498197bcfdc829bdfd784e974e208cde5f1787099b",
+          "latencyMs": 1207,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2722,
+              "cacheReadInputTokens": 1191
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " con"
+            },
+            {
+              "type": "text_delta",
+              "text": " sede"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " /"
+            },
+            {
+              "type": "text_delta",
+              "text": " remoto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nS"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " multiplic"
+            },
+            {
+              "type": "text_delta",
+              "text": "ación"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": " por"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "8"
+            },
+            {
+              "type": "text_delta",
+              "text": " es"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "7"
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación: 9 por 8 es 72.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2722,
+                  "cacheReadInputTokens": 1191,
+                  "outputTokens": 39
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet, con sede en Madrid / remoto.\n\nSobre la multiplicación: 9 por 8 es 72."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

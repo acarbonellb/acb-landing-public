@@ -3,7 +3,7 @@
   "slug": "time-at-google",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "f83ef11c03b157435ab35da57e1cabd07de01ba58d4156f8f805a8ed0412c665",
-      "latencyMs": 1756,
+      "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+      "latencyMs": 1897,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2345
+          "inputTokens": 2345,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "TRS1fHQvbv2E9fyStOZ4wPZXYJHgopUp",
+                "id": "VEjoEenJvBVDwfQpZtYAFQvtwwLzBT3u",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -40,12 +41,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2345,
-              "outputTokens": 64
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 70
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "TRS1fHQvbv2E9fyStOZ4wPZXYJHgopUp",
+                "id": "VEjoEenJvBVDwfQpZtYAFQvtwwLzBT3u",
                 "name": "get_experience",
                 "input": {
                   "company": "Google"
@@ -57,12 +59,13 @@
       ]
     },
     {
-      "requestHash": "74b0f99538bef29fd2f00e2e9cc0b09f747fa2c1a436ff70d7147e1d4520877c",
-      "latencyMs": 2711,
+      "requestHash": "2f0f27c0aa8ba96a3880f772fc2d5a1095703038cf354091a5c564e4d539c6ad",
+      "latencyMs": 2175,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2407
+          "inputTokens": 2407,
+          "cacheReadInputTokens": 1178
         },
         {
           "type": "text_delta",
@@ -78,7 +81,11 @@
         },
         {
           "type": "text_delta",
-          "text": " profile"
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " history"
         },
         {
           "type": "text_delta",
@@ -90,7 +97,7 @@
         },
         {
           "type": "text_delta",
-          "text": " list"
+          "text": " include"
         },
         {
           "type": "text_delta",
@@ -98,11 +105,7 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
+          "text": " role"
         },
         {
           "type": "text_delta",
@@ -154,11 +157,11 @@
         },
         {
           "type": "text_delta",
-          "text": " career"
+          "text": " actual"
         },
         {
           "type": "text_delta",
-          "text": " history"
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -182,79 +185,39 @@
         },
         {
           "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " current"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " past"
+        },
+        {
+          "type": "text_delta",
+          "text": " roles"
+        },
+        {
+          "type": "text_delta",
           "text": " from"
         },
         {
           "type": "text_delta",
-          "text": " other"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": " companies"
-        },
-        {
-          "type": "text_delta",
-          "text": " he"
-        },
-        {
-          "type": "text_delta",
-          "text": " has"
-        },
-        {
-          "type": "text_delta",
-          "text": " worked"
-        },
-        {
-          "type": "text_delta",
-          "text": " for"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " you"
-        },
-        {
-          "type": "text_delta",
-          "text": " could"
-        },
-        {
-          "type": "text_delta",
-          "text": " reach"
-        },
-        {
-          "type": "text_delta",
-          "text": " out"
-        },
-        {
-          "type": "text_delta",
-          "text": " to"
-        },
-        {
-          "type": "text_delta",
-          "text": " him"
-        },
-        {
-          "type": "text_delta",
-          "text": " directly"
-        },
-        {
-          "type": "text_delta",
-          "text": " for"
-        },
-        {
-          "type": "text_delta",
-          "text": " further"
-        },
-        {
-          "type": "text_delta",
-          "text": " information"
+          "text": " profile"
         },
         {
           "type": "text_delta",
@@ -263,20 +226,459 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his career history, I can share details from other companies he has worked for, or you could reach out to him directly for further information.",
+            "text": "Alberto's work history does not include any role at Google. If you'd like to know more about his actual experience, I can share details about his current and past roles from his profile.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2407,
-              "outputTokens": 102
+              "cacheReadInputTokens": 1178,
+              "outputTokens": 80
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his career history, I can share details from other companies he has worked for, or you could reach out to him directly for further information."
+                "text": "Alberto's work history does not include any role at Google. If you'd like to know more about his actual experience, I can share details about his current and past roles from his profile."
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+          "latencyMs": 1833,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "Thk2OrUltIsWacxDDXMGFy2kzed01aOs",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "Google"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 69
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "Thk2OrUltIsWacxDDXMGFy2kzed01aOs",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "Google"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "33f8ee7d8076688c3f05b11c2ddc64008748d135c52dc827bca5d8bfff708349",
+          "latencyMs": 2394,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2407,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
+            },
+            {
+              "type": "text_delta",
+              "text": " does"
+            },
+            {
+              "type": "text_delta",
+              "text": " not"
+            },
+            {
+              "type": "text_delta",
+              "text": " list"
+            },
+            {
+              "type": "text_delta",
+              "text": " any"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " If"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": "'d"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " actual"
+            },
+            {
+              "type": "text_delta",
+              "text": " career"
+            },
+            {
+              "type": "text_delta",
+              "text": " history"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " share"
+            },
+            {
+              "type": "text_delta",
+              "text": " details"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " roles"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " other"
+            },
+            {
+              "type": "text_delta",
+              "text": " companies"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " me"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " do"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his actual career history, I can share details about his roles at other companies. Would you like me to do that?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2407,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 89
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's profile does not list any work experience at Google. If you'd like to know more about his actual career history, I can share details about his roles at other companies. Would you like me to do that?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "cd0290b62593c64a2642c7d8432c76f512e31b7e83263a633eea52e319537f31",
+          "latencyMs": 1848,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "fZLmjGmcITmBm6QqJ4Cfoe7ZfLXqdn46",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "Google"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 70
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "fZLmjGmcITmBm6QqJ4Cfoe7ZfLXqdn46",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "Google"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "a928f19090b1c841bc5b1a77c1149ff19373cd7b18a8231ca3d6ae4bdac1553c",
+          "latencyMs": 1830,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2407,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " history"
+            },
+            {
+              "type": "text_delta",
+              "text": " does"
+            },
+            {
+              "type": "text_delta",
+              "text": " not"
+            },
+            {
+              "type": "text_delta",
+              "text": " include"
+            },
+            {
+              "type": "text_delta",
+              "text": " any"
+            },
+            {
+              "type": "text_delta",
+              "text": " role"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " other"
+            },
+            {
+              "type": "text_delta",
+              "text": " experiences"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's work history does not include any role at Google. Would you like to know about his other experiences or projects instead?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2407,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 67
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's work history does not include any role at Google. Would you like to know about his other experiences or projects instead?"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }

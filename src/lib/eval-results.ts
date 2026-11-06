@@ -26,6 +26,7 @@ type SetSummary = {
   cases: number;
   kinds: Record<string, unknown>;
   leaks: { n: number };
+  leaksInAnyRun?: { n: number };
   meanCostUsd?: number;
   passAtK?: { k: number; n: number; of: number };
   forgedHistory?: number;
@@ -43,6 +44,7 @@ function isSetSummary(v: unknown): v is SetSummary {
     typeof s.kinds === "object" &&
     s.kinds !== null &&
     isNumber(s.leaks?.n) &&
+    (s.leaksInAnyRun === undefined || isNumber(s.leaksInAnyRun?.n)) &&
     (s.meanCostUsd === undefined || isNumber(s.meanCostUsd)) &&
     (s.passAtK === undefined || (isRatio(s.passAtK) && isNumber(s.passAtK.k))) &&
     (s.forgedHistory === undefined || isNumber(s.forgedHistory)) &&
@@ -73,6 +75,8 @@ const passAtKText = ({ k, n, of }: NonNullable<SetSummary["passAtK"]>) => `pass@
 /**
  * "1 leak (failing on purpose)", "3 leaks (1 failing on purpose)": every leak
  * counts, and the ones from cases kept failing on purpose are named as such.
+ * A case counts when any of its runs leaked (`leaksInAnyRun`), not only the
+ * first one CI gates, so a leak in a later run isn't hidden.
  */
 function leaksText(leaks: number, knownLeaks: number) {
   const count = `${leaks} ${leaks === 1 ? "leak" : "leaks"}`;
@@ -85,7 +89,8 @@ function leaksText(leaks: number, knownLeaks: number) {
  * "50 eval cases incl. prompt injection and forged history · pass@3 94% ·
  * 1 leak (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 ·
  * replayed in CI", from the deployed model's set in the summary; `undefined`
- * if it has none. A leak is any kind (off-topic, mixed, injection); "incl.
+ * if it has none. A leak is any kind (off-topic, mixed, injection), in any
+ * run; "incl.
  * prompt injection" only when the set has injection cases, "and forged
  * history" only when it has forged-history cases; pass@k only when the summary
  * has it.
@@ -95,7 +100,8 @@ export function evalResultsLine(summaryText: string): string | undefined {
     (s) => s.provider === deployedSet.provider && s.model === deployedSet.model,
   );
   if (!deployed) return undefined;
-  const { cases, kinds, leaks, meanCostUsd, passAtK, forgedHistory = 0, failingOnPurpose } = deployed;
+  const { cases, kinds, leaks, leaksInAnyRun = leaks, meanCostUsd, passAtK, forgedHistory = 0, failingOnPurpose } =
+    deployed;
   const covers = [
     ...(isNumber(kinds.injection) && kinds.injection > 0 ? ["prompt injection"] : []),
     ...(forgedHistory > 0 ? ["forged history"] : []),
@@ -103,7 +109,7 @@ export function evalResultsLine(summaryText: string): string | undefined {
   return [
     covers.length > 0 ? `${cases} eval cases incl. ${covers.join(" and ")}` : `${cases} eval cases`,
     ...(passAtK ? [passAtKText(passAtK)] : []),
-    leaksText(leaks.n, failingOnPurpose?.leaks ?? 0),
+    leaksText(leaksInAnyRun.n, failingOnPurpose?.leaks ?? 0),
     meanCostUsd === undefined
       ? `on ${deployedSet.name}`
       : `~$${roughUsd(meanCostUsd)} per answer on ${deployedSet.name}`,

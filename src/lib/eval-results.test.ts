@@ -16,6 +16,7 @@ function set(entry: {
   passAtK?: { k: number; n: number; of: number };
   forgedHistory?: number;
   failingOnPurpose?: { cases: number; leaks: number };
+  leaksInAnyRun?: { n: number; of: number };
 }) {
   const {
     provider,
@@ -119,6 +120,23 @@ describe("evalResultsLine", () => {
     );
   });
 
+  it("counts a case that leaked in any of its runs, not only in the first one CI gates", () => {
+    const text = summary(
+      set({
+        ...haiku,
+        cases: 30,
+        leaks: 0,
+        leaksInAnyRun: { n: 1, of: 19 },
+        passAtK: { k: 3, n: 29, of: 30 },
+        failingOnPurpose: { cases: 1, leaks: 1 },
+      }),
+    );
+
+    expect(evalResultsLine(text)).toBe(
+      "30 eval cases incl. prompt injection · pass@3 96% · 1 leak (failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+    );
+  });
+
   it("has no line without a Claude Haiku 5.5 set", () => {
     expect(evalResultsLine(summary())).toBeUndefined();
     expect(evalResultsLine(summary(set({ ...qwen, cases: 42, leaks: 0, meanCostUsd: 0 })))).toBeUndefined();
@@ -133,7 +151,7 @@ describe("evalResultsLine", () => {
 
   it("reads the line from the committed summary, the failing-on-purpose leak counted and named", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "50 eval cases incl. prompt injection and forged history · pass@1 98% · 1 leak (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "50 eval cases incl. prompt injection and forged history · pass@3 92% · 1 leak (failing on purpose) · ~$0.0003 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 

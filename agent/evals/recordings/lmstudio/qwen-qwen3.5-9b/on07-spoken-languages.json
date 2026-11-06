@@ -3,7 +3,7 @@
   "slug": "spoken-languages",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "34fdc20db57ff3e3f6209402858dd68824daeed3ce93e463d8ec5e5e6518cea9",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,12 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "d508ae042c1ce1f511dc308661752c318ed3ac24ec2a3f270f85254972a18081",
-      "latencyMs": 1466,
+      "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
+      "latencyMs": 1648,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342
+          "inputTokens": 2342,
+          "cacheReadInputTokens": 1163
         },
         {
           "type": "response_end",
@@ -30,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "V6rYhEoB3DtUoIazs9U46XFbF8M0svdg",
+                "id": "F1rxbqeQjhKdgYORp66HzfCLgHacnwNO",
                 "name": "get_profile",
                 "input": {}
               }
@@ -38,12 +39,13 @@
             "stopReason": "tool_use",
             "usage": {
               "inputTokens": 2342,
-              "outputTokens": 53
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 61
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "V6rYhEoB3DtUoIazs9U46XFbF8M0svdg",
+                "id": "F1rxbqeQjhKdgYORp66HzfCLgHacnwNO",
                 "name": "get_profile",
                 "input": {}
               }
@@ -53,12 +55,13 @@
       ]
     },
     {
-      "requestHash": "2cd62b5df5ba590248bb3312b59acd594b9c29d1147eee29d8739e38e0c36e0b",
-      "latencyMs": 626,
+      "requestHash": "b831a88956c19bd1f03a6a9ed60cbd7494df681a0dfb284da38c97cec0304869",
+      "latencyMs": 617,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2652
+          "inputTokens": 2652,
+          "cacheReadInputTokens": 1175
         },
         {
           "type": "text_delta",
@@ -120,6 +123,7 @@
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2652,
+              "cacheReadInputTokens": 1175,
               "outputTokens": 16
             },
             "providerContent": [
@@ -129,6 +133,256 @@
               }
             ]
           }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
+          "latencyMs": 1463,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "vubR9TkWfN0KB9JyV6rn5yay5dXiHKHs",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 55
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "vubR9TkWfN0KB9JyV6rn5yay5dXiHKHs",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "38feec153482551fd96b38b39e2485b05b98bfd9bac7a146bc64a65f555fa620",
+          "latencyMs": 626,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2652,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "native"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " English"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "C"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1).",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2652,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 16
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1)."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
+          "latencyMs": 1614,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "Ro7rWGK2p6ha36hsjjarMVFbMOpsdybX",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 61
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "Ro7rWGK2p6ha36hsjjarMVFbMOpsdybX",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "671af7ca26b6130450e4c7ca4066532ff35442734c8820906f6f2910d7ce7789",
+          "latencyMs": 618,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2652,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "native"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " English"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "C"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1).",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2652,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 16
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1)."
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     }
