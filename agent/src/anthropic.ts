@@ -142,28 +142,31 @@ function upstreamMessage(error: InstanceType<typeof Anthropic.APIError>): unknow
 
 /**
  * Capacity, network and the provider's own limits are "try again later", not
- * bugs. The tier spend cap is a 429, covered by `RateLimitError`; no credit is
- * a 402 `billing_error`. Overload and rate limits also count when streamed.
+ * bugs: why, or `undefined` for anything else. The tier spend cap is a 429,
+ * covered by `RateLimitError` (and counted as capacity: it reads like any
+ * rate limit); no credit is a 402 `billing_error`; a workspace or
+ * organization spend limit is a 400 with its own message. Overload and rate
+ * limits also count when streamed.
  */
-function isUnavailable(error: unknown): boolean {
+function unavailableReason(error: unknown): ModelUnavailableError["reason"] | undefined {
   if (
     error instanceof Anthropic.RateLimitError ||
     error instanceof Anthropic.InternalServerError ||
     error instanceof Anthropic.APIConnectionError
   ) {
-    return true;
+    return "capacity";
   }
-  if (!(error instanceof Anthropic.APIError)) return false;
-  if (error.status === 402 || error.type === "billing_error") return true;
+  if (!(error instanceof Anthropic.APIError)) return undefined;
+  if (error.status === 402 || error.type === "billing_error") return "provider_limit";
   // Mid-stream, after a 200, an SSE `error` event comes through as a plain
   // APIError with no status: only the body's error type says what it was.
-  if (error.type === "overloaded_error" || error.type === "rate_limit_error") return true;
+  if (error.type === "overloaded_error" || error.type === "rate_limit_error") return "capacity";
   const message = upstreamMessage(error);
-  return (
+  const spendLimit =
     error instanceof Anthropic.BadRequestError &&
     typeof message === "string" &&
-    spendLimitMessage.test(message)
-  );
+    spendLimitMessage.test(message);
+  return spendLimit ? "provider_limit" : undefined;
 }
 
 export function createAnthropicModelClient(options: AnthropicModelOptions): ModelClient {
@@ -206,9 +209,8 @@ export function createAnthropicModelClient(options: AnthropicModelOptions): Mode
         }
         yield { type: "response_end", response: toResponse(await stream.finalMessage()) };
       } catch (error) {
-        if (isUnavailable(error)) {
-          throw new ModelUnavailableError("Claude is unavailable", { cause: error });
-        }
+        const reason = unavailableReason(error);
+        if (reason) throw new ModelUnavailableError("Claude is unavailable", { cause: error, reason });
         throw error;
       }
     },

@@ -1,4 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { profile } from "../src/shared/profile";
 
 const finalText = `❯ whoami\n${profile.tagline}\n\n❯ cat status.json\n{ "open_to_work": true, "focus": "AI agents" }`;

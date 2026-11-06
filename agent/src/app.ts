@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { Hono, type Context, type MiddlewareHandler } from "hono";
 import { bodyLimit } from "hono/body-limit";
@@ -5,15 +6,20 @@ import { cors } from "hono/cors";
 import { createMiddleware } from "hono/factory";
 import { streamSSE } from "hono/streaming";
 import * as z from "zod";
-import type { ChatRequest, HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import type { HttpErrorBody, HttpErrorCode } from "../../src/shared/chat-contract";
+import type { AnswerSigner, VerifiedConversation } from "./answer-signing";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
+import { describeError, logEvent, logStoreError, withRequestId } from "./log";
+import type { DailyQuota } from "./daily-quota";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
-import type { RateLimiter } from "./rate-limit";
+import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
+import type { RateLimitDecision, RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
+import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
-import type { UsageRecorder } from "./usage";
+import { logChatRequest, type UsageRecorder } from "./usage";
 
 export type { HttpErrorBody, HttpErrorCode };
 
@@ -31,6 +37,11 @@ export const maxChatBodyBytes = 64 * 1024;
 /** User-facing messages of the HTTP-layer refusals, safe to show as-is. */
 export const httpErrorMessages = {
   rateLimited: "Too many requests. Please wait a moment and try again.",
+  dailyQuota:
+    "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
+  statsUnavailable: "Usage stats are unavailable.",
+  unsignedAnswer:
+    "An earlier answer in this conversation is missing its signature or was changed, so the agent can't continue it. Reload the page to start a new conversation.",
   spendCap:
     "The agent has used up its budget for this month, so it's resting until next month. You can still read everything on this page or contact Alberto directly.",
 } as const;
@@ -47,20 +58,33 @@ export type AppDeps = {
   /** Browser origins allowed to call the chat endpoint. */
   allowedOrigins: string[];
   chatLimits: ChatLimits;
+  /** Signs the chat's answers and checks the earlier ones a request sends back. */
+  answerSigner: AnswerSigner;
   /**
    * Per-IP limits: in the shared store when `AGENT_STORE` selects one, else
    * in memory, per instance (`rate-limit.ts`).
    */
   chatRateLimiter: RateLimiter;
   mcpRateLimiter: RateLimiter;
-  /** Monthly model budget; shared or in memory like the limits (`spend-cap.ts`). */
+  /** Its own limit and ceiling, so polling `/stats` never uses up `/mcp`'s. */
+  statsRateLimiter: RateLimiter;
+  /** Monthly spend cap on the model; shared or in memory like the limits (`spend-cap.ts`). */
   spendCap: SpendCap;
+  /** Per-key daily spend quota on `/chat`; shared or in memory like the limits (`daily-quota.ts`). */
+  dailyQuota: DailyQuota;
   /** Weekly usage aggregates served by `/stats`; in the same store (`usage.ts`). */
   usage: UsageRecorder;
-  /** Key for the `/chat` and `/stats` rate limits: the client IP in production. */
+  /** Notes the provider's own spend limit, for its alert event; in the same store (`provider-limit.ts`). */
+  providerLimit: ProviderLimitWatch;
+  /** Key for the `/chat` and `/stats` rate limits: the client IP, or its `/64` for IPv6, in production. */
   rateLimitKey: (c: Context) => string;
-  /** Key for the `/mcp` rate limit: the client IP, through the Hosting rewrite too. */
+  /** Key for the `/mcp` rate limit: the client IP (or its `/64`), through the Hosting rewrite too. */
   mcpRateLimitKey: (c: Context) => string;
+  /**
+   * Whether a `/mcp` request's right-most hop is a Google address outside the
+   * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
+   */
+  isUnknownGoogleHop: (c: Context) => boolean;
 };
 
 const jsonError = (
@@ -70,16 +94,62 @@ const jsonError = (
 ) => c.json<HttpErrorBody>({ error }, status);
 
 /**
+ * A JSON-RPC error, as `/mcp` answers whatever it refuses before the MCP
+ * server runs, so MCP clients can surface it. `data.code` is the HTTP error
+ * code the chat would use.
+ */
+const jsonRpcError = (
+  c: Context,
+  status: 429 | 503,
+  code: number,
+  message: string,
+  data: { code: HttpErrorCode; retryAfterSeconds?: number },
+) => c.json({ jsonrpc: "2.0", id: null, error: { code, message, data } }, status);
+
+/** How each route answers an error it didn't handle, in its own error contract. */
+const unhandledErrorResponders: Record<string, (c: Context) => Response> = {
+  [paths.chat]: (c) => {
+    logUnrecordedChat(503);
+    return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
+  },
+  [paths.mcp]: (c) =>
+    jsonRpcError(c, 503, -32603, errorMessages.unavailable, { code: "unavailable" }),
+  [paths.stats]: (c) =>
+    jsonError(c, 503, { code: "unavailable", message: httpErrorMessages.statsUnavailable }),
+};
+
+const unhandledErrorFallback = (c: Context) =>
+  jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
+
+/**
+ * What a route does when its store fails: `open` keeps answering without the
+ * guardrail, `closed` refuses (the error reaches `app.onError`, which answers
+ * in the route's error contract).
+ */
+type StoreFailurePolicy = "open" | "closed";
+
+/**
  * Per-client rate limit: lets the request through, or sets `Retry-After` and
- * answers with `refuse` (each endpoint words the refusal in its protocol).
+ * answers with `refuse` (each endpoint words the refusal in its protocol). If
+ * the limiter's store fails, `onStoreFailure` decides.
  */
 function rateLimit(
   limiter: RateLimiter,
   rateLimitKey: (c: Context) => string,
+  onStoreFailure: StoreFailurePolicy,
   refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
-    const decision = await limiter.hit(rateLimitKey(c));
+    let decision: RateLimitDecision;
+    try {
+      decision = await limiter.hit(rateLimitKey(c));
+    } catch (error) {
+      if (onStoreFailure === "closed") throw error;
+      logStoreError("rate_limit", `Rate limit: store failed, letting ${c.req.path} through`, error, {
+        route: c.req.path,
+      });
+      return next();
+    }
     if (decision.allowed) return next();
     c.header("Retry-After", String(decision.retryAfterSeconds));
     return refuse(c, decision.retryAfterSeconds);
@@ -92,8 +162,24 @@ const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>
   await next();
 });
 
-/** The chat request in the body, or the `400` that refuses it. */
-async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
+/**
+ * Logs a chat request the usage stats don't record: refused as invalid
+ * (`400`, `413`), or failed closed on a store error (`503`). Every other one
+ * is logged as it's recorded (`usage.ts`).
+ */
+function logUnrecordedChat(status: 400 | 413 | 503) {
+  logChatRequest({ outcome: `http_${status}` });
+}
+
+/**
+ * The conversation in the body, as the chat agent reads it and with its
+ * answer's place, or the `400` that refuses it: malformed, or an earlier
+ * answer unsigned, changed or out of its place.
+ */
+async function parseChatRequest(
+  c: Context,
+  answerSigner: AnswerSigner,
+): Promise<VerifiedConversation | Response> {
   let body: unknown;
   try {
     body = await c.req.json();
@@ -104,7 +190,11 @@ async function parseChatRequest(c: Context): Promise<ChatRequest | Response> {
   if (!parsed.success) {
     return jsonError(c, 400, { code: "invalid_request", message: z.prettifyError(parsed.error) });
   }
-  return parsed.data;
+  const conversation = answerSigner.verify(parsed.data.messages);
+  if (!conversation) {
+    return jsonError(c, 400, { code: "invalid_request", message: httpErrorMessages.unsignedAnswer });
+  }
+  return conversation;
 }
 
 export function createApp(deps: AppDeps): Hono {
@@ -113,28 +203,45 @@ export function createApp(deps: AppDeps): Hono {
     modelClient,
     allowedOrigins,
     chatLimits,
+    answerSigner,
     chatRateLimiter,
     mcpRateLimiter,
+    statsRateLimiter,
     spendCap,
+    dailyQuota,
     usage,
+    providerLimit,
     rateLimitKey,
     mcpRateLimitKey,
+    isUnknownGoogleHop,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
   const chatAgent = modelClient
-    ? createChatAgent({ model: modelClient, toolset, limits: chatLimits })
+    ? createChatAgent({
+        model: watchingProviderLimit(modelClient, providerLimit),
+        toolset,
+        limits: chatLimits,
+      })
     : null;
   const app = new Hono();
+
+  // Every request gets an id, echoed in `X-Request-Id`, that tags each line
+  // logged while serving it (`log.ts`), its stream and store writes included.
+  app.use(async (c, next) => {
+    const requestId = randomUUID();
+    c.header("X-Request-Id", requestId);
+    await withRequestId(requestId, next);
+  });
 
   app.get(paths.health, (c) => c.json({ status: "ok" }));
 
   // Public usage aggregates (no content, no IPs), read by the site from any
-  // origin. Under the MCP rate limit, sharing its per-IP count.
+  // origin. Under its own per-IP limit and global ceiling.
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(mcpRateLimiter, rateLimitKey, (c) =>
+    rateLimit(statsRateLimiter, rateLimitKey, "open", (c) =>
       jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
     ),
     async (c) => {
@@ -143,8 +250,11 @@ export function createApp(deps: AppDeps): Hono {
         c.header("Cache-Control", "public, max-age=300");
         return c.json(body);
       } catch (error) {
-        console.error("Usage: could not read the stats", error);
-        return jsonError(c, 503, { code: "unavailable", message: "Usage stats are unavailable." });
+        logStoreError("usage_stats", "Usage: could not read the stats", error);
+        return jsonError(c, 503, {
+          code: "unavailable",
+          message: httpErrorMessages.statsUnavailable,
+        });
       }
     },
   );
@@ -165,22 +275,21 @@ export function createApp(deps: AppDeps): Hono {
     }),
   );
 
+  // Counted before the limit: if Hosting's peer has left the fetchers ranges,
+  // its visitors share one key, so most of them are refused. Only the count.
+  app.use(paths.mcp, async (c, next) => {
+    if (isUnknownGoogleHop(c)) usage.countUnknownGoogleHop();
+    await next();
+  });
+
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, mcpRateLimitKey, (c, retryAfterSeconds) =>
-      c.json(
-        {
-          jsonrpc: "2.0",
-          id: null,
-          error: {
-            code: -32000,
-            message: httpErrorMessages.rateLimited,
-            data: { code: "rate_limited" satisfies HttpErrorCode, retryAfterSeconds },
-          },
-        },
-        429,
-      ),
+    rateLimit(mcpRateLimiter, mcpRateLimitKey, "open", (c, retryAfterSeconds) =>
+      jsonRpcError(c, 429, -32000, httpErrorMessages.rateLimited, {
+        code: "rate_limited",
+        retryAfterSeconds,
+      }),
     ),
   );
 
@@ -194,8 +303,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    const [response] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
-    return response;
+    // Not awaited: the answer doesn't wait on the weekly document, which every
+    // request writes. The recorder never throws.
+    void usage.recordMcp();
+    return transport.handleRequest(c.req.raw);
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -216,7 +327,7 @@ export function createApp(deps: AppDeps): Hono {
     paths.chat,
     markChatStart,
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, rateLimitKey, async (c, retryAfterSeconds) => {
+    rateLimit(chatRateLimiter, rateLimitKey, "closed", async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
       return jsonError(c, 429, {
         code: "rate_limited",
@@ -226,20 +337,41 @@ export function createApp(deps: AppDeps): Hono {
     }),
     bodyLimit({
       maxSize: maxChatBodyBytes,
-      onError: (c) =>
-        jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." }),
+      onError: (c) => {
+        logUnrecordedChat(413);
+        return jsonError(c, 413, { code: "invalid_request", message: "Request body is too large." });
+      },
     }),
     async (c) => {
-      const request = await parseChatRequest(c);
-      if (request instanceof Response) return request;
+      const conversation = await parseChatRequest(c, answerSigner);
+      if (conversation instanceof Response) {
+        logUnrecordedChat(400);
+        return conversation;
+      }
+      const { messages } = conversation;
       if (!chatAgent) {
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
       }
-      const { messages } = request;
-      // Reserve the most this request can cost while it runs (see spend-cap.ts).
-      const spend = await spendCap.reserve(chatAgent.worstCaseUsage(messages));
+      // Reserve the most this request can cost while it runs, against the
+      // key's daily quota and then the month's spend cap (see spend-holds.ts).
+      // The quota first: its document is the key's own, so a key over it
+      // never touches the month's shared one.
+      const worstCase = chatAgent.worstCaseUsage(messages);
+      const quota = await dailyQuota.reserve(rateLimitKey(c), worstCase);
+      if (quota.exceeded) {
+        await usage.recordChat({ outcome: "http_429" });
+        c.header("Retry-After", String(quota.retryAfterSeconds));
+        return jsonError(c, 429, {
+          code: "rate_limited",
+          message: httpErrorMessages.dailyQuota,
+          retryAfterSeconds: quota.retryAfterSeconds,
+          resetsAt: quota.resetsAt,
+        });
+      }
+      const spend = await spendCap.reserve(worstCase);
       if (spend.exhausted) {
+        await quota.reservation.settle();
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
@@ -253,13 +385,15 @@ export function createApp(deps: AppDeps): Hono {
       const abort = new AbortController();
       const stop = () => abort.abort();
       c.req.raw.signal.addEventListener("abort", stop, { once: true });
-      const events = meteredChat(messages, {
+      // The answer is signed as it ends, so it can come back in the next
+      // chat request (answer-signing.ts).
+      const events = answerSigner.signEvents(conversation.next, meteredChat(messages, {
         agent: chatAgent,
-        reservation: spend.reservation,
+        reservation: combineReservations(quota.reservation, spend.reservation),
         usage,
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
-      });
+      }));
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         // Drained to the end even once the visitor has left: every model call
@@ -275,6 +409,19 @@ export function createApp(deps: AppDeps): Hono {
       });
     },
   );
+
+  // Whatever a route didn't handle (a store failing where the route fails
+  // closed, or a bug) is answered in that route's error contract, never as
+  // Hono's plain-text 500. The CORS headers set before the error stay on.
+  app.onError((error, c) => {
+    logEvent("ERROR", "unhandled_error", `Unhandled error on ${c.req.method} ${c.req.path}`, {
+      method: c.req.method,
+      route: c.req.path,
+      error: describeError(error),
+      stack: error.stack,
+    });
+    return (unhandledErrorResponders[c.req.path] ?? unhandledErrorFallback)(c);
+  });
 
   return app;
 }

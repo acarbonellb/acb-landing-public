@@ -18,15 +18,15 @@ function fakeClock(iso: string) {
 /** Reserves, records `usage` and settles: one whole request. */
 async function spend(cap: SpendCap, usage: { inputTokens: number; outputTokens: number }) {
   const status = await cap.reserve(none);
-  if (status.exhausted) throw new Error("budget exhausted");
+  if (status.exhausted) throw new Error("spend cap reached");
   await status.reservation.record(usage);
   await status.reservation.settle();
 }
 
 describe("createMemorySpendCap", () => {
-  it("is open until the month's spend reaches the budget", async () => {
+  it("is open until the month's spend reaches the cap", async () => {
     const clock = fakeClock("2026-11-02T12:00:00Z");
-    const cap = createMemorySpendCap({ budgetUsd: 10, pricing, now: clock.now });
+    const cap = createMemorySpendCap({ capUsd: 10, pricing, now: clock.now });
 
     await spend(cap, { inputTokens: 1_000_000, outputTokens: 250_000 }); // $9
     expect((await cap.reserve(none)).exhausted).toBe(false);
@@ -37,8 +37,8 @@ describe("createMemorySpendCap", () => {
     });
   });
 
-  it("holds each open request's worst case, so concurrent requests can't overshoot the budget", async () => {
-    const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
+  it("holds each open request's worst case, so concurrent requests can't overshoot the cap", async () => {
+    const cap = createMemorySpendCap({ capUsd: 10, pricing });
     const worstCase = { inputTokens: 0, outputTokens: 300_000 }; // $6
 
     const first = await cap.reserve(worstCase);
@@ -53,7 +53,7 @@ describe("createMemorySpendCap", () => {
   });
 
   it("holds a worst case's input at the cache-write price, the most recording can charge for it", async () => {
-    const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
+    const cap = createMemorySpendCap({ capUsd: 10, pricing });
     // 2M input tokens: $8 at the input price, $10 if all are written to the cache.
     const worstCase = { inputTokens: 2_000_000, outputTokens: 0 };
 
@@ -68,7 +68,7 @@ describe("createMemorySpendCap", () => {
   });
 
   it("charges what a request actually spent, even beyond its reservation", async () => {
-    const cap = createMemorySpendCap({ budgetUsd: 10, pricing });
+    const cap = createMemorySpendCap({ capUsd: 10, pricing });
     const status = await cap.reserve({ inputTokens: 0, outputTokens: 50_000 }); // $1
     if (status.exhausted) throw new Error("expected room");
     await status.reservation.record({ inputTokens: 0, outputTokens: 500_000 }); // $10
@@ -78,7 +78,7 @@ describe("createMemorySpendCap", () => {
 
   it("starts over at the beginning of the next UTC month", async () => {
     const clock = fakeClock("2026-12-31T23:59:59Z");
-    const cap = createMemorySpendCap({ budgetUsd: 1, pricing, now: clock.now });
+    const cap = createMemorySpendCap({ capUsd: 1, pricing, now: clock.now });
     await spend(cap, { inputTokens: 0, outputTokens: 100_000 }); // $2
     expect(await cap.reserve(none)).toMatchObject({
       exhausted: true,
@@ -89,8 +89,8 @@ describe("createMemorySpendCap", () => {
     expect((await cap.reserve(none)).exhausted).toBe(false);
   });
 
-  it("a zero budget disables the chat", async () => {
-    const cap = createMemorySpendCap({ budgetUsd: 0, pricing });
+  it("a zero cap disables the chat", async () => {
+    const cap = createMemorySpendCap({ capUsd: 0, pricing });
     expect((await cap.reserve(none)).exhausted).toBe(true);
   });
 });
@@ -100,20 +100,20 @@ describe("createStoreSpendCap", () => {
 
   it("keeps the month's spend across a restart and shares it between instances", async () => {
     const store = createMemoryDocumentStore();
-    const first = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+    const first = createStoreSpendCap({ store, capUsd: 10, pricing });
     await spend(first, { inputTokens: 1_000_000, outputTokens: 250_000 }); // $9
 
     // A cold start, and a second instance: both see the $9.
-    const restarted = createStoreSpendCap({ store, budgetUsd: 10, pricing });
-    const other = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+    const restarted = createStoreSpendCap({ store, capUsd: 10, pricing });
+    const other = createStoreSpendCap({ store, capUsd: 10, pricing });
     await spend(restarted, { inputTokens: 0, outputTokens: 50_000 }); // $1 → $10
     expect((await other.reserve(none)).exhausted).toBe(true);
   });
 
-  it("lets concurrent requests on several instances hold no more than the budget", async () => {
+  it("lets concurrent requests on several instances hold no more than the cap", async () => {
     const store = createMemoryDocumentStore();
     const caps = Array.from({ length: 6 }, () =>
-      createStoreSpendCap({ store, budgetUsd: 20, pricing }),
+      createStoreSpendCap({ store, capUsd: 20, pricing }),
     );
     const statuses = await Promise.all(caps.map((cap) => cap.reserve(sixDollars)));
     // Three $6 worst cases fit in $20; the other three are refused.
@@ -122,7 +122,7 @@ describe("createStoreSpendCap", () => {
 
   it("releases on settle what a request held and didn't spend, and charges overruns in full", async () => {
     const store = createMemoryDocumentStore();
-    const cap = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+    const cap = createStoreSpendCap({ store, capUsd: 10, pricing });
 
     const first = await cap.reserve(sixDollars);
     if (first.exhausted) throw new Error("expected room");
@@ -143,7 +143,7 @@ describe("createStoreSpendCap", () => {
   it("drops a hold its instance never settled once it expires, but keeps what it spent", async () => {
     const clock = fakeClock("2026-11-02T12:00:00Z");
     const store = createMemoryDocumentStore();
-    const options = { store, budgetUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now };
+    const options = { store, capUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now };
     const crashed = createStoreSpendCap(options);
     const status = await crashed.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");
@@ -165,7 +165,7 @@ describe("createStoreSpendCap", () => {
       update: (path, change) =>
         down ? Promise.reject(new Error("unreachable")) : memory.update(path, change),
     };
-    const cap = createStoreSpendCap({ store, budgetUsd: 10, pricing });
+    const cap = createStoreSpendCap({ store, capUsd: 10, pricing });
     const status = await cap.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");
 
@@ -191,7 +191,7 @@ describe("createStoreSpendCap", () => {
     };
     const cap = createStoreSpendCap({
       store,
-      budgetUsd: 10,
+      capUsd: 10,
       pricing,
       now: clock.now,
       reservationTtlMs: 15 * 60_000,
@@ -211,10 +211,10 @@ describe("createStoreSpendCap", () => {
     expect((await cap.reserve(sixDollars)).exhausted).toBe(false);
   });
 
-  it("budgets each UTC month separately", async () => {
+  it("caps each UTC month separately", async () => {
     const clock = fakeClock("2026-12-31T23:59:59Z");
     const store = createMemoryDocumentStore();
-    const cap = createStoreSpendCap({ store, budgetUsd: 1, pricing, now: clock.now });
+    const cap = createStoreSpendCap({ store, capUsd: 1, pricing, now: clock.now });
     await spend(cap, { inputTokens: 0, outputTokens: 100_000 }); // $2
     expect(await cap.reserve(none)).toEqual({
       exhausted: true,

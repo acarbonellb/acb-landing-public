@@ -1,6 +1,6 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { profile } from "../src/shared/profile";
 import { addressForms, findAddresses, maskAddress } from "../repo-hygiene/address-scan";
 

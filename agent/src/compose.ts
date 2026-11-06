@@ -2,15 +2,24 @@
 // the configuration (`config.ts`). The only place that picks adapters; the
 // router (`app.ts`) takes them all as given, and tests build theirs with
 // `testAppDeps` (`test-deps.ts`).
+import { createAnswerSigner, ephemeralSigningKey } from "./answer-signing";
 import { createAnthropicModelClient } from "./anthropic";
+import { createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
-import { clientIp, mcpClientIp } from "./client-ip";
+import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import type { Config } from "./config";
-import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
+import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import type { ModelClient } from "./model";
-import { createMemoryRateLimiter, createStoreRateLimiter } from "./rate-limit";
-import { createMemorySpendCap, createStoreSpendCap } from "./spend-cap";
+import { createProviderLimitWatch } from "./provider-limit";
+import {
+  createMemoryRateLimiter,
+  createStoreRateLimiter,
+  withGlobalCeiling,
+  withRefusalCache,
+  type RateLimiter,
+} from "./rate-limit";
+import { createStoreSpendCap } from "./spend-cap";
 import { createToolset, siteContent } from "./tools";
 import { createUsageRecorder } from "./usage";
 
@@ -32,31 +41,51 @@ function createModelClient(config: Config): ModelClient | null {
 }
 
 /**
- * The rate limits, spend cap and usage stats: all in the shared store when
+ * The rate limits, daily quota, spend cap and usage stats: all in the shared store when
  * one is configured, else all in memory, per instance.
  */
 export function createGuardrails(
-  store: DocumentStore | null,
-  { guardrails }: Config,
-): Pick<AppDeps, "chatRateLimiter" | "mcpRateLimiter" | "spendCap" | "usage"> {
+  sharedStore: DocumentStore | null,
+  { guardrails, alerts }: Config,
+): Pick<
+  AppDeps,
+  "chatRateLimiter" | "mcpRateLimiter" | "statsRateLimiter" | "spendCap" | "dailyQuota" | "usage" | "providerLimit"
+> {
   const { pricing } = guardrails;
-  const spendCapOptions = { budgetUsd: guardrails.monthlyBudgetUsd, pricing };
-  if (store) {
-    const rateLimiter = (name: string, limit: number) =>
-      createStoreRateLimiter({ store, name, limit, windowMs: minute });
-    return {
-      chatRateLimiter: rateLimiter("chat", guardrails.chatRequestsPerMinute),
-      mcpRateLimiter: rateLimiter("mcp", guardrails.mcpRequestsPerMinute),
-      spendCap: createStoreSpendCap({ ...spendCapOptions, store }),
-      usage: createUsageRecorder({ store, pricing }),
-    };
-  }
-  const rateLimiter = (limit: number) => createMemoryRateLimiter({ limit, windowMs: minute });
+  const shared = sharedStore && withStoreHealthEvents(sharedStore);
+  // Without a shared store every guardrail keeps its documents in this
+  // process: the same code over a memory store.
+  const store = shared ?? createMemoryDocumentStore();
+  // One window of `limit` requests per minute, the only part that differs.
+  // Over the shared store, each window's refusals are also remembered
+  // locally, so a flood that is already refused costs no store reads; the
+  // ceiling's window is `rateLimits/<name>:*`.
+  const window: (name: string, limit: number) => RateLimiter = shared
+    ? (name, limit) =>
+        withRefusalCache(createStoreRateLimiter({ store: shared, name, limit, windowMs: minute }))
+    : (_name, limit) => createMemoryRateLimiter({ limit, windowMs: minute });
+  const rateLimiter = (name: string, perKey: number, global: number) =>
+    withGlobalCeiling(window(name, perKey), window(name, global));
   return {
-    chatRateLimiter: rateLimiter(guardrails.chatRequestsPerMinute),
-    mcpRateLimiter: rateLimiter(guardrails.mcpRequestsPerMinute),
-    spendCap: createMemorySpendCap(spendCapOptions),
-    usage: createUsageRecorder({ store: createMemoryDocumentStore(), pricing }),
+    chatRateLimiter: rateLimiter(
+      "chat",
+      guardrails.chatRequestsPerMinute,
+      guardrails.chatGlobalRequestsPerMinute,
+    ),
+    mcpRateLimiter: rateLimiter(
+      "mcp",
+      guardrails.mcpRequestsPerMinute,
+      guardrails.mcpGlobalRequestsPerMinute,
+    ),
+    statsRateLimiter: rateLimiter(
+      "stats",
+      guardrails.statsRequestsPerMinute,
+      guardrails.statsGlobalRequestsPerMinute,
+    ),
+    spendCap: createStoreSpendCap({ store, capUsd: guardrails.monthlySpendCapUsd, pricing }),
+    dailyQuota: createStoreDailyQuota({ store, quotaUsd: guardrails.dailyQuotaUsd, pricing }),
+    usage: createUsageRecorder({ store, pricing, errorRateAlert: alerts.chatErrorRate }),
+    providerLimit: createProviderLimitWatch({ store }),
   };
 }
 
@@ -67,8 +96,10 @@ export function composeAppDeps(config: Config): AppDeps {
     modelClient: createModelClient(config),
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
+    answerSigner: createAnswerSigner(config.answerSigningKey ?? ephemeralSigningKey()),
     ...createGuardrails(createDocumentStore(config.store), config),
-    rateLimitKey: clientIp,
-    mcpRateLimitKey: mcpClientIp,
+    rateLimitKey,
+    mcpRateLimitKey,
+    isUnknownGoogleHop: mcpUnknownGoogleHop,
   };
 }

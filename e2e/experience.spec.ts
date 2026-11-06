@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Literals from the owner's CV: the first role's commit and one highlight.
 

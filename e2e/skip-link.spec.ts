@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // The header is sticky and holds a dozen links: keyboard users skip past it.
 test("the first Tab stop skips to the content and moves focus there", async ({ page }) => {

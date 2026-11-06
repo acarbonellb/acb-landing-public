@@ -6,6 +6,7 @@ import * as z from "zod";
 import { chatLimits } from "./chat";
 import { efforts } from "./model";
 import { resolvePricing } from "./pricing";
+import { defaultErrorRateAlert } from "./usage";
 
 const defaultModel = "claude-haiku-5-5";
 
@@ -21,6 +22,13 @@ const envSchema = z.object({
     (value) => (typeof value === "string" ? value.trim() || undefined : value),
     z.email().optional(),
   ),
+  // Signs the chat's answers (answer-signing.ts). Secret Manager in
+  // production, where it is required; unset elsewhere, each process makes
+  // its own. Trimmed like the email.
+  ANSWER_SIGNING_KEY: z.preprocess(
+    (value) => (typeof value === "string" ? value.trim() || undefined : value),
+    z.string().min(32, "must be at least 32 characters").optional(),
+  ),
   AGENT_MODEL: z.string().min(1).default(defaultModel),
   AGENT_EFFORT: z.enum(efforts).default("low"),
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
@@ -28,9 +36,27 @@ const envSchema = z.object({
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
+  // The page reads /stats once per load (and caches it 5 minutes), so a few
+  // per minute per IP is plenty.
+  RATE_LIMIT_STATS_PER_MINUTE: intFromEnv.default(30),
+  // Global ceilings, all keys together, so rotating keys can't multiply what
+  // one source gets. Sized well above the per-IP limits.
+  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(60),
+  RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
+  RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: intFromEnv.default(300),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
-  // cap (and its "budget reached" message) is what the visitor meets first.
+  // cap (and its "used up for this month" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),
+  // The `chat_error_rate` alert event (README, "Logs and alert events"):
+  // fires when more than this share of the last hour's streamed requests
+  // ended in an error, once the hour has at least that many of them.
+  ALERT_CHAT_ERROR_RATE: z.coerce.number().min(0).max(1).default(defaultErrorRateAlert.threshold),
+  ALERT_CHAT_ERROR_MIN_REQUESTS: intFromEnv.default(defaultErrorRateAlert.minRequests),
+  // Per rate-limit key and UTC day. /stats measured about $0.0004 per answer
+  // (W45), so this is ~250 short answers, or a few dozen long conversations,
+  // and still fits a maximal request's worst case (~$0.02 on the default
+  // model). Forty keys a day are needed to spend the month's cap.
+  DAILY_SPEND_QUOTA_USD: usdFromEnv.default(0.1),
   // Unset, AGENT_MODEL's list prices (pricing.ts); required for a model
   // missing from that list.
   AGENT_PRICE_INPUT_USD_PER_MTOK: usdFromEnv.optional(),
@@ -50,9 +76,30 @@ const envSchema = z.object({
   FIRESTORE_PROJECT_ID: z.string().optional(),
   FIRESTORE_DATABASE: z.string().min(1).default("(default)"),
   FIRESTORE_EMULATOR_HOST: z.string().optional(),
+  // The image sets NODE_ENV=production (agent/Dockerfile). There, scaled to
+  // zero, the memory store would start the month's spend again at $0 on every
+  // cold start, so it needs this explicit override.
+  NODE_ENV: z.string().optional(),
+  AGENT_ALLOW_MEMORY_STORE: z.enum(["true", "false"]).default("false"),
 }).refine((e) => e.AGENT_STORE !== "firestore" || e.FIRESTORE_PROJECT_ID, {
   message: "required when AGENT_STORE is firestore",
   path: ["FIRESTORE_PROJECT_ID"],
+}).refine(
+  (e) =>
+    e.NODE_ENV !== "production" ||
+    e.AGENT_STORE !== "memory" ||
+    e.AGENT_ALLOW_MEMORY_STORE === "true",
+  {
+    message:
+      "AGENT_STORE is memory in production: the spend cap and rate limits would reset on every cold start. " +
+      "Set AGENT_STORE=firestore, or AGENT_ALLOW_MEMORY_STORE=true to accept that",
+    path: ["AGENT_STORE"],
+  },
+).refine((e) => e.NODE_ENV !== "production" || e.ANSWER_SIGNING_KEY, {
+  // Each instance would sign with its own key, so answers from one would be
+  // refused by the next after a cold start or a deploy.
+  message: "required in production, where every instance must sign answers with the same key",
+  path: ["ANSWER_SIGNING_KEY"],
 });
 
 export type Config = ReturnType<typeof loadConfig>;
@@ -88,6 +135,8 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     anthropicApiKey: e.ANTHROPIC_API_KEY,
     model: e.AGENT_MODEL,
     contactEmail: e.CONTACT_EMAIL,
+    /** Signs the chat's answers; unset (never in production), each process makes its own. */
+    answerSigningKey: e.ANSWER_SIGNING_KEY,
     effort: e.AGENT_EFFORT,
     allowedOrigins: e.ALLOWED_ORIGINS,
     chatLimits: {
@@ -98,8 +147,19 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     guardrails: {
       chatRequestsPerMinute: e.RATE_LIMIT_CHAT_PER_MINUTE,
       mcpRequestsPerMinute: e.RATE_LIMIT_MCP_PER_MINUTE,
-      monthlyBudgetUsd: e.MONTHLY_SPEND_CAP_USD,
+      chatGlobalRequestsPerMinute: e.RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE,
+      mcpGlobalRequestsPerMinute: e.RATE_LIMIT_MCP_GLOBAL_PER_MINUTE,
+      statsRequestsPerMinute: e.RATE_LIMIT_STATS_PER_MINUTE,
+      statsGlobalRequestsPerMinute: e.RATE_LIMIT_STATS_GLOBAL_PER_MINUTE,
+      monthlySpendCapUsd: e.MONTHLY_SPEND_CAP_USD,
+      dailyQuotaUsd: e.DAILY_SPEND_QUOTA_USD,
       pricing,
+    },
+    alerts: {
+      chatErrorRate: {
+        threshold: e.ALERT_CHAT_ERROR_RATE,
+        minRequests: e.ALERT_CHAT_ERROR_MIN_REQUESTS,
+      },
     },
     store,
   };

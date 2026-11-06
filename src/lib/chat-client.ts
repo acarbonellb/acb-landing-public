@@ -5,27 +5,31 @@
 import type {
   ChatErrorCode,
   ChatEvent,
-  ChatMessage,
   ChatRequest,
+  ChatRequestMessage,
   ChatStopReason,
   HttpErrorBody,
   HttpErrorCode,
 } from "@/shared/chat-contract";
 
-export type { ChatMessage };
+export type { ChatRequestMessage };
 
 /** What the UI shows for a failure: wire error codes folded into three kinds. */
 export type ChatErrorKind = "rate_limited" | "unavailable" | "error";
 
 export type ChatClientEvent =
   | Extract<ChatEvent, { type: "text" | "tool_call" }>
-  | { type: "done"; stopReason: ChatStopReason }
+  /** `signature` is absent only if the agent sent none (one that predates signed answers). */
+  | { type: "done"; stopReason: ChatStopReason; signature?: string }
   | {
       type: "error";
       kind: ChatErrorKind;
       message?: string;
       retryAfterSeconds?: number;
-      /** ISO time the spend cap resets (next UTC month), when it closed the chat. */
+      /**
+       * ISO time the limit that refused the chat resets: the spend cap (next
+       * UTC month, `unavailable`) or the daily quota (next UTC day, `rate_limited`).
+       */
       resetsAt?: string;
     };
 
@@ -112,9 +116,15 @@ function toClientEvent(e: Record<string, unknown>): ChatClientEvent | undefined 
         name: String(e.name),
         input: e.input,
       };
-    case "done":
+    case "done": {
       // Unchecked off the wire: an unknown reason just gets no note in the UI.
-      return { type: "done", stopReason: String(e.stopReason) as ChatStopReason };
+      const done: ChatClientEvent = {
+        type: "done",
+        stopReason: String(e.stopReason) as ChatStopReason,
+      };
+      if (typeof e.signature === "string" && e.signature) done.signature = e.signature;
+      return done;
+    }
     case "error":
       return toError(e as ErrorPayload);
     default:
@@ -125,7 +135,7 @@ function toClientEvent(e: Record<string, unknown>): ChatClientEvent | undefined 
 
 export async function* streamChat(
   url: string,
-  messages: ChatMessage[],
+  messages: ChatRequestMessage[],
   options: { fetch?: typeof fetch; signal?: AbortSignal } = {},
 ): AsyncGenerator<ChatClientEvent> {
   const doFetch = options.fetch ?? globalThis.fetch.bind(globalThis);

@@ -47,8 +47,16 @@ export type WeekStats = {
     /** From the request's arrival to the answer's first text. */
     firstText: LatencyPercentiles;
   };
-  /** MCP HTTP requests served (a client's session is several). */
-  mcp: { requests: number };
+  mcp: {
+    /** MCP HTTP requests served (a client's session is several). */
+    requests: number;
+    /**
+     * `/mcp` requests, refused ones included, whose right-most hop was a
+     * Google address outside the user-triggered fetchers ranges: the sign
+     * the agent's ranges snapshot is stale.
+     */
+    unknownGoogleHops: number;
+  };
 };
 
 /** Body of `GET /stats`. */

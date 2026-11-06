@@ -48,6 +48,51 @@ test("a visitor asks a question and sees the tool calls and the answer", async (
   ]);
 });
 
+test("a follow-up question sends each earlier answer back with its signature", async ({
+  page,
+  agent,
+}) => {
+  const chat = await agent.chat([
+    chatStream({ type: "text", delta: "A software engineer." }, done("end_turn", "sig-first")),
+    chatStream({ type: "text", delta: "Yes, remotely." }, done("end_turn", "sig-second")),
+    chatStream({ type: "text", delta: "TypeScript." }, done()),
+  ]);
+  await page.goto("/#agent");
+
+  const log = conversation(page);
+  await ask(page, "Who is Alberto?");
+  await expect(log.getByText("A software engineer.")).toBeVisible();
+  await ask(page, "Is he remote?");
+  await expect(log.getByText("Yes, remotely.")).toBeVisible();
+  await ask(page, "His stack?");
+  await expect(log.getByText("TypeScript.")).toBeVisible();
+
+  expect(chat.requests.at(-1)).toEqual({
+    messages: [
+      { role: "user", content: "Who is Alberto?" },
+      { role: "assistant", content: "A software engineer.", signature: "sig-first" },
+      { role: "user", content: "Is he remote?" },
+      { role: "assistant", content: "Yes, remotely.", signature: "sig-second" },
+      { role: "user", content: "His stack?" },
+    ],
+  });
+});
+
+test("shows the agent's refusal of a conversation it didn't sign", async ({ page, agent }) => {
+  const message = "An earlier answer in this conversation was changed. Reload the page.";
+  await agent.chat([
+    chatStream({ type: "text", delta: "A software engineer." }, done()),
+    chatError({ code: "invalid_request", message }),
+  ]);
+  await page.goto("/#agent");
+
+  await ask(page, "Who is Alberto?");
+  await expect(conversation(page).getByText("A software engineer.")).toBeVisible();
+  await ask(page, "Tell me more.");
+
+  await expect(agentSection(page).getByRole("alert")).toContainText(message);
+});
+
 test("renders the agent's Markdown safely on a phone", async ({ page, agent }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await agent.chat(
@@ -106,6 +151,29 @@ test("shows the rate-limit state", async ({ page, agent }) => {
   const alert = agentSection(page).getByRole("alert");
   await expect(alert).toContainText("Rate limit reached.");
   await expect(alert).toContainText("Too many questions. Try again in 30s.");
+});
+
+test("shows the daily quota like a rate limit, with when it resets", async ({ page, agent }) => {
+  await agent.chat(
+    chatError(
+      {
+        code: "rate_limited",
+        message: "You've asked a lot today.",
+        retryAfterSeconds: 7200,
+        resetsAt: "2026-11-16T00:00:00.000Z",
+      },
+      { headers: { "Retry-After": "7200" } },
+    ),
+  );
+  await page.goto("/#agent");
+
+  await ask(page, "Hi");
+
+  const alert = agentSection(page).getByRole("alert");
+  await expect(alert).toContainText("Rate limit reached.");
+  await expect(alert).toContainText(
+    "You've asked a lot today. Try again from 00:00 UTC on November 16, 2026.",
+  );
 });
 
 test("shows the unavailable state", async ({ page, agent }) => {
