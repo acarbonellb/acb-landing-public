@@ -1,8 +1,8 @@
-import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { commentedFile, issueReferencesInComments } from "./issue-refs";
+import { isCommentScanned, issueReferencesInComments } from "./issue-refs";
+import { repoFiles, repoRoot as root } from "./repo-files";
 
 // Code comments say why in words, so the code reads without the tracker open.
 // Issue numbers belong in commit messages and PR descriptions; ADRs and
@@ -59,9 +59,13 @@ describe("issueReferencesInComments", () => {
     expect(issueReferencesInComments("a.ts", source)).toEqual([]);
     expect(issueReferencesInComments("s.sh", `echo "$#"\nX="${ref(1)}"`)).toEqual([]);
   });
+
+  it("finds nothing in a file whose comments aren't checked", () => {
+    expect(issueReferencesInComments("docs/adr/0001-x.md", `# Decision\n\n# See ${ref(98)}`)).toEqual([]);
+  });
 });
 
-describe("commentedFile", () => {
+describe("isCommentScanned", () => {
   it("covers source, tests, scripts and workflows, not Markdown, data or styles", () => {
     for (const path of [
       "src/a.tsx",
@@ -72,23 +76,16 @@ describe("commentedFile", () => {
       ".github/workflows/deploy.yml",
       "agent/Dockerfile",
     ]) {
-      expect(commentedFile(path), path).toBe(true);
+      expect(isCommentScanned(path), path).toBe(true);
     }
     for (const path of ["docs/adr/0001-x.md", "README.md", "package.json", "src/app/globals.css"]) {
-      expect(commentedFile(path), path).toBe(false);
+      expect(isCommentScanned(path), path).toBe(false);
     }
   });
 });
 
 describe("the repo's code comments", () => {
-  const root = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
-  const files = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], {
-    cwd: root,
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  })
-    .split("\0")
-    .filter((path) => path && commentedFile(path) && existsSync(join(root, path)));
+  const files = repoFiles().filter(isCommentScanned);
 
   it("are scanned across the tree", () => {
     expect(files).toEqual(

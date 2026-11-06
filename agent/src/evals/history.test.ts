@@ -297,7 +297,7 @@ describe("checkHistory", () => {
     const older = { ...without(entry, "requestIdentity"), promptHash: "a".repeat(64) };
 
     expect(checkHistory([older], [clean])).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: latest history entry has no request identity, only a system prompt hash: migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)",
+      "lmstudio / qwen/qwen3.5-9b: latest history entry has no request identity, only a system prompt hash: migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001)",
     ]);
   });
 

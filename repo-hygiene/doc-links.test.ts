@@ -1,24 +1,16 @@
-import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { brokenLinks, headingAnchors, markdownLinks } from "./doc-links";
+import { repoFiles, repoRoot as root } from "./repo-files";
 
 // The README is an overview that links into `docs/`, and the docs link to
 // each other and to the code. A moved section or a renamed file must not
 // leave a dead link behind, so every relative link and anchor in the README
 // and the docs has to resolve. External links aren't fetched: CI stays
 // offline.
-const root = execFileSync("git", ["rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
-
 function docFiles(): string[] {
-  return execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard"], {
-    cwd: root,
-    encoding: "utf8",
-  })
-    .split("\n")
-    .filter((path) => path === "README.md" || (path.startsWith("docs/") && path.endsWith(".md")))
-    .filter((path) => existsSync(join(root, path)));
+  return repoFiles().filter((path) => path === "README.md" || (path.startsWith("docs/") && path.endsWith(".md")));
 }
 
 describe("headingAnchors", () => {

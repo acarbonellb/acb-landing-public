@@ -2,18 +2,6 @@
 // words. Test-only: `issue-refs.test.ts` runs it over the tree.
 import ts from "typescript";
 
-const scriptFile = /\.(?:[cm]?[jt]s|tsx|jsx)$/;
-const hashCommentFile = /(?:\.(?:sh|ya?ml)|(?:^|\/)Dockerfile)$/;
-
-/**
- * Whether `path` is code whose comments are checked: source, tests, scripts
- * and workflows. Markdown (ADRs, research notes, docs) keeps its references;
- * JSON has no comments; CSS colours read like issue numbers.
- */
-export function commentedFile(path: string): boolean {
-  return scriptFile.test(path) || hashCommentFile.test(path);
-}
-
 // A `#` and a number (not an HTML entity such as `&#64;`, nor part of a word
 // or path), or a link to an issue or a pull request.
 const reference = /(?<![\w&/#])#\d+\b|\b(?:issues|pull)\/\d+\b/g;
@@ -63,9 +51,26 @@ function hashComments(text: string): Comment[] {
   return comments;
 }
 
-/** Each issue reference in `text`'s comments, as `path:line: reference`. */
+// Each kind of file whose comments are checked, with how to find them.
+const extractors: { file: RegExp; comments: (path: string, text: string) => Comment[] }[] = [
+  { file: /\.(?:[cm]?[jt]s|tsx|jsx)$/, comments: scriptComments },
+  { file: /(?:\.(?:sh|ya?ml)|(?:^|\/)Dockerfile)$/, comments: (_path, text) => hashComments(text) },
+];
+
+const extractorFor = (path: string) => extractors.find(({ file }) => file.test(path))?.comments;
+
+/**
+ * Whether `path` is code whose comments are checked: source, tests, scripts
+ * and workflows. Markdown (ADRs, research notes, docs) keeps its references;
+ * JSON has no comments; CSS colours read like issue numbers.
+ */
+export function isCommentScanned(path: string): boolean {
+  return extractorFor(path) !== undefined;
+}
+
+/** Each issue reference in `text`'s comments, as `path:line: reference`. A file whose comments aren't checked has none. */
 export function issueReferencesInComments(path: string, text: string): string[] {
-  const comments = scriptFile.test(path) ? scriptComments(path, text) : hashComments(text);
+  const comments = extractorFor(path)?.(path, text) ?? [];
   return comments.flatMap(({ start, text: comment }) =>
     [...comment.matchAll(reference)].map((m) => {
       const line = text.slice(0, start + m.index).split("\n").length;

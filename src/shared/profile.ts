@@ -56,7 +56,7 @@ export type AgentProject = {
 export type PracticeSource = { label: string; href: string };
 
 /**
- * One "how I run agents" bullet. State only what a public source backs:
+ * One Practice, a bullet on the page. State only what a public source backs:
  * this repo, or approved copy already on the page. Never link a private repo.
  */
 export type Practice = {

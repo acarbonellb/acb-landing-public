@@ -2,7 +2,7 @@
 // the repo: the API key and the contact email come from the environment
 // (Secret Manager in production, your shell locally). Plain data only: the
 // production composer (`compose.ts`) builds the adapters from it. Each
-// variable, its default and what it does: docs/agent.md, "Configuration".
+// variable, its default and what it does (docs/agent.md, "Configuration").
 import * as z from "zod";
 import { chatLimits } from "./chat";
 import { efforts } from "./model";

@@ -11,8 +11,8 @@
 // instance died before settling doesn't keep its worst case reserved; what it
 // spent stays charged.
 //
-// A limit can also have alert events (`SpendAlerts`; the spend cap's,
-// docs/logs-and-alerts.md): a share of the limit first reached, and its first
+// A limit can also have alert events (`SpendAlerts`, the spend cap's;
+// docs/logs-and-alerts.md, "Alert events"): a share of the limit first reached, and its first
 // refusal. Each fires once per document (so per period): it is noted under
 // `alerted`, in the same atomic update that crossed it, so it holds across
 // instances and cold starts.

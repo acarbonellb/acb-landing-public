@@ -171,7 +171,7 @@ function changedMetrics(entry: HistoryEntry, set: SetResult): string[] {
 
 const rescore = "re-score with `pnpm agent:eval:rescore`";
 const migrate =
-  "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)";
+  "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001)";
 
 /**
  * What fails CI, for each recording set's latest history entry:

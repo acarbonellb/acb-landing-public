@@ -48,14 +48,14 @@ pnpm test         # unit tests; see docs/development.md for the rest
 
 ## How this was built
 
-The work is planned in [GitHub Issues](https://github.com/acarbonellb/acb-landing-public/issues): each feature starts as a spec, which is split into tickets with acceptance criteria. Coding agents implement the tickets, and I write the specs, review the changes and merge the pull requests. The files the agents read are part of that tooling: [`CLAUDE.md`](CLAUDE.md) holds the project conventions, [`AGENTS.md`](AGENTS.md) is the block that `next dev` generates for this Next.js version, and [`docs/agents/`](docs/agents/) says how to use the [issue tracker](docs/agents/issue-tracker.md), the [triage labels](docs/agents/triage-labels.md) and the [domain docs](docs/agents/domain.md). The gate is the same for every change: [CI](.github/workflows/deploy.yml) runs lint, the unit, agent and browser tests and the [eval replay](docs/evals.md), and only a build that passes is deployed.
+The work is planned in [GitHub Issues](https://github.com/acarbonellb/acb-landing-public/issues): each feature starts as a spec, which is split into tickets with acceptance criteria. Coding agents implement the tickets; I direct the work through specs and tickets, review the changes and merge the pull requests. The files the agents read are part of that tooling: [`CLAUDE.md`](CLAUDE.md) holds the project conventions, [`AGENTS.md`](AGENTS.md) is the block that `next dev` generates for this Next.js version, and [`docs/agents/`](docs/agents/) says how to use the [issue tracker](docs/agents/issue-tracker.md), the [triage labels](docs/agents/triage-labels.md) and the [domain docs](docs/agents/domain.md). The gate is the same for every change: [CI](.github/workflows/deploy.yml) runs lint, the unit, agent and browser tests and the [eval replay](docs/evals.md), and only a build that passes is deployed.
 
 ## Docs
 
 | Doc | What's in it |
 | --- | --- |
 | [Development](docs/development.md) | Content files, the agent URL at build time, the test suites |
-| [Agent service](docs/agent.md) | Tools, endpoints, the contact path, configuration (environment variables), running it locally |
+| [Agent service](docs/agent.md) | Tools, endpoints, the contact question and fallback, configuration (environment variables), running it locally |
 | [Chat contract](docs/chat-contract.md) | `POST /chat`: request, errors, the event stream, signed answers |
 | [Guardrails](docs/guardrails.md) | Rate limits, client IP, spend cap, daily quota, the shared store and how it fails |
 | [Usage stats](docs/usage-stats.md) | What is recorded, the weekly document, `GET /stats` |

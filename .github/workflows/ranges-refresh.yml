@@ -4,7 +4,7 @@ name: Ranges refresh
 # (agent/src/google-ranges.json) and, when a list's prefixes changed, opens or
 # updates a PR from the fixed `ranges-refresh` branch. A download that isn't a
 # valid, plausible list fails the run (`pnpm agent:ranges` exits non-zero and
-# leaves the file untouched), so no PR is opened. docs/deploy.md, Ranges refresh.
+# leaves the file untouched), so no PR is opened (docs/deploy.md, "Ranges refresh").
 on:
   schedule:
     - cron: "23 4 * * 1" # Mondays, 04:23 UTC

@@ -31,8 +31,8 @@ export const chatPrivacyNote =
   "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days. Per-IP counters, a rate limit that expires after a minute and a daily spend quota that expires at midnight UTC, are deleted within a day of expiring; a refused IP is also held in the agent's memory until its minute ends. The agent and its MCP server share my contact email on purpose.";
 
 /**
- * What the contact section's "ask my agent" button sends to the chat, as the
- * visitor's message. The eval case `on11` asks exactly this and is
- * gated in CI (ADR 0001), as it's the site's contact path.
+ * The Contact question: what the contact section's "ask my agent" button
+ * sends to the chat, as the visitor's message. The eval case `on11` asks
+ * exactly this and is gated in CI (ADR 0001), as the page shows no address.
  */
 export const contactQuestion = "I'd like to contact Alberto, what's his email address?";

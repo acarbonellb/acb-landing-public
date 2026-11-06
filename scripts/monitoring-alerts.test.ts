@@ -84,11 +84,14 @@ describe("monitoring-alerts.sh setup --dry-run", () => {
   });
 });
 
-/** The alert events the docs list as alerting (WARNING or ERROR rows), from the "Alert events" table of docs/logs-and-alerts.md. */
+/** The alert events the docs list as alerting: the WARNING or ERROR rows of the table (docs/logs-and-alerts.md, "Alert events"). */
 function documentedAlertEvents(): { event: string; severity: string }[] {
-  const table = alertDocs.slice(alertDocs.indexOf("\n## Alert events\n")).split("\n\n")[2];
+  const section = alertDocs.slice(alertDocs.indexOf("\n## Alert events\n") + 1).split("\n## ")[0].split("\n");
+  // The section's first table: the run of `|` lines after the prose.
+  const start = section.findIndex((line) => line.startsWith("|"));
+  const end = section.findIndex((line, i) => i > start && !line.startsWith("|"));
+  const table = section.slice(start, end === -1 ? undefined : end);
   return table
-    .split("\n")
     .map((line) => line.match(/^\| `([a-z_]+)` \| `(WARNING|ERROR)` \|/))
     .filter((m): m is RegExpMatchArray => m !== null)
     .map(([, event, severity]) => ({ event, severity }));
