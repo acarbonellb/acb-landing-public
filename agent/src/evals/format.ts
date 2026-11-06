@@ -14,6 +14,17 @@ export const sameSet = (a: SetId, b: SetId) =>
 /** "ot01-capital-of-spain": also the recording's file name. */
 export const caseName = ({ id, slug }: { id: string; slug: string }) => `${id}-${slug}`;
 
+/** A recording's case name (`caseName`): also its file name, without `.json`. */
+export const recordingName = ({ caseId, slug }: { caseId: string; slug: string }) =>
+  caseName({ id: caseId, slug });
+
+/**
+ * What fixes recordings only a live run can fix (stale, made with another
+ * request identity or settings, or out of step with the history), in every
+ * CI message that asks for one.
+ */
+export const makeLiveRun = "make a live run with `pnpm agent:eval`";
+
 /** Plain string order, never locale order. */
 export const byString = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 

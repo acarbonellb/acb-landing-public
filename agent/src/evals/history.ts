@@ -4,9 +4,10 @@
 // and checks it (the report renders it). Pure functions; the script does the
 // file I/O.
 import * as z from "zod";
-import { sameSet, setLabel, type SetId } from "./format";
+import { makeLiveRun, sameSet, setLabel, type SetId } from "./format";
 import { setMetrics, type Metrics, type SetResult } from "./metrics";
 import { canonicalJson } from "./recording";
+import { caseKinds } from "./scoring";
 
 /** When and from where a live run was made. */
 export type LiveRun = {
@@ -71,6 +72,8 @@ const entrySchema = z
         // Absent from entries made before pass@k was recorded.
         passAtK: ratio.extend({ k: z.number().int().positive() }).strict().optional(),
         flaky: ratio.optional(),
+        // Absent from entries made before case kinds were recorded.
+        kinds: z.partialRecord(z.enum(caseKinds), z.number().int().nonnegative()).optional(),
       })
       .strict(),
   })
@@ -166,7 +169,6 @@ function changedMetrics(entry: HistoryEntry, set: SetResult): string[] {
   );
 }
 
-const rerecord = "re-record with `pnpm agent:eval`";
 const rescore = "re-score with `pnpm agent:eval:rescore`";
 const migrate =
   "migrate it with `pnpm --filter agent exec tsx scripts/migrate-request-identity.ts` (ADR 0001, #98)";
@@ -184,7 +186,7 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
   return sets.flatMap((set) => {
     const label = setLabel(set);
     const latest = entries.findLast((e) => sameSet(e, set));
-    if (!latest) return [`${label} has no entry in agent/evals/history.jsonl: ${rerecord}`];
+    if (!latest) return [`${label} has no entry in agent/evals/history.jsonl: ${makeLiveRun}`];
     if (latest.fingerprint === undefined) {
       return [`${label}: latest history entry has no recordings fingerprint: ${rescore}`];
     }
@@ -196,7 +198,7 @@ export function checkHistory(entries: HistoryEntry[], sets: SetResult[]): string
       ...(latest.requestIdentity !== set.requestIdentity ? ["requestIdentity"] : []),
     ];
     if (identity.length) {
-      return [`${label}: latest history entry doesn't match the recordings (${identity.join(", ")}): ${rerecord}`];
+      return [`${label}: latest history entry doesn't match the recordings (${identity.join(", ")}): ${makeLiveRun}`];
     }
     const scores = changedMetrics(latest, set);
     return scores.length
@@ -231,11 +233,11 @@ export function rescoreHistory(
     const label = setLabel(set);
     const latest = entries.findLast((e) => sameSet(e, set));
     if (!latest) {
-      problems.push(`${label} has no entry in agent/evals/history.jsonl: ${rerecord}`);
+      problems.push(`${label} has no entry in agent/evals/history.jsonl: ${makeLiveRun}`);
       continue;
     }
     if (set.results.length !== caseCount) {
-      problems.push(`${label}: some recordings are stale or missing, not re-scored: ${rerecord}`);
+      problems.push(`${label}: some recordings are stale or missing, not re-scored: ${makeLiveRun}`);
       continue;
     }
     const legacy = latest.fingerprint === undefined;
@@ -247,7 +249,7 @@ export function rescoreHistory(
       ? !changedMetrics(latest, set).length
       : latest.fingerprint === set.fingerprint && latest.requestIdentity === set.requestIdentity;
     if (!sameRecordings) {
-      problems.push(`${label}: recordings changed since the latest history entry, not re-scored: ${rerecord}`);
+      problems.push(`${label}: recordings changed since the latest history entry, not re-scored: ${makeLiveRun}`);
       continue;
     }
     if (note) {

@@ -3,7 +3,7 @@
 // chat loop and the tools run for real while no model is ever called.
 import { createHash } from "node:crypto";
 import type { ModelClient, ModelRequest, ModelStreamEvent, ModelTool } from "../model";
-import { byString } from "./format";
+import { byString, makeLiveRun } from "./format";
 
 /** One model call as it happened: what was asked (hashed) and what came back. */
 export type RecordedCall = {
@@ -74,7 +74,7 @@ const staleDetail: Record<StaleReason, string> = {
   missing_step: "more model calls than recorded",
 };
 
-/** The recording no longer answers what the code asks. Never re-recorded automatically. */
+/** The recording no longer answers what the code asks. Never replaced automatically: only a live run makes a new one. */
 export class StaleRecordingError extends Error {
   constructor(
     readonly reason: StaleReason,
@@ -85,7 +85,7 @@ export class StaleRecordingError extends Error {
   ) {
     const where = run > 1 ? `call ${call} of run ${run}` : `call ${call}`;
     super(
-      `Stale recording (${reason}: ${staleDetail[reason]} at ${where}): re-run \`pnpm agent:eval\` and commit`,
+      `Stale recording (${reason}: ${staleDetail[reason]} at ${where}): ${makeLiveRun} and commit`,
     );
     this.name = "StaleRecordingError";
   }

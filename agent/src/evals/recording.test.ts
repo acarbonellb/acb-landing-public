@@ -111,7 +111,7 @@ describe("createReplayModelClient", () => {
       (e: unknown) => e,
     );
     expect(error).toBeInstanceOf(StaleRecordingError);
-    expect((error as Error).message).toMatch(/re-run `pnpm agent:eval` and commit/);
+    expect((error as Error).message).toMatch(/make a live run with `pnpm agent:eval` and commit/);
     return (error as StaleRecordingError).reason;
   }
 
