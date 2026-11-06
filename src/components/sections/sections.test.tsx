@@ -367,8 +367,13 @@ describe("Agent", () => {
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
     expect(note).toHaveTextContent(/conversations aren't stored/i);
     expect(note).toHaveTextContent(/30 days/);
-    // Firestore TTL deletes expired documents within about a day, not at once.
-    expect(note).toHaveTextContent(/expire after a minute and are deleted within a day/);
+    // Every per-IP document the agent keeps, and when it goes: Firestore TTL
+    // deletes expired documents within about a day, not at once.
+    expect(note).toHaveTextContent(/rate limit that expires after a minute/i);
+    expect(note).toHaveTextContent(/daily spend quota that expires at midnight UTC/i);
+    expect(note).toHaveTextContent(/deleted within a day of expiring/i);
+    // The refusal cache holds a refused IP in memory only, until its minute ends.
+    expect(note).toHaveTextContent(/in the agent's memory until its minute ends/i);
     const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
     expect(form.nextElementSibling).toBe(note);
   });
@@ -394,7 +399,7 @@ describe("Agent", () => {
         latency: { p50Ms: 3000, p95Ms: 5000 },
         firstText: { p50Ms: 1000, p95Ms: 2000 },
       },
-      mcp: { requests: 0 },
+      mcp: { requests: 0, unknownGoogleHops: 0 },
     });
     const fetch = vi.fn(async () => Response.json({ current: week(7), previous: week(0) }));
     vi.stubGlobal("fetch", fetch);

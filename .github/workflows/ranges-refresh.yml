@@ -1,0 +1,76 @@
+name: Ranges refresh
+
+# Refreshes the committed snapshot of Google's IP ranges
+# (agent/src/google-ranges.json) and, when a list's prefixes changed, opens or
+# updates a PR from the fixed `ranges-refresh` branch. A download that isn't a
+# valid, plausible list fails the run (`pnpm agent:ranges` exits non-zero and
+# leaves the file untouched), so no PR is opened. README, Guardrails.
+on:
+  schedule:
+    - cron: "23 4 * * 1" # Mondays, 04:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ranges-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the ranges-refresh branch
+      pull-requests: write # open or update its PR
+      actions: write # dispatch CI on it: pushes and PRs made with GITHUB_TOKEN start no workflows
+    env:
+      BRANCH: ranges-refresh
+      SNAPSHOT: agent/src/google-ranges.json
+      # The PR targets the branch this run started on: the default branch on
+      # schedule, or the branch a manual dispatch picked.
+      BASE: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Validates all three lists and rewrites the snapshot only if a list's
+      # prefixes changed. Logs counts and publication times, never prefixes.
+      - name: Refresh the snapshot
+        id: refresh
+        run: |
+          pnpm agent:ranges
+          if git diff --quiet -- "$SNAPSHOT"; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open or update the PR
+        if: steps.refresh.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add -- "$SNAPSHOT"
+          git commit -m "chore(agent): refresh Google's IP ranges snapshot"
+          git push --force origin "$BRANCH"
+          title="chore(agent): refresh Google's IP ranges snapshot"
+          body="Weekly refresh from \`pnpm agent:ranges\` (run ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}): a list's prefixes changed. All three lists passed validation; the run log has the counts."
+          if [ -n "$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json number --jq '.[].number')" ]; then
+            echo "Updated the open PR from $BRANCH."
+          else
+            gh pr create --head "$BRANCH" --base "$BASE" --title "$title" --body "$body"
+          fi
+          # The PR gets the normal PR checks from this dispatch: deploy.yml's
+          # test and rehearse-deploy jobs (the deploy jobs are main-only).
+          gh workflow run deploy.yml --ref "$BRANCH"

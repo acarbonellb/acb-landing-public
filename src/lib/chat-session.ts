@@ -2,15 +2,16 @@
 // chat events fold into a turn, which notice the conversation shows, and the
 // history sent with the next question. The `useAgentChat` hook holds the list
 // and runs the requests; the views only render it.
-import type {
-  ChatClientEvent,
-  ChatErrorKind,
-  ChatMessage,
-} from "./chat-client";
+import type { ChatClientEvent, ChatErrorKind } from "./chat-client";
 import type { ContactFallback } from "./contact-fallback";
-import { type ChatStopReason, chatRequestLimits } from "@/shared/chat-contract";
+import {
+  answerForHistory,
+  type ChatRequestMessage,
+  type ChatStopReason,
+  chatRequestLimits,
+} from "@/shared/chat-contract";
 
-const { maxMessages, maxMessageChars } = chatRequestLimits;
+const { maxMessages } = chatRequestLimits;
 
 /** One piece of an answer, in the order it streamed. */
 export type Part =
@@ -28,7 +29,8 @@ export type Notice = {
 
 export type TurnStatus =
   | { kind: "streaming" }
-  | { kind: "answered"; stopReason: ChatStopReason }
+  /** `signature` goes back with the answer in the next chat request. */
+  | { kind: "answered"; stopReason: ChatStopReason; signature?: string }
   /** The notice is absent when the request was aborted (e.g. on unmount). */
   | { kind: "failed"; notice?: Notice }
   | { kind: "fallback"; fallback: ContactFallback };
@@ -70,8 +72,11 @@ export function foldEvent(turn: Turn, event: ChatClientEvent): Turn {
           { kind: "tool", id: event.id, label: toolLabel(event.name, event.input) },
         ],
       };
-    case "done":
-      return { ...turn, status: { kind: "answered", stopReason: event.stopReason } };
+    case "done": {
+      const status: TurnStatus = { kind: "answered", stopReason: event.stopReason };
+      if (event.signature !== undefined) status.signature = event.signature;
+      return { ...turn, status };
+    }
     case "error": {
       const { kind, message, retryAfterSeconds, resetsAt } = event;
       const notice: Notice = { kind };
@@ -104,26 +109,26 @@ export function isBusy(turns: Turn[]): boolean {
   return turns.at(-1)?.status.kind === "streaming";
 }
 
-function answerText(turn: Turn): string {
-  return turn.parts
-    .map((p) => (p.kind === "text" ? p.text : ""))
-    .join("")
-    .trim();
+/** A turn's answer as it goes back to the agent, with its signature, if it can. */
+function signedAnswer(turn: Turn): ChatRequestMessage | undefined {
+  if (turn.status.kind !== "answered" || !turn.status.signature) return undefined;
+  const content = answerForHistory(
+    turn.parts.map((p) => (p.kind === "text" ? p.text : "")).join(""),
+  );
+  return content ? { role: "assistant", content, signature: turn.status.signature } : undefined;
 }
 
 /**
- * The conversation the endpoint sees: turns the chat answered with text,
- * most recent first to survive the message cap, then the new question.
+ * The conversation the endpoint sees: turns the chat answered with signed
+ * text (the agent refuses any other answer), most recent first to survive
+ * the message cap, then the new question.
  */
-export function historyFor(turns: Turn[], question: string): ChatMessage[] {
+export function historyFor(turns: Turn[], question: string): ChatRequestMessage[] {
   const pairs = turns
-    .filter((t) => t.status.kind === "answered" && answerText(t))
+    .flatMap((t) => {
+      const answer = signedAnswer(t);
+      return answer ? [[{ role: "user", content: t.question }, answer] as const] : [];
+    })
     .slice(-Math.floor((maxMessages - 1) / 2));
-  return [
-    ...pairs.flatMap((t): ChatMessage[] => [
-      { role: "user", content: t.question },
-      { role: "assistant", content: answerText(t).slice(0, maxMessageChars) },
-    ]),
-    { role: "user", content: question },
-  ];
+  return [...pairs.flat(), { role: "user", content: question }];
 }

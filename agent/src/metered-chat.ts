@@ -3,7 +3,7 @@
 // reservation is settled and the request is recorded for `/stats`. The chat
 // events pass through unchanged.
 import type { TokenUsage } from "../../src/shared/chat-contract";
-import type { ChatAgent, ChatEvent, ChatMessage } from "./chat";
+import type { ChatAgent, ChatMessage, ChatRunEvent } from "./chat";
 import { addUsage } from "./pricing";
 import type { SpendReservation } from "./spend-cap";
 import type { ChatOutcome, UsageRecorder } from "./usage";
@@ -26,18 +26,20 @@ export type MeteredChatOptions = {
 export async function* meteredChat(
   messages: ChatMessage[],
   { agent, reservation, usage, startedAt, signal }: MeteredChatOptions,
-): AsyncGenerator<ChatEvent> {
+): AsyncGenerator<ChatRunEvent> {
   const elapsed = () => Math.round(performance.now() - startedAt);
   // What `usage.ts` records once the run ends: no content. A run that never
   // reaches its end (the consumer stopped early) counts as aborted.
   let outcome: ChatOutcome = "aborted";
   let firstTextMs: number | undefined;
   const spent: TokenUsage = { inputTokens: 0, outputTokens: 0 };
+  let modelCalls = 0;
   try {
     for await (const event of agent.run(messages, { signal })) {
       if (event.type === "usage") {
         await reservation.record(event);
         addUsage(spent, event);
+        modelCalls = Math.max(modelCalls, event.iteration);
       }
       if (event.type === "text") firstTextMs ??= elapsed();
       if (event.type === "done") outcome = event.stopReason;
@@ -46,6 +48,6 @@ export async function* meteredChat(
     }
   } finally {
     await reservation.settle();
-    await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs });
+    await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs, modelCalls });
   }
 }

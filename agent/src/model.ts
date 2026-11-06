@@ -99,7 +99,15 @@ export interface ModelClient {
 
 /**
  * The model could not be reached or refused the request for capacity reasons
- * (overloaded, upstream rate limit, network). Shown to visitors as
- * "unavailable"; anything else is an internal error.
+ * (overloaded, upstream rate limit, network: `capacity`), or because the
+ * provider's own spend or credit limit was hit (`provider_limit`). Shown to
+ * visitors as "unavailable"; anything else is an internal error.
  */
-export class ModelUnavailableError extends Error {}
+export class ModelUnavailableError extends Error {
+  readonly reason: "capacity" | "provider_limit";
+
+  constructor(message: string, options: ErrorOptions & { reason?: ModelUnavailableError["reason"] } = {}) {
+    super(message, options);
+    this.reason = options.reason ?? "capacity";
+  }
+}

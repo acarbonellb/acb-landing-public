@@ -9,7 +9,7 @@ import {
   type ChatErrorCode,
   type ChatEvent,
   type ChatMessage,
-  type ChatRequest,
+  type ChatRole,
   type ChatStopReason,
 } from "../../src/shared/chat-contract";
 import {
@@ -22,12 +22,29 @@ import {
   type ToolResult,
   type Usage,
 } from "./model";
+import { describeError, logEvent } from "./log";
 import { addUsage } from "./pricing";
 import { systemPrompt } from "./system-prompt";
 import { ToolInputError, type Toolset } from "./tools";
 
 // The wire contract lives in one module shared with the site.
 export type { ChatErrorCode, ChatEvent, ChatMessage, ChatStopReason };
+
+/**
+ * What the chat agent yields: the wire events, but its `done` is not signed
+ * yet. The HTTP layer signs it (`answer-signing.ts`); the eval runner, which
+ * calls the agent directly, never needs a signature.
+ */
+export type ChatRunEvent =
+  | Exclude<ChatEvent, { type: "done" }>
+  | Omit<Extract<ChatEvent, { type: "done" }>, "signature">;
+
+/**
+ * One message of a chat request as validated. An earlier answer's signature
+ * is optional here so a missing one is refused with the same clear error as
+ * a wrong one, once the signature is checked (`answer-signing.ts`).
+ */
+export type ReceivedMessage = { role: ChatRole; content: string; signature?: string };
 
 export const chatLimits = {
   ...chatRequestLimits,
@@ -42,17 +59,26 @@ export const chatLimits = {
   maxRequestTokens: 8192,
 };
 
-/** What the browser sends: the visible conversation, ending with the new question. */
-export const chatRequestSchema: z.ZodType<ChatRequest> = z
+const content = z.string().trim().min(1).max(chatLimits.maxMessageChars);
+
+/**
+ * What the browser sends: the visible conversation, ending with the new
+ * question, each earlier answer with its signature.
+ */
+export const chatRequestSchema: z.ZodType<{ messages: ReceivedMessage[] }> = z
   .object({
     messages: z
       .array(
-        z
-          .object({
-            role: z.enum(["user", "assistant"]),
-            content: z.string().trim().min(1).max(chatLimits.maxMessageChars),
-          })
-          .strict(),
+        z.discriminatedUnion("role", [
+          z.object({ role: z.literal("user"), content }).strict(),
+          z
+            .object({
+              role: z.literal("assistant"),
+              content,
+              signature: z.string().max(100).optional(),
+            })
+            .strict(),
+        ]),
       )
       .min(1)
       .max(chatLimits.maxMessages)
@@ -92,7 +118,7 @@ export type ChatAgent = {
    */
   worstCaseUsage(messages: ChatMessage[]): Usage;
   /** Answers the conversation, ending with its new question, as chat events. */
-  run(messages: ChatMessage[], options?: { signal?: AbortSignal }): AsyncGenerator<ChatEvent>;
+  run(messages: ChatMessage[], options?: { signal?: AbortSignal }): AsyncGenerator<ChatRunEvent>;
 };
 
 export function createChatAgent({
@@ -152,7 +178,7 @@ type ChatRun = ChatLimits & {
   signal?: AbortSignal;
 };
 
-async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
+async function* runChat(options: ChatRun): AsyncGenerator<ChatRunEvent> {
   const { model, toolset, tools, system, maxModelCalls, maxTokens, maxRequestTokens, signal } =
     options;
   const messages: ModelMessage[] = options.messages.map((m) =>
@@ -258,7 +284,12 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
     if (signal?.aborted) return;
     const code: ChatErrorCode =
       error instanceof ModelUnavailableError ? "unavailable" : "internal";
-    if (code === "internal") console.error("Chat failed:", error);
+    if (code === "internal") {
+      logEvent("ERROR", "chat_failed", "Chat failed", {
+        error: describeError(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+    }
     yield { type: "error", code, message: errorMessages[code] };
   }
 }
@@ -266,7 +297,7 @@ async function* runChat(options: ChatRun): AsyncGenerator<ChatEvent> {
 function runTool(
   toolset: Toolset,
   call: { id: string; name: string; input: unknown },
-): { result: ToolResult; event: ChatEvent } {
+): { result: ToolResult; event: ChatRunEvent } {
   let output: unknown;
   let isError = false;
   try {

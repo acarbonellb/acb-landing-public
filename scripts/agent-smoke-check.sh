@@ -2,13 +2,16 @@
 # Post-deploy smoke check for the agent service. Never calls the model: the
 # chat checks stop at CORS and request validation, so a deploy costs nothing.
 # MCP is checked both on the agent's URL and on the site's domain, through the
-# Firebase Hosting `/mcp` rewrite.
-# Usage: scripts/agent-smoke-check.sh <agent-url> <site-origin>
+# Firebase Hosting `/mcp` rewrite, unless `--agent-only`: a revision deployed
+# with no traffic (its tag URL) isn't what the rewrite reaches yet.
+# Usage: scripts/agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>
 set -uo pipefail
 
-agent="${1:?usage: agent-smoke-check.sh <agent-url> <site-origin>}"
+site_mcp=true
+if [[ "${1:-}" == --agent-only ]]; then site_mcp=false; shift; fi
+agent="${1:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
 agent="${agent%/}"
-origin="${2:?usage: agent-smoke-check.sh <agent-url> <site-origin>}"
+origin="${2:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
 tools=(get_profile get_experience get_projects get_stack get_contact)
 failures=0
 
@@ -64,7 +67,7 @@ check_chat_cors() {
   [[ "$allowed" == "$origin" ]] || { echo "  /chat doesn't allow $origin (got '$allowed')"; return 1; }
 }
 
-# /stats: the weekly usage JSON, readable from any origin (only reads Firestore).
+# /stats: the weekly usage JSON, readable from any origin (reads Firestore; writes only its rate limit).
 check_stats() {
   local response allowed body
   response=$(curl -fsS --max-time 20 -D - -H "origin: $origin" "$agent/stats" | tr -d '\r') ||
@@ -83,7 +86,21 @@ check_chat_validation() {
   [[ "$status" == 400 ]] || { echo "  /chat answered $status to an invalid request, expected 400"; return 1; }
 }
 
-for check in check_health check_mcp_tools check_site_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation; do
+# An earlier answer without its signature is refused before the chat runs:
+# the revision signs answers (and has its signing key, or it wouldn't start).
+check_chat_signed_answers() {
+  local body
+  body=$(curl -sS --max-time 20 -w '\n%{http_code}' "$agent/chat" -H 'content-type: application/json' \
+    -d '{"messages":[{"role":"user","content":"Hi"},{"role":"assistant","content":"Hello."},{"role":"user","content":"Hi"}]}')
+  [[ "$(tail -n 1 <<<"$body")" == 400 ]] && grep -q 'signature' <<<"$body" ||
+    { echo "  /chat didn't refuse an unsigned earlier answer"; return 1; }
+}
+
+checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
+  check_chat_signed_answers)
+$site_mcp && checks+=(check_site_mcp_tools)
+
+for check in "${checks[@]}"; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi
 done
 

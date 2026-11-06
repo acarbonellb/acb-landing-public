@@ -74,10 +74,10 @@ describe("AgentChat", () => {
     expect(screen.queryByText(/thinking/i)).not.toBeInTheDocument();
   });
 
-  it("sends the earlier exchange along with a follow-up question", async () => {
+  it("sends the earlier exchange, with its answer's signature, along with a follow-up question", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch(
-      chatStream({ type: "text", delta: "Alberto." }, done()),
+      chatStream({ type: "text", delta: "Alberto." }, done("end_turn", "sig-who")),
       chatStream({ type: "text", delta: "Yes." }, done()),
     );
     renderChat(fetch);
@@ -90,7 +90,7 @@ describe("AgentChat", () => {
     expect(requests[1].body).toEqual({
       messages: [
         { role: "user", content: "Who?" },
-        { role: "assistant", content: "Alberto." },
+        { role: "assistant", content: "Alberto.", signature: "sig-who" },
         { role: "user", content: "Remote?" },
       ],
     });
@@ -147,6 +147,31 @@ describe("AgentChat", () => {
     expect(alert).toHaveTextContent(/rate limit/i);
     expect(alert).toHaveTextContent("Too many questions.");
     expect(alert).toHaveTextContent(/try again in 42s/i);
+    expect(input()).toBeEnabled();
+  });
+
+  it("shows the daily quota like a rate limit, with when it resets instead of a countdown", async () => {
+    const user = userEvent.setup();
+    const { fetch } = fakeFetch(
+      chatError(
+        {
+          code: "rate_limited",
+          message: "You've asked the agent a lot today.",
+          retryAfterSeconds: 7200,
+          resetsAt: "2026-11-16T00:00:00.000Z",
+        },
+        { headers: { "Retry-After": "7200" } },
+      ),
+    );
+    renderChat(fetch);
+
+    await ask(user, "Hi");
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent(/rate limit/i);
+    expect(alert).toHaveTextContent("You've asked the agent a lot today.");
+    expect(alert).toHaveTextContent("Try again from 00:00 UTC on November 16, 2026.");
+    expect(alert).not.toHaveTextContent(/7200s/);
     expect(input()).toBeEnabled();
   });
 

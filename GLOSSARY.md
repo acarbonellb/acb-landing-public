@@ -18,6 +18,10 @@ _Avoid_: exchange, round, message; never a single model call
 What the chat sends the agent to answer one turn: the new question with the conversation before it.
 _Avoid_: chat call, query, turn
 
+**Answer signature**:
+The agent's HMAC of an answer and its place (the conversation, its position there and the question it answered), sent with the answer's `done` event and sent back with the answer in later chat requests, so the agent only reads earlier answers it gave itself, where it gave them.
+_Avoid_: turn signature, token, hash
+
 **Model call**:
 One request to the model while answering a turn: it either answers or asks for tools, whose results go into the next model call.
 _Avoid_: turn, iteration, step, completion
@@ -30,8 +34,12 @@ _Avoid_: function, endpoint, skill, action
 The monthly budget of estimated model spend. Once it is reached the chat stops until the next month; the tools over MCP keep working, as they cost nothing.
 _Avoid_: quota, billing limit, budget
 
+**Daily quota**:
+The estimated model spend one rate-limit key may use on the chat in a UTC day. A key over it is refused like a rate limit until midnight UTC; other keys go on.
+_Avoid_: daily limit, daily cap, allowance
+
 **Reservation**:
-The worst-case cost of one chat request, held against the spend cap while it runs so concurrent requests can't overshoot it, and settled to the actual cost when it ends.
+The worst-case cost of one chat request, held against the daily quota and the spend cap while it runs so concurrent requests can't overshoot them, and settled to the actual cost when it ends.
 _Avoid_: lock, booking, pre-authorization
 
 **Outcome**:
@@ -39,8 +47,16 @@ How one chat request ended, as the usage stats count it: answered, cut off by a 
 _Avoid_: status, result
 
 **Rate-limit key**:
-Who a rate limit counts requests for: the visitor's IP address.
+Who a rate limit counts requests for: the visitor's IP address, or its /64 prefix for IPv6.
 _Avoid_: client id, user, session
+
+**Alert event**:
+A log line, named by its `event` field, that tells the owner money or errors moved (a spend threshold, the spend cap or the provider limit reached, a high error rate, the store down). It fires once per crossing, not once per request.
+_Avoid_: alert (that is the Cloud Monitoring policy that matches it), notification, alarm
+
+**Request ID**:
+The id each request to the agent gets, on every log line written while serving it and in its `X-Request-Id` header, so a chat request's stream and its store writes can be tied together.
+_Avoid_: trace id, correlation id, session id
 
 ### Agent evals
 

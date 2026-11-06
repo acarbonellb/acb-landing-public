@@ -2,7 +2,8 @@
 // endpoint contract"): request limits, message and event shapes, error codes.
 // Both sides import this one module: the site's chat client and UI, and the
 // agent service (`agent/`, which bundles it like `src/shared/profile.ts`).
-// Types and plain constants only, so it is safe in either runtime.
+// Types, plain constants and pure functions only, so it is safe in either
+// runtime.
 
 /** Limits on the conversation a chat request may carry. */
 export const chatRequestLimits = {
@@ -14,11 +15,30 @@ export const chatRequestLimits = {
 
 export type ChatRole = "user" | "assistant";
 
-/** One message of the conversation the browser sends. */
+/** One message of the conversation, as the agent reads it. */
 export type ChatMessage = { role: ChatRole; content: string };
 
+/**
+ * An earlier answer sent back with the conversation, with the `signature` its
+ * `done` event carried. The agent refuses a chat request whose earlier answers
+ * are unsigned, were changed or were moved (README, "Signed answers").
+ */
+export type SignedAnswer = { role: "assistant"; content: string; signature: string };
+
+/** One message of the conversation the browser sends. */
+export type ChatRequestMessage = { role: "user"; content: string } | SignedAnswer;
+
 /** The request body: alternating messages, starting and ending with `user`. */
-export type ChatRequest = { messages: ChatMessage[] };
+export type ChatRequest = { messages: ChatRequestMessage[] };
+
+/**
+ * An answer's text as it goes back in the conversation, and as the agent signs
+ * it: trimmed and cut to the message limit (then trimmed again, so the
+ * agent's own trimming of what it receives can't change it).
+ */
+export function answerForHistory(text: string): string {
+  return text.trim().slice(0, chatRequestLimits.maxMessageChars).trim();
+}
 
 /**
  * Tokens spent by model calls. `inputTokens` counts all input; the optional
@@ -60,7 +80,13 @@ export type ChatEvent =
       /** Set when the call never reported its usage and this is an upper bound. */
       estimated?: true;
     } & TokenUsage)
-  | { type: "done"; stopReason: ChatStopReason; usage: TokenUsage }
+  | {
+      type: "done";
+      stopReason: ChatStopReason;
+      usage: TokenUsage;
+      /** The answer's signature, to send back with it (`SignedAnswer`). */
+      signature: string;
+    }
   | { type: "error"; code: ChatErrorCode; message: string };
 
 /** Codes of the JSON errors answered before any streaming. */
@@ -68,8 +94,9 @@ export type HttpErrorCode = "invalid_request" | "rate_limited" | "unavailable";
 
 /**
  * Body of every non-streamed chat error. `rate_limited` adds
- * `retryAfterSeconds` (also sent as the `Retry-After` header); `unavailable`
- * because of the monthly spend cap adds `resetsAt` (ISO time the budget
+ * `retryAfterSeconds` (also sent as the `Retry-After` header), and `resetsAt`
+ * (the next UTC midnight) when the key's daily quota refused it; `unavailable`
+ * because of the monthly spend cap adds `resetsAt` (ISO time the spend cap
  * renews). `message` is user-facing and safe to show as-is.
  */
 export type HttpErrorBody = {

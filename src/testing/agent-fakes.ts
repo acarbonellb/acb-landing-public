@@ -20,9 +20,15 @@ export function sse(...events: ChatEvent[]): string {
   return events.map((e) => `event: ${e.type}\ndata: ${JSON.stringify(e)}\n\n`).join("");
 }
 
-/** The `done` event that closes an answer (usage is ignored by the site). */
-export function done(stopReason: Extract<ChatEvent, { type: "done" }>["stopReason"] = "end_turn"): ChatEvent {
-  return { type: "done", stopReason, usage: { inputTokens: 0, outputTokens: 0 } };
+/**
+ * The `done` event that closes an answer (usage is ignored by the site). The
+ * fakes never check signatures, so any string stands in for the agent's.
+ */
+export function done(
+  stopReason: Extract<ChatEvent, { type: "done" }>["stopReason"] = "end_turn",
+  signature = "fake-answer-signature",
+): ChatEvent {
+  return { type: "done", stopReason, usage: { inputTokens: 0, outputTokens: 0 }, signature };
 }
 
 /** A chat stream that sends `events`, then ends. */
@@ -79,7 +85,7 @@ export function weekStats(week: string, chat: Partial<WeekStats["chat"]> = {}): 
       firstText: { p50Ms: null, p95Ms: null },
       ...chat,
     },
-    mcp: { requests: 0 },
+    mcp: { requests: 0, unknownGoogleHops: 0 },
   };
 }
 

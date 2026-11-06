@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { createFirestoreDocumentStore } from "./firestore";
-import { fakeFirestore, root } from "./firestore-fake";
+import { fakeFirestore, hangingFetch, root } from "./firestore-fake";
 
 const emulator = (fake: ReturnType<typeof fakeFirestore>) =>
   createFirestoreDocumentStore({
@@ -119,5 +119,63 @@ describe("createFirestoreDocumentStore", () => {
       "Bearer token-1",
       "Bearer token-2",
     ]);
+  });
+
+  describe("when Firestore hangs", () => {
+    it("gives up on a call after the timeout", async () => {
+      const store = createFirestoreDocumentStore({
+        projectId: "acb-landing",
+        emulatorHost: "localhost:8081",
+        fetch: hangingFetch,
+        timeoutMs: 20,
+      });
+      const started = performance.now();
+      await expect(store.update("c/x", () => ({ result: 0 }))).rejects.toThrow(/timed out/);
+      expect(performance.now() - started).toBeLessThan(1000);
+    });
+
+    it("gives up on the metadata server's token after the timeout too", async () => {
+      const store = createFirestoreDocumentStore({
+        projectId: "acb-landing",
+        fetch: hangingFetch,
+        timeoutMs: 20,
+      });
+      await expect(store.update("c/x", () => ({ result: 0 }))).rejects.toThrow(/timed out/);
+    });
+
+    it("defaults to a timeout of a few seconds", async () => {
+      vi.useFakeTimers();
+      try {
+        const store = createFirestoreDocumentStore({
+          projectId: "acb-landing",
+          emulatorHost: "localhost:8081",
+          fetch: hangingFetch,
+        });
+        const settled = expect(store.update("c/x", () => ({ result: 0 }))).rejects.toThrow(
+          /timed out/,
+        );
+        await vi.advanceTimersByTimeAsync(5000);
+        await settled;
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+  });
+
+  it("names only the collection in its errors, never the document id (it may hold a client IP)", async () => {
+    const store = createFirestoreDocumentStore({
+      projectId: "acb-landing",
+      emulatorHost: "localhost:8081",
+      fetch: async () =>
+        Response.json(
+          { error: { status: "INTERNAL", message: "rateLimits/chat:203.0.113.7" } },
+          { status: 500 },
+        ),
+    });
+    const error = await store
+      .update("rateLimits/chat:203.0.113.7", () => ({ result: 0 }))
+      .catch((e: unknown) => e);
+    expect(String(error)).toMatch(/rateLimits/);
+    expect(String(error)).not.toMatch(/203\.0\.113\.7/);
   });
 });
