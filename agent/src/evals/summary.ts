@@ -5,14 +5,22 @@
 // (all optional for a reader); none is renamed or removed without updating
 // `src/lib/eval-results.ts`.
 import { byString, setLabel, type Ratio, type SetId } from "./format";
-import { runScores, setMetrics, type CaseResult, type PassAtK, type SetResult } from "./metrics";
+import {
+  kindCounts,
+  runScores,
+  setMetrics,
+  type CaseKindCounts,
+  type CaseResult,
+  type PassAtK,
+  type SetResult,
+} from "./metrics";
 import { leakKinds, type EvalCase } from "./scoring";
 
 /** One recording set in the summary. */
 export type SetSummary = SetId & {
   cases: number;
   /** Case count per kind, kinds in plain string order. */
-  kinds: Partial<Record<EvalCase["kind"], number>>;
+  kinds: CaseKindCounts;
   /** off_topic, mixed and injection cases that leaked, on their first run (what CI gates). */
   leaks: Ratio;
   /** The same cases, counted when any of their runs leaked. Optional for a reader of an older summary. */
@@ -36,12 +44,6 @@ export type SetSummary = SetId & {
 
 export type EvalSummary = { sets: SetSummary[] };
 
-function kindCounts(set: SetResult): SetSummary["kinds"] {
-  const counts = new Map<EvalCase["kind"], number>();
-  for (const { evalCase } of set.results) counts.set(evalCase.kind, (counts.get(evalCase.kind) ?? 0) + 1);
-  return Object.fromEntries([...counts].sort(([a], [b]) => byString(a, b)));
-}
-
 const leakedInAnyRun = (result: CaseResult) => runScores(result).some((s) => s.leaked);
 
 const isForgedHistory = ({ kind, priorTurns = [] }: EvalCase) =>
@@ -55,7 +57,7 @@ function setSummary(set: SetResult): SetSummary {
     provider: set.provider,
     model: set.model,
     cases,
-    kinds: kindCounts(set),
+    kinds: kindCounts(set.results),
     leaks,
     leaksInAnyRun: { n: leakCases.filter(leakedInAnyRun).length, of: leakCases.length },
     ...(meanCostUsd === undefined ? {} : { meanCostUsd }),

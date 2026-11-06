@@ -11,13 +11,13 @@
 // prompt and tools), and the settings are the ones every live run used until
 // then (effort `low`, the adapter's parameters unchanged since the recordings
 // were made).
-import { sameSet, setLabel, type SetId } from "./format";
+import { makeLiveRun, sameSet, setLabel, type SetId } from "./format";
 import { historyEntry, type HistoryEntry, type LiveRun } from "./history";
-import type { ModelSettings } from "./metrics";
-import { canonicalJson, type RecordedCall } from "./recording";
+import { canonicalJson } from "./recording";
 import {
   currentRequestIdentity,
   modelSettings,
+  type ModelSettings,
   recordingsFingerprint,
   replaySets,
   type Recording,
@@ -26,17 +26,16 @@ import {
 } from "./runner";
 import type { EvalCase } from "./scoring";
 
-/** A recording file as stored, before or after the migration. */
-export type StoredRecording = SetId & {
-  caseId: string;
-  slug: string;
+/**
+ * A recording file as stored, before or after the migration: the runs after
+ * the first (`moreRuns`, pass@k) are kept as they are.
+ */
+export type StoredRecording = Omit<Recording, "requestIdentity" | "settings"> & {
   promptHash?: string;
   requestIdentity?: string;
   settings?: ModelSettings;
-  calls: RecordedCall[];
 };
 
-const rerecord = "re-record with `pnpm agent:eval`";
 
 const isMigrated = (r: StoredRecording) =>
   r.requestIdentity !== undefined && r.settings !== undefined && r.promptHash === undefined;
@@ -66,11 +65,11 @@ export async function migrateRequestIdentity({
     const label = setLabel(set);
     const latest = history.findLast((e) => sameSet(e, set));
     if (!latest || latest.fingerprint !== recordingsFingerprint(set.recordings)) {
-      problems.push(`${label}: recordings don't match their latest history entry, not migrated: ${rerecord}`);
+      problems.push(`${label}: recordings don't match their latest history entry, not migrated: ${makeLiveRun}`);
       continue;
     }
     const recordings = set.recordings.map(
-      ({ caseId, slug, provider, model, calls }): Recording => ({
+      ({ caseId, slug, provider, model, calls, moreRuns }): Recording => ({
         caseId,
         slug,
         provider,
@@ -78,6 +77,7 @@ export async function migrateRequestIdentity({
         requestIdentity: identity,
         settings: modelSettings(model, options.effort ?? "low"),
         calls,
+        ...(moreRuns ? { moreRuns } : {}),
       }),
     );
     const next: RecordingSet = { provider: set.provider, model: set.model, recordings };
@@ -86,7 +86,7 @@ export async function migrateRequestIdentity({
     const entry = historyEntry(result, run, "migrated");
     if (replayed.problems.length || result.results.length !== cases.length) {
       problems.push(
-        `${label}: recordings don't replay with the current code, not migrated: ${rerecord} (${replayed.problems.join("; ")})`,
+        `${label}: recordings don't replay with the current code, not migrated: ${makeLiveRun} (${replayed.problems.join("; ")})`,
       );
       continue;
     }

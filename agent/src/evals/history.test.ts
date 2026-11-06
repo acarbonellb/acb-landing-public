@@ -53,6 +53,7 @@ const cleanMetrics: Metrics = {
   meanCostUsd: 0,
   passAtK: { k: 1, n: 1, of: 1 },
   flaky: { n: 0, of: 1 },
+  kinds: { off_topic: 1 },
 };
 
 const run = { date: "2026-11-03", commit: "d7fa65c" };
@@ -141,6 +142,19 @@ describe("appendHistory and parseHistory", () => {
     );
   });
 
+  it("parses an entry from before case kinds were recorded", () => {
+    const older = { ...first, metrics: { ...first.metrics } };
+    delete older.metrics.kinds;
+
+    expect(parseHistory(`${JSON.stringify(older)}\n`)).toEqual([older]);
+  });
+
+  it("rejects a case count for an unknown kind", () => {
+    const odd = { ...first, metrics: { ...first.metrics, kinds: { trivia: 1 } } };
+
+    expect(() => parseHistory(`${JSON.stringify(odd)}\n`)).toThrow(/history\.jsonl line 1/);
+  });
+
   it("parses an entry from before costs were recorded", () => {
     const uncosted = withoutCost(first.metrics);
     const older = { ...first, metrics: uncosted };
@@ -225,7 +239,7 @@ describe("liveRunKind (the re-run guard)", () => {
 describe("checkHistory", () => {
   const clean = setWith("Only about Alberto.");
   const entry = historyEntry(clean, run, "live");
-  const rerecord = "re-record with `pnpm agent:eval`";
+  const rerecord = "make a live run with `pnpm agent:eval`";
   const rescore = "re-score with `pnpm agent:eval:rescore`";
 
   it("passes when each set's latest entry matches its recordings", () => {
@@ -366,20 +380,20 @@ describe("rescoreHistory", () => {
     expect(rescoreHistory([live], [rerecorded], 1, today)).toEqual({
       entries: [],
       problems: [
-        "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: re-record with `pnpm agent:eval`",
+        "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: make a live run with `pnpm agent:eval`",
       ],
     });
     expect(rescoreHistory([legacy], [stricter], 1, today).problems).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b: recordings changed since the latest history entry, not re-scored: make a live run with `pnpm agent:eval`",
     ]);
   });
 
   it("refuses a set with no history entry, or with cases that can't be replayed", () => {
     expect(rescoreHistory([], [clean], 1, today).problems).toEqual([
-      "lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b has no entry in agent/evals/history.jsonl: make a live run with `pnpm agent:eval`",
     ]);
     expect(rescoreHistory([live], [stricter], 2, today).problems).toEqual([
-      "lmstudio / qwen/qwen3.5-9b: some recordings are stale or missing, not re-scored: re-record with `pnpm agent:eval`",
+      "lmstudio / qwen/qwen3.5-9b: some recordings are stale or missing, not re-scored: make a live run with `pnpm agent:eval`",
     ]);
   });
 });

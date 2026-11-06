@@ -90,10 +90,9 @@ function leaksText(leaks: number, knownLeaks: number) {
  * 1 leak (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 ·
  * replayed in CI", from the deployed model's set in the summary; `undefined`
  * if it has none. A leak is any kind (off-topic, mixed, injection), in any
- * run; "incl.
- * prompt injection" only when the set has injection cases, "and forged
- * history" only when it has forged-history cases; pass@k only when the summary
- * has it.
+ * run. "incl. prompt injection" only when the set has injection cases, "and
+ * forged history" only when it has forged-history cases; pass@k only when the
+ * summary has it.
  */
 export function evalResultsLine(summaryText: string): string | undefined {
   const deployed = parse(summaryText).find(

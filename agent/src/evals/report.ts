@@ -8,11 +8,11 @@ import {
   runScores,
   setMetrics,
   type CaseResult,
-  type ModelSettings,
   type PassAtK,
   type SetResult,
 } from "./metrics";
 import { canonicalJson } from "./recording";
+import type { ModelSettings } from "./runner";
 import { expectation, type CaseResponse } from "./scoring";
 
 /** "$0.000362"; "$0" for a free model; "n/a" without a price. */
@@ -50,6 +50,16 @@ function settingsLine(settings: ModelSettings | undefined): string {
   return `Model settings: effort \`${settings.effort}\` · request parameters \`${canonicalJson(settings.requestParams)}\``;
 }
 
+/** The set's effort, or "mixed" when its recordings state different settings. */
+const effortCell = (set: SetResult) => set.settings?.effort ?? "mixed";
+
+/**
+ * "lmstudio / qwen/qwen3.5-9b · effort low": the set's label with the effort
+ * its recordings were made with, so a heading or column says what was measured.
+ */
+const reportSetLabel = (set: SetResult) =>
+  `${setLabel(set)} · ${set.settings ? `effort ${set.settings.effort}` : "mixed settings"}`;
+
 /** The first run's verdict; with k runs, also how many of them passed. */
 function verdict(result: CaseResult): string {
   const { score } = result;
@@ -85,7 +95,7 @@ function renderSet(set: SetResult): string {
         .map(cell)
         .join(" | "),
     );
-  return `## ${setLabel(set)}
+  return `## ${reportSetLabel(set)}
 
 ${settingsLine(set.settings)}
 
@@ -110,13 +120,14 @@ ${rows.map((r) => `| ${r} |`).join("\n")}
 `;
 }
 
-/** One row per set: model · provider · cases · quality · tokens · latency · cost. */
+/** One row per set: model · provider · effort · cases · quality · tokens · latency · cost. */
 function renderSummary(sets: SetResult[]): string {
   const rows = sets.map((set) => {
     const m = setMetrics(set);
     return [
       set.model,
       set.provider,
+      effortCell(set),
       String(m.cases),
       formatRatio(m.leaks),
       formatRatio(m.toolAccuracy),
@@ -136,8 +147,8 @@ function renderSummary(sets: SetResult[]): string {
 
 One row per recording set. Cost per case is the mean of each case's tokens at the model's list prices (the spend cap's too, in \`agent/src/pricing.ts\`); a local model costs $0. A live run records each case k times: pass@k is the share of cases that passed every one of their first k runs (k is the fewest runs any case has; 1 for one-run recordings), and Flaky counts the cases that passed some of their runs but not all. Every other metric is the first run's, the one CI replays.
 
-| Model | Provider | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Model | Provider | Effort | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 `;
 }
@@ -176,7 +187,7 @@ function renderFailingOnPurpose(sets: SetResult[]): string {
 
 Cases the current system prompt is known not to pass. They count in every metric (a leak among them is a leak), but CI's leak gate skips them (ADR 0001).
 
-| Case | Kind | Why | ${sets.map(setLabel).join(" | ")} |
+| Case | Kind | Why | ${sets.map(reportSetLabel).join(" | ")} |
 | --- | --- | --- | ${sets.map(() => "---").join(" | ")} |
 ${rows.map((r) => `| ${r} |`).join("\n")}
 `;

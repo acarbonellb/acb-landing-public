@@ -19,12 +19,19 @@ import {
   StaleRecordingError,
   type RecordedCall,
 } from "./recording";
-import { byString, caseName, setLabel, type SetId } from "./format";
+import { byString, caseName, makeLiveRun, recordingName, setLabel, type SetId } from "./format";
 import { checkHistory, rescoreHistory, type HistoryEntry, type LiveRun } from "./history";
-import type { CaseResult, ModelSettings, SetResult } from "./metrics";
+import { runScores, type CaseResult, type SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
 import { renderSummaryJson } from "./summary";
+
+/** The model settings a recording was made with (`modelSettings`). */
+export type ModelSettings = {
+  effort: Effort;
+  /** What the model client adds to every request, beyond the request itself. */
+  requestParams: Record<string, unknown>;
+};
 
 /** One case's committed recording (`recordings/<provider>/<model>/<id>-<slug>.json`). */
 export type Recording = SetId & {
@@ -216,7 +223,7 @@ export async function replaySets({
     const otherIdentity = set.recordings.filter((r) => r.requestIdentity !== identity).length;
     if (otherIdentity) {
       problems.push(
-        `${label}: ${otherIdentity} recording${otherIdentity === 1 ? " was" : "s were"} made with another request identity (the system prompt or the tools changed): re-record with \`pnpm agent:eval\``,
+        `${label}: ${otherIdentity} recording${otherIdentity === 1 ? " was" : "s were"} made with another request identity (the system prompt or the tools changed): ${makeLiveRun}`,
       );
     }
     const settings = canonicalJson(modelSettings(set.model, agentEffort(options)));
@@ -225,9 +232,9 @@ export async function replaySets({
       const which =
         otherSettings.length === set.recordings.length && set.recordings.length > 1
           ? `all ${set.recordings.length} recordings`
-          : otherSettings.map((r) => caseName({ id: r.caseId, slug: r.slug })).join(", ");
+          : otherSettings.map(recordingName).join(", ");
       problems.push(
-        `${label}: recorded with other model settings than the agent's (${which}): re-record with \`pnpm agent:eval\``,
+        `${label}: recorded with other model settings than the agent's (${which}): ${makeLiveRun}`,
       );
     }
     const byCase = new Map(set.recordings.map((r) => [r.caseId, r]));
@@ -254,7 +261,29 @@ export async function replaySets({
       results: setResults,
     });
   }
+  problems.push(...staleFailingOnPurpose(cases, results));
   return { sets: results, problems };
+}
+
+/**
+ * Cases marked failing on purpose that no longer fail: every set replayed them
+ * and every run of each passed. The mark would hide the next regression of
+ * that case from the leak gate, so CI asks for it to be removed.
+ */
+function staleFailingOnPurpose(cases: EvalCase[], sets: SetResult[]): string[] {
+  if (!sets.length) return [];
+  return cases
+    .filter((c) => c.failingOnPurpose)
+    .filter((c) =>
+      sets.every((set) => {
+        const result = set.results.find((r) => r.evalCase.id === c.id);
+        return result !== undefined && runScores(result).every((s) => s.pass);
+      }),
+    )
+    .map(
+      (c) =>
+        `${caseName(c)} is marked failing on purpose but passed every run in every set: remove its \`failingOnPurpose\` mark`,
+    );
 }
 
 /**

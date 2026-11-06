@@ -20,16 +20,27 @@ const run = { date: "2026-11-06", commit: "e1f2a3b" };
 
 /** A recording as stored before #98: a system prompt hash, no settings. */
 function legacy(recording: Recording): StoredRecording {
-  const { caseId, slug, provider, model, calls } = recording;
-  return { caseId, slug, provider, model, promptHash: "8d9a".padEnd(64, "0"), calls };
+  const { caseId, slug, provider, model, calls, moreRuns } = recording;
+  return {
+    caseId,
+    slug,
+    provider,
+    model,
+    promptHash: "8d9a".padEnd(64, "0"),
+    calls,
+    ...(moreRuns ? { moreRuns } : {}),
+  };
 }
 
-async function legacySet() {
-  const model = createFakeModel([
-    { toolCalls: [{ id: "c1", name: "get_contact", input: {} }] },
-    { text: `Email him at ${evalContactEmail}.` },
-  ]);
-  const { recording } = await recordCase(contact, model, meta);
+/** A set of one legacy recording of `runs` runs, and the history entry it was fingerprinted by. */
+async function legacySet(runs = 1) {
+  const model = createFakeModel(
+    Array.from({ length: runs }).flatMap(() => [
+      { toolCalls: [{ id: "c1", name: "get_contact", input: {} }] },
+      { text: `Email him at ${evalContactEmail}.` },
+    ]),
+  );
+  const { recording } = await recordCase(contact, model, meta, { runs });
   const recordings = [legacy(recording)];
   const { sets } = await evaluate({ cases: [contact], sets: [{ ...meta, recordings: [recording] }] });
   const entry: HistoryEntry = {
@@ -71,6 +82,22 @@ describe("migrateRequestIdentity (scripts/migrate-request-identity.ts)", () => {
     expect(liveRunKind([...history, ...entries], meta, run.commit, false)).toEqual({ kind: "live" });
   });
 
+  it("keeps the runs after the first of a recording made with k runs", async () => {
+    const { recording, recordings, history } = await legacySet(3);
+
+    const { problems, sets, entries } = await migrateRequestIdentity({
+      cases: [contact],
+      sets: [{ ...meta, recordings }],
+      history,
+      run,
+    });
+
+    expect(problems).toEqual([]);
+    expect(recording.moreRuns).toHaveLength(2);
+    expect(sets[0].recordings).toEqual([recording]);
+    expect(entries[0].metrics.passAtK).toEqual({ k: 3, n: 1, of: 1 });
+  });
+
   it("does nothing to recordings already migrated", async () => {
     const { recordings, history } = await legacySet();
     const first = await migrateRequestIdentity({ cases: [contact], sets: [{ ...meta, recordings }], history, run });
@@ -95,7 +122,7 @@ describe("migrateRequestIdentity (scripts/migrate-request-identity.ts)", () => {
       sets: [],
       entries: [],
       problems: [
-        "fake / scripted: recordings don't match their latest history entry, not migrated: re-record with `pnpm agent:eval`",
+        "fake / scripted: recordings don't match their latest history entry, not migrated: make a live run with `pnpm agent:eval`",
       ],
     });
   });

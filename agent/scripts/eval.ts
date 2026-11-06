@@ -25,7 +25,7 @@ import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { cases } from "../evals/cases";
 import { createAnthropicModelClient } from "../src/anthropic";
-import { caseName, sameSet, setLabel, type SetId } from "../src/evals/format";
+import { caseName, recordingName, sameSet, setLabel, type SetId } from "../src/evals/format";
 import {
   appendHistory,
   appendLiveRun,
@@ -98,7 +98,7 @@ async function loadSets(): Promise<RecordingSet[]> {
 async function saveRecording(recording: Recording) {
   const dir = join(recordingsDir, recording.provider, modelSlug(recording.model));
   await mkdir(dir, { recursive: true });
-  const name = `${caseName({ id: recording.caseId, slug: recording.slug })}.json`;
+  const name = `${recordingName(recording)}.json`;
   const tmp = join(dir, `.${name}.tmp`);
   await writeFile(tmp, `${JSON.stringify(recording, null, 2)}\n`);
   for (const old of await readdir(dir)) {

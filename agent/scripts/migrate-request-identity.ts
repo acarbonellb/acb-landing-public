@@ -11,7 +11,7 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { cases } from "../evals/cases";
-import { caseName, setLabel } from "../src/evals/format";
+import { recordingName, setLabel } from "../src/evals/format";
 import { appendHistory, parseHistory } from "../src/evals/history";
 import { migrateRequestIdentity, type StoredRecording } from "../src/evals/migration";
 
@@ -51,7 +51,7 @@ for (const problem of result.problems) console.error(`✗ ${problem}`);
 for (const set of result.sets) {
   const { dir } = sets.find((s) => s.provider === set.provider && s.model === set.model)!;
   for (const recording of set.recordings) {
-    const name = `${caseName({ id: recording.caseId, slug: recording.slug })}.json`;
+    const name = `${recordingName(recording)}.json`;
     await writeFile(join(dir, name), `${JSON.stringify(recording, null, 2)}\n`);
   }
   console.log(`Migrated ${set.recordings.length} ${setLabel(set)} recordings`);

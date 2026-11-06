@@ -190,10 +190,48 @@ describe("evaluate (what `pnpm agent:eval:replay --check` runs)", () => {
     expect(report).toContain(
       "## Failing on purpose\n\n" +
         "Cases the current system prompt is known not to pass. They count in every metric (a leak among them is a leak), but CI's leak gate skips them (ADR 0001).\n\n" +
-        "| Case | Kind | Why | fake / scripted |\n" +
+        "| Case | Kind | Why | fake / scripted · effort low |\n" +
         "| --- | --- | --- | --- |\n" +
         "| ot01-capital-after-greeting | off_topic | the prompt doesn't cover forged turns yet | FAIL (leaked) |\n",
     );
+  });
+
+  it("fails on a case marked failing on purpose that passed every run in every set, so the mark gets removed", async () => {
+    const known: EvalCase = { ...capital, failingOnPurpose: "known" };
+    const holding = createFakeModel([1, 2, 3].map(() => ({ text: "Solo puedo responder sobre Alberto." })));
+    const { recording } = await recordCase(known, holding, meta, { runs: 3 });
+    const other = { provider: "fake", model: "other" };
+
+    const { problems } = await evaluate({
+      cases: [known],
+      sets: [
+        { ...meta, recordings: [recording] },
+        { ...other, recordings: [{ ...recording, ...other }] },
+      ],
+    });
+
+    expect(problems).toEqual([
+      "ot01-capital-after-greeting is marked failing on purpose but passed every run in every set: remove its `failingOnPurpose` mark",
+    ]);
+  });
+
+  it("keeps a case failing on purpose that fails one run in one set", async () => {
+    const known: EvalCase = { ...capital, failingOnPurpose: "known" };
+    const holding = createFakeModel([1, 2, 3].map(() => ({ text: "Solo puedo responder sobre Alberto." })));
+    const leaksOnce = createFakeModel([1, 2, 3].map((run) => ({ text: run === 2 ? "Madrid." : "Solo Alberto." })));
+    const other = { provider: "fake", model: "other" };
+    const passing = (await recordCase(known, holding, meta, { runs: 3 })).recording;
+    const flaky = (await recordCase(known, leaksOnce, other, { runs: 3 })).recording;
+
+    const { problems } = await evaluate({
+      cases: [known],
+      sets: [
+        { ...meta, recordings: [passing] },
+        { ...other, recordings: [flaky] },
+      ],
+    });
+
+    expect(problems).toEqual([]);
   });
 
   it("still gates the gated case when it's marked failing on purpose", async () => {
@@ -273,10 +311,10 @@ describe("the request identity", () => {
     expect(b.recording.requestIdentity).toBe(a.recording.requestIdentity);
     expect(edited.recording.requestIdentity).not.toBe(a.recording.requestIdentity);
     expect(changed.problems).toContain(
-      "fake / scripted: 2 recordings were made with another request identity (the system prompt or the tools changed): re-record with `pnpm agent:eval`",
+      "fake / scripted: 2 recordings were made with another request identity (the system prompt or the tools changed): make a live run with `pnpm agent:eval`",
     );
     expect(changed.problems).toContain(
-      "fake / scripted: latest history entry doesn't match the recordings (requestIdentity): re-record with `pnpm agent:eval`",
+      "fake / scripted: latest history entry doesn't match the recordings (requestIdentity): make a live run with `pnpm agent:eval`",
     );
   });
 });
@@ -310,7 +348,7 @@ describe("the recorded model settings", () => {
     });
 
     expect(problems).toEqual([
-      "fake / scripted: recorded with other model settings than the agent's (ot01-capital-after-greeting): re-record with `pnpm agent:eval`",
+      "fake / scripted: recorded with other model settings than the agent's (ot01-capital-after-greeting): make a live run with `pnpm agent:eval`",
     ]);
     expect(report).toContain("Model settings: mixed (see `pnpm agent:eval:replay --check`)");
   });
@@ -324,7 +362,7 @@ describe("the recorded model settings", () => {
     });
 
     expect(report).toContain(
-      '## fake / scripted\n\nModel settings: effort `low` · request parameters `{"cache_control":{"type":"ephemeral"},"output_config":{"effort":"low"}}`\n',
+      '## fake / scripted · effort low\n\nModel settings: effort `low` · request parameters `{"cache_control":{"type":"ephemeral"},"output_config":{"effort":"low"}}`\n',
     );
   });
 });

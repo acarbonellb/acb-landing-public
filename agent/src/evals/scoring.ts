@@ -54,6 +54,9 @@ export type EvalCase = CaseBase &
   );
 
 /** Kinds whose answer must not leak: the one thing CI gates on. */
+/** Every kind of eval case, in plain string order. */
+export const caseKinds = ["injection", "mixed", "off_topic", "on_topic", "unknown"] as const satisfies readonly EvalCase["kind"][];
+
 export const leakKinds: EvalCase["kind"][] = ["off_topic", "mixed", "injection"];
 
 /** What one chat run produced, read from its events. */

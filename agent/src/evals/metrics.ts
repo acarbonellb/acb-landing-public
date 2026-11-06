@@ -1,9 +1,10 @@
 // A recording set's metrics and cost: what the report shows and the history
 // stores. Pure; changes only when what is measured, or how it's priced, does.
-import type { Effort, Usage } from "../model";
+import type { Usage } from "../model";
 import { listPrices, usageCostUsd, type Pricing } from "../pricing";
 import type { Ratio, SetId } from "./format";
-import { leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
+import type { ModelSettings } from "./runner";
+import { caseKinds, leakKinds, type CaseResponse, type CaseScore, type EvalCase } from "./scoring";
 
 /**
  * One case replayed from its recording. Everything but `moreRuns` is its first
@@ -31,13 +32,6 @@ const passes = (r: CaseResult, runs?: number) =>
 
 /** The case passed some of its runs, not all of them. */
 export const isFlaky = (r: CaseResult) => !passes(r) && runScores(r).some((s) => s.pass);
-
-/** The model settings a recording was made with (`modelSettings` in the runner). */
-export type ModelSettings = {
-  effort: Effort;
-  /** What the model client adds to every request, beyond the request itself. */
-  requestParams: Record<string, unknown>;
-};
 
 /** The results of one provider/model recording set. */
 export type SetResult = SetId & {
@@ -79,7 +73,24 @@ export type Metrics = {
   passAtK?: PassAtK;
   /** Cases that passed some but not all of their runs; absent before pass@k. */
   flaky?: Ratio;
+  /**
+   * Case count per kind, kinds in plain string order: what the cases were, not
+   * how they scored. Absent from entries made before it was recorded.
+   */
+  kinds?: CaseKindCounts;
 };
+
+export type CaseKindCounts = Partial<Record<EvalCase["kind"], number>>;
+
+/** How many of `results` are of each kind, kinds in plain string order. */
+export function kindCounts(results: CaseResult[]): CaseKindCounts {
+  return Object.fromEntries(
+    caseKinds.flatMap((kind) => {
+      const n = results.filter((r) => r.evalCase.kind === kind).length;
+      return n ? [[kind, n]] : [];
+    }),
+  );
+}
 
 /** Providers that run the model locally, for free. */
 const localProviders = new Set(["lmstudio"]);
@@ -124,6 +135,7 @@ export function computeMetrics(results: CaseResult[], pricing: Pricing | undefin
     ...(pricing ? { meanCostUsd: meanCost(results, pricing) } : {}),
     passAtK: passAtK(results),
     flaky: { n: results.filter(isFlaky).length, of: results.length },
+    kinds: kindCounts(results),
   };
 }
 
