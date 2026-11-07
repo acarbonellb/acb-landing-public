@@ -16,6 +16,10 @@ Default vocabulary: needs-triage, needs-info, ready-for-agent, ready-for-human, 
 
 Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
+### Design System
+
+The Design System artifact (https://claude.ai/artifact/9dpLiwikKeXPNuD9Cj4uUz) is derived from this repo, which stays the source of truth. Re-sync it with the `design-system-sync` skill after a merged change to the files it lists.
+
 ## Next.js rules
 
 `AGENTS.md` is generated and kept up to date by `next dev`. Don't edit it; its rules are imported here:
