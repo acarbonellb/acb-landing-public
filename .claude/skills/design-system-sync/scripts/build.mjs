@@ -68,7 +68,7 @@ const toGlobals = (map) => ({
 // The components resolve React to whichever React the page loaded, so the
 // bundle also runs on a Design canvas, whose runtime provides React 18.
 // `react/jsx-runtime` goes through `createElement` instead of React 19's own
-// runtime, whose elements React 18 rejects (minified error #31), and
+// runtime, whose elements React 18 rejects (React's minified error 31), and
 // `useEffectEvent`, which React 18 lacks, falls back to a ref.
 const pageReact = {
   name: "page-react",
