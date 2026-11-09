@@ -1,5 +1,6 @@
 // Builds the Design System artifact's components from this checkout: React 19
-// as two classic scripts, the site's components as one IIFE (`window.Acb`),
+// as two classic scripts, the site's components as one IIFE (`window.Acb`,
+// running on the page's React, 19 or a Design canvas's 18),
 // the previews, and the stylesheet compiled by the site's own Tailwind.
 //
 // Usage: node build.mjs <project dir> [--update-sources]
@@ -64,6 +65,36 @@ const toGlobals = (map) => ({
     }));
   },
 });
+// The components resolve React to whichever React the page loaded, so the
+// bundle also runs on a Design canvas, whose runtime provides React 18.
+// `react/jsx-runtime` goes through `createElement` instead of React 19's own
+// runtime, whose elements React 18 rejects (React's minified error 31), and
+// `useEffectEvent`, which React 18 lacks, falls back to a ref.
+const pageReact = {
+  name: "page-react",
+  setup(b) {
+    b.onResolve({ filter: /^react(\/jsx-runtime)?$/ }, (a) => ({ path: a.path, namespace: "page-react" }));
+    b.onLoad({ filter: /^react$/, namespace: "page-react" }, () => ({
+      contents: `var R = window.React;
+module.exports = R.useEffectEvent ? R : Object.assign({}, R, {
+  useEffectEvent: function (fn) {
+    var ref = R.useRef(fn);
+    R.useLayoutEffect(function () { ref.current = fn; });
+    return R.useCallback(function () { return ref.current.apply(void 0, arguments); }, []);
+  },
+});`,
+      loader: "js",
+    }));
+    b.onLoad({ filter: /^react\/jsx-runtime$/, namespace: "page-react" }, () => ({
+      contents: `var R = window.React;
+function jsx(type, props, key) {
+  return R.createElement(type, key === undefined ? props : Object.assign({}, props, { key: key }));
+}
+module.exports = { Fragment: R.Fragment, jsx: jsx, jsxs: jsx };`,
+      loader: "js",
+    }));
+  },
+};
 const alias = {
   name: "alias",
   setup(b) {
@@ -103,7 +134,7 @@ const result = await esbuild.build({
   entryPoints: [entry],
   jsx: "automatic",
   metafile: true,
-  plugins: [toGlobals({ react: "React", "react-dom": "ReactDOM", "react-dom/client": "ReactDOM" }), alias],
+  plugins: [pageReact, toGlobals({ "react-dom": "ReactDOM", "react-dom/client": "ReactDOM" }), alias],
   define: {
     ...common.define,
     "process.env.NEXT_PUBLIC_AGENT_URL": "undefined",

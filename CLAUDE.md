@@ -20,6 +20,10 @@ Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents
 
 The Design System artifact (https://claude.ai/artifact/9dpLiwikKeXPNuD9Cj4uUz) is derived from this repo, which stays the source of truth. Re-sync it with the `design-system-sync` skill after a merged change to the files it lists.
 
+### Design canvases
+
+A Design canvas on claude.ai is scratch space for one task, like a worktree: create one per issue, titled `#<issue> — <topic>`, link it from the issue, and build it from the Design System. Never reuse one across tasks or treat it as a source of truth. Delete it once the change is merged.
+
 ## Next.js rules
 
 `AGENTS.md` is generated and kept up to date by `next dev`. Don't edit it; its rules are imported here:
