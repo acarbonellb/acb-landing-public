@@ -35,9 +35,7 @@ The agent runs as a separate Cloud Run service that the browser calls directly a
 
 Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site and the agent's origin). The browser tests serve every page with those headers and fail on any CSP violation.
 
-A static export can't use nonces, so the CSP allows each inline script by its hash: the theme script and the RSC payloads Next writes, which change with every build. Every inline script has to be hashed, Next's own included, or the page doesn't hydrate, and those hashes only exist once the build has run, so the CSP can't be committed. So `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`, `src/lib/security-headers.ts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`.
-
-The deploy ships that file (`firebase deploy --config out/firebase.json`); the committed one has no CSP and isn't deployed on its own. Edit headers, rewrites and the rest there, and the CSP in `src/lib/security-headers.ts`.
+A static export can't use nonces, so the CSP allows each inline script by its hash (the theme script and the RSC payloads Next writes, which change with every build, or the page doesn't hydrate). Those hashes only exist once the build has run, so `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`. The deploy ships that file (`firebase deploy --config out/firebase.json`). Edit headers and rewrites in the committed `firebase.json`, and the CSP in `src/lib/security-headers.ts`.
 
 ### Repository variables
 
@@ -73,7 +71,7 @@ The `deploy-agent` job takes the tested bundle, builds the image and deploys it 
 | `AGENT_STORE` | The repository variable of the same name: `firestore` when unset, never `memory` ([Shared store](guardrails.md#shared-store)), with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID` |
 | Model and its prices | The code defaults ([configuration](agent.md#configuration)) |
 
-The contact address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
+The contact address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public. The public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
 
 The rollout keeps the serving revision until the new one has passed:
 
@@ -84,7 +82,7 @@ The rollout keeps the serving revision until the new one has passed:
    - that `/mcp` lists the five tools, and `get_contact` returns an email (without printing it);
    - that `/stats` answers the weekly JSON to any origin;
    - that `/chat` allows the site's origin (CORS preflight), rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers).
-4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the smoke check runs on `AGENT_URL` without `--agent-only`. If that fails, traffic goes back to the recorded revision. This run adds `/mcp` on the site's domain (through the Hosting rewrite) and leaves out the deep check, which already passed on the same revision and whose rate limit anyone can use up on the public URL, so a flood can't make this step roll a good deploy back (`scripts/agent-smoke-check.test.ts` pins that).
+4. Traffic moves to the new revision, and the smoke check runs on `AGENT_URL` without `--agent-only`; if it fails, traffic goes back to the recorded revision. This run adds `/mcp` through the Hosting rewrite and leaves out the deep check, which already passed and whose rate limit anyone can use up on the public URL, so a flood can't roll a good deploy back (pinned by `scripts/agent-smoke-check.test.ts`).
 5. The `candidate` tag is removed, pass or fail, so no extra public URL outlives the job.
 
 Traffic stays pinned to a named revision after this, so a manual `gcloud run deploy` doesn't take traffic on its own: move it with `gcloud run services update-traffic agent --region europe-southwest1 --to-revisions <revision>=100` (or `--to-latest`).
@@ -118,11 +116,11 @@ gcloud projects add-iam-policy-binding "$PROJECT" --role roles/datastore.user \
 gcloud firestore fields ttls update expireAt --collection-group dailySpend --enable-ttl --project "$PROJECT"
 ```
 
-The deploy uses `firestore` unless the repository variable `AGENT_STORE` says otherwise, so the database must exist before the agent's first deploy; until then the new revision can't reach its store and requests answer `500`. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
+The database must exist before the agent's first deploy, or the new revision fails its deep health check. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
 
 #### The weekly live eval check
 
-The [weekly live check](evals.md#weekly-live-check) (`.github/workflows/live-eval.yml`) reads the Anthropic key from the secret `ANTHROPIC_API_KEY` of the GitHub environment `live-eval`, whose deployment branches are restricted to `main`, so a workflow run from any other branch (a PR, or a dispatch on a feature branch) can't read it. Create the environment and copy the key from Secret Manager, piping it so it is never printed or written to disk:
+The [weekly live check](evals.md#weekly-live-check) reads the Anthropic key from the secret `ANTHROPIC_API_KEY` of the GitHub environment `live-eval`, restricted to `main`, so a run from any other branch can't read it. Create it and copy the key from Secret Manager, piped so it is never printed or written to disk:
 
 ```bash
 REPO=acarbonellb/acb-landing-public
@@ -136,7 +134,7 @@ Then dispatch it once from `main` (`gh workflow run live-eval.yml --ref main`) a
 
 #### Rotating the Anthropic key
 
-The key now lives in two places: the Secret Manager secret `anthropic-api-key` (the agent) and the `live-eval` environment's secret (the weekly check). To rotate it, create the new key in the Claude Console, add it as a new version without printing it, copy that version to the environment, then revoke the old key:
+The key lives in Secret Manager (`anthropic-api-key`, the agent) and in the `live-eval` environment (the weekly check). Create the new key in the Claude Console, add it as a new version without printing it, copy it to the environment, then revoke the old key:
 
 ```bash
 read -rs KEY # paste the key: not echoed
@@ -146,7 +144,7 @@ gcloud secrets versions access latest --secret anthropic-api-key --project acb-l
   gh secret set ANTHROPIC_API_KEY --env live-eval --repo acarbonellb/acb-landing-public
 ```
 
-The agent reads `anthropic-api-key:latest` when a revision starts, so redeploy it (re-run the latest `main` deploy) before revoking the old key, or the serving revision keeps the old one until its next cold start.
+The agent reads `anthropic-api-key:latest` when a revision starts, so redeploy (re-run the latest `main` deploy) before revoking the old key.
 
 #### Alerts
 
@@ -154,7 +152,7 @@ The Cloud Monitoring alert policies: [Logs and alerts](logs-and-alerts.md#alerts
 
 #### Billing budget
 
-A monthly GCP billing budget for the project warns the owner when the infrastructure bill (Cloud Run, Firestore and the rest of the project) grows. It only alerts: a budget never stops a service or caps the bill, and nothing here turns usage off when it is crossed. The model's spend is separate, held by the [spend cap](guardrails.md) and the provider's own limit.
+A monthly GCP billing budget warns the owner when the project's infrastructure bill (Cloud Run, Firestore and the rest) grows. It only alerts: it never stops a service or caps the bill. The model's spend is held by the [spend cap](guardrails.md#monthly-spend-cap) and the provider's own limit.
 
 `scripts/billing-budget.sh` sets it up, with these values:
 
@@ -165,18 +163,18 @@ A monthly GCP billing budget for the project warns the owner when the infrastruc
 | Thresholds | 50%, 90% and 100% of actual spend, and 100% of forecast spend (the month is on track to cross the amount) |
 | Who is notified | By email, the billing account's default recipients: everyone with Billing Account Administrator or Billing Account User on it. No Pub/Sub topic or Monitoring channel |
 
-A threshold emails when the month's spend crosses it. Run it from the owner's machine, whose `gcloud` login has a billing role on the account; the pipeline never runs it, so CI holds no billing or IAM permission:
+Run it from the owner's machine, whose `gcloud` login has a billing role on the account; the pipeline never runs it, so CI holds no billing or IAM permission:
 
 ```sh
 scripts/billing-budget.sh --dry-run acb-landing  # reads only: prints what differs and the command it would run
 scripts/billing-budget.sh acb-landing            # creates the budget, or reconciles the existing one in place
 ```
 
-It looks the billing account up from the project and finds the one budget there scoped to this project. A budget made by hand is adopted, never duplicated, and a re-run once it matches changes nothing. Two budgets scoped to the project, or default recipients turned off, stop it without changes. It never prints the billing account id (it shows `<billing account>`), so its output can go in a pull request. Change the values in the script and re-run it; `scripts/billing-budget.test.ts` runs it against a fake `gcloud`.
+It finds the project's billing account and the one budget scoped to the project: a budget made by hand is adopted, never duplicated, and a re-run that matches changes nothing. Two budgets scoped to the project, or default recipients turned off, stop it without changes. It never prints the billing account id, so its output can go in a pull request. Change the values in the script and re-run it; `scripts/billing-budget.test.ts` runs it against a fake `gcloud`.
 
 ### `/mcp` rate-limit check
 
-`scripts/mcp-rate-limit-check.sh`, by hand, never in CI: it uses up your own one-minute `/mcp` window for a minute. Run it once after a deploy that changes the rate limits, the client-IP rule or the Hosting rewrite, from your own machine, and paste its output into the issue; it prints only counts and status codes, never a URL or an address:
+`scripts/mcp-rate-limit-check.sh`, by hand, never in CI, as it uses up your own `/mcp` window for a minute. Run it after a deploy that changes the rate limits, the client-IP rule or the Hosting rewrite, and paste its output (counts and status codes only) into the issue:
 
 ```bash
 scripts/mcp-rate-limit-check.sh https://albertocarbonell.dev "$AGENT_URL" [per-ip-limit]
@@ -184,14 +182,14 @@ scripts/mcp-rate-limit-check.sh https://albertocarbonell.dev "$AGENT_URL" [per-i
 
 The limit defaults to `RATE_LIMIT_MCP_PER_MINUTE`, else the code default; pass it if the service is configured otherwise. After waking the service on `/health`, it runs three phases, each `ok` or `FAIL` (exit code 1 if any fails):
 
-1. **Through the site**: MCP `tools/list` calls to the site's `/mcp` until one is refused with `429`. Proves the rewrite's traffic is limited per visitor: if Hosting's peer weren't recognised, every visitor would share one key and the count would still stop, but phase 2 would then be allowed. Fewer allowed than the limit just means part of the window was already used. If the refusal comes in a window's last 10 s, it waits for the next window and starts again.
+1. **Through the site**: MCP `tools/list` calls to the site's `/mcp` until one is refused with `429`, proving the rewrite's traffic is limited (per visitor, once phase 2 passes). Fewer allowed than the limit means part of the window was already used; a refusal in a window's last 10 s restarts it in the next window.
 2. **Direct to the agent**: one call to `$AGENT_URL/mcp`, which must be refused: the same visitor gets the same key through the rewrite and directly ([Client IP](guardrails.md#client-ip)).
 3. **Forged `X-Forwarded-For`**: five calls to each URL with made-up addresses (IPv4, IPv6 in a fresh `/64`, a two-entry chain), which must all be refused: forging the header doesn't buy a fresh window, because the key is the entry Cloud Run appends (measured live against the deployed service).
 
-Against a local agent (`PORT=8090 pnpm agent:dev`, memory store) phases 1 and 2 pass but phase 3 fails: with no Cloud Run front end appending the real address, the agent takes the forged value as the caller. `agent/src/mcp-rate-limit-check.test.ts` runs the script against a local agent behind a stand-in front end, in the agent tests.
+Against a bare local agent phase 3 fails, as no Cloud Run front end appends the real address; `agent/src/mcp-rate-limit-check.test.ts` runs the script against a local agent behind a stand-in front end.
 
 ## Ranges refresh
 
-`.github/workflows/ranges-refresh.yml` runs every Monday (and on manual dispatch): it runs `pnpm agent:ranges`, which downloads Google's three IP range lists (see [Client IP](guardrails.md#client-ip)), validates each (the published shape, at least one prefix, and no list down to less than half its committed size) and rewrites `agent/src/google-ranges.json` only if a list's prefixes changed (a new publication time alone is no change). When the snapshot changed, it force-pushes a commit to the fixed branch `ranges-refresh` and opens a PR from it to the branch the run started on, or updates the one already open; otherwise it does nothing. A download that fails validation fails the run and opens no PR.
+`.github/workflows/ranges-refresh.yml` runs every Monday (and on manual dispatch) `pnpm agent:ranges`, which downloads Google's three IP range lists ([Client IP](guardrails.md#client-ip)), validates each (the published shape, at least one prefix, no list down to under half its committed size) and rewrites `agent/src/google-ranges.json` only if a list's prefixes changed. Then it force-pushes a commit to the branch `ranges-refresh` and opens a PR from it to the branch the run started on, or updates the open one. A download that fails validation fails the run and opens no PR.
 
-It uses only the default `GITHUB_TOKEN` (contents and pull-requests write, plus `actions: write`, needed because pushes and PRs made with that token start no workflows): it dispatches `deploy.yml` on the branch, and that run is the PR's checks, the same as any PR's: `test` and `rehearse-deploy` (which runs on pull requests and on a dispatch on any branch but `main`; the deploy jobs only run on `main`). The repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General) must be on. The log and the PR text carry counts and publication times only, never prefixes.
+It uses only the default `GITHUB_TOKEN` (contents and pull-requests write, plus `actions: write`, as pushes and PRs made with that token start no workflows): it dispatches `deploy.yml` on the branch, and that run (`test` and `rehearse-deploy`) is the PR's checks. The repository setting "Allow GitHub Actions to create and approve pull requests" (Settings, Actions, General) must be on. The log and the PR carry counts and publication times only, never prefixes.
