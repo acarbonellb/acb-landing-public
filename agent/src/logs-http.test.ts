@@ -169,7 +169,10 @@ describe("store failure events", () => {
 
   it("logs store_unavailable once when the store starts failing, and store_recovered once it works again", async () => {
     const store = flakyStore();
-    const url = await start(createGuardrails(store, loadConfig({})));
+    // More /stats calls than the default per-IP limit allows.
+    const url = await start(
+      createGuardrails(store, loadConfig({ RATE_LIMIT_STATS_PER_MINUTE: "10", RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "10" })),
+    );
     const stats = () => fetch(new URL(paths.stats, url));
 
     await stats();

@@ -8,7 +8,7 @@ On `/chat`, `/mcp` and `/stats`, each counted separately (`agent/src/rate-limit.
 
 ## Global ceilings
 
-On `/chat` (`RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE`), `/mcp` (`RATE_LIMIT_MCP_GLOBAL_PER_MINUTE`) and `/stats` (`RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`): a second one-minute window per endpoint that counts every request the per-IP limit lets through, under one fixed key. So rotating IPs can't multiply what one source gets: past the ceiling the model is never called more often, whoever asks. A refusal answers exactly the per-IP limit's `429`. The defaults are set well above the per-IP limits and normal traffic; tune them from `/stats` through the configuration.
+On `/chat` (`RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE`), `/mcp` (`RATE_LIMIT_MCP_GLOBAL_PER_MINUTE`) and `/stats` (`RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`): a second one-minute window per endpoint that counts every request the per-IP limit lets through, under one fixed key. So rotating IPs can't multiply what one source gets: past the ceiling the model is never called more often, whoever asks. A refusal answers exactly the per-IP limit's `429`. The defaults sit above the per-IP limits and far above normal traffic, and `/chat`'s and `/stats`'s are sized by what a flood at them costs in store operations ([Store cost](#store-cost)); tune them from `/stats` through the configuration, and re-check that section when you raise one.
 
 ## Rate limits are per instance
 
@@ -53,6 +53,45 @@ The default ($0.10) comes from `/stats`: about $0.0004 per answer measured in we
 
 The Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console: the spend cap counts estimated spend, so that is the hard limit. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices from `agent/src/pricing.ts`, at the requested model's rates) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. The provider limit is the backstop if the estimate is ever off; if it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage and the stream ends with `unavailable`, not `internal`. Raise both together, keeping the code cap under the provider's. Hitting the provider limit logs the `provider_limit` [alert event](logs-and-alerts.md#alert-events), since it means the two have drifted apart.
 
+
+## Store cost
+
+What the [shared store](#shared-store) costs per request, and per day at the [global ceilings](#global-ceilings). The model's cost is bounded by the [spend cap](#monthly-spend-cap) whatever the traffic; the store's isn't, so the `/chat` and `/stats` ceilings are sized by it.
+
+### Store operations per request
+
+Every store change reads the document, then commits it (`agent/src/firestore.ts`), so each write comes with a read. A commit that conflicts is re-read and retried, but on one instance (see [Rate limits are per instance](#rate-limits-are-per-instance)) only a canary's overlap can conflict.
+
+| Request | Writes | Reads | What they are |
+| --- | --- | --- | --- |
+| `/chat` that runs | 5 | 5 | Daily quota and spend cap, each once to reserve and once to settle, whatever the number of model calls, and the request's usage record. Checked: `agent/src/spend-writes-http.test.ts`. Once a week per instance it also reads the previous week's usage document |
+| `/chat` refused by the spend cap (`503`) | 2 | 3 | The daily quota's reserve and settle; the spend cap's refused reservation is a read only |
+| `/chat` refused by the daily quota (`429`) | 0 | 1 | The quota's refused reservation |
+| `/chat` refused by a rate limit or ceiling, invalid (`400`, `413`), or with no model (`503`) | 0 | 0 | Rate limits are in memory; refusals are counted in the next usage batch |
+| `/mcp` | 0 | 0 | Counted in the next usage batch. Checked: `agent/src/spend-writes-http.test.ts` |
+| Usage batch | 1 | 1 | MCP requests and chat refusals since the last batch, written inside the first request that records usage 10 s after the last one, so at most 8,640 a day ([Usage stats](usage-stats.md#batching)); a fresh instance's first is due at once |
+| `/stats` | 1 | 3 | It writes the waiting batch first, whether due or not (nothing if none is waiting), then reads this week's and last week's documents |
+| `/health?deep=1` | 0 | 1 | One read, under its own ceiling of 10 a minute (`agent/src/health.ts`) |
+
+Each daily-quota document (one per key and UTC day) is removed by Firestore's TTL policy, one TTL delete each.
+
+### A day-long flood at the ceilings
+
+Computed with Firestore Standard edition's prices for the database's location, `europe-southwest1` (Madrid), as listed on Google Cloud's [Firestore pricing](https://cloud.google.com/firestore/pricing) page, read on 2026-11-22: **$0.035 per 100,000 document reads, $0.106 per 100,000 writes, $0.012 per 100,000 TTL deletes**. The worst case assumes every request the ceiling lets through takes its row's most expensive path (every chat request runs, on a fresh key, and every `/stats` call finds a batch waiting), and ignores the free tier (50,000 reads and 20,000 writes a day, on the project's one free database), which takes off at most about $0.04 a day. Storage is negligible: the daily-quota documents are deleted each day.
+
+| Ceiling (default) | Requests a day | Writes | Reads | TTL deletes | Cost a day |
+| --- | --- | --- | --- | --- | --- |
+| `/chat`, 8 a minute | 11,520 | 57,600 | 57,600 | 11,520 | $0.083 |
+| `/stats`, 5 a minute | 7,200 | 7,200 | 21,600 | 0 | $0.015 |
+| `/mcp`, 600 a minute | 864,000 | 0 | 0 | 0 | $0.000 |
+| Usage batches, one per 10 s | 8,640 | 8,640 | 8,640 | 0 | $0.012 |
+| `/health?deep=1`, 10 a minute | 14,400 | 0 | 14,400 | 0 | $0.005 |
+| **All together** | | **73,440** | **102,240** | **11,520** | **$0.115** |
+
+**The threshold: a day-long flood at every default ceiling at once costs less than $0.12 a day in store operations**, so a month of it (about $3.45) stays under the month's model budget (the $4 spend cap). `agent/src/config.test.ts` computes this from the default ceilings and fails if a change to them crosses it. A flood writes more than three times the free tier's 20,000 writes a day, so the free tier doesn't cover it.
+
+The ceilings were re-derived for this: before, at 60 chat and 300 `/stats` requests a minute, the same flood cost about $1.55 a day (some $46 a month, over ten times the model budget). Now `/chat` allows 8 a minute from all clients (4 per IP) and `/stats` 5 (2 per IP): still far above a personal site's traffic, and a page reads `/stats` once per load and caches it 5 minutes. `/mcp` keeps 600 a minute: it costs no store operations of its own. Not counted here: Cloud Run's own cost and network egress.
+
 ## In memory
 
 With `AGENT_STORE=memory`, the durable state (cap, daily quota, usage stats) is per instance and resets on every cold start. So in production (`NODE_ENV=production`, set in `agent/Dockerfile`) the agent refuses to start with `AGENT_STORE=memory` and says why, unless `AGENT_ALLOW_MEMORY_STORE=true` accepts it explicitly; the deploy never sets that. The agent is deployed with Cloud Run `--max-instances 1` either way, as the rate limits need it ([above](#rate-limits-are-per-instance)).
@@ -65,7 +104,7 @@ With `AGENT_STORE=firestore` the durable state, the spend cap, the daily quota a
 - **Daily quota**: one document per rate-limit key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (URL-encoded), shaped like the monthly spend document, with `expireAt`, the day's end, for the TTL policy.
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](usage-stats.md#the-weekly-document)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining room of a spend limit.
-- **Cost**: a chat request that runs is five writes, whatever number of model calls it makes: two to reserve (daily quota and spend cap), two to settle and one for its usage stats (checked in `agent/src/spend-writes-http.test.ts`); MCP requests and refusals share one batched usage write per instance every 10 seconds at most ([Usage stats](usage-stats.md#batching)), and a `/stats` call reads two documents. The rate limits write nothing. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
+- **Cost**: what each request costs in store operations, and what a flood at the ceilings costs a day, is in [Store cost](#store-cost).
 
 ### When the store fails
 
