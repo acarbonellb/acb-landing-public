@@ -97,6 +97,28 @@ The deploy uses `firestore` unless the repository variable `AGENT_STORE` says ot
 
 The Cloud Monitoring alert policies: [Logs and alerts](logs-and-alerts.md#alerts-cloud-monitoring).
 
+#### Billing budget
+
+A monthly GCP billing budget for the project warns the owner when the infrastructure bill (Cloud Run, Firestore and the rest of the project) grows. It only alerts: a budget never stops a service or caps the bill, and nothing here turns usage off when it is crossed. The model's spend is separate, held by the [spend cap](guardrails.md) and the provider's own limit.
+
+`scripts/billing-budget.sh` sets it up, with these values:
+
+| Setting | Value |
+| --- | --- |
+| Amount | 5 EUR per calendar month, credits included |
+| Scope | This project only (by project number) |
+| Thresholds | 50%, 90% and 100% of actual spend, and 100% of forecast spend (the month is on track to cross the amount) |
+| Who is notified | By email, the billing account's default recipients: everyone with Billing Account Administrator or Billing Account User on it. No Pub/Sub topic or Monitoring channel |
+
+A threshold emails when the month's spend crosses it. Run it from the owner's machine, whose `gcloud` login has a billing role on the account; the pipeline never runs it, so CI holds no billing or IAM permission:
+
+```sh
+scripts/billing-budget.sh --dry-run acb-landing  # reads only: prints what differs and the command it would run
+scripts/billing-budget.sh acb-landing            # creates the budget, or reconciles the existing one in place
+```
+
+It looks the billing account up from the project and finds the one budget there scoped to this project. A budget made by hand is adopted, never duplicated, and a re-run once it matches changes nothing. Two budgets scoped to the project, or default recipients turned off, stop it without changes. It never prints the billing account id (it shows `<billing account>`), so its output can go in a pull request. Change the values in the script and re-run it; `scripts/billing-budget.test.ts` runs it against a fake `gcloud`.
+
 ### `/mcp` rate-limit check
 
 `scripts/mcp-rate-limit-check.sh`, by hand, never in CI: it uses up your own one-minute `/mcp` window for a minute. Run it once after a deploy that changes the rate limits, the client-IP rule or the Hosting rewrite, from your own machine, and paste its output into the issue; it prints only counts and status codes, never a URL or an address:
