@@ -17,11 +17,24 @@ env:
 # Deploy what was tested: `test` builds the site and the agent bundle
 # once, with production settings, and tests that build; the deploy jobs ship
 # those same artifacts, checked by hash. Actions are pinned by commit SHA,
-# firebase-tools by deploy/firebase-tools/package-lock.json and the agent's
-# base image by version and digest (agent/Dockerfile).
+# firebase-tools by deploy/firebase-tools/package-lock.json, and the agent's
+# base image (agent/Dockerfile) and the Firestore emulator by version and
+# digest.
 jobs:
   test:
     runs-on: ubuntu-latest
+    # The Firestore emulator, for the agent's DocumentStore contract suite
+    # (agent/src/document-store.contract.test.ts). Google's image, pinned by
+    # version and digest; the job starts once it answers.
+    services:
+      firestore-emulator:
+        image: gcr.io/google.com/cloudsdktool/google-cloud-cli:594.0.0-emulators@sha256:4568487af2c00a66e1d3e0f054be208c9c5b499a3999da50428b396e1341e9fd
+        command: gcloud emulators firestore start --host-port=0.0.0.0:8080
+        ports:
+          - 8081:8080
+        options: >-
+          --health-cmd "curl -sf http://localhost:8080/"
+          --health-interval 5s --health-timeout 5s --health-retries 30 --health-start-period 10s
     outputs:
       site-hash: ${{ steps.hash.outputs.site }}
       agent-hash: ${{ steps.hash.outputs.agent }}
@@ -40,6 +53,8 @@ jobs:
       - run: pnpm test
       - run: pnpm agent:lint
       - run: pnpm agent:test
+        env:
+          FIRESTORE_EMULATOR_HOST: localhost:8081
       # Replays the committed eval recordings: no model, no network, no key.
       - run: pnpm agent:eval:replay --check
       - run: pnpm agent:build
