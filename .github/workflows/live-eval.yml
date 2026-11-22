@@ -1,0 +1,51 @@
+name: Weekly live eval check
+
+# Runs every eval case once against the production model (the agent's default,
+# Claude Haiku 5.5) with `pnpm agent:eval:check`, which scores the answers
+# without writing recordings, history, report or summary. On any leak, or a
+# pass rate more than the stated margin below the latest recorded live run, it
+# opens one issue or comments on the one already open (docs/evals.md, "Weekly
+# live check"). It commits nothing. The key comes from the `live-eval`
+# environment, whose secrets only runs on `main` can read (docs/deploy.md,
+# "The weekly live eval check").
+on:
+  schedule:
+    - cron: "41 5 * * 2" # Tuesdays, 05:41 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-eval
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    environment: live-eval
+    permissions:
+      contents: read
+      issues: write # open or comment on the check's issue
+    env:
+      ANTHROPIC_BASE_URL: https://api.anthropic.com
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      AGENT_EVAL_PROVIDER: anthropic
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Logs case names, pass/fail and rates only, never an answer, address or IP.
+      - name: Run the live check
+        run: pnpm agent:eval:check --paid --issue
