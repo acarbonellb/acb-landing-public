@@ -17,7 +17,7 @@ import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
 import { globalKey, type RateLimitDecision, type RateLimiter } from "./rate-limit";
-import type { SpendCap } from "./spend-cap";
+import type { SpendCap, SpendCapStatus } from "./spend-cap";
 import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
 import { logChatRequest, type UsageRecorder } from "./usage";
@@ -328,10 +328,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    // Not awaited: the answer doesn't wait on the weekly document, which every
-    // request writes. The recorder never throws.
-    void usage.recordMcp();
-    return transport.handleRequest(c.req.raw);
+    // Counted alongside the answer, and awaited: a due batch is written
+    // inside this request, while it has the CPU. The recorder never throws.
+    const [res] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
+    return res;
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -394,7 +394,16 @@ export function createApp(deps: AppDeps): Hono {
           resetsAt: quota.resetsAt,
         });
       }
-      const spend = await spendCap.reserve(worstCase);
+      // Whether the spend cap refuses or its store throws, the quota's hold is
+      // settled first: a request that never runs mustn't keep it until it
+      // expires. The error then reaches `app.onError`, which answers `503`.
+      let spend: SpendCapStatus;
+      try {
+        spend = await spendCap.reserve(worstCase);
+      } catch (error) {
+        await quota.reservation.settle();
+        throw error;
+      }
       if (spend.exhausted) {
         await quota.reservation.settle();
         await usage.recordChat({ outcome: "http_503" });
