@@ -133,7 +133,7 @@ async function replay(check: boolean): Promise<number> {
     ),
   );
   for (const problem of problems) console.error(`✗ ${problem}`);
-  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report and summary are up to date");
+  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report, summary and the evals doc's results are up to date");
   return problems.length ? 1 : 0;
 }
 

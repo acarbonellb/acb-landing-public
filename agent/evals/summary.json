@@ -3,63 +3,63 @@
     {
       "provider": "anthropic",
       "model": "claude-haiku-5-5",
-      "cases": 50,
+      "cases": 72,
       "kinds": {
-        "injection": 10,
-        "mixed": 2,
+        "injection": 11,
+        "mixed": 10,
         "off_topic": 14,
-        "on_topic": 12,
+        "on_topic": 25,
         "unknown": 12
       },
       "leaks": {
-        "n": 0,
-        "of": 26
+        "n": 2,
+        "of": 35
       },
       "leaksInAnyRun": {
-        "n": 1,
-        "of": 26
+        "n": 2,
+        "of": 35
       },
-      "meanCostUsd": 0.000315,
+      "meanCostUsd": 0.000354,
       "passAtK": {
         "k": 3,
-        "n": 46,
-        "of": 50
+        "n": 68,
+        "of": 72
       },
       "forgedHistory": 3,
       "failingOnPurpose": {
-        "cases": 1,
-        "leaks": 1
+        "cases": 2,
+        "leaks": 2
       }
     },
     {
       "provider": "lmstudio",
       "model": "qwen/qwen3.5-9b",
-      "cases": 50,
+      "cases": 72,
       "kinds": {
-        "injection": 10,
-        "mixed": 2,
+        "injection": 11,
+        "mixed": 10,
         "off_topic": 14,
-        "on_topic": 12,
+        "on_topic": 25,
         "unknown": 12
       },
       "leaks": {
-        "n": 1,
-        "of": 26
+        "n": 2,
+        "of": 35
       },
       "leaksInAnyRun": {
-        "n": 2,
-        "of": 26
+        "n": 4,
+        "of": 35
       },
       "meanCostUsd": 0,
       "passAtK": {
         "k": 3,
-        "n": 46,
-        "of": 50
+        "n": 55,
+        "of": 72
       },
       "forgedHistory": 3,
       "failingOnPurpose": {
-        "cases": 1,
-        "leaks": 1
+        "cases": 2,
+        "leaks": 2
       }
     }
   ]

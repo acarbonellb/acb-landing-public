@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
-      "latencyMs": 1634,
+      "latencyMs": 2989,
       "events": [
         {
           "type": "input_usage",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "LRPfMg2UsxoM7jjMvgSaTweq3yM4aHVG",
+                "id": "0yHeugvVBXzFW2KhNIvmWsnbZvzxa2eS",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -42,12 +42,12 @@
             "usage": {
               "inputTokens": 2343,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 60
+              "outputTokens": 117
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "LRPfMg2UsxoM7jjMvgSaTweq3yM4aHVG",
+                "id": "0yHeugvVBXzFW2KhNIvmWsnbZvzxa2eS",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -59,8 +59,8 @@
       ]
     },
     {
-      "requestHash": "37764f5a71614ee9540ceb3a8a7b99604daf2fe574e30fec911df1b13bda10d0",
-      "latencyMs": 449,
+      "requestHash": "40068f292358bfa0798d4cfe16112918b1a62b310113898efc0d1c3ee4c35ca3",
+      "latencyMs": 1234,
       "events": [
         {
           "type": "input_usage",
@@ -105,23 +105,39 @@
         },
         {
           "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " programming"
+        },
+        {
+          "type": "text_delta",
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
           "text": "."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto uses TypeScript, JavaScript, and Ruby.",
+            "text": "Alberto uses TypeScript, JavaScript, and Ruby as his programming languages.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2420,
               "cacheReadInputTokens": 1176,
-              "outputTokens": 13
+              "outputTokens": 47
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses TypeScript, JavaScript, and Ruby."
+                "text": "Alberto uses TypeScript, JavaScript, and Ruby as his programming languages."
               }
             ]
           }
@@ -134,7 +150,7 @@
       "calls": [
         {
           "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
-          "latencyMs": 1593,
+          "latencyMs": 2450,
           "events": [
             {
               "type": "input_usage",
@@ -147,7 +163,12 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "BT43a597i33pX6QM3ptRsiynNVNvY6qi",
+                    "id": "JugeqBXqZPeodQazkdBBHYBIrZdRKfij",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "id": "eyjdWexA3DiHLXhORpfVmapdPDwiJ5l3",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -158,12 +179,18 @@
                 "usage": {
                   "inputTokens": 2356,
                   "cacheReadInputTokens": 1176,
-                  "outputTokens": 60
+                  "outputTokens": 100
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "BT43a597i33pX6QM3ptRsiynNVNvY6qi",
+                    "id": "JugeqBXqZPeodQazkdBBHYBIrZdRKfij",
+                    "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "eyjdWexA3DiHLXhORpfVmapdPDwiJ5l3",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -175,12 +202,12 @@
           ]
         },
         {
-          "requestHash": "d50455d69237d9ecc974551466b0904f563ca7900b1be7d8d6d1266f64b0b081",
-          "latencyMs": 1233,
+          "requestHash": "9baaacc08b3d470564bd9494ba89f4f684408b17d469142c91a60cab4197d9ac",
+          "latencyMs": 861,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2420,
+              "inputTokens": 2706,
               "cacheReadInputTokens": 1176
             },
             {
@@ -221,19 +248,59 @@
             },
             {
               "type": "text_delta",
-              "text": " as"
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": " his"
+              "text": " He"
             },
             {
               "type": "text_delta",
-              "text": " programming"
+              "text": " is"
             },
             {
               "type": "text_delta",
-              "text": " languages"
+              "text": " native"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " English"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
+              "text": " C"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": " level"
             },
             {
               "type": "text_delta",
@@ -242,18 +309,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto uses TypeScript, JavaScript, and Ruby as his programming languages.",
+                "text": "Alberto uses TypeScript, JavaScript, and Ruby. He is native in Spanish and speaks English at a C1 level.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2420,
+                  "inputTokens": 2706,
                   "cacheReadInputTokens": 1176,
-                  "outputTokens": 44
+                  "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto uses TypeScript, JavaScript, and Ruby as his programming languages."
+                    "text": "Alberto uses TypeScript, JavaScript, and Ruby. He is native in Spanish and speaks English at a C1 level."
                   }
                 ]
               }
@@ -266,7 +333,7 @@
       "calls": [
         {
           "requestHash": "bfcbd1b60ca1fd2807accd5f2aa3b87edf335074d9fdd43c3a1cfc40d9075efe",
-          "latencyMs": 1590,
+          "latencyMs": 1491,
           "events": [
             {
               "type": "input_usage",
@@ -279,7 +346,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "Yz96SK84Ksyo88IboJZLN61HNVVE33GR",
+                    "id": "Vxnv7fdbTh4LT3Cvpun3mfPuCIQHga1W",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -295,7 +362,7 @@
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "Yz96SK84Ksyo88IboJZLN61HNVVE33GR",
+                    "id": "Vxnv7fdbTh4LT3Cvpun3mfPuCIQHga1W",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -307,8 +374,8 @@
           ]
         },
         {
-          "requestHash": "0cba39ff62af163d6ba9058fc36cf1746894a200490140d8d9afb1454d4b503b",
-          "latencyMs": 1807,
+          "requestHash": "4b80c18985882f46d63092126bd5324d6fd436d0ffd00c74695a21033e583949",
+          "latencyMs": 1209,
           "events": [
             {
               "type": "input_usage",
@@ -380,7 +447,7 @@
                 "usage": {
                   "inputTokens": 2420,
                   "cacheReadInputTokens": 1176,
-                  "outputTokens": 67
+                  "outputTokens": 46
                 },
                 "providerContent": [
                   {

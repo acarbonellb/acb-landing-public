@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
-      "latencyMs": 2881,
+      "latencyMs": 2765,
       "events": [
         {
           "type": "input_usage",
@@ -52,6 +52,18 @@
         {
           "type": "text_delta",
           "text": "áticas"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
+        },
+        {
+          "type": "text_delta",
+          "text": " trivia"
+        },
+        {
+          "type": "text_delta",
+          "text": " general"
         },
         {
           "type": "text_delta",
@@ -131,15 +143,15 @@
         },
         {
           "type": "text_delta",
-          "text": " cómo"
+          "text": " sus"
         },
         {
           "type": "text_delta",
-          "text": " contact"
+          "text": " habilidades"
         },
         {
           "type": "text_delta",
-          "text": "arlo"
+          "text": " técnicas"
         },
         {
           "type": "text_delta",
@@ -148,18 +160,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o cómo contactarlo?",
+            "text": "No puedo responder preguntas de matemáticas o trivia general. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2386,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 107
+              "outputTokens": 109
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No puedo responder preguntas de matemáticas. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o cómo contactarlo?"
+                "text": "No puedo responder preguntas de matemáticas o trivia general. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?"
               }
             ]
           }
@@ -172,7 +184,7 @@
       "calls": [
         {
           "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
-          "latencyMs": 3274,
+          "latencyMs": 3053,
           "events": [
             {
               "type": "input_usage",
@@ -181,43 +193,7 @@
             },
             {
               "type": "text_delta",
-              "text": "S"
-            },
-            {
-              "type": "text_delta",
-              "text": "oy"
-            },
-            {
-              "type": "text_delta",
-              "text": " el"
-            },
-            {
-              "type": "text_delta",
-              "text": " agente"
-            },
-            {
-              "type": "text_delta",
-              "text": " del"
-            },
-            {
-              "type": "text_delta",
-              "text": " portfolio"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " Alberto"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " solo"
+              "text": "No"
             },
             {
               "type": "text_delta",
@@ -233,11 +209,11 @@
             },
             {
               "type": "text_delta",
-              "text": " sobre"
+              "text": " matem"
             },
             {
               "type": "text_delta",
-              "text": " él"
+              "text": "áticas"
             },
             {
               "type": "text_delta",
@@ -265,7 +241,35 @@
             },
             {
               "type": "text_delta",
-              "text": " sus"
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
             },
             {
               "type": "text_delta",
@@ -285,15 +289,19 @@
             },
             {
               "type": "text_delta",
-              "text": " su"
+              "text": " stack"
             },
             {
               "type": "text_delta",
-              "text": " experiencia"
+              "text": " tecnológico"
             },
             {
               "type": "text_delta",
-              "text": " laboral"
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " educación"
             },
             {
               "type": "text_delta",
@@ -322,18 +330,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Soy el agente del portfolio de Alberto y solo puedo responder preguntas sobre él. ¿Te gustaría saber sobre sus proyectos de IA, su experiencia laboral o cómo contactar con él?",
+                "text": "No puedo responder preguntas matemáticas. ¿Te gustaría saber sobre Alberto: su perfil, experiencia laboral, proyectos de IA, stack tecnológico, educación o cómo contactar con él?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2442,
                   "cacheReadInputTokens": 1219,
-                  "outputTokens": 125
+                  "outputTokens": 124
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Soy el agente del portfolio de Alberto y solo puedo responder preguntas sobre él. ¿Te gustaría saber sobre sus proyectos de IA, su experiencia laboral o cómo contactar con él?"
+                    "text": "No puedo responder preguntas matemáticas. ¿Te gustaría saber sobre Alberto: su perfil, experiencia laboral, proyectos de IA, stack tecnológico, educación o cómo contactar con él?"
                   }
                 ]
               }
@@ -346,7 +354,7 @@
       "calls": [
         {
           "requestHash": "feaf5cdc5f27cccfa6d90ddddfcaa4202c305cc16b38af5851fd228a9b289514",
-          "latencyMs": 2857,
+          "latencyMs": 2677,
           "events": [
             {
               "type": "input_usage",
@@ -383,15 +391,15 @@
             },
             {
               "type": "text_delta",
-              "text": " trivia"
+              "text": " de"
             },
             {
               "type": "text_delta",
-              "text": "les"
+              "text": " otro"
             },
             {
               "type": "text_delta",
-              "text": " generales"
+              "text": " tipo"
             },
             {
               "type": "text_delta",
@@ -488,18 +496,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "No puedo responder preguntas matemáticas o triviales generales. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?",
+                "text": "No puedo responder preguntas matemáticas o de otro tipo. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2442,
                   "cacheReadInputTokens": 1219,
-                  "outputTokens": 108
+                  "outputTokens": 109
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "No puedo responder preguntas matemáticas o triviales generales. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?"
+                    "text": "No puedo responder preguntas matemáticas o de otro tipo. ¿Te gustaría saber sobre los proyectos de IA que ha construido, su experiencia laboral o sus habilidades técnicas?"
                   }
                 ]
               }

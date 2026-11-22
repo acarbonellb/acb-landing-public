@@ -1,0 +1,592 @@
+{
+  "caseId": "mx10",
+  "slug": "current-job-and-recipe-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+      "latencyMs": 777,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1690,
+          "cacheWriteInputTokens": 1686
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_017XZskd7G59CHKFiJSax38D",
+                "name": "get_experience",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1690,
+              "cacheWriteInputTokens": 1686,
+              "outputTokens": 92
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSkwYKEAgUGAI4AUIIdGhpbmtpbmcSDG05TCKylhXItH1cEhoMfVFSxTA9j4sEBdJhIjDgVbYTAkRXauHDK3jJxQ/LBp1A7CunFrz7qd4VCGTxYixm+NUuCpIi94DSdrfVjoMqsAUXuUu5IVe80I5WwQPzBnaMeugTBYFiJ7SvyixQKKz0+aF7sslROwlYPAvdc4PoVLNLh1lwyEgNDTT/+uDgSlL+mTKItHGz44HDkpQ/O4KYMutAV0svRxUVZNdG6Q/Wl8y6lgeeGlVmj31NEX4jrWQs2YnuWTdsDAALBREcBl0BtjCmX5RWSOvM4Om/F+NdibsooJb9JdktXXWWatdq8FZBhf7qRu0W3e15EB2OT45TaZQQB12O9Z+XBYqT0gZ93kzaO1y4Vixmx4Qjc4JzG91n+H8P2llUz4vLPPn7HW/py/MX0TeE8uGIpCPfTnTHgLMnqgUOfQNplZVlbXqCU1hUcRuwJVdHp/nZzPAeWmo2E6M+JGFHdMOZAMFrGdxnudwElvkhkEneZp66vcTgqjoDMqwMcuqeA3PS6kc+OJ1d56WgprS7d7zQq2FhiJuQ+kxy+FpMv330dMcijzFPbxthHbU+pDdnsqDkMRHzlAHkg2wx9JLyeHQnUUDE30tDAemG2Z1ge8AhbEXRkG6tAstWVyHon+kC8dZVcdcpVNS8ad56I52UBNS0dT292qRORj0s72brv2sKpJrB3tf8PMfvJsbZYkSuZdu19KlV7gD7Cffyv7ZX9Xc883LiAeC5YN7npqQrPAbtOfEarf6v0yM77Qiu2apZczVfNPtt1Y5HoC3EiEbnLIifYCeXF0fw7Kfu1UgYiGNpCCF+HzkTyUCkll8pe8HXHK9/Nrntg7ZMz5ilL6SVpYkLCCj6fk+Y26FdXsuOVzmOhChpeQfX01j2tJb/Izo7RLSLg7dpbFn1bx3z48epJqL/5klBJzyjRLcbLo9wQAGf5TLvyG88USNPPNnxEpE6Tv3hrSA2nXsm/dlWqJFkMukNSYdUavHqrxZ0n3V/oPV0fqG4877H6ID/GAE="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_017XZskd7G59CHKFiJSax38D",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f32426d420ad946416957c3b7424d4b112ad15f5c00033af0af08be6e76668e6",
+      "latencyMs": 1027,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2317,
+          "cacheWriteInputTokens": 629,
+          "cacheReadInputTokens": 1686
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abaja actualmente como"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior Software Engine"
+        },
+        {
+          "type": "text_delta",
+          "text": "er en **"
+        },
+        {
+          "type": "text_delta",
+          "text": "CoverWallet** ("
+        },
+        {
+          "type": "text_delta",
+          "text": "Madrid / rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "oto),"
+        },
+        {
+          "type": "text_delta",
+          "text": " desde 2019."
+        },
+        {
+          "type": "text_delta",
+          "text": " Es una plataforma ins"
+        },
+        {
+          "type": "text_delta",
+          "text": "urtech que integra a"
+        },
+        {
+          "type": "text_delta",
+          "text": "seguradoras extern"
+        },
+        {
+          "type": "text_delta",
+          "text": "as en un"
+        },
+        {
+          "type": "text_delta",
+          "text": " único flujo de compra."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nNo"
+        },
+        {
+          "type": "text_delta",
+          "text": " puedo ay"
+        },
+        {
+          "type": "text_delta",
+          "text": "udarte con la receta de"
+        },
+        {
+          "type": "text_delta",
+          "text": " la tortilla de patat"
+        },
+        {
+          "type": "text_delta",
+          "text": "as, "
+        },
+        {
+          "type": "text_delta",
+          "text": "ya que solo resp"
+        },
+        {
+          "type": "text_delta",
+          "text": "ondo pre"
+        },
+        {
+          "type": "text_delta",
+          "text": "guntas sobre Al"
+        },
+        {
+          "type": "text_delta",
+          "text": "berto y su trabajo"
+        },
+        {
+          "type": "text_delta",
+          "text": ". ¿Qu"
+        },
+        {
+          "type": "text_delta",
+          "text": "ieres saber s"
+        },
+        {
+          "type": "text_delta",
+          "text": "obre sus proyectos"
+        },
+        {
+          "type": "text_delta",
+          "text": " con agentes de IA o"
+        },
+        {
+          "type": "text_delta",
+          "text": " su experiencia profesional"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia profesional?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2317,
+              "cacheWriteInputTokens": 629,
+              "cacheReadInputTokens": 1686,
+              "outputTokens": 167
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en **CoverWallet** (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia profesional?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+          "latencyMs": 806,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1690,
+              "cacheReadInputTokens": 1686
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01GEKLxB6ubX3tqm16yXRX9k",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1690,
+                  "cacheReadInputTokens": 1686,
+                  "outputTokens": 80
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS+QUKEAgUGAI4AUIIdGhpbmtpbmcSDLterzwiwscU2V5ASRoMoY3lF/080LYWuJtnIjDe//Nz4E9f2HOvwXTOiv7VakPP0Qsy7oOFLo6X7PzduHyV909sqL5Uy6pgTKd/ts0qlgU/2ya3bsjvZQ11kX/e73KGh+NG9YMLL+pW/SeOm2kejOOlU117/fWXdo7YmlhtyDemfhmqBsGTQzxLCvFKcsjxmc+3Z1/gABlPyTT1Eh3Nw2asXFdKytcP7a6qyRxgq4bkUnaBCSK8KrvI2OgZ4M83xmjx5OlXDUrfwZQGC8Ap9nC8m7L7Qfw6wZ5kDp90T/R3jFifRd9Pd05kKyxbv2gnXf/e94xvH69WaX44vodPVghg22YI1wxk22t+c3nM/qD8dmOW6qdA2K6mloA/tXr3TOuTnJ4Ahfsf11gZnSV0GOWGw8cFZY07dsm1q7fIp0gClmcZRZdroTphg11QNqiI/lDk4DG8okHCYQ1EQNSwo7k+oBBeSwGb6Q/yBANhwA3oIBxrTh9KDwXX5Fi1puwoQu6wFs2MZk96tEcqRxrxPDVJGcVQ622LycjBp6e8BH8KHyW/Sd3u+RS+jDC3MmrHEHwH4UunSrAiA/s9zxsOGwgoEyFsmJ66qVHKyOcHdQgoKlbRNXFyPiiAMqNTZZvz6N0qJbyDJbUrHnX6FEs0bzf2Y64sP8PA3j2woGFGjdTXD5j1RyKI5wXeVVrh/NQtZyljV5ldpStkiau1gRiF+8/5P6PMMAFgMjpyDwfP8JKgtLY5WxFMFmo35l6m0vWunkpBJB+GgycMf4P4Yf0DnJVm4m40BaYoaxMpwbT1mwKfGipNx6T66z6fPONH7Alpw6IxLxxCjbN11rZf0Lv3p1LdIg9qOswQmu00EzQEONAAIBT1fWcbciW/Go9JywqPopVtc6CwJeLLf3WrVNs+T+zXvj0hsyFPc95mGZn3/nnLwYD7I42fu8ZpX6ACFW5iorayl08HZZHgzzros6Fe5QSQUtTH1xgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01GEKLxB6ubX3tqm16yXRX9k",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "857fdf252637ecfc78b24da248e0c70408f342dbdec6a58ca59836ff6e9f5b28",
+          "latencyMs": 987,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2305,
+              "cacheWriteInputTokens": 617,
+              "cacheReadInputTokens": 1686
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja actualmente como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er en CoverWallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto),"
+            },
+            {
+              "type": "text_delta",
+              "text": " desde 2019."
+            },
+            {
+              "type": "text_delta",
+              "text": " Es"
+            },
+            {
+              "type": "text_delta",
+              "text": " una plataforma ins"
+            },
+            {
+              "type": "text_delta",
+              "text": "urtech que integra a"
+            },
+            {
+              "type": "text_delta",
+              "text": "seguradoras extern"
+            },
+            {
+              "type": "text_delta",
+              "text": "as en un"
+            },
+            {
+              "type": "text_delta",
+              "text": " único flujo de comp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra.\n\nSobre la"
+            },
+            {
+              "type": "text_delta",
+              "text": " t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ortilla de patatas,"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo puedo responder pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto y su trab"
+            },
+            {
+              "type": "text_delta",
+              "text": "ajo. ¿Qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres saber s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre sus proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " con agentes de IA o"
+            },
+            {
+              "type": "text_delta",
+              "text": " su experiencia profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nSobre la tortilla de patatas, solo puedo responder preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia profesional?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2305,
+                  "cacheWriteInputTokens": 617,
+                  "cacheReadInputTokens": 1686,
+                  "outputTokens": 154
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nSobre la tortilla de patatas, solo puedo responder preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus proyectos con agentes de IA o su experiencia profesional?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+          "latencyMs": 765,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1690,
+              "cacheReadInputTokens": 1686
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01Wy92gw9YweAQzgYtVjcuxt",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1690,
+                  "cacheReadInputTokens": 1686,
+                  "outputTokens": 68
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSywUKEAgUGAI4AUIIdGhpbmtpbmcSDN6Nlf2L/nCvAquVtRoMD1C19uZVvG2Amx6qIjCVYpIzN3ZW71VK9tZQ1+Ahs4a+cv2M6X0/8hibgFm0BtcaPWBauL4s1d0LtaGFjkIq6ATU+coasyzKMi7LgnUYWccTVQp2UmjVFyvJB+bYKSKWgr7w1dSlRuZpUmSnzpPdQ9rUIUWnAM47YWQm8xNIxdXNhbM+uGaTpbTibqh+zCNjx7Af7GFOBwF5qyBf87TSr1t4iQCMToLhErnzLLjvpXjYLqCbC1uIAuMjc4wCfmW7R9wAL5Ezu26QDeLPBlffy8Ek6qLBZZdqsFz6M8X2/qlHE3iHRjaj8Wq/tcEPczZsrZyK4yR6sMc7OZdi12A9GlSHSOpBafvw57JB31AJ5TxVuV76NDn4E/OIsJV9il9gohHAi6YnMdM6/PcoYropO5Gwo6bbrQTjWnnlSn6Mjq/zcpdhNT8fzZSoOGarkmS6cimA667QBcMjk6MRpykyDTnY70oql+Dn8wu2LKSQlZP0CuOYUM4LEyPF5FaFQWyZO9mm5vTljgX/LGSN7Smt+hdkhClfMrfbhSyLXu8A61fd0HcnNCtj8R44CbieLVbmUDb7BS/GNYd65TBuBqbL02KTUjFHxjfeE+STwihA7aARrsO2eJTe+cBee7CSJiuh2oBRfQWOpKMxp/1h5U5XAV+r19g6/E2IpEBgB2m9EZvycYv5+wY6QvJGIO9Fu80A8Cyzh1VE6MSrnlM1D6dLRsBImOSxHhDnNtKxepzYgMys+cnlCTiekW/+VpqIeG0ostftCvfbWvDwBjnB8Zv6p7KCALUKnxvXsIuQ/AAT7CKFSoUC2OhUo7ml5zLVXtHkgVA3Cu0yHVRUJYcMEf3btJxIYy0GIF4WK46pCPNM6wcAyWme8yRhPgI/fxLZxI2QmEoLs1lPddIwGAE="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01Wy92gw9YweAQzgYtVjcuxt",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "d1d2a934a1d997053d401e448bf5c9994e69baa29bcf7c56ecb42c402e8425f2",
+          "latencyMs": 1047,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2293,
+              "cacheWriteInputTokens": 605,
+              "cacheReadInputTokens": 1686
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja actualmente como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er en CoverWallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto),"
+            },
+            {
+              "type": "text_delta",
+              "text": " desde 2019."
+            },
+            {
+              "type": "text_delta",
+              "text": " Es una plataforma ins"
+            },
+            {
+              "type": "text_delta",
+              "text": "urtech que integra a"
+            },
+            {
+              "type": "text_delta",
+              "text": "seguradoras extern"
+            },
+            {
+              "type": "text_delta",
+              "text": "as en un"
+            },
+            {
+              "type": "text_delta",
+              "text": " único flujo de comp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra.\n\nNo"
+            },
+            {
+              "type": "text_delta",
+              "text": " pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo ay"
+            },
+            {
+              "type": "text_delta",
+              "text": "udarte con la rece"
+            },
+            {
+              "type": "text_delta",
+              "text": "ta de la tortilla de"
+            },
+            {
+              "type": "text_delta",
+              "text": " patatas, ya que sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o resp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ondo preguntas sob"
+            },
+            {
+              "type": "text_delta",
+              "text": "re Alberto y su tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abajo. ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres saber s"
+            },
+            {
+              "type": "text_delta",
+              "text": "obre sus ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de IA o su exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "iencia profesional?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus agentes de IA o su experiencia profesional?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2293,
+                  "cacheWriteInputTokens": 605,
+                  "cacheReadInputTokens": 1686,
+                  "outputTokens": 160
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber sobre sus agentes de IA o su experiencia profesional?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

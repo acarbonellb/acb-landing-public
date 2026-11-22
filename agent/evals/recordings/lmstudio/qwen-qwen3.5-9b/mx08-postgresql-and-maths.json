@@ -1,0 +1,634 @@
+{
+  "caseId": "mx08",
+  "slug": "postgresql-and-maths",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+      "latencyMs": 4631,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2352,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "5qMklkDzKxvBqVGA3DMZrLmnoPmE03EN",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2352,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 189
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "5qMklkDzKxvBqVGA3DMZrLmnoPmE03EN",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "ea151f9a962f68758c2a83603a87957580bf8a848d843f35af48c1889068c831",
+      "latencyMs": 957,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2455,
+          "cacheReadInputTokens": 1185
+        },
+        {
+          "type": "text_delta",
+          "text": "Yes"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " uses"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Regarding"
+        },
+        {
+          "type": "text_delta",
+          "text": " your"
+        },
+        {
+          "type": "text_delta",
+          "text": " second"
+        },
+        {
+          "type": "text_delta",
+          "text": " question"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " only"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Would"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " know"
+        },
+        {
+          "type": "text_delta",
+          "text": " more"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Yes, Alberto uses PostgreSQL. Regarding your second question, I can only answer questions about Alberto. Would you like to know more about his work experience or projects?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2455,
+              "cacheReadInputTokens": 1185,
+              "outputTokens": 35
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Yes, Alberto uses PostgreSQL. Regarding your second question, I can only answer questions about Alberto. Would you like to know more about his work experience or projects?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+          "latencyMs": 6351,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2374,
+              "cacheReadInputTokens": 1185
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "YMkhUi4e6NxGmM4YzseqMzJ9FMmTy4gk",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2374,
+                  "cacheReadInputTokens": 1185,
+                  "outputTokens": 262
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "YMkhUi4e6NxGmM4YzseqMzJ9FMmTy4gk",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "fc3dc497d120db05fcc07e1512444c66241fef497d1827014652f539b2919d8a",
+          "latencyMs": 738,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2455,
+              "cacheReadInputTokens": 1185
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " uses"
+            },
+            {
+              "type": "text_delta",
+              "text": " PostgreSQL"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " As"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " math"
+            },
+            {
+              "type": "text_delta",
+              "text": " question"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "3"
+            },
+            {
+              "type": "text_delta",
+              "text": " times"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "7"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, Alberto uses PostgreSQL. As for the math question, 13 times 7 is 91.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2455,
+                  "cacheReadInputTokens": 1185,
+                  "outputTokens": 26
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, Alberto uses PostgreSQL. As for the math question, 13 times 7 is 91."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+          "latencyMs": 4967,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2374,
+              "cacheReadInputTokens": 1185
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "zLCu2cgkAy2YFChxSkmtLq9iBm5Ra6BK",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2374,
+                  "cacheReadInputTokens": 1185,
+                  "outputTokens": 204
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "zLCu2cgkAy2YFChxSkmtLq9iBm5Ra6BK",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "25890b494d796720a0a3cec1c245fc4eaf64570afcacced66bd3c7cf7b0f8119",
+          "latencyMs": 2379,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2455,
+              "cacheReadInputTokens": 1185
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " uses"
+            },
+            {
+              "type": "text_delta",
+              "text": " PostgreSQL"
+            },
+            {
+              "type": "text_delta",
+              "text": ";"
+            },
+            {
+              "type": "text_delta",
+              "text": " it"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " part"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " backend"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " data"
+            },
+            {
+              "type": "text_delta",
+              "text": " skills"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nI"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, Alberto uses PostgreSQL; it's part of his backend and data skills.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2455,
+                  "cacheReadInputTokens": 1185,
+                  "outputTokens": 94
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, Alberto uses PostgreSQL; it's part of his backend and data skills.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

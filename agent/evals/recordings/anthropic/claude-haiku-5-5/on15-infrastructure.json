@@ -1,0 +1,441 @@
+{
+  "caseId": "on15",
+  "slug": "infrastructure",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+      "latencyMs": 657,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1671,
+          "cacheWriteInputTokens": 1667
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_018DKgRsKpCmAg12zFhpQZ46",
+                "name": "get_stack",
+                "input": {
+                  "group": "infra"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1671,
+              "cacheWriteInputTokens": 1667,
+              "outputTokens": 49
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_018DKgRsKpCmAg12zFhpQZ46",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "infra"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "4808cfa2b447a9b54c4e4d2afc626993667da52f3f827adbf41cf2c32ee13d20",
+      "latencyMs": 769,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1787,
+          "cacheWriteInputTokens": 118,
+          "cacheReadInputTokens": 1667
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's"
+        },
+        {
+          "type": "text_delta",
+          "text": " infrastructure and clo"
+        },
+        {
+          "type": "text_delta",
+          "text": "ud skills include:"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n- **Contain"
+        },
+        {
+          "type": "text_delta",
+          "text": "ers and"
+        },
+        {
+          "type": "text_delta",
+          "text": " orchestration:** Doc"
+        },
+        {
+          "type": "text_delta",
+          "text": "ker, Kubernetes"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **CI/CD"
+        },
+        {
+          "type": "text_delta",
+          "text": ":** CircleCI"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **C"
+        },
+        {
+          "type": "text_delta",
+          "text": "loud and hosting:**"
+        },
+        {
+          "type": "text_delta",
+          "text": " G"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP, Vercel,"
+        },
+        {
+          "type": "text_delta",
+          "text": " Railway\n- **Datab"
+        },
+        {
+          "type": "text_delta",
+          "text": "ases:** Neon"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Cloud and hosting:** GCP, Vercel, Railway\n- **Databases:** Neon",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1787,
+              "cacheWriteInputTokens": 118,
+              "cacheReadInputTokens": 1667,
+              "outputTokens": 94
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Cloud and hosting:** GCP, Vercel, Railway\n- **Databases:** Neon"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+          "latencyMs": 637,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1671,
+              "cacheReadInputTokens": 1667
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01TQAQGUyUXWgF1QgCvGpneo",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1671,
+                  "cacheReadInputTokens": 1667,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01TQAQGUyUXWgF1QgCvGpneo",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "b223d9b6097c6eb176ce99388cf1f1fd4e376906a71b8a55fa82a86fab475e01",
+          "latencyMs": 812,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1787,
+              "cacheReadInputTokens": 1785
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " infrastructure and clo"
+            },
+            {
+              "type": "text_delta",
+              "text": "ud skills include"
+            },
+            {
+              "type": "text_delta",
+              "text": ":\n\n- **Contain"
+            },
+            {
+              "type": "text_delta",
+              "text": "ers and"
+            },
+            {
+              "type": "text_delta",
+              "text": " orchestration:** Doc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ker, Kubernetes"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n- **CI/CD"
+            },
+            {
+              "type": "text_delta",
+              "text": ":** CircleCI"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n- **Hosting and plat"
+            },
+            {
+              "type": "text_delta",
+              "text": "forms:** Vercel"
+            },
+            {
+              "type": "text_delta",
+              "text": ", Railway"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n- **Datab"
+            },
+            {
+              "type": "text_delta",
+              "text": "ases:** Neon\n-"
+            },
+            {
+              "type": "text_delta",
+              "text": " **Cloud:**"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google Cloud Platform"
+            },
+            {
+              "type": "text_delta",
+              "text": " (GCP)"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Hosting and platforms:** Vercel, Railway\n- **Databases:** Neon\n- **Cloud:** Google Cloud Platform (GCP)",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1787,
+                  "cacheReadInputTokens": 1785,
+                  "outputTokens": 113
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Hosting and platforms:** Vercel, Railway\n- **Databases:** Neon\n- **Cloud:** Google Cloud Platform (GCP)"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+          "latencyMs": 693,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1671,
+              "cacheReadInputTokens": 1667
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01DYXTdRMfQeHowx8KEzsVKg",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1671,
+                  "cacheReadInputTokens": 1667,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01DYXTdRMfQeHowx8KEzsVKg",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "d985d9edc02f669117fd3106447b377534742d33ca1b93c000f43e7e90020c7d",
+          "latencyMs": 730,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1787,
+              "cacheReadInputTokens": 1785
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " infrastructure and clo"
+            },
+            {
+              "type": "text_delta",
+              "text": "ud skills include"
+            },
+            {
+              "type": "text_delta",
+              "text": ":\n\n- **Contain"
+            },
+            {
+              "type": "text_delta",
+              "text": "ers and"
+            },
+            {
+              "type": "text_delta",
+              "text": " orchestration:** Doc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ker, Kubernetes"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n- **CI/CD"
+            },
+            {
+              "type": "text_delta",
+              "text": ":** CircleCI"
+            },
+            {
+              "type": "text_delta",
+              "text": "\n- **Cloud and h"
+            },
+            {
+              "type": "text_delta",
+              "text": "osting:** G"
+            },
+            {
+              "type": "text_delta",
+              "text": "CP, Vercel,"
+            },
+            {
+              "type": "text_delta",
+              "text": " Railway\n- **Datab"
+            },
+            {
+              "type": "text_delta",
+              "text": "ases:** Neon"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Cloud and hosting:** GCP, Vercel, Railway\n- **Databases:** Neon",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1787,
+                  "cacheReadInputTokens": 1785,
+                  "outputTokens": 94
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's infrastructure and cloud skills include:\n\n- **Containers and orchestration:** Docker, Kubernetes\n- **CI/CD:** CircleCI\n- **Cloud and hosting:** GCP, Vercel, Railway\n- **Databases:** Neon"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

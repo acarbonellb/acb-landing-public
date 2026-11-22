@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
-      "latencyMs": 3994,
+      "latencyMs": 8378,
       "events": [
         {
           "type": "input_usage",
@@ -31,12 +31,12 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "21SwZnoRYqhxezCyVONdj0qSNsKjlqnI",
+                "id": "XIKNE2GaSrAY8Rl4GGMXK2MN5YUSbtm6",
                 "name": "get_profile",
                 "input": {}
               },
               {
-                "id": "GK716IiLh6fFJsyd9kH3rdkAxkHH26D0",
+                "id": "XKY9UOYraJTGII9K7J0hUx95oAvXU0bI",
                 "name": "get_contact",
                 "input": {}
               }
@@ -45,18 +45,18 @@
             "usage": {
               "inputTokens": 2350,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 152
+              "outputTokens": 344
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "21SwZnoRYqhxezCyVONdj0qSNsKjlqnI",
+                "id": "XIKNE2GaSrAY8Rl4GGMXK2MN5YUSbtm6",
                 "name": "get_profile",
                 "input": {}
               },
               {
                 "type": "tool_use",
-                "id": "GK716IiLh6fFJsyd9kH3rdkAxkHH26D0",
+                "id": "XKY9UOYraJTGII9K7J0hUx95oAvXU0bI",
                 "name": "get_contact",
                 "input": {}
               }
@@ -66,8 +66,8 @@
       ]
     },
     {
-      "requestHash": "79c63a9c48cf6fa4a8de9d5f75cd3ca480db46d619106a4e548e31a2eb6261b7",
-      "latencyMs": 1623,
+      "requestHash": "5dc283e3e07ef2399c9e526416b60d68ce902102a8abb95e50349d9cb8291e1b",
+      "latencyMs": 1418,
       "events": [
         {
           "type": "input_usage",
@@ -168,11 +168,11 @@
         },
         {
           "type": "text_delta",
-          "text": " cuándo"
+          "text": " si"
         },
         {
           "type": "text_delta",
-          "text": " podría"
+          "text": " puede"
         },
         {
           "type": "text_delta",
@@ -184,23 +184,23 @@
         },
         {
           "type": "text_delta",
-          "text": " y"
-        },
-        {
-          "type": "text_delta",
-          "text": " si"
-        },
-        {
-          "type": "text_delta",
-          "text": " está"
-        },
-        {
-          "type": "text_delta",
-          "text": " disponible"
-        },
-        {
-          "type": "text_delta",
           "text": " ya"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
+        },
+        {
+          "type": "text_delta",
+          "text": " cuándo"
+        },
+        {
+          "type": "text_delta",
+          "text": " podría"
+        },
+        {
+          "type": "text_delta",
+          "text": " hacerlo"
         },
         {
           "type": "text_delta",
@@ -244,27 +244,11 @@
         },
         {
           "type": "text_delta",
-          "text": " ("
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": "al"
-        },
-        {
-          "type": "text_delta",
-          "text": "berto"
-        },
-        {
-          "type": "text_delta",
-          "text": "@example"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": ")"
+          "text": " LinkedIn"
         },
         {
           "type": "text_delta",
@@ -272,7 +256,7 @@
         },
         {
           "type": "text_delta",
-          "text": " LinkedIn"
+          "text": " GitHub"
         },
         {
           "type": "text_delta",
@@ -281,18 +265,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, lo mejor es contactar directamente con él por email (alberto@example.com) o LinkedIn.",
+            "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber si puede incorporarse ya o cuándo podría hacerlo, lo mejor es contactar directamente con él por email, LinkedIn o GitHub.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2742,
               "cacheReadInputTokens": 1183,
-              "outputTokens": 54
+              "outputTokens": 50
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber cuándo podría incorporarse y si está disponible ya, lo mejor es contactar directamente con él por email (alberto@example.com) o LinkedIn."
+                "text": "No tengo información sobre su disponibilidad actual, periodo de preaviso o fecha de incorporación en su perfil. Para saber si puede incorporarse ya o cuándo podría hacerlo, lo mejor es contactar directamente con él por email, LinkedIn o GitHub."
               }
             ]
           }
@@ -305,7 +289,7 @@
       "calls": [
         {
           "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
-          "latencyMs": 2757,
+          "latencyMs": 4214,
           "events": [
             {
               "type": "input_usage",
@@ -318,7 +302,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "3awaqLlgk9KNLzFHNmAIvOxXRlW1p8uR",
+                    "id": "lVb9PQdp4LWHDo6FGtFhVHnw9zOxeE3d",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -327,12 +311,12 @@
                 "usage": {
                   "inputTokens": 2370,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 105
+                  "outputTokens": 170
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "3awaqLlgk9KNLzFHNmAIvOxXRlW1p8uR",
+                    "id": "lVb9PQdp4LWHDo6FGtFhVHnw9zOxeE3d",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -342,8 +326,8 @@
           ]
         },
         {
-          "requestHash": "c1f2baa4f51f6c2f295d850ebf6293d71f1c89de6694509414f922c9b3eb0417",
-          "latencyMs": 1680,
+          "requestHash": "44856905f84f595439ea815f738edeaaf8aeb023a01b59161de8635363e721d7",
+          "latencyMs": 1394,
           "events": [
             {
               "type": "input_usage",
@@ -392,15 +376,19 @@
             },
             {
               "type": "text_delta",
-              "text": " su"
+              "text": " si"
             },
             {
               "type": "text_delta",
-              "text": " disponibilidad"
+              "text": " está"
             },
             {
               "type": "text_delta",
-              "text": " actual"
+              "text": " disponible"
+            },
+            {
+              "type": "text_delta",
+              "text": " ya"
             },
             {
               "type": "text_delta",
@@ -408,11 +396,7 @@
             },
             {
               "type": "text_delta",
-              "text": " Según"
-            },
-            {
-              "type": "text_delta",
-              "text": " su"
+              "text": " Su"
             },
             {
               "type": "text_delta",
@@ -420,23 +404,31 @@
             },
             {
               "type": "text_delta",
+              "text": " no"
+            },
+            {
+              "type": "text_delta",
+              "text": " incluye"
+            },
+            {
+              "type": "text_delta",
+              "text": " detalles"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " disponibilidad"
+            },
+            {
+              "type": "text_delta",
               "text": ","
             },
             {
               "type": "text_delta",
-              "text": " es"
-            },
-            {
-              "type": "text_delta",
-              "text": " un"
-            },
-            {
-              "type": "text_delta",
-              "text": " ingen"
-            },
-            {
-              "type": "text_delta",
-              "text": "iero"
+              "text": " periodo"
             },
             {
               "type": "text_delta",
@@ -444,19 +436,23 @@
             },
             {
               "type": "text_delta",
-              "text": " software"
+              "text": " pre"
             },
             {
               "type": "text_delta",
-              "text": " senior"
+              "text": "av"
             },
             {
               "type": "text_delta",
-              "text": " que"
+              "text": "iso"
             },
             {
               "type": "text_delta",
-              "text": " trabaja"
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " fechas"
             },
             {
               "type": "text_delta",
@@ -464,23 +460,7 @@
             },
             {
               "type": "text_delta",
-              "text": " forma"
-            },
-            {
-              "type": "text_delta",
-              "text": " rem"
-            },
-            {
-              "type": "text_delta",
-              "text": "ota"
-            },
-            {
-              "type": "text_delta",
-              "text": " desde"
-            },
-            {
-              "type": "text_delta",
-              "text": " España"
+              "text": " inicio"
             },
             {
               "type": "text_delta",
@@ -492,19 +472,7 @@
             },
             {
               "type": "text_delta",
-              "text": " conocer"
-            },
-            {
-              "type": "text_delta",
-              "text": " detalles"
-            },
-            {
-              "type": "text_delta",
-              "text": " específicos"
-            },
-            {
-              "type": "text_delta",
-              "text": " sobre"
+              "text": " saber"
             },
             {
               "type": "text_delta",
@@ -512,23 +480,11 @@
             },
             {
               "type": "text_delta",
-              "text": " disponibilidad"
+              "text": " situación"
             },
             {
               "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " proceso"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " incorporación"
+              "text": " actual"
             },
             {
               "type": "text_delta",
@@ -540,11 +496,11 @@
             },
             {
               "type": "text_delta",
-              "text": " sug"
+              "text": " recom"
             },
             {
               "type": "text_delta",
-              "text": "iero"
+              "text": "iendo"
             },
             {
               "type": "text_delta",
@@ -569,18 +525,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "No tengo información sobre cuándo podría incorporarse Alberto o su disponibilidad actual. Según su perfil, es un ingeniero de software senior que trabaja de forma remota desde España. Para conocer detalles específicos sobre su disponibilidad y proceso de incorporación, te sugiero contactar directamente con él.",
+                "text": "No tengo información sobre cuándo podría incorporarse Alberto o si está disponible ya. Su perfil no incluye detalles sobre disponibilidad, periodo de preaviso o fechas de inicio. Para saber su situación actual, te recomiendo contactar directamente con él.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2668,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 57
+                  "outputTokens": 50
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "No tengo información sobre cuándo podría incorporarse Alberto o su disponibilidad actual. Según su perfil, es un ingeniero de software senior que trabaja de forma remota desde España. Para conocer detalles específicos sobre su disponibilidad y proceso de incorporación, te sugiero contactar directamente con él."
+                    "text": "No tengo información sobre cuándo podría incorporarse Alberto o si está disponible ya. Su perfil no incluye detalles sobre disponibilidad, periodo de preaviso o fechas de inicio. Para saber su situación actual, te recomiendo contactar directamente con él."
                   }
                 ]
               }
@@ -593,60 +549,11 @@
       "calls": [
         {
           "requestHash": "52dfe76ded1e52a1d7e0427ff68e75ea08512c9020ab04861be78f1169836203",
-          "latencyMs": 3293,
+          "latencyMs": 4581,
           "events": [
             {
               "type": "input_usage",
               "inputTokens": 2370,
-              "cacheReadInputTokens": 1183
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "t2QgQlbHpef7gbwOyZSvd3C8Xr1tihUn",
-                    "name": "get_profile",
-                    "input": {}
-                  },
-                  {
-                    "id": "9rTnrQmtHBY6WKkXDYQfQ1CrJKlstZYO",
-                    "name": "get_contact",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 2370,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 126
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "t2QgQlbHpef7gbwOyZSvd3C8Xr1tihUn",
-                    "name": "get_profile",
-                    "input": {}
-                  },
-                  {
-                    "type": "tool_use",
-                    "id": "9rTnrQmtHBY6WKkXDYQfQ1CrJKlstZYO",
-                    "name": "get_contact",
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "6f59683de8b39a4264fa789e7363b964378d719b6e8c795b4fd13a20d8384b27",
-          "latencyMs": 2167,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2742,
               "cacheReadInputTokens": 1183
             },
             {
@@ -655,39 +562,19 @@
             },
             {
               "type": "text_delta",
-              "text": " tengo"
+              "text": " puedo"
             },
             {
               "type": "text_delta",
-              "text": " información"
+              "text": " hablar"
             },
             {
               "type": "text_delta",
-              "text": " sobre"
-            },
-            {
-              "type": "text_delta",
-              "text": " cuándo"
-            },
-            {
-              "type": "text_delta",
-              "text": " podría"
-            },
-            {
-              "type": "text_delta",
-              "text": " incorpor"
-            },
-            {
-              "type": "text_delta",
-              "text": "arse"
+              "text": " por"
             },
             {
               "type": "text_delta",
               "text": " Alberto"
-            },
-            {
-              "type": "text_delta",
-              "text": " ni"
             },
             {
               "type": "text_delta",
@@ -703,111 +590,11 @@
             },
             {
               "type": "text_delta",
-              "text": " actual"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Estos"
-            },
-            {
-              "type": "text_delta",
-              "text": " detalles"
-            },
-            {
-              "type": "text_delta",
-              "text": " no"
-            },
-            {
-              "type": "text_delta",
-              "text": " están"
-            },
-            {
-              "type": "text_delta",
-              "text": " en"
-            },
-            {
-              "type": "text_delta",
-              "text": " su"
-            },
-            {
-              "type": "text_delta",
-              "text": " perfil"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
               "text": ","
             },
             {
               "type": "text_delta",
-              "text": " según"
-            },
-            {
-              "type": "text_delta",
-              "text": " las"
-            },
-            {
-              "type": "text_delta",
-              "text": " reglas"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " no"
-            },
-            {
-              "type": "text_delta",
-              "text": " puedo"
-            },
-            {
-              "type": "text_delta",
-              "text": " asumir"
-            },
-            {
-              "type": "text_delta",
-              "text": " o"
-            },
-            {
-              "type": "text_delta",
-              "text": " invent"
-            },
-            {
-              "type": "text_delta",
-              "text": "ar"
-            },
-            {
-              "type": "text_delta",
-              "text": " fechas"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " inicio"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " period"
-            },
-            {
-              "type": "text_delta",
-              "text": "os"
+              "text": " período"
             },
             {
               "type": "text_delta",
@@ -827,43 +614,19 @@
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " expectativas"
-            },
-            {
-              "type": "text_delta",
-              "text": " sal"
-            },
-            {
-              "type": "text_delta",
-              "text": "ariales"
-            },
-            {
-              "type": "text_delta",
               "text": " o"
             },
             {
               "type": "text_delta",
-              "text": " si"
+              "text": " fecha"
             },
             {
               "type": "text_delta",
-              "text": " acept"
+              "text": " de"
             },
             {
               "type": "text_delta",
-              "text": "aría"
-            },
-            {
-              "type": "text_delta",
-              "text": " una"
-            },
-            {
-              "type": "text_delta",
-              "text": " oferta"
+              "text": " incorporación"
             },
             {
               "type": "text_delta",
@@ -871,43 +634,51 @@
             },
             {
               "type": "text_delta",
-              "text": " Para"
+              "text": " Esta"
             },
             {
               "type": "text_delta",
-              "text": " saber"
+              "text": " información"
             },
             {
               "type": "text_delta",
-              "text": "lo"
+              "text": " no"
             },
             {
               "type": "text_delta",
-              "text": " con"
+              "text": " está"
             },
             {
               "type": "text_delta",
-              "text": " certeza"
+              "text": " disponible"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " en"
             },
             {
               "type": "text_delta",
-              "text": " lo"
+              "text": " su"
             },
             {
               "type": "text_delta",
-              "text": " mejor"
+              "text": " perfil"
             },
             {
               "type": "text_delta",
-              "text": " es"
+              "text": " y"
             },
             {
               "type": "text_delta",
-              "text": " contactar"
+              "text": " debes"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": "arlo"
             },
             {
               "type": "text_delta",
@@ -915,27 +686,23 @@
             },
             {
               "type": "text_delta",
-              "text": " a"
+              "text": " para"
             },
             {
               "type": "text_delta",
-              "text": " Alberto"
+              "text": " conocer"
             },
             {
               "type": "text_delta",
-              "text": " por"
+              "text": " sus"
             },
             {
               "type": "text_delta",
-              "text": " email"
+              "text": " circunstancias"
             },
             {
               "type": "text_delta",
-              "text": " o"
-            },
-            {
-              "type": "text_delta",
-              "text": " LinkedIn"
+              "text": " actuales"
             },
             {
               "type": "text_delta",
@@ -944,18 +711,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "No tengo información sobre cuándo podría incorporarse Alberto ni sobre su disponibilidad actual. Estos detalles no están en su perfil y, según las reglas, no puedo asumir o inventar fechas de inicio, periodos de preaviso, expectativas salariales o si aceptaría una oferta. Para saberlo con certeza, lo mejor es contactar directamente a Alberto por email o LinkedIn.",
+                "text": "No puedo hablar por Alberto sobre su disponibilidad, período de preaviso o fecha de incorporación. Esta información no está disponible en su perfil y debes contactarlo directamente para conocer sus circunstancias actuales.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2742,
+                  "inputTokens": 2370,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 76
+                  "outputTokens": 188
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "No tengo información sobre cuándo podría incorporarse Alberto ni sobre su disponibilidad actual. Estos detalles no están en su perfil y, según las reglas, no puedo asumir o inventar fechas de inicio, periodos de preaviso, expectativas salariales o si aceptaría una oferta. Para saberlo con certeza, lo mejor es contactar directamente a Alberto por email o LinkedIn."
+                    "text": "No puedo hablar por Alberto sobre su disponibilidad, período de preaviso o fecha de incorporación. Esta información no está disponible en su perfil y debes contactarlo directamente para conocer sus circunstancias actuales."
                   }
                 ]
               }

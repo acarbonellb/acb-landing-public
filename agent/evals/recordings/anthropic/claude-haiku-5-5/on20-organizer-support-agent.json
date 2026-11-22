@@ -1,0 +1,513 @@
+{
+  "caseId": "on20",
+  "slug": "organizer-support-agent",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+      "latencyMs": 814,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1670,
+          "cacheWriteInputTokens": 1666
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01Jt7wWc3YPWNjtJCum2Qh55",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1670,
+              "cacheWriteInputTokens": 1666,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01Jt7wWc3YPWNjtJCum2Qh55",
+                "name": "get_projects",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "72becbf6a8e4703fc9c97f739f5ffcc4a394432f8ace33b897c54c8fc0fe5950",
+      "latencyMs": 952,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2842,
+          "cacheWriteInputTokens": 1174,
+          "cacheReadInputTokens": 1666
+        },
+        {
+          "type": "text_delta",
+          "text": "The"
+        },
+        {
+          "type": "text_delta",
+          "text": " Organizer Support Ag"
+        },
+        {
+          "type": "text_delta",
+          "text": "ent is a"
+        },
+        {
+          "type": "text_delta",
+          "text": " planned project"
+        },
+        {
+          "type": "text_delta",
+          "text": ", not built"
+        },
+        {
+          "type": "text_delta",
+          "text": " yet ("
+        },
+        {
+          "type": "text_delta",
+          "text": "status: coming so"
+        },
+        {
+          "type": "text_delta",
+          "text": "on). It's"
+        },
+        {
+          "type": "text_delta",
+          "text": " meant for"
+        },
+        {
+          "type": "text_delta",
+          "text": " an online event ticketing plat"
+        },
+        {
+          "type": "text_delta",
+          "text": "form and would answer event"
+        },
+        {
+          "type": "text_delta",
+          "text": " organizers' questions about s"
+        },
+        {
+          "type": "text_delta",
+          "text": "ales, payouts and setup"
+        },
+        {
+          "type": "text_delta",
+          "text": " without"
+        },
+        {
+          "type": "text_delta",
+          "text": " human review."
+        },
+        {
+          "type": "text_delta",
+          "text": " It would pull live data from P"
+        },
+        {
+          "type": "text_delta",
+          "text": "ostgreSQL and the"
+        },
+        {
+          "type": "text_delta",
+          "text": " payments API,"
+        },
+        {
+          "type": "text_delta",
+          "text": " using T"
+        },
+        {
+          "type": "text_delta",
+          "text": "ypeScript, tool cal"
+        },
+        {
+          "type": "text_delta",
+          "text": "ling, and"
+        },
+        {
+          "type": "text_delta",
+          "text": " MCP."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "The Organizer Support Agent is a planned project, not built yet (status: coming soon). It's meant for an online event ticketing platform and would answer event organizers' questions about sales, payouts and setup without human review. It would pull live data from PostgreSQL and the payments API, using TypeScript, tool calling, and MCP.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2842,
+              "cacheWriteInputTokens": 1174,
+              "cacheReadInputTokens": 1666,
+              "outputTokens": 106
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "The Organizer Support Agent is a planned project, not built yet (status: coming soon). It's meant for an online event ticketing platform and would answer event organizers' questions about sales, payouts and setup without human review. It would pull live data from PostgreSQL and the payments API, using TypeScript, tool calling, and MCP."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+          "latencyMs": 623,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01BNhtHMQ4xUoBeNr2dYayyT",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01BNhtHMQ4xUoBeNr2dYayyT",
+                    "name": "get_projects",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "dfdb51924706e62e7dd310588bf85ca0c2c6d01feab9a2a470255f86d26b2bb7",
+          "latencyMs": 857,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2842,
+              "cacheReadInputTokens": 2840
+            },
+            {
+              "type": "text_delta",
+              "text": "The"
+            },
+            {
+              "type": "text_delta",
+              "text": " Organizer Support Ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent is a"
+            },
+            {
+              "type": "text_delta",
+              "text": " planned project"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " not yet built. It's"
+            },
+            {
+              "type": "text_delta",
+              "text": " me"
+            },
+            {
+              "type": "text_delta",
+              "text": "ant to answer event organizers"
+            },
+            {
+              "type": "text_delta",
+              "text": "' questions about sales, pay"
+            },
+            {
+              "type": "text_delta",
+              "text": "outs and setup on an online"
+            },
+            {
+              "type": "text_delta",
+              "text": " event ticketing platform,"
+            },
+            {
+              "type": "text_delta",
+              "text": " without human review. It would"
+            },
+            {
+              "type": "text_delta",
+              "text": " pull live data from Postg"
+            },
+            {
+              "type": "text_delta",
+              "text": "reSQL and the payments"
+            },
+            {
+              "type": "text_delta",
+              "text": " API. The plan"
+            },
+            {
+              "type": "text_delta",
+              "text": "ned stack is TypeSc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ript, tool calling, M"
+            },
+            {
+              "type": "text_delta",
+              "text": "CP and PostgreS"
+            },
+            {
+              "type": "text_delta",
+              "text": "QL."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "The Organizer Support Agent is a planned project, not yet built. It's meant to answer event organizers' questions about sales, payouts and setup on an online event ticketing platform, without human review. It would pull live data from PostgreSQL and the payments API. The planned stack is TypeScript, tool calling, MCP and PostgreSQL.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2842,
+                  "cacheReadInputTokens": 2840,
+                  "outputTokens": 111
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "The Organizer Support Agent is a planned project, not yet built. It's meant to answer event organizers' questions about sales, payouts and setup on an online event ticketing platform, without human review. It would pull live data from PostgreSQL and the payments API. The planned stack is TypeScript, tool calling, MCP and PostgreSQL."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+          "latencyMs": 639,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_017C2yxxpVv72Z6yL2Vczjfx",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_017C2yxxpVv72Z6yL2Vczjfx",
+                    "name": "get_projects",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "00967ebee238eaf883ea40613122cf7a2f6e3d049c33556f1b35ea46145ba79d",
+          "latencyMs": 1011,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2842,
+              "cacheReadInputTokens": 2840
+            },
+            {
+              "type": "text_delta",
+              "text": "The"
+            },
+            {
+              "type": "text_delta",
+              "text": " Organizer Support Ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent is a"
+            },
+            {
+              "type": "text_delta",
+              "text": " plan"
+            },
+            {
+              "type": "text_delta",
+              "text": "ned project"
+            },
+            {
+              "type": "text_delta",
+              "text": ", not a"
+            },
+            {
+              "type": "text_delta",
+              "text": " finished one."
+            },
+            {
+              "type": "text_delta",
+              "text": " It's list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed as \""
+            },
+            {
+              "type": "text_delta",
+              "text": "coming soon,\" meaning"
+            },
+            {
+              "type": "text_delta",
+              "text": " it is"
+            },
+            {
+              "type": "text_delta",
+              "text": "n't built yet. It"
+            },
+            {
+              "type": "text_delta",
+              "text": " would"
+            },
+            {
+              "type": "text_delta",
+              "text": " run"
+            },
+            {
+              "type": "text_delta",
+              "text": " on an online event ticketing"
+            },
+            {
+              "type": "text_delta",
+              "text": " platform and answer event"
+            },
+            {
+              "type": "text_delta",
+              "text": " organizers' questions about s"
+            },
+            {
+              "type": "text_delta",
+              "text": "ales, payouts and setup"
+            },
+            {
+              "type": "text_delta",
+              "text": ", without human review. It would p"
+            },
+            {
+              "type": "text_delta",
+              "text": "ull live data from Postgre"
+            },
+            {
+              "type": "text_delta",
+              "text": "SQL and the payments API"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " using T"
+            },
+            {
+              "type": "text_delta",
+              "text": "ypeScript, tool cal"
+            },
+            {
+              "type": "text_delta",
+              "text": "ling, MCP and P"
+            },
+            {
+              "type": "text_delta",
+              "text": "ostgreSQL."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "The Organizer Support Agent is a planned project, not a finished one. It's listed as \"coming soon,\" meaning it isn't built yet. It would run on an online event ticketing platform and answer event organizers' questions about sales, payouts and setup, without human review. It would pull live data from PostgreSQL and the payments API, using TypeScript, tool calling, MCP and PostgreSQL.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2842,
+                  "cacheReadInputTokens": 2840,
+                  "outputTokens": 128
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "The Organizer Support Agent is a planned project, not a finished one. It's listed as \"coming soon,\" meaning it isn't built yet. It would run on an online event ticketing platform and answer event organizers' questions about sales, payouts and setup, without human review. It would pull live data from PostgreSQL and the payments API, using TypeScript, tool calling, MCP and PostgreSQL."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

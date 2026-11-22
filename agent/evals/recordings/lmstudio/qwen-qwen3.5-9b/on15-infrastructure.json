@@ -1,0 +1,594 @@
+{
+  "caseId": "on15",
+  "slug": "infrastructure",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+      "latencyMs": 1842,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2345,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "JGIU1h0RzmiFXpzvXnpqsHjvSlX3Xyqn",
+                "name": "get_stack",
+                "input": {
+                  "group": "infra"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2345,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 73
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "JGIU1h0RzmiFXpzvXnpqsHjvSlX3Xyqn",
+                "name": "get_stack",
+                "input": {
+                  "group": "infra"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "0c0f69845b04ca372bcd4634e464772d00816809e3059f177541dd210961e084",
+      "latencyMs": 889,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2440,
+          "cacheReadInputTokens": 1178
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " uses"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " following"
+        },
+        {
+          "type": "text_delta",
+          "text": " infrastructure"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " cloud"
+        },
+        {
+          "type": "text_delta",
+          "text": " tools"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
+        },
+        {
+          "type": "text_delta",
+          "text": " Docker"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Kubernetes"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Circle"
+        },
+        {
+          "type": "text_delta",
+          "text": "CI"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " V"
+        },
+        {
+          "type": "text_delta",
+          "text": "erc"
+        },
+        {
+          "type": "text_delta",
+          "text": "el"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Railway"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Neon"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " G"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1178,
+              "outputTokens": 32
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+          "latencyMs": 1808,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "jfzF6VHRSDi9emnYC4LgxzPSccSxxF7o",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 72
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "jfzF6VHRSDi9emnYC4LgxzPSccSxxF7o",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "98098a3da411f70b62efa135d807c5a7fba5622d7175ebcd998a4adc648c8df0",
+          "latencyMs": 893,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " uses"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " following"
+            },
+            {
+              "type": "text_delta",
+              "text": " infrastructure"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " cloud"
+            },
+            {
+              "type": "text_delta",
+              "text": " tools"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " Docker"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Kubernetes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Circle"
+            },
+            {
+              "type": "text_delta",
+              "text": "CI"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " V"
+            },
+            {
+              "type": "text_delta",
+              "text": "erc"
+            },
+            {
+              "type": "text_delta",
+              "text": "el"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Railway"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Neon"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " G"
+            },
+            {
+              "type": "text_delta",
+              "text": "CP"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 32
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
+          "latencyMs": 1830,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "MPc1gf4D3K9RmnTr5mGZmVsp1HbiwNmX",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 73
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "MPc1gf4D3K9RmnTr5mGZmVsp1HbiwNmX",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "infra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "10a1a0ce653459c5bcd70d3add81040df6737b1d62533cc429e577678235cfd7",
+          "latencyMs": 902,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " uses"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " following"
+            },
+            {
+              "type": "text_delta",
+              "text": " infrastructure"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " cloud"
+            },
+            {
+              "type": "text_delta",
+              "text": " tools"
+            },
+            {
+              "type": "text_delta",
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " Docker"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Kubernetes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Circle"
+            },
+            {
+              "type": "text_delta",
+              "text": "CI"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " V"
+            },
+            {
+              "type": "text_delta",
+              "text": "erc"
+            },
+            {
+              "type": "text_delta",
+              "text": "el"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Railway"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Neon"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " G"
+            },
+            {
+              "type": "text_delta",
+              "text": "CP"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 32
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto uses the following infrastructure and cloud tools: Docker, Kubernetes, CircleCI, Vercel, Railway, Neon, and GCP."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

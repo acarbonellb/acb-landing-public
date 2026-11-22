@@ -1,0 +1,301 @@
+{
+  "caseId": "on16",
+  "slug": "frontend",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
+      "latencyMs": 678,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1668,
+          "cacheWriteInputTokens": 1664
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01LyT1BVyd9f1fZtmiGkPAAr",
+                "name": "get_stack",
+                "input": {
+                  "group": "frontend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1668,
+              "cacheWriteInputTokens": 1664,
+              "outputTokens": 50
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01LyT1BVyd9f1fZtmiGkPAAr",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "frontend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "5522c53b7ca34bc73d29cb2cf19868855d2f33fb6927ceb29e0fed73e1ee7081",
+      "latencyMs": 505,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1763,
+          "cacheWriteInputTokens": 97,
+          "cacheReadInputTokens": 1664
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's"
+        },
+        {
+          "type": "text_delta",
+          "text": " frontend skills include"
+        },
+        {
+          "type": "text_delta",
+          "text": " React, React Native and Ang"
+        },
+        {
+          "type": "text_delta",
+          "text": "ular."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's frontend skills include React, React Native and Angular.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1763,
+              "cacheWriteInputTokens": 97,
+              "cacheReadInputTokens": 1664,
+              "outputTokens": 23
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's frontend skills include React, React Native and Angular."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
+          "latencyMs": 779,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01XSdYLwdhfGKLU2kuntvz5G",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 50
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01XSdYLwdhfGKLU2kuntvz5G",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "7b181a2243761092dc4da09de3de510122fac0be07d18f0d909f7b3b00649743",
+          "latencyMs": 504,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1763,
+              "cacheReadInputTokens": 1761
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " frontend skills include React,"
+            },
+            {
+              "type": "text_delta",
+              "text": " React Native and Angular."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's frontend skills include React, React Native and Angular.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1763,
+                  "cacheReadInputTokens": 1761,
+                  "outputTokens": 23
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's frontend skills include React, React Native and Angular."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
+          "latencyMs": 666,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_013c5ijcxdMc3w4mp59SMqYZ",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 50
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_013c5ijcxdMc3w4mp59SMqYZ",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "f589f8cfafc0a443065fde2140d0f79784fea16033a2919a9fdc229474bbf28e",
+          "latencyMs": 634,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1763,
+              "cacheReadInputTokens": 1761
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " frontend skills include"
+            },
+            {
+              "type": "text_delta",
+              "text": " React, React Native and Ang"
+            },
+            {
+              "type": "text_delta",
+              "text": "ular."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's frontend skills include React, React Native and Angular.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1763,
+                  "cacheReadInputTokens": 1761,
+                  "outputTokens": 23
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's frontend skills include React, React Native and Angular."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

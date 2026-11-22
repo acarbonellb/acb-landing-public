@@ -1,0 +1,231 @@
+{
+  "caseId": "on14",
+  "slug": "databases-es",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+      "latencyMs": 2418,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2344,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "KSwmFDPkj5HgmNwB89xRfy4bvvLZOZyZ",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2344,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 97
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "KSwmFDPkj5HgmNwB89xRfy4bvvLZOZyZ",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "b05909d6a413011f98c0ac0a794ececc5e48fb39c045132efb36f1771caa5257",
+      "latencyMs": 585,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2439,
+          "cacheReadInputTokens": 1177
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2439,
+              "cacheReadInputTokens": 1177,
+              "outputTokens": 20
+            },
+            "providerContent": []
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+          "latencyMs": 2479,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "OQbMGHMUB675QeORzeBVg4w9YqL4vPGV",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 101
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "OQbMGHMUB675QeORzeBVg4w9YqL4vPGV",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "71dfcda97736af86305efad95aa94627192c69bc4726923f05646aa8d7aae209",
+          "latencyMs": 587,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2439,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2439,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 20
+                },
+                "providerContent": []
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+          "latencyMs": 2627,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "KEP3z38exV5K1kSlv6wLGivf0ZSluLQf",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 107
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "KEP3z38exV5K1kSlv6wLGivf0ZSluLQf",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "94f7008a3b8bb7ec9e017d4dd643df4ce3d6958e681fff7040f759d8e2bec06c",
+          "latencyMs": 596,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2439,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2439,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 20
+                },
+                "providerContent": []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "caseId": "mx08",
+  "slug": "postgresql-and-maths",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+      "latencyMs": 840,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1679,
+          "cacheWriteInputTokens": 1675
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_019aUasBhqgSGkACbW9E5Kea",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1679,
+              "cacheWriteInputTokens": 1675,
+              "outputTokens": 107
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS8QUKEAgUGAI4AUIIdGhpbmtpbmcSDMcz0RPf2+MfpYRcIBoMjvV8Bg+d5lJuYEt+IjC5TdLwqRC+QYNqL/oPGr9kvzLN0Oqi7ujtoeLRsp72hJ4UST20TQsVcXgRdPC4Gy8qjgW+n1UvEScJiZmEQcrmFqhK9Vy3VT+pab4QbhvUj3MTtkP+xxKud+U6g26FUmiIkdUKR+ubcHZw5N7VIWUEqLDseCSTjL7MwywtSO4Z7fOqdPUB6I3S8VYtkePtfpiYJFIFHeNihG0Au21LPpkR6xEgRvQRxpvsL4jfx8D3JYb5tyRWtlfZ5f2GJ0zPchezdblzCagdxJxO9OrSvOR25FL+cXZoAwOe5LT0yWQprU69u4ufHYpVtG5E4WHYLp426ybwo5OiEXokB1xB/y103WWI36z7ozdq01U7+/0O+iyzBKKn87VpLjOHw5bb6ncqTuyKTPUHSTyHgMSeyQD9jYe3KzlJtuoo6vz0feaO3Bm+yP0LH6HDDSQqYdzEbiq/bs3zxYdFET4edOVkw2di57j9EEK6DLHky5jlADIkSklHwoKTY1c6q32Rwgdw+yIM4Go6bHycwMOddZmCLEOhcdc2bQEU3YUjZK89f5GjWpClnN+mUaSNKOQDPvTMHx1ldw8w2U3P4wiKX+rc8NdKH0rG8D64wFzUf7luTR2DD4uV/fQ0ODmr5ljx2Fy3mW8QZSWCVxWAPuGeP5i/x4VwM1ALReEKq2IoaughCJ5OWsWOJY3vNE02roB5BNDujKRTJ9PIHEhhWAg30Th73PP71aXO8QCJp3dUXcxvovyTk/6y/sze0hS+Hul4sTOBXxowG1sI+LQ41L5Fuoa4yD1zFRuV8CRPJLErGCZGNgpSL5kd0w87aj76UzUDr04253HrKrHGSYCXV936Bk1HCfz7mlKCH4R0Tnt2HmTA3MYoIeAfFwkWp0OzucD3G5oKXaDQO+IkxSIYLWImxgotlxLqWBnfSyMzYFiUUMafi+wlc4kYAQ=="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_019aUasBhqgSGkACbW9E5Kea",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "f9836d26465276e3181f0499e289356a32142a9abf374dd5d1ba15c67052be65",
+      "latencyMs": 892,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1862,
+          "cacheWriteInputTokens": 185,
+          "cacheReadInputTokens": 1675
+        },
+        {
+          "type": "text_delta",
+          "text": "Yes, P"
+        },
+        {
+          "type": "text_delta",
+          "text": "ostgreSQL is list"
+        },
+        {
+          "type": "text_delta",
+          "text": "ed in Alberto's back"
+        },
+        {
+          "type": "text_delta",
+          "text": "end and"
+        },
+        {
+          "type": "text_delta",
+          "text": " data sk"
+        },
+        {
+          "type": "text_delta",
+          "text": "ills,"
+        },
+        {
+          "type": "text_delta",
+          "text": " alongside"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node.js, NestJS"
+        },
+        {
+          "type": "text_delta",
+          "text": ", Express, RE"
+        },
+        {
+          "type": "text_delta",
+          "text": "ST, GraphQL and"
+        },
+        {
+          "type": "text_delta",
+          "text": " MongoDB.\n\nI"
+        },
+        {
+          "type": "text_delta",
+          "text": " can only answer questions about"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto, so I can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t help with the mult"
+        },
+        {
+          "type": "text_delta",
+          "text": "iplication. If you'd"
+        },
+        {
+          "type": "text_delta",
+          "text": " like,"
+        },
+        {
+          "type": "text_delta",
+          "text": " I can tell you more about his"
+        },
+        {
+          "type": "text_delta",
+          "text": " back"
+        },
+        {
+          "type": "text_delta",
+          "text": "end exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience or his AI agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside Node.js, NestJS, Express, REST, GraphQL and MongoDB.\n\nI can only answer questions about Alberto, so I can't help with the multiplication. If you'd like, I can tell you more about his backend experience or his AI agent projects.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1862,
+              "cacheWriteInputTokens": 185,
+              "cacheReadInputTokens": 1675,
+              "outputTokens": 113
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside Node.js, NestJS, Express, REST, GraphQL and MongoDB.\n\nI can only answer questions about Alberto, so I can't help with the multiplication. If you'd like, I can tell you more about his backend experience or his AI agent projects."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+          "latencyMs": 856,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1679,
+              "cacheReadInputTokens": 1675
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_014L4pGz1hx7GCwpjpScRgGX",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1679,
+                  "cacheReadInputTokens": 1675,
+                  "outputTokens": 95
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS6gUKEAgUGAI4AUIIdGhpbmtpbmcSDAMP3818KEhFtGlUvhoMm6R5OTGb8gXU7SCOIjAQGfU4p/GU5ONScoGfBf8f30S1F3/9fqIvfCpiwPRRCDY3XyvvQDPywlCvFNK/mJwqhwVA4xx0DHhjM3m/1wZNii8cEg0iriMAeO6Ghkzqz1vny66VxMCcBNDK2zHyotO+DIpDQM9K78xvyjerfZF+xb/ndkrZbT+ALZ/cuxva3Jj1pef0tPDccomZkP5yQs5DyL/Hu9dtQUnraq+soU06KbrHTePsCnl/mt2E0E8NucI7KmA70uicbopUnbhaad7Nr2dxXHWPOb4rMWveigzQuuZm3Hz25rxSNfYmAzVzZZFWl7Sbsj/quZE6ecTPhPE3Jlf9UbQyRFTgJXJQ+Bbe2Cz+UIM+YHbJuejlXjBMN5/kfWvrXhkkUVPv47Gd6MJ4dgmi/vY+1t94N+vbq+QB2yFIFTYvZcFCR3A6Pi1XXP4aofV9h784t2jqvOTS7rpSicocweFASFGkMv0TtEgH1vVNXM4CT1PJlaAwOBzeAt+2gAjGUp4i6pmVzyKw2eKqWEwql1hGrDCmNttGlFYUNoSKle+iWHWV7HYtK4OAO7cfSkS8rhIMi3ittkJJDFqqtPRkprx7vgBdAeLlipTXzkWiXJYHKXg/duvO8iBGQxqQ9TsQc5vSTCZJ8qSSM/IJNOs16By+hDvOJ4tM9TN4yBMW9B2YL7bGD02kJI5Rze+eKDDV2VIeCpBXxwILk9FJnATVHB4fTmxWlnkaiGEIDWj/7MHYnTp3I7wU+t2k/aaydBT3TvGVmVnOjPXf+5qVg+ZHl72ydHt1dZFOchu7ACDdgVpiZHid8UzQxjw+o9Gbhmn367YXyJvN2z6Ju4vVl44Fl++uPP4UxPhLIJ9vpN4+LCmb2SMKrCtRHnTVEzSqqb+FguUv11sqXvYPeS0pY1Kb0x02DRecDjDtTXOO+lVAQ3w2uSi2IBgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_014L4pGz1hx7GCwpjpScRgGX",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "278d3d5f1850365efbe2c5cd66e5ae2c89c14308d97e35653e58e6d6d9686b26",
+          "latencyMs": 812,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1850,
+              "cacheWriteInputTokens": 173,
+              "cacheReadInputTokens": 1675
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes, P"
+            },
+            {
+              "type": "text_delta",
+              "text": "ostgreSQL is list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed in Alberto's back"
+            },
+            {
+              "type": "text_delta",
+              "text": "end and"
+            },
+            {
+              "type": "text_delta",
+              "text": " data sk"
+            },
+            {
+              "type": "text_delta",
+              "text": "ills,"
+            },
+            {
+              "type": "text_delta",
+              "text": " alongside"
+            },
+            {
+              "type": "text_delta",
+              "text": " Node.js, NestJS"
+            },
+            {
+              "type": "text_delta",
+              "text": ", Express, RE"
+            },
+            {
+              "type": "text_delta",
+              "text": "ST, GraphQL and"
+            },
+            {
+              "type": "text_delta",
+              "text": " MongoDB.\n\nI"
+            },
+            {
+              "type": "text_delta",
+              "text": " can only answer questions about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto, so I can't"
+            },
+            {
+              "type": "text_delta",
+              "text": " help with the"
+            },
+            {
+              "type": "text_delta",
+              "text": " mult"
+            },
+            {
+              "type": "text_delta",
+              "text": "iplication."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside Node.js, NestJS, Express, REST, GraphQL and MongoDB.\n\nI can only answer questions about Alberto, so I can't help with the multiplication.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1850,
+                  "cacheWriteInputTokens": 173,
+                  "cacheReadInputTokens": 1675,
+                  "outputTokens": 86
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside Node.js, NestJS, Express, REST, GraphQL and MongoDB.\n\nI can only answer questions about Alberto, so I can't help with the multiplication."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e6f4a4d444291a2b1c991f92ee321972df13f0d981e36f5c9045cb67f28d7751",
+          "latencyMs": 900,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1679,
+              "cacheReadInputTokens": 1675
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01Bd7sKs864FotCp219b5Nga",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1679,
+                  "cacheReadInputTokens": 1675,
+                  "outputTokens": 124
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSrAYKEAgUGAI4AUIIdGhpbmtpbmcSDGUis7KvDnSoyPh70xoMTIVTWxzS2aVnxiFPIjAwGriXZLt2BAhePPUWr9ICgQZHGnn+t8ekzr4WKliGS+a+CwEaHDVaoXT1WwWFZxMqyQWy0Sx9lhUnugHVjN0v/LgQ3AFzvvuSpPdBwbz1uQ1P2If+Y4OoXLxb+xQq8SNNaFLGp2dhdaueG2noVZ9C2TsV67m7fltgOk7eBcuYNPPQFBacwYX1zkLe0KTxhgurmRmzqeIz81SMcTnEt9KQClMa9wWemG73jqpGLyMtrKMpgICy9X5ZYbK2OJq/Wsl7KF2VjKPzxYLu95BjX88RjIepMFJ1ln45jJfdVp2t3uD/CcDkaKKU21PcqaBJzJU2igsTXPdP56v630VuzUDpsAh4Ybvt0HZTT+i/O2U3DA116WH1YdlcQ/5uWQ6NmGN9xmw+RRqQ4S3/tRaIG6teg4UZ8r2CKpsmCSNbaFHQShcDlwSzpXpmIC1Gvfg3Jkcr9efJT9RuqP7J5i7AC2n7Qjd1is8Gx9gS6MHlNKBdjXrJ0gmcjt+1H9p1K/FQIMWAP2XvgtR41KpJlXsdBHbRRB3MyOK+cmKWLvuOHjKKhkBaaX1mIQhyKii6zHPjyTZybb9FXiNiLQ8Gj28b4uWhc5kDJDIj2l6G6dyzTXRiJ3oKg5bDXUhdHgSOSLH4yRG7r9gITx/nYiAhG7Ssf+hbUxSoKYvmv+fBs7UKDbMI0k/f2MVbSNwW2/3CDtNjFzXc+xOt5ay//guYt3f9syZJePazf+kUIApwKqOReU4BMmQOFskdjLpfx2b5cjX41VnMzRH3ZTrNO3FWILjxzczEQQe57/uKYacIV95KHG4mG7GSLkThTJVTcBnKAQ/B57PxZb0a9joYSeistCeSQk82UfyW9vWh0ibr03p/WhlkgkTV10/8lvxEtNLnYJXeGmi89YX+GRCCMfT8Yu3JxLbItHirf7PBHU4Hnl1b3Pjyfz02BpAQc+yI9JZJCUEP95NNa0jYO42/X137+TndQBQ7h71hY9KwuKP1KpaL181ZjwfwXX4lsv3cTrcW0BgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01Bd7sKs864FotCp219b5Nga",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "e998b350d60bcfee3fb7d01d46729efb76a15c219d1371ac61caca4011e3570b",
+          "latencyMs": 802,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1879,
+              "cacheWriteInputTokens": 202,
+              "cacheReadInputTokens": 1675
+            },
+            {
+              "type": "text_delta",
+              "text": "Yes, P"
+            },
+            {
+              "type": "text_delta",
+              "text": "ostgreSQL is list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed in Alberto's back"
+            },
+            {
+              "type": "text_delta",
+              "text": "end and"
+            },
+            {
+              "type": "text_delta",
+              "text": " data sk"
+            },
+            {
+              "type": "text_delta",
+              "text": "ills, alongside Mongo"
+            },
+            {
+              "type": "text_delta",
+              "text": "DB, Node.js,"
+            },
+            {
+              "type": "text_delta",
+              "text": " NestJS, and Gra"
+            },
+            {
+              "type": "text_delta",
+              "text": "phQL.\n\nI can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer questions about Alber"
+            },
+            {
+              "type": "text_delta",
+              "text": "to, so I can't help with"
+            },
+            {
+              "type": "text_delta",
+              "text": " the mult"
+            },
+            {
+              "type": "text_delta",
+              "text": "iplication. Would you like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to know more about his back"
+            },
+            {
+              "type": "text_delta",
+              "text": "end work or his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside MongoDB, Node.js, NestJS, and GraphQL.\n\nI can only answer questions about Alberto, so I can't help with the multiplication. Would you like to know more about his backend work or his experience?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1879,
+                  "cacheWriteInputTokens": 202,
+                  "cacheReadInputTokens": 1675,
+                  "outputTokens": 98
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Yes, PostgreSQL is listed in Alberto's backend and data skills, alongside MongoDB, Node.js, NestJS, and GraphQL.\n\nI can only answer questions about Alberto, so I can't help with the multiplication. Would you like to know more about his backend work or his experience?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
