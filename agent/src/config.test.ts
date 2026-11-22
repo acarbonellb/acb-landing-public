@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { chatLimits } from "./chat";
 import { loadConfig } from "./config";
+import { deepHealthChecksPerMinute } from "./health";
+import { defaultFlushEveryMs } from "./usage";
 
 const signingKey = "test-signing-key-0123456789abcdefghijklmnop";
 
@@ -59,18 +61,41 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, global ceilings well above them, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
+  it("defaults the guardrails: per-IP limits, global ceilings sized by store cost, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
     expect(loadConfig({}).guardrails).toEqual({
-      chatRequestsPerMinute: 10,
+      chatRequestsPerMinute: 4,
       mcpRequestsPerMinute: 60,
-      chatGlobalRequestsPerMinute: 60,
+      chatGlobalRequestsPerMinute: 8,
       mcpGlobalRequestsPerMinute: 600,
-      statsRequestsPerMinute: 30,
-      statsGlobalRequestsPerMinute: 300,
+      statsRequestsPerMinute: 2,
+      statsGlobalRequestsPerMinute: 5,
       monthlySpendCapUsd: 4,
       dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
     });
+  });
+
+  it("keeps a day-long flood at the default ceilings under the $0.12/day store threshold (docs/guardrails.md, Store cost)", () => {
+    // Firestore Standard edition, europe-southwest1, USD per document
+    // (Google Cloud's pricing page, read 2026-11-22), free tier ignored.
+    const read = 0.035 / 100_000;
+    const write = 0.106 / 100_000;
+    const ttlDelete = 0.012 / 100_000;
+    // Each store write is a read then a commit (firestore.ts). The worst case
+    // per request, from the table in docs/guardrails.md: a chat request that
+    // runs writes 5 (spend-writes-http.test.ts), on a fresh key whose daily
+    // document a TTL delete removes later; `/stats` writes the waiting batch
+    // and reads two weeks; `/mcp` writes nothing of its own.
+    const chat = 5 * (read + write) + ttlDelete;
+    const stats = read + write + 2 * read;
+    const minutesPerDay = 24 * 60;
+    const { chatGlobalRequestsPerMinute, statsGlobalRequestsPerMinute } = loadConfig({}).guardrails;
+    const usageBatches = (minutesPerDay * 60_000) / defaultFlushEveryMs;
+    const perDay =
+      minutesPerDay * (chatGlobalRequestsPerMinute * chat + statsGlobalRequestsPerMinute * stats) +
+      usageBatches * (read + write) +
+      minutesPerDay * deepHealthChecksPerMinute * read;
+    expect(perDay).toBeLessThan(0.12);
   });
 
   it("reads guardrail overrides; a zero spend cap is allowed (chat off)", () => {

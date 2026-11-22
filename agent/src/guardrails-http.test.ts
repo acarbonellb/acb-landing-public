@@ -349,7 +349,12 @@ describe("/stats rate limits", () => {
 
   it("doesn't use up /mcp's per-IP limit or global ceiling", async () => {
     const url = await start(
-      guardrails({ RATE_LIMIT_MCP_PER_MINUTE: "1", RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "1" }),
+      guardrails({
+        RATE_LIMIT_MCP_PER_MINUTE: "1",
+        RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "1",
+        RATE_LIMIT_STATS_PER_MINUTE: "3",
+        RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "3",
+      }),
     );
 
     for (let i = 0; i < 3; i++) expect((await getStats(url, "198.51.100.1")).status).toBe(200);

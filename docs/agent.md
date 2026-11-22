@@ -50,12 +50,12 @@ Environment variables (none are required to run the MCP server; nothing secret i
 | `AGENT_MAX_REQUEST_TOKENS` | `8192` | Output-token budget for a whole chat request, shared by all its model calls (each gets the smaller of `AGENT_MAX_TOKENS` and what's left) |
 | `AGENT_MAX_ITERATIONS` | `5` | Max model calls per chat request (each one after the first reads tool results) |
 | `ALLOWED_ORIGINS` | `http://localhost:3000,https://albertocarbonell.dev` | Comma-separated browser origins allowed to call `/chat` (CORS) |
-| `RATE_LIMIT_CHAT_PER_MINUTE` | `10` | Requests per client IP per minute to `/chat` |
+| `RATE_LIMIT_CHAT_PER_MINUTE` | `4` | Requests per client IP per minute to `/chat` |
 | `RATE_LIMIT_MCP_PER_MINUTE` | `60` | Requests per client IP per minute to `/mcp` |
-| `RATE_LIMIT_STATS_PER_MINUTE` | `30` | Requests per client IP per minute to `/stats` (the page reads it once per load) |
-| `RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE` | `60` | Requests per minute to `/chat` from all clients together (the global ceiling) |
+| `RATE_LIMIT_STATS_PER_MINUTE` | `2` | Requests per client IP per minute to `/stats` (the page reads it once per load) |
+| `RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE` | `8` | Requests per minute to `/chat` from all clients together (the global ceiling; sized by [store cost](guardrails.md#store-cost)) |
 | `RATE_LIMIT_MCP_GLOBAL_PER_MINUTE` | `600` | Requests per minute to `/mcp` from all clients together |
-| `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE` | `300` | Requests per minute to `/stats` from all clients together |
+| `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE` | `5` | Requests per minute to `/stats` from all clients together (sized by [store cost](guardrails.md#store-cost)) |
 | `MONTHLY_SPEND_CAP_USD` | `4` | Estimated model spend per UTC month before the chat closes (`0` turns it off). Keep it under the provider's spend limit (see [Guardrails](guardrails.md#provider-spend-limit)) |
 | `ALERT_CHAT_ERROR_RATE` | `0.2` | The `chat_error_rate` alert event fires when more than this share (0 to 1) of the last hour's streamed chat requests ended in an error (see [Logs and alerts](logs-and-alerts.md#alert-events)) |
 | `ALERT_CHAT_ERROR_MIN_REQUESTS` | `5` | Streamed chat requests the last hour needs before its error rate fires or clears the alert |
