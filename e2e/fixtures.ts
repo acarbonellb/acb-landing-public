@@ -143,7 +143,13 @@ async function stubPostHog(page: Page): Promise<PostHogStub> {
       await route.fulfill({
         status: 200,
         headers: { ...postHogCors(request.headers().origin), "Content-Type": "application/json" },
-        body: JSON.stringify(url.pathname.startsWith("/flags") ? { featureFlags: {} } : { status: 1 }),
+        // Remote config as a new project's: autocapture on (the SDK waits for
+        // `autocapture_opt_out` before it starts), no flags.
+        body: JSON.stringify(
+          url.pathname.startsWith("/flags")
+            ? { featureFlags: {}, autocapture_opt_out: false }
+            : { status: 1, autocapture_opt_out: false },
+        ),
       });
     },
   );

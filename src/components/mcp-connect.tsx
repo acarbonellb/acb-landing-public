@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { report } from "@/lib/analytics";
 import { TerminalButton } from "./ui";
 
 /** How to connect your own agent to the MCP server, with a command to copy. */
@@ -19,6 +20,7 @@ export function McpConnect({ mcpUrl }: { mcpUrl: string }) {
     try {
       await navigator.clipboard.writeText(command);
       setCopied(true);
+      report({ event: "mcp_command_copied" });
     } catch {
       // Clipboard blocked: the command stays visible to select by hand.
     }

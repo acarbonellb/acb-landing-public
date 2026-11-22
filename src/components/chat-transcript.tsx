@@ -31,7 +31,9 @@ export function ChatTranscript({
       aria-label="Conversation with the agent"
       aria-busy={busy}
       tabIndex={0}
-      className="max-h-[28rem] space-y-3 overflow-y-auto text-sm leading-relaxed outline-none focus-visible:ring-1 focus-visible:ring-blue"
+      // ph-no-capture: a click in the conversation must not carry its text
+      // to site analytics (docs/analytics.md#events).
+      className="ph-no-capture max-h-[28rem] space-y-3 overflow-y-auto text-sm leading-relaxed outline-none focus-visible:ring-1 focus-visible:ring-blue"
     >
       <p>
         <span className="text-comment">[system]</span>{" "}
