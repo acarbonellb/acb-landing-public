@@ -137,7 +137,7 @@ Scoring a set's stored recordings again with the current cases and scoring, and 
 _Avoid_: re-run, re-evaluate
 
 **Decline**:
-What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer. Suggesting to contact him is not a decline on its own.
+What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer, stating no number, currency amount or date that isn't in the content module (or the conversation). Suggesting to contact him is not a decline on its own, and a decline doesn't excuse an invented figure.
 _Avoid_: refusal (that's the model's stop reason), deflection
 
 **Failing on purpose**:

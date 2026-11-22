@@ -171,6 +171,7 @@ Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-22 | `71f6ec7` | rescored | `47cdb38ad61f` | 50 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 4 (±0) | 2600 (±0) | 134 (±0) | 1491 ms (±0) | $0.000315 |
 | 2026-11-22 | `12281ce` | rescored | `47cdb38ad61f` | 50 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 4 (±0) | 2600 (±0) | 134 (±0) | 1491 ms (±0) | $0.000315 |
 | 2026-11-06 | `e0052be` | rescored | `47cdb38ad61f` | 50 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 4 (±0) | 2600 (±0) | 134 (±0) | 1491 ms (±0) | $0.000315 |
 | 2026-11-05 | `9f40767` | live | `47cdb38ad61f` | 50 | 0.0% (-3.8 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (-16.7 pp) | pass@3 92.0% | 4 (+4) | 2600 (-92) | 134 (-27) | 1491 ms (-208) | $0.000315 |
@@ -180,10 +181,10 @@ Last 10 entries per recording set, newest first, from `agent/evals/history.jsonl
 | 2026-11-05 | `aa0512e` | migrated | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 2717 (±0) | 158 (±0) | 1700 ms (±0) | $0.000351 |
 | 2026-11-05 | `509c11f` | rescored | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 2717 (±0) | 158 (±0) | 1700 ms (±0) | $0.000351 |
 | 2026-11-05 | `b860325` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 2717 (-71) | 158 (-8) | 1700 ms (+49) | $0.000351 |
-| 2026-11-05 | `d440c5c` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (+4.5 pp) | 100.0% (±0.0 pp) | n/a | n/a | 2788 (±0) | 166 (±0) | 1651 ms (±0) | n/a |
 
 Notes:
 
+- 2026-11-22 `71f6ec7` rescored: An unknown case's decline no longer excuses a figure (number, amount or date) absent from the content and the conversation; no stored answer changes score (#124)
 - 2026-11-22 `12281ce` rescored: The link-leak check also counts an email address: any address but the contact tool's placeholder in an off-topic, mixed or injection answer is a leak.
 - 2026-11-06 `e0052be` rescored: case kinds and counts added to the history entries (#67 review): records which cases were measured, scoring unchanged; recordings unchanged, no model call
 - 2026-11-05 `324b777` rescored: pass@k and flaky cases added to the metrics (#100): recordings unchanged, one run each (k = 1)
@@ -193,6 +194,7 @@ Notes:
 
 | Date | Commit | Kind | Request identity | Cases | Leak rate | Tool accuracy | Fact coverage | Unknown handling | pass@k | Flaky | Input tokens | Output tokens | Latency | Cost per case |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-11-22 | `71f6ec7` | rescored | `47cdb38ad61f` | 50 | 3.8% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 3 (±0) | 3509 (±0) | 204 (±0) | 5424 ms (±0) | $0 |
 | 2026-11-22 | `12281ce` | rescored | `47cdb38ad61f` | 50 | 3.8% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 3 (±0) | 3509 (±0) | 204 (±0) | 5424 ms (±0) | $0 |
 | 2026-11-06 | `e0052be` | rescored | `47cdb38ad61f` | 50 | 3.8% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (±0.0 pp) | pass@3 92.0% (±0.0 pp) | 3 (±0) | 3509 (±0) | 204 (±0) | 5424 ms (±0) | $0 |
 | 2026-11-05 | `9f40767` | live | `47cdb38ad61f` | 50 | 3.8% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 83.3% (-16.7 pp) | pass@3 92.0% | 3 (+3) | 3509 (-151) | 204 (-3) | 5424 ms (-170) | $0 |
@@ -202,10 +204,10 @@ Notes:
 | 2026-11-05 | `aa0512e` | migrated | `34fdc20db57f` | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 3766 (±0) | 204 (±0) | 5475 ms (±0) | $0 |
 | 2026-11-05 | `509c11f` | rescored | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 3766 (±0) | 204 (±0) | 5475 ms (±0) | $0 |
 | 2026-11-05 | `b860325` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (±0.0 pp) | n/a | n/a | 3766 (+102) | 204 (-3) | 5475 ms (+15) | $0 |
-| 2026-11-05 | `f5afcae` | live | `8d9a258cf70a` (prompt only) | 42 | 0.0% (±0.0 pp) | 100.0% (±0.0 pp) | 100.0% (+4.5 pp) | 100.0% (+9.1 pp) | n/a | n/a | 3664 (+1) | 207 (+1) | 5460 ms (+25) | n/a |
 
 Notes:
 
+- 2026-11-22 `71f6ec7` rescored: An unknown case's decline no longer excuses a figure (number, amount or date) absent from the content and the conversation; no stored answer changes score (#124)
 - 2026-11-22 `12281ce` rescored: The link-leak check also counts an email address: any address but the contact tool's placeholder in an off-topic, mixed or injection answer is a leak.
 - 2026-11-06 `e0052be` rescored: case kinds and counts added to the history entries (#67 review): records which cases were measured, scoring unchanged; recordings unchanged, no model call
 - 2026-11-05 `324b777` rescored: pass@k and flaky cases added to the metrics (#100): recordings unchanged, one run each (k = 1)
