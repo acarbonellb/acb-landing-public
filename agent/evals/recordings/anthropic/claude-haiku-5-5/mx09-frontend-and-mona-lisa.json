@@ -1,0 +1,420 @@
+{
+  "caseId": "mx09",
+  "slug": "frontend-and-mona-lisa",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
+      "latencyMs": 845,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1681,
+          "cacheWriteInputTokens": 1677
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01MqT21L4WJPenk8xEJYx8Ws",
+                "name": "get_stack",
+                "input": {
+                  "group": "frontend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1681,
+              "cacheWriteInputTokens": 1677,
+              "outputTokens": 104
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS5wUKEAgUGAI4AUIIdGhpbmtpbmcSDIS+cps8JQ7rZEXgghoM4KGmUvHpCRogRbzWIjA4M5h93QLtCXS/ymxCmfEld8UNq/0cTVkn2FJlKbfIAVOP5wbkrJ7xJcJwex4+37IqhAUlgyJU0SeUNFBmoDungDWoSVwYZOpT2d8jsN6b3cmMMytOD3xCFX+xzo/73RkkC5bztPD6qHNwNQjg5CeAC02JQ9I2Aadt1dTX6ZHGNwIAKpq2V7/KEQbQWZlXPbo4t6SO38wMD8qjJq7/cgLS1EnSuta8cqGBK3LggO0ql0Xr5ykfPGwLziz12ZR6b1D39Fq26a2VYVluCeoFgyTGQo5gNQ2qIoF0JRg/UiEJJUcJ/ggzzHKL2WLhyw8mMnaB4V2B4vTcvBRE70XL0kErm6HrM14JgsJcTxHSwm/iej2pYVkfkBBH6ieZg3ODEIKRbGxFa8bogVJV4EF6O0yV7gmbwRq8Ah0tTXDKuj8d3qZJcWmrGjwPOj2OS7fUuNn5MNnHisHz757C/fqBl3BGZgpOmXcTxXfSNvcKsInjxaz/gfngkeSJ+9ia+TEwxaAiCQU72zkFXBCdMUHiSqvoaWAZ9cPARXQJW3bs8x3t0WOPXsw2DEeYkm7xGp+BhUOT7HAKXL3V+3zo3JfWX2pBt6aZtpO94Ziy71PPMFFpnZPT160rXnyNN85GMf0h/xl+a7a0VQZxob7Quwf4VI4Bp1T4YsTY6RArMln+QiBx93cbNmkKC5EmiBMXKSQnQpH76yMkDaaG5Jh8aET64X48KQLAB9bObYly1YJCiT4dz5Oq8eMIcDAMcetQyXDMxlCJzAshgHkWodNiOGsVK0kis8EMP/6iFi9NO+Q7RjQsHYWCNbNwVebZGnIuzTuF64T6bXkiS5H6ezCZQcCnejtXdh5c/cqmDOH6XNJD7Xic6H2j5jxPcxbsI56sCoX9kF+zi8gbYAz/CYoKiR3OcQK8wi20UK5kTBgB"
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01MqT21L4WJPenk8xEJYx8Ws",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "frontend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "131a3edc91d42de295fab5cb15cc748cf90d2c1c0724e5d1ff4510b100339ea9",
+      "latencyMs": 732,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1830,
+          "cacheWriteInputTokens": 151,
+          "cacheReadInputTokens": 1677
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto's"
+        },
+        {
+          "type": "text_delta",
+          "text": " frontend skills include"
+        },
+        {
+          "type": "text_delta",
+          "text": " React, React Native and Ang"
+        },
+        {
+          "type": "text_delta",
+          "text": "ular.\n\nI can only answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions about Alberto,"
+        },
+        {
+          "type": "text_delta",
+          "text": " so I can't help with the"
+        },
+        {
+          "type": "text_delta",
+          "text": " Mona Lisa question"
+        },
+        {
+          "type": "text_delta",
+          "text": ". I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell you more about his work exper"
+        },
+        {
+          "type": "text_delta",
+          "text": "ience or his AI agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects if you'd like."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's frontend skills include React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question. I can tell you more about his work experience or his AI agent projects if you'd like.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1830,
+              "cacheWriteInputTokens": 151,
+              "cacheReadInputTokens": 1677,
+              "outputTokens": 78
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's frontend skills include React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question. I can tell you more about his work experience or his AI agent projects if you'd like."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
+          "latencyMs": 848,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1681,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_014x9w883F1173Pd4HAFJMMo",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1681,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 101
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS7wUKEAgUGAI4AUIIdGhpbmtpbmcSDJT2bYkiAA3LxE/TVBoMArMJe71NbEjWxGAeIjD7aJi95T+RI3D1C83mWy84opKIWe+9uMTFqJYXWISngNNx951FSTsmbfV2aZyP4SEqjAUwuiCq8D8c5Jbc3PGO4euBXQh0OSeIA2aNgPChKjbdhs2nQHof2pXr0DVP5no9Lp/TpFIXfqXHpfwKVLxFdqqK+9WdI1tMpVIbuX9Wsypuk8r0HWselczTqor8i8jAvnaglGCJQsdNAIlA4nB1HP4tgZU1ph5zkFsX99GR1NofxJYWXzoq31ybiqQtM2Pj7FME6H+fXSgMoBq0osLbQjCdiZVqOdqBKq5jfqvD/iFPopFdTsD5URHcgCODmt4Qh3o7CY49rT+yuTL//KBfafGz82xqwAdhLEJ9asBIZGeS/n9M1KfFzqT3/pN+QqogeABhvUDjy7uNgnNjifAxUTByDroIavg4VIRslE4mV59+BmvJjd2yixTmZu0i0106/USAj3M+3ueislxTS3Fe9geaj3fgZfQWJEGfDfwHAyyy2Acbzk4Xmx4LgIDVjMoYpD0esSPQJOqPeWBpB/ILbMSBeXoHCMSQfrfmr7OhJQLFYE644+7pcH6ntThFR+PW5WolEEd/rl7Tqmnnt4sbvWbyJM+svSRLZq8MDZzGrMsFErTh6ofgNIsWyYvbMrO4x69LZUdxTfsOzw3K+mirtch+SBtgrA24l2ZTm3nIRi1JZRartw/pRIPtIcKMTJ4bRLT3BWMti11Xu2IZWXpippAuzRTrqhNPcfK5ZfAmi2rh3ADtWEPzYKRBZoa8TGUiz4mCrKwj+NxZtcZP2+AIGQWWic+ZAGtzEvTBZH5JbRSrO9YFs9IUpGZSq+2SICSG4ysGWMpKl5mHFTbdlW7LQ8sInRheR68QuA9bfOw+NGGGahtkyrFVtH/OQvRngmonqbjtoEMTKDtKnRb6tRkvMbbFOM1w6VOEsBfEsgHlGAE="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_014x9w883F1173Pd4HAFJMMo",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "972c5e525d6290afa42c382728b964d62c453442691e395f1de895b06e129ea9",
+          "latencyMs": 708,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1827,
+              "cacheWriteInputTokens": 148,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " frontend skills are React,"
+            },
+            {
+              "type": "text_delta",
+              "text": " React Native and Angular."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nI can only answer questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about Alberto, so I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can't help with the"
+            },
+            {
+              "type": "text_delta",
+              "text": " Mona Lisa question"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's frontend skills are React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1827,
+                  "cacheWriteInputTokens": 148,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 53
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's frontend skills are React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
+          "latencyMs": 813,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1681,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01Pmn8S2wbSi3LTTrsPCKxMj",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1681,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 111
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS+wUKEAgUGAI4AUIIdGhpbmtpbmcSDIayDvwGqw5pPf4bKhoMfKpoBzLhtGbg1NweIjBoJM8Mu5zROQw/nyhGejSPSuZRnmEntmkVLkFOCUkA24pZFZrliADgqiIjD1ZmpqwqmAW4wmYl1tAd2hoOXvhDUfPV5U8XGzzXqoBmO0gA7wBy9xED9bK7TCazIGvfPgOami38q1vf14et+CgbAhQg1GbWIUWRgj1R0iNR02j8VCLlT0zTONmVwUO2tKtSpAF/ZAZcTltUqwdlUMzP2mN0evsaZ2XxAR8d0SG2IfWbpau8BRoLIHAqboVnjTLyuiwwdqxe5sd67Jzdr8JA9hnZhS5JCB6HyWhzrSxyHgEHyBWasVVOZt3qIFyT9YBIvb30CatbhMkH5pfqrcfYabwIHH3sCzgXtawqytZVkHtmC4jHXJjS33rOmzTNI6naOZG6advSUpDbMyFuS8zTCzTL+L9lBYvxp1uSMxV5Pr1ZVLWd1S2EFD6twwmi190BEuWH1Kzp9xSi/jvJrifdJYwGGGvxOTL2gOjVlQ0PkS/MdgImKR+AR5y2JxylryN+6eL1tXwJCzyuf9PX7jcG8qqsIL7BCbFgTdV9AwwO98JLJyqIOoeuydjpst5L3wXbojfTfEyFSr629r1xNVgbO6LioJmiTIppaTuCSiRRkDuOXipr3ReGB6V5XBVwPRs+t5MQZjJ3cz61uezEu5glgAK9lbMEBCI5HDiCBK4r+Xwlw++xfh4p8M9r188cdqjU/y0n/ySz1TM1lh2LSNjNcCd2mS/gQGclDlOFLAL6pe0tDRVZv9F8Qxh/5ifOU9n7qtHdANI0tX3OajGc5s3/ZoMe62IssfrUzbRdmIeidC0pdlpdBRuMCIEO8zcBPZdamZ8U5mSXP2MCl17sOrAKGyp6FuLDx6dPsTnhM9ZXYaC8f/VEUz9viP1llIxzgmAYVKle1lweOJG6ULXUsmqoKTkapSaZaSk0ntfIfygHSc6vMvw3bAU3mRjSCE/CGAE="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01Pmn8S2wbSi3LTTrsPCKxMj",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "9b0193d809ece0f737e4cd42b43e8121cb65a357940ccf070674454376fb96f9",
+          "latencyMs": 757,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1837,
+              "cacheWriteInputTokens": 158,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " frontend skills include"
+            },
+            {
+              "type": "text_delta",
+              "text": " React, React Native and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Angular.\n\nI can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer questions about Alber"
+            },
+            {
+              "type": "text_delta",
+              "text": "to, so I can't help with"
+            },
+            {
+              "type": "text_delta",
+              "text": " the Mona Lisa"
+            },
+            {
+              "type": "text_delta",
+              "text": " question. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell you about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his back"
+            },
+            {
+              "type": "text_delta",
+              "text": "end or AI agent work"
+            },
+            {
+              "type": "text_delta",
+              "text": " if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you're"
+            },
+            {
+              "type": "text_delta",
+              "text": " interested."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's frontend skills include React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question. I can tell you about his backend or AI agent work if you're interested.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1837,
+                  "cacheWriteInputTokens": 158,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 74
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's frontend skills include React, React Native and Angular.\n\nI can only answer questions about Alberto, so I can't help with the Mona Lisa question. I can tell you about his backend or AI agent work if you're interested."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

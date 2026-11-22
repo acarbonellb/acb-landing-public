@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "e7db2e0caa28003e08c8b038873201af67a06a678b2e01e57ee768dc1ea10fe5",
-      "latencyMs": 934,
+      "latencyMs": 731,
       "events": [
         {
           "type": "input_usage",
@@ -31,59 +31,67 @@
         },
         {
           "type": "text_delta",
-          "text": " Alberto and"
+          "text": " Alberto, so I can"
         },
         {
           "type": "text_delta",
-          "text": " his work, so"
+          "text": "'t help with that"
         },
         {
           "type": "text_delta",
-          "text": " I can"
+          "text": " one"
         },
         {
           "type": "text_delta",
-          "text": "'t help with that one"
+          "text": ". I"
         },
         {
           "type": "text_delta",
-          "text": ". Would you like to know about"
+          "text": " can"
         },
         {
           "type": "text_delta",
-          "text": " his AI agent"
+          "text": " t"
         },
         {
           "type": "text_delta",
-          "text": " projects, his exper"
+          "text": "ell you about his work"
         },
         {
           "type": "text_delta",
-          "text": "ience, or how"
+          "text": " experience, his AI agent"
         },
         {
           "type": "text_delta",
-          "text": " to get"
+          "text": " projects, or how"
         },
         {
           "type": "text_delta",
-          "text": " in touch with him?"
+          "text": " to contact him."
+        },
+        {
+          "type": "text_delta",
+          "text": " Which"
+        },
+        {
+          "type": "text_delta",
+          "text": " would you like to know?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can only answer questions about Alberto and his work, so I can't help with that one. Would you like to know about his AI agent projects, his experience, or how to get in touch with him?",
+            "text": "I can only answer questions about Alberto, so I can't help with that one. I can tell you about his work experience, his AI agent projects, or how to contact him. Which would you like to know?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1715,
               "cacheWriteInputTokens": 1711,
-              "outputTokens": 56
+              "outputTokens": 58
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can only answer questions about Alberto and his work, so I can't help with that one. Would you like to know about his AI agent projects, his experience, or how to get in touch with him?"
+                "text": "I can only answer questions about Alberto, so I can't help with that one. I can tell you about his work experience, his AI agent projects, or how to contact him. Which would you like to know?"
               }
             ]
           }
@@ -96,7 +104,7 @@
       "calls": [
         {
           "requestHash": "e7db2e0caa28003e08c8b038873201af67a06a678b2e01e57ee768dc1ea10fe5",
-          "latencyMs": 892,
+          "latencyMs": 668,
           "events": [
             {
               "type": "input_usage",
@@ -125,7 +133,11 @@
             },
             {
               "type": "text_delta",
-              "text": "ience, or how"
+              "text": "ience,"
+            },
+            {
+              "type": "text_delta",
+              "text": " or how"
             },
             {
               "type": "text_delta",
@@ -162,7 +174,7 @@
       "calls": [
         {
           "requestHash": "e7db2e0caa28003e08c8b038873201af67a06a678b2e01e57ee768dc1ea10fe5",
-          "latencyMs": 1073,
+          "latencyMs": 655,
           "events": [
             {
               "type": "input_usage",
@@ -175,32 +187,32 @@
             },
             {
               "type": "text_delta",
-              "text": " Alberto. Would you"
+              "text": " Alberto and"
             },
             {
               "type": "text_delta",
-              "text": " like to know about his AI ag"
+              "text": " his work. Would you like to"
             },
             {
               "type": "text_delta",
-              "text": "ents, work"
+              "text": " know about his AI agents,"
             },
             {
               "type": "text_delta",
-              "text": " experience, or how"
+              "text": " his experience,"
             },
             {
               "type": "text_delta",
-              "text": " to get"
+              "text": " or how to cont"
             },
             {
               "type": "text_delta",
-              "text": " in touch with him?"
+              "text": "act him?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?",
+                "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, his experience, or how to contact him?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
@@ -211,7 +223,7 @@
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I can only answer questions about Alberto. Would you like to know about his AI agents, work experience, or how to get in touch with him?"
+                    "text": "I can only answer questions about Alberto and his work. Would you like to know about his AI agents, his experience, or how to contact him?"
                   }
                 ]
               }

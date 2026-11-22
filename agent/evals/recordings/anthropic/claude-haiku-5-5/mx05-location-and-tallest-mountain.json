@@ -1,0 +1,447 @@
+{
+  "caseId": "mx05",
+  "slug": "location-and-tallest-mountain",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "bcddd951f66dad7ce6caa4bfc32b08a542d44daaa1797e9ce32513a805528680",
+      "latencyMs": 823,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1677,
+          "cacheWriteInputTokens": 1673
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01NwH876P9SYQskHsZYEVkdn",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1677,
+              "cacheWriteInputTokens": 1673,
+              "outputTokens": 87
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSigYKEAgUGAI4AUIIdGhpbmtpbmcSDJH1exIJlVZJYw/MNBoM0zzFY5dITnecHp2IIjDdYGE0WE6ILdMv0fI4aSwDVfCSjOP9dsaz9NDkp6Zy4xGb4Tgiq7WnbmNnZU5HxDsqpwUp/MW70WDPQ+bqzMxno/gV86khkQ8xX6dl7npas8EiEBFKlPLMr5F6eJfsbkV61AnhL0JSFpN116jx5AlbbFkgCVGOiiFD/7GD0UUA9ihXiVeBEfIYZCJ1u2vSh7h3TOz4Y166rqwM8/LfPVCOq192tJhBe99MXVkG7iLm+2SgJ83ANzzk2FeW2x5ytjEnwOewe10c2kCjk13Rao1+JC4EJMxIbGvHSwNvAhbO10BlW9UkAHAUqqunsgVv/2UM9lvYMWvEzHsLYH72Q/Do0MPd7Q6IXE3QxiRCRujVO0AKeZG1HYAO7x5CgglqCWnZ+GonNl+1RdgzbmqwU9XOz5TsEej3a3vI7Twi9AkZ7OjDy9iupnaFB6k0PPc2s/rew3oYwT3k+u71CGoxjVbuzZT9GQVMU41fSnFJXv4C3bDm/epI0VgZRH+BtZ6Z7AvGXhTPmyXjMhWsldAHlj8W0o+xuELeb2r8cXsQOOzM7BGbyuSIqPafxwXX2g3XmtrI1jcHH/Sgj1+NYO0VBLU8E84VEbBrIbBDdHb9mCWAaIJHWT7Te+QIXRlpAcI8kqMFSOnjEvWMAhH3ad9NoRm5f81DSZvDKs/zkq+8m350ZLyjJoJqr1fIbR8rdiJyLdsvsvAASdFinEzjVx5JaeGZD3a+dbiOBsratpB2OibugxH1xgi5KZesrAhu0gewKOuZQRbdBJomTq3tePzGHkqMYezg2X7lLLM8pJxit4rKYpoJUIxRJluLYuVH+lF46kM1Y5QaOeTCXtQ9kcT3/VqBTW2gHPX4iDJwy63mGiYPaJMBj0BWA37Gzeih5quIXeS6qNUvrrMG4cP38Gbjz2xbhkMxH9wZkbEgKMk2k0lj/q0Trlw9MKcDAiiN5aDMinwJ8Y8yvHeZHJffGAE="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01NwH876P9SYQskHsZYEVkdn",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "00335d454b16716d15b13416042a7ebba01837fea47f1ccfc9342a6748439468",
+      "latencyMs": 793,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2210,
+          "cacheWriteInputTokens": 535,
+          "cacheReadInputTokens": 1673
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto is based in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spain and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works remotely."
+        },
+        {
+          "type": "text_delta",
+          "text": " I can't answer the"
+        },
+        {
+          "type": "text_delta",
+          "text": " question"
+        },
+        {
+          "type": "text_delta",
+          "text": " about the tallest mountain"
+        },
+        {
+          "type": "text_delta",
+          "text": ", since"
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can only help"
+        },
+        {
+          "type": "text_delta",
+          "text": " with questions about Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": ". I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell you about his work experience,"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects, or t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ech stack if you're"
+        },
+        {
+          "type": "text_delta",
+          "text": " interested."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto is based in Spain and works remotely. I can't answer the question about the tallest mountain, since I can only help with questions about Alberto. I can tell you about his work experience, AI agent projects, or tech stack if you're interested.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2210,
+              "cacheWriteInputTokens": 535,
+              "cacheReadInputTokens": 1673,
+              "outputTokens": 77
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto is based in Spain and works remotely. I can't answer the question about the tallest mountain, since I can only help with questions about Alberto. I can tell you about his work experience, AI agent projects, or tech stack if you're interested."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "bcddd951f66dad7ce6caa4bfc32b08a542d44daaa1797e9ce32513a805528680",
+          "latencyMs": 513,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1677,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01TZq4qM5LFF2DkFqHjj3AfP",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1677,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01TZq4qM5LFF2DkFqHjj3AfP",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "b6a92a18d66bcf00c1dbfeccc82554c74ceb3a5342e80f3059485b771a14e20d",
+          "latencyMs": 752,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2150,
+              "cacheWriteInputTokens": 475,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is based in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "text_delta",
+              "text": " I can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer questions about Alber"
+            },
+            {
+              "type": "text_delta",
+              "text": "to and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work, so I can"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t help"
+            },
+            {
+              "type": "text_delta",
+              "text": " with the m"
+            },
+            {
+              "type": "text_delta",
+              "text": "ountain question"
+            },
+            {
+              "type": "text_delta",
+              "text": ". Would you like to know about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his AI agents, his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience,"
+            },
+            {
+              "type": "text_delta",
+              "text": " or how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act him?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is based in Spain and works remotely. I can only answer questions about Alberto and his work, so I can't help with the mountain question. Would you like to know about his AI agents, his experience, or how to contact him?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2150,
+                  "cacheWriteInputTokens": 475,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 70
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is based in Spain and works remotely. I can only answer questions about Alberto and his work, so I can't help with the mountain question. Would you like to know about his AI agents, his experience, or how to contact him?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "bcddd951f66dad7ce6caa4bfc32b08a542d44daaa1797e9ce32513a805528680",
+          "latencyMs": 796,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1677,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01HVNEfusXm6htfTXM6voL6x",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1677,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 71
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS4gUKEAgUGAI4AUIIdGhpbmtpbmcSDLtV7Mw1jQNTjH9XoxoMG53YXCX8+YUQW18JIjCUKmNmDoWNP92DdbmQBvn3sGvDqxvVkiGELE6FrvWLAxPXtRs6vUvhF8xiuZwdOaEq/wROdcgwZ3cn54uTc9eivXhSpbzqADx5fXqPdPzfBQyiFz4J7y/B+mNSXAudHAPe+AUGx5tpfUJHvje+DmgsKdYAZrp08mf1FI3BhIrraTaoraH884AiY7fRvi7P8vPFQ6YsMtQrHXSLcLnphDZBnfglm7yZ56F37cJh+bw+Wh2t4ULgjP4cznVm2lH41Tgvg2LB71iB1EiBlDrCFK6nqR9TL1CI8WuSTAEB3w83JX6GyKMme8GVD2xAjJ91qwOloDyXVjIajV++vuQ6T3qmTCgFUN52skO5g6WDKFSu3JPDdb8ujb/RegRDG4pritvKgjComszF0QgRDQ9aMe5qisXZzFEgBywtZ2o6hm70T7A9MUhP+uKhMw5tvRSvOtOutTs3eQDRY4q8YXzDxxDvFGgAtkyb6+lIOqzlg3GsGUnjL/BmuhGL0vndAmLL5JIoQMvIgRno2xrPrMqX8u0c7/4fcnlvj78xFYVTPu8XoIcc71yfB2uAMsB9Y0DPCkRMQEY29KjtvdKsON7wDwdzIU8JhrFOxfkAzmYHvCFgdRIXi+EFEmf+RtCPBqpnfm8ajKAUg2+hCrVbeQ1nIGCCI41otu1fslBkU8mMUef30gx9BHNWOnVsQFtS5WfSzC426gn78woyDwHV1FVrtYOSUnRAClPOxhB5ic8Btj/ObdJGYM6CxOQsrZiRw9T3eBwYN4yK3oh/ObYw/et3jn0HPkt2ACa0dMyvt5voio0qsaMxvU9M6Ll2Q4lGV7HeDnCAYtxJFrJ35WnuzklJ797mxDm74pqn9pwQ6MckmnNbY3TnWJDlCGJNneurHyn3FtoLnG8DCp4qja33h746gbAPvi0YAQ=="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01HVNEfusXm6htfTXM6voL6x",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "bc4b31dc81749e7a5770c829e7affa33b60e7e3ba66ee594ae00fd127c65a0cc",
+          "latencyMs": 761,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2194,
+              "cacheWriteInputTokens": 519,
+              "cacheReadInputTokens": 1673
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is based in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer quest"
+            },
+            {
+              "type": "text_delta",
+              "text": "ions about Alberto and"
+            },
+            {
+              "type": "text_delta",
+              "text": " his work, so"
+            },
+            {
+              "type": "text_delta",
+              "text": " I can't help"
+            },
+            {
+              "type": "text_delta",
+              "text": " with the mountain question"
+            },
+            {
+              "type": "text_delta",
+              "text": ". Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you like to know about his AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents, his experience,"
+            },
+            {
+              "type": "text_delta",
+              "text": " or his tech stack?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is based in Spain and works remotely. I can only answer questions about Alberto and his work, so I can't help with the mountain question. Would you like to know about his AI agents, his experience, or his tech stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2194,
+                  "cacheWriteInputTokens": 519,
+                  "cacheReadInputTokens": 1673,
+                  "outputTokens": 70
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is based in Spain and works remotely. I can only answer questions about Alberto and his work, so I can't help with the mountain question. Would you like to know about his AI agents, his experience, or his tech stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

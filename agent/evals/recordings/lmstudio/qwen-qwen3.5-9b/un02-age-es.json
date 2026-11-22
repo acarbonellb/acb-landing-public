@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
-      "latencyMs": 4218,
+      "latencyMs": 4106,
       "events": [
         {
           "type": "input_usage",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "r5RxnwuaSht41eEmEvyr3I3i59DtBPPP",
+                "id": "JUZpxoGvgXS85LcKVCWgQOSLqJkbcYzi",
                 "name": "get_profile",
                 "input": {}
               }
@@ -40,12 +40,12 @@
             "usage": {
               "inputTokens": 2344,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 161
+              "outputTokens": 167
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "r5RxnwuaSht41eEmEvyr3I3i59DtBPPP",
+                "id": "JUZpxoGvgXS85LcKVCWgQOSLqJkbcYzi",
                 "name": "get_profile",
                 "input": {}
               }
@@ -55,8 +55,8 @@
       ]
     },
     {
-      "requestHash": "a5d3a438d6fadbdf612d1b7174cb8c17967df593f81ad682b2e2e5d541dfdcbc",
-      "latencyMs": 1795,
+      "requestHash": "8172ba6b9d6dd0292bfb6ea69f56061465671bb2503d434c24361fb59a21ee63",
+      "latencyMs": 3725,
       "events": [
         {
           "type": "input_usage",
@@ -161,23 +161,7 @@
         },
         {
           "type": "text_delta",
-          "text": " como"
-        },
-        {
-          "type": "text_delta",
-          "text": " ingen"
-        },
-        {
-          "type": "text_delta",
-          "text": "iero"
-        },
-        {
-          "type": "text_delta",
           "text": " y"
-        },
-        {
-          "type": "text_delta",
-          "text": " que"
         },
         {
           "type": "text_delta",
@@ -237,23 +221,27 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " Para"
+          "text": " pero"
         },
         {
           "type": "text_delta",
-          "text": " detalles"
+          "text": " no"
         },
         {
           "type": "text_delta",
-          "text": " personales"
+          "text": " se"
         },
         {
           "type": "text_delta",
-          "text": " como"
+          "text": " menc"
+        },
+        {
+          "type": "text_delta",
+          "text": "iona"
         },
         {
           "type": "text_delta",
@@ -261,7 +249,43 @@
         },
         {
           "type": "text_delta",
+          "text": " fecha"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " nacimiento"
+        },
+        {
+          "type": "text_delta",
+          "text": " ni"
+        },
+        {
+          "type": "text_delta",
           "text": " edad"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " Si"
+        },
+        {
+          "type": "text_delta",
+          "text": " necesitas"
+        },
+        {
+          "type": "text_delta",
+          "text": " ese"
+        },
+        {
+          "type": "text_delta",
+          "text": " dato"
         },
         {
           "type": "text_delta",
@@ -281,19 +305,15 @@
         },
         {
           "type": "text_delta",
-          "text": " contactar"
+          "text": " contact"
+        },
+        {
+          "type": "text_delta",
+          "text": "arlo"
         },
         {
           "type": "text_delta",
           "text": " directamente"
-        },
-        {
-          "type": "text_delta",
-          "text": " con"
-        },
-        {
-          "type": "text_delta",
-          "text": " él"
         },
         {
           "type": "text_delta",
@@ -302,18 +322,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él.",
+            "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia y estudió entre 2010 y 2015, pero no se menciona su fecha de nacimiento ni edad. Si necesitas ese dato, te sugiero contactarlo directamente.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2656,
               "cacheReadInputTokens": 1177,
-              "outputTokens": 62
+              "outputTokens": 147
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia como ingeniero y que estudió entre 2010 y 2015. Para detalles personales como su edad, te sugiero contactar directamente con él."
+                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo sé que tiene más de 10 años de experiencia y estudió entre 2010 y 2015, pero no se menciona su fecha de nacimiento ni edad. Si necesitas ese dato, te sugiero contactarlo directamente."
               }
             ]
           }
@@ -326,7 +346,7 @@
       "calls": [
         {
           "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
-          "latencyMs": 5258,
+          "latencyMs": 3987,
           "events": [
             {
               "type": "input_usage",
@@ -339,7 +359,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "EMU9OK5MhfbRUVGuUdRxAtKYtlEM8Fdv",
+                    "id": "odH32n10sj502Al4BYo6qfpiXqrqmNXO",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -348,12 +368,12 @@
                 "usage": {
                   "inputTokens": 2358,
                   "cacheReadInputTokens": 1177,
-                  "outputTokens": 203
+                  "outputTokens": 164
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "EMU9OK5MhfbRUVGuUdRxAtKYtlEM8Fdv",
+                    "id": "odH32n10sj502Al4BYo6qfpiXqrqmNXO",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -363,8 +383,8 @@
           ]
         },
         {
-          "requestHash": "c5c69337ec1bb74e51084735084627a17312045d91f477d7159a32944c4e8926",
-          "latencyMs": 1817,
+          "requestHash": "822b0fd86b09d53767c66bd880d983060ab5d05b2bc18c2dbed8ed75e69b9b6e",
+          "latencyMs": 4272,
           "events": [
             {
               "type": "input_usage",
@@ -377,15 +397,15 @@
             },
             {
               "type": "text_delta",
-              "text": " se"
+              "text": " tengo"
             },
             {
               "type": "text_delta",
-              "text": " menc"
+              "text": " información"
             },
             {
               "type": "text_delta",
-              "text": "iona"
+              "text": " sobre"
             },
             {
               "type": "text_delta",
@@ -425,7 +445,7 @@
             },
             {
               "type": "text_delta",
-              "text": " indica"
+              "text": " aparece"
             },
             {
               "type": "text_delta",
@@ -469,19 +489,7 @@
             },
             {
               "type": "text_delta",
-              "text": " como"
-            },
-            {
-              "type": "text_delta",
-              "text": " ingen"
-            },
-            {
-              "type": "text_delta",
-              "text": "iero"
-            },
-            {
-              "type": "text_delta",
-              "text": " senior"
+              "text": " profesional"
             },
             {
               "type": "text_delta",
@@ -493,7 +501,11 @@
             },
             {
               "type": "text_delta",
-              "text": " estudi"
+              "text": " se"
+            },
+            {
+              "type": "text_delta",
+              "text": " gradu"
             },
             {
               "type": "text_delta",
@@ -549,15 +561,27 @@
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": " Para"
+              "text": " pero"
             },
             {
               "type": "text_delta",
-              "text": " saber"
+              "text": " no"
+            },
+            {
+              "type": "text_delta",
+              "text": " se"
+            },
+            {
+              "type": "text_delta",
+              "text": " menc"
+            },
+            {
+              "type": "text_delta",
+              "text": "iona"
             },
             {
               "type": "text_delta",
@@ -565,27 +589,27 @@
             },
             {
               "type": "text_delta",
-              "text": " edad"
+              "text": " fecha"
             },
             {
               "type": "text_delta",
-              "text": " exact"
+              "text": " de"
             },
             {
               "type": "text_delta",
-              "text": "a"
+              "text": " nacimiento"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": " sería"
+              "text": " Si"
             },
             {
               "type": "text_delta",
-              "text": " necesario"
+              "text": " necesitas"
             },
             {
               "type": "text_delta",
@@ -605,23 +629,55 @@
             },
             {
               "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " proporcion"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus"
+            },
+            {
+              "type": "text_delta",
+              "text": " datos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " contacto"
+            },
+            {
+              "type": "text_delta",
               "text": "."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, sería necesario contactar con él directamente.",
+                "text": "No tengo información sobre la edad de Alberto en su perfil. Solo aparece que tiene más de 10 años de experiencia profesional y que se graduó entre 2010 y 2015, pero no se menciona su fecha de nacimiento. Si necesitas contactar con él directamente, puedo proporcionarte sus datos de contacto.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2656,
                   "cacheReadInputTokens": 1177,
-                  "outputTokens": 62
+                  "outputTokens": 169
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "No se menciona la edad de Alberto en su perfil. Solo indica que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para saber su edad exacta, sería necesario contactar con él directamente."
+                    "text": "No tengo información sobre la edad de Alberto en su perfil. Solo aparece que tiene más de 10 años de experiencia profesional y que se graduó entre 2010 y 2015, pero no se menciona su fecha de nacimiento. Si necesitas contactar con él directamente, puedo proporcionarte sus datos de contacto."
                   }
                 ]
               }
@@ -634,7 +690,7 @@
       "calls": [
         {
           "requestHash": "d0b31b04292bd669ba7c0d4d744311e7ca3fe9d5e0a11a8ad07a1fc98ac82de6",
-          "latencyMs": 4464,
+          "latencyMs": 5117,
           "events": [
             {
               "type": "input_usage",
@@ -647,7 +703,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "nSCskQQhJsESpPmIybfmHhfWD2azTV6V",
+                    "id": "nOPwKOLxHqxCuGiWPRCmeO0ET7axO5TT",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -656,12 +712,12 @@
                 "usage": {
                   "inputTokens": 2358,
                   "cacheReadInputTokens": 1177,
-                  "outputTokens": 172
+                  "outputTokens": 211
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "nSCskQQhJsESpPmIybfmHhfWD2azTV6V",
+                    "id": "nOPwKOLxHqxCuGiWPRCmeO0ET7axO5TT",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -671,8 +727,8 @@
           ]
         },
         {
-          "requestHash": "5bfa320d6a6b87ed34e94203e1008c0ebef1738b08cbd84c76471de2ebfe40eb",
-          "latencyMs": 1820,
+          "requestHash": "dd0dc63fe94876ffc70cebf112d35a0d7f3c226911657e4a086b8b765b1faf21",
+          "latencyMs": 4931,
           "events": [
             {
               "type": "input_usage",
@@ -685,15 +741,15 @@
             },
             {
               "type": "text_delta",
-              "text": " se"
+              "text": " tengo"
             },
             {
               "type": "text_delta",
-              "text": " menc"
+              "text": " información"
             },
             {
               "type": "text_delta",
-              "text": "iona"
+              "text": " sobre"
             },
             {
               "type": "text_delta",
@@ -729,151 +785,15 @@
             },
             {
               "type": "text_delta",
-              "text": " Solo"
+              "text": " El"
             },
             {
               "type": "text_delta",
-              "text": " sabemos"
+              "text": " perfil"
             },
             {
               "type": "text_delta",
-              "text": " que"
-            },
-            {
-              "type": "text_delta",
-              "text": " tiene"
-            },
-            {
-              "type": "text_delta",
-              "text": " más"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": " años"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " experiencia"
-            },
-            {
-              "type": "text_delta",
-              "text": " como"
-            },
-            {
-              "type": "text_delta",
-              "text": " ingen"
-            },
-            {
-              "type": "text_delta",
-              "text": "iero"
-            },
-            {
-              "type": "text_delta",
-              "text": " senior"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " que"
-            },
-            {
-              "type": "text_delta",
-              "text": " estudi"
-            },
-            {
-              "type": "text_delta",
-              "text": "ó"
-            },
-            {
-              "type": "text_delta",
-              "text": " entre"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "2"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "2"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "5"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Para"
-            },
-            {
-              "type": "text_delta",
-              "text": " obtener"
-            },
-            {
-              "type": "text_delta",
-              "text": " información"
-            },
-            {
-              "type": "text_delta",
-              "text": " sobre"
+              "text": " incluye"
             },
             {
               "type": "text_delta",
@@ -881,7 +801,7 @@
             },
             {
               "type": "text_delta",
-              "text": " edad"
+              "text": " nombre"
             },
             {
               "type": "text_delta",
@@ -889,27 +809,139 @@
             },
             {
               "type": "text_delta",
+              "text": " título"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " ubicación"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " resumen"
+            },
+            {
+              "type": "text_delta",
+              "text": " profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " educación"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " idiomas"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " pero"
+            },
+            {
+              "type": "text_delta",
+              "text": " no"
+            },
+            {
+              "type": "text_delta",
+              "text": " menc"
+            },
+            {
+              "type": "text_delta",
+              "text": "iona"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " fecha"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " nacimiento"
+            },
+            {
+              "type": "text_delta",
+              "text": " ni"
+            },
+            {
+              "type": "text_delta",
+              "text": " edad"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Si"
+            },
+            {
+              "type": "text_delta",
+              "text": " te"
+            },
+            {
+              "type": "text_delta",
+              "text": " interesa"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": "lo"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " lo"
+            },
+            {
+              "type": "text_delta",
+              "text": " mejor"
+            },
+            {
+              "type": "text_delta",
               "text": " sería"
             },
             {
               "type": "text_delta",
-              "text": " necesario"
+              "text": " contact"
             },
             {
               "type": "text_delta",
-              "text": " contactar"
+              "text": "arlo"
             },
             {
               "type": "text_delta",
               "text": " directamente"
-            },
-            {
-              "type": "text_delta",
-              "text": " con"
-            },
-            {
-              "type": "text_delta",
-              "text": " él"
             },
             {
               "type": "text_delta",
@@ -918,18 +950,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "No se menciona la edad de Alberto en su perfil. Solo sabemos que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar directamente con él.",
+                "text": "No tengo información sobre la edad de Alberto en su perfil. El perfil incluye su nombre, título, ubicación, resumen profesional, educación y idiomas, pero no menciona su fecha de nacimiento ni edad. Si te interesa saberlo, lo mejor sería contactarlo directamente.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2656,
                   "cacheReadInputTokens": 1177,
-                  "outputTokens": 62
+                  "outputTokens": 197
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "No se menciona la edad de Alberto en su perfil. Solo sabemos que tiene más de 10 años de experiencia como ingeniero senior y que estudió entre 2010 y 2015. Para obtener información sobre su edad, sería necesario contactar directamente con él."
+                    "text": "No tengo información sobre la edad de Alberto en su perfil. El perfil incluye su nombre, título, ubicación, resumen profesional, educación y idiomas, pero no menciona su fecha de nacimiento ni edad. Si te interesa saberlo, lo mejor sería contactarlo directamente."
                   }
                 ]
               }

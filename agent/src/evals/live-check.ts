@@ -11,7 +11,7 @@ import type { CaseResult, PassAtK } from "./metrics";
  * How far, in percentage points, the live pass rate may fall below the latest
  * recorded run's before the check raises. The recorded rate is pass@3 (a case
  * passes only if all 3 runs did), a lower bound for a one-run rate, so 10 points
- * (5 of 50 cases) is well past run-to-run noise (Haiku: 4 flaky cases of 50).
+ * (7 of 72 cases) is well past run-to-run noise (docs/evals.md#weekly-live-check).
  */
 export const liveCheckMarginPoints = 10;
 

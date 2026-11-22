@@ -25,6 +25,7 @@ import { runScores, type CaseResult, type SetResult } from "./metrics";
 import { renderHistory, renderReport } from "./report";
 import { scoreCase, type CaseResponse, type EvalCase } from "./scoring";
 import { renderSummaryJson } from "./summary";
+import { resultsParagraph } from "./doc-results";
 
 /** The model settings a recording was made with (`modelSettings`). */
 export type ModelSettings = {
@@ -342,6 +343,8 @@ export async function evaluate({
   problems: string[];
   report: string;
   summary: string;
+  /** The evals doc's "Current results" paragraph (`withResults` puts it in place). */
+  results: string;
 }> {
   const { sets, problems } = await replaySets(input);
   if (history) problems.push(...checkHistory(history, sets));
@@ -351,15 +354,17 @@ export async function evaluate({
     problems,
     report: renderReport(sets) + historySection,
     summary: renderSummaryJson(sets),
+    results: resultsParagraph(sets),
   };
 }
 
-/** The files `evaluate` generates, as text. */
-export type GeneratedFiles = { report: string; summary: string };
+/** The files `evaluate` generates, as text; of the evals doc, only its results paragraph is. */
+export type GeneratedFiles = { report: string; summary: string; evalsDoc: string };
 
 const generatedPaths: Record<keyof GeneratedFiles, string> = {
   report: "agent/evals/report.md",
   summary: "agent/evals/summary.json",
+  evalsDoc: "docs/evals.md",
 };
 
 /**

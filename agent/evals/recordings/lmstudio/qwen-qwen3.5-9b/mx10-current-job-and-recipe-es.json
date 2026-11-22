@@ -1,0 +1,818 @@
+{
+  "caseId": "mx10",
+  "slug": "current-job-and-recipe-es",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+      "latencyMs": 3466,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2356,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "Y8DtpPgXU5vOYmrNR8M2dPMxhdrXOCU4",
+                "name": "get_experience",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2356,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 140
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "Y8DtpPgXU5vOYmrNR8M2dPMxhdrXOCU4",
+                "name": "get_experience",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "8cdfee9dd1b4f17906fe03ceeda616bc1ed52e7ed90beab45dbf7d1825ec9a14",
+      "latencyMs": 1576,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2718,
+          "cacheReadInputTokens": 1189
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " trabaja"
+        },
+        {
+          "type": "text_delta",
+          "text": " actualmente"
+        },
+        {
+          "type": "text_delta",
+          "text": " en"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cover"
+        },
+        {
+          "type": "text_delta",
+          "text": "Wallet"
+        },
+        {
+          "type": "text_delta",
+          "text": " como"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nNo"
+        },
+        {
+          "type": "text_delta",
+          "text": " puedo"
+        },
+        {
+          "type": "text_delta",
+          "text": " ayudarte"
+        },
+        {
+          "type": "text_delta",
+          "text": " con"
+        },
+        {
+          "type": "text_delta",
+          "text": " la"
+        },
+        {
+          "type": "text_delta",
+          "text": " receta"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " la"
+        },
+        {
+          "type": "text_delta",
+          "text": " tort"
+        },
+        {
+          "type": "text_delta",
+          "text": "illa"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " pat"
+        },
+        {
+          "type": "text_delta",
+          "text": "atas"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " ya"
+        },
+        {
+          "type": "text_delta",
+          "text": " que"
+        },
+        {
+          "type": "text_delta",
+          "text": " solo"
+        },
+        {
+          "type": "text_delta",
+          "text": " puedo"
+        },
+        {
+          "type": "text_delta",
+          "text": " responder"
+        },
+        {
+          "type": "text_delta",
+          "text": " preguntas"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " y"
+        },
+        {
+          "type": "text_delta",
+          "text": " su"
+        },
+        {
+          "type": "text_delta",
+          "text": " trabajo"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " ¿"
+        },
+        {
+          "type": "text_delta",
+          "text": "Te"
+        },
+        {
+          "type": "text_delta",
+          "text": " gustaría"
+        },
+        {
+          "type": "text_delta",
+          "text": " saber"
+        },
+        {
+          "type": "text_delta",
+          "text": " más"
+        },
+        {
+          "type": "text_delta",
+          "text": " sobre"
+        },
+        {
+          "type": "text_delta",
+          "text": " sus"
+        },
+        {
+          "type": "text_delta",
+          "text": " proyectos"
+        },
+        {
+          "type": "text_delta",
+          "text": " de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA"
+        },
+        {
+          "type": "text_delta",
+          "text": " o"
+        },
+        {
+          "type": "text_delta",
+          "text": " su"
+        },
+        {
+          "type": "text_delta",
+          "text": " experiencia"
+        },
+        {
+          "type": "text_delta",
+          "text": " profesional"
+        },
+        {
+          "type": "text_delta",
+          "text": "?"
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te gustaría saber más sobre sus proyectos de IA o su experiencia profesional?",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2718,
+              "cacheReadInputTokens": 1189,
+              "outputTokens": 57
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.\n\nNo puedo ayudarte con la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su trabajo. ¿Te gustaría saber más sobre sus proyectos de IA o su experiencia profesional?"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+          "latencyMs": 3274,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2382,
+              "cacheReadInputTokens": 1189
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "4LAmslCI8Vmy9FJYPnlSEJt462w4fvrQ",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2382,
+                  "cacheReadInputTokens": 1189,
+                  "outputTokens": 134
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "4LAmslCI8Vmy9FJYPnlSEJt462w4fvrQ",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "5e9387bf83b1cc39f06791982c99137e4d91c0c3d66da611ddc50aa97a3057d5",
+          "latencyMs": 1201,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2718,
+              "cacheReadInputTokens": 1189
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nNo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " proporcion"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " receta"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " tort"
+            },
+            {
+              "type": "text_delta",
+              "text": "illa"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " pat"
+            },
+            {
+              "type": "text_delta",
+              "text": "atas"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " ya"
+            },
+            {
+              "type": "text_delta",
+              "text": " que"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " preguntas"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabajo"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.\n\nNo puedo proporcionarte la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su trabajo.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2718,
+                  "cacheReadInputTokens": 1189,
+                  "outputTokens": 42
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.\n\nNo puedo proporcionarte la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su trabajo."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e89d910c42cb6a4031aea90550939e7e1e212ea53850acd230a26140d30af2e1",
+          "latencyMs": 3304,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2382,
+              "cacheReadInputTokens": 1189
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "mQtwyA7Dik4iCBAPvf8vS8bWokzVNYZL",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2382,
+                  "cacheReadInputTokens": 1189,
+                  "outputTokens": 135
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "mQtwyA7Dik4iCBAPvf8vS8bWokzVNYZL",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "262371877ba7ced1443e7f212ebed2bf8776ae2b255fad14438be990a9bfc77a",
+          "latencyMs": 1605,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2718,
+              "cacheReadInputTokens": 1189
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " trabaja"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nNo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " proporcion"
+            },
+            {
+              "type": "text_delta",
+              "text": "arte"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " receta"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " la"
+            },
+            {
+              "type": "text_delta",
+              "text": " tort"
+            },
+            {
+              "type": "text_delta",
+              "text": "illa"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " pat"
+            },
+            {
+              "type": "text_delta",
+              "text": "atas"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " ya"
+            },
+            {
+              "type": "text_delta",
+              "text": " que"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo"
+            },
+            {
+              "type": "text_delta",
+              "text": " puedo"
+            },
+            {
+              "type": "text_delta",
+              "text": " responder"
+            },
+            {
+              "type": "text_delta",
+              "text": " preguntas"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil"
+            },
+            {
+              "type": "text_delta",
+              "text": " profesional"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " ¿"
+            },
+            {
+              "type": "text_delta",
+              "text": "Te"
+            },
+            {
+              "type": "text_delta",
+              "text": " gustaría"
+            },
+            {
+              "type": "text_delta",
+              "text": " saber"
+            },
+            {
+              "type": "text_delta",
+              "text": " más"
+            },
+            {
+              "type": "text_delta",
+              "text": " sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus"
+            },
+            {
+              "type": "text_delta",
+              "text": " proyectos"
+            },
+            {
+              "type": "text_delta",
+              "text": " de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA"
+            },
+            {
+              "type": "text_delta",
+              "text": " o"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer. \n\nNo puedo proporcionarte la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su perfil profesional. ¿Te gustaría saber más sobre sus proyectos de IA o su experiencia laboral?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2718,
+                  "cacheReadInputTokens": 1189,
+                  "outputTokens": 58
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer. \n\nNo puedo proporcionarte la receta de la tortilla de patatas, ya que solo puedo responder preguntas sobre Alberto y su perfil profesional. ¿Te gustaría saber más sobre sus proyectos de IA o su experiencia laboral?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

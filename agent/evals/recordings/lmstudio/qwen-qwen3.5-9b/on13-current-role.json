@@ -1,0 +1,538 @@
+{
+  "caseId": "on13",
+  "slug": "current-role",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+      "latencyMs": 2232,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2345,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "IYujGCPFXOuWJo3yf2lX322KA78pmLmr",
+                "name": "get_experience",
+                "input": {
+                  "company": "CoverWallet"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2345,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 89
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "IYujGCPFXOuWJo3yf2lX322KA78pmLmr",
+                "name": "get_experience",
+                "input": {
+                  "company": "CoverWallet"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "c4ce4daaaa81781153c785b0ff5e2801b517ce8b288783e438ad472dbe88b78e",
+      "latencyMs": 947,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2554,
+          "cacheReadInputTokens": 1178
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " role"
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cover"
+        },
+        {
+          "type": "text_delta",
+          "text": "Wallet"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " Senior"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Engineer"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " He"
+        },
+        {
+          "type": "text_delta",
+          "text": " has"
+        },
+        {
+          "type": "text_delta",
+          "text": " been"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " company"
+        },
+        {
+          "type": "text_delta",
+          "text": " since"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "9"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " working"
+        },
+        {
+          "type": "text_delta",
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " Madrid"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's role at CoverWallet is Senior Software Engineer. He has been with the company since 2019, working remotely from Madrid.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2554,
+              "cacheReadInputTokens": 1178,
+              "outputTokens": 33
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's role at CoverWallet is Senior Software Engineer. He has been with the company since 2019, working remotely from Madrid."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+          "latencyMs": 1853,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "AwO1Ih6ohBCGByoFIO3KznuJkXI0v5mU",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "CoverWallet"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 75
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "AwO1Ih6ohBCGByoFIO3KznuJkXI0v5mU",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "CoverWallet"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "60292a2fdcd4cee4ae1f7839ad56090874983ffbc2dfb71a13646b88e436a6cc",
+          "latencyMs": 512,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2554,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " role"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's role at CoverWallet is Senior Software Engineer.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2554,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 15
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's role at CoverWallet is Senior Software Engineer."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+          "latencyMs": 2399,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "CANHH6x2gsvKYlSA9OLiQYAmwHBftfVA",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "CoverWallet"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 98
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "CANHH6x2gsvKYlSA9OLiQYAmwHBftfVA",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "CoverWallet"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "457994a8fa6addbe405c5c650e3926ad588a541b3ea52882b41b6addff2c2c5b",
+          "latencyMs": 1710,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2554,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " role"
+            },
+            {
+              "type": "text_delta",
+              "text": " at"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cover"
+            },
+            {
+              "type": "text_delta",
+              "text": "Wallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": "**."
+            },
+            {
+              "type": "text_delta",
+              "text": " He"
+            },
+            {
+              "type": "text_delta",
+              "text": " has"
+            },
+            {
+              "type": "text_delta",
+              "text": " held"
+            },
+            {
+              "type": "text_delta",
+              "text": " this"
+            },
+            {
+              "type": "text_delta",
+              "text": " position"
+            },
+            {
+              "type": "text_delta",
+              "text": " since"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " working"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
+            },
+            {
+              "type": "text_delta",
+              "text": " Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " remotely"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's role at CoverWallet is **Senior Software Engineer**. He has held this position since 2019, working from Madrid or remotely.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2554,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 65
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's role at CoverWallet is **Senior Software Engineer**. He has held this position since 2019, working from Madrid or remotely."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

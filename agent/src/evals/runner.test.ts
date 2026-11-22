@@ -477,8 +477,8 @@ describe("the eval summary (agent/evals/summary.json)", () => {
   });
 });
 
-describe("staleFiles (the committed report and summary against the regenerated ones)", () => {
-  const generated = { report: "# Agent evals\n", summary: '{\n  "sets": []\n}\n' };
+describe("staleFiles (the committed report, summary and evals doc against the regenerated ones)", () => {
+  const generated = { report: "# Agent evals\n", summary: '{\n  "sets": []\n}\n', evalsDoc: "# Evals\n" };
 
   it("passes when both committed files match", () => {
     expect(staleFiles(generated, { ...generated })).toEqual([]);
@@ -488,9 +488,15 @@ describe("staleFiles (the committed report and summary against the regenerated o
     expect(staleFiles(generated, { ...generated, summary: '{"sets":[]}' })).toEqual([
       "agent/evals/summary.json differs from the recordings: run `pnpm agent:eval:replay` and commit it",
     ]);
-    expect(staleFiles(generated, { report: "old", summary: undefined })).toEqual([
+    expect(staleFiles(generated, { ...generated, report: "old", summary: undefined })).toEqual([
       "agent/evals/report.md differs from the recordings: run `pnpm agent:eval:replay` and commit it",
       "agent/evals/summary.json differs from the recordings: run `pnpm agent:eval:replay` and commit it",
+    ]);
+  });
+
+  it("fails on a results paragraph in docs/evals.md that differs from the recordings", () => {
+    expect(staleFiles(generated, { ...generated, evalsDoc: "# Evals, by hand\n" })).toEqual([
+      "docs/evals.md differs from the recordings: run `pnpm agent:eval:replay` and commit it",
     ]);
   });
 });
@@ -534,16 +540,17 @@ describe("rescore (what `pnpm agent:eval:rescore` runs)", () => {
 });
 
 describe("replaySets (what a live run's history line is computed from)", () => {
-  it("gives the same sets and problems as evaluate, with no report, summary or history", async () => {
+  it("gives the same sets and problems as evaluate, with no report, summary, results or history", async () => {
     const { a, b } = await recordBoth();
     const input = { cases: [contact, capital], sets: [{ ...meta, recordings: [a.recording, b.recording] }] };
 
     const replayed = await replaySets(input);
-    const { report, summary, ...evaluated } = await evaluate(input);
+    const { report, summary, results, ...evaluated } = await evaluate(input);
 
     expect(replayed).toEqual(evaluated);
     expect(report).toContain("## fake / scripted");
     expect(summary).toContain(`"model": "scripted"`);
+    expect(results).toMatch(/^On `scripted` \(fake\): 2 cases/);
   });
 });
 

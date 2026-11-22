@@ -14,7 +14,7 @@
 //     fingerprints to old entries and refuses scores that changed (ADR 0001).
 //   tsx scripts/eval.ts replay [--check]
 //     Replays the committed recordings (no model, no network) and writes the
-//     report and summary.json; with --check, writes nothing and fails on stale
+//     report, summary.json and the results paragraph of docs/evals.md; with --check, writes nothing and fails on stale
 //     or missing recordings, leaks, a history that doesn't match the
 //     recordings, or a report or summary that differs from the committed one.
 //     Never appends history.
@@ -39,6 +39,7 @@ import {
   parseHistory,
   type LiveRun,
 } from "../src/evals/history";
+import { withResults } from "../src/evals/doc-results";
 import { liveCheck, liveCheckIssue, liveCheckTitle, renderLiveCheck } from "../src/evals/live-check";
 import { liveRunConfig } from "../src/evals/live-run";
 import { runScores } from "../src/evals/metrics";
@@ -58,6 +59,7 @@ const recordingsDir = join(evalsDir, "recordings");
 const reportPath = join(evalsDir, "report.md");
 const summaryPath = join(evalsDir, "summary.json");
 const historyPath = join(evalsDir, "history.jsonl");
+const evalsDocPath = fileURLToPath(new URL("../../docs/evals.md", import.meta.url));
 
 const readHistory = () => readFile(historyPath, "utf8").catch(() => "");
 
@@ -118,22 +120,29 @@ async function saveRecording(recording: Recording) {
 
 async function replay(check: boolean): Promise<number> {
   const history = parseHistory(await readHistory());
-  const { report, summary, problems } = await evaluate({ cases, sets: await loadSets(), history });
+  const { report, summary, results, problems } = await evaluate({ cases, sets: await loadSets(), history });
+  const committed = async (path: string) => readFile(path, "utf8").catch(() => undefined);
+  const evalsDocText = await committed(evalsDocPath);
+  if (evalsDocText === undefined) {
+    console.error(`✗ ${evalsDocPath} is missing`);
+    return 1;
+  }
+  const evalsDoc = withResults(evalsDocText, results);
   if (!check) {
     await writeFile(reportPath, report);
     await writeFile(summaryPath, summary);
-    console.log(`Wrote ${reportPath} and ${summaryPath}`);
+    await writeFile(evalsDocPath, evalsDoc);
+    console.log(`Wrote ${reportPath}, ${summaryPath} and the results in ${evalsDocPath}`);
     return problems.length ? 1 : 0;
   }
-  const committed = async (path: string) => readFile(path, "utf8").catch(() => undefined);
   problems.push(
     ...staleFiles(
-      { report, summary },
-      { report: await committed(reportPath), summary: await committed(summaryPath) },
+      { report, summary, evalsDoc },
+      { report: await committed(reportPath), summary: await committed(summaryPath), evalsDoc: evalsDocText },
     ),
   );
   for (const problem of problems) console.error(`✗ ${problem}`);
-  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report and summary are up to date");
+  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report, summary and the evals doc's results are up to date");
   return problems.length ? 1 : 0;
 }
 

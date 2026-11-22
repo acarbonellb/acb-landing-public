@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "ee255c0434db60459e60ceb34adefe93fe9fe5ba905ee5d01204723e0b535f76",
-      "latencyMs": 740,
+      "latencyMs": 616,
       "events": [
         {
           "type": "input_usage",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01FZzfWDa1w61wEXJWcawzVu",
+                "id": "toolu_016JhvphGRe8LR3aWsifRzCY",
                 "name": "get_projects",
                 "input": {}
               }
@@ -45,7 +45,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01FZzfWDa1w61wEXJWcawzVu",
+                "id": "toolu_016JhvphGRe8LR3aWsifRzCY",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -58,8 +58,8 @@
       ]
     },
     {
-      "requestHash": "1f99e21568255cc1d5f893fdc97844b8e6bbbc9eaac9e37c489e262d3fa08104",
-      "latencyMs": 1334,
+      "requestHash": "6abef47394b0f4ad96dea8cc9c0d0d826908db2cbbeb5f8900ad38c4f3fe21e1",
+      "latencyMs": 1473,
       "events": [
         {
           "type": "input_usage",
@@ -77,71 +77,147 @@
         },
         {
           "type": "text_delta",
-          "text": "ent works"
+          "text": "ent reviews newly published events"
         },
         {
           "type": "text_delta",
-          "text": " on an online event ticketing"
+          "text": " and organizers on an online event"
         },
         {
           "type": "text_delta",
-          "text": " platform. It reviews new"
+          "text": " ticketing platform. For"
         },
         {
           "type": "text_delta",
-          "text": "ly published events and organizers,"
+          "text": " each one, it rec"
         },
         {
           "type": "text_delta",
-          "text": " then"
+          "text": "ommends appro"
         },
         {
           "type": "text_delta",
-          "text": " g"
+          "text": "ve, reject, or request info"
         },
         {
           "type": "text_delta",
-          "text": "ives a human"
+          "text": ", along with its"
         },
         {
           "type": "text_delta",
-          "text": " admin an approve, reject"
+          "text": " reasons, and a human adm"
         },
         {
           "type": "text_delta",
-          "text": ", or request-info recommend"
+          "text": "in mak"
         },
         {
           "type": "text_delta",
-          "text": "ation with"
+          "text": "es the final decision.\n\nIt"
         },
         {
           "type": "text_delta",
-          "text": " its reasons. It au"
+          "text": " u"
         },
         {
           "type": "text_delta",
-          "text": "to-approves only when"
+          "text": "ses graded autonomy:"
         },
         {
           "type": "text_delta",
-          "text": " the evidence is verified in"
+          "text": " it au"
         },
         {
           "type": "text_delta",
-          "text": " code, and web sources can h"
+          "text": "to-approves only on evid"
         },
         {
           "type": "text_delta",
-          "text": "old a decision back but never appro"
+          "text": "ence verified in code, and web"
         },
         {
           "type": "text_delta",
-          "text": "ve one"
+          "text": " sources can hold a decision"
         },
         {
           "type": "text_delta",
-          "text": ".\n\nIt"
+          "text": " back but never approve it."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nThe"
+        },
+        {
+          "type": "text_delta",
+          "text": " ag"
+        },
+        {
+          "type": "text_delta",
+          "text": "ent is at"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " offline-"
+        },
+        {
+          "type": "text_delta",
+          "text": "evals stage. On"
+        },
+        {
+          "type": "text_delta",
+          "text": " 31 test"
+        },
+        {
+          "type": "text_delta",
+          "text": " cases, the"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cla"
+        },
+        {
+          "type": "text_delta",
+          "text": "ude Haiku 5."
+        },
+        {
+          "type": "text_delta",
+          "text": "5 model was"
+        },
+        {
+          "type": "text_delta",
+          "text": " chosen for deployment,"
+        },
+        {
+          "type": "text_delta",
+          "text": " with 86% accuracy"
+        },
+        {
+          "type": "text_delta",
+          "text": " and "
+        },
+        {
+          "type": "text_delta",
+          "text": "1% of fraud approved"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " at"
+        },
+        {
+          "type": "text_delta",
+          "text": " about $0.002 per review"
+        },
+        {
+          "type": "text_delta",
+          "text": ". It"
         },
         {
           "type": "text_delta",
@@ -149,92 +225,37 @@
         },
         {
           "type": "text_delta",
-          "text": " currently in offline evals ("
+          "text": " built with TypeScript,"
         },
         {
           "type": "text_delta",
-          "text": "31 cases). With"
+          "text": " PostgreSQL and"
         },
         {
           "type": "text_delta",
-          "text": " Claude Haiku "
-        },
-        {
-          "type": "text_delta",
-          "text": "5.5, which"
-        },
-        {
-          "type": "text_delta",
-          "text": " was chosen for deployment"
-        },
-        {
-          "type": "text_delta",
-          "text": ", acc"
-        },
-        {
-          "type": "text_delta",
-          "text": "uracy was 86% and"
-        },
-        {
-          "type": "text_delta",
-          "text": " 1% of fraud"
-        },
-        {
-          "type": "text_delta",
-          "text": " was approved,"
-        },
-        {
-          "type": "text_delta",
-          "text": " comp"
-        },
-        {
-          "type": "text_delta",
-          "text": "ared with 71"
-        },
-        {
-          "type": "text_delta",
-          "text": "% acc"
-        },
-        {
-          "type": "text_delta",
-          "text": "uracy and 8% f"
-        },
-        {
-          "type": "text_delta",
-          "text": "raud approved for the"
-        },
-        {
-          "type": "text_delta",
-          "text": " local "
-        },
-        {
-          "type": "text_delta",
-          "text": "9B model. A"
-        },
-        {
-          "type": "text_delta",
-          "text": " review costs about $0.002"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
+          "text": " GCP."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's Fraud Detection Agent works on an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation with its reasons. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt is currently in offline evals (31 cases). With Claude Haiku 5.5, which was chosen for deployment, accuracy was 86% and 1% of fraud was approved, compared with 71% accuracy and 8% fraud approved for the local 9B model. A review costs about $0.002.",
+            "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. For each one, it recommends approve, reject, or request info, along with its reasons, and a human admin makes the final decision.\n\nIt uses graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n\nThe agent is at the offline-evals stage. On 31 test cases, the Claude Haiku 5.5 model was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review. It is built with TypeScript, PostgreSQL and GCP.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2840,
               "cacheWriteInputTokens": 1174,
               "cacheReadInputTokens": 1664,
-              "outputTokens": 201
+              "outputTokens": 241
             },
             "providerContent": [
               {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQSmgUKEAgUGAI4AUIIdGhpbmtpbmcSDEvpS1da9YV5Mr1INBoMRtqKGkbJwgjqCAAiIjCo4ajjOOCkGO3E67WvM24RLhMrgzPb7394FS1ttvBX3gn0SqqbnxUxeNjN1KcKbrAqtwQ3y137EWclB4ys8udhNhDh2WCDdmQLQvu72aC2unxB1HdmYWB0uRvjpFrsqno8ef1x5HXQSHFOeKgDQbFE8FatYSWIxvzFeQ/asYJKt5jLV4H8bTZDvjiT/7qQmYtAi8nLEOAmCWEKPOw2Rw7IfV0LRf81P+T4E9gE6JMh4atmkqS08REOTqvkfiDfuDC+FbK4rexq1nphYPx2lrMkFSLySVWV+p58CX7RsOtQW3DjJb4Xyt1lxbJNFZ/7XRrjvEkC2UN5sCtBUnjkIK1s/DIhAKBpDxXU+BOL3/XjCd38410OIvGuIQvTZzs9HtIn8dS0rTRWzx0T4FVY0Xc2zlu/ov10G0hKT62pLIeHmhznswLuggNiiY9kf3NYkb0ZOTltct3kD7EsQNFpgRn7fh8jbT7BT+gVzYpD/Hb5LQK8RE3tyGdpPSR2bgOViOOkK08XW03VWNSBRPeJkHwk+FpJllY+b4KQeSdRoEfSM54hp6mYLBugvqNJwgO26Vi/2R7DOlv8NM57wRu2JIcedeiaTJe3nULigUBciYUqxM4K5NVNatdxj8J2b3rDMfyNtq9Je0x0H35jzbGt9QFmRnVLsuvKqicbMohpFQr6w/I3GTPFqFmgBjYqGaAkqitaGYrRu30AVIXX0AT0ODVr9ChBH/tpIXJgsFl21PnZWqyeN+a0LnGFCbPY0GBy5H8FGrXaxQnM0BmQE5uHAFqlFaxM5pcFoeh0PEL6xDg0EhFBDWodCQrH4XoYAQ=="
+              },
+              {
                 "type": "text",
-                "text": "Alberto's Fraud Detection Agent works on an online event ticketing platform. It reviews newly published events and organizers, then gives a human admin an approve, reject, or request-info recommendation with its reasons. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt is currently in offline evals (31 cases). With Claude Haiku 5.5, which was chosen for deployment, accuracy was 86% and 1% of fraud was approved, compared with 71% accuracy and 8% fraud approved for the local 9B model. A review costs about $0.002."
+                "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. For each one, it recommends approve, reject, or request info, along with its reasons, and a human admin makes the final decision.\n\nIt uses graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n\nThe agent is at the offline-evals stage. On 31 test cases, the Claude Haiku 5.5 model was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review. It is built with TypeScript, PostgreSQL and GCP."
               }
             ]
           }
@@ -247,7 +268,7 @@
       "calls": [
         {
           "requestHash": "ee255c0434db60459e60ceb34adefe93fe9fe5ba905ee5d01204723e0b535f76",
-          "latencyMs": 884,
+          "latencyMs": 636,
           "events": [
             {
               "type": "input_usage",
@@ -260,7 +281,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01Wg9Ev2WUkqkSaopEv278Fy",
+                    "id": "toolu_01BWNUf5LDV1J87CmyGbgSTP",
                     "name": "get_projects",
                     "input": {}
                   }
@@ -274,7 +295,7 @@
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01Wg9Ev2WUkqkSaopEv278Fy",
+                    "id": "toolu_01BWNUf5LDV1J87CmyGbgSTP",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -287,251 +308,8 @@
           ]
         },
         {
-          "requestHash": "8948e2ba281d70714d75bcb50ca5f3a9461ef2a84bfa566e28ccc04359ae37bf",
-          "latencyMs": 1410,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2840,
-              "cacheReadInputTokens": 2838
-            },
-            {
-              "type": "text_delta",
-              "text": "Alberto's Fra"
-            },
-            {
-              "type": "text_delta",
-              "text": "ud Detection Agent re"
-            },
-            {
-              "type": "text_delta",
-              "text": "views newly published events and"
-            },
-            {
-              "type": "text_delta",
-              "text": " organizers on an online event "
-            },
-            {
-              "type": "text_delta",
-              "text": "ticketing platform. It le"
-            },
-            {
-              "type": "text_delta",
-              "text": "aves a"
-            },
-            {
-              "type": "text_delta",
-              "text": " recommendation to"
-            },
-            {
-              "type": "text_delta",
-              "text": " appro"
-            },
-            {
-              "type": "text_delta",
-              "text": "ve, reject, or request more"
-            },
-            {
-              "type": "text_delta",
-              "text": " info,"
-            },
-            {
-              "type": "text_delta",
-              "text": " along with its reasons, for"
-            },
-            {
-              "type": "text_delta",
-              "text": " a human admin to"
-            },
-            {
-              "type": "text_delta",
-              "text": " dec"
-            },
-            {
-              "type": "text_delta",
-              "text": "ide.\n\nIt"
-            },
-            {
-              "type": "text_delta",
-              "text": " has"
-            },
-            {
-              "type": "text_delta",
-              "text": " graded autonomy: it"
-            },
-            {
-              "type": "text_delta",
-              "text": " only auto-approves when"
-            },
-            {
-              "type": "text_delta",
-              "text": " the"
-            },
-            {
-              "type": "text_delta",
-              "text": " evidence is verified in code"
-            },
-            {
-              "type": "text_delta",
-              "text": ", and web sources can hold"
-            },
-            {
-              "type": "text_delta",
-              "text": " a decision back but never approve"
-            },
-            {
-              "type": "text_delta",
-              "text": " one"
-            },
-            {
-              "type": "text_delta",
-              "text": ".\n\nThe"
-            },
-            {
-              "type": "text_delta",
-              "text": " ag"
-            },
-            {
-              "type": "text_delta",
-              "text": "ent is in"
-            },
-            {
-              "type": "text_delta",
-              "text": " off"
-            },
-            {
-              "type": "text_delta",
-              "text": "line evals ("
-            },
-            {
-              "type": "text_delta",
-              "text": "31 cases)."
-            },
-            {
-              "type": "text_delta",
-              "text": " Claude Haiku 5"
-            },
-            {
-              "type": "text_delta",
-              "text": ".5 was chosen for"
-            },
-            {
-              "type": "text_delta",
-              "text": " deployment,"
-            },
-            {
-              "type": "text_delta",
-              "text": " with 86% accuracy"
-            },
-            {
-              "type": "text_delta",
-              "text": " and 1% of fraud"
-            },
-            {
-              "type": "text_delta",
-              "text": " approved,"
-            },
-            {
-              "type": "text_delta",
-              "text": " at"
-            },
-            {
-              "type": "text_delta",
-              "text": " about $0.002 per review"
-            },
-            {
-              "type": "text_delta",
-              "text": ". The"
-            },
-            {
-              "type": "text_delta",
-              "text": " st"
-            },
-            {
-              "type": "text_delta",
-              "text": "ack is T"
-            },
-            {
-              "type": "text_delta",
-              "text": "ypeScript, Postg"
-            },
-            {
-              "type": "text_delta",
-              "text": "reSQL and GCP"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It leaves a recommendation to approve, reject, or request more info, along with its reasons, for a human admin to decide.\n\nIt has graded autonomy: it only auto-approves when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nThe agent is in offline evals (31 cases). Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review. The stack is TypeScript, PostgreSQL and GCP.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2840,
-                  "cacheReadInputTokens": 2838,
-                  "outputTokens": 209
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It leaves a recommendation to approve, reject, or request more info, along with its reasons, for a human admin to decide.\n\nIt has graded autonomy: it only auto-approves when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nThe agent is in offline evals (31 cases). Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review. The stack is TypeScript, PostgreSQL and GCP."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "ee255c0434db60459e60ceb34adefe93fe9fe5ba905ee5d01204723e0b535f76",
-          "latencyMs": 859,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1668,
-              "cacheReadInputTokens": 1664
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_01R865T9Rhtc7Y9bkVz8nsbm",
-                    "name": "get_projects",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1668,
-                  "cacheReadInputTokens": 1664,
-                  "outputTokens": 27
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_01R865T9Rhtc7Y9bkVz8nsbm",
-                    "name": "get_projects",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "1462707af8c7acd1fc9d187a496a871952eedb45040060af77818340649bd24f",
-          "latencyMs": 1331,
+          "requestHash": "3ffd166eebf5ae2ff1d1b878cf654aee97efc9bba8a0d53e30fa600bd8069c78",
+          "latencyMs": 1400,
           "events": [
             {
               "type": "input_usage",
@@ -548,59 +326,55 @@
             },
             {
               "type": "text_delta",
-              "text": "ent works"
+              "text": "ent reviews newly published events"
             },
             {
               "type": "text_delta",
-              "text": " for an online"
+              "text": " and organizers on an online event"
             },
             {
               "type": "text_delta",
-              "text": " event ticketing platform."
+              "text": " ticketing platform. It"
             },
             {
               "type": "text_delta",
-              "text": " It reviews newly published events"
+              "text": " g"
             },
             {
               "type": "text_delta",
-              "text": " and organizers,"
+              "text": "ives a human"
             },
             {
               "type": "text_delta",
-              "text": " then leaves a recommend"
+              "text": " admin a"
             },
             {
               "type": "text_delta",
-              "text": "ation to appro"
+              "text": " recommendation ("
             },
             {
               "type": "text_delta",
-              "text": "ve, reject, or request more"
+              "text": "approve, reject, or request"
             },
             {
               "type": "text_delta",
-              "text": " info, along"
+              "text": " more"
             },
             {
               "type": "text_delta",
-              "text": " with its reasons. A"
+              "text": " info) along"
             },
             {
               "type": "text_delta",
-              "text": " human admin mak"
+              "text": " with its"
             },
             {
               "type": "text_delta",
-              "text": "es the final decision."
+              "text": " reasons. It auto-"
             },
             {
               "type": "text_delta",
-              "text": " It"
-            },
-            {
-              "type": "text_delta",
-              "text": " auto-approves only when"
+              "text": "approves only when"
             },
             {
               "type": "text_delta",
@@ -612,11 +386,11 @@
             },
             {
               "type": "text_delta",
-              "text": "old a dec"
+              "text": "old a decision back but never appro"
             },
             {
               "type": "text_delta",
-              "text": "ision back but never approve one"
+              "text": "ve one"
             },
             {
               "type": "text_delta",
@@ -624,55 +398,59 @@
             },
             {
               "type": "text_delta",
-              "text": "'s currently in off"
+              "text": "'s currently at"
             },
             {
               "type": "text_delta",
-              "text": "line evals, with 31 "
+              "text": " the"
             },
             {
               "type": "text_delta",
-              "text": "test cases."
+              "text": " offline-evals stage."
             },
             {
               "type": "text_delta",
-              "text": " Al"
+              "text": " On "
             },
             {
               "type": "text_delta",
-              "text": "berto chose Claude"
+              "text": "31 test"
             },
             {
               "type": "text_delta",
-              "text": " Haiku 5.5 "
+              "text": " cases, the team"
             },
             {
               "type": "text_delta",
-              "text": "for deployment:"
+              "text": " chose Claude Hai"
             },
             {
               "type": "text_delta",
-              "text": " it re"
+              "text": "ku 5.5 for"
             },
             {
               "type": "text_delta",
-              "text": "ached 86% accuracy"
+              "text": " deployment because"
             },
             {
               "type": "text_delta",
-              "text": " ("
+              "text": " it reached 86% accu"
             },
             {
               "type": "text_delta",
-              "text": "vs 71%"
+              "text": "racy ("
             },
             {
               "type": "text_delta",
-              "text": " for a local "
+              "text": "v"
             },
             {
               "type": "text_delta",
-              "text": "9B model) and appro"
+              "text": "s. 71% for a"
+            },
+            {
+              "type": "text_delta",
+              "text": " local 9B model) and appro"
             },
             {
               "type": "text_delta",
@@ -680,7 +458,11 @@
             },
             {
               "type": "text_delta",
-              "text": " cases (vs 8%"
+              "text": " c"
+            },
+            {
+              "type": "text_delta",
+              "text": "ases (vs. 8%"
             },
             {
               "type": "text_delta",
@@ -692,35 +474,234 @@
             },
             {
               "type": "text_delta",
-              "text": "002. The"
+              "text": "002. The st"
             },
             {
               "type": "text_delta",
-              "text": " stack is TypeScript"
+              "text": "ack is TypeScript,"
             },
             {
               "type": "text_delta",
-              "text": ", PostgreSQL"
+              "text": " PostgreSQL and"
             },
             {
               "type": "text_delta",
-              "text": " and GCP."
+              "text": " GCP."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto's Fraud Detection Agent works for an online event ticketing platform. It reviews newly published events and organizers, then leaves a recommendation to approve, reject, or request more info, along with its reasons. A human admin makes the final decision. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt's currently in offline evals, with 31 test cases. Alberto chose Claude Haiku 5.5 for deployment: it reached 86% accuracy (vs 71% for a local 9B model) and approved 1% of fraud cases (vs 8%). Each review costs about $0.002. The stack is TypeScript, PostgreSQL and GCP.",
+                "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It gives a human admin a recommendation (approve, reject, or request more info) along with its reasons. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt's currently at the offline-evals stage. On 31 test cases, the team chose Claude Haiku 5.5 for deployment because it reached 86% accuracy (vs. 71% for a local 9B model) and approved 1% of fraud cases (vs. 8%). Each review costs about $0.002. The stack is TypeScript, PostgreSQL and GCP.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 2840,
                   "cacheReadInputTokens": 2838,
-                  "outputTokens": 234
+                  "outputTokens": 227
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto's Fraud Detection Agent works for an online event ticketing platform. It reviews newly published events and organizers, then leaves a recommendation to approve, reject, or request more info, along with its reasons. A human admin makes the final decision. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt's currently in offline evals, with 31 test cases. Alberto chose Claude Haiku 5.5 for deployment: it reached 86% accuracy (vs 71% for a local 9B model) and approved 1% of fraud cases (vs 8%). Each review costs about $0.002. The stack is TypeScript, PostgreSQL and GCP."
+                    "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It gives a human admin a recommendation (approve, reject, or request more info) along with its reasons. It auto-approves only when the evidence is verified in code, and web sources can hold a decision back but never approve one.\n\nIt's currently at the offline-evals stage. On 31 test cases, the team chose Claude Haiku 5.5 for deployment because it reached 86% accuracy (vs. 71% for a local 9B model) and approved 1% of fraud cases (vs. 8%). Each review costs about $0.002. The stack is TypeScript, PostgreSQL and GCP."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "ee255c0434db60459e60ceb34adefe93fe9fe5ba905ee5d01204723e0b535f76",
+          "latencyMs": 619,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01JS5Wbjtf1rQ7U28uVMm3fZ",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01JS5Wbjtf1rQ7U28uVMm3fZ",
+                    "name": "get_projects",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0d048151a7341955af5bfc8b8323fdd41a64f49bf1af899457a4abd00adfebe1",
+          "latencyMs": 1273,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2840,
+              "cacheReadInputTokens": 2838
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's"
+            },
+            {
+              "type": "text_delta",
+              "text": " Fraud Detection Ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent reviews newly published events"
+            },
+            {
+              "type": "text_delta",
+              "text": " and organizers on an online event"
+            },
+            {
+              "type": "text_delta",
+              "text": " ticketing platform. It"
+            },
+            {
+              "type": "text_delta",
+              "text": " leaves a recommendation"
+            },
+            {
+              "type": "text_delta",
+              "text": " (approve, reject, or"
+            },
+            {
+              "type": "text_delta",
+              "text": " request info) with its reasons"
+            },
+            {
+              "type": "text_delta",
+              "text": " for a human admin to"
+            },
+            {
+              "type": "text_delta",
+              "text": " decide.\n\nIt u"
+            },
+            {
+              "type": "text_delta",
+              "text": "ses graded autonomy:"
+            },
+            {
+              "type": "text_delta",
+              "text": " it auto-approves only on"
+            },
+            {
+              "type": "text_delta",
+              "text": " evidence verified in code,"
+            },
+            {
+              "type": "text_delta",
+              "text": " and web sources can hold a"
+            },
+            {
+              "type": "text_delta",
+              "text": " decision back but never approve it"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nThe"
+            },
+            {
+              "type": "text_delta",
+              "text": " ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent is currently at"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " offline-"
+            },
+            {
+              "type": "text_delta",
+              "text": "evals stage. On"
+            },
+            {
+              "type": "text_delta",
+              "text": " 31 test"
+            },
+            {
+              "type": "text_delta",
+              "text": " cases,"
+            },
+            {
+              "type": "text_delta",
+              "text": " Claude Haiku 5"
+            },
+            {
+              "type": "text_delta",
+              "text": ".5 was chosen for"
+            },
+            {
+              "type": "text_delta",
+              "text": " deployment, with 86%"
+            },
+            {
+              "type": "text_delta",
+              "text": " accuracy and 1%"
+            },
+            {
+              "type": "text_delta",
+              "text": " of fraud approved, at"
+            },
+            {
+              "type": "text_delta",
+              "text": " about $0.002 per review"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It leaves a recommendation (approve, reject, or request info) with its reasons for a human admin to decide.\n\nIt uses graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n\nThe agent is currently at the offline-evals stage. On 31 test cases, Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2840,
+                  "cacheReadInputTokens": 2838,
+                  "outputTokens": 192
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's Fraud Detection Agent reviews newly published events and organizers on an online event ticketing platform. It leaves a recommendation (approve, reject, or request info) with its reasons for a human admin to decide.\n\nIt uses graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n\nThe agent is currently at the offline-evals stage. On 31 test cases, Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and 1% of fraud approved, at about $0.002 per review."
                   }
                 ]
               }

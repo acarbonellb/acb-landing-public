@@ -1,0 +1,398 @@
+{
+  "caseId": "on23",
+  "slug": "github",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
+      "latencyMs": 1175,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2342,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "LZBb4XRIY2YZ8VAGanp5MOFKuAt5Evgj",
+                "name": "get_contact",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 45
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "LZBb4XRIY2YZ8VAGanp5MOFKuAt5Evgj",
+                "name": "get_contact",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "12f24eb96ef33be01af480fe1ca397717e0464115bfdc28aef1dff83d3b549d7",
+      "latencyMs": 525,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2440,
+          "cacheReadInputTokens": 1175
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " GitHub"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " https"
+        },
+        {
+          "type": "text_delta",
+          "text": "://"
+        },
+        {
+          "type": "text_delta",
+          "text": "github"
+        },
+        {
+          "type": "text_delta",
+          "text": ".com"
+        },
+        {
+          "type": "text_delta",
+          "text": "/ac"
+        },
+        {
+          "type": "text_delta",
+          "text": "arbon"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell"
+        },
+        {
+          "type": "text_delta",
+          "text": "b"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's GitHub is https://github.com/acarbonellb.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1175,
+              "outputTokens": 17
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's GitHub is https://github.com/acarbonellb."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
+          "latencyMs": 1355,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "EuSZRmZtt7fROsvmyMWiOnmBBNJ5Uba4",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 54
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "EuSZRmZtt7fROsvmyMWiOnmBBNJ5Uba4",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "d70506d6180e13de41dd655c77a733ff450aa5acea7286ccf0ab6b88eb00e997",
+          "latencyMs": 1676,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " https"
+            },
+            {
+              "type": "text_delta",
+              "text": "://"
+            },
+            {
+              "type": "text_delta",
+              "text": "github"
+            },
+            {
+              "type": "text_delta",
+              "text": ".com"
+            },
+            {
+              "type": "text_delta",
+              "text": "/ac"
+            },
+            {
+              "type": "text_delta",
+              "text": "arbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "b"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's GitHub is https://github.com/acarbonellb",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 65
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's GitHub is https://github.com/acarbonellb"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
+          "latencyMs": 1230,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "FDgYHcWJr8CKh275UQbci7A2P6J4jrc3",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2354,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "FDgYHcWJr8CKh275UQbci7A2P6J4jrc3",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0a1991106c1cfe1292888b4f14c45a0d37fb5f860807be5c2080ad4a09e9bf9c",
+          "latencyMs": 521,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2440,
+              "cacheReadInputTokens": 1175
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " https"
+            },
+            {
+              "type": "text_delta",
+              "text": "://"
+            },
+            {
+              "type": "text_delta",
+              "text": "github"
+            },
+            {
+              "type": "text_delta",
+              "text": ".com"
+            },
+            {
+              "type": "text_delta",
+              "text": "/ac"
+            },
+            {
+              "type": "text_delta",
+              "text": "arbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "b"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's GitHub is https://github.com/acarbonellb.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2440,
+                  "cacheReadInputTokens": 1175,
+                  "outputTokens": 17
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's GitHub is https://github.com/acarbonellb."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

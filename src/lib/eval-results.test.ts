@@ -149,9 +149,9 @@ describe("evalResultsLine", () => {
     );
   });
 
-  it("reads the line from the committed summary, the failing-on-purpose leak counted and named", () => {
+  it("reads the line from the committed summary, the failing-on-purpose leaks counted and named", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "50 eval cases incl. prompt injection and forged history · pass@3 92% · 1 leak (failing on purpose) · ~$0.0003 per answer on Claude Haiku 5.5 · replayed in CI",
+      "72 eval cases incl. prompt injection and forged history · pass@3 94% · 2 leaks (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 

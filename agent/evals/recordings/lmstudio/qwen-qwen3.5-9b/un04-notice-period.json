@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
-      "latencyMs": 8955,
+      "latencyMs": 7133,
       "events": [
         {
           "type": "input_usage",
@@ -115,11 +115,39 @@
         },
         {
           "type": "text_delta",
-          "text": " These"
+          "text": " According"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " rules"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " availability"
         },
         {
           "type": "text_delta",
           "text": " details"
+        },
+        {
+          "type": "text_delta",
+          "text": " like"
+        },
+        {
+          "type": "text_delta",
+          "text": " this"
         },
         {
           "type": "text_delta",
@@ -131,39 +159,43 @@
         },
         {
           "type": "text_delta",
-          "text": " publicly"
+          "text": " included"
         },
         {
           "type": "text_delta",
-          "text": " listed"
+          "text": " in"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": " so"
+          "text": " public"
         },
         {
           "type": "text_delta",
-          "text": " you"
+          "text": " profile"
         },
         {
           "type": "text_delta",
-          "text": " would"
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": " need"
+          "text": " I"
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": "'d"
         },
         {
           "type": "text_delta",
-          "text": " contact"
+          "text": " recommend"
+        },
+        {
+          "type": "text_delta",
+          "text": " contacting"
         },
         {
           "type": "text_delta",
@@ -175,15 +207,35 @@
         },
         {
           "type": "text_delta",
-          "text": " to"
+          "text": " through"
         },
         {
           "type": "text_delta",
-          "text": " discuss"
+          "text": " his"
         },
         {
           "type": "text_delta",
-          "text": " availability"
+          "text": " email"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " LinkedIn"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " that"
+        },
+        {
+          "type": "text_delta",
+          "text": " information"
         },
         {
           "type": "text_delta",
@@ -192,18 +244,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "I don't have information about Alberto's notice period or when he could start a new job in his profile. These details aren't publicly listed, so you would need to contact him directly to discuss availability.",
+            "text": "I don't have information about Alberto's notice period or when he could start a new job in his profile. According to the rules, availability details like this aren't included in his public profile. I'd recommend contacting him directly through his email or LinkedIn for that information.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 2350,
               "cacheReadInputTokens": 1163,
-              "outputTokens": 347
+              "outputTokens": 293
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have information about Alberto's notice period or when he could start a new job in his profile. These details aren't publicly listed, so you would need to contact him directly to discuss availability."
+                "text": "I don't have information about Alberto's notice period or when he could start a new job in his profile. According to the rules, availability details like this aren't included in his public profile. I'd recommend contacting him directly through his email or LinkedIn for that information."
               }
             ]
           }
@@ -216,11 +268,49 @@
       "calls": [
         {
           "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
-          "latencyMs": 6167,
+          "latencyMs": 11244,
           "events": [
             {
               "type": "input_usage",
               "inputTokens": 2370,
+              "cacheReadInputTokens": 1183
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "9Ynqy1hbjGkUnAhL4VZEwkc0XxS6Z2Ro",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2370,
+                  "cacheReadInputTokens": 1183,
+                  "outputTokens": 465
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "9Ynqy1hbjGkUnAhL4VZEwkc0XxS6Z2Ro",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "64acc425d4e8c13fb2b5c06d7cdf7330ac6ecbfc55bf9f1195cace64cfd9f497",
+          "latencyMs": 1569,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2668,
               "cacheReadInputTokens": 1183
             },
             {
@@ -229,19 +319,19 @@
             },
             {
               "type": "text_delta",
-              "text": " can"
+              "text": " don"
             },
             {
               "type": "text_delta",
-              "text": " only"
+              "text": "'t"
             },
             {
               "type": "text_delta",
-              "text": " answer"
+              "text": " have"
             },
             {
               "type": "text_delta",
-              "text": " questions"
+              "text": " information"
             },
             {
               "type": "text_delta",
@@ -257,90 +347,6 @@
             },
             {
               "type": "text_delta",
-              "text": " profile"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " work"
-            },
-            {
-              "type": "text_delta",
-              "text": " experience"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " agent"
-            },
-            {
-              "type": "text_delta",
-              "text": " projects"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " tech"
-            },
-            {
-              "type": "text_delta",
-              "text": " stack"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " education"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " languages"
-            },
-            {
-              "type": "text_delta",
-              "text": " and"
-            },
-            {
-              "type": "text_delta",
-              "text": " contact"
-            },
-            {
-              "type": "text_delta",
-              "text": " information"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " His"
-            },
-            {
-              "type": "text_delta",
-              "text": " availability"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
               "text": " notice"
             },
             {
@@ -349,7 +355,19 @@
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " when"
+            },
+            {
+              "type": "text_delta",
+              "text": " he"
+            },
+            {
+              "type": "text_delta",
+              "text": " could"
             },
             {
               "type": "text_delta",
@@ -357,23 +375,23 @@
             },
             {
               "type": "text_delta",
-              "text": " date"
+              "text": " a"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " new"
             },
             {
               "type": "text_delta",
-              "text": " and"
+              "text": " job"
             },
             {
               "type": "text_delta",
-              "text": " other"
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": " employment"
+              "text": " These"
             },
             {
               "type": "text_delta",
@@ -381,11 +399,11 @@
             },
             {
               "type": "text_delta",
-              "text": " are"
+              "text": " aren"
             },
             {
               "type": "text_delta",
-              "text": " not"
+              "text": "'t"
             },
             {
               "type": "text_delta",
@@ -401,27 +419,7 @@
             },
             {
               "type": "text_delta",
-              "text": " public"
-            },
-            {
-              "type": "text_delta",
               "text": " profile"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " For"
-            },
-            {
-              "type": "text_delta",
-              "text": " those"
-            },
-            {
-              "type": "text_delta",
-              "text": " specifics"
             },
             {
               "type": "text_delta",
@@ -429,11 +427,63 @@
             },
             {
               "type": "text_delta",
-              "text": " you"
+              "text": " and"
             },
             {
               "type": "text_delta",
-              "text": " would"
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " speak"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": " regarding"
+            },
+            {
+              "type": "text_delta",
+              "text": " availability"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " start"
+            },
+            {
+              "type": "text_delta",
+              "text": " dates"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " You"
+            },
+            {
+              "type": "text_delta",
+              "text": "'d"
             },
             {
               "type": "text_delta",
@@ -457,23 +507,43 @@
             },
             {
               "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " ask"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " those"
+            },
+            {
+              "type": "text_delta",
+              "text": " specifics"
+            },
+            {
+              "type": "text_delta",
               "text": "."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages and contact information. His availability, notice period, start date, and other employment details are not included in his public profile. For those specifics, you would need to contact him directly.",
+                "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't included in his profile, and I can't speak for him regarding availability or start dates. You'd need to contact him directly to ask about those specifics.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2370,
+                  "inputTokens": 2668,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 239
+                  "outputTokens": 57
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I can only answer questions about Alberto's profile, work experience, agent projects, tech stack, education, languages and contact information. His availability, notice period, start date, and other employment details are not included in his public profile. For those specifics, you would need to contact him directly."
+                    "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't included in his profile, and I can't speak for him regarding availability or start dates. You'd need to contact him directly to ask about those specifics."
                   }
                 ]
               }
@@ -486,7 +556,7 @@
       "calls": [
         {
           "requestHash": "f80ffeec16c527fff18ce7ffdc8ca66b9b9769454109be0b0b3a6e8756783924",
-          "latencyMs": 8648,
+          "latencyMs": 11007,
           "events": [
             {
               "type": "input_usage",
@@ -499,8 +569,13 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "Wf7cWiSs9llj8yeZkbbHyeiVCecAQJqj",
+                    "id": "dwlFcRxVlxVY8WZmtIeSUPhLyT0lFx5A",
                     "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "id": "vn9RxukrgwSWR4FxXWBC5YBUpv2BX7tV",
+                    "name": "get_contact",
                     "input": {}
                   }
                 ],
@@ -508,13 +583,19 @@
                 "usage": {
                   "inputTokens": 2370,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 337
+                  "outputTokens": 455
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "Wf7cWiSs9llj8yeZkbbHyeiVCecAQJqj",
+                    "id": "dwlFcRxVlxVY8WZmtIeSUPhLyT0lFx5A",
                     "name": "get_profile",
+                    "input": {}
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "vn9RxukrgwSWR4FxXWBC5YBUpv2BX7tV",
+                    "name": "get_contact",
                     "input": {}
                   }
                 ]
@@ -523,12 +604,12 @@
           ]
         },
         {
-          "requestHash": "1fe64a698aef82b2a5400975054db931735c4eb072be2bc7d992fea086e9a457",
-          "latencyMs": 1546,
+          "requestHash": "8d39f82675e1682a8cd14da264df5bd7d9aa9772987a280d4dc1f95e6608910d",
+          "latencyMs": 1793,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2668,
+              "inputTokens": 2742,
               "cacheReadInputTokens": 1183
             },
             {
@@ -669,7 +750,7 @@
             },
             {
               "type": "text_delta",
-              "text": " on"
+              "text": " regarding"
             },
             {
               "type": "text_delta",
@@ -681,7 +762,11 @@
             },
             {
               "type": "text_delta",
-              "text": " commitments"
+              "text": " relocation"
+            },
+            {
+              "type": "text_delta",
+              "text": " preferences"
             },
             {
               "type": "text_delta",
@@ -693,7 +778,7 @@
             },
             {
               "type": "text_delta",
-              "text": "'d"
+              "text": "'ll"
             },
             {
               "type": "text_delta",
@@ -717,11 +802,59 @@
             },
             {
               "type": "text_delta",
-              "text": " for"
+              "text": " via"
             },
             {
               "type": "text_delta",
-              "text": " that"
+              "text": " email"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto"
+            },
+            {
+              "type": "text_delta",
+              "text": "@example"
+            },
+            {
+              "type": "text_delta",
+              "text": ".com"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " LinkedIn"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " discuss"
+            },
+            {
+              "type": "text_delta",
+              "text": " these"
+            },
+            {
+              "type": "text_delta",
+              "text": " specifics"
             },
             {
               "type": "text_delta",
@@ -730,18 +863,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't in his profile, and I can't speak for him on availability or commitments. You'd need to contact him directly for that.",
+                "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't in his profile, and I can't speak for him regarding availability or relocation preferences. You'll need to contact him directly via email (alberto@example.com) or LinkedIn to discuss these specifics.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2668,
+                  "inputTokens": 2742,
                   "cacheReadInputTokens": 1183,
-                  "outputTokens": 52
+                  "outputTokens": 65
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't in his profile, and I can't speak for him on availability or commitments. You'd need to contact him directly for that."
+                    "text": "I don't have information about Alberto's notice period or when he could start a new job. These details aren't in his profile, and I can't speak for him regarding availability or relocation preferences. You'll need to contact him directly via email (alberto@example.com) or LinkedIn to discuss these specifics."
                   }
                 ]
               }
