@@ -25,7 +25,7 @@ A static Next.js site (React, TypeScript, Tailwind CSS) on Firebase Hosting, and
    ──► build once ──► deploy the tested artifacts (agent, then site)
 ```
 
-- **Site**: a static export with no server. The chat calls the agent directly; the public MCP endpoint is the site's `/mcp`, rewritten to the agent.
+- **Site**: a static export with no server. The chat calls the agent directly; the public MCP endpoint is the site's `/mcp`, rewritten to the agent. Visits are measured with PostHog ([site analytics](docs/analytics.md)).
 - **Agent**: five read-only tools, served to MCP clients and to a Claude tool-use loop that streams answers to the chat. Every answer it gives is signed, so it only reads back answers it gave.
 - **Store**: Firestore holds the durable state, the spend cap, the daily quota and the weekly usage stats. The rate limits are in memory, on the one instance the service runs.
 - **CI**: every push runs the tests and replays the agent's eval recordings; `main` deploys the exact build that was tested.
@@ -59,6 +59,7 @@ The work is planned in [GitHub Issues](https://github.com/acarbonellb/acb-landin
 | [Chat contract](docs/chat-contract.md) | `POST /chat`: request, errors, the event stream, signed answers |
 | [Guardrails](docs/guardrails.md) | Rate limits, client IP, spend cap, daily quota, the shared store and how it fails |
 | [Usage stats](docs/usage-stats.md) | What is recorded, the weekly document, `GET /stats` |
+| [Site analytics](docs/analytics.md) | What the page reports to PostHog and what it never does, how the SDK loads under the CSP, the PostHog project and the variable that switches it on |
 | [Logs and alerts](docs/logs-and-alerts.md) | Log fields, request and alert events, Cloud Monitoring policies |
 | [Evals](docs/evals.md) | Eval cases, live runs, replay, pass@k, what CI gates |
 | [CI and deployment](docs/deploy.md) | The pipeline, the site and agent deploys, one-time GCP setup, the ranges refresh |
