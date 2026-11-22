@@ -41,12 +41,13 @@ const envSchema = z.object({
   // The page reads /stats once per load and caches it 5 minutes.
   RATE_LIMIT_STATS_PER_MINUTE: intFromEnv.default(30),
   // Global ceilings, all keys together, so rotating keys can't multiply what
-  // one source gets. Chat and stats are sized by store cost, so a day-long
-  // flood at them stays under the threshold in docs/guardrails.md ("Store
-  // cost"); /mcp writes nothing of its own, so its ceiling costs no more.
-  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(8),
+  // one source gets. Chat is sized by store cost, so a day-long flood at it
+  // stays under the threshold in docs/guardrails.md ("Store cost"). /stats
+  // answers from a 10 s snapshot (usage.ts) and /mcp writes nothing of its
+  // own, so their ceilings cost no more in store operations.
+  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
-  RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: intFromEnv.default(11),
+  RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: intFromEnv.default(300),
   // Under the $5/month hard limit set on the Anthropic workspace, so this
   // cap (and its "used up for this month" message) is what the visitor meets first.
   MONTHLY_SPEND_CAP_USD: usdFromEnv.default(4),

@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { chatLimits } from "./chat";
 import { loadConfig } from "./config";
 import { deepHealthChecksPerMinute } from "./health";
-import { defaultFlushEveryMs } from "./usage";
+import { defaultFlushEveryMs, defaultStatsMaxAgeMs } from "./usage";
 
 const signingKey = "test-signing-key-0123456789abcdefghijklmnop";
 
@@ -65,10 +65,10 @@ describe("loadConfig", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
-      chatGlobalRequestsPerMinute: 8,
+      chatGlobalRequestsPerMinute: 10,
       mcpGlobalRequestsPerMinute: 600,
       statsRequestsPerMinute: 30,
-      statsGlobalRequestsPerMinute: 11,
+      statsGlobalRequestsPerMinute: 300,
       monthlySpendCapUsd: 4,
       dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
@@ -85,18 +85,24 @@ describe("loadConfig", () => {
     // per request, from the table in docs/guardrails.md: a chat request that
     // runs writes 4 (spend-writes-http.test.ts), on a fresh key whose daily
     // document a TTL delete removes later, and its usage joins the batch;
-    // `/stats` writes the waiting batch (a usage-producing request, e.g. a
-    // refused chat, can leave one before each call) and reads two weeks;
-    // `/mcp` writes nothing of its own.
+    // `/mcp` writes nothing of its own. `/stats` answers from a snapshot
+    // (usage.ts), so only one call per snapshot reaches the store: it writes
+    // the waiting batch and reads two weeks. Its ceiling only caps that if
+    // it is lower than one call per snapshot.
     const chat = 4 * (read + write) + ttlDelete;
-    const stats = read + write + 2 * read;
+    const statsRead = read + write + 2 * read;
     const minutesPerDay = 24 * 60;
+    const msPerDay = minutesPerDay * 60_000;
     const { chatGlobalRequestsPerMinute, statsGlobalRequestsPerMinute } = loadConfig({}).guardrails;
-    const usageBatches = (minutesPerDay * 60_000) / defaultFlushEveryMs;
+    const statsReads = Math.min(msPerDay / defaultStatsMaxAgeMs, minutesPerDay * statsGlobalRequestsPerMinute);
+    const usageBatches = msPerDay / defaultFlushEveryMs;
     const perDay =
-      minutesPerDay * (chatGlobalRequestsPerMinute * chat + statsGlobalRequestsPerMinute * stats) +
+      minutesPerDay * chatGlobalRequestsPerMinute * chat +
+      statsReads * statsRead +
       usageBatches * (read + write) +
       minutesPerDay * deepHealthChecksPerMinute * read;
+    // The default ceiling is past one call per snapshot: the window bounds it.
+    expect(statsReads).toBe(8_640);
     expect(perDay).toBeLessThan(0.12);
   });
 
