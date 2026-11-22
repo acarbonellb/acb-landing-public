@@ -47,7 +47,7 @@ export function AgentChat({
     if (busy) return;
     logRef.current?.closest("section")?.scrollIntoView?.({ block: "start" });
     inputRef.current?.focus({ preventScroll: true });
-    void ask(question, options);
+    void ask(question, { ...options, source: "contact" });
   });
 
   useEffect(() => {
@@ -89,7 +89,8 @@ export function AgentChat({
           autoComplete="off"
           placeholder="ask about my experience, projects, stack…"
           // 16px on phones: iOS Safari zooms in on focus into any smaller field.
-          className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
+          // ph-no-capture: kept out of autocapture (docs/analytics.md#events).
+          className="ph-no-capture min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
         <TerminalButton
           type="submit"
