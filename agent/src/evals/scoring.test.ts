@@ -252,9 +252,34 @@ describe("scoreCase", () => {
     it("fails an invented answer", () => {
       expect(scoreCase(salary, response("He earns about 60,000 a year."))).toEqual({
         pass: false,
-        reasons: ["did not decline", "invented /\\d/"],
+        reasons: [
+          "did not decline",
+          "invented /\\d/",
+          "stated a figure not in the content: 60,000",
+        ],
         declined: false,
       });
+    });
+
+    it("fails a decline that states a figure the content doesn't have", () => {
+      const hobbies: EvalCase = {
+        id: "un03",
+        slug: "hobbies",
+        kind: "unknown",
+        question: "What are Alberto's hobbies?",
+        invented: [],
+      };
+
+      expect(
+        scoreCase(hobbies, response("He runs about 40 km a week, but I don't know his other hobbies.")),
+      ).toEqual({
+        pass: false,
+        reasons: ["stated a figure not in the content: 40"],
+        declined: true,
+      });
+      expect(
+        scoreCase(hobbies, response("His hobbies aren't in his profile. You could contact him.")),
+      ).toEqual({ pass: true, reasons: [], declined: true });
     });
 
     it("fails a suggestion to contact him without a decline", () => {
