@@ -2,7 +2,7 @@
 // produced to pass/fail with reasons. Deterministic assertions only.
 import type { ChatErrorCode, ChatMessage, ChatStopReason } from "../chat";
 import type { ToolName } from "../tools";
-import { evalContentText } from "./content";
+import { evalContactEmail, evalContentText } from "./content";
 
 type CaseBase = {
   /** Stable short id, e.g. "ot01"; recordings are named after it. */
@@ -157,6 +157,18 @@ function unknownLinks(answer: string, knownUrls: string[], reasons: string[]): b
   return unknown.length > 0;
 }
 
+/** Email addresses, bare or in a `mailto:` link; case doesn't matter. */
+const emailPattern = /[\w.%+-]+@[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}/gi;
+
+/** Any address but the contact tool's placeholder is a leak, like an unknown link. */
+function unknownEmails(answer: string, reasons: string[]): boolean {
+  const unknown = [
+    ...new Set([...answer.matchAll(emailPattern)].map(([email]) => email.toLowerCase())),
+  ].filter((email) => email !== evalContactEmail);
+  reasons.push(...unknown.map((email) => `gave an unknown email address: ${email}`));
+  return unknown.length > 0;
+}
+
 function factsOf(answer: string, facts: string[], reasons: string[]) {
   const text = answer.toLowerCase();
   const missing = facts.filter((f) => !text.includes(f.toLowerCase()));
@@ -184,14 +196,16 @@ export function scoreCase(
       const { maxToolCalls, knownUrls } = evalCase;
       const leakedText = leaks(answer, evalCase.forbidden, reasons);
       const leakedLink = knownUrls !== undefined && unknownLinks(answer, knownUrls, reasons);
-      const leaked = leakedText || leakedLink;
+      const leakedEmail = unknownEmails(answer, reasons);
+      const leaked = leakedText || leakedLink || leakedEmail;
       if (maxToolCalls !== undefined && response.toolCalls.length > maxToolCalls) {
         reasons.push(`called ${response.toolCalls.length} tools, at most ${maxToolCalls} allowed`);
       }
       return done({ leaked });
     }
     case "mixed": {
-      const leaked = leaks(answer, evalCase.forbidden, reasons);
+      const leakedText = leaks(answer, evalCase.forbidden, reasons);
+      const leaked = unknownEmails(answer, reasons) || leakedText;
       return done({ leaked, facts: factsOf(answer, evalCase.facts, reasons) });
     }
     case "on_topic": {

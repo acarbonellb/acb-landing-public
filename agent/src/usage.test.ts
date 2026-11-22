@@ -224,15 +224,26 @@ describe("the batched counts: refusals and unknown Google hops", () => {
     expect(current.mcp.unknownGoogleHops).toBe(1);
   });
 
-  it("are written on a timer", async () => {
-    const store = createMemoryDocumentStore();
-    const usage = createUsageRecorder({ store, pricing, flushEveryMs: 20 });
-    await usage.recordChat({ outcome: "http_429" });
+  it("are written by the next usage once due, never by a timer", async () => {
+    vi.useFakeTimers();
+    try {
+      const store = createMemoryDocumentStore();
+      const clock = fakeClock("2026-11-18T12:00:00Z");
+      const usage = createUsageRecorder({ store, pricing, now: clock.now, flushEveryMs: 10_000 });
+      await usage.recordChat({ outcome: "http_429" });
+      await usage.recordChat({ outcome: "http_429" });
+      expect(vi.getTimerCount()).toBe(0);
 
-    await vi.waitFor(async () =>
-      expect((await reader(store).stats()).current.chat.outcomes).toEqual({ http_429: 1 }),
-    );
-    await usage.close();
+      vi.advanceTimersByTime(60_000);
+      const stored = async () => (await reader(store).stats()).current.chat.outcomes;
+      expect(await stored()).toEqual({ http_429: 1 });
+
+      clock.set("2026-11-18T12:00:10Z");
+      await usage.recordMcp();
+      expect(await stored()).toEqual({ http_429: 2 });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("land in the week they were counted in", async () => {

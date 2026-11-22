@@ -1,15 +1,17 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createApp, httpErrorMessages, paths, type AppDeps } from "./app";
+import { errorMessages } from "./chat";
 import { createMemoryDailyQuota, createStoreDailyQuota } from "./daily-quota";
-import { createMemoryDocumentStore } from "./document-store";
+import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
 import { listen, type RunningServer } from "./server";
-import { createMemorySpendCap } from "./spend-cap";
+import { createMemorySpendCap, createStoreSpendCap } from "./spend-cap";
 import { signedConversation, testAppDeps } from "./test-deps";
 
 let servers: RunningServer[] = [];
 
 afterEach(async () => {
+  vi.restoreAllMocks();
   await Promise.all(servers.map((s) => s.close()));
   servers = [];
 });
@@ -134,6 +136,40 @@ describe("daily spend quota", () => {
       spendCap: createMemorySpendCap({ capUsd: 0, pricing: outputOnly }),
     });
     for (let i = 0; i < 3; i++) expect((await chat(closed, "198.51.100.1")).status).toBe(503);
+
+    const open = await start({
+      modelClient: createFakeModel([fullAnswer]),
+      chatLimits,
+      dailyQuota,
+    });
+    await answered(await chat(open, "198.51.100.1"));
+  });
+
+  it("releases what it held when the spend cap's store fails, still answering 503 unavailable", async () => {
+    // The spend cap's policy logs each failure; keep the test output quiet.
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const brokenStore: DocumentStore = {
+      update: async () => {
+        throw new Error("store unreachable");
+      },
+    };
+    // Room for one $0.02 worst case: a hold left behind by a failed request
+    // would refuse the next one with 429.
+    const dailyQuota = createMemoryDailyQuota({ quotaUsd: 0.03, pricing: outputOnly });
+    const broken = await start({
+      modelClient: createFakeModel([fullAnswer, fullAnswer, fullAnswer]),
+      chatLimits,
+      dailyQuota,
+      spendCap: createStoreSpendCap({ store: brokenStore, capUsd: 50, pricing: outputOnly }),
+    });
+    for (let i = 0; i < 3; i++) {
+      const res = await chat(broken, "198.51.100.1");
+      expect(res.status).toBe(503);
+      expect(res.headers.get("access-control-allow-origin")).toBe(origin);
+      expect(await res.json()).toEqual({
+        error: { code: "unavailable", message: errorMessages.unavailable },
+      });
+    }
 
     const open = await start({
       modelClient: createFakeModel([fullAnswer]),
