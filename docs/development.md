@@ -48,3 +48,21 @@ docker stop firestore-emulator
 ```
 
 Each test uses a project of its own, so the emulator needs no reset between runs. If the fake and the emulator ever disagree, fix the fake: it stands in for Firestore everywhere else in the tests. When bumping the image, take the digest of the versioned `-emulators` tag from the registry (`docker buildx imagetools inspect <image>:<version>-emulators`) and update it here and in the workflow.
+
+### The load test on the Firestore emulator
+
+`agent/scripts/load-test.ts` floods the guardrails locally: it starts the agent in its own process, wired like production (`createGuardrails`) over the Firestore emulator, with a fake model client, so no model call leaves the machine. For a fixed duration it sends `/chat`, `/mcp` and `/stats` twice each configured ceiling on a fresh rate-limit key per request, plus one key at twice its per-key limit, and reports per endpoint the requests, refusals by reason, errors and latency, the store's writes, reads and conflicts by collection (counted at the REST boundary), and any limit that let through more than its limit could (exit code 1 if one did). It is a script, not a CI test. It refuses to start unless the store is the Firestore emulator on this machine (`agent/src/load-test-guard.ts`, tested), so it can't reach production or a deployed revision.
+
+With the emulator from the section above on a port of its own:
+
+```bash
+docker run -d --rm --name firestore-emulator-load-test -p 8091:8080 \
+  gcr.io/google.com/cloudsdktool/google-cloud-cli:594.0.0-emulators@sha256:4568487af2c00a66e1d3e0f054be208c9c5b499a3999da50428b396e1341e9fd \
+  gcloud emulators firestore start --host-port=0.0.0.0:8080
+until curl -sf http://localhost:8091/ >/dev/null; do sleep 1; done
+AGENT_STORE=firestore FIRESTORE_PROJECT_ID=load-test FIRESTORE_EMULATOR_HOST=localhost:8091 \
+  pnpm agent:load-test --seconds 120 --shape steady   # then again with --shape burst
+docker stop firestore-emulator-load-test
+```
+
+`--shape steady` spaces each stream's requests evenly; `--shape burst` sends each minute's requests all at once, at the start of the minute, which is what makes concurrent requests race on the same store documents. The ceilings are the configuration's (the `RATE_LIMIT_*` variables, defaults otherwise). Each run uses a project of its own on the emulator, so it starts from an empty store. Record the result, and the commit it ran on, in [Guardrails](guardrails.md#load-test).

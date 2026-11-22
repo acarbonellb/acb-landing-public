@@ -60,7 +60,7 @@ What the [shared store](#shared-store) costs per request, and per day at the [gl
 
 ### Store operations per request
 
-Every store change reads the document, then commits it (`agent/src/firestore.ts`), so each write comes with a read. A commit that conflicts is re-read and retried, but on one instance (see [Rate limits are per instance](#rate-limits-are-per-instance)) only a canary's overlap can conflict.
+Every store change reads the document, then commits it (`agent/src/firestore.ts`), so each write comes with a read. A commit that conflicts is re-read and retried, a read and a write attempt more. Even on one instance (see [Rate limits are per instance](#rate-limits-are-per-instance)) chat requests that run at the same time race on the month's `spend` document and the week's `usage` document, so a few conflicts are normal; the [load test](#load-test) measures them.
 
 | Request | Writes | Reads | What they are |
 | --- | --- | --- | --- |
@@ -91,6 +91,31 @@ Computed with Firestore Standard edition's prices for the database's location, `
 **The threshold: a day-long flood at every default ceiling at once costs less than $0.12 a day in store operations**, so a month of it (about $3.45) stays under the month's model budget (the $4 spend cap). `agent/src/config.test.ts` computes this from the default ceilings and fails if a change to them crosses it. A flood writes more than three times the free tier's 20,000 writes a day, so the free tier doesn't cover it.
 
 The ceilings were re-derived for this: before, at 60 chat and 300 `/stats` requests a minute, the same flood cost about $1.55 a day (some $46 a month, over ten times the model budget). Now `/chat` allows 8 a minute from all clients (4 per IP) and `/stats` 5 (2 per IP): still far above a personal site's traffic, and a page reads `/stats` once per load and caches it 5 minutes. `/mcp` keeps 600 a minute: it costs no store operations of its own. Not counted here: Cloud Run's own cost and network egress.
+
+## Load test
+
+`pnpm agent:load-test` floods `/chat`, `/mcp` and `/stats` at twice each ceiling, locally, against the Firestore emulator with a fake model (no model call); how to run it is in [Development](development.md#the-load-test-on-the-firestore-emulator). "At most" is what a one-minute fixed window can let through over the run: the limit times the windows that fit between the first request and the last answer.
+
+**Latest result:** commit `8c92766` (2026-11-22), default configuration (ceilings `/chat` 8, `/mcp` 600, `/stats` 5 a minute; per key 4, 60, 2), 120 s per shape, 2,716 requests per shape.
+
+| Shape | Endpoint | Requests | Answered | Refused (`rate_limited`) | Errors | Let through (at most) | One key: let through (at most) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| steady | `/chat` | 48 | 16 | 32 | 0 | 16 (16) | 5 of 16 (8) |
+| steady | `/mcp` | 2,640 | 1,200 | 1,440 | 0 | 1,200 (1,200) | 109 of 240 (120) |
+| steady | `/stats` | 28 | 10 | 18 | 0 | 10 (10) | 3 of 8 (4) |
+| burst | `/chat` | 48 | 8 | 40 | 0 | 8 (16) | 0 of 16 (8) |
+| burst | `/mcp` | 2,640 | 1,200 | 1,440 | 0 | 1,200 (1,200) | 0 of 240 (120) |
+| burst | `/stats` | 28 | 10 | 18 | 0 | 10 (10) | 3 of 8 (4) |
+
+| Shape | Store writes | Reads | Conflicts (all retried) | Other store failures |
+| --- | --- | --- | --- | --- |
+| steady | 96 (`dailySpend` 32, `spend` 32, `usage` 32) | 124 | 6 (`spend` 5, `usage` 1) | 0 |
+| burst | 44 (`dailySpend` 16, `spend` 16, `usage` 12) | 77 | 11 (`spend` 11) | 0 |
+
+- **No limit let through more than its limit**, per key or global, in either shape. No refusal by the daily quota or the spend cap, and no error: every answered chat request ran to `done`.
+- **Writes match [the table above](#store-operations-per-request)**: each chat request that ran wrote its daily quota and the spend cap twice each; the rest are usage records and batches.
+- **Conflicts are real on one instance**: concurrent chat requests race on the month's `spend` document (11 conflicts for 8 simultaneous requests in the burst), and every one was retried and landed, well inside the 10 tries an update gets.
+- In the burst, `/chat`'s second minute was refused: its window opened when the first burst arrived, a few milliseconds after the start, so the second burst, sent exactly 60 s later, still fell inside it. That is the window being strict, not a failure.
 
 ## In memory
 
