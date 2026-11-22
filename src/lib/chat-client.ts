@@ -19,6 +19,8 @@ export type ChatErrorKind = "rate_limited" | "unavailable" | "error";
 
 export type ChatClientEvent =
   | Extract<ChatEvent, { type: "text" | "tool_call" }>
+  /** The address a `get_contact` result returned: the only kind the answer may link. */
+  | { type: "contact"; email: string }
   /** `signature` is absent only if the agent sent none (one that predates signed answers). */
   | { type: "done"; stopReason: ChatStopReason; signature?: string }
   | {
@@ -125,10 +127,15 @@ function toClientEvent(e: Record<string, unknown>): ChatClientEvent | undefined 
       if (typeof e.signature === "string" && e.signature) done.signature = e.signature;
       return done;
     }
+    case "tool_result": {
+      if (e.name !== "get_contact" || e.isError !== false) return undefined;
+      const email = (e.output as { email?: unknown } | null)?.email;
+      return typeof email === "string" ? { type: "contact", email } : undefined;
+    }
     case "error":
       return toError(e as ErrorPayload);
     default:
-      // tool_result, usage and future events are not rendered.
+      // Other tool results, usage and future events are not rendered.
       return undefined;
   }
 }

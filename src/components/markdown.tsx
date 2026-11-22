@@ -39,30 +39,41 @@ function blocks(text: string): Block[] {
 // Inline spans, earliest match first; code comes first so its contents stay
 // literal. Emphasis needs a non-space right inside its markers, and `_` only
 // counts at word edges, so "5 * 3" and snake_case stay plain text. A link's
-// URL may hold one level of balanced parentheses. A bare email address
-// becomes a mailto: link (the contact answer); its domain must not end in
-// a dot, so a sentence's full stop stays out.
+// URL may hold one level of balanced parentheses. A bare email address's
+// domain must not end in a dot, so a sentence's full stop stays out.
 const span =
   /`([^`]+)`|\[([^\]]+)\]\(([^()\s]*(?:\([^()\s]*\)[^()\s]*)*)\)|\*\*(\S(?:.*?\S)?)\*\*|__(\S(?:.*?\S)?)__|\*(\S(?:.*?\S)?)\*|(?<!\w)_(\S(?:.*?\S)?)_(?!\w)|(?<![\w.+-])([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/;
 
 /**
- * Only mailto: links and https: links to an allowed host become links, so an
- * injected link can't be clicked;
- * anything else (another host, http:, javascript:, a relative URL) is text.
+ * The URL a Markdown link may point to, or `undefined` to show its label as
+ * text. An https: link needs an allowed host. A mailto: link needs an address
+ * from `contacts`, and is rebuilt from it alone, so an added `cc` can't ride
+ * along. Anything else (http:, javascript:, a relative URL) is text.
  */
-function isSafeUrl(href: string): boolean {
-  if (!URL.canParse(href)) return false;
+function safeHref(href: string, contacts: ReadonlySet<string>): string | undefined {
+  if (!URL.canParse(href)) return undefined;
   const url = new URL(href);
-  return url.protocol === "mailto:" || (url.protocol === "https:" && linkHosts.has(url.host));
+  if (url.protocol === "https:") return linkHosts.has(url.host) ? href : undefined;
+  if (url.protocol !== "mailto:") return undefined;
+  let address: string;
+  try {
+    address = decodeURIComponent(url.pathname);
+  } catch {
+    return undefined;
+  }
+  return contacts.has(address) ? `mailto:${address}` : undefined;
 }
 
 // Web links open in a new tab so the chat stays put; a mailto: link just
 // hands off to the mail app, and in a new tab would leave a blank one behind.
 const newTab = { target: "_blank", rel: "noopener noreferrer" } as const;
-const isMailto = (href: string) => new URL(href).protocol === "mailto:";
 
-/** `inLink`: inside a link's label, where an address must not become a nested link. */
-function inline(text: string, inLink = false): ReactNode[] {
+/**
+ * `contacts`: the addresses this answer's `get_contact` results returned, the
+ * only ones that become mailto: links (an injected address stays text).
+ * `inLink`: inside a link's label, where an address must not become a nested link.
+ */
+function inline(text: string, contacts: ReadonlySet<string>, inLink = false): ReactNode[] {
   const out: ReactNode[] = [];
   let rest = text;
   while (rest) {
@@ -77,33 +88,41 @@ function inline(text: string, inLink = false): ReactNode[] {
     if (code !== undefined) out.push(<code key={key}>{code}</code>);
     else if (email !== undefined) {
       out.push(
-        inLink ? (
-          email
-        ) : (
+        !inLink && contacts.has(email) ? (
           <a key={key} href={`mailto:${email}`}>
             {email}
           </a>
+        ) : (
+          email
         ),
       );
-    }
-    else if (label !== undefined) {
+    } else if (label !== undefined) {
+      const safe = safeHref(href, contacts);
       out.push(
-        isSafeUrl(href) ? (
-          <a key={key} href={href} {...(isMailto(href) ? {} : newTab)}>
-            {inline(label, true)}
+        safe ? (
+          <a key={key} href={safe} {...(safe.startsWith("mailto:") ? {} : newTab)}>
+            {inline(label, contacts, true)}
           </a>
         ) : (
-          <Fragment key={key}>{inline(label, inLink)}</Fragment>
+          <Fragment key={key}>{inline(label, contacts, inLink)}</Fragment>
         ),
       );
-    } else if (bold1 ?? bold2) out.push(<strong key={key}>{inline(bold1 ?? bold2, inLink)}</strong>);
-    else out.push(<em key={key}>{inline(em1 ?? em2, inLink)}</em>);
+    } else if (bold1 ?? bold2) out.push(<strong key={key}>{inline(bold1 ?? bold2, contacts, inLink)}</strong>);
+    else out.push(<em key={key}>{inline(em1 ?? em2, contacts, inLink)}</em>);
     rest = rest.slice(m.index + m[0].length);
   }
   return out;
 }
 
-export function Markdown({ text }: { text: string }) {
+const noContacts: ReadonlySet<string> = new Set();
+
+export function Markdown({
+  text,
+  contacts = noContacts,
+}: {
+  text: string;
+  contacts?: ReadonlySet<string>;
+}) {
   return blocks(text).map((block, i) => {
     if (block.kind === "paragraph") {
       return (
@@ -111,7 +130,7 @@ export function Markdown({ text }: { text: string }) {
           {block.lines.map((line, j) => (
             <Fragment key={j}>
               {j > 0 && <br />}
-              {inline(line)}
+              {inline(line, contacts)}
             </Fragment>
           ))}
         </p>
@@ -121,7 +140,7 @@ export function Markdown({ text }: { text: string }) {
     return (
       <List key={i}>
         {block.items.map((item, j) => (
-          <li key={j}>{inline(item)}</li>
+          <li key={j}>{inline(item, contacts)}</li>
         ))}
       </List>
     );

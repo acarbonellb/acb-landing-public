@@ -40,11 +40,13 @@ export type Turn = {
   id: number;
   question: string;
   parts: Part[];
+  /** The addresses this answer's `get_contact` results returned: the only ones it may link. */
+  contacts: string[];
   status: TurnStatus;
 };
 
 export function startTurn(id: number, question: string): Turn {
-  return { id, question, parts: [], status: { kind: "streaming" } };
+  return { id, question, parts: [], contacts: [], status: { kind: "streaming" } };
 }
 
 function toolLabel(name: string, input: unknown): string {
@@ -72,6 +74,10 @@ export function foldEvent(turn: Turn, event: ChatClientEvent): Turn {
           { kind: "tool", id: event.id, label: toolLabel(event.name, event.input) },
         ],
       };
+    case "contact":
+      return turn.contacts.includes(event.email)
+        ? turn
+        : { ...turn, contacts: [...turn.contacts, event.email] };
     case "done": {
       const status: TurnStatus = { kind: "answered", stopReason: event.stopReason };
       if (event.signature !== undefined) status.signature = event.signature;

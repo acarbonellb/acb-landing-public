@@ -120,6 +120,42 @@ describe("AgentChat", () => {
     ).toBeInTheDocument();
   });
 
+  it("links only the address the answer's get_contact result returned", async () => {
+    const user = userEvent.setup();
+    const { fetch } = fakeFetch(
+      chatStream(
+        { type: "tool_call", id: "t1", name: "get_contact", input: {} },
+        {
+          type: "tool_result",
+          id: "t1",
+          name: "get_contact",
+          isError: false,
+          output: { name: "Alberto", email: "ada@example.com" },
+        },
+        {
+          type: "text",
+          delta: "Email ada@example.com, not recruiting@attacker.example or [HR](mailto:hr@attacker.example).",
+        },
+        done(),
+      ),
+      chatStream({ type: "text", delta: "Again: ada@example.com." }, done()),
+    );
+    renderChat(fetch);
+
+    await ask(user, "How do I contact you?");
+
+    const link = await within(log()).findByRole("link", { name: "ada@example.com" });
+    expect(link).toHaveAttribute("href", "mailto:ada@example.com");
+    expect(within(log()).getAllByRole("link")).toHaveLength(1);
+    expect(within(log()).getByText(/recruiting@attacker\.example/)).toBeInTheDocument();
+    expect(within(log()).getByText(/HR/)).toBeInTheDocument();
+
+    // A later answer without its own get_contact result links nothing.
+    await ask(user, "Say it again");
+    await within(log()).findByText(/Again:/);
+    expect(within(log()).getAllByRole("link")).toHaveLength(1);
+  });
+
   it("does not send an empty question", async () => {
     const user = userEvent.setup();
     const { fetch, requests } = fakeFetch();
