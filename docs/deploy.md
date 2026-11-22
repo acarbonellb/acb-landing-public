@@ -33,9 +33,9 @@ The agent runs as a separate Cloud Run service that the browser calls directly a
 
 ### Security headers
 
-Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site and the agent's origin). The browser tests serve every page with those headers and fail on any CSP violation.
+Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site, the agent's origin and, in a build with a PostHog key, PostHog's two EU origins: [Site analytics](analytics.md#how-the-page-loads-it)). The browser tests serve every page with those headers and fail on any CSP violation.
 
-A static export can't use nonces, so the CSP allows each inline script by its hash (the theme script and the RSC payloads Next writes, which change with every build, or the page doesn't hydrate). Those hashes only exist once the build has run, so `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`. The deploy ships that file (`firebase deploy --config out/firebase.json`). Edit headers and rewrites in the committed `firebase.json`, and the CSP in `src/lib/security-headers.ts`.
+A static export can't use nonces, so the CSP allows each inline script by its hash (the theme script and the RSC payloads Next writes, which change with every build, or the page doesn't hydrate). Those hashes only exist once the build has run, so `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`): the committed `firebase.json` plus the CSP for that build, its `NEXT_PUBLIC_AGENT_URL` and its `NEXT_PUBLIC_POSTHOG_KEY`. The deploy ships that file (`firebase deploy --config out/firebase.json`). Edit headers and rewrites in the committed `firebase.json`, and the CSP in `src/lib/security-headers.ts`.
 
 ### Repository variables
 
@@ -49,6 +49,7 @@ The deploy jobs use these repository variables:
 | `SITE_URL` | `https://albertocarbonell.dev`: URL the smoke check hits (defaults to `https://<GCP_PROJECT_ID>.web.app`) |
 | `REDIRECT_HOSTS` | `www.albertocarbonell.dev albertocarbonell.es www.albertocarbonell.es`: hosts the smoke check expects to 301 to `SITE_URL` |
 | `AGENT_URL` | The agent service's URL; also inlined into the site as `NEXT_PUBLIC_AGENT_URL`. Without it nothing deploys (the tested build then points at the local default, `http://localhost:8080`) |
+| `POSTHOG_KEY` | Optional: the PostHog project key, inlined into the site as `NEXT_PUBLIC_POSTHOG_KEY`; public by design. Unset, the site has no [site analytics](analytics.md) |
 | `AGENT_STORE` | Optional: unset deploys `firestore`, whose database must exist ([below](#the-firestore-database)). `memory` is refused in production (the service fails to start) |
 
 The Workload Identity provider only accepts GitHub OIDC tokens from this repository (matched by repository and owner id, so a renamed or re-created repo can't reuse it) on `refs/heads/main`. The deploy service account `github-deploy` can only be impersonated through that provider and holds two roles: Firebase Hosting Admin, and Service Usage Viewer (firebase-tools checks the Hosting API is enabled before deploying). It has no keys.

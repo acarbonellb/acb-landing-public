@@ -33,14 +33,14 @@ function directives(csp: string) {
 
 describe("hostingConfig", () => {
   it("allows exactly the built pages' inline scripts, by hash", () => {
-    const config = hostingConfig(committed, { pages: [page], agentUrl: undefined });
+    const config = hostingConfig(committed, { pages: [page], agentUrl: undefined, posthogKey: undefined });
 
     const csp = directives(pageHeaders(config)["Content-Security-Policy"]);
     expect(csp["script-src"]).toEqual(["'self'", ALERT, NEXT_INIT]);
   });
 
   it("lists a script shared by several pages once", () => {
-    const config = hostingConfig(committed, { pages: [page, page], agentUrl: undefined });
+    const config = hostingConfig(committed, { pages: [page, page], agentUrl: undefined, posthogKey: undefined });
 
     const csp = directives(pageHeaders(config)["Content-Security-Policy"]);
     expect(csp["script-src"]).toEqual(["'self'", ALERT, NEXT_INIT]);
@@ -50,8 +50,9 @@ describe("hostingConfig", () => {
     const withAgent = hostingConfig(committed, {
       pages: [page],
       agentUrl: "https://agent.example.dev/",
+      posthogKey: undefined,
     });
-    const noAgent = hostingConfig(committed, { pages: [page], agentUrl: undefined });
+    const noAgent = hostingConfig(committed, { pages: [page], agentUrl: undefined, posthogKey: undefined });
 
     expect(directives(pageHeaders(withAgent)["Content-Security-Policy"])["connect-src"]).toEqual([
       "'self'",
@@ -62,8 +63,47 @@ describe("hostingConfig", () => {
     ]);
   });
 
+  it("lets a build with a PostHog key connect to PostHog's EU ingestion and assets hosts, and nothing else changes", () => {
+    const build = { pages: [page], agentUrl: "https://agent.example.dev/" };
+    const withKey = directives(
+      pageHeaders(hostingConfig(committed, { ...build, posthogKey: "phc_test" }))["Content-Security-Policy"],
+    );
+    const noKey = directives(pageHeaders(hostingConfig(committed, { ...build, posthogKey: undefined }))["Content-Security-Policy"]);
+
+    expect(withKey["connect-src"]).toEqual([
+      "'self'",
+      "https://agent.example.dev",
+      "https://eu.i.posthog.com",
+      "https://eu-assets.i.posthog.com",
+    ]);
+    expect({ ...withKey, "connect-src": undefined }).toEqual({ ...noKey, "connect-src": undefined });
+    expect(withKey["script-src"]).toEqual(["'self'", ALERT, NEXT_INIT]);
+  });
+
+  it("gives a build without a PostHog key today's policy, byte for byte", () => {
+    const build = { pages: [page], agentUrl: "https://agent.example.dev/" };
+    const csp = (posthogKey: string | undefined) =>
+      pageHeaders(hostingConfig(committed, { ...build, posthogKey }))["Content-Security-Policy"];
+
+    expect(csp(undefined)).toBe(
+      [
+        "default-src 'self'",
+        `script-src 'self' ${ALERT} ${NEXT_INIT}`,
+        "style-src 'self' 'unsafe-inline'",
+        "img-src 'self'",
+        "font-src 'self'",
+        "connect-src 'self' https://agent.example.dev",
+        "object-src 'none'",
+        "base-uri 'none'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+      ].join("; "),
+    );
+    expect(csp("")).toBe(csp(undefined));
+  });
+
   it("forbids framing, plugins and other origins, and keeps the hardening headers", () => {
-    const headers = pageHeaders(hostingConfig(committed, { pages: [page], agentUrl: undefined }));
+    const headers = pageHeaders(hostingConfig(committed, { pages: [page], agentUrl: undefined, posthogKey: undefined }));
 
     const csp = directives(headers["Content-Security-Policy"]);
     expect(csp["default-src"]).toEqual(["'self'"]);
@@ -75,7 +115,7 @@ describe("hostingConfig", () => {
   });
 
   it("serves the export it sits in and keeps the committed rewrites and headers", () => {
-    const config = hostingConfig(committed, { pages: [page], agentUrl: undefined });
+    const config = hostingConfig(committed, { pages: [page], agentUrl: undefined, posthogKey: undefined });
 
     // Written to out/firebase.json, next to the files it publishes.
     expect(config.hosting.public).toBe(".");

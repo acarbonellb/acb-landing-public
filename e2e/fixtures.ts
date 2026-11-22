@@ -1,5 +1,9 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { gunzipSync } from "node:zlib";
 import { expect, type Page, type Route, test as base } from "@playwright/test";
+import { COOKIE_NOTICE_DISMISSED, COOKIE_NOTICE_STORAGE_KEY } from "../src/lib/cookie-notice";
+import { POSTHOG_API_HOST, POSTHOG_ASSETS_HOST } from "../src/lib/posthog-hosts";
 import type { FakeReply } from "../src/testing/agent-fakes";
 
 // The agent service, stubbed for browser tests: the page calls its chat, MCP
@@ -83,7 +87,130 @@ export async function cspViolations(page: Page): Promise<string[]> {
   return [...(violations.get(page) ?? [])];
 }
 
-export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
+/** One event the page sent PostHog. */
+export type PostHogEvent = { event: string; properties: Record<string, unknown> };
+
+export type PostHogStub = {
+  /** Every event the page sent, in order. */
+  events: PostHogEvent[];
+  /** The raw bodies of every request to PostHog, decoded, for checks on what left the page. */
+  bodies: string[];
+};
+
+/** An event request's body as the SDK sends it: plain, base64 form-encoded or gzipped JSON. */
+function decodeBatch(url: URL, body: Buffer): string {
+  const compression = url.searchParams.get("compression");
+  const gzipped = body[0] === 0x1f && body[1] === 0x8b;
+  if (compression === "gzip-js" || gzipped) return gunzipSync(body).toString("utf8");
+  const text = body.toString("utf8");
+  if (compression === "base64" || text.startsWith("data=")) {
+    const data = new URLSearchParams(text).get("data") ?? "";
+    return Buffer.from(data, "base64").toString("utf8");
+  }
+  return text;
+}
+
+/**
+ * PostHog EU, stubbed like the agent: its two origins answer from here and
+ * `events` collects what the page sent. Without this stub `localOnly`
+ * refuses them, as a tracker blocker would.
+ */
+async function stubPostHog(page: Page): Promise<PostHogStub> {
+  const stub: PostHogStub = { events: [], bodies: [] };
+  // The SDK drops every event from an automated browser (navigator.webdriver,
+  // a headless user agent): look like a visitor's browser instead.
+  await page.addInitScript(() => {
+    Object.defineProperty(Navigator.prototype, "webdriver", { get: () => false });
+    Object.defineProperty(Navigator.prototype, "userAgentData", { get: () => undefined });
+  });
+  await page.route(
+    (url) => url.origin === POSTHOG_API_HOST || url.origin === POSTHOG_ASSETS_HOST,
+    async (route) => {
+      const request = route.request();
+      const url = new URL(request.url());
+      if (request.method() === "OPTIONS") {
+        return route.fulfill({ status: 204, headers: postHogCors(request.headers().origin) });
+      }
+      const body = request.postDataBuffer();
+      if (body) {
+        const decoded = decodeBatch(url, body);
+        stub.bodies.push(decoded);
+        if (/^\/(e|i\/v0\/e|batch|capture)\/?$/.test(url.pathname)) {
+          const parsed = JSON.parse(decoded);
+          const batch = Array.isArray(parsed) ? parsed : (parsed.batch ?? [parsed]);
+          stub.events.push(...batch);
+        }
+      }
+      await route.fulfill({
+        status: 200,
+        headers: { ...postHogCors(request.headers().origin), "Content-Type": "application/json" },
+        // Remote config as a new project's: autocapture on (the SDK waits for
+        // `autocapture_opt_out` before it starts), no flags.
+        body: JSON.stringify(
+          url.pathname.startsWith("/flags")
+            ? { featureFlags: {}, autocapture_opt_out: false }
+            : { status: 1, autocapture_opt_out: false },
+        ),
+      });
+    },
+  );
+  return stub;
+}
+
+const postHogCors = (origin: string | undefined) => ({
+  "Access-Control-Allow-Origin": origin ?? "*",
+  "Access-Control-Allow-Credentials": "true",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+});
+
+/** Whether this export was built with a PostHog key: its CSP lets the page reach PostHog. */
+export const analyticsBuild = () =>
+  hostingPageHeaders()["Content-Security-Policy"].includes(POSTHOG_API_HOST);
+
+/** The export's chunks that hold the PostHog SDK, by the version string it carries. */
+export function sdkChunks(): string[] {
+  const { version } = JSON.parse(readFileSync("node_modules/posthog-js/package.json", "utf8"));
+  const dir = "out/_next/static/chunks";
+  return readdirSync(dir)
+    .filter((file) => file.endsWith(".js") && readFileSync(join(dir, file), "utf8").includes(`"${version}"`))
+    .map((file) => `/_next/static/chunks/${file}`);
+}
+
+/** The options a spec sets with `test.use`. */
+export type Options = {
+  /**
+   * Whether the `posthog` stub answers PostHog's hosts (the default, so no
+   * test logs a refused request) or leaves them refused like every other
+   * origin, as a tracker blocker would (offline.spec.ts).
+   */
+  postHog: "answered" | "refused";
+  /**
+   * Whether the cookie notice shows on a first visit, or the browser already
+   * dismissed it (the default): in a build with a key the notice is fixed
+   * over the bottom of the page, where it could cover what a test taps.
+   * cookie-notice.spec.ts asks for "shown".
+   */
+  cookieNotice: "dismissed" | "shown";
+};
+
+export const test = base.extend<
+  Options & { agent: AgentStub; posthog: PostHogStub; localOnly: void; noticeState: void }
+>({
+  postHog: ["answered", { option: true }],
+  cookieNotice: ["dismissed", { option: true }],
+  noticeState: [
+    async ({ context, cookieNotice }, provide) => {
+      if (cookieNotice === "dismissed") {
+        await context.addInitScript(
+          ([key, value]) => localStorage.setItem(key, value),
+          [COOKIE_NOTICE_STORAGE_KEY, COOKIE_NOTICE_DISMISSED] as const,
+        );
+      }
+      await provide();
+    },
+    { auto: true },
+  ],
   // CI builds the page with the production agent URL (it tests the build it
   // deploys), so every request off the local server is refused: an endpoint a
   // test doesn't stub fails as if the agent were down, and never reaches it.
@@ -132,6 +259,14 @@ export const test = base.extend<{ agent: AgentStub; localOnly: void }>({
       stats: (replies, options) => stub(page, "stats", replies, options),
     });
   },
+  // Automatic: in a build with a key every page calls PostHog, so every test
+  // has it answered unless it asks for "refused" (then `events` stays empty).
+  posthog: [
+    async ({ page, postHog }, provide) => {
+      await provide(postHog === "answered" ? await stubPostHog(page) : { events: [], bodies: [] });
+    },
+    { auto: true },
+  ],
 });
 
 export { expect };

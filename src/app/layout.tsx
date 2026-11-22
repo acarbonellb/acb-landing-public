@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
+import { CookieNotice } from "@/components/cookie-notice";
+import { SiteAnalytics } from "@/components/site-analytics";
 import { profile } from "@/shared/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
 import { DEFAULT_THEME, themeScript } from "@/lib/theme";
@@ -49,7 +51,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="bg-grid min-h-screen font-mono">{children}</body>
+      <body className="bg-grid min-h-screen font-mono">
+        {children}
+        <SiteAnalytics />
+        <CookieNotice />
+      </body>
     </html>
   );
 }

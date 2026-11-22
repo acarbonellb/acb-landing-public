@@ -2,7 +2,8 @@
 
 import { type FormEvent, useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { chatRequestLimits } from "@/shared/chat-contract";
-import { chatPrivacyNote } from "@/shared/site-copy";
+import { posthogKey } from "@/lib/analytics";
+import { analyticsPrivacyNote, chatPrivacyNote } from "@/shared/site-copy";
 import { type BridgeAsk, connectChat } from "./chat-bridge";
 import { ChatNotice } from "./chat-notice";
 import { ChatTranscript } from "./chat-transcript";
@@ -20,6 +21,8 @@ export function AgentChat({
   mcpUrl: string;
   fetch?: typeof globalThis.fetch;
 }) {
+  // A build with site analytics says so in the privacy note.
+  const analytics = Boolean(posthogKey());
   const { turns, notice, busy, ask } = useAgentChat({ chatUrl, fetch });
   const [draft, setDraft] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
@@ -47,7 +50,7 @@ export function AgentChat({
     if (busy) return;
     logRef.current?.closest("section")?.scrollIntoView?.({ block: "start" });
     inputRef.current?.focus({ preventScroll: true });
-    void ask(question, options);
+    void ask(question, { ...options, source: "contact" });
   });
 
   useEffect(() => {
@@ -89,7 +92,8 @@ export function AgentChat({
           autoComplete="off"
           placeholder="ask about my experience, projects, stack…"
           // 16px on phones: iOS Safari zooms in on focus into any smaller field.
-          className="min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
+          // ph-no-capture: kept out of autocapture (docs/analytics.md#events).
+          className="ph-no-capture min-w-0 flex-1 bg-transparent text-base text-fg outline-none placeholder:text-comment sm:text-sm"
         />
         <TerminalButton
           type="submit"
@@ -107,6 +111,7 @@ export function AgentChat({
       >
         <span aria-hidden>{"// "}</span>
         {chatPrivacyNote}
+        {analytics && ` ${analyticsPrivacyNote}`}
       </p>
 
       <McpConnect mcpUrl={mcpUrl} />
