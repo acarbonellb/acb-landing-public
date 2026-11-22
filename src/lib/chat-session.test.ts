@@ -24,11 +24,12 @@ function answered(id: number, question: string, answer: string): Turn {
 }
 
 describe("folding chat events into a turn", () => {
-  it("starts streaming with the question and no parts", () => {
+  it("starts streaming with the question, no parts and no contact addresses", () => {
     expect(startTurn(3, "Who?")).toEqual({
       id: 3,
       question: "Who?",
       parts: [],
+      contacts: [],
       status: { kind: "streaming" },
     });
   });

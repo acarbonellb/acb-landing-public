@@ -81,6 +81,30 @@ describe("streamChat", () => {
     ]);
   });
 
+  it("yields the address of a get_contact result, and no other tool result", async () => {
+    const result = (name: string, isError: boolean, output: unknown) =>
+      ({ type: "tool_result", id: "t", name, isError, output }) as const;
+    const { fetch } = fakeFetch(
+      streamed([
+        sse(
+          result("get_contact", false, { name: "Alberto", email: "ada@example.com" }),
+          result("get_contact", false, { name: "Alberto" }),
+          result("get_contact", true, { email: "err@example.com" }),
+          result("get_projects", false, { email: "proj@example.com" }),
+          result("get_contact", false, { email: 42 }),
+          done(),
+        ),
+      ]),
+    );
+
+    const events = await collect(streamChat("/chat", question, { fetch }));
+
+    expect(events).toEqual([
+      { type: "contact", email: "ada@example.com" },
+      { type: "done", stopReason: "end_turn", signature: "fake-answer-signature" },
+    ]);
+  });
+
   it("turns a stream error event into a typed error", async () => {
     const { fetch } = fakeFetch(
       streamed([
