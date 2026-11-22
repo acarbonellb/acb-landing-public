@@ -30,7 +30,7 @@ One output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model cal
 
 ## Monthly spend cap
 
-`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
+`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. That charge and the settle happen inside the request: its handler resolves only once they are in the store (`waitUntil` in `agent/src/server.ts`), so nothing waits for CPU after the response. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
 
 ## Daily quota
 
