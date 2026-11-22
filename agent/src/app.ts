@@ -303,10 +303,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    // Not awaited: the answer doesn't wait on the weekly document, which every
-    // request writes. The recorder never throws.
-    void usage.recordMcp();
-    return transport.handleRequest(c.req.raw);
+    // Counted alongside the answer, and awaited: a due batch is written
+    // inside this request, while it has the CPU. The recorder never throws.
+    const [res] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
+    return res;
   });
 
   // The chat spends model tokens, so only the site's own origins may call it

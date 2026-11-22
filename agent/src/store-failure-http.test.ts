@@ -168,7 +168,7 @@ describe("an error no route handled", () => {
     server = await listen(
       createApp(
         testAppDeps({
-          // `recordMcp` isn't awaited, so fail the one usage call that is.
+          // A synchronous usage call, so its throw reaches the route.
           isUnknownGoogleHop: () => true,
           usage: {
             ...usage,

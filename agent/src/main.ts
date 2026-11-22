@@ -2,6 +2,7 @@ import { createApp, paths } from "./app";
 import { composeAppDeps } from "./compose";
 import { loadConfig } from "./config";
 import { listen } from "./server";
+import { closeOnSignals } from "./shutdown";
 
 const config = loadConfig();
 const port = Number(process.env.PORT ?? 8080);
@@ -23,14 +24,4 @@ if (!config.contactEmail) {
   console.warn("CONTACT_EMAIL is not set: get_contact offers LinkedIn and GitHub only.");
 }
 
-for (const signal of ["SIGINT", "SIGTERM"] as const) {
-  process.once(signal, () => {
-    // The batched usage counts first, in case closing outlasts Cloud Run's
-    // shutdown grace; then what arrived while the server closed.
-    void deps.usage
-      .flush()
-      .then(() => server.close())
-      .then(() => deps.usage.close())
-      .then(() => process.exit(0));
-  });
-}
+closeOnSignals(process, { server, usage: deps.usage, exit: (code) => process.exit(code) });
