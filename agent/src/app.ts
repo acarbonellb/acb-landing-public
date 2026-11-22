@@ -113,6 +113,10 @@ const jsonRpcError = (
   data: { code: HttpErrorCode; retryAfterSeconds?: number },
 ) => c.json({ jsonrpc: "2.0", id: null, error: { code, message, data } }, status);
 
+/** The `429` of `/health?deep=1` and `/stats`, once `rateLimit` has set `Retry-After`. */
+const refuseRateLimited = (c: Context) =>
+  jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited });
+
 /** How each route answers an error it didn't handle, in its own error contract. */
 const unhandledErrorResponders: Record<string, (c: Context) => Response> = {
   [paths.chat]: (c) => {
@@ -251,9 +255,7 @@ export function createApp(deps: AppDeps): Hono {
   app.get(
     paths.health,
     async (c, next) => (c.req.query("deep") === "1" ? next() : c.json({ status: "ok" })),
-    rateLimit(deepHealthRateLimiter, () => globalKey, (c) =>
-      jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
-    ),
+    rateLimit(deepHealthRateLimiter, () => globalKey, refuseRateLimited),
     async (c) => {
       const report = await deepHealth.check();
       if (!report.healthy) {
@@ -268,9 +270,7 @@ export function createApp(deps: AppDeps): Hono {
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(statsRateLimiter, rateLimitKey, (c) =>
-      jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
-    ),
+    rateLimit(statsRateLimiter, rateLimitKey, refuseRateLimited),
     async (c) => {
       try {
         const body = await usage.stats();

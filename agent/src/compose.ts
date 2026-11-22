@@ -1,8 +1,9 @@
 // The production composition root: builds every dependency of the app from
 // the configuration (`config.ts`). The only place that picks adapters; the
-// router (`app.ts`) takes them all as given, and tests build theirs with
-// `testAppDeps` (`test-deps.ts`).
-import { createAnswerSigner, ephemeralSigningKey } from "./answer-signing";
+// router (`app.ts`) takes them all as given. `assembleAppDeps` wires them for
+// production, the tests (`testAppDeps` in `test-deps.ts`) and the load test
+// alike, from the parts that differ.
+import { createAnswerSigner, ephemeralSigningKey, type AnswerSigner } from "./answer-signing";
 import { createAnthropicModelClient } from "./anthropic";
 import { createStoreDailyQuota } from "./daily-quota";
 import type { AppDeps } from "./app";
@@ -10,12 +11,12 @@ import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip"
 import type { Config } from "./config";
 import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
-import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
+import { createDeepHealthCheck, createDeepHealthRateLimiter, type RequiredConfig } from "./health";
 import type { ModelClient } from "./model";
 import { createProviderLimitWatch } from "./provider-limit";
 import { createMemoryRateLimiter, withGlobalCeiling } from "./rate-limit";
 import { createStoreSpendCap } from "./spend-cap";
-import { createToolset, siteContent } from "./tools";
+import { createToolset, siteContent, type Toolset } from "./tools";
 import { createUsageRecorder } from "./usage";
 
 const minute = 60_000;
@@ -81,21 +82,53 @@ export function createGuardrails(
   };
 }
 
-/** Every dependency of the production app, built from the configuration. */
-export function composeAppDeps(config: Config): AppDeps {
-  const sharedStore = createDocumentStore(config.store);
+/** What differs between production, the tests and the load test; the rest comes from `config`. */
+export type AppDepsParts = {
+  config: Config;
+  /** The shared store for the guardrails, or `null` to keep them in memory. */
+  sharedStore: DocumentStore | null;
+  modelClient: ModelClient | null;
+  answerSigner: AnswerSigner;
+  toolset: Toolset;
+  /** What the deep health check requires; defaults to `config`'s. */
+  requiredConfig?: RequiredConfig;
+};
+
+/** Every dependency of the app, wired the same way wherever it runs. */
+export function assembleAppDeps({
+  config,
+  sharedStore,
+  modelClient,
+  answerSigner,
+  toolset,
+  requiredConfig = config,
+}: AppDepsParts): AppDeps {
   return {
-    toolset: createToolset({ ...siteContent, contactEmail: config.contactEmail }),
-    modelClient: createModelClient(config),
+    toolset,
+    modelClient,
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
-    answerSigner: createAnswerSigner(config.answerSigningKey ?? ephemeralSigningKey()),
+    answerSigner,
     ...createGuardrails(sharedStore, config),
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop: mcpUnknownGoogleHop,
     // The guardrails' store; with none shared, a memory one, which always answers.
-    deepHealth: createDeepHealthCheck({ store: sharedStore ?? createMemoryDocumentStore(), config }),
+    deepHealth: createDeepHealthCheck({
+      store: sharedStore ?? createMemoryDocumentStore(),
+      config: requiredConfig,
+    }),
     deepHealthRateLimiter: createDeepHealthRateLimiter(),
   };
+}
+
+/** Every dependency of the production app, built from the configuration. */
+export function composeAppDeps(config: Config): AppDeps {
+  return assembleAppDeps({
+    config,
+    sharedStore: createDocumentStore(config.store),
+    modelClient: createModelClient(config),
+    answerSigner: createAnswerSigner(config.answerSigningKey ?? ephemeralSigningKey()),
+    toolset: createToolset({ ...siteContent, contactEmail: config.contactEmail }),
+  });
 }
