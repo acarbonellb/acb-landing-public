@@ -163,6 +163,21 @@ const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>
 });
 
 /**
+ * Hands `work` to the request's execution context: the server (`server.ts`)
+ * resolves the request's handler only once it's done. Without a context
+ * (`app.request` in a test) nothing waits for it.
+ */
+function waitUntil(c: Context, work: Promise<unknown>) {
+  let ctx;
+  try {
+    ctx = c.executionCtx;
+  } catch {
+    return;
+  }
+  ctx.waitUntil(work);
+}
+
+/**
  * Logs a chat request the usage stats don't record: refused as invalid
  * (`400`, `413`), or failed closed on a store error (`503`). Every other one
  * is logged as it's recorded (`usage.ts`).
@@ -403,17 +418,25 @@ export function createApp(deps: AppDeps): Hono {
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
       }));
+      // The request's handler resolves only once the run is drained, so an
+      // abandoned chat is charged and settled inside its request.
+      let drained!: () => void;
+      waitUntil(c, new Promise<void>((resolve) => (drained = resolve)));
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         // Drained to the end even once the visitor has left: every model call
         // is paid for, and the metered chat records it when the run ends.
-        for await (const event of events) {
-          if (stream.aborted) continue;
-          try {
-            await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
-          } catch {
-            stop();
+        try {
+          for await (const event of events) {
+            if (stream.aborted) continue;
+            try {
+              await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+            } catch {
+              stop();
+            }
           }
+        } finally {
+          drained();
         }
       });
     },
