@@ -148,18 +148,26 @@ function schedule(perMinute: number): number[] {
   return Array.from({ length: Math.floor(durationMs / spacing) }, (_, i) => i * spacing);
 }
 
-/** A 429 that a rate limit or ceiling answered, as opposed to the daily quota's. */
-const rateLimitReason = (body: { code?: string; resetsAt?: string; error?: { data?: { code?: string } } }) =>
-  body.resetsAt ? "daily_quota" : (body.code ?? body.error?.data?.code ?? "429");
+/** The error JSON of `/chat` and `/stats`, or the JSON-RPC error of `/mcp`. */
+type ErrorBody = { error?: { code?: string | number; message?: string; resetsAt?: string; data?: { code?: string } } };
+
+/** The error's code: the HTTP error code, which `/mcp` puts in `data`. */
+const codeOf = (text: string) => {
+  const { error } = JSON.parse(text) as ErrorBody;
+  return error?.data?.code ?? String(error?.code);
+};
+
+/** A 429's reason: `rate_limited` from a rate limit or ceiling, `daily_quota` from the quota. */
+const refusalReason = (text: string) => ((JSON.parse(text) as ErrorBody).error?.resetsAt ? "daily_quota" : codeOf(text));
 
 async function send(endpoint: Endpoint, key: string): Promise<Outcome> {
   const headers = { "X-Forwarded-For": key };
   if (endpoint === "stats") {
     const res = await fetch(`${server.url}${paths.stats}`, { headers });
-    const body = await res.json();
+    const text = await res.text();
     if (res.status === 200) return { kind: "ok" };
-    if (res.status === 429) return { kind: "refused", reason: rateLimitReason(body) };
-    return { kind: "error", reason: `${res.status} ${body.code}` };
+    if (res.status === 429) return { kind: "refused", reason: refusalReason(text) };
+    return { kind: "error", reason: `${res.status} ${codeOf(text)}` };
   }
   if (endpoint === "mcp") {
     const res = await fetch(`${server.url}${paths.mcp}`, {
@@ -168,8 +176,8 @@ async function send(endpoint: Endpoint, key: string): Promise<Outcome> {
       body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "get_contact", arguments: {} } }),
     });
     const text = await res.text();
-    if (res.status === 429) return { kind: "refused", reason: rateLimitReason(JSON.parse(text)) };
-    if (res.status !== 200) return { kind: "error", reason: String(res.status) };
+    if (res.status === 429) return { kind: "refused", reason: refusalReason(text) };
+    if (res.status !== 200) return { kind: "error", reason: `${res.status} ${codeOf(text)}` };
     return /"error"\s*:\s*\{/.test(text) ? { kind: "error", reason: "json-rpc error" } : { kind: "ok" };
   }
   const res = await fetch(`${server.url}${paths.chat}`, {
@@ -178,11 +186,11 @@ async function send(endpoint: Endpoint, key: string): Promise<Outcome> {
     body: JSON.stringify({ messages: [{ role: "user", content: "What is Alberto building?" }] }),
   });
   const text = await res.text();
-  if (res.status === 429) return { kind: "refused", reason: rateLimitReason(JSON.parse(text)) };
-  if (res.status === 503 && (JSON.parse(text) as { message?: string }).message === httpErrorMessages.spendCap) {
+  if (res.status === 429) return { kind: "refused", reason: refusalReason(text) };
+  if (res.status === 503 && (JSON.parse(text) as ErrorBody).error?.message === httpErrorMessages.spendCap) {
     return { kind: "refused", reason: "spend_cap" };
   }
-  if (res.status !== 200) return { kind: "error", reason: `${res.status} ${(JSON.parse(text) as { code?: string }).code}` };
+  if (res.status !== 200) return { kind: "error", reason: `${res.status} ${codeOf(text)}` };
   const streamError = /event: error\ndata: (.*)/.exec(text);
   if (streamError) return { kind: "error", reason: `stream ${(JSON.parse(streamError[1]) as { code: string }).code}` };
   return /event: done/.test(text) ? { kind: "ok" } : { kind: "error", reason: "stream without done" };
