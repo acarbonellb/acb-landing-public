@@ -2,7 +2,7 @@
 // day, on top of the per-minute rate limit and the monthly spend cap, so one
 // source can't use up the month's spend cap. It counts spend, not requests: each
 // chat request reserves its worst-case cost here too (it grows with the
-// conversation sent), its model calls are charged, and the rest is released,
+// conversation sent), and settles it to what its model calls actually cost,
 // with the spend cap's reservation mechanics (`spend-holds.ts`). A request
 // whose worst case doesn't fit is refused like a rate-limit refusal, until
 // the next UTC midnight.

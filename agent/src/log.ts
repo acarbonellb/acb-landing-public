@@ -54,7 +54,6 @@ export function logEvent(
 export type StoreOperation =
   | "usage_record"
   | "usage_stats"
-  | "spend_record"
   | "spend_settle"
   | "provider_limit"
   | "health_check";

@@ -6,17 +6,17 @@
 // only known at the end. So each request first RESERVES its worst-case cost
 // (`reserve`): it is refused if that doesn't fit in what's left under the
 // spend cap, and the reservation stays while it runs, so concurrent requests
-// can't all slip in under the same remaining room. Its model calls then
-// RECORD their actual usage against the reservation, and settling releases
-// what wasn't spent (`spend-holds.ts`, shared with the daily quota).
+// can't all slip in under the same remaining room. Once it ends, it SETTLES:
+// the actual usage of its model calls, added up in memory, replaces the
+// reservation (`spend-holds.ts`, shared with the daily quota).
 //
 // The running total lives in a `DocumentStore`, one document per UTC month
 // (`spend/<YYYY-MM>`): with Firestore it is shared by every Cloud Run
 // instance and survives cold starts; `createMemorySpendCap` keeps it in this
 // process, for local development and tests. Each reservation expires after
-// `reservationTtlMs`, so a request whose instance died before settling doesn't
-// keep its worst case reserved for the rest of the month; what it spent stays
-// charged. (The store keeps the reservations under `holds`.)
+// `reservationTtlMs`: a request whose instance died before settling is then
+// charged its worst case, as what it spent was only in that instance's memory.
+// (The store keeps the reservations under `holds`.)
 //
 // Alert events (docs/logs-and-alerts.md): `spend_threshold` when the
 // month's spend first reaches 50% and 80% of the cap, `spend_cap_reached`

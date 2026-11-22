@@ -15,12 +15,11 @@ function fakeClock(iso: string) {
   };
 }
 
-/** Reserves, records `usage` and settles: one whole request. */
+/** Reserves and settles with `usage`: one whole request. */
 async function spend(cap: SpendCap, usage: { inputTokens: number; outputTokens: number }) {
   const status = await cap.reserve(none);
   if (status.exhausted) throw new Error("spend cap reached");
-  await status.reservation.record(usage);
-  await status.reservation.settle();
+  await status.reservation.settle(usage);
 }
 
 describe("createMemorySpendCap", () => {
@@ -47,12 +46,11 @@ describe("createMemorySpendCap", () => {
     expect((await cap.reserve(worstCase)).exhausted).toBe(true);
 
     // The first request actually spent $1: settling frees the rest.
-    await first.reservation.record({ inputTokens: 0, outputTokens: 50_000 });
-    await first.reservation.settle();
+    await first.reservation.settle({ inputTokens: 0, outputTokens: 50_000 });
     expect((await cap.reserve(worstCase)).exhausted).toBe(false);
   });
 
-  it("holds a worst case's input at the cache-write price, the most recording can charge for it", async () => {
+  it("holds a worst case's input at the cache-write price, the most a settle can charge for it", async () => {
     const cap = createMemorySpendCap({ capUsd: 10, pricing });
     // 2M input tokens: $8 at the input price, $10 if all are written to the cache.
     const worstCase = { inputTokens: 2_000_000, outputTokens: 0 };
@@ -63,7 +61,7 @@ describe("createMemorySpendCap", () => {
     expect((await cap.reserve({ inputTokens: 0, outputTokens: 25_000 })).exhausted).toBe(true);
 
     // Spending it as cache writes uses up exactly what was held.
-    await status.reservation.record({ ...worstCase, cacheWriteInputTokens: 2_000_000 });
+    await status.reservation.settle({ ...worstCase, cacheWriteInputTokens: 2_000_000 });
     expect((await cap.reserve(none)).exhausted).toBe(true);
   });
 
@@ -71,8 +69,7 @@ describe("createMemorySpendCap", () => {
     const cap = createMemorySpendCap({ capUsd: 10, pricing });
     const status = await cap.reserve({ inputTokens: 0, outputTokens: 50_000 }); // $1
     if (status.exhausted) throw new Error("expected room");
-    await status.reservation.record({ inputTokens: 0, outputTokens: 500_000 }); // $10
-    await status.reservation.settle();
+    await status.reservation.settle({ inputTokens: 0, outputTokens: 500_000 }); // $10
     expect((await cap.reserve(none)).exhausted).toBe(true);
   });
 
@@ -127,61 +124,53 @@ describe("createStoreSpendCap", () => {
     const first = await cap.reserve(sixDollars);
     if (first.exhausted) throw new Error("expected room");
     expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
-    await first.reservation.record({ inputTokens: 0, outputTokens: 50_000 }); // $1
-    await first.reservation.settle();
-    await first.reservation.settle();
+    await first.reservation.settle({ inputTokens: 0, outputTokens: 50_000 }); // $1
+    // Only the first settle counts.
+    await first.reservation.settle({ inputTokens: 0, outputTokens: 450_000 });
     expect((await cap.reserve(sixDollars)).exhausted).toBe(false);
 
     const status = await cap.reserve(none);
     if (status.exhausted) throw new Error("expected room");
-    await status.reservation.record({ inputTokens: 0, outputTokens: 450_000 }); // $9
-    await status.reservation.settle();
+    await status.reservation.settle({ inputTokens: 0, outputTokens: 450_000 }); // $9
     // $1 + $9 spent, plus the $6 still held above.
     expect((await cap.reserve(none)).exhausted).toBe(true);
   });
 
-  it("drops a hold its instance never settled once it expires, but keeps what it spent", async () => {
+  it("charges a hold its instance never settled at its worst case once it expires", async () => {
     const clock = fakeClock("2026-11-02T12:00:00Z");
     const store = createMemoryDocumentStore();
     const options = { store, capUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now };
     const crashed = createStoreSpendCap(options);
     const status = await crashed.reserve(sixDollars);
     if (status.exhausted) throw new Error("expected room");
-    await status.reservation.record({ inputTokens: 0, outputTokens: 100_000 }); // $2
-    // The instance dies here: no settle. $2 spent + $4 still held.
+    // The instance dies here: what it spent was only in its memory.
 
     const survivor = createStoreSpendCap(options);
-    expect((await survivor.reserve(sixDollars)).exhausted).toBe(true);
     clock.set("2026-11-02T12:10:00Z");
-    // The hold is gone; the $2 spent stays: $6 fits in the $8 left, $9 doesn't.
-    expect((await survivor.reserve({ inputTokens: 0, outputTokens: 450_000 })).exhausted).toBe(true);
-    expect((await survivor.reserve(sixDollars)).exhausted).toBe(false);
+    // The $6 hold is now $6 spent: $4.50 doesn't fit, $4 does.
+    expect((await survivor.reserve({ inputTokens: 0, outputTokens: 225_000 })).exhausted).toBe(true);
+    expect((await survivor.reserve({ inputTokens: 0, outputTokens: 200_000 })).exhausted).toBe(false);
   });
 
-  it("keeps the hold when a usage can't be recorded, so the call it was for still counts", async () => {
-    const memory = createMemoryDocumentStore();
-    let down = false;
-    const store: DocumentStore = {
-      update: (path, change) =>
-        down ? Promise.reject(new Error("unreachable")) : memory.update(path, change),
-    };
-    const cap = createStoreSpendCap({ store, capUsd: 10, pricing });
-    const status = await cap.reserve(sixDollars);
-    if (status.exhausted) throw new Error("expected room");
+  it("charges only an overrun past the worst case when a request settles after its hold expired", async () => {
+    const clock = fakeClock("2026-11-02T12:00:00Z");
+    const store = createMemoryDocumentStore();
+    const cap = createStoreSpendCap({ store, capUsd: 10, pricing, reservationTtlMs: 600_000, now: clock.now });
+    const slow = await cap.reserve(sixDollars);
+    const slower = await cap.reserve({ inputTokens: 0, outputTokens: 50_000 }); // $1
+    if (slow.exhausted || slower.exhausted) throw new Error("expected room");
+    clock.set("2026-11-02T12:10:00Z");
+    // Charges both holds at their worst case: $7 spent, $4 doesn't fit.
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 200_000 })).exhausted).toBe(true);
 
-    down = true;
-    const error = vi.spyOn(console, "error").mockImplementation(() => {});
-    // Doesn't throw: the answer the visitor is reading goes on.
-    await status.reservation.record({ inputTokens: 0, outputTokens: 50_000 });
-    expect(error).toHaveBeenCalled();
-    error.mockRestore();
-    down = false;
-    await status.reservation.settle();
-    // The $6 stays held (until it expires) instead of the $1 going uncharged.
-    expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
+    await slow.reservation.settle({ inputTokens: 0, outputTokens: 50_000 }); // $1, under its $6
+    await slower.reservation.settle({ inputTokens: 0, outputTokens: 100_000 }); // $2: $1 over its $1
+    // $6 + $1 + the $1 over: $2 left.
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 100_000 })).exhausted).toBe(false);
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 5_000 })).exhausted).toBe(true);
   });
 
-  it("logs a settle the store can't take instead of throwing, and drops its hold once it expires", async () => {
+  it("logs a settle the store can't take instead of throwing, and charges its hold at its worst case once it expires", async () => {
     const clock = fakeClock("2026-11-04T10:00:00Z");
     const memory = createMemoryDocumentStore();
     let down = false;
@@ -201,14 +190,16 @@ describe("createStoreSpendCap", () => {
 
     down = true;
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
-    await expect(status.reservation.settle()).resolves.toBeUndefined();
+    await expect(status.reservation.settle({ inputTokens: 0, outputTokens: 50_000 })).resolves.toBeUndefined();
     expect(error).toHaveBeenCalled();
     error.mockRestore();
     down = false;
 
     expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
     clock.set("2026-11-04T10:16:00Z");
-    expect((await cap.reserve(sixDollars)).exhausted).toBe(false);
+    // The $6 held is charged, not released: $4 is left, not $10.
+    expect((await cap.reserve(sixDollars)).exhausted).toBe(true);
+    expect((await cap.reserve({ inputTokens: 0, outputTokens: 200_000 })).exhausted).toBe(false);
   });
 
   it("caps each UTC month separately", async () => {
