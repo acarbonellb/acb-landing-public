@@ -3,6 +3,7 @@ import { createChatAgent, type ChatRunEvent } from "./chat";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel, type ScriptedResponse } from "./fake-model";
 import { meteredChat } from "./metered-chat";
+import type { Usage } from "./model";
 import { createStoreSpendCap, spendCollection } from "./spend-cap";
 import { createToolset } from "./tools";
 import { createUsageRecorder } from "./usage";
@@ -35,10 +36,9 @@ async function run(script: ScriptedResponse[], { failSettle = false } = {}) {
   if (status.exhausted) throw new Error("spend cap reached");
   const reservation = failSettle
     ? {
-        record: status.reservation.record,
-        settle: () => {
+        settle: (usage: Usage) => {
           store.failSpend = true;
-          return status.reservation.settle();
+          return status.reservation.settle(usage);
         },
       }
     : status.reservation;

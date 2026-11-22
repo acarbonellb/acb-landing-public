@@ -169,7 +169,10 @@ describe("store failure events", () => {
 
   it("logs store_unavailable once when the store starts failing, and store_recovered once it works again", async () => {
     const store = flakyStore();
-    const url = await start(createGuardrails(store, loadConfig({})));
+    // More /stats calls than the default per-IP limit allows.
+    const url = await start(
+      createGuardrails(store, loadConfig({ RATE_LIMIT_STATS_PER_MINUTE: "10", RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "10" })),
+    );
     const stats = () => fetch(new URL(paths.stats, url));
 
     await stats();
@@ -191,7 +194,7 @@ describe("store failure events", () => {
     ]);
     expect(events.find((e) => e.event === "store_unavailable")).toMatchObject({
       severity: "ERROR",
-      collection: "rateLimits",
+      collection: "usage",
       error: "Error: store unreachable",
     });
     // The chat failed closed, and still logged its request line.
@@ -200,7 +203,7 @@ describe("store failure events", () => {
       expect.objectContaining({ requestId: closed.requestId, outcome: "http_503", modelCalls: 0 }),
     ]);
     // Each failure is still logged on its own, tagged with its request.
-    expect(events.filter((e) => e.event === "store_error").length).toBeGreaterThanOrEqual(4);
+    expect(events.filter((e) => e.event === "store_error").length).toBeGreaterThanOrEqual(3);
     expect(events.filter((e) => e.event === "store_error").every((e) => typeof e.requestId === "string")).toBe(true);
   });
 });

@@ -154,6 +154,21 @@ export async function recordCase(
   return { recording, result: withMoreRuns(first.result, more.map((r) => r.result.score)) };
 }
 
+/**
+ * Live, for the weekly check: runs the case once against `model` and scores it,
+ * keeping nothing of the run. A chat that ends in an error is returned, not
+ * thrown: its `response.error` says so.
+ */
+export async function liveCase(
+  evalCase: EvalCase,
+  model: ModelClient,
+  options: RunOptions = {},
+): Promise<CaseResult> {
+  // The recorder only times the calls here; its calls are dropped with it.
+  const timer = createRecordingModelClient(model);
+  return scoredResult(evalCase, await runChatCase(evalCase, timer, options), timer.calls);
+}
+
 const withMoreRuns = (result: CaseResult, scores: CaseResult["score"][]): CaseResult =>
   scores.length ? { ...result, moreRuns: scores } : result;
 

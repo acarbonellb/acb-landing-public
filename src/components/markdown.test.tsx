@@ -2,8 +2,8 @@ import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Markdown } from "./markdown";
 
-function renderMarkdown(text: string) {
-  return render(<Markdown text={text} />).container;
+function renderMarkdown(text: string, contacts: string[] = []) {
+  return render(<Markdown text={text} contacts={new Set(contacts)} />).container;
 }
 
 describe("Markdown", () => {
@@ -47,9 +47,10 @@ describe("Markdown", () => {
     expect(screen.queryByRole("emphasis")).toBeNull();
   });
 
-  it("renders links to the hosts the tools return in a new tab, and mailto links in place", () => {
+  it("renders links to the hosts the tools return in a new tab, and a contact mailto link in place", () => {
     renderMarkdown(
       "See [GitHub](https://github.com/acarbonellb), [**mail**](mailto:a@b.example), [LinkedIn](https://www.linkedin.com/in/someone/) or [the site](https://albertocarbonell.dev/#agent).",
+      ["a@b.example"],
     );
 
     for (const [name, href] of [
@@ -67,9 +68,10 @@ describe("Markdown", () => {
     expect(mail).not.toHaveAttribute("target");
   });
 
-  it("links a bare email address to mailto:, keeping the sentence's punctuation out", () => {
+  it("links a bare contact address to mailto:, keeping the sentence's punctuation out", () => {
     const root = renderMarkdown(
       "Email him at **ada.l+cv@mail.example.org**. Or `not@linked.example` in code.",
+      ["ada.l+cv@mail.example.org", "not@linked.example"],
     );
 
     const link = screen.getByRole("link", { name: "ada.l+cv@mail.example.org" });
@@ -79,8 +81,49 @@ describe("Markdown", () => {
     expect(root.textContent).toBe("Email him at ada.l+cv@mail.example.org. Or not@linked.example in code.");
   });
 
+  it("shows any other bare address as plain text", () => {
+    const root = renderMarkdown(
+      "Write to recruiting@attacker.example or ada@mail.example.",
+      ["ada@mail.example"],
+    );
+
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(screen.getByRole("link")).toHaveAttribute("href", "mailto:ada@mail.example");
+    expect(root.textContent).toBe("Write to recruiting@attacker.example or ada@mail.example.");
+  });
+
+  it("links no address when the answer has no contact addresses", () => {
+    const root = renderMarkdown("Write to ada@mail.example.");
+
+    expect(screen.queryAllByRole("link")).toEqual([]);
+    expect(root.textContent).toBe("Write to ada@mail.example.");
+  });
+
+  it("renders a mailto link to another address as its label, as plain text", () => {
+    const root = renderMarkdown(
+      "[Email Alberto](mailto:recruiting@attacker.example) or [**write**](mailto:other@mail.example).",
+      ["ada@mail.example"],
+    );
+
+    expect(screen.queryAllByRole("link")).toEqual([]);
+    expect(screen.getByRole("strong")).toHaveTextContent("write");
+    expect(root.textContent).toBe("Email Alberto or write.");
+  });
+
+  it("links a contact mailto link to its address only, dropping any added recipients", () => {
+    renderMarkdown(
+      "[Email him](mailto:ada@mail.example?cc=recruiting@attacker.example)",
+      ["ada@mail.example"],
+    );
+
+    expect(screen.getByRole("link", { name: "Email him" })).toHaveAttribute(
+      "href",
+      "mailto:ada@mail.example",
+    );
+  });
+
   it("does not link an address twice inside a mailto link's label", () => {
-    renderMarkdown("Write to [a@b.example](mailto:a@b.example).");
+    renderMarkdown("Write to [a@b.example](mailto:a@b.example).", ["a@b.example"]);
 
     expect(screen.getAllByRole("link")).toHaveLength(1);
     expect(screen.getByRole("link")).toHaveAttribute("href", "mailto:a@b.example");

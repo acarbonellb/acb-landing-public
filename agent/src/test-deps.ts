@@ -8,7 +8,9 @@ import type { AppDeps } from "./app";
 import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import { createGuardrails } from "./compose";
 import { loadConfig } from "./config";
+import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
+import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
 import { createToolset } from "./tools";
 
 /** The fixed key the tests' answers are signed with. */
@@ -36,6 +38,30 @@ export function signedConversation(messages: ChatMessage[]): ChatRequestMessage[
   );
 }
 
+/**
+ * A memory store that counts its writes: `writes` holds the path of every
+ * update that wrote a document (an update whose change writes nothing is a
+ * read), in the order they landed.
+ */
+export function countingStore() {
+  const inner = createMemoryDocumentStore();
+  const writes: string[] = [];
+  const store: DocumentStore = {
+    async update(path, change) {
+      // The last run of `change` is the one that landed.
+      let wrote = false;
+      const result = await inner.update(path, (doc) => {
+        const changed = change(doc);
+        wrote = changed.doc !== undefined;
+        return changed;
+      });
+      if (wrote) writes.push(path);
+      return result;
+    },
+  };
+  return { store, writes };
+}
+
 /** The configuration with no environment: the code defaults. */
 const defaults = loadConfig({});
 
@@ -54,6 +80,16 @@ export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop: mcpUnknownGoogleHop,
+    // Healthy: a memory store and the production secrets, as placeholders.
+    deepHealth: createDeepHealthCheck({
+      store: createMemoryDocumentStore(),
+      config: {
+        anthropicApiKey: "sk-test-placeholder",
+        contactEmail: "ada@example.com",
+        answerSigningKey: testSigningKey,
+      },
+    }),
+    deepHealthRateLimiter: createDeepHealthRateLimiter(),
     ...overrides,
   };
 }

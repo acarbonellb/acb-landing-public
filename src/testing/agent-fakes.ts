@@ -36,10 +36,14 @@ export function chatStream(...events: ChatEvent[]): FakeReply {
   return { status: 200, headers: { "Content-Type": "text/event-stream" }, body: sse(...events) };
 }
 
-/** A chat answer that names the contact address after a `get_contact` call. */
+/**
+ * A chat answer that names the contact address after a `get_contact` call
+ * returned it (the result is what lets the chat link the address).
+ */
 export function contactAnswer(email: string): FakeReply {
   return chatStream(
     { type: "tool_call", id: "t1", name: "get_contact", input: {} },
+    { type: "tool_result", id: "t1", name: "get_contact", isError: false, output: { email } },
     { type: "text", delta: `You can email Alberto at ${email}.` },
     done(),
   );

@@ -18,6 +18,12 @@
 //     or missing recordings, leaks, a history that doesn't match the
 //     recordings, or a report or summary that differs from the committed one.
 //     Never appends history.
+//   tsx scripts/eval.ts check [--paid] [--issue]
+//     The weekly live check: runs every case once against the configured
+//     model, scores it and compares the pass rate and leaks with the set's
+//     latest history entry. Writes no recordings, history, report or summary.
+//     With --issue, opens the check's issue or comments on the open one when it
+//     raises (through `gh`). Exits non-zero when a case ended in an error.
 import { execFileSync } from "node:child_process";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -34,10 +40,12 @@ import {
   type LiveRun,
 } from "../src/evals/history";
 import { withResults } from "../src/evals/doc-results";
+import { liveCheck, liveCheckIssue, liveCheckTitle, renderLiveCheck } from "../src/evals/live-check";
 import { liveRunConfig } from "../src/evals/live-run";
 import { runScores } from "../src/evals/metrics";
 import {
   evaluate,
+  liveCase,
   recordCase,
   replaySets,
   rescore,
@@ -59,6 +67,7 @@ const { positionals, values } = parseArgs({
   allowPositionals: true,
   options: {
     check: { type: "boolean", default: false },
+    issue: { type: "boolean", default: false },
     paid: { type: "boolean", default: false },
     rerun: { type: "boolean", default: false },
     only: { type: "string" },
@@ -137,29 +146,36 @@ async function replay(check: boolean): Promise<number> {
   return problems.length ? 1 : 0;
 }
 
-async function record(): Promise<number> {
+/** The live settings, or `undefined` after printing why they can't be used. */
+function paidConfig() {
   let config;
   try {
     // The agent's own config schema: the same settings, rejected the same way.
     config = liveRunConfig(process.env, { provider: values.provider });
   } catch (error) {
     console.error((error as Error).message);
-    return 1;
+    return undefined;
   }
-  const { baseURL, local, provider, model, effort, apiKey } = config;
+  if (!config.local && !values.paid) {
+    console.error(
+      `${config.baseURL} is a paid provider. Only run against it with the owner's go-ahead, then pass --paid.`,
+    );
+    return undefined;
+  }
+  if (!config.apiKey) {
+    console.error("ANTHROPIC_API_KEY is not set.");
+    return undefined;
+  }
+  return { ...config, apiKey: config.apiKey };
+}
+
+async function record(): Promise<number> {
+  const config = paidConfig();
+  if (!config) return 1;
+  const { baseURL, provider, model, effort, apiKey } = config;
   const runs = Number(values.runs);
   if (!Number.isInteger(runs) || runs < 1) {
     console.error(`--runs must be a whole number of at least 1, not "${values.runs}".`);
-    return 1;
-  }
-  if (!local && !values.paid) {
-    console.error(
-      `${baseURL} is a paid provider. Only record against it with the owner's go-ahead, then pass --paid.`,
-    );
-    return 1;
-  }
-  if (!apiKey) {
-    console.error("ANTHROPIC_API_KEY is not set.");
     return 1;
   }
   // Before any model call: a refused re-run costs nothing.
@@ -194,6 +210,61 @@ async function record(): Promise<number> {
   if (failed < selected.length) await appendToHistory({ provider, model }, run, guard.kind);
   const status = await replay(false);
   return failed ? 1 : status;
+}
+
+/**
+ * The weekly live check (see `liveCheck`): one run per case, nothing written.
+ * The log and the issue carry case names, scorer reasons and rates only, never
+ * an answer.
+ */
+async function check(): Promise<number> {
+  const config = paidConfig();
+  if (!config) return 1;
+  const { baseURL, provider, model, effort, apiKey } = config;
+  const client = createAnthropicModelClient({ apiKey, model, effort, baseURL });
+  console.log(`Live check: ${cases.length} cases × 1 run with ${setLabel({ provider, model })} (effort ${effort})`);
+  const results = [];
+  for (const evalCase of cases) {
+    const result = await liveCase(evalCase, client);
+    const verdict = result.response.error ? `error ${result.response.error}` : result.score.pass ? "pass" : "fail";
+    console.log(`  ${caseName(evalCase)}: ${verdict}`);
+    results.push(result);
+  }
+  const { GITHUB_SERVER_URL: server, GITHUB_REPOSITORY: repo, GITHUB_RUN_ID: runId } = process.env;
+  const url = server && repo && runId ? `${server}/${repo}/actions/runs/${runId}` : undefined;
+  const outcome = liveCheck({
+    set: { provider, model },
+    results,
+    history: parseHistory(await readHistory()),
+    run: { ...liveRun(), url },
+  });
+  console.log(`\n${renderLiveCheck(outcome)}`);
+  if (values.issue) {
+    const title = liveCheckTitle(outcome);
+    const open = JSON.parse(
+      gh(["issue", "list", "--state", "open", "--search", `in:title "${title}"`, "--json", "number,title"]),
+    ) as { number: number; title: string }[];
+    const issue = liveCheckIssue(outcome, open.find((i) => i.title === title)?.number);
+    if (issue.action === "open") {
+      gh(["issue", "create", "--title", issue.title, "--body-file", "-"], issue.body);
+      console.log(`Opened the issue "${title}".`);
+    } else if (issue.action === "comment") {
+      gh(["issue", "comment", String(issue.issue), "--body-file", "-"], issue.body);
+      console.log(`Commented on issue #${issue.issue}.`);
+    } else {
+      console.log("No issue: nothing to raise.");
+    }
+  }
+  if (outcome.errored) {
+    console.error(`${outcome.errored} cases ended in an error: the check is incomplete.`);
+    return 1;
+  }
+  return 0;
+}
+
+/** Runs `gh` with `input` on stdin; its stdout. */
+function gh(args: string[], input?: string): string {
+  return execFileSync("gh", args, { encoding: "utf8", input, stdio: ["pipe", "pipe", "inherit"] });
 }
 
 /** Today (UTC) and the commit the run starts from. */
@@ -238,12 +309,15 @@ async function rescoreRecordings(): Promise<number> {
 
 const modes = {
   record,
+  check,
   rescore: rescoreRecordings,
   replay: () => replay(values.check),
 } as const;
 const mode = positionals[0];
-if (mode !== "record" && mode !== "rescore" && mode !== "replay") {
-  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] [--runs k] | rescore [--note text] | replay [--check]");
+if (mode !== "record" && mode !== "check" && mode !== "rescore" && mode !== "replay") {
+  console.error(
+    "Usage: eval.ts record [--only ids] [--paid] [--rerun] [--runs k] | check [--paid] [--issue] | rescore [--note text] | replay [--check]",
+  );
   process.exit(2);
 }
 process.exitCode = await modes[mode]();

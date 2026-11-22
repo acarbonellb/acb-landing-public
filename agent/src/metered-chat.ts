@@ -1,7 +1,8 @@
-// A chat run with its accounting: every model call's usage is charged to the
-// request's spend reservation, and once the run ends, however it ends, the
-// reservation is settled and the request is recorded for `/stats`. The chat
-// events pass through unchanged.
+// A chat run with its accounting: the usage of every model call is added up
+// in memory, and once the run ends, however it ends, the request's spend
+// reservation is settled with the total and the request is recorded for
+// `/stats`. So no store write happens between model calls. The chat events
+// pass through unchanged.
 import type { TokenUsage } from "../../src/shared/chat-contract";
 import type { ChatAgent, ChatMessage, ChatRunEvent } from "./chat";
 import { addUsage } from "./pricing";
@@ -20,7 +21,7 @@ export type MeteredChatOptions = {
 };
 
 /**
- * Runs the chat and yields its events. Recording and settling are best
+ * Runs the chat and yields its events. Settling and recording are best
  * effort (they never throw), so a failure in one doesn't skip the other.
  */
 export async function* meteredChat(
@@ -37,7 +38,6 @@ export async function* meteredChat(
   try {
     for await (const event of agent.run(messages, { signal })) {
       if (event.type === "usage") {
-        await reservation.record(event);
         addUsage(spent, event);
         modelCalls = Math.max(modelCalls, event.iteration);
       }
@@ -47,7 +47,7 @@ export async function* meteredChat(
       yield event;
     }
   } finally {
-    await reservation.settle();
+    await reservation.settle(spent);
     await usage.recordChat({ outcome, usage: spent, totalMs: elapsed(), firstTextMs, modelCalls });
   }
 }

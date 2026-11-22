@@ -4,8 +4,9 @@ import { describe, expect, it } from "vitest";
 
 // The deploy pipeline ships what it tested, with nothing that can move under
 // it between runs: actions by commit SHA, firebase-tools and every one of
-// its dependencies by version and integrity, the agent's base image by version
-// and digest, and no deploy job cancelled halfway.
+// its dependencies by version and integrity, the agent's base image and the
+// Firestore emulator the tests run against by version and digest, and no
+// deploy job cancelled halfway.
 const root = resolve(__dirname, "..");
 const read = (path: string) => readFileSync(join(root, path), "utf8");
 const workflowsDir = ".github/workflows";
@@ -30,6 +31,25 @@ describe("the deploy pipeline", () => {
   it("builds the agent image on a base pinned by version and digest", () => {
     const from = read("agent/Dockerfile").match(/^FROM\s+(\S+)/m)?.[1];
     expect(from).toMatch(/^node:\d+\.\d+\.\d+-slim@sha256:[0-9a-f]{64}$/);
+  });
+
+  it("runs the agent tests against a Firestore emulator image pinned by version and digest", () => {
+    const ci = read(`${workflowsDir}/deploy.yml`);
+    const emulator = ci.match(/^\s+firestore-emulator:\n\s+image:\s*(\S+)/m)?.[1];
+    expect(emulator).toMatch(
+      /^gcr\.io\/google\.com\/cloudsdktool\/google-cloud-cli:\d+\.\d+\.\d+-emulators@sha256:[0-9a-f]{64}$/,
+    );
+    // The agent tests point at it, so the contract suite's emulator run isn't skipped.
+    expect(ci).toMatch(/- run: pnpm agent:test\n\s+env:\n\s+FIRESTORE_EMULATOR_HOST: localhost:\d+/);
+    // The local instructions run the same image.
+    expect(read("docs/development.md")).toContain(emulator);
+  });
+
+  it("pins every container image in the workflows by digest", () => {
+    const images = workflows.flatMap(({ path, text }) =>
+      [...text.matchAll(/^\s*image:\s*(\S+)/gm)].map((m) => `${path}: ${m[1]}`),
+    );
+    expect(images.filter((i) => !/@sha256:[0-9a-f]{64}$/.test(i))).toEqual([]);
   });
 
   it("deploys with a firebase-tools locked by version and integrity, dependencies included", () => {

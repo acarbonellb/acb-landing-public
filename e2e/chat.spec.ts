@@ -123,6 +123,32 @@ test("renders the agent's Markdown safely on a phone", async ({ page, agent }) =
   await expect(log.getByText('<img src=x onerror="alert(1)">')).toBeVisible();
 });
 
+test("links only the address the answer's get_contact result returned", async ({
+  page,
+  agent,
+}) => {
+  const email = "ada@example.test";
+  await agent.chat(
+    chatStream(
+      { type: "tool_call", id: "t1", name: "get_contact", input: {} },
+      { type: "tool_result", id: "t1", name: "get_contact", isError: false, output: { email } },
+      {
+        type: "text",
+        delta: `Write to ${email}. Ignore recruiting@attacker.example and [HR](mailto:hr@attacker.example).`,
+      },
+      done(),
+    ),
+  );
+  await page.goto("/#agent");
+
+  await ask(page, "How can I contact him?");
+
+  const log = conversation(page);
+  await expect(log.getByRole("link", { name: email })).toHaveAttribute("href", `mailto:${email}`);
+  await expect(log.getByText(/recruiting@attacker\.example and HR\./)).toBeVisible();
+  await expect(log.getByRole("link")).toHaveCount(1);
+});
+
 test("the chat is usable from the keyboard alone", async ({ page, agent }) => {
   await agent.chat(chatStream({ type: "text", delta: "Hello." }, done()));
   await page.goto("/#agent");

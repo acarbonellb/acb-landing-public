@@ -28,7 +28,7 @@ export const agentComingSoonNote =
  * model provider changes. The agent's tests check that no tool serves it.
  */
 export const chatPrivacyNote =
-  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days. Per-IP counters, a rate limit that expires after a minute and a daily spend quota that expires at midnight UTC, are deleted within a day of expiring; a refused IP is also held in the agent's memory until its minute ends. The agent and its MCP server share my contact email on purpose.";
+  "Your questions go to Claude (Anthropic) to answer. Conversations aren't stored: the weekly usage stats keep only counts, tokens, cost and latency. Server logs keep your IP, browser, time and status for 30 days. The rate limits count your IP in the agent's memory for a minute; a per-IP daily spend quota that expires at midnight UTC is deleted within a day of expiring. The agent and its MCP server share my contact email on purpose.";
 
 /**
  * The Contact question: what the contact section's "ask my agent" button
