@@ -6,9 +6,11 @@
 // A static export can't use nonces (no request at render time), so every
 // inline script the built pages hold is allowed by its hash: the theme script
 // in layout.tsx and the RSC payload scripts Next writes, whose bodies change
-// with every build. `connect-src` is the site itself (RSC payloads) and the
-// agent's origin (chat, MCP, stats: ADR 0002).
+// with every build. `connect-src` is the site itself (RSC payloads), the
+// agent's origin (chat, MCP, stats: ADR 0002) and, in a build with a PostHog
+// key, PostHog's two EU origins (docs/analytics.md).
 import { createHash } from "node:crypto";
+import { POSTHOG_API_HOST, POSTHOG_ASSETS_HOST } from "./posthog-hosts.ts";
 
 type Header = { key: string; value: string };
 type HeaderRule = { source: string; headers: Header[] };
@@ -32,14 +34,18 @@ const hash = (body: string) =>
 export function contentSecurityPolicy({
   pages,
   agentUrl,
+  posthogKey,
 }: {
   /** The built HTML of every page. */
   pages: string[];
   /** NEXT_PUBLIC_AGENT_URL as the build saw it; none means no agent. */
   agentUrl: string | undefined;
+  /** NEXT_PUBLIC_POSTHOG_KEY as the build saw it; none means no analytics. */
+  posthogKey?: string;
 }): string {
   const scripts = [...new Set(pages.flatMap(inlineScripts).map(hash))];
   const agent = agentUrl ? [new URL(agentUrl).origin] : [];
+  const analytics = posthogKey ? [POSTHOG_API_HOST, POSTHOG_ASSETS_HOST] : [];
   return [
     "default-src 'self'",
     ["script-src 'self'", ...scripts].join(" "),
@@ -48,7 +54,7 @@ export function contentSecurityPolicy({
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self'",
     "font-src 'self'",
-    ["connect-src 'self'", ...agent].join(" "),
+    ["connect-src 'self'", ...agent, ...analytics].join(" "),
     "object-src 'none'",
     "base-uri 'none'",
     "form-action 'self'",

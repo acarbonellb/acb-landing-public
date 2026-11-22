@@ -1,5 +1,5 @@
 // Writes out/firebase.json after `next build`: the committed firebase.json with
-// the CSP for this build's inline scripts and agent URL. The deploy uses
+// the CSP for this build's inline scripts, agent URL and PostHog key. The deploy uses
 // it (`firebase deploy --config out/firebase.json`), and the browser tests
 // serve the page with its headers (e2e/fixtures.ts). Run by `pnpm build`,
 // whose flag keeps Node quiet about parsing the imported .ts as an ES module.
@@ -18,6 +18,7 @@ const committed = JSON.parse(readFileSync("firebase.json", "utf8"));
 const config = hostingConfig(committed, {
   pages,
   agentUrl: process.env.NEXT_PUBLIC_AGENT_URL || undefined,
+  posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY || undefined,
 });
 writeFileSync(join(OUT, "firebase.json"), `${JSON.stringify(config, null, 2)}\n`);
 console.log(`Wrote ${OUT}/firebase.json (CSP for ${pages.length} pages).`);

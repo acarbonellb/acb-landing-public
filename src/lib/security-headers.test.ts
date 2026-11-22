@@ -62,6 +62,45 @@ describe("hostingConfig", () => {
     ]);
   });
 
+  it("lets a build with a PostHog key connect to PostHog's EU ingestion and assets hosts, and nothing else changes", () => {
+    const build = { pages: [page], agentUrl: "https://agent.example.dev/" };
+    const withKey = directives(
+      pageHeaders(hostingConfig(committed, { ...build, posthogKey: "phc_test" }))["Content-Security-Policy"],
+    );
+    const noKey = directives(pageHeaders(hostingConfig(committed, build))["Content-Security-Policy"]);
+
+    expect(withKey["connect-src"]).toEqual([
+      "'self'",
+      "https://agent.example.dev",
+      "https://eu.i.posthog.com",
+      "https://eu-assets.i.posthog.com",
+    ]);
+    expect({ ...withKey, "connect-src": undefined }).toEqual({ ...noKey, "connect-src": undefined });
+    expect(withKey["script-src"]).toEqual(["'self'", ALERT, NEXT_INIT]);
+  });
+
+  it("gives a build without a PostHog key today's policy, byte for byte", () => {
+    const build = { pages: [page], agentUrl: "https://agent.example.dev/" };
+    const csp = (posthogKey?: string) =>
+      pageHeaders(hostingConfig(committed, { ...build, posthogKey }))["Content-Security-Policy"];
+
+    expect(csp(undefined)).toBe(
+      [
+        "default-src 'self'",
+        `script-src 'self' ${ALERT} ${NEXT_INIT}`,
+        "style-src 'self' 'unsafe-inline'",
+        "img-src 'self'",
+        "font-src 'self'",
+        "connect-src 'self' https://agent.example.dev",
+        "object-src 'none'",
+        "base-uri 'none'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+      ].join("; "),
+    );
+    expect(csp("")).toBe(csp(undefined));
+  });
+
   it("forbids framing, plugins and other origins, and keeps the hardening headers", () => {
     const headers = pageHeaders(hostingConfig(committed, { pages: [page], agentUrl: undefined }));
 
