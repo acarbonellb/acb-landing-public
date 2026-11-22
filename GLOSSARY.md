@@ -166,6 +166,10 @@ _Avoid_: eval badge, score
 The one-line summary of the agent's recent usage under the chat (questions answered, latency, errors, cost), read from the agent when the page loads.
 _Avoid_: stats bar, metrics, dashboard
 
+**Site analytics**:
+What PostHog measures on the page: visits, where they come from, scroll depth and clicks, for anonymous visitors. On only in a build with a PostHog project key. Not the agent's usage stats, which stay the exact figures for the agent, nor the usage line.
+_Avoid_: tracking, telemetry, stats, metrics
+
 **Contact fallback**:
 How the page answers the contact question when the chat can't: with the address from the contact tool over MCP, or else a LinkedIn link.
 _Avoid_: backup, retry, contact form

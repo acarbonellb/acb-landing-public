@@ -65,6 +65,9 @@ jobs:
           # refuses every request off the local server. Without AGENT_URL
           # nothing deploys and the tests use the local default.
           NEXT_PUBLIC_AGENT_URL: ${{ vars.AGENT_URL || 'http://localhost:8080' }}
+          # The PostHog project key, public by design (docs/analytics.md). Empty
+          # when unset: the build then has no analytics.
+          NEXT_PUBLIC_POSTHOG_KEY: ${{ vars.POSTHOG_KEY }}
 
       - name: Hash the artifacts
         id: hash
