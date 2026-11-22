@@ -138,6 +138,9 @@ const result = await esbuild.build({
   define: {
     ...common.define,
     "process.env.NEXT_PUBLIC_AGENT_URL": "undefined",
+    // No site analytics in the artifact: nothing is reported from it. The
+    // cookie notice's card turns the notice on by hand (entry.tsx).
+    "process.env.NEXT_PUBLIC_POSTHOG_KEY": "undefined",
     __EVAL_SUMMARY__: JSON.stringify(readFileSync(join(repo, evalSummary), "utf8")),
   },
   banner: { js: header },

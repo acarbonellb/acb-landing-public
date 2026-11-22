@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { expect, type Page, type Route, test as base } from "@playwright/test";
+import { COOKIE_NOTICE_DISMISSED, COOKIE_NOTICE_STORAGE_KEY } from "../src/lib/cookie-notice";
 import { POSTHOG_API_HOST, POSTHOG_ASSETS_HOST } from "../src/lib/posthog-hosts";
 import type { FakeReply } from "../src/testing/agent-fakes";
 
@@ -176,7 +177,40 @@ export function sdkChunks(): string[] {
     .map((file) => `/_next/static/chunks/${file}`);
 }
 
-export const test = base.extend<{ agent: AgentStub; posthog: PostHogStub; localOnly: void }>({
+/** The options a spec sets with `test.use`. */
+export type Options = {
+  /**
+   * Whether the `posthog` stub answers PostHog's hosts (the default, so no
+   * test logs a refused request) or leaves them refused like every other
+   * origin, as a tracker blocker would (offline.spec.ts).
+   */
+  postHog: "answered" | "refused";
+  /**
+   * Whether the cookie notice shows on a first visit, or the browser already
+   * dismissed it (the default): in a build with a key the notice is fixed
+   * over the bottom of the page, where it could cover what a test taps.
+   * cookie-notice.spec.ts asks for "shown".
+   */
+  cookieNotice: "dismissed" | "shown";
+};
+
+export const test = base.extend<
+  Options & { agent: AgentStub; posthog: PostHogStub; localOnly: void; noticeState: void }
+>({
+  postHog: ["answered", { option: true }],
+  cookieNotice: ["dismissed", { option: true }],
+  noticeState: [
+    async ({ context, cookieNotice }, provide) => {
+      if (cookieNotice === "dismissed") {
+        await context.addInitScript(
+          ([key, value]) => localStorage.setItem(key, value),
+          [COOKIE_NOTICE_STORAGE_KEY, COOKIE_NOTICE_DISMISSED] as const,
+        );
+      }
+      await provide();
+    },
+    { auto: true },
+  ],
   // CI builds the page with the production agent URL (it tests the build it
   // deploys), so every request off the local server is refused: an endpoint a
   // test doesn't stub fails as if the agent were down, and never reaches it.
@@ -225,9 +259,14 @@ export const test = base.extend<{ agent: AgentStub; posthog: PostHogStub; localO
       stats: (replies, options) => stub(page, "stats", replies, options),
     });
   },
-  posthog: async ({ page }, provide) => {
-    await provide(await stubPostHog(page));
-  },
+  // Automatic: in a build with a key every page calls PostHog, so every test
+  // has it answered unless it asks for "refused" (then `events` stays empty).
+  posthog: [
+    async ({ page, postHog }, provide) => {
+      await provide(postHog === "answered" ? await stubPostHog(page) : { events: [], bodies: [] });
+    },
+    { auto: true },
+  ],
 });
 
 export { expect };

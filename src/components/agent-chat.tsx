@@ -15,15 +15,14 @@ export function AgentChat({
   chatUrl,
   mcpUrl,
   fetch,
-  analytics = Boolean(posthogKey),
 }: {
   chatUrl: string;
   /** Shown to visitors for their own MCP clients. */
   mcpUrl: string;
   fetch?: typeof globalThis.fetch;
-  /** Whether this build has site analytics, which the privacy note then mentions. */
-  analytics?: boolean;
 }) {
+  // A build with site analytics says so in the privacy note.
+  const analytics = Boolean(posthogKey());
   const { turns, notice, busy, ask } = useAgentChat({ chatUrl, fetch });
   const [draft, setDraft] = useState("");
   const logRef = useRef<HTMLDivElement>(null);

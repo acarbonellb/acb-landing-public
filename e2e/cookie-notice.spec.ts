@@ -8,7 +8,9 @@ import { analyticsBuild, expect, horizontalOverflow, test } from "./fixtures";
 
 // The cookie notice (docs/analytics.md#cookie-notice). Like analytics.spec.ts,
 // these check whichever build is under test. Runs on Chromium and on the
-// iPhone (WebKit) profile, the phone project.
+// iPhone (WebKit) profile, the phone project. Every other spec starts with
+// the notice already dismissed (e2e/fixtures.ts); these see a first visit.
+test.use({ cookieNotice: "shown" });
 
 const notice = (page: Page) =>
   page.getByRole("region", { name: "Cookie notice" });
@@ -28,7 +30,9 @@ test.describe("in a build with a PostHog key", () => {
     expect(Math.round(box.y + box.height)).toBe(viewport.height);
     expect(box.x + box.width).toBeLessThanOrEqual(viewport.width);
     // One line: no taller than one line of its text plus its padding.
-    const lineHeight = await notice(page).locator("p").evaluate((p) => p.getBoundingClientRect().height);
+    const lineHeight = await notice(page)
+      .getByText(cookieNoticeText)
+      .evaluate((line) => line.getBoundingClientRect().height);
     expect(box.height).toBeLessThan(lineHeight * 2);
   });
 

@@ -4,7 +4,9 @@ import { analyticsBuild, expect, test } from "./fixtures";
 // CI tests the build it deploys, so the page under test is built with the
 // production agent URL and, once its variable is set, the PostHog key.
 // Nothing a test leaves unstubbed may reach either: the page only ever talks
-// to the local server.
+// to the local server. PostHog stays unanswered here, as for a tracker
+// blocker: the `posthog` stub otherwise answers it in every test.
+test.use({ postHog: "refused" });
 
 test("never reaches a server other than the site, even an endpoint no test stubbed", async ({
   page,

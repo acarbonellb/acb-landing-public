@@ -21,10 +21,10 @@ function dismissedBefore(): boolean {
  * the client: the server snapshot counts as dismissed, so the static HTML and
  * hydration render nothing.
  */
-export function CookieNotice({ projectKey = posthogKey }: { projectKey?: string }) {
-  const seen = useSyncExternalStore(noSubscription, dismissedBefore, () => true);
+export function CookieNotice() {
+  const dismissedEarlier = useSyncExternalStore(noSubscription, dismissedBefore, () => true);
   const [dismissed, setDismissed] = useState(false);
-  if (!projectKey || seen || dismissed) return null;
+  if (!posthogKey() || dismissedEarlier || dismissed) return null;
 
   function dismiss() {
     setDismissed(true);

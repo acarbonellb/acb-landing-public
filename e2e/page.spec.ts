@@ -1,10 +1,9 @@
 import { json } from "../src/testing/agent-fakes";
 import { expect, test } from "./fixtures";
 
-test("loads without console errors", async ({ page, agent, posthog }) => {
-  // In a build with a PostHog key the page calls PostHog too: the stub
-  // answers for it, as `agent` does below.
-  void posthog;
+test("loads without console errors", async ({ page, agent }) => {
+  // In a build with a PostHog key the page calls PostHog too: the automatic
+  // `posthog` stub answers for it, as `agent` does below.
   const errors: string[] = [];
   page.on("console", (msg) => {
     if (msg.type() === "error") errors.push(msg.text());

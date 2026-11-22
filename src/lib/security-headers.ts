@@ -41,7 +41,7 @@ export function contentSecurityPolicy({
   /** NEXT_PUBLIC_AGENT_URL as the build saw it; none means no agent. */
   agentUrl: string | undefined;
   /** NEXT_PUBLIC_POSTHOG_KEY as the build saw it; none means no analytics. */
-  posthogKey?: string;
+  posthogKey: string | undefined;
 }): string {
   const scripts = [...new Set(pages.flatMap(inlineScripts).map(hash))];
   const agent = agentUrl ? [new URL(agentUrl).origin] : [];

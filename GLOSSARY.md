@@ -167,7 +167,7 @@ The one-line summary of the agent's recent usage under the chat (questions answe
 _Avoid_: stats bar, metrics, dashboard
 
 **Site analytics**:
-What PostHog measures on the page: visits, where they come from, scroll depth and clicks, for anonymous visitors. On only in a build with a PostHog project key. Not the agent's usage stats, which stay the exact figures for the agent, nor the usage line.
+What PostHog measures on the page: visits, where they come from, scroll depth and clicks, for visitors it never identifies. On only in a build with a PostHog project key. Not the agent's usage stats, which stay the exact figures for the agent, nor the usage line.
 _Avoid_: tracking, telemetry, stats, metrics
 
 **Cookie notice**:

@@ -2,7 +2,6 @@
 // chat events fold into a turn, which notice the conversation shows, and the
 // history sent with the next question. The `useAgentChat` hook holds the list
 // and runs the requests; the views only render it.
-import type { QuestionOutcome } from "./analytics";
 import type { ChatClientEvent, ChatErrorKind } from "./chat-client";
 import type { ContactFallback } from "./contact-fallback";
 import {
@@ -104,21 +103,6 @@ export function endTurn(turn: Turn): Turn {
   return turn.status.kind === "streaming"
     ? { ...turn, status: { kind: "failed" } }
     : turn;
-}
-
-/** How an ended turn ended, for site analytics: a failure with no notice was aborted. */
-export function outcomeOf(turn: Turn): QuestionOutcome {
-  const { status } = turn;
-  switch (status.kind) {
-    case "answered":
-      return status.stopReason;
-    case "fallback":
-      return "contact_fallback";
-    case "failed":
-      return status.notice?.kind ?? "abandoned";
-    case "streaming":
-      return "abandoned";
-  }
 }
 
 /** The notice of the last question, when it failed with one. */
