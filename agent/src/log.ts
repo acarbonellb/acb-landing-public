@@ -52,7 +52,6 @@ export function logEvent(
 
 /** The store operations a `store_error` line names (docs/logs-and-alerts.md). */
 export type StoreOperation =
-  | "rate_limit"
   | "usage_record"
   | "usage_stats"
   | "spend_record"

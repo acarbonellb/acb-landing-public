@@ -191,7 +191,7 @@ describe("store failure events", () => {
     ]);
     expect(events.find((e) => e.event === "store_unavailable")).toMatchObject({
       severity: "ERROR",
-      collection: "rateLimits",
+      collection: "usage",
       error: "Error: store unreachable",
     });
     // The chat failed closed, and still logged its request line.
@@ -200,7 +200,7 @@ describe("store failure events", () => {
       expect.objectContaining({ requestId: closed.requestId, outcome: "http_503", modelCalls: 0 }),
     ]);
     // Each failure is still logged on its own, tagged with its request.
-    expect(events.filter((e) => e.event === "store_error").length).toBeGreaterThanOrEqual(4);
+    expect(events.filter((e) => e.event === "store_error").length).toBeGreaterThanOrEqual(3);
     expect(events.filter((e) => e.event === "store_error").every((e) => typeof e.requestId === "string")).toBe(true);
   });
 });

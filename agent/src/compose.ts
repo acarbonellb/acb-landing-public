@@ -13,13 +13,7 @@ import { createFirestoreDocumentStore } from "./firestore";
 import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
 import type { ModelClient } from "./model";
 import { createProviderLimitWatch } from "./provider-limit";
-import {
-  createMemoryRateLimiter,
-  createStoreRateLimiter,
-  withGlobalCeiling,
-  withRefusalCache,
-  type RateLimiter,
-} from "./rate-limit";
+import { createMemoryRateLimiter, withGlobalCeiling } from "./rate-limit";
 import { createStoreSpendCap } from "./spend-cap";
 import { createToolset, siteContent } from "./tools";
 import { createUsageRecorder } from "./usage";
@@ -42,8 +36,11 @@ function createModelClient(config: Config): ModelClient | null {
 }
 
 /**
- * The rate limits, daily quota, spend cap and usage stats: all in the shared store when
- * one is configured, else all in memory, per instance.
+ * The rate limits, daily quota, spend cap and usage stats. The rate limits
+ * (per-key windows and global ceilings) are always in this process: the
+ * deploy runs one instance (ADR 0003, amendment). The daily quota, spend cap
+ * and usage stats are in the shared store when one is configured, else in
+ * memory too.
  */
 export function createGuardrails(
   sharedStore: DocumentStore | null,
@@ -54,32 +51,26 @@ export function createGuardrails(
 > {
   const { pricing } = guardrails;
   const shared = sharedStore && withStoreHealthEvents(sharedStore);
-  // Without a shared store every guardrail keeps its documents in this
-  // process: the same code over a memory store.
+  // Without a shared store every durable guardrail keeps its documents in
+  // this process: the same code over a memory store.
   const store = shared ?? createMemoryDocumentStore();
-  // One window of `limit` requests per minute, the only part that differs.
-  // Over the shared store, each window's refusals are also remembered
-  // locally, so a flood that is already refused costs no store reads; the
-  // ceiling's window is `rateLimits/<name>:*`.
-  const window: (name: string, limit: number) => RateLimiter = shared
-    ? (name, limit) =>
-        withRefusalCache(createStoreRateLimiter({ store: shared, name, limit, windowMs: minute }))
-    : (_name, limit) => createMemoryRateLimiter({ limit, windowMs: minute });
-  const rateLimiter = (name: string, perKey: number, global: number) =>
-    withGlobalCeiling(window(name, perKey), window(name, global));
+  // A per-key window of `perKey` requests a minute under a global ceiling of
+  // `global`, both in memory.
+  const rateLimiter = (perKey: number, global: number) =>
+    withGlobalCeiling(
+      createMemoryRateLimiter({ limit: perKey, windowMs: minute }),
+      createMemoryRateLimiter({ limit: global, windowMs: minute }),
+    );
   return {
     chatRateLimiter: rateLimiter(
-      "chat",
       guardrails.chatRequestsPerMinute,
       guardrails.chatGlobalRequestsPerMinute,
     ),
     mcpRateLimiter: rateLimiter(
-      "mcp",
       guardrails.mcpRequestsPerMinute,
       guardrails.mcpGlobalRequestsPerMinute,
     ),
     statsRateLimiter: rateLimiter(
-      "stats",
       guardrails.statsRequestsPerMinute,
       guardrails.statsGlobalRequestsPerMinute,
     ),

@@ -208,6 +208,9 @@ jobs:
       # needs in production to start.
       # `^@^` makes `@` the separator, as ALLOWED_ORIGINS may hold commas.
       # `--no-traffic` keeps every request on the serving revision.
+      # `--max-instances 1` is load-bearing: the rate limits and global
+      # ceilings are in memory, correct only on one instance (ADR 0003,
+      # amendment; repo-hygiene/single-instance.test.ts).
       - name: Deploy to Cloud Run with no traffic
         id: deploy
         env:
