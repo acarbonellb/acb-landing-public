@@ -6,13 +6,14 @@
 // request is folded into it once, when it ends: its outcome, tokens, estimated
 // cost (list prices, `pricing.ts`) and latency as fixed histogram buckets, so
 // percentiles can be read back without keeping any sample. MCP requests are
-// only counted, and the request doesn't wait for that write. Nothing about
-// the message content or the client is kept.
+// only counted. Nothing about the message content or the client is kept.
 //
-// Refusals (a chat request's `http_429` or `http_503`, what a flood is made
-// of) and the hop-drift count are kept in memory and folded into the
-// document in batches: on a timer, before `/stats` reads it, and on shutdown
-// (`close`). So a flood that is already refused costs one write per batch,
+// MCP requests, refusals (a chat request's `http_429` or `http_503`, what a
+// flood is made of) and the hop-drift count are kept in memory and folded
+// into the document in batches, always inside a request: by the first one
+// that records usage once a batch is due (`flushEveryMs` after the last),
+// before `/stats` reads it, and on shutdown (`close`). No timer: Cloud Run
+// throttles the CPU outside requests. So a flood costs one write per batch,
 // not one per request.
 //
 // Recording is best effort: a failure is logged and swallowed, so it never
@@ -102,7 +103,10 @@ export interface UsageRecorder {
    * throws.
    */
   recordChat(record: ChatRecord): Promise<void>;
-  /** Counts one MCP request. Never throws; nobody needs to wait for it. */
+  /**
+   * Counts one MCP request in the next batch, and writes the batch if it is
+   * due. Never throws.
+   */
   recordMcp(): Promise<void>;
   /**
    * Counts one `/mcp` request whose right-most hop is a Google address
@@ -111,7 +115,7 @@ export interface UsageRecorder {
   countUnknownGoogleHop(): void;
   /** Writes the batched counts. Never throws: a batch that fails is kept. */
   flush(): Promise<void>;
-  /** Stops the batch timer and writes what is left, for shutdown. */
+  /** Writes what is left, for shutdown. */
   close(): Promise<void>;
   /** This week's and the previous week's aggregates, batched counts written first. */
   stats(): Promise<StatsResponse>;
@@ -122,7 +126,10 @@ export type UsageOptions = {
   pricing: Pricing;
   /** Injectable clock (ms since epoch); defaults to `Date.now`. */
   now?: () => number;
-  /** How often the batched counts are written, in ms. */
+  /**
+   * How long after a batch is written the next one is due, in ms; the next
+   * request that records usage then writes it.
+   */
   flushEveryMs?: number;
   errorRateAlert?: ErrorRateAlert;
 };
@@ -142,7 +149,7 @@ export const defaultErrorRateAlert: ErrorRateAlert = { threshold: 0.2, minReques
 const errorBucketMs = 10 * 60_000;
 const errorWindowMinutes = 60;
 
-/** Default batch interval: well inside Cloud Run's shutdown grace and `/stats`' cache. */
+/** Default batch interval: well inside `/stats`' cache. */
 export const defaultFlushEveryMs = 10_000;
 
 /** Collection of the weekly usage documents. */
@@ -203,7 +210,7 @@ type WeekDoc = {
 };
 
 /** Counts waiting for the next batch, of one week. */
-type Batch = { refusals: Record<string, number>; unknownGoogleHops: number };
+type Batch = { refusals: Record<string, number>; mcpRequests: number; unknownGoogleHops: number };
 
 const refusedOutcomes: ChatOutcome[] = ["http_429", "http_503"];
 
@@ -384,7 +391,7 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
 
   function batchOf(week: string): Batch {
     let batch = batches.get(week);
-    if (!batch) batches.set(week, (batch = { refusals: {}, unknownGoogleHops: 0 }));
+    if (!batch) batches.set(week, (batch = { refusals: {}, mcpRequests: 0, unknownGoogleHops: 0 }));
     return batch;
   }
 
@@ -408,18 +415,23 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     return tail;
   }
 
+  /** When the last batch was written (or started to be); the first one is due at once. */
+  let flushedAt = -Infinity;
+
   async function flush(): Promise<void> {
+    flushedAt = now();
     const pending = [...batches];
     batches.clear();
     await Promise.all(
-      pending.map(async ([week, { refusals, unknownGoogleHops }]) => {
+      pending.map(async ([week, { refusals, mcpRequests, unknownGoogleHops }]) => {
         const written = await fold(
-          "a batch of refused requests",
+          "a batch of counted requests",
           ({ chat, mcp }) => {
             for (const [outcome, n] of Object.entries(refusals)) {
               chat.requests += n;
               add(chat.outcomes, outcome, n);
             }
+            mcp.requests += mcpRequests;
             mcp.unknownGoogleHops += unknownGoogleHops;
           },
           week,
@@ -428,14 +440,16 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         // Kept for the next batch, with whatever was counted meanwhile.
         const kept = batchOf(week);
         for (const [outcome, n] of Object.entries(refusals)) add(kept.refusals, outcome, n);
+        kept.mcpRequests += mcpRequests;
         kept.unknownGoogleHops += unknownGoogleHops;
       }),
     );
   }
 
-  const timer = setInterval(() => void flush(), flushEveryMs);
-  // Never what keeps the process alive: shutdown writes the rest with `close`.
-  timer.unref();
+  /** Writes the batch inside the request recording usage, once it is due. */
+  async function flushIfDue(): Promise<void> {
+    if (batches.size > 0 && now() - flushedAt >= flushEveryMs) await flush();
+  }
 
   async function readStats(t: number): Promise<WeekStats> {
     const { week, startsAt } = isoWeek(t);
@@ -449,6 +463,7 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
       logChatRequest(record, pricing);
       if (refusedOutcomes.includes(outcome)) {
         add(thisWeeksBatch().refusals, outcome);
+        await flushIfDue();
         return;
       }
       const t = now();
@@ -477,20 +492,17 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
         rate = countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert, tail);
       }, week);
       if (written && rate) logErrorRate(week, rate);
+      await flushIfDue();
     },
     async recordMcp() {
-      await fold("an MCP request", ({ mcp }) => {
-        mcp.requests++;
-      });
+      thisWeeksBatch().mcpRequests++;
+      await flushIfDue();
     },
     countUnknownGoogleHop() {
       thisWeeksBatch().unknownGoogleHops++;
     },
     flush,
-    async close() {
-      clearInterval(timer);
-      await flush();
-    },
+    close: flush,
     async stats() {
       await flush();
       const t = now();
