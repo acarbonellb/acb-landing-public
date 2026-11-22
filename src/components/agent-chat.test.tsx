@@ -300,4 +300,17 @@ describe("AgentChat", () => {
     expect(await navigator.clipboard.readText()).toBe(command);
     expect(screen.getByRole("button", { name: /copied/i })).toBeInTheDocument();
   });
+
+  it("adds site analytics to the privacy note in a build with a PostHog key, and only there", () => {
+    const note = () => screen.getByRole("note", { name: /privacy/i });
+    const { unmount } = render(<AgentChat chatUrl={CHAT_URL} mcpUrl={MCP_URL} analytics />);
+
+    expect(note()).toHaveTextContent(
+      /uses PostHog \(EU\) with a cookie to measure visits and chat usage, never the text of questions or answers\./i,
+    );
+
+    unmount();
+    render(<AgentChat chatUrl={CHAT_URL} mcpUrl={MCP_URL} analytics={false} />);
+    expect(note()).not.toHaveTextContent(/PostHog/);
+  });
 });

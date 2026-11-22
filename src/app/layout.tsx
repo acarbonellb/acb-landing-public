@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, JetBrains_Mono } from "next/font/google";
+import { CookieNotice } from "@/components/cookie-notice";
 import { SiteAnalytics } from "@/components/site-analytics";
 import { profile } from "@/shared/profile";
 import { SITE_URL, siteDescription, siteTitle } from "@/lib/site";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="bg-grid min-h-screen font-mono">
         {children}
         <SiteAnalytics />
+        <CookieNotice />
       </body>
     </html>
   );

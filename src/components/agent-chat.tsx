@@ -2,7 +2,8 @@
 
 import { type FormEvent, useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { chatRequestLimits } from "@/shared/chat-contract";
-import { chatPrivacyNote } from "@/shared/site-copy";
+import { posthogKey } from "@/lib/analytics";
+import { analyticsPrivacyNote, chatPrivacyNote } from "@/shared/site-copy";
 import { type BridgeAsk, connectChat } from "./chat-bridge";
 import { ChatNotice } from "./chat-notice";
 import { ChatTranscript } from "./chat-transcript";
@@ -14,11 +15,14 @@ export function AgentChat({
   chatUrl,
   mcpUrl,
   fetch,
+  analytics = Boolean(posthogKey),
 }: {
   chatUrl: string;
   /** Shown to visitors for their own MCP clients. */
   mcpUrl: string;
   fetch?: typeof globalThis.fetch;
+  /** Whether this build has site analytics, which the privacy note then mentions. */
+  analytics?: boolean;
 }) {
   const { turns, notice, busy, ask } = useAgentChat({ chatUrl, fetch });
   const [draft, setDraft] = useState("");
@@ -107,6 +111,7 @@ export function AgentChat({
       >
         <span aria-hidden>{"// "}</span>
         {chatPrivacyNote}
+        {analytics && ` ${analyticsPrivacyNote}`}
       </p>
 
       <McpConnect mcpUrl={mcpUrl} />

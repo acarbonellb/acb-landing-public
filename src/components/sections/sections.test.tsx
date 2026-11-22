@@ -374,6 +374,9 @@ describe("Agent", () => {
     // The rate limits count an IP in memory only, for their one-minute window.
     expect(note).toHaveTextContent(/rate limits count your IP in the agent's memory for a minute/i);
     expect(note).not.toHaveTextContent(/refused IP/i);
+    // A build without a PostHog key has no site analytics to mention
+    // (agent-chat.test.tsx covers one with a key).
+    expect(note).not.toHaveTextContent(/PostHog/);
     const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
     expect(form.nextElementSibling).toBe(note);
   });

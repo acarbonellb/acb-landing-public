@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import * as z from "zod";
-import { chatPrivacyNote } from "../../src/shared/site-copy";
+import { analyticsPrivacyNote, chatPrivacyNote } from "../../src/shared/site-copy";
 import { systemPrompt } from "./system-prompt";
 import { createToolset, type Content } from "./tools";
 
@@ -326,7 +326,7 @@ describe("the chat privacy note", () => {
       })),
     });
 
-    for (const fragment of [chatPrivacyNote, "Conversations aren't stored", "rate-limit counters"]) {
+    for (const fragment of [chatPrivacyNote, analyticsPrivacyNote, "Conversations aren't stored", "rate-limit counters"]) {
       expect(request).not.toContain(fragment);
     }
   });
