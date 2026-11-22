@@ -27,7 +27,7 @@ export interface DeepHealthCheck {
   check(): Promise<DeepHealthReport>;
 }
 
-type RequiredConfig = Pick<Config, "anthropicApiKey" | "contactEmail" | "answerSigningKey">;
+export type RequiredConfig = Pick<Config, "anthropicApiKey" | "contactEmail" | "answerSigningKey">;
 
 /**
  * The settings production needs that the agent can start without: each one's

@@ -63,12 +63,12 @@ describe("loadConfig", () => {
 
   it("defaults the guardrails: per-IP limits, global ceilings sized by store cost, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
     expect(loadConfig({}).guardrails).toEqual({
-      chatRequestsPerMinute: 4,
+      chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
       chatGlobalRequestsPerMinute: 8,
       mcpGlobalRequestsPerMinute: 600,
-      statsRequestsPerMinute: 2,
-      statsGlobalRequestsPerMinute: 5,
+      statsRequestsPerMinute: 30,
+      statsGlobalRequestsPerMinute: 11,
       monthlySpendCapUsd: 4,
       dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
@@ -83,10 +83,12 @@ describe("loadConfig", () => {
     const ttlDelete = 0.012 / 100_000;
     // Each store write is a read then a commit (firestore.ts). The worst case
     // per request, from the table in docs/guardrails.md: a chat request that
-    // runs writes 5 (spend-writes-http.test.ts), on a fresh key whose daily
-    // document a TTL delete removes later; `/stats` writes the waiting batch
-    // and reads two weeks; `/mcp` writes nothing of its own.
-    const chat = 5 * (read + write) + ttlDelete;
+    // runs writes 4 (spend-writes-http.test.ts), on a fresh key whose daily
+    // document a TTL delete removes later, and its usage joins the batch;
+    // `/stats` writes the waiting batch (a usage-producing request, e.g. a
+    // refused chat, can leave one before each call) and reads two weeks;
+    // `/mcp` writes nothing of its own.
+    const chat = 4 * (read + write) + ttlDelete;
     const stats = read + write + 2 * read;
     const minutesPerDay = 24 * 60;
     const { chatGlobalRequestsPerMinute, statsGlobalRequestsPerMinute } = loadConfig({}).guardrails;

@@ -5,12 +5,10 @@
 import type { ChatMessage, ChatRequestMessage } from "../../src/shared/chat-contract";
 import { createAnswerSigner } from "./answer-signing";
 import type { AppDeps } from "./app";
-import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
-import { createGuardrails } from "./compose";
+import { assembleAppDeps } from "./compose";
 import { loadConfig } from "./config";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
-import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
 import { createToolset } from "./tools";
 
 /** The fixed key the tests' answers are signed with. */
@@ -71,25 +69,19 @@ const defaults = loadConfig({});
  */
 export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
   return {
-    toolset: createToolset(),
-    modelClient: createFakeModel([]),
-    allowedOrigins: defaults.allowedOrigins,
-    chatLimits: defaults.chatLimits,
-    answerSigner: createAnswerSigner(testSigningKey),
-    ...createGuardrails(null, defaults),
-    rateLimitKey,
-    mcpRateLimitKey,
-    isUnknownGoogleHop: mcpUnknownGoogleHop,
-    // Healthy: a memory store and the production secrets, as placeholders.
-    deepHealth: createDeepHealthCheck({
-      store: createMemoryDocumentStore(),
-      config: {
+    ...assembleAppDeps({
+      config: defaults,
+      sharedStore: null,
+      modelClient: createFakeModel([]),
+      answerSigner: createAnswerSigner(testSigningKey),
+      toolset: createToolset(),
+      // Healthy: the production secrets, as placeholders.
+      requiredConfig: {
         anthropicApiKey: "sk-test-placeholder",
         contactEmail: "ada@example.com",
         answerSigningKey: testSigningKey,
       },
     }),
-    deepHealthRateLimiter: createDeepHealthRateLimiter(),
     ...overrides,
   };
 }

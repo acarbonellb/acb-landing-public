@@ -1,10 +1,10 @@
 // The weekly live check (`pnpm agent:eval:check`, docs/evals.md "Weekly live
 // check"): one live run of each case, scored by the eval scorer, compared with
-// the set's latest history entry. Pure: decides whether the check's one issue
+// the set's latest recorded live run. Pure: decides whether the check's one issue
 // is opened or updated, and with what text; the script runs the cases and `gh`.
 // Nothing here is written to the recordings, history, report or summary.
 import { caseName, percent, sameSet, setLabel, type Ratio, type SetId } from "./format";
-import type { HistoryEntry, LiveRun } from "./history";
+import { isLiveRun, type HistoryEntry, type LiveRun } from "./history";
 import type { CaseResult, PassAtK } from "./metrics";
 
 /**
@@ -22,7 +22,7 @@ export type LiveCheck = SetId & {
   alert: boolean;
   /** Cases that passed, over the cases that completed. */
   passRate: Ratio;
-  /** The latest recorded run's pass@k, when the set has one. */
+  /** The latest recorded live run's pass@k (never a re-score), when the set has one. */
   baseline?: { entry: HistoryEntry; rate: PassAtK };
   /** Cases whose chat ended in an error: out of the pass rate. */
   errored: number;
@@ -72,7 +72,7 @@ export function liveCheck({
   const passRate = { n: completed.filter((r) => r.score.pass).length, of: completed.length };
   const leaked = completed.filter((r) => r.score.leaked && !r.evalCase.failingOnPurpose);
   const failures = completed.filter((r) => !r.score.pass && !leaked.includes(r)).map(described);
-  const entry = history.findLast((e) => sameSet(e, set) && e.metrics.passAtK);
+  const entry = history.findLast((e) => sameSet(e, set) && isLiveRun(e) && e.metrics.passAtK);
   const baseline = entry?.metrics.passAtK && { entry, rate: entry.metrics.passAtK };
 
   const alerts: string[] = [];

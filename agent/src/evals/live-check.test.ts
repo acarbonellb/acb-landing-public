@@ -87,10 +87,25 @@ describe("liveCheck: whether the weekly live check opens or updates its issue", 
     expect(liveCheck({ set, results: withFailures(50, 8), history: [entry(46, 50)], run }).alert).toBe(false);
   });
 
-  it("compares with the set's latest entry only", () => {
-    const history = [entry(50, 50), entry(40, 50, { kind: "rescored" }), entry(46, 50, { provider: "lmstudio" })];
-    // 42/50 = 84%: 16 points below the first entry, but above the latest one (80%).
+  it("compares with the set's latest live run only", () => {
+    const history = [entry(50, 50), entry(40, 50), entry(46, 50, { provider: "lmstudio" })];
+    // 42/50 = 84%: 16 points below the first run, but above the latest one (80%).
     expect(liveCheck({ set, results: withFailures(50, 8), history, run }).alert).toBe(false);
+  });
+
+  it("never takes a rescored or migrated entry as the baseline: those didn't run the model", () => {
+    const history = [
+      entry(50, 50, { kind: "rerun" }),
+      entry(40, 50, { kind: "rescored" }),
+      entry(40, 50, { kind: "migrated" }),
+    ];
+    // 42/50 = 84%: above the rescored 80%, but 16 points below the latest live run.
+    const check = liveCheck({ set, results: withFailures(50, 8), history, run });
+    expect(check.alert).toBe(true);
+    expect(check.baseline?.entry.kind).toBe("rerun");
+    // Entries from before kinds were recorded were all live runs.
+    const unkinded = entry(50, 50, { kind: undefined });
+    expect(liveCheck({ set, results: withFailures(50, 8), history: [unkinded, entry(40, 50, { kind: "rescored" })], run }).alert).toBe(true);
   });
 
   it("leaves cases that ended in an error out of the pass rate", () => {

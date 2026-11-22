@@ -1,8 +1,8 @@
 // The store writes one request costs, as checked numbers: a chat request
 // writes its daily quota and the month's spend cap once each to reserve and
-// once each to settle, whatever number of model calls it makes, plus its
-// usage stats; an MCP request writes nothing of its own, only the usage batch
-// when one is due. And since what a request spends is only in its instance's
+// once each to settle, whatever number of model calls it makes; its usage
+// stats, like an MCP request's, only join the usage batch, written when one
+// is due. And since what a request spends is only in its instance's
 // memory until it settles, a hold that expires unsettled is charged at its
 // worst case.
 import { describe, expect, it } from "vitest";
@@ -85,11 +85,11 @@ describe("the store writes of one request", () => {
 
     expect(res.status).toBe(200);
     expect(model.requests).toHaveLength(3);
-    // No usage batch is waiting, so none is written.
+    // A fresh instance's first batch is due at once: this request's own usage.
     expect(byCollection(writes)).toEqual({ [dailySpendCollection]: 2, [spendCollection]: 2, [usageCollection]: 1 });
   });
 
-  it("are exactly 5 for a chat request and 0 for an MCP request, plus the usage batch when one is due", async () => {
+  it("are exactly 4 for a chat request and 0 for an MCP request, plus the usage batch when one is due", async () => {
     const { store, writes } = countingStore();
     let now = Date.parse("2026-11-04T10:00:00Z");
     const usage = createUsageRecorder({ store, pricing, now: () => now });
@@ -112,10 +112,10 @@ describe("the store writes of one request", () => {
     expect(await writesOf(() => listTools(app))).toBe(1);
     expect(await writesOf(() => listTools(app))).toBe(0);
     expect(await writesOf(() => listTools(app))).toBe(0);
-    expect(await writesOf(() => chat(app))).toBe(5);
+    expect(await writesOf(() => chat(app))).toBe(4);
     now += defaultFlushEveryMs;
     // The batch is due again: the next request writes it, a chat request too.
-    expect(await writesOf(() => chat(app))).toBe(6);
+    expect(await writesOf(() => chat(app))).toBe(5);
     expect(await writesOf(() => listTools(app))).toBe(0);
   });
 });

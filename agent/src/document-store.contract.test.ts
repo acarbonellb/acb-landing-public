@@ -66,8 +66,8 @@ describe.each(implementations)("DocumentStore contract: $name", ({ fresh, skip }
       holds: { h1: { usd: 1.5, at: new Date("2026-11-04T10:00:00.123Z") } },
       noHolds: {},
     };
-    await store.update("rateLimits/chat:<visitor>", () => ({ doc, result: undefined }));
-    expect(await store.update("rateLimits/chat:<visitor>", (current) => ({ result: current }))).toEqual(doc);
+    await store.update("counters/chat:<visitor>", () => ({ doc, result: undefined }));
+    expect(await store.update("counters/chat:<visitor>", (current) => ({ result: current }))).toEqual(doc);
   });
 
   test("replaces the whole document on each write", async () => {
@@ -87,10 +87,10 @@ describe.each(implementations)("DocumentStore contract: $name", ({ fresh, skip }
     const store = fresh();
     const ids = ["chat:2001:db8::1", "chat:2001%3Adb8%3A%3A1", "chat:a b", "chat:a+b", "chat:a?b#c"];
     for (const [i, id] of ids.entries()) {
-      await store.update(`rateLimits/${id}`, () => ({ doc: { i }, result: 0 }));
+      await store.update(`counters/${id}`, () => ({ doc: { i }, result: 0 }));
     }
     for (const [i, id] of ids.entries()) {
-      expect(await store.update(`rateLimits/${id}`, (doc) => ({ result: doc }))).toEqual({ i });
+      expect(await store.update(`counters/${id}`, (doc) => ({ result: doc }))).toEqual({ i });
     }
   });
 
@@ -100,13 +100,13 @@ describe.each(implementations)("DocumentStore contract: $name", ({ fresh, skip }
     const racers = 20;
     const seen = await Promise.all(
       Array.from({ length: racers }, () =>
-        store.update("rateLimits/chat:race", (doc) => {
+        store.update("counters/chat:race", (doc) => {
           const count = Number(doc?.count ?? 0) + 1;
           return { doc: { count }, result: count };
         }),
       ),
     );
-    expect(await store.update("rateLimits/chat:race", (doc) => ({ result: doc }))).toEqual({
+    expect(await store.update("counters/chat:race", (doc) => ({ result: doc }))).toEqual({
       count: racers,
     });
     // Each update saw a different count: none ran its change on a stale copy and won.

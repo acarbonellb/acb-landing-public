@@ -16,11 +16,11 @@ describe("createFirestoreDocumentStore", () => {
   it("encodes document ids in the URL", async () => {
     const fake = fakeFirestore();
     const store = emulator(fake);
-    await store.update("rateLimits/chat:2001%3Adb8%3A%3A1", () => ({ doc: { count: 1 }, result: 0 }));
+    await store.update("counters/chat:2001%3Adb8%3A%3A1", () => ({ doc: { count: 1 }, result: 0 }));
     expect(fake.requests[0].url).toBe(
-      `http://localhost:8081/v1/${root}/rateLimits/chat%3A2001%253Adb8%253A%253A1`,
+      `http://localhost:8081/v1/${root}/counters/chat%3A2001%253Adb8%253A%253A1`,
     );
-    expect(fake.docs.has(`${root}/rateLimits/chat:2001%3Adb8%3A%3A1`)).toBe(true);
+    expect(fake.docs.has(`${root}/counters/chat:2001%3Adb8%3A%3A1`)).toBe(true);
   });
 
   it("writes nothing when the change returns no document", async () => {
@@ -153,14 +153,14 @@ describe("createFirestoreDocumentStore", () => {
       emulatorHost: "localhost:8081",
       fetch: async () =>
         Response.json(
-          { error: { status: "INTERNAL", message: "rateLimits/chat:203.0.113.7" } },
+          { error: { status: "INTERNAL", message: "counters/chat:203.0.113.7" } },
           { status: 500 },
         ),
     });
     const error = await store
-      .update("rateLimits/chat:203.0.113.7", () => ({ result: 0 }))
+      .update("counters/chat:203.0.113.7", () => ({ result: 0 }))
       .catch((e: unknown) => e);
-    expect(String(error)).toMatch(/rateLimits/);
+    expect(String(error)).toMatch(/counters/);
     expect(String(error)).not.toMatch(/203\.0\.113\.7/);
   });
 });

@@ -13,14 +13,11 @@
 // at the start of the minute.
 import { parseArgs } from "node:util";
 import { createAnswerSigner, ephemeralSigningKey } from "../src/answer-signing";
-import { createApp, httpErrorMessages, paths, type AppDeps } from "../src/app";
-import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "../src/client-ip";
-import { createGuardrails } from "../src/compose";
+import { createApp, httpErrorMessages, paths } from "../src/app";
+import { assembleAppDeps } from "../src/compose";
 import { loadConfig } from "../src/config";
-import { createMemoryDocumentStore } from "../src/document-store";
 import { createFakeModel } from "../src/fake-model";
 import { createFirestoreDocumentStore } from "../src/firestore";
-import { createDeepHealthCheck, createDeepHealthRateLimiter } from "../src/health";
 import { emulatorStoreOrRefuse } from "../src/load-test-guard";
 import type { ModelClient } from "../src/model";
 import { listen } from "../src/server";
@@ -87,19 +84,13 @@ const fakeModel: ModelClient = {
   stream: (request) => createFakeModel([{ text: "A portfolio site and an agent that answers about it." }]).stream(request),
 };
 
-const deps: AppDeps = {
-  toolset: createToolset({ ...siteContent, contactEmail: undefined }),
+const deps = assembleAppDeps({
+  config,
+  sharedStore: documentStore,
   modelClient: fakeModel,
-  allowedOrigins: config.allowedOrigins,
-  chatLimits: config.chatLimits,
   answerSigner: createAnswerSigner(ephemeralSigningKey()),
-  ...createGuardrails(documentStore, config),
-  rateLimitKey,
-  mcpRateLimitKey,
-  isUnknownGoogleHop: mcpUnknownGoogleHop,
-  deepHealth: createDeepHealthCheck({ store: createMemoryDocumentStore(), config }),
-  deepHealthRateLimiter: createDeepHealthRateLimiter(),
-};
+  toolset: createToolset({ ...siteContent, contactEmail: undefined }),
+});
 
 // The agent's log lines, counted by event instead of printed.
 const logged: Record<string, number> = {};

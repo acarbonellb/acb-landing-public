@@ -1,5 +1,6 @@
 // A minimal document store with atomic read-modify-write, the one thing the
-// shared rate limits and spend cap need. Production backs it with Firestore
+// durable guardrails need: the spend cap, the daily quota and the usage stats
+// (the rate limits are in memory). Production backs it with Firestore
 // (`firestore.ts`); the in-memory version serves local development and tests.
 import { describeError, logEvent } from "./log";
 

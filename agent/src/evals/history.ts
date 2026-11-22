@@ -26,6 +26,13 @@ export type LiveRun = {
 export const entryKinds = ["live", "rerun", "rescored", "migrated"] as const;
 export type EntryKind = (typeof entryKinds)[number];
 
+/**
+ * Whether `entry` ran the model: a live run or a re-run (entries without a
+ * kind were all live runs), not a re-score or a migration of stored recordings.
+ */
+export const isLiveRun = (entry: Pick<HistoryEntry, "kind">) =>
+  entry.kind !== "rescored" && entry.kind !== "migrated";
+
 export type HistoryEntry = LiveRun &
   SetId & {
     /** Absent from entries made before kinds were recorded (all live runs). */
@@ -141,7 +148,7 @@ export function liveRunKind(
   rerun: boolean,
 ): { kind: "live" | "rerun" } | { refused: string } {
   const ranHere = entries.some(
-    (e) => sameSet(e, set) && e.commit === commit && e.kind !== "rescored" && e.kind !== "migrated",
+    (e) => sameSet(e, set) && e.commit === commit && isLiveRun(e),
   );
   if (!ranHere) return { kind: "live" };
   if (rerun) return { kind: "rerun" };
