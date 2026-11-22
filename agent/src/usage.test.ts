@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import { fakeFirestore, root } from "./firestore-fake";
+import { countingStore } from "./test-deps";
 import { createUsageRecorder, isoWeek } from "./usage";
 
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
@@ -261,6 +262,20 @@ describe("the batched counts", () => {
     clock.set("2026-11-18T12:00:10Z");
     await usage.recordMcp();
     expect(await stored()).toBe(2);
+  });
+
+  it("are written by `/stats` before it reads, and a `/stats` with none waiting writes nothing", async () => {
+    const { store, writes } = countingStore();
+    const usage = createUsageRecorder({ store, pricing, flushEveryMs: 10_000 });
+    await usage.recordMcp(); // a fresh instance's first batch is due at once
+    await usage.recordMcp();
+    expect(writes).toHaveLength(1);
+
+    expect((await usage.stats()).current.mcp.requests).toBe(2);
+    expect(writes).toHaveLength(2);
+    await usage.stats();
+    await usage.stats();
+    expect(writes).toHaveLength(2);
   });
 
   it("land in the week they were counted in", async () => {
