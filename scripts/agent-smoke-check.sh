@@ -31,6 +31,19 @@ check_health() {
   [[ "$body" == '{"status":"ok"}' ]] || { echo "  /health answered $body"; return 1; }
 }
 
+# /health?deep=1: the revision reads the store and has its required config,
+# so one whose guarded routes would all answer 503 fails here. Any status but
+# 200 fails it (a 429 too: the check allows a few a minute, per instance).
+check_deep_health() {
+  local response status body
+  response=$(curl -sS --max-time 20 -w '\n%{http_code}' "$agent/health?deep=1") ||
+    { echo "  /health?deep=1 is down"; return 1; }
+  status=$(tail -n 1 <<<"$response")
+  body=$(sed '$d' <<<"$response")
+  [[ "$status" == 200 && "$body" == '{"status":"ok"}' ]] ||
+    { echo "  /health?deep=1 answered $status $body (the reason is in the revision's logs)"; return 1; }
+}
+
 # mcp_lists_tools URL: URL answers MCP tools/list with the five tools.
 mcp_lists_tools() {
   local body tool
@@ -96,7 +109,7 @@ check_chat_signed_answers() {
     { echo "  /chat didn't refuse an unsigned earlier answer"; return 1; }
 }
 
-checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
+checks=(check_health check_deep_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
   check_chat_signed_answers)
 $site_mcp && checks+=(check_site_mcp_tools)
 

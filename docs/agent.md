@@ -22,7 +22,7 @@ pnpm agent:build   # self-contained bundle in agent/dist/main.js; run with `node
 | --- | --- |
 | `POST /mcp` | MCP endpoint (Streamable HTTP) |
 | `POST /chat` | Chat with the agent, streamed as Server-Sent Events ([chat contract](chat-contract.md)) |
-| `GET /health` | Health check, returns `{"status":"ok"}` |
+| `GET /health` | Liveness, returns `{"status":"ok"}`; `?deep=1` also reads the store and checks the production config, rate-limited ([health check](chat-contract.md#health-check)) |
 | `GET /stats` | This and last week's usage aggregates, public JSON ([usage stats](usage-stats.md)) |
 
 CORS on `/chat` only allows `ALLOWED_ORIGINS`; `/mcp` allows any origin, and so does `/stats`.
