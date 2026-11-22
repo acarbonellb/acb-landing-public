@@ -1,6 +1,8 @@
 # Logs and alerts
 
-The [agent](agent.md) logs one JSON object per line (`agent/src/log.ts`), which Cloud Logging parses natively: `severity` becomes the entry's severity, `message` its summary, and every other field lands in `jsonPayload`. `INFO` lines go to stdout, `WARNING` and `ERROR` to stderr. **No line carries message content, a client IP or the contact email**: only counts, ids, outcomes, months and weeks, and error messages that are scrubbed where they're made (Firestore errors name the collection, never the document id, which can hold a client IP; `agent/src/firestore.ts`). The startup banner (`main.ts`) is plain text.
+What the [agent](agent.md) logs, and which events email the owner, so an incident can be traced and noticed without logging anything private. **No line carries message content, a client IP or the contact email.**
+
+`agent/src/log.ts` writes one JSON object per line, which Cloud Logging parses natively: `severity` becomes the entry's severity, `message` its summary, and every other field lands in `jsonPayload`. `INFO` lines go to stdout, `WARNING` and `ERROR` to stderr. Lines hold only counts, ids, outcomes, months and weeks, and error messages that are scrubbed where they're made (Firestore errors name the collection, never the document id, which can hold a client IP; `agent/src/firestore.ts`). The startup banner (`main.ts`) is plain text.
 
 ## Fields on every line
 
@@ -71,6 +73,8 @@ scripts/monitoring-alerts.sh setup acb-landing "$ALERT_EMAIL"            # creat
 scripts/monitoring-alerts.sh test acb-landing [event]                     # one synthetic alert event (default store_unavailable); wait ~10 min after a first setup
 ```
 
-`setup` is idempotent: it enables the Monitoring API, then looks up the channel and each policy by display name and creates it, or replaces it with the script's version (two with the same name stop it: delete the extra). Re-run it after changing an alert event, the policies or the address, or to recreate them all in a rebuilt project. The email address is only an argument: it reaches gcloud in a temporary file (mode 600, deleted on exit), never on a command line, and the script never prints it (the dry run shows `<email>`); it is in no repo file, variable or workflow, like the contact address. Nothing in CI runs this script; `scripts/monitoring-alerts.test.ts` runs it against a fake `gcloud`, and checks it makes one policy per `WARNING` or `ERROR` row of the [Alert events](#alert-events) table.
+`setup` is idempotent: it enables the Monitoring API, then looks up the channel and each policy by display name and creates it, or replaces it with the script's version (two with the same name stop it: delete the extra). Re-run it after changing an alert event, the policies or the address, or to recreate them all in a rebuilt project.
+
+The email address is only an argument: it reaches gcloud in a temporary file (mode 600, deleted on exit), never on a command line, and the script never prints it (the dry run shows `<email>`); it is in no repo file, variable or workflow, like the contact address. Nothing in CI runs this script; `scripts/monitoring-alerts.test.ts` runs it against a fake `gcloud`, and checks it makes one policy per `WARNING` or `ERROR` row of the [Alert events](#alert-events) table.
 
 `test` writes one log entry (`gcloud logging write`, log `agent-alert-test`) shaped like the agent's line for that event, on the `agent` Cloud Run service's resource, with `"test": true` and `"test"` as each field's value: its policy opens an incident and emails the channel within a few minutes. A newly created policy takes a few minutes to start matching, so after a first `setup` wait about 10 minutes before `test`: an entry written sooner is missed and sends nothing. Close the incident in the console, or let it close itself after 30 minutes.

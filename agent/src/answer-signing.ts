@@ -1,19 +1,9 @@
-// Signed answers: the agent signs every answer it gives (an HMAC keyed by
-// `ANSWER_SIGNING_KEY`) and accepts earlier answers back only with a valid
-// signature, so a chat request can't put words in the agent's mouth while the
-// server stays stateless (docs/chat-contract.md, "Signed answers"; ADR 0004).
-//
-// Each signature binds the answer to its place: the conversation it was given
-// in (a random id the conversation's first answer starts), its position there
-// (1, 2, ...) and the question it answered. So a genuine answer can't come
-// back after a question it didn't answer, before an answer it came after, or
-// in another conversation. The id and position travel in the signature
-// itself (`<conversation>.<position>.<mac>`), so nothing is kept between
-// requests. Positions only have to grow: the site leaves out turns it can't
-// send back (failed, empty) and, past the message cap, the oldest ones.
-//
-// Only the HTTP layer signs and checks: the chat agent, and the eval runner
-// that calls it directly, never see a signature.
+// Signed answers: the agent signs every answer it gives and accepts earlier
+// answers back only with a valid signature, `<conversation>.<position>.<mac>`,
+// which binds the answer to its conversation, position and question
+// (docs/chat-contract.md#signed-answers; ADR 0004). Positions only have to
+// grow, as the site leaves out turns it can't send back. Only the HTTP layer
+// signs and checks: the chat agent and the eval runner never see a signature.
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import {
   answerForHistory,

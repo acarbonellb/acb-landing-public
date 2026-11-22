@@ -1,18 +1,37 @@
 # Guardrails
 
-What keeps the public [agent](agent.md) from being abused or running up a bill. The limits are set through the [configuration](agent.md#configuration). They sit behind interfaces injected through `AppDeps` (`RateLimiter`, `DailyQuota`, `SpendCap`, with an injectable clock). The rate limits are always in memory, in production too (see [Rate limits are per instance](#rate-limits-are-per-instance)). The **durable state**, the daily quota, the spend cap and the usage stats, has two implementations: in memory (local development and tests) and over a shared document store (production, see [Shared store](#shared-store)). `AGENT_STORE` picks one, in the production composer (`agent/src/compose.ts`).
+What keeps the public [agent](agent.md) from being abused or running up a bill. Rate limits bound each visitor and all of them together, so floods stay cheap; a token budget, a daily quota and a monthly spend cap bound what the model can cost. The table lists each guard; the sections below say how each behaves.
+
+| Guard | Routes | Setting (default) | Kept in | When it refuses |
+| --- | --- | --- | --- | --- |
+| [Per-IP rate limit](#per-ip-rate-limits) | `/chat`, `/mcp`, `/stats`, each counted separately | `RATE_LIMIT_CHAT_PER_MINUTE` (4), `RATE_LIMIT_MCP_PER_MINUTE` (60), `RATE_LIMIT_STATS_PER_MINUTE` (2) | Instance memory | `429`, per route below |
+| [Global ceiling](#global-ceilings) | The same, all clients together | `RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE` (8), `RATE_LIMIT_MCP_GLOBAL_PER_MINUTE` (600), `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE` (5) | Instance memory | Exactly the per-IP limit's `429` |
+| [Per-request token cap](#per-request-token-cap) | `/chat` | `AGENT_MAX_REQUEST_TOKENS` (8192) | The request | The request ends with `stopReason: "max_tokens"` |
+| [Daily quota](#daily-quota) | `/chat` | `DAILY_SPEND_QUOTA_USD` ($0.10 per key per UTC day) | The store | `429 rate_limited` until midnight UTC |
+| [Monthly spend cap](#monthly-spend-cap) | `/chat` | `MONTHLY_SPEND_CAP_USD` ($4 per UTC month) | The store | `503 unavailable` |
+| [Provider spend limit](#provider-spend-limit) | The model calls | $5 a month, in the Claude Console | The Anthropic workspace | The stream ends with `unavailable` |
+
+The limits are set through the [configuration](agent.md#configuration) and sit behind interfaces injected through `AppDeps` (`RateLimiter`, `DailyQuota`, `SpendCap`, with an injectable clock). The rate limits are in memory in production too ([Rate limits are per instance](#rate-limits-are-per-instance)). The **durable state**, the daily quota, the spend cap and the usage stats, is in memory for local development and tests, and in the [shared store](#shared-store) in production; `AGENT_STORE` picks one, in the production composer (`agent/src/compose.ts`).
 
 ## Per-IP rate limits
 
-On `/chat`, `/mcp` and `/stats`, each counted separately (`agent/src/rate-limit.ts`, fixed one-minute window), so polling `/stats` never uses up a visitor's `/mcp` (the contact fallback). Over the limit, `/chat` answers the `429 rate_limited` JSON of the [chat contract](chat-contract.md#errors-before-streaming), `/stats` the same JSON without `retryAfterSeconds` (with `Retry-After`), and `/mcp` answers `429` with `Retry-After` and a JSON-RPC error `{"code":-32000,"data":{"code":"rate_limited","retryAfterSeconds"}}`.
+A fixed one-minute window per route (`agent/src/rate-limit.ts`), counted separately so polling `/stats` never uses up a visitor's `/mcp` (the contact fallback). Over the limit:
+
+| Route | Answer |
+| --- | --- |
+| `/chat` | The `429 rate_limited` JSON of the [chat contract](chat-contract.md#errors-before-streaming) |
+| `/stats` | The same JSON without `retryAfterSeconds`, with `Retry-After` |
+| `/mcp` | `429` with `Retry-After` and a JSON-RPC error `{"code":-32000,"data":{"code":"rate_limited","retryAfterSeconds"}}` |
 
 ## Global ceilings
 
-On `/chat` (`RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE`), `/mcp` (`RATE_LIMIT_MCP_GLOBAL_PER_MINUTE`) and `/stats` (`RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`): a second one-minute window per endpoint that counts every request the per-IP limit lets through, under one fixed key. So rotating IPs can't multiply what one source gets: past the ceiling the model is never called more often, whoever asks. A refusal answers exactly the per-IP limit's `429`. The defaults sit above the per-IP limits and far above normal traffic, and `/chat`'s and `/stats`'s are sized by what a flood at them costs in store operations ([Store cost](#store-cost)); tune them from `/stats` through the configuration, and re-check that section when you raise one.
+A second one-minute window per route counts every request the per-IP limit lets through, under one fixed key. So rotating IPs can't multiply what one source gets: past the ceiling the model is never called more often, whoever asks. The defaults sit above the per-IP limits and far above normal traffic, and `/chat`'s and `/stats`'s are sized by what a flood at them costs in store operations ([Store cost](#store-cost)). Tune them from `/stats` through the configuration, and re-check that section when you raise one.
 
 ## Rate limits are per instance
 
-The per-IP windows and the global ceilings are counted in the instance's memory (`createMemoryRateLimiter`), never in the store: they cost no store writes, are exact under any concurrency on one instance, and can't fail, so no route has a store-failure policy for them. That is only correct on one instance, so the deploy pins Cloud Run to `--max-instances 1` and a repo-hygiene test (`repo-hygiene/single-instance.test.ts`) fails if a workflow deploys or reconfigures the agent without it. During a canary the candidate revision runs beside the serving one, each with its own windows, so for that minute a key can get up to twice its limit; that overlap is accepted. A cold start starts the windows afresh. Why: [ADR 0003, amendment](adr/0003-agent-firestore-over-rest.md#amendment-128-rate-limits-are-per-instance-on-one-instance). Memory stays bounded: ended windows are swept once per window length.
+The per-IP windows and the global ceilings are counted in the instance's memory (`createMemoryRateLimiter`), never in the store: they cost no store writes, are exact under any concurrency on one instance, and can't fail, so no route has a store-failure policy for them. Memory stays bounded: ended windows are swept once per window length. A cold start starts the windows afresh.
+
+That is only correct on one instance, so the deploy pins Cloud Run to `--max-instances 1`, and `repo-hygiene/single-instance.test.ts` fails if a workflow deploys or reconfigures the agent without it. During a canary the candidate revision runs beside the serving one, each with its own windows, so for that minute a key can get up to twice its limit; that overlap is accepted. Why: [ADR 0003, amendment](adr/0003-agent-firestore-over-rest.md#amendment-128-rate-limits-are-per-instance-on-one-instance).
 
 ## Client IP
 
@@ -30,7 +49,9 @@ One output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model cal
 
 ## Monthly spend cap
 
-`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. The actual `usage` of its model calls is added up in memory while it runs, and charged once, when the request settles, in place of the reservation: no store write happens between model calls. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. That charge and the settle happen inside the request: its handler resolves only once they are in the store (`waitUntil` in `agent/src/server.ts`), so nothing waits for CPU after the response. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
+`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
+
+The actual `usage` of the request's model calls is added up in memory while it runs, and charged once, when the request settles, in place of the reservation: no store write happens between model calls. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. That charge and the settle happen inside the request: its handler resolves only once they are in the store (`waitUntil` in `agent/src/server.ts`), so nothing waits for CPU after the response.
 
 ## Daily quota
 
@@ -51,8 +72,9 @@ The default ($0.10) comes from `/stats`: about $0.0004 per answer measured in we
 
 ## Provider spend limit
 
-The Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console: the spend cap counts estimated spend, so that is the hard limit. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices from `agent/src/pricing.ts`, at the requested model's rates) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. The provider limit is the backstop if the estimate is ever off; if it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage and the stream ends with `unavailable`, not `internal`. Raise both together, keeping the code cap under the provider's. Hitting the provider limit logs the `provider_limit` [alert event](logs-and-alerts.md#alert-events), since it means the two have drifted apart.
+The Anthropic workspace has its own hard limit of $5 per month, set in the Claude Console. The code cap defaults to $4, below it, because the code cap only estimates spend (list prices from `agent/src/pricing.ts`, at the requested model's rates) and is the one with a graceful answer: it refuses before calling the model and says when the chat reopens. Raise both together, keeping the code cap under the provider's.
 
+The provider limit is the backstop if the estimate is ever off. If it is hit (a 400 naming the usage limit, or a 402 `billing_error` when there is no credit), `agent/src/anthropic.ts` treats it like an outage: the stream ends with `unavailable`, not `internal`, and the `provider_limit` [alert event](logs-and-alerts.md#alert-events) is logged, since it means the two have drifted apart.
 
 ## Store cost
 
@@ -119,25 +141,26 @@ The ceilings were re-derived for this: before, at 60 chat and 300 `/stats` reque
 
 ## In memory
 
-With `AGENT_STORE=memory`, the durable state (cap, daily quota, usage stats) is per instance and resets on every cold start. So in production (`NODE_ENV=production`, set in `agent/Dockerfile`) the agent refuses to start with `AGENT_STORE=memory` and says why, unless `AGENT_ALLOW_MEMORY_STORE=true` accepts it explicitly; the deploy never sets that. The agent is deployed with Cloud Run `--max-instances 1` either way, as the rate limits need it ([above](#rate-limits-are-per-instance)).
+With `AGENT_STORE=memory`, the durable state (cap, daily quota, usage stats) is per instance and resets on every cold start. So in production (`NODE_ENV=production`, set in `agent/Dockerfile`) the agent refuses to start with `AGENT_STORE=memory` and says why, unless `AGENT_ALLOW_MEMORY_STORE=true` accepts it explicitly; the deploy never sets that.
 
 ## Shared store
 
-With `AGENT_STORE=firestore` the durable state, the spend cap, the daily quota and the usage stats, lives in Firestore, so it survives cold starts and is shared by every revision: the month's spend no longer starts again at $0 when the service scales to zero. The agent talks to Firestore's REST API with plain `fetch` and the service account's token from the metadata server, so the bundle stays self-contained ([ADR 0003](adr/0003-agent-firestore-over-rest.md)). Creating the database is a one-time step in [Deploy](deploy.md#the-firestore-database); trying it locally against the emulator is in [Agent service](agent.md#running-it-locally).
+With `AGENT_STORE=firestore` the durable state lives in Firestore, so it survives cold starts and is shared by every revision: the month's spend no longer starts again at $0 when the service scales to zero. The agent talks to Firestore's REST API with plain `fetch` and the service account's token from the metadata server, so the bundle stays self-contained ([ADR 0003](adr/0003-agent-firestore-over-rest.md)). Creating the database is a one-time step in [Deploy](deploy.md#the-firestore-database); trying it locally against the emulator is in [Agent service](agent.md#running-it-locally).
 
-- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alerts](logs-and-alerts.md#alert-events)). A reservation never settled (its instance died) is charged at its worst case after 15 minutes (Cloud Run's request timeout is 5); see [When a reservation is released](#when-a-reservation-is-released).
+- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alerts](logs-and-alerts.md#alert-events)). A hold expires after 15 minutes, as Cloud Run's request timeout is 5 ([When a reservation is released](#when-a-reservation-is-released)).
 - **Daily quota**: one document per rate-limit key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (URL-encoded), shaped like the monthly spend document, with `expireAt`, the day's end, for the TTL policy.
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](usage-stats.md#the-weekly-document)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining room of a spend limit.
-- **Cost**: what each request costs in store operations, and what a flood at the ceilings costs a day, is in [Store cost](#store-cost).
-
 ### When the store fails
 
 Every Firestore REST call (and the metadata server's token request) gives up after 3 s, so a hanging store fails fast instead of holding the request. Each route then follows its own policy (`agent/src/app.ts`):
 
-- `/mcp` reads nothing from the store (its rate limits are in memory), so `get_contact` keeps answering and the limits keep holding. It is the contact fallback when the chat is down.
-- `/stats` keeps its rate limits too, and answers `503 unavailable` JSON if the aggregates can't be read; the page then hides its usage line.
-- `/chat` **fails closed**: a failed reservation (daily quota or spend cap) answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts without a reservation; a quota reservation already taken is released first ([When a reservation is released](#when-a-reservation-is-released)). The page falls back to `/mcp` for the contact.
+| Route | When the store fails |
+| --- | --- |
+| `/mcp` | Reads nothing from the store (its rate limits are in memory), so `get_contact` keeps answering and the limits keep holding. It is the contact fallback when the chat is down |
+| `/stats` | Keeps its rate limits too, and answers `503 unavailable` JSON if the aggregates can't be read; the page then hides its usage line |
+| `/chat` | **Fails closed**: a failed reservation (daily quota or spend cap) answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts without a reservation; a quota reservation already taken is released first ([When a reservation is released](#when-a-reservation-is-released)). The page falls back to `/mcp` for the contact |
+
 - Any other error a route doesn't handle reaches the app's error handler, which answers in the route's contract (JSON on `/chat` and `/stats`, a JSON-RPC error `-32603` with `data.code: "unavailable"` on `/mcp`, both `503`), never a plain-text `500`; the CORS headers stay on.
 - If settling fails once the answer has streamed, the error is logged and the request's reservation stays until it expires, then is charged at its worst case, covering whatever the request spent. Recording usage stats is best effort everywhere.
 - Errors are logged with the collection only (`spend`, `dailySpend`, `usage`), never the document id, which can hold a client IP, nor Firestore's response body.

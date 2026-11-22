@@ -1,35 +1,15 @@
-// Usage monitoring: weekly aggregates of chat and MCP requests, served
-// publicly by `GET /stats` (docs/usage-stats.md).
+// Usage stats: weekly aggregates served by `GET /stats`, and the
+// `chat_error_rate` alert's window, in one `usage/<YYYY-Www>` document per
+// week. What is recorded, batching and the document's shape:
+// docs/usage-stats.md; the alert: docs/logs-and-alerts.md.
 //
-// One document per ISO week (`usage/<YYYY-Www>`) in the same `DocumentStore`
-// as the guardrails (Firestore in production, memory locally). Each chat
-// request is folded into it once, when it ends: its outcome, tokens, estimated
-// cost (list prices, `pricing.ts`) and latency as fixed histogram buckets, so
-// percentiles can be read back without keeping any sample. MCP requests are
-// only counted. Nothing about the message content or the client is kept.
-//
-// MCP requests, refusals (a chat request's `http_429` or `http_503`, what a
-// flood is made of) and the hop-drift count are kept in memory and folded
-// into the document in batches, always inside a request: by the first one
-// that records usage once a batch is due (`flushEveryMs` after the last),
-// before `/stats` reads it, and on shutdown (`close`). No timer: Cloud Run
-// throttles the CPU outside requests. So a flood costs one write per batch,
-// not one per request.
-//
-// Recording is best effort: a failure is logged and swallowed, so it never
-// fails the request being recorded; a batch that fails to write is kept for
-// the next one.
-//
-// The same document watches the chat's error rate for the `chat_error_rate`
-// alert event (docs/logs-and-alerts.md): streamed requests and their
-// errors are also counted in 10-minute buckets (`errorWindow`, pruned past
-// the hour), and the event fires once when the last hour's rate passes the
-// threshold (noted under `alerted`, in the same atomic update), then once
-// more as `chat_error_rate_recovered` when it's back under. The hour doesn't
-// end with the week: a week's document starts its window (and the alert's
-// state) from the previous week's, which each instance reads once a week.
-//
-// Every chat request recorded is also logged, as one `chat_request` line.
+// Batches are written only inside a request (`flushEveryMs`, before `/stats`
+// reads, and in `close`), never by a timer: Cloud Run throttles the CPU
+// outside requests. Recording is best effort: a failure is logged and
+// swallowed, never failing the request being recorded. Latency is kept as
+// histogram buckets, so percentiles need no samples; the alert's state is
+// noted under `alerted` in the same atomic update that crosses it. Every chat request
+// recorded is also logged, as one `chat_request` line.
 import type { TokenUsage } from "../../src/shared/chat-contract";
 import type {
   ChatOutcome,

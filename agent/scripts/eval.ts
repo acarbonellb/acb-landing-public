@@ -1,29 +1,11 @@
-// Agent evals (docs/evals.md; docs/adr/0001-agent-evals-record-replay.md).
+// Agent evals. What each command and flag does, and what --check fails on:
+// docs/evals.md; why record/replay: docs/adr/0001-agent-evals-record-replay.md.
 //
 //   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun] [--runs k]
-//     Live: runs every case k times (default 3, pass@k) against the configured
-//     model, records each case whose k runs all complete (every run in its
-//     recording; CI replays the first), appends the set's metrics to history.jsonl, then
-//     regenerates the report and summary. Defaults to LM Studio on localhost; any other
-//     server is a paid provider and needs --paid. Refused at a commit that
-//     already has a live run of the set, unless --rerun (marked `rerun`).
 //   tsx scripts/eval.ts rescore [--note "what the scoring change is"]
-//     Scores the stored recordings with the current cases and scoring (no
-//     model, no network), then regenerates the report and summary. With --note, appends a
-//     `rescored` entry with the note for every set; without it, only adds
-//     fingerprints to old entries and refuses scores that changed (ADR 0001).
 //   tsx scripts/eval.ts replay [--check]
-//     Replays the committed recordings (no model, no network) and writes the
-//     report, summary.json and the results paragraph of docs/evals.md; with --check, writes nothing and fails on stale
-//     or missing recordings, leaks, a history that doesn't match the
-//     recordings, or a report or summary that differs from the committed one.
-//     Never appends history.
 //   tsx scripts/eval.ts check [--paid] [--issue]
-//     The weekly live check: runs every case once against the configured
-//     model, scores it and compares the pass rate and leaks with the set's
-//     latest history entry. Writes no recordings, history, report or summary.
-//     With --issue, opens the check's issue or comments on the open one when it
-//     raises (through `gh`). Exits non-zero when a case ended in an error.
+//     Exits non-zero when a case ended in an error.
 import { execFileSync } from "node:child_process";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";

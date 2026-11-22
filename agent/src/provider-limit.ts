@@ -1,14 +1,9 @@
-// Watches for the model provider's own spend or credit limit (a workspace or
-// organization spend limit, or no credit left: `anthropic.ts`). Hitting it
-// means the code's spend cap (`spend-cap.ts`) and the provider's limit have
-// drifted apart, so the owner is told with a `provider_limit` alert event
-// (docs/logs-and-alerts.md).
-//
-// Once per crossing: the month's spend document notes the limit under
-// `alerted.provider_limit` when it's first hit, and clears it when a model
-// call next succeeds (logging `provider_limit_cleared`), so it holds across
-// instances and cold starts. Each instance also remembers the last state it
-// saw, so a model call that succeeds normally costs no store operation.
+// Watches for the model provider's own spend or credit limit (`anthropic.ts`)
+// and logs the `provider_limit` / `provider_limit_cleared` alert events once
+// per crossing, noted under `alerted.provider_limit` in the month's spend
+// document (docs/logs-and-alerts.md). Each instance also remembers the last
+// state it saw, so a model call that succeeds normally costs no store
+// operation.
 import type { DocumentStore } from "./document-store";
 import { logEvent, logStoreError } from "./log";
 import { ModelUnavailableError, type ModelClient } from "./model";

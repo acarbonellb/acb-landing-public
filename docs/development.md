@@ -1,5 +1,7 @@
 # Development
 
+Working on the site locally: running it, where content lives, how the chat finds the agent, and which suite tests what, so a change is checked where it can break, including on the Firestore emulator.
+
 ```bash
 pnpm install
 pnpm dev
@@ -51,7 +53,9 @@ Each test uses a project of its own, so the emulator needs no reset between runs
 
 ### The load test on the Firestore emulator
 
-`agent/scripts/load-test.ts` floods the guardrails locally: it starts the agent in its own process, wired like production (`createGuardrails`) over the Firestore emulator, with a fake model client, so no model call leaves the machine. For a fixed duration it sends `/chat`, `/mcp` and `/stats` twice each configured ceiling on a fresh rate-limit key per request, plus one key at twice its per-key limit, and reports per endpoint the requests, refusals by reason, errors and latency, the store's writes, reads and conflicts by collection (counted at the REST boundary), and any limit that let through more than its limit could (exit code 1 if one did). It is a script, not a CI test. It refuses to start unless the store is the Firestore emulator on this machine (`agent/src/load-test-guard.ts`, tested), so it can't reach production or a deployed revision.
+`agent/scripts/load-test.ts` floods the guardrails locally: it serves the agent from the script's own process, on a local port, wired like production (`createGuardrails`) over the Firestore emulator, with a fake model client, so no model call leaves the machine. For a fixed duration it sends `/chat`, `/mcp` and `/stats` twice each configured ceiling on a fresh rate-limit key per request, plus one key at twice its per-key limit. It is a script, not a CI test.
+
+It reports per endpoint the requests, refusals by reason, errors and latency, the store's writes, reads and conflicts by collection (counted at the REST boundary), and any limit that let through more than its limit could (exit code 1 if one did). It refuses to start unless the store is the Firestore emulator on this machine (`agent/src/load-test-guard.ts`, tested), so it can't reach production or a deployed revision.
 
 With the emulator from the section above on a port of its own:
 

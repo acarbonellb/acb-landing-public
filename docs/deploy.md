@@ -1,14 +1,23 @@
 # CI and deployment
 
-`.github/workflows/deploy.yml` runs lint, unit tests, the agent tests, the agent evals (replayed, see [Evals](evals.md#what-ci-gates)), build and browser tests on every push and pull request. A failing check blocks the deploy.
+How a push reaches production, and why what runs there is what was tested: CI builds the site and the agent once, tests that build, and the deploy ships exactly it, the agent first, then the site, keeping the old agent revision until the new one passes a smoke check. The steps done once by hand are in [One-time setup](#one-time-setup).
+
+`.github/workflows/deploy.yml` runs these jobs; a failing check blocks the deploy:
+
+| Job | Runs on | What it does |
+| --- | --- | --- |
+| `test` | Every push and pull request | Lint, unit tests, the agent tests, the agent evals (replayed, see [Evals](evals.md#what-ci-gates)), build and browser tests |
+| `rehearse-deploy` | Pull requests, and a manual dispatch on any branch but `main` (how the [ranges refresh](#ranges-refresh)'s PR gets its checks) | The deploy short of touching GCP |
+| `deploy-agent` | `main`, once `GCP_PROJECT_ID` and `AGENT_URL` are set | [Agent deploy](#agent-deploy) |
+| `deploy-site` | `main`, after `deploy-agent` succeeds, so the site never calls an agent that isn't live | [The site](#the-site), then its [smoke check](#smoke-check) |
+
+Deploy jobs never cancel each other halfway (`cancel-in-progress: false`: a newer run waits).
 
 ## Deploy what was tested
 
-The `test` job builds the site and the agent bundle once, with production settings (the site with `NEXT_PUBLIC_AGENT_URL` set to `AGENT_URL`), runs the browser tests against that build, hashes both (`scripts/artifact-hash.sh`: one sha256 over every file's path and bytes) and uploads them as the `site` and `agent-bundle` workflow artifacts. The browser tests never reach the production agent: `e2e/fixtures.ts` stubs its endpoints and refuses every request off the local server (ESLint makes every spec import `test` from there). The deploy jobs download those artifacts and stop unless their hash matches the tested one; the agent image must hold the same bundle (`scripts/image-bundle-hash.sh`) and Cloud Run gets it by digest, and the deploy checks the live page is the tested `out/index.html` byte for byte.
+The `test` job builds the site and the agent bundle once, with production settings (the site with `NEXT_PUBLIC_AGENT_URL` set to `AGENT_URL`), runs the browser tests against that build, hashes both (`scripts/artifact-hash.sh`: one sha256 over every file's path and bytes) and uploads them as the `site` and `agent-bundle` workflow artifacts. The browser tests never reach the production agent: `e2e/fixtures.ts` stubs its endpoints and refuses every request off the local server (ESLint makes every spec import `test` from there).
 
-On a pull request (and on a manual dispatch on any branch but `main`, which is how the ranges refresh's PR gets its checks), `rehearse-deploy` does all of that short of touching GCP: artifacts round-trip and match, the image builds on the pinned base and holds the tested bundle, and the pinned firebase-tools installs.
-
-Order on `main`: `deploy-agent`, then `deploy-site`, so the site never calls an agent that isn't live. Deploy jobs never cancel each other halfway (`cancel-in-progress: false`: a newer run waits).
+The deploy jobs download those artifacts and stop unless their hash matches the tested one; the agent image must hold the same bundle (`scripts/image-bundle-hash.sh`) and Cloud Run gets it by digest, and the deploy checks the live page is the tested `out/index.html` byte for byte. `rehearse-deploy` checks all of that short of touching GCP: artifacts round-trip and match, the image builds on the pinned base and holds the tested bundle, and the pinned firebase-tools installs.
 
 ## Pins
 
@@ -24,11 +33,15 @@ The agent runs as a separate Cloud Run service that the browser calls directly a
 
 ### Security headers
 
-Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site and the agent's origin). A static export can't use nonces, so the CSP allows each inline script by its hash: the theme script and the RSC payloads Next writes, which change with every build. So `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`, `src/lib/security-headers.ts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`. Every inline script has to be hashed, Next's own included, or the page doesn't hydrate, and those hashes only exist once the build has run, so the CSP can't be committed. The deploy ships that file (`firebase deploy --config out/firebase.json`); the committed one has no CSP and isn't deployed on its own: edit headers, rewrites and the rest there, and the CSP in `src/lib/security-headers.ts`. The browser tests serve every page with those headers and fail on any CSP violation.
+Every page gets `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a Content Security Policy (`frame-ancestors 'none'`, no plugins, `connect-src` limited to the site and the agent's origin). The browser tests serve every page with those headers and fail on any CSP violation.
+
+A static export can't use nonces, so the CSP allows each inline script by its hash: the theme script and the RSC payloads Next writes, which change with every build. Every inline script has to be hashed, Next's own included, or the page doesn't hydrate, and those hashes only exist once the build has run, so the CSP can't be committed. So `pnpm build` ends by writing `out/firebase.json` (`scripts/hosting-config.mts`, `src/lib/security-headers.ts`): the committed `firebase.json` plus the CSP for that build and its `NEXT_PUBLIC_AGENT_URL`.
+
+The deploy ships that file (`firebase deploy --config out/firebase.json`); the committed one has no CSP and isn't deployed on its own. Edit headers, rewrites and the rest there, and the CSP in `src/lib/security-headers.ts`.
 
 ### Repository variables
 
-The deploy jobs run only on `main` and only once `GCP_PROJECT_ID` and `AGENT_URL` are set. They use these repository variables:
+The deploy jobs use these repository variables:
 
 | Variable | Value |
 | --- | --- |
@@ -44,21 +57,37 @@ The Workload Identity provider only accepts GitHub OIDC tokens from this reposit
 
 ### Smoke check
 
-After deploying, `deploy-site` checks the live page is the tested build, then a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell" and the [security headers](#security-headers), and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
+Once the live page matches the tested build, a **smoke check** (`scripts/smoke-check.sh`, runnable locally) fails the workflow unless `SITE_URL` answers 200 with a page containing "Alberto Carbonell" and the [security headers](#security-headers), and every host in `REDIRECT_HOSTS` answers 301 over http and https and ends on `SITE_URL`. Each check gets five attempts, 10 s apart.
 
 ## Agent deploy
 
-The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It takes the tested bundle, builds `agent/Dockerfile` (just the bundle on a pinned `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys it by digest to the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance, as the rate limits are in memory (see [Guardrails](guardrails.md#rate-limits-are-per-instance)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key`, `CONTACT_EMAIL` from the secret `contact-email` and `ANSWER_SIGNING_KEY` from the secret `answer-signing-key` (all readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](guardrails.md#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults ([configuration](agent.md#configuration)). The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
+The `deploy-agent` job takes the tested bundle, builds the image and deploys it by digest to Cloud Run:
+
+| Setting | Value |
+| --- | --- |
+| Image | `agent/Dockerfile`: just the bundle on a pinned `node:24-slim`, pushed to Artifact Registry as `europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>` |
+| Service | Cloud Run `agent` in `europe-southwest1`: scale to zero, at most one instance, as the rate limits are in memory ([Guardrails](guardrails.md#rate-limits-are-per-instance)) |
+| Runs as | `agent-runtime` |
+| Secrets (Secret Manager, readable only by `agent-runtime`) | `ANTHROPIC_API_KEY` from `anthropic-api-key`, `CONTACT_EMAIL` from `contact-email`, `ANSWER_SIGNING_KEY` from `answer-signing-key` |
+| `ALLOWED_ORIGINS` | `SITE_URL` |
+| `AGENT_STORE` | The repository variable of the same name: `firestore` when unset, never `memory` ([Shared store](guardrails.md#shared-store)), with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID` |
+| Model and its prices | The code defaults ([configuration](agent.md#configuration)) |
+
+The contact address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public. The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
 
 The rollout keeps the serving revision until the new one has passed:
 
 1. It records the revision serving 100% of traffic (a split stops the job before anything changes).
 2. It deploys the new revision with `--no-traffic` under the tag `candidate`, which gives it its own URL.
-3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL: `/health`, then the deep check `/health?deep=1` ([health check](chat-contract.md#health-check)), which must answer 200, so a revision whose store read fails or that lacks a required secret never takes traffic; that `/mcp` lists the five tools, that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers). It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving.
-4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the smoke check runs on `AGENT_URL` without `--agent-only`: it adds `/mcp` on the site's domain (through the Hosting rewrite) and leaves out the deep check, which already passed on the same revision and whose rate limit anyone can use up on the public URL, so a flood can't make this step roll a good deploy back (`scripts/agent-smoke-check.test.ts` pins that). If that fails, traffic goes back to the recorded revision.
+3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL. It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving. It checks:
+   - `/health`, then the deep check `/health?deep=1` ([health check](chat-contract.md#health-check)), which must answer 200, so a revision whose store read fails or that lacks a required secret never takes traffic;
+   - that `/mcp` lists the five tools, and `get_contact` returns an email (without printing it);
+   - that `/stats` answers the weekly JSON to any origin;
+   - that `/chat` allows the site's origin (CORS preflight), rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers).
+4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the smoke check runs on `AGENT_URL` without `--agent-only`. If that fails, traffic goes back to the recorded revision. This run adds `/mcp` on the site's domain (through the Hosting rewrite) and leaves out the deep check, which already passed on the same revision and whose rate limit anyone can use up on the public URL, so a flood can't make this step roll a good deploy back (`scripts/agent-smoke-check.test.ts` pins that).
 5. The `candidate` tag is removed, pass or fail, so no extra public URL outlives the job.
 
-Traffic stays pinned to a named revision after this, so a manual `gcloud run deploy` doesn't take traffic on its own: move it with `gcloud run services update-traffic agent --region europe-southwest1 --to-revisions <revision>=100` (or `--to-latest`). The site deploys only after this job succeeds.
+Traffic stays pinned to a named revision after this, so a manual `gcloud run deploy` doesn't take traffic on its own: move it with `gcloud run services update-traffic agent --region europe-southwest1 --to-revisions <revision>=100` (or `--to-latest`).
 
 ### One-time setup
 

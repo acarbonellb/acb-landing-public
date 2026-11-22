@@ -3,22 +3,13 @@
 # notification channel and one log-based alert policy per alert event
 # (docs/logs-and-alerts.md). Run by the owner, by hand; never in CI.
 #
-#   setup [--dry-run] <project-id> <email>
-#       Creates the channel and the policies, or updates them in place when
-#       they exist (matched by display name), so re-running it after a change
-#       or a rebuilt project converges on the same set. --dry-run runs no gcloud
-#       command: it prints every command the setup would run, and the channel
-#       and policy files it would pass.
-#   test [--dry-run] <project-id> [event]
-#       Writes one synthetic log entry for `event` (default store_unavailable)
-#       as if the agent had logged it, so its policy fires and emails the
-#       channel (within a few minutes). The entry carries "test": true.
+#   setup [--dry-run] <project-id> <email>   create or update in place, by display name
+#   test [--dry-run] <project-id> [event]     one synthetic alert event (default store_unavailable)
 #
-# The email address is only ever an argument: it goes to gcloud in a temporary
-# file (mode 600, deleted on exit), never on a command line, and this script
-# never prints it. The channel and policies hold no address beyond the
-# channel's own label. Needs gcloud's beta component (notification channels
-# have no GA command): gcloud components install beta.
+# What each does and when to run it: docs/logs-and-alerts.md#alerts-cloud-monitoring.
+# The email address never reaches a command line or the output: it goes to
+# gcloud in a temporary file (mode 600, deleted on exit). Notification
+# channels have no GA command, so this needs `gcloud components install beta`.
 set -euo pipefail
 
 usage() {

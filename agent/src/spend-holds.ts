@@ -1,28 +1,14 @@
 // The reservation mechanics shared by the monthly spend cap (`spend-cap.ts`)
 // and the daily quota (`daily-quota.ts`): one spend document per limit and
-// period, holding what was charged (`spentUsd`) and the reservations of the
-// requests running (`holds`, each with its worst case and `expireAt`).
+// period, with `spentUsd` and the running requests' `holds`. A request
+// reserves its worst case, then settles to what it actually spent, charged in
+// full even past the reservation (the worst-case input is an estimate). An
+// expired hold is charged at its worst case by the next reservation on the
+// document. Why, and when a hold is released: docs/guardrails.md.
 //
-// A chat request RESERVES its worst-case cost if it fits under the limit,
-// keeps the actual usage of its model calls in memory while it runs, and
-// SETTLES once it ends: the hold is replaced by what the request actually
-// spent. So a request writes each document twice, to reserve and to settle,
-// whatever number of model calls it makes. Actual usage is always charged in
-// full, even past the reservation (the worst-case input is an estimate).
-//
-// Each reservation expires after its TTL. A hold still there by then was
-// never settled (its instance died, or the settle couldn't be written): the
-// next reservation on the document charges it at its worst case, as what the
-// request actually spent was only ever in that instance's memory. So a lost
-// settle never under-counts spend; it over-counts by what the request didn't
-// use.
-//
-// A limit can also have alert events (`SpendAlerts`, the spend cap's;
-// docs/logs-and-alerts.md, "Alert events"): a share of the limit first reached, and its first
-// refusal. Each fires once per document (so per period): it is noted under
-// `alerted`, in the same atomic update that crossed it (a settle, or the
-// reservation that charges an expired hold), so it holds across instances and
-// cold starts.
+// Alert events (`SpendAlerts`, docs/logs-and-alerts.md) are noted under
+// `alerted` in the same atomic update that crossed them (a settle, or the
+// reservation that charges an expired hold), so each fires once per document.
 import { randomUUID } from "node:crypto";
 import type { DocumentStore, StoreChange, StoreDocument } from "./document-store";
 import { logStoreError } from "./log";
