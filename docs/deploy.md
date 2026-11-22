@@ -93,6 +93,34 @@ gcloud firestore fields ttls update expireAt --collection-group dailySpend --ena
 
 The deploy uses `firestore` unless the repository variable `AGENT_STORE` says otherwise, so the database must exist before the agent's first deploy; until then the new revision can't reach its store and requests answer `500`. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
 
+#### The weekly live eval check
+
+The [weekly live check](evals.md#weekly-live-check) (`.github/workflows/live-eval.yml`) reads the Anthropic key from the secret `ANTHROPIC_API_KEY` of the GitHub environment `live-eval`, whose deployment branches are restricted to `main`, so a workflow run from any other branch (a PR, or a dispatch on a feature branch) can't read it. Create the environment and copy the key from Secret Manager, piping it so it is never printed or written to disk:
+
+```bash
+REPO=acarbonellb/acb-landing-public
+gh api -X PUT "repos/$REPO/environments/live-eval" --input - <<<'{"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":true}}'
+gh api -X POST "repos/$REPO/environments/live-eval/deployment-branch-policies" -f name=main -f type=branch
+gcloud secrets versions access latest --secret anthropic-api-key --project acb-landing |
+  gh secret set ANTHROPIC_API_KEY --env live-eval --repo "$REPO"
+```
+
+Then dispatch it once from `main` (`gh workflow run live-eval.yml --ref main`) and check it ran green.
+
+#### Rotating the Anthropic key
+
+The key now lives in two places: the Secret Manager secret `anthropic-api-key` (the agent) and the `live-eval` environment's secret (the weekly check). To rotate it, create the new key in the Claude Console, add it as a new version without printing it, copy that version to the environment, then revoke the old key:
+
+```bash
+read -rs KEY # paste the key: not echoed
+printf %s "$KEY" | gcloud secrets versions add anthropic-api-key --project acb-landing --data-file=-
+unset KEY
+gcloud secrets versions access latest --secret anthropic-api-key --project acb-landing |
+  gh secret set ANTHROPIC_API_KEY --env live-eval --repo acarbonellb/acb-landing-public
+```
+
+The agent reads `anthropic-api-key:latest` when a revision starts, so redeploy it (re-run the latest `main` deploy) before revoking the old key, or the serving revision keeps the old one until its next cold start.
+
 #### Alerts
 
 The Cloud Monitoring alert policies: [Logs and alerts](logs-and-alerts.md#alerts-cloud-monitoring).
