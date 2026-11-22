@@ -376,6 +376,8 @@ describe("chat error rate events", () => {
         pricing,
         now: time.now,
         errorRateAlert: { threshold: 0.2, minRequests: 5 },
+        // Every request writes its batch, so each crossing is logged by the request that caused it.
+        flushEveryMs: 0,
       }),
     });
   }

@@ -3,9 +3,9 @@
 // week. What is recorded, batching and the document's shape:
 // docs/usage-stats.md; the alert: docs/logs-and-alerts.md.
 //
-// Batches are written only inside a request (`flushEveryMs`, before `/stats`
-// reads, and in `close`), never by a timer: Cloud Run throttles the CPU
-// outside requests. Recording is best effort: a failure is logged and
+// Every request's usage joins a batch per week, written only inside a request
+// (`flushEveryMs`, before `/stats` reads, and in `close`), never by a timer:
+// Cloud Run throttles the CPU outside requests. Recording is best effort: a failure is logged and
 // swallowed, never failing the request being recorded. Latency is kept as
 // histogram buckets, so percentiles need no samples; the alert's state is
 // noted under `alerted` in the same atomic update that crosses it. Every chat request
@@ -78,9 +78,8 @@ export function logChatRequest(
 
 export interface UsageRecorder {
   /**
-   * Logs one chat request (`chat_request`) and folds it into this week's
-   * aggregates; a refusal before streaming only joins the next batch. Never
-   * throws.
+   * Logs one chat request (`chat_request`) and counts it in the next batch,
+   * and writes the batch if it is due. Never throws.
    */
   recordChat(record: ChatRecord): Promise<void>;
   /**
@@ -189,8 +188,16 @@ type WeekDoc = {
   alerted: Record<string, boolean>;
 };
 
+/** A chat request that ran, waiting for the next batch, with when it was recorded. */
+type PendingChat = { record: ChatRecord; t: number };
+
 /** Counts waiting for the next batch, of one week. */
-type Batch = { refusals: Record<string, number>; mcpRequests: number; unknownGoogleHops: number };
+type Batch = {
+  refusals: Record<string, number>;
+  chats: PendingChat[];
+  mcpRequests: number;
+  unknownGoogleHops: number;
+};
 
 const refusedOutcomes: ChatOutcome[] = ["http_429", "http_503"];
 
@@ -371,7 +378,9 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
 
   function batchOf(week: string): Batch {
     let batch = batches.get(week);
-    if (!batch) batches.set(week, (batch = { refusals: {}, mcpRequests: 0, unknownGoogleHops: 0 }));
+    if (!batch) {
+      batches.set(week, (batch = { refusals: {}, chats: [], mcpRequests: 0, unknownGoogleHops: 0 }));
+    }
     return batch;
   }
 
@@ -403,23 +412,40 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     const pending = [...batches];
     batches.clear();
     await Promise.all(
-      pending.map(async ([week, { refusals, mcpRequests, unknownGoogleHops }]) => {
+      pending.map(async ([week, { refusals, chats, mcpRequests, unknownGoogleHops }]) => {
+        let tail: ErrorWindowTail = { alerted: false };
+        if (chats.length > 0) {
+          try {
+            tail = await tailBefore(week, chats[0].t);
+          } catch {
+            // The window then starts afresh, as with no previous week. Not
+            // logged: a store that fails this read fails the update below, which is.
+          }
+        }
+        // What the error-rate watch saw, in the update that was written.
+        let changes: ErrorRateChange[] = [];
         const written = await fold(
           "a batch of counted requests",
-          ({ chat, mcp }) => {
+          (doc) => {
+            const { chat, mcp } = doc;
             for (const [outcome, n] of Object.entries(refusals)) {
               chat.requests += n;
               add(chat.outcomes, outcome, n);
             }
+            changes = chats.map(({ record, t }) => foldChat(doc, record, t, tail));
             mcp.requests += mcpRequests;
             mcp.unknownGoogleHops += unknownGoogleHops;
           },
           week,
         );
-        if (written) return;
+        if (written) {
+          for (const change of changes) logErrorRate(week, change);
+          return;
+        }
         // Kept for the next batch, with whatever was counted meanwhile.
         const kept = batchOf(week);
         for (const [outcome, n] of Object.entries(refusals)) add(kept.refusals, outcome, n);
+        kept.chats.unshift(...chats);
         kept.mcpRequests += mcpRequests;
         kept.unknownGoogleHops += unknownGoogleHops;
       }),
@@ -437,41 +463,27 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     return summarize(readWeek(week, doc), startsAt);
   }
 
+  /** Folds one chat request that ran into its week's document, and counts it in the error window. */
+  function foldChat(doc: WeekDoc, record: ChatRecord, t: number, tail: ErrorWindowTail) {
+    const { outcome, usage, totalMs, firstTextMs } = record;
+    const { chat } = doc;
+    chat.requests++;
+    add(chat.outcomes, outcome);
+    if (usage) {
+      chat.inputTokens += usage.inputTokens;
+      chat.outputTokens += usage.outputTokens;
+      chat.costUsd += usageCostUsd(usage, pricing);
+    }
+    if (totalMs !== undefined) add(chat.totalMs, bucketOf(totalMs));
+    if (firstTextMs !== undefined) add(chat.firstTextMs, bucketOf(firstTextMs));
+    return countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert, tail);
+  }
+
   return {
     async recordChat(record) {
-      const { outcome, usage, totalMs, firstTextMs } = record;
       logChatRequest(record, pricing);
-      if (refusedOutcomes.includes(outcome)) {
-        add(thisWeeksBatch().refusals, outcome);
-        await flushIfDue();
-        return;
-      }
-      const t = now();
-      const { week } = isoWeek(t);
-      let tail: ErrorWindowTail;
-      try {
-        tail = await tailBefore(week, t);
-      } catch {
-        // The window then starts afresh, as with no previous week. Not logged:
-        // a store that fails this read fails the update below, which is.
-        tail = { alerted: false };
-      }
-      // What the error-rate watch saw, in the update that was written.
-      let rate: ErrorRateChange | undefined;
-      const written = await fold(`a chat request (${outcome})`, (doc) => {
-        const { chat } = doc;
-        chat.requests++;
-        add(chat.outcomes, outcome);
-        if (usage) {
-          chat.inputTokens += usage.inputTokens;
-          chat.outputTokens += usage.outputTokens;
-          chat.costUsd += usageCostUsd(usage, pricing);
-        }
-        if (totalMs !== undefined) add(chat.totalMs, bucketOf(totalMs));
-        if (firstTextMs !== undefined) add(chat.firstTextMs, bucketOf(firstTextMs));
-        rate = countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert, tail);
-      }, week);
-      if (written && rate) logErrorRate(week, rate);
+      if (refusedOutcomes.includes(record.outcome)) add(thisWeeksBatch().refusals, record.outcome);
+      else thisWeeksBatch().chats.push({ record, t: now() });
       await flushIfDue();
     },
     async recordMcp() {
