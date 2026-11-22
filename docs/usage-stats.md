@@ -17,7 +17,7 @@ Nothing is written one request at a time: each instance counts chat requests, MC
 | When | By |
 |---|---|
 | A batch is due (10 seconds since the last write; the first is due at once) | The next chat or MCP request that records usage, before it answers |
-| A `/stats` request arrives and a batch is waiting | `/stats`, before it reads, so it counts this instance's usage up to that moment |
+| A `/stats` request finds its [snapshot](#get-stats) stale and a batch is waiting | `/stats`, before it reads, so it counts this instance's usage up to that moment |
 | The instance shuts down (`SIGTERM`) | The shutdown handler, before and after the server closes |
 
 A batch that fails to write is logged and kept for the next one. So a flood costs one write per batch, not one per request, and the `chat_error_rate` alert is judged as each batch is written, up to 10 s after the request that crossed it. Another instance's pending batch is only written by its own next request or its shutdown, so `/stats` may lag behind it.
@@ -48,6 +48,10 @@ Histogram keys are bucket upper bounds in ms (`inf` past the last). `errorWindow
 
 Answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under its own [per-IP limit and global ceiling](guardrails.md#per-ip-rate-limits) (`RATE_LIMIT_STATS_PER_MINUTE`, `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`); `503 unavailable` if the store can't be read. The body is `StatsResponse` in [`src/shared/stats-contract.ts`](../src/shared/stats-contract.ts), which documents each field (`answered`, `errorRate`, the latency percentiles).
 
+It answers from an in-memory snapshot (`statsMaxAgeMs` in `agent/src/usage.ts`, 10 s): a call within 10 s of the last read gets that read's answer, with no store read or write. Once the snapshot is 10 s old the next call writes the waiting batch and reads both weeks again; calls that arrive while that read is in flight wait for it and share its answer. So `/stats` reflects this instance's usage recorded up to 10 s before it, and at most one call per 10 s reaches the store, whatever the traffic. A failed read isn't kept: the next call reads again.
+
+The snapshot is per instance, like the rate limits; the deploy runs one ([ADR 0003, amendment](adr/0003-agent-firestore-over-rest.md#amendment-128-rate-limits-are-per-instance-on-one-instance)), and during a canary each of the two revisions keeps its own.
+
 ## Cost
 
-One Firestore write per [batch](#batching) and two document reads per `/stats` call; all store operations per request are in [Store cost](guardrails.md#store-cost). Every batch in a week writes the same document, at most one every 10 s plus one per `/stats` call that finds a batch waiting: below Firestore's limit of about one sustained write per second per document at the default `/stats` ceiling, and a conflict only retries. One small document a week accumulates; no TTL is needed.
+One Firestore write per [batch](#batching) and two document reads per `/stats` call that finds its snapshot stale, at most one every 10 s; all store operations per request are in [Store cost](guardrails.md#store-cost). Every batch in a week writes the same document, at most one every 10 s plus one per stale `/stats` snapshot (so at most two every 10 s, whatever the `/stats` ceiling): below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.
