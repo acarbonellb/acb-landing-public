@@ -1,10 +1,8 @@
 // Rate limiting per rate-limit key (the client IP, or its /64 for IPv6) for the chat and MCP endpoints.
 //
-// Two implementations of `RateLimiter`: `createStoreRateLimiter` keeps the
-// counts in a shared `DocumentStore` (Firestore in production), so they hold
-// across Cloud Run instances and cold starts; `createMemoryRateLimiter` keeps
-// them in this process, for local development and tests.
-import type { DocumentStore } from "./document-store";
+// The counts are kept in this process (`createMemoryRateLimiter`), in
+// production too: the deploy runs one instance, so they are exact there, cost
+// no store writes and can't fail (ADR 0003, amendment).
 
 export type RateLimitDecision =
   | { allowed: true }
@@ -92,82 +90,6 @@ export function withGlobalCeiling(perKey: RateLimiter, ceiling: RateLimiter): Ra
     async hit(key) {
       const decision = await perKey.hit(key);
       return decision.allowed ? ceiling.hit(globalKey) : decision;
-    },
-  };
-}
-
-/**
- * Remembers the keys `limiter` refused until their wait ends, and refuses
- * them again locally, without asking `limiter` (so with no store read). A
- * fixed window that refused stays full until it ends, and the wait is rounded
- * up to whole seconds, so this never allows what `limiter` would refuse. With
- * several instances each keeps its own memory, which only refuses sooner.
- * At most `maxKeys` refusals are kept: expired ones are dropped first, then
- * the oldest; a forgotten key is simply asked about again.
- */
-export function withRefusalCache(
-  limiter: RateLimiter,
-  { maxKeys = 10_000, now = Date.now }: { maxKeys?: number; now?: () => number } = {},
-): RateLimiter {
-  /** Key to the time (ms since epoch) its refusal ends. */
-  const refusedUntil = new Map<string, number>();
-
-  function remember(key: string, until: number, t: number) {
-    if (refusedUntil.size >= maxKeys) {
-      for (const [k, end] of refusedUntil) if (end <= t) refusedUntil.delete(k);
-    }
-    while (refusedUntil.size >= maxKeys) {
-      refusedUntil.delete(refusedUntil.keys().next().value!);
-    }
-    refusedUntil.set(key, until);
-  }
-
-  return {
-    async hit(key) {
-      const t = now();
-      const until = refusedUntil.get(key);
-      if (until !== undefined) {
-        if (t < until) {
-          return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil((until - t) / 1000)) };
-        }
-        refusedUntil.delete(key);
-      }
-      const decision = await limiter.hit(key);
-      if (!decision.allowed) remember(key, t + decision.retryAfterSeconds * 1000, t);
-      return decision;
-    },
-  };
-}
-
-/** Collection of the store-backed windows, one document per limiter and key. */
-export const rateLimitCollection = "rateLimits";
-
-/**
- * Rate limiter over a shared store: each key's window is the document
- * `rateLimits/<name>:<key>`, updated atomically, so every instance counts
- * against the same limit. Each window carries `expireAt` (its end) for a
- * Firestore TTL policy to delete it.
- */
-export function createStoreRateLimiter(
-  options: RateLimitOptions & {
-    store: DocumentStore;
-    /** Tells limiters on the same store apart (e.g. "chat", "mcp"). */
-    name: string;
-  },
-): RateLimiter {
-  const { store, name, windowMs, now = Date.now } = options;
-  return {
-    hit(key) {
-      const t = now();
-      const path = `${rateLimitCollection}/${name}:${encodeURIComponent(key)}`;
-      return store.update(path, (doc) => {
-        const w = doc && { start: Number(doc.start), count: Number(doc.count) };
-        const { decision, next } = hitWindow(w, t, options);
-        return {
-          result: decision,
-          doc: next && { ...next, expireAt: new Date(next.start + windowMs) },
-        };
-      });
     },
   };
 }

@@ -15,7 +15,7 @@ import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
-import type { RateLimitDecision, RateLimiter } from "./rate-limit";
+import type { RateLimiter } from "./rate-limit";
 import type { SpendCap } from "./spend-cap";
 import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
@@ -122,34 +122,18 @@ const unhandledErrorFallback = (c: Context) =>
   jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
 
 /**
- * What a route does when its store fails: `open` keeps answering without the
- * guardrail, `closed` refuses (the error reaches `app.onError`, which answers
- * in the route's error contract).
- */
-type StoreFailurePolicy = "open" | "closed";
-
-/**
  * Per-client rate limit: lets the request through, or sets `Retry-After` and
- * answers with `refuse` (each endpoint words the refusal in its protocol). If
- * the limiter's store fails, `onStoreFailure` decides.
+ * answers with `refuse` (each endpoint words the refusal in its protocol).
+ * The limiters are in memory (ADR 0003, amendment), so there is no store to
+ * fail here and no policy for it.
  */
 function rateLimit(
   limiter: RateLimiter,
   rateLimitKey: (c: Context) => string,
-  onStoreFailure: StoreFailurePolicy,
   refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
-    let decision: RateLimitDecision;
-    try {
-      decision = await limiter.hit(rateLimitKey(c));
-    } catch (error) {
-      if (onStoreFailure === "closed") throw error;
-      logStoreError("rate_limit", `Rate limit: store failed, letting ${c.req.path} through`, error, {
-        route: c.req.path,
-      });
-      return next();
-    }
+    const decision = await limiter.hit(rateLimitKey(c));
     if (decision.allowed) return next();
     c.header("Retry-After", String(decision.retryAfterSeconds));
     return refuse(c, decision.retryAfterSeconds);
@@ -241,7 +225,7 @@ export function createApp(deps: AppDeps): Hono {
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(statsRateLimiter, rateLimitKey, "open", (c) =>
+    rateLimit(statsRateLimiter, rateLimitKey, (c) =>
       jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
     ),
     async (c) => {
@@ -285,7 +269,7 @@ export function createApp(deps: AppDeps): Hono {
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, mcpRateLimitKey, "open", (c, retryAfterSeconds) =>
+    rateLimit(mcpRateLimiter, mcpRateLimitKey, (c, retryAfterSeconds) =>
       jsonRpcError(c, 429, -32000, httpErrorMessages.rateLimited, {
         code: "rate_limited",
         retryAfterSeconds,
@@ -327,7 +311,7 @@ export function createApp(deps: AppDeps): Hono {
     paths.chat,
     markChatStart,
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, rateLimitKey, "closed", async (c, retryAfterSeconds) => {
+    rateLimit(chatRateLimiter, rateLimitKey, async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
       return jsonError(c, 429, {
         code: "rate_limited",

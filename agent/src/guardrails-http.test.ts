@@ -7,7 +7,7 @@ import { loadConfig } from "./config";
 import { createMemoryDailyQuota } from "./daily-quota";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
-import { createMemoryRateLimiter, rateLimitCollection } from "./rate-limit";
+import { createMemoryRateLimiter } from "./rate-limit";
 import { listen, type RunningServer } from "./server";
 import { createMemorySpendCap, type SpendCap } from "./spend-cap";
 import { testAppDeps } from "./test-deps";
@@ -358,39 +358,86 @@ describe("/stats rate limits", () => {
   });
 });
 
-describe("local refusal cache over the shared store", () => {
-  /** A memory store that counts the rate-limit windows it reads. */
-  function countingStore() {
+describe("rate limits in memory, over the shared store", () => {
+  /** A memory store that records the path of every update. */
+  function recordingStore() {
     const inner = createMemoryDocumentStore();
-    const counter = { rateLimitReads: 0 };
+    const paths: string[] = [];
     const store: DocumentStore = {
       update(path, change) {
-        if (path.startsWith(`${rateLimitCollection}/`)) counter.rateLimitReads++;
+        paths.push(path);
         return inner.update(path, change);
       },
     };
-    return { store, counter };
+    return { store, paths };
   }
 
-  it("refuses a key again with no store read once the store has refused it, until its window ends", async () => {
-    const { store, counter } = countingStore();
+  /** A store whose every update fails, like optimistic writes that keep conflicting. */
+  const conflictingStore: DocumentStore = {
+    update: async () => {
+      throw new Error("too much contention on these documents");
+    },
+  };
+
+  const statuses = async (requests: Promise<Response>[]) =>
+    (await Promise.all(requests)).map((res) => res.status);
+  const count = (list: number[], status: number) => list.filter((s) => s === status).length;
+  const ips = (n: number) => Array.from({ length: n }, (_, i) => `198.51.100.${i + 1}`);
+
+  it("holds the global ceilings under many concurrent requests, with no store writes for them", async () => {
+    const { store, paths: written } = recordingStore();
     const url = await start(
-      createGuardrails(store, loadConfig({ RATE_LIMIT_MCP_PER_MINUTE: "1" })),
+      createGuardrails(
+        store,
+        loadConfig({ RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "5", RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "4" }),
+      ),
     );
 
-    expect((await listTools(url, "198.51.100.1")).status).toBe(200);
-    const refused = await listTools(url, "198.51.100.1");
-    expect(refused.status).toBe(429);
-    const readsAtFirstRefusal = counter.rateLimitReads;
+    const mcp = await statuses(ips(40).map((ip) => listTools(url, ip)));
+    const stats = await statuses(ips(40).map((ip) => getStats(url, ip)));
 
-    for (let i = 0; i < 3; i++) {
-      const res = await listTools(url, "198.51.100.1");
-      expect(res.status).toBe(429);
-      expect(Number(res.headers.get("retry-after"))).toBeGreaterThan(0);
-    }
-    expect(counter.rateLimitReads).toBe(readsAtFirstRefusal);
-    // Another key is still asked about, and allowed.
-    expect((await listTools(url, "198.51.100.2")).status).toBe(200);
+    expect([count(mcp, 200), count(mcp, 429)]).toEqual([5, 35]);
+    expect([count(stats, 200), count(stats, 429)]).toEqual([4, 36]);
+    expect(written.filter((path) => path.startsWith("rateLimits/"))).toEqual([]);
+  });
+
+  it("holds the per-key windows under many concurrent requests from one key, with no store writes for them", async () => {
+    const { store, paths: written } = recordingStore();
+    const url = await start({
+      modelClient: createFakeModel(Array.from({ length: 30 }, () => ({ text: "Hi." }))),
+      ...createGuardrails(
+        store,
+        loadConfig({ RATE_LIMIT_CHAT_PER_MINUTE: "3", RATE_LIMIT_MCP_PER_MINUTE: "2" }),
+      ),
+    });
+
+    const chats = await statuses(Array.from({ length: 30 }, () => chat(url, "198.51.100.1")));
+    const mcp = await statuses(Array.from({ length: 30 }, () => listTools(url, "198.51.100.1")));
+
+    expect([count(chats, 200), count(chats, 429)]).toEqual([3, 27]);
+    expect([count(mcp, 200), count(mcp, 429)]).toEqual([2, 28]);
+    expect(written.filter((path) => path.startsWith("rateLimits/"))).toEqual([]);
+  });
+
+  it("keeps refusing /mcp past its ceiling when the store keeps failing, rather than letting it through", async () => {
+    const url = await start(
+      createGuardrails(conflictingStore, loadConfig({ RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: "3" })),
+    );
+
+    const mcp = await statuses(ips(20).map((ip) => listTools(url, ip)));
+
+    expect([count(mcp, 200), count(mcp, 429)]).toEqual([3, 17]);
+  });
+
+  it("keeps refusing /stats past its ceiling when the store keeps failing", async () => {
+    const url = await start(
+      createGuardrails(conflictingStore, loadConfig({ RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "3" })),
+    );
+
+    const stats = await statuses(ips(20).map((ip) => getStats(url, ip)));
+
+    // The three let through can't read the stats (503); every other one is refused.
+    expect([count(stats, 503), count(stats, 429)]).toEqual([3, 17]);
   });
 });
 
