@@ -31,12 +31,12 @@ export default defineConfig({
     },
     // Safari handles taps and focus differently from Chromium (a tap on the
     // mobile menu once did nothing on iOS Safari), so the mobile menu, the
-    // phone "ask my agent" flow and the phone layout also run on WebKit with a
-    // touch screen. Linux WebKit still focuses a tapped link, unlike iOS: the
+    // phone "ask my agent" flow, the phone layout and the cookie notice also
+    // run on WebKit with a touch screen. Linux WebKit still focuses a tapped link, unlike iOS: the
     // unit tests cover that case.
     {
       name: "webkit",
-      testMatch: ["mobile-menu.spec.ts", "contact-mobile.spec.ts", "layout.spec.ts"],
+      testMatch: ["mobile-menu.spec.ts", "contact-mobile.spec.ts", "layout.spec.ts", "cookie-notice.spec.ts"],
       use: { ...devices["iPhone XS"] },
     },
   ],

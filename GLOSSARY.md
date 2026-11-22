@@ -170,6 +170,10 @@ _Avoid_: stats bar, metrics, dashboard
 What PostHog measures on the page: visits, where they come from, scroll depth and clicks, for anonymous visitors. On only in a build with a PostHog project key. Not the agent's usage stats, which stay the exact figures for the agent, nor the usage line.
 _Avoid_: tracking, telemetry, stats, metrics
 
+**Cookie notice**:
+The one-line prompt at the bottom left that tells visitors, in a build with site analytics, that the site uses a cookie for analytics. Its `[ok]` only hides it, for good in that browser; it changes nothing about what is collected.
+_Avoid_: cookie banner, consent prompt, popup
+
 **Contact fallback**:
 How the page answers the contact question when the chat can't: with the address from the contact tool over MCP, or else a LinkedIn link.
 _Avoid_: backup, retry, contact form
