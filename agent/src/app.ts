@@ -11,11 +11,12 @@ import type { AnswerSigner, VerifiedConversation } from "./answer-signing";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { describeError, logEvent, logStoreError, withRequestId } from "./log";
 import type { DailyQuota } from "./daily-quota";
+import type { DeepHealthCheck } from "./health";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
-import type { RateLimiter } from "./rate-limit";
+import { globalKey, type RateLimiter } from "./rate-limit";
 import type { SpendCap, SpendCapStatus } from "./spend-cap";
 import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
@@ -40,6 +41,8 @@ export const httpErrorMessages = {
   dailyQuota:
     "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
   statsUnavailable: "Usage stats are unavailable.",
+  /** The deep health check failed; its reason is in the logs, not the answer. */
+  unhealthy: "The agent isn't ready to serve.",
   unsignedAnswer:
     "An earlier answer in this conversation is missing its signature or was changed, so the agent can't continue it. Reload the page to start a new conversation.",
   spendCap:
@@ -85,6 +88,10 @@ export type AppDeps = {
    * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
    */
   isUnknownGoogleHop: (c: Context) => boolean;
+  /** What `/health?deep=1` checks: one store read and the required production config (`health.ts`). */
+  deepHealth: DeepHealthCheck;
+  /** In memory, one window for all clients, so the deep check can't run up store reads. */
+  deepHealthRateLimiter: RateLimiter;
 };
 
 const jsonError = (
@@ -213,6 +220,8 @@ export function createApp(deps: AppDeps): Hono {
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop,
+    deepHealth,
+    deepHealthRateLimiter,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -233,7 +242,23 @@ export function createApp(deps: AppDeps): Hono {
     await withRequestId(requestId, next);
   });
 
-  app.get(paths.health, (c) => c.json({ status: "ok" }));
+  // Liveness only, unless `?deep=1` asks for the deep check (`health.ts`),
+  // which the post-deploy smoke check runs on the candidate revision. Each
+  // deep check reads the store, so they share one in-memory window.
+  app.get(
+    paths.health,
+    async (c, next) => (c.req.query("deep") === "1" ? next() : c.json({ status: "ok" })),
+    rateLimit(deepHealthRateLimiter, () => globalKey, (c) =>
+      jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
+    ),
+    async (c) => {
+      const report = await deepHealth.check();
+      if (!report.healthy) {
+        return jsonError(c, 503, { code: "unavailable", message: httpErrorMessages.unhealthy });
+      }
+      return c.json({ status: "ok" });
+    },
+  );
 
   // Public usage aggregates (no content, no IPs), read by the site from any
   // origin. Under its own per-IP limit and global ceiling.

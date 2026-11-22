@@ -31,6 +31,17 @@ JSON, an `HttpErrorBody` (what each code adds is documented on the type):
 | 429 | `rate_limited` | Too many requests from this IP, or its daily spend quota is used up. `Retry-After` is exposed to the browser via CORS |
 | 503 | `unavailable` | No model configured, or the monthly spend cap is reached (then `message` says so) |
 
+## Health check
+
+`GET /health` is liveness only: `200 {"status":"ok"}` whenever the process answers, without touching the store.
+
+`GET /health?deep=1` is the readiness check the post-deploy smoke check runs on the candidate revision ([Deploy](deploy.md#agent-deploy)). It reads one store document (`health/probe`, never written) and checks that the configuration production needs but the agent can start without is set: `ANTHROPIC_API_KEY`, `CONTACT_EMAIL` and `ANSWER_SIGNING_KEY`. It answers `200 {"status":"ok"}`, or an `HttpErrorBody` in the contract above:
+
+| Status | `code` | When |
+| --- | --- | --- |
+| 429 | `rate_limited` | More than 10 deep checks in the minute, all clients together (in memory, per instance; `deepHealthChecksPerMinute` in `agent/src/health.ts`), so the route can't run up store reads. `Retry-After` says when |
+| 503 | `unavailable` | The store read failed or a required setting is missing. The answer doesn't say which; the log line does (`store_error` with `operation: health_check`, or `config_missing`; see [Logs and alerts](logs-and-alerts.md#request-events)) |
+
 ## Stream
 
 Otherwise `200` with `Content-Type: text/event-stream`. Each SSE frame has `event: <type>` and `data: <JSON>`, a `ChatEvent` whose JSON also carries `type`. Use `fetch` and read the body (an `EventSource` can't `POST`). Events, in order of appearance:

@@ -56,7 +56,8 @@ export type StoreOperation =
   | "usage_stats"
   | "spend_record"
   | "spend_settle"
-  | "provider_limit";
+  | "provider_limit"
+  | "health_check";
 
 /** Logs one failed store operation as `store_error`, with the error described. */
 export function logStoreError(
