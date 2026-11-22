@@ -6,7 +6,7 @@ import { SiteAnalytics } from "./site-analytics";
 // without one is covered here (docs/analytics.md).
 describe("SiteAnalytics", () => {
   it("never requests the SDK in a build without a project key", async () => {
-    const load = vi.fn(async () => ({ init: vi.fn() }));
+    const load = vi.fn(async () => ({ init: vi.fn(), capture: vi.fn() }));
     const { container } = render(<SiteAnalytics projectKey={undefined} load={load} />);
 
     // Give a load that would follow hydration time to happen.
@@ -17,7 +17,7 @@ describe("SiteAnalytics", () => {
 
   it("loads the SDK once and starts it with the key in a build with one", async () => {
     const init = vi.fn();
-    const load = vi.fn(async () => ({ init }));
+    const load = vi.fn(async () => ({ init, capture: vi.fn() }));
     render(<SiteAnalytics projectKey="phc_test" load={load} />);
 
     await waitFor(() => expect(init).toHaveBeenCalledTimes(1));

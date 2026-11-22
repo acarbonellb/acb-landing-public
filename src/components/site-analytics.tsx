@@ -1,12 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { loadPostHog, posthogConfig, posthogKey, type PostHogClient } from "@/lib/analytics";
+import {
+  attachClient,
+  dropReports,
+  loadPostHog,
+  posthogConfig,
+  posthogKey,
+  type PostHogClient,
+} from "@/lib/analytics";
 
 /**
  * Starts site analytics once the page is interactive (docs/analytics.md).
  * Renders nothing; without a key it never loads the SDK, and if the SDK fails
- * to load the page goes on as if analytics were off.
+ * to load the page goes on as if analytics were off. Events reported before
+ * the SDK starts wait for it (`report`).
  */
 export function SiteAnalytics({
   projectKey = posthogKey,
@@ -21,9 +29,11 @@ export function SiteAnalytics({
     const start = () =>
       load()
         .then((posthog) => {
-          if (!cancelled) posthog.init(projectKey, posthogConfig);
+          if (cancelled) return;
+          posthog.init(projectKey, posthogConfig);
+          attachClient(posthog);
         })
-        .catch(() => {});
+        .catch(dropReports);
     if (document.readyState === "complete") start();
     else window.addEventListener("load", start, { once: true });
     return () => {
