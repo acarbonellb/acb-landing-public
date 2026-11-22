@@ -528,9 +528,8 @@ describe("monthly spend cap", () => {
           return {
             exhausted: false,
             reservation: {
-              record: (usage) => reservation.record(usage),
-              settle: async () => {
-                await reservation.settle();
+              settle: async (usage) => {
+                await reservation.settle(usage);
                 settled();
               },
             },

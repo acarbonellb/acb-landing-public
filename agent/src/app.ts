@@ -140,6 +140,9 @@ function rateLimit(
   };
 }
 
+/** The usage of a chat request refused before any model call. */
+const nothingSpent = { inputTokens: 0, outputTokens: 0 };
+
 /** Notes when a chat request arrived, in its context, for its latency (`usage.ts`). */
 const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>(async (c, next) => {
   c.set("chatStartedAt", performance.now());
@@ -369,17 +372,18 @@ export function createApp(deps: AppDeps): Hono {
         });
       }
       // Whether the spend cap refuses or its store throws, the quota's hold is
-      // settled first: a request that never runs mustn't keep it until it
-      // expires. The error then reaches `app.onError`, which answers `503`.
+      // settled first, with nothing spent: a request that never runs mustn't
+      // keep it until it expires, and then be charged its worst case. The
+      // error then reaches `app.onError`, which answers `503`.
       let spend: SpendCapStatus;
       try {
         spend = await spendCap.reserve(worstCase);
       } catch (error) {
-        await quota.reservation.settle();
+        await quota.reservation.settle(nothingSpent);
         throw error;
       }
       if (spend.exhausted) {
-        await quota.reservation.settle();
+        await quota.reservation.settle(nothingSpent);
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",

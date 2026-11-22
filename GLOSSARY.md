@@ -39,7 +39,7 @@ The estimated model spend one rate-limit key may use on the chat in a UTC day. A
 _Avoid_: daily limit, daily cap, allowance
 
 **Reservation**:
-The worst-case cost of one chat request, held against the daily quota and the spend cap while it runs so concurrent requests can't overshoot them, and settled to the actual cost when it ends.
+The worst-case cost of one chat request, held against the daily quota and the spend cap while it runs so concurrent requests can't overshoot them, and settled to the actual cost when it ends, in one write per limit. One never settled (its instance died) is charged at its worst case once it expires.
 _Avoid_: lock, booking, pre-authorization
 
 **Outcome**:

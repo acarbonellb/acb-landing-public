@@ -30,7 +30,7 @@ One output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model cal
 
 ## Monthly spend cap
 
-`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. Each model call's actual `usage` is then charged and the unused reservation released. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. That charge and the settle happen inside the request: its handler resolves only once they are in the store (`waitUntil` in `agent/src/server.ts`), so nothing waits for CPU after the response. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
+`agent/src/spend-cap.ts`: before calling the model, each chat request reserves its worst-case cost (its whole output budget plus a generous input estimate) and is refused with `503 unavailable` if that doesn't fit in what's left of `MONTHLY_SPEND_CAP_USD` this UTC month, so concurrent requests can't overshoot together. The actual `usage` of its model calls is added up in memory while it runs, and charged once, when the request settles, in place of the reservation: no store write happens between model calls. A call cut off because the visitor left is still charged, conservatively, at its output cap plus its input. That charge and the settle happen inside the request: its handler resolves only once they are in the store (`waitUntil` in `agent/src/server.ts`), so nothing waits for CPU after the response. MCP tools cost nothing and keep working. The chat shows the visitor the date it reopens (`resetsAt`).
 
 ## Daily quota
 
@@ -38,14 +38,14 @@ One output-token budget (`AGENT_MAX_REQUEST_TOKENS`) shared by all the model cal
 
 ### When a reservation is released
 
-A chat request holds a reservation against the daily quota and then the spend cap (`agent/src/app.ts`, `agent/src/spend-holds.ts`). Settling a reservation releases what it holds beyond what was charged:
+A chat request holds a reservation against the daily quota and then the spend cap (`agent/src/app.ts`, `agent/src/spend-holds.ts`). Settling a reservation replaces its hold with what the request actually spent (nothing, for a request that never ran):
 
 - **The quota refuses** (`429`): nothing was reserved, so nothing is held.
 - **The spend cap refuses** (`503`, `httpErrorMessages.spendCap`): the quota's reservation is settled before the answer.
 - **The spend cap's reservation throws** (a store error): the quota's reservation is settled, then the store-failure policy answers `503 unavailable` (see [When the store fails](#when-the-store-fails)), so a store error doesn't hold the visitor's quota.
-- **The quota's reservation throws**: no reservation was taken; the request answers `503 unavailable`. A hold the store wrote before failing (a commit whose reply timed out) expires like any other.
+- **The quota's reservation throws**: no reservation was taken; the request answers `503 unavailable`. A hold the store wrote before failing (a commit whose reply timed out) is never settled, so it expires and is charged like the next bullet's.
 - **The chat runs**: both reservations are settled once the run ends, however it ends (answered, failed, or the visitor left).
-- **Settling fails, or a model call's usage couldn't be recorded**: that reservation stays until it expires, 15 minutes after the request arrived.
+- **Settling fails, or never happens** (the store failed, or the instance died mid-request): that reservation stays until it expires, 15 minutes after the request arrived, and is then charged at its worst case, not released. What the request actually spent was only in its instance's memory, so the worst case is the one figure that never under-counts. The next reservation on that document charges it. A settle that still arrives later charges only what it spent beyond that worst case.
 
 The default ($0.10) comes from `/stats`: about $0.0004 per answer measured in week 45, so $0.10 is some 250 short answers or a few dozen long ones, far beyond a real visitor, and still above a maximal request's worst case (about $0.02 on Claude Haiku 5.5; a short question reserves about $0.01). Forty keys a day are needed to spend the $4 cap.
 
@@ -61,11 +61,11 @@ With `AGENT_STORE=memory`, the durable state (cap, daily quota, usage stats) is 
 
 With `AGENT_STORE=firestore` the durable state, the spend cap, the daily quota and the usage stats, lives in Firestore, so it survives cold starts and is shared by every revision: the month's spend no longer starts again at $0 when the service scales to zero. The agent talks to Firestore's REST API with plain `fetch` and the service account's token from the metadata server, so the bundle stays self-contained ([ADR 0003](adr/0003-agent-firestore-over-rest.md)). Creating the database is a one-time step in [Deploy](deploy.md#the-firestore-database); trying it locally against the emulator is in [Agent service](agent.md#running-it-locally).
 
-- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alerts](logs-and-alerts.md#alert-events)). A reservation whose instance died before settling stops counting after 15 minutes (Cloud Run's request timeout is 5); what that request spent stays charged.
+- **Spend**: one document per UTC month, `spend/<YYYY-MM>`, holding `spentUsd`, the `holds` of the requests running (each reservation's worst case and `expireAt`) and `alerted`, the alert events already fired this month (see [Logs and alerts](logs-and-alerts.md#alert-events)). A reservation never settled (its instance died) is charged at its worst case after 15 minutes (Cloud Run's request timeout is 5); see [When a reservation is released](#when-a-reservation-is-released).
 - **Daily quota**: one document per rate-limit key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (URL-encoded), shaped like the monthly spend document, with `expireAt`, the day's end, for the TTL policy.
 - **Usage**: one document per ISO week, `usage/<YYYY-Www>`, with the week's aggregates (see [Usage stats](usage-stats.md#the-weekly-document)).
 - **Concurrency**: every change is read, then committed with a precondition on the document's `updateTime` (or that it doesn't exist yet); if another request wrote in between, it is re-read and re-applied. So parallel requests can't both pass the limit or both fit under the same remaining room of a spend limit.
-- **Cost**: a chat request is about two writes to reserve (daily quota and spend cap), two per model call, two to settle and one for its usage stats; MCP requests and refusals share one batched usage write per instance every 10 seconds at most ([Usage stats](usage-stats.md#batching)), and a `/stats` call reads two documents. The rate limits write nothing. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
+- **Cost**: a chat request that runs is five writes, whatever number of model calls it makes: two to reserve (daily quota and spend cap), two to settle and one for its usage stats (checked in `agent/src/spend-writes-http.test.ts`); MCP requests and refusals share one batched usage write per instance every 10 seconds at most ([Usage stats](usage-stats.md#batching)), and a `/stats` call reads two documents. The rate limits write nothing. That is far inside Firestore's free tier (20K writes and 50K reads a day, on the `(default)` database).
 
 ### When the store fails
 
@@ -75,5 +75,5 @@ Every Firestore REST call (and the metadata server's token request) gives up aft
 - `/stats` keeps its rate limits too, and answers `503 unavailable` JSON if the aggregates can't be read; the page then hides its usage line.
 - `/chat` **fails closed**: a failed reservation (daily quota or spend cap) answers `503 unavailable` JSON (`errorMessages.unavailable`), so the chat never starts without a reservation; a quota reservation already taken is released first ([When a reservation is released](#when-a-reservation-is-released)). The page falls back to `/mcp` for the contact.
 - Any other error a route doesn't handle reaches the app's error handler, which answers in the route's contract (JSON on `/chat` and `/stats`, a JSON-RPC error `-32603` with `data.code: "unavailable"` on `/mcp`, both `503`), never a plain-text `500`; the CORS headers stay on.
-- If recording a model call's usage fails once the answer is streaming, the error is logged, the answer goes on, and the request's reservation stays until it expires, covering that call's cost. Recording usage stats is best effort everywhere.
+- If settling fails once the answer has streamed, the error is logged and the request's reservation stays until it expires, then is charged at its worst case, covering whatever the request spent. Recording usage stats is best effort everywhere.
 - Errors are logged with the collection only (`spend`, `dailySpend`, `usage`), never the document id, which can hold a client IP, nor Firestore's response body.
