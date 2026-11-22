@@ -5,7 +5,10 @@
 //
 // Every request's usage joins a batch per week, written only inside a request
 // (`flushEveryMs`, before `/stats` reads, and in `close`), never by a timer:
-// Cloud Run throttles the CPU outside requests. Recording is best effort: a failure is logged and
+// Cloud Run throttles the CPU outside requests. `/stats` answers from a
+// snapshot for `statsMaxAgeMs`, so its store operations are bounded by that
+// window, not by how often it is called.
+// Recording is best effort: a failure is logged and
 // swallowed, never failing the request being recorded. Latency is kept as
 // histogram buckets, so percentiles need no samples; the alert's state is
 // noted under `alerted` in the same atomic update that crosses it. Every chat request
@@ -96,7 +99,12 @@ export interface UsageRecorder {
   flush(): Promise<void>;
   /** Writes what is left, for shutdown. */
   close(): Promise<void>;
-  /** This week's and the previous week's aggregates, batched counts written first. */
+  /**
+   * This week's and the previous week's aggregates. Answered from the last
+   * read while it is younger than `statsMaxAgeMs`, with no store operation;
+   * once it is stale, the batched counts are written first and both weeks
+   * read again, once for all the calls waiting on it. A failed read isn't kept.
+   */
   stats(): Promise<StatsResponse>;
 }
 
@@ -110,6 +118,8 @@ export type UsageOptions = {
    * request that records usage then writes it.
    */
   flushEveryMs?: number;
+  /** How long `stats` answers from its last read, in ms. */
+  statsMaxAgeMs?: number;
   errorRateAlert?: ErrorRateAlert;
 };
 
@@ -130,6 +140,12 @@ const errorWindowMinutes = 60;
 
 /** Default batch interval: well inside `/stats`' cache. */
 export const defaultFlushEveryMs = 10_000;
+
+/**
+ * Default age past which `/stats` reads again: one batch interval, so it lags
+ * this instance's usage by at most that, well inside its 5-minute cache.
+ */
+export const defaultStatsMaxAgeMs = 10_000;
 
 /** Collection of the weekly usage documents. */
 export const usageCollection = "usage";
@@ -330,6 +346,7 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     pricing,
     now = Date.now,
     flushEveryMs = defaultFlushEveryMs,
+    statsMaxAgeMs = defaultStatsMaxAgeMs,
     errorRateAlert = defaultErrorRateAlert,
   } = options;
 
@@ -479,6 +496,19 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     return countStreamed(doc, t, outcome.startsWith("error:"), errorRateAlert, tail);
   }
 
+  /** The last read of the stats, and when it started. */
+  let snapshot: { at: number; stats: StatsResponse } | undefined;
+  /** The read in progress, shared by every call that finds the snapshot stale. */
+  let reading: Promise<StatsResponse> | undefined;
+
+  async function readBothWeeks(): Promise<StatsResponse> {
+    const at = now();
+    await flush();
+    const [current, previous] = await Promise.all([readStats(at), readStats(at - 7 * day)]);
+    snapshot = { at, stats: { current, previous } };
+    return snapshot.stats;
+  }
+
   return {
     async recordChat(record) {
       logChatRequest(record, pricing);
@@ -495,11 +525,12 @@ export function createUsageRecorder(options: UsageOptions): UsageRecorder {
     },
     flush,
     close: flush,
-    async stats() {
-      await flush();
-      const t = now();
-      const [current, previous] = await Promise.all([readStats(t), readStats(t - 7 * day)]);
-      return { current, previous };
+    stats() {
+      if (snapshot && now() - snapshot.at < statsMaxAgeMs) return Promise.resolve(snapshot.stats);
+      reading ??= readBothWeeks().finally(() => {
+        reading = undefined;
+      });
+      return reading;
     },
   };
 }

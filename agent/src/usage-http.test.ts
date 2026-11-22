@@ -98,6 +98,74 @@ describe("GET /stats", () => {
     expect((await get("198.51.100.2, 66.249.93.229")).status).toBe(429);
   });
 
+  describe("served from a snapshot", () => {
+    /** A memory store that counts every operation: each update reads, some also write. */
+    function operationCountingStore() {
+      const inner = createMemoryDocumentStore();
+      const counter = { operations: 0, down: false };
+      const store: DocumentStore = {
+        update: (path, change) => {
+          counter.operations++;
+          if (counter.down) return Promise.reject(new Error("Firestore down"));
+          return inner.update(path, change);
+        },
+      };
+      return { store, counter };
+    }
+
+    async function startWithClock() {
+      const { store, counter } = operationCountingStore();
+      const clock = { t: Date.parse("2026-11-18T12:00:00Z") };
+      const usage = createUsageRecorder({ store, pricing, now: () => clock.t, flushEveryMs: 60_000 });
+      const { url } = await start([], { usage });
+      return { url, clock, counter };
+    }
+
+    it("answers from memory for 10 s after a read: no store read or write", async () => {
+      const { url, clock, counter } = await startWithClock();
+      expect((await listTools(url)).status).toBe(200); // the first batch is due at once
+      expect((await listTools(url)).status).toBe(200); // waits in the batch
+      const first = await stats(url);
+      expect(first.current.mcp.requests).toBe(2);
+      const operations = counter.operations;
+
+      expect((await listTools(url)).status).toBe(200);
+      clock.t += 9_999;
+      expect(await stats(url)).toEqual(first);
+      expect(counter.operations).toBe(operations);
+    });
+
+    it("once stale, writes the waiting usage and reads again", async () => {
+      const { url, clock, counter } = await startWithClock();
+      await stats(url);
+      expect((await listTools(url)).status).toBe(200);
+      expect((await listTools(url)).status).toBe(200);
+      const operations = counter.operations;
+
+      clock.t += 10_000;
+      expect((await stats(url)).current.mcp.requests).toBe(2);
+      expect(counter.operations).toBeGreaterThan(operations);
+    });
+
+    it("reads once for concurrent calls that find it stale", async () => {
+      const { url, counter } = await startWithClock();
+      const results = await Promise.all(Array.from({ length: 5 }, () => stats(url)));
+      expect(new Set(results.map((r) => JSON.stringify(r))).size).toBe(1);
+      // This week's and last week's documents; nothing waiting to write.
+      expect(counter.operations).toBe(2);
+    });
+
+    it("isn't kept when the read fails: the next call reads again", async () => {
+      const { url, counter } = await startWithClock();
+      const error = vi.spyOn(console, "error").mockImplementation(() => {});
+      counter.down = true;
+      expect((await fetch(new URL(paths.stats, url))).status).toBe(503);
+      counter.down = false;
+      expect((await fetch(new URL(paths.stats, url))).status).toBe(200);
+      error.mockRestore();
+    });
+  });
+
   it("answers 503 when the aggregates can't be read", async () => {
     const broken: DocumentStore = {
       update: async () => {
@@ -225,7 +293,7 @@ describe("usage recording", () => {
       expect(await stored(store)).toBe(3);
     });
 
-    it("are counted by /stats as soon as they have answered", async () => {
+    it("are counted by /stats at most 10 s after they have answered", async () => {
       let t = Date.parse("2026-11-18T12:00:00Z");
       const { url } = await start([], {
         usage: createUsageRecorder({
@@ -235,10 +303,16 @@ describe("usage recording", () => {
           flushEveryMs: 60_000,
         }),
       });
+      expect((await stats(url)).current.mcp.requests).toBe(0);
       for (let i = 0; i < 3; i++) {
         t += 1000;
         expect((await listTools(url)).status).toBe(200);
       }
+      // Still the snapshot read before them, until it is 10 s old...
+      t += 6_999;
+      expect((await stats(url)).current.mcp.requests).toBe(0);
+      // ...then the next call writes the waiting batch and reads it back.
+      t += 1;
       expect((await stats(url)).current.mcp.requests).toBe(3);
     });
 

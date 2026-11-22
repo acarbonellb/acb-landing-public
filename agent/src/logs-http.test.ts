@@ -26,6 +26,7 @@ afterEach(async () => {
   await server?.close();
   server = undefined;
   vi.restoreAllMocks();
+  vi.useRealTimers();
 });
 
 const origin = "https://albertocarbonell.dev";
@@ -169,11 +170,16 @@ describe("store failure events", () => {
 
   it("logs store_unavailable once when the store starts failing, and store_recovered once it works again", async () => {
     const store = flakyStore();
+    // Each call finds `/stats`' snapshot stale, so it reaches the store.
+    vi.useFakeTimers({ toFake: ["Date"] });
     // More /stats calls than the default per-IP limit allows.
     const url = await start(
       createGuardrails(store, loadConfig({ RATE_LIMIT_STATS_PER_MINUTE: "10", RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: "10" })),
     );
-    const stats = () => fetch(new URL(paths.stats, url));
+    const stats = () => {
+      vi.setSystemTime(Date.now() + 10_000);
+      return fetch(new URL(paths.stats, url));
+    };
 
     await stats();
     store.down = true;

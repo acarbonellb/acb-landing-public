@@ -94,7 +94,8 @@ describe("createUsageRecorder", () => {
   });
 
   it("reads p50 and p95 from the latency buckets", async () => {
-    const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing });
+    const clock = fakeClock("2026-11-04T10:00:00Z");
+    const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing, now: clock.now });
     // 18 fast answers (≤ 2 s), one slow (≤ 10 s), one past the last bucket.
     for (let i = 0; i < 18; i++) await usage.recordChat(answered(1500 + i * 10));
     await usage.recordChat(answered(9000));
@@ -104,6 +105,7 @@ describe("createUsageRecorder", () => {
     expect(latency).toEqual({ p50Ms: 2000, p95Ms: 10_000 });
 
     await usage.recordChat(answered(400_000));
+    clock.set("2026-11-04T10:00:10Z"); // past the stats' snapshot
     // Now 2 of 21 are past the last bucket: p95 has no upper bound.
     expect((await usage.stats()).current.chat.latency).toEqual({ p50Ms: 2000, p95Ms: null });
   });
