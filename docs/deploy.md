@@ -48,14 +48,14 @@ After deploying, `deploy-site` checks the live page is the tested build, then a 
 
 ## Agent deploy
 
-The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It takes the tested bundle, builds `agent/Dockerfile` (just the bundle on a pinned `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys it by digest to the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance (see [Guardrails](guardrails.md#in-memory)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key`, `CONTACT_EMAIL` from the secret `contact-email` and `ANSWER_SIGNING_KEY` from the secret `answer-signing-key` (all readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](guardrails.md#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults ([configuration](agent.md#configuration)). The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
+The `deploy-agent` job runs on `main` once the `AGENT_URL` variable is set. It takes the tested bundle, builds `agent/Dockerfile` (just the bundle on a pinned `node:24-slim`), pushes it to Artifact Registry (`europe-southwest1-docker.pkg.dev/acb-landing/agent/agent:<sha>`) and deploys it by digest to the Cloud Run service `agent` in `europe-southwest1`: scale to zero, at most one instance, as the rate limits are in memory (see [Guardrails](guardrails.md#rate-limits-are-per-instance)), running as `agent-runtime`, with `ANTHROPIC_API_KEY` from the Secret Manager secret `anthropic-api-key`, `CONTACT_EMAIL` from the secret `contact-email` and `ANSWER_SIGNING_KEY` from the secret `answer-signing-key` (all readable only by `agent-runtime`; the address never goes through GitHub variables or the workflow, as the repo and its Actions logs are public), `ALLOWED_ORIGINS` set to `SITE_URL`, and `AGENT_STORE` from the variable of the same name (`firestore` when unset, never `memory`; see [Shared store](guardrails.md#shared-store)) with `FIRESTORE_PROJECT_ID` set to `GCP_PROJECT_ID`. The model and its prices are the code defaults ([configuration](agent.md#configuration)). The service's public (`allUsers`) invoker binding was set once by hand; deploys never change IAM, so `github-deploy` only has Cloud Run Developer, Service Account User on `agent-runtime` and Artifact Registry Writer on the `agent` repository.
 
 The rollout keeps the serving revision until the new one has passed:
 
 1. It records the revision serving 100% of traffic (a split stops the job before anything changes).
 2. It deploys the new revision with `--no-traffic` under the tag `candidate`, which gives it its own URL.
-3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL: `/health`, that `/mcp` lists the five tools, that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers). It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving.
-4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the full smoke check runs on `AGENT_URL`, adding `/mcp` on the site's domain (through the Hosting rewrite). If that fails, traffic goes back to the recorded revision.
+3. `scripts/agent-smoke-check.sh --agent-only` runs against that tag URL: `/health`, then the deep check `/health?deep=1` ([health check](chat-contract.md#health-check)), which must answer 200, so a revision whose store read fails or that lacks a required secret never takes traffic; that `/mcp` lists the five tools, that `get_contact` returns an email (without printing it), that `/stats` answers the weekly JSON to any origin, that `/chat` allows the site's origin (CORS preflight) rejects an invalid request with 400, and refuses an earlier answer without its signature (so the revision signs answers). It never calls the model, so a deploy costs nothing. If it fails, the job stops and the previous revision keeps serving.
+4. Traffic moves to the new revision (`update-traffic --to-revisions <new>=100`), and the smoke check runs on `AGENT_URL` without `--agent-only`: it adds `/mcp` on the site's domain (through the Hosting rewrite) and leaves out the deep check, which already passed on the same revision and whose rate limit anyone can use up on the public URL, so a flood can't make this step roll a good deploy back (`scripts/agent-smoke-check.test.ts` pins that). If that fails, traffic goes back to the recorded revision.
 5. The `candidate` tag is removed, pass or fail, so no extra public URL outlives the job.
 
 Traffic stays pinned to a named revision after this, so a manual `gcloud run deploy` doesn't take traffic on its own: move it with `gcloud run services update-traffic agent --region europe-southwest1 --to-revisions <revision>=100` (or `--to-latest`). The site deploys only after this job succeeds.
@@ -85,17 +85,65 @@ gcloud firestore databases create --project "$PROJECT" --location europe-southwe
 # Read and write documents, nothing else: the minimum predefined role.
 gcloud projects add-iam-policy-binding "$PROJECT" --role roles/datastore.user \
   --member "serviceAccount:agent-runtime@$PROJECT.iam.gserviceaccount.com"
-# Deletes rate-limit windows once they end, so the collection doesn't grow.
-gcloud firestore fields ttls update expireAt --collection-group rateLimits --enable-ttl --project "$PROJECT"
 # Deletes each key's daily quota document once its day is over.
 gcloud firestore fields ttls update expireAt --collection-group dailySpend --enable-ttl --project "$PROJECT"
 ```
 
 The deploy uses `firestore` unless the repository variable `AGENT_STORE` says otherwise, so the database must exist before the agent's first deploy; until then the new revision can't reach its store and requests answer `500`. `roles/datastore.user` is project-wide (IAM conditions can't narrow it to collections); nothing else lives in this project's Firestore.
 
+#### The weekly live eval check
+
+The [weekly live check](evals.md#weekly-live-check) (`.github/workflows/live-eval.yml`) reads the Anthropic key from the secret `ANTHROPIC_API_KEY` of the GitHub environment `live-eval`, whose deployment branches are restricted to `main`, so a workflow run from any other branch (a PR, or a dispatch on a feature branch) can't read it. Create the environment and copy the key from Secret Manager, piping it so it is never printed or written to disk:
+
+```bash
+REPO=acarbonellb/acb-landing-public
+gh api -X PUT "repos/$REPO/environments/live-eval" --input - <<<'{"deployment_branch_policy":{"protected_branches":false,"custom_branch_policies":true}}'
+gh api -X POST "repos/$REPO/environments/live-eval/deployment-branch-policies" -f name=main -f type=branch
+gcloud secrets versions access latest --secret anthropic-api-key --project acb-landing |
+  gh secret set ANTHROPIC_API_KEY --env live-eval --repo "$REPO"
+```
+
+Then dispatch it once from `main` (`gh workflow run live-eval.yml --ref main`) and check it ran green.
+
+#### Rotating the Anthropic key
+
+The key now lives in two places: the Secret Manager secret `anthropic-api-key` (the agent) and the `live-eval` environment's secret (the weekly check). To rotate it, create the new key in the Claude Console, add it as a new version without printing it, copy that version to the environment, then revoke the old key:
+
+```bash
+read -rs KEY # paste the key: not echoed
+printf %s "$KEY" | gcloud secrets versions add anthropic-api-key --project acb-landing --data-file=-
+unset KEY
+gcloud secrets versions access latest --secret anthropic-api-key --project acb-landing |
+  gh secret set ANTHROPIC_API_KEY --env live-eval --repo acarbonellb/acb-landing-public
+```
+
+The agent reads `anthropic-api-key:latest` when a revision starts, so redeploy it (re-run the latest `main` deploy) before revoking the old key, or the serving revision keeps the old one until its next cold start.
+
 #### Alerts
 
 The Cloud Monitoring alert policies: [Logs and alerts](logs-and-alerts.md#alerts-cloud-monitoring).
+
+#### Billing budget
+
+A monthly GCP billing budget for the project warns the owner when the infrastructure bill (Cloud Run, Firestore and the rest of the project) grows. It only alerts: a budget never stops a service or caps the bill, and nothing here turns usage off when it is crossed. The model's spend is separate, held by the [spend cap](guardrails.md) and the provider's own limit.
+
+`scripts/billing-budget.sh` sets it up, with these values:
+
+| Setting | Value |
+| --- | --- |
+| Amount | 5 EUR per calendar month, credits included |
+| Scope | This project only (by project number) |
+| Thresholds | 50%, 90% and 100% of actual spend, and 100% of forecast spend (the month is on track to cross the amount) |
+| Who is notified | By email, the billing account's default recipients: everyone with Billing Account Administrator or Billing Account User on it. No Pub/Sub topic or Monitoring channel |
+
+A threshold emails when the month's spend crosses it. Run it from the owner's machine, whose `gcloud` login has a billing role on the account; the pipeline never runs it, so CI holds no billing or IAM permission:
+
+```sh
+scripts/billing-budget.sh --dry-run acb-landing  # reads only: prints what differs and the command it would run
+scripts/billing-budget.sh acb-landing            # creates the budget, or reconciles the existing one in place
+```
+
+It looks the billing account up from the project and finds the one budget there scoped to this project. A budget made by hand is adopted, never duplicated, and a re-run once it matches changes nothing. Two budgets scoped to the project, or default recipients turned off, stop it without changes. It never prints the billing account id (it shows `<billing account>`), so its output can go in a pull request. Change the values in the script and re-run it; `scripts/billing-budget.test.ts` runs it against a fake `gcloud`.
 
 ### `/mcp` rate-limit check
 

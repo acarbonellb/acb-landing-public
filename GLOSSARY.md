@@ -46,6 +46,14 @@ _Avoid_: lock, booking, pre-authorization
 How one chat request ended, as the usage stats count it: answered, cut off by a limit, refused, aborted by the visitor, failed, or turned away before starting.
 _Avoid_: status, result
 
+**Global ceiling**:
+The most requests one endpoint takes a minute from every rate-limit key together, so rotating keys can't multiply what one source gets.
+_Avoid_: global limit, total cap
+
+**Durable state**:
+The guardrail state that must survive a restart and be shared by every instance: the spend cap, the daily quota and the usage stats. Rate-limit windows and global ceilings are not durable: each instance keeps its own, and the agent runs one.
+_Avoid_: persistent state, shared state
+
 **Rate-limit key**:
 Who a rate limit counts requests for: the visitor's IP address, or its /64 prefix for IPv6.
 _Avoid_: client id, user, session
@@ -129,7 +137,7 @@ Scoring a set's stored recordings again with the current cases and scoring, and 
 _Avoid_: re-run, re-evaluate
 
 **Decline**:
-What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer. Suggesting to contact him is not a decline on its own.
+What an unknown case must answer: an explicit statement that it isn't in his profile, the agent doesn't know, or it can't answer, stating no number, currency amount or date that isn't in the content module (or the conversation). Suggesting to contact him is not a decline on its own, and a decline doesn't excuse an invented figure.
 _Avoid_: refusal (that's the model's stop reason), deflection
 
 **Failing on purpose**:

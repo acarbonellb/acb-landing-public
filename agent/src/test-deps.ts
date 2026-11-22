@@ -8,7 +8,9 @@ import type { AppDeps } from "./app";
 import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip";
 import { createGuardrails } from "./compose";
 import { loadConfig } from "./config";
+import { createMemoryDocumentStore } from "./document-store";
 import { createFakeModel } from "./fake-model";
+import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
 import { createToolset } from "./tools";
 
 /** The fixed key the tests' answers are signed with. */
@@ -54,6 +56,16 @@ export function testAppDeps(overrides: Partial<AppDeps> = {}): AppDeps {
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop: mcpUnknownGoogleHop,
+    // Healthy: a memory store and the production secrets, as placeholders.
+    deepHealth: createDeepHealthCheck({
+      store: createMemoryDocumentStore(),
+      config: {
+        anthropicApiKey: "sk-test-placeholder",
+        contactEmail: "ada@example.com",
+        answerSigningKey: testSigningKey,
+      },
+    }),
+    deepHealthRateLimiter: createDeepHealthRateLimiter(),
     ...overrides,
   };
 }
