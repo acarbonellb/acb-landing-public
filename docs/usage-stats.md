@@ -50,4 +50,4 @@ Answers this week's and the previous week's aggregates, any origin (CORS `*`), `
 
 ## Cost
 
-One more Firestore write per chat request that streams, one per batch of MCP requests and refusals (at most one per instance every 10 seconds, plus one before each `/stats` read and at shutdown when a batch is waiting), and two document reads per `/stats` call (cached by browsers for 5 minutes). Every streamed chat request and every batch in a week writes the same document; at this site's traffic that is far below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.
+One Firestore write per chat request that streams, one per [batch](#batching), and two document reads per `/stats` call; all store operations per request are in [Store cost](guardrails.md#store-cost). Every streamed chat request and every batch in a week writes the same document; at this site's traffic that is far below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.

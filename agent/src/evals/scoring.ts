@@ -72,7 +72,7 @@ export type CaseResponse = {
 export type CaseScore = {
   pass: boolean;
   reasons: string[];
-  /** off_topic, injection, mixed: the answer matched a forbidden regex. */
+  /** off_topic, injection, mixed: a forbidden regex matched, or an unknown link or email address. */
   leaked?: boolean;
   /** on_topic with expected tools: one of them was called. */
   toolOk?: boolean;

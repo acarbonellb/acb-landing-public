@@ -1,27 +1,11 @@
-// Monthly spend cap on model usage. When the month's estimated spend reaches
-// the cap, the chat answers `503 unavailable` without calling the model;
-// MCP tools (no model cost) keep working.
-//
-// Check and record race: a chat request streams for seconds, and its cost is
-// only known at the end. So each request first RESERVES its worst-case cost
-// (`reserve`): it is refused if that doesn't fit in what's left under the
-// spend cap, and the reservation stays while it runs, so concurrent requests
-// can't all slip in under the same remaining room. Once it ends, it SETTLES:
-// the actual usage of its model calls, added up in memory, replaces the
-// reservation (`spend-holds.ts`, shared with the daily quota).
-//
-// The running total lives in a `DocumentStore`, one document per UTC month
-// (`spend/<YYYY-MM>`): with Firestore it is shared by every Cloud Run
-// instance and survives cold starts; `createMemorySpendCap` keeps it in this
-// process, for local development and tests. Each reservation expires after
-// `reservationTtlMs`: a request whose instance died before settling is then
-// charged its worst case, as what it spent was only in that instance's memory.
-// (The store keeps the reservations under `holds`.)
-//
-// Alert events (docs/logs-and-alerts.md): `spend_threshold` when the
-// month's spend first reaches 50% and 80% of the cap, `spend_cap_reached`
-// when the cap first refuses a request. Each fires once per month, noted in
-// the month's document (`spend-holds.ts`).
+// Monthly spend cap on model usage, one `spend/<YYYY-MM>` document per UTC
+// month (docs/guardrails.md#monthly-spend-cap). A chat request's cost is only
+// known once it ends, so it reserves its worst case first (`reserve`) and
+// settles later (`spend-holds.ts`, shared with the daily quota): concurrent
+// requests can't all slip in under the same remaining room.
+// `createMemorySpendCap` keeps the total in this process, for local
+// development and tests. Its alert events, `spend_threshold` and
+// `spend_cap_reached`: docs/logs-and-alerts.md.
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { logEvent } from "./log";
 import type { Usage } from "./model";

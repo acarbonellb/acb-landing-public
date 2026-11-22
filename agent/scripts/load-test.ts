@@ -1,10 +1,7 @@
-// Local load test of the guardrails: floods `/chat`, `/mcp` and `/stats` at
-// twice each configured ceiling and reports what got through. The agent runs
-// in this process, wired like production (`createGuardrails`) over the
-// Firestore emulator, with a fake model client: no model call leaves the
-// machine. It refuses to run unless the store is the emulator on this machine
-// (`src/load-test-guard.ts`). A dev script, not a CI test: how to run it is in
-// docs/development.md, its latest result in docs/guardrails.md.
+// Local load test of the guardrails, over the Firestore emulator with a fake
+// model client; refused unless the store is the emulator on this machine
+// (`src/load-test-guard.ts`). How to run it: docs/development.md; its latest
+// result: docs/guardrails.md.
 //
 //   AGENT_STORE=firestore FIRESTORE_PROJECT_ID=load-test FIRESTORE_EMULATOR_HOST=localhost:8091 \
 //     pnpm agent:load-test [--seconds 120] [--shape steady|burst]

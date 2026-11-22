@@ -1,6 +1,6 @@
 # Chat contract
 
-`POST /chat` on the [agent service](agent.md). The wire types and request limits live in [`src/shared/chat-contract.ts`](../src/shared/chat-contract.ts), imported by both the site and the agent: it is the source for the message, event and error-body shapes, and this page doesn't repeat them. The site's client is `src/lib/chat-client.ts`.
+How the site talks to the [agent service](agent.md) over `POST /chat`: the request, the errors before streaming, the event stream, and the signed answers that keep a stateless chat from carrying answers the agent never gave. The wire types and request limits live in [`src/shared/chat-contract.ts`](../src/shared/chat-contract.ts), imported by both the site and the agent: it is the source for the message, event and error-body shapes, and this page doesn't repeat them. The site's client is `src/lib/chat-client.ts`.
 
 ## The loop behind it
 

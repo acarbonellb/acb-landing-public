@@ -1,14 +1,9 @@
 #!/usr/bin/env bash
 # Production check for the per-IP /mcp rate limit through the Firebase Hosting
-# rewrite, which only a live deploy shows. Run by hand, once after a deploy
-# that touches the limit or the client-IP rule; never in CI, as it uses up the caller's own one-minute window.
-#   1. through the site: MCP calls to <site-url>/mcp until one is refused;
-#   2. direct to the agent: one call to <agent-url>/mcp, which must be refused
-#      too (same visitor, same key);
-#   3. forged X-Forwarded-For: calls to both URLs with made-up addresses, which
-#      must all be refused (forging the header doesn't buy a fresh window).
-# Prints allowed/refused counts and status codes per phase, never a URL or an
-# address, so the output can be pasted into an issue. Exits 1 if a phase fails.
+# rewrite, which only a live deploy shows. By hand, never in CI: it uses up the
+# caller's own one-minute window. Its three phases, and when to run it:
+# docs/deploy.md#mcp-rate-limit-check. Prints counts and status codes only,
+# never a URL or an address. Exits 1 if a phase fails.
 # Usage: scripts/mcp-rate-limit-check.sh <site-url> <agent-url> [per-ip-limit]
 # The limit defaults to RATE_LIMIT_MCP_PER_MINUTE, else the code default.
 set -uo pipefail

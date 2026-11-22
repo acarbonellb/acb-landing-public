@@ -4,16 +4,11 @@
 # it needs a login with a billing role on the project's billing account.
 #
 #   billing-budget.sh [--dry-run] <project-id>
-#       Finds the one budget on the project's billing account that is scoped
-#       to this project and reconciles it with the values below, or creates it
-#       when there is none. A budget already made by hand is adopted, never
-#       duplicated; re-running it once it matches changes nothing. Two budgets
-#       scoped to the project stop it. --dry-run only reads: it prints what
-#       differs and the gcloud command it would run.
 #
-# The billing account id is looked up from the project, never an argument,
-# and this script never prints it (output shows <billing account>), so its
-# output can be pasted into a pull request.
+# Reconciles the one budget scoped to this project with the values below, or
+# creates it; what that means and what --dry-run prints are in the doc. The
+# billing account id is looked up from the project and never printed (output
+# shows <billing account>).
 set -euo pipefail
 
 usage() {
