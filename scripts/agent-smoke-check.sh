@@ -4,11 +4,14 @@
 # MCP is checked both on the agent's URL and on the site's domain, through the
 # Firebase Hosting `/mcp` rewrite, unless `--agent-only`: a revision deployed
 # with no traffic (its tag URL) isn't what the rewrite reaches yet.
+# The deep health check runs with `--agent-only` only, i.e. on the candidate:
+# on the live URL anyone can use up its rate limit, and a 429 there would roll
+# a good deploy back.
 # Usage: scripts/agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>
 set -uo pipefail
 
-site_mcp=true
-if [[ "${1:-}" == --agent-only ]]; then site_mcp=false; shift; fi
+candidate=false
+if [[ "${1:-}" == --agent-only ]]; then candidate=true; shift; fi
 agent="${1:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
 agent="${agent%/}"
 origin="${2:?usage: agent-smoke-check.sh [--agent-only] <agent-url> <site-origin>}"
@@ -29,6 +32,20 @@ check_health() {
   local body
   body=$(curl -fsS --max-time 20 "$agent/health") || { echo "  /health is down"; return 1; }
   [[ "$body" == '{"status":"ok"}' ]] || { echo "  /health answered $body"; return 1; }
+}
+
+# /health?deep=1: the revision reads the store and has its required config,
+# so one whose guarded routes would all answer 503 fails here. Any status but
+# 200 fails it (a 429 too: the check allows a few a minute, per instance, and
+# the candidate's tag URL is fresh and short-lived). Candidate only.
+check_deep_health() {
+  local response status body
+  response=$(curl -sS --max-time 20 -w '\n%{http_code}' "$agent/health?deep=1") ||
+    { echo "  /health?deep=1 is down"; return 1; }
+  status=$(tail -n 1 <<<"$response")
+  body=$(sed '$d' <<<"$response")
+  [[ "$status" == 200 && "$body" == '{"status":"ok"}' ]] ||
+    { echo "  /health?deep=1 answered $status $body (the reason is in the revision's logs)"; return 1; }
 }
 
 # mcp_lists_tools URL: URL answers MCP tools/list with the five tools.
@@ -96,9 +113,11 @@ check_chat_signed_answers() {
     { echo "  /chat didn't refuse an unsigned earlier answer"; return 1; }
 }
 
-checks=(check_health check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
+checks=(check_health)
+$candidate && checks+=(check_deep_health)
+checks+=(check_mcp_tools check_contact_email check_stats check_chat_cors check_chat_validation
   check_chat_signed_answers)
-$site_mcp && checks+=(check_site_mcp_tools)
+$candidate || checks+=(check_site_mcp_tools)
 
 for check in "${checks[@]}"; do
   if retry "$check"; then echo "ok    $check"; else echo "FAIL  $check"; failures=$((failures + 1)); fi

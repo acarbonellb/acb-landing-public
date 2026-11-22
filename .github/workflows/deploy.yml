@@ -227,9 +227,11 @@ jobs:
           echo "CANDIDATE_REVISION=$(jq -er .revisionName <<<"$candidate")" >> "$GITHUB_ENV"
           echo "CANDIDATE_URL=$(jq -er .url <<<"$candidate")" >> "$GITHUB_ENV"
 
-      # Never calls the model: health, MCP tools, the usage stats, CORS and
-      # validation only. The site's /mcp rewrite still reaches the serving
-      # revision, so it's checked after the move.
+      # Never calls the model: health (the deep check too, so a revision whose
+      # store or config is broken never takes traffic), MCP tools, the usage
+      # stats, CORS and validation only. The site's /mcp rewrite still reaches the serving
+      # revision, so it's checked after the move. The deep check runs here
+      # only: on the live URL a flood could 429 it and roll the deploy back.
       - name: Smoke check the candidate
         run: scripts/agent-smoke-check.sh --agent-only "$CANDIDATE_URL" "$SITE_URL"
 

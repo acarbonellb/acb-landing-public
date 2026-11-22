@@ -10,6 +10,7 @@ import { mcpRateLimitKey, mcpUnknownGoogleHop, rateLimitKey } from "./client-ip"
 import type { Config } from "./config";
 import { createMemoryDocumentStore, withStoreHealthEvents, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
+import { createDeepHealthCheck, createDeepHealthRateLimiter } from "./health";
 import type { ModelClient } from "./model";
 import { createProviderLimitWatch } from "./provider-limit";
 import {
@@ -91,15 +92,19 @@ export function createGuardrails(
 
 /** Every dependency of the production app, built from the configuration. */
 export function composeAppDeps(config: Config): AppDeps {
+  const sharedStore = createDocumentStore(config.store);
   return {
     toolset: createToolset({ ...siteContent, contactEmail: config.contactEmail }),
     modelClient: createModelClient(config),
     allowedOrigins: config.allowedOrigins,
     chatLimits: config.chatLimits,
     answerSigner: createAnswerSigner(config.answerSigningKey ?? ephemeralSigningKey()),
-    ...createGuardrails(createDocumentStore(config.store), config),
+    ...createGuardrails(sharedStore, config),
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop: mcpUnknownGoogleHop,
+    // The guardrails' store; with none shared, a memory one, which always answers.
+    deepHealth: createDeepHealthCheck({ store: sharedStore ?? createMemoryDocumentStore(), config }),
+    deepHealthRateLimiter: createDeepHealthRateLimiter(),
   };
 }
