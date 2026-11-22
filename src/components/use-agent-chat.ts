@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { type QuestionSource, report } from "@/lib/analytics";
+import { type RefObject, useEffect, useRef, useState } from "react";
+import { type QuestionOutcome, type QuestionSource, outcomeOf, report } from "@/lib/analytics";
 import { type ChatErrorKind, streamChat } from "@/lib/chat-client";
 import {
   type Turn,
@@ -9,17 +9,21 @@ import {
   historyFor,
   isBusy,
   noticeOf,
-  outcomeOf,
   startTurn,
 } from "@/lib/chat-session";
 import type { FallbackStrategy } from "@/lib/contact-fallback";
+
+/** A question sent and not yet reported ended. */
+type SentQuestion = { source: QuestionSource; sentAt: number };
 
 /**
  * A conversation with the agent's chat endpoint: the turns so far, the notice
  * of a failed question, whether an answer is streaming, and `ask`. With a
  * `fallback`, a failed question is answered by it instead of a notice.
- * Each question is reported to site analytics when sent and when it ends,
- * with its `source` (docs/analytics.md#events).
+ * Each question is reported to site analytics when sent and, exactly once,
+ * when it ends, with its `source` (docs/analytics.md#events): with how it
+ * ended, `error` if asking threw, or `abandoned` if the visitor left or the
+ * chat went away first.
  */
 export function useAgentChat({
   chatUrl,
@@ -32,20 +36,20 @@ export function useAgentChat({
   const abort = useRef<AbortController | null>(null);
   const nextId = useRef(0);
   /** The question in flight, until its "ended" event is reported. */
-  const inFlight = useRef<{ source: QuestionSource; sentAt: number } | null>(null);
+  const inFlight = useRef<SentQuestion | null>(null);
 
-  useEffect(() => () => abort.current?.abort(), []);
-
-  // A visitor who leaves while an answer streams abandoned the question.
   useEffect(() => {
-    const leave = () => {
-      const question = inFlight.current;
-      if (!question) return;
-      inFlight.current = null;
-      report(ended(question, "abandoned"), { leaving: true });
+    // A visitor who leaves, or a chat that goes away, while an answer
+    // streams abandoned the question.
+    const leave = (options?: { leaving: boolean }) =>
+      reportEnded(inFlight, inFlight.current, "abandoned", options);
+    const onPageHide = () => leave({ leaving: true });
+    window.addEventListener("pagehide", onPageHide);
+    return () => {
+      window.removeEventListener("pagehide", onPageHide);
+      leave();
+      abort.current?.abort();
     };
-    window.addEventListener("pagehide", leave);
-    return () => window.removeEventListener("pagehide", leave);
   }, []);
 
   async function ask(
@@ -61,43 +65,53 @@ export function useAgentChat({
     };
 
     setTurns((all) => [...all, last]);
-    const sent = { source, sentAt: performance.now() };
+    const sent: SentQuestion = { source, sentAt: performance.now() };
     inFlight.current = sent;
     report({ event: "chat_question_sent", properties: { source } });
 
-    const controller = new AbortController();
-    abort.current = controller;
-    let failure: ChatErrorKind | undefined;
-    for await (const event of streamChat(chatUrl, messages, {
-      fetch,
-      signal: controller.signal,
-    })) {
-      if (event.type === "error" && fallback) {
-        failure = event.kind;
-        break;
+    // Until the request settles, asking threw.
+    let outcome: QuestionOutcome = "error";
+    try {
+      const controller = new AbortController();
+      abort.current = controller;
+      let failure: ChatErrorKind | undefined;
+      for await (const event of streamChat(chatUrl, messages, {
+        fetch,
+        signal: controller.signal,
+      })) {
+        if (event.type === "error" && fallback) {
+          failure = event.kind;
+          break;
+        }
+        update((t) => foldEvent(t, event));
       }
-      update((t) => foldEvent(t, event));
-    }
-    if (failure && fallback) {
-      // Still streaming while the fallback answers.
-      const answer = await fallback(failure, controller.signal);
-      update((t) => answerWithFallback(t, answer));
-    }
-    update(endTurn);
-    if (inFlight.current === sent) {
-      inFlight.current = null;
-      report(ended(sent, outcomeOf(last)));
+      if (failure && fallback) {
+        // Still streaming while the fallback answers.
+        const answer = await fallback(failure, controller.signal);
+        update((t) => answerWithFallback(t, answer));
+      }
+      outcome = outcomeOf(endTurn(last));
+    } finally {
+      update(endTurn);
+      reportEnded(inFlight, sent, outcome);
     }
   }
 
   return { turns, notice: noticeOf(turns), busy: isBusy(turns), ask };
 }
 
-const ended = (
-  { source, sentAt }: { source: QuestionSource; sentAt: number },
-  outcome: ReturnType<typeof outcomeOf>,
-) =>
-  ({
-    event: "chat_question_ended",
-    properties: { source, outcome, ms: Math.round(performance.now() - sentAt) },
-  }) as const;
+/** Reports `question` ended, unless it no longer is the one in flight (already reported). */
+function reportEnded(
+  inFlight: RefObject<SentQuestion | null>,
+  question: SentQuestion | null,
+  outcome: QuestionOutcome,
+  options?: { leaving: boolean },
+) {
+  if (!question || inFlight.current !== question) return;
+  inFlight.current = null;
+  const ms = Math.round(performance.now() - question.sentAt);
+  report(
+    { event: "chat_question_ended", properties: { source: question.source, outcome, ms } },
+    options,
+  );
+}

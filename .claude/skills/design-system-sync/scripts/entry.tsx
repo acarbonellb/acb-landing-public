@@ -1,7 +1,10 @@
 // Design System bundle entry: the site's real components, plus the data the
 // page passes them, so previews and designs render exactly what the site does.
-import { Fragment, type ReactNode } from "react";
+import { Fragment, type ReactNode, useState } from "react";
+import { CookieNotice } from "@/components/cookie-notice";
 import { Header } from "@/components/header";
+import { resetAnalytics } from "@/lib/analytics";
+import { COOKIE_NOTICE_STORAGE_KEY } from "@/lib/cookie-notice";
 import { About } from "@/components/sections/about";
 import { Agent } from "@/components/sections/agent";
 import { AgentCard } from "@/components/sections/agent-card";
@@ -78,6 +81,22 @@ const ContactWithDemo = (props: { profile?: typeof profile; endpoints?: typeof e
   />
 );
 
+// The notice shows only in a build with a PostHog key and on a first visit;
+// the bundle has no key. Its card renders it as a first visit to such a
+// build: on that page, analytics counts as on (events wait in the queue and
+// are never sent: the SDK isn't in the bundle) and an earlier `[ok]` is
+// forgotten.
+const CookieNoticeAsFirstVisit = () => {
+  useState(() => {
+    resetAnalytics("phc_design_system");
+    try {
+      localStorage.removeItem(COOKIE_NOTICE_STORAGE_KEY);
+    } catch {}
+    return null;
+  });
+  return <CookieNotice />;
+};
+
 const components = {
   Window,
   Section,
@@ -101,6 +120,7 @@ const components = {
   AgentCard,
   Agent: AgentWithDemo,
   Contact: ContactWithDemo,
+  CookieNotice: CookieNoticeAsFirstVisit,
   Page,
 };
 

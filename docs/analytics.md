@@ -4,11 +4,11 @@ The page reports its visits to PostHog (EU Cloud), a hosted product-analytics se
 
 ## What is collected
 
-The SDK runs in its standard configuration, for every visitor from the first page view, with its own persistence (a first-party cookie and local storage) so a returning visitor is recognised. Visitors stay anonymous: nothing identifies a person.
+The SDK runs in its standard configuration, for every visitor from the first page view, with its own persistence (a first-party cookie and local storage) so a returning browser is recognised. The page never says who a visitor is (no `identify` call, no person profiles), and the PostHog project must discard the client IP address PostHog otherwise stores with each event ([The PostHog project](#the-posthog-project), step 2): the cookie's random ID then ties a browser's visits together, not to a person. The country is still derived from the IP before it is discarded.
 
 | Collected | Not collected |
 | --- | --- |
-| Page views, with the referrer, UTM parameters, country and device the SDK records | Anything that identifies a visitor (no `identify` call, no person profiles) |
+| Page views, with the referrer, UTM parameters, country and device the SDK records | Who a visitor is (no `identify` call, no person profiles) and their IP address (discarded by the project's setting, not by the page) |
 | Page leaves, with scroll depth | Session replay, heatmaps, dead clicks, exceptions, web vitals |
 | Autocaptured clicks (element and link, as the SDK ships it) | Surveys, feature flags, web experiments, product tours, conversations |
 | | The agent's tokens, cost or any other agent-side figure |
@@ -28,7 +28,7 @@ Besides what the SDK collects on its own, the page reports three events about th
 | Property | Values |
 | --- | --- |
 | `source` | `input` (typed into the chat) or `contact` (the contact section's "ask my agent" button) |
-| `outcome` | The stream's stop reason (`end_turn`, `max_tokens`, `max_iterations`, `refusal`); the error kind (`rate_limited`, `unavailable`, `error`); `contact_fallback` (the contact fallback answered); or `abandoned` (the visitor left while it streamed) |
+| `outcome` | The stream's stop reason (`end_turn`, `max_tokens`, `max_iterations`, `refusal`); the error kind (`rate_limited`, `unavailable`, `error`, also when asking threw, the contact fallback included); `contact_fallback` (the contact fallback answered); or `abandoned` (the visitor left, or the chat went away, while it streamed). Every `chat_question_sent` gets exactly one `chat_question_ended` |
 | `ms` | Milliseconds from sending the question to its end, measured in the browser |
 
 No event carries the text of a question or an answer. The chat's transcript and input have the `ph-no-capture` class, so autocapture ignores clicks inside them: a click on the contact address the chat links sends nothing.
@@ -79,8 +79,9 @@ The project key comes from `NEXT_PUBLIC_POSTHOG_KEY` at build time, which CI set
 Set up once, by the owner, by hand; nothing in the deploy creates or configures it:
 
 1. Create a project in PostHog Cloud, **EU region**.
-2. In its settings, turn session replay off (the SDK keeps it off anyway).
-3. Copy the project API key into the repository variable `POSTHOG_KEY`. The next `main` deploy builds the site with it.
+2. **Discard client IP data.** PostHog stores the client IP address with every event unless the project says otherwise, and the page can't prevent it. In the project's settings (Settings > Project, "IP data capture configuration"), turn on **Discard client IP data**. Check it before setting the variable below, and again whenever the project is recreated: open a recent `$pageview` in the activity view and confirm it has no `$ip` property. PostHog's docs say EU organizations default new projects to discarding it; that default was not checked here, so confirm the toggle rather than rely on it. Without this setting, the [privacy claims](#what-is-collected) above don't hold.
+3. In its settings, turn session replay off (the SDK keeps it off anyway).
+4. Copy the project API key into the repository variable `POSTHOG_KEY`. The next `main` deploy builds the site with it.
 
 Until the variable exists, merged code changes nothing on the live site.
 
@@ -92,8 +93,11 @@ Until the variable exists, merged code changes nothing on the live site.
 | Unit, `src/components/site-analytics.test.tsx` | A build without a key never loads the SDK (CI's build has one once the variable is set) |
 | Unit, `src/components/cookie-notice.test.tsx` | A build without a key renders no notice; `[ok]` is remembered, and still hides it when storage is blocked |
 | Unit, `src/components/agent-chat.test.tsx` | The privacy note's analytics sentence shows only in a build with a key |
+| Unit, `src/components/use-agent-chat.test.ts` | Every question sent is reported ended once: with its stop reason or error kind, `error` when the request or the contact fallback throws, `abandoned` when the chat unmounts or the visitor leaves mid-answer |
 | Browser, `e2e/analytics.spec.ts` | Whichever build is under test: with a key, a page view reaches the PostHog stub, the SDK chunk loads after the page, no script comes from another origin and a blocked SDK breaks nothing; each [event](#events) arrives with its properties for every source and outcome, also when asked before the SDK loaded, and no payload holds a question, an answer or the contact address; without one, nothing is requested, even while chatting |
 | Browser, `e2e/cookie-notice.spec.ts` | With a key: the notice shows as one line at the bottom left, outside `main`, with no overflow; `[ok]` hides it across reloads and visits, from the keyboard too; axe passes with it visible in both themes, on Chromium and the phone (WebKit). Without one: no notice |
 | Browser, `e2e/offline.spec.ts` | No test reaches a real PostHog host, even one that stubs nothing |
 
-The `posthog` fixture in `e2e/fixtures.ts` answers PostHog's two origins and collects the events. The SDK drops events from automated browsers, so the fixture hides `navigator.webdriver` from the page. Its remote config answers like a new project's (`autocapture_opt_out: false`), as autocapture waits for it. Playwright can't intercept a beacon from a page being unloaded, so the abandoned test fires `pagehide` on a page that stays open.
+Whether analytics is on has one seam: `posthogKey()` in `src/lib/analytics.ts`, which `report`, `SiteAnalytics`, `CookieNotice` and the chat's privacy note all read. Unit tests pick a build with or without a key with `resetAnalytics`, which also empties the event queue; `vitest.setup.ts` starts every test without one.
+
+The `posthog` fixture in `e2e/fixtures.ts` is automatic: in every browser test it answers PostHog's two origins and collects the events, except where a spec sets `test.use({ postHog: "refused" })` (`offline.spec.ts`). Every test also starts with the cookie notice already dismissed, so the fixed line never covers what a test taps; `cookie-notice.spec.ts` sets `test.use({ cookieNotice: "shown" })`. The SDK drops events from automated browsers, so the fixture hides `navigator.webdriver` from the page. Its remote config answers like a new project's (`autocapture_opt_out: false`), as autocapture waits for it. Playwright can't intercept a beacon from a page being unloaded, so the abandoned test fires `pagehide` on a page that stays open.

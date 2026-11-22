@@ -3,10 +3,8 @@
 import type { CaptureOptions, PostHogConfig } from "posthog-js";
 import type { ChatStopReason } from "@/shared/chat-contract";
 import type { ChatErrorKind } from "./chat-client";
+import type { Turn } from "./chat-session";
 import { POSTHOG_API_HOST } from "./posthog-hosts";
-
-/** The PostHog project key, inlined at build time; none means no analytics. */
-export const posthogKey: string | undefined = process.env.NEXT_PUBLIC_POSTHOG_KEY || undefined;
 
 /** The part of the SDK the page uses. */
 export type PostHogClient = {
@@ -44,6 +42,21 @@ export type QuestionSource = "input" | "contact";
 /** How a question ended: the stream's stop reason, the error kind, the contact fallback, or abandoned. */
 export type QuestionOutcome = ChatStopReason | ChatErrorKind | "contact_fallback" | "abandoned";
 
+/** How an ended turn ended: a failure with no notice was aborted, as the visitor left. */
+export function outcomeOf(turn: Turn): QuestionOutcome {
+  const { status } = turn;
+  switch (status.kind) {
+    case "answered":
+      return status.stopReason;
+    case "fallback":
+      return "contact_fallback";
+    case "failed":
+      return status.notice?.kind ?? "abandoned";
+    case "streaming":
+      return "abandoned";
+  }
+}
+
 /**
  * The custom events the page reports, with their properties. The names and
  * properties are fixed: the dashboard views are built on them
@@ -62,8 +75,28 @@ const QUEUE_LIMIT = 20;
 
 type Pending = { site: SiteEvent; options?: CaptureOptions };
 
-let client: PostHogClient | null = null;
-let queue: Pending[] | null = [];
+// The module's state: the one place that says whether analytics is on (the
+// components and `report` all ask `posthogKey()`), and the SDK or the events
+// waiting for it.
+let key: string | undefined;
+let client: PostHogClient | null;
+let queue: Pending[] | null;
+
+/**
+ * Starts the module over with `projectKey` as the build's key and no SDK
+ * yet, the page's state at load. Called once below with the key the build
+ * inlined (NEXT_PUBLIC_POSTHOG_KEY); tests call it to pick a build with or
+ * without a key, so no state leaks from one test to the next.
+ */
+export function resetAnalytics(projectKey: string | undefined) {
+  key = projectKey || undefined;
+  client = null;
+  queue = [];
+}
+resetAnalytics(process.env.NEXT_PUBLIC_POSTHOG_KEY);
+
+/** This build's PostHog project key; none means no analytics. */
+export const posthogKey = (): string | undefined => key;
 
 /**
  * Reports `site` to PostHog: sent at once once the SDK has started, queued
@@ -71,7 +104,7 @@ let queue: Pending[] | null = [];
  * `leaving` sends it as the page goes away (a beacon, not batched).
  */
 export function report(site: SiteEvent, { leaving = false } = {}) {
-  if (!posthogKey) return;
+  if (!key) return;
   const options: CaptureOptions | undefined = leaving
     ? { transport: "sendBeacon", send_instantly: true }
     : undefined;

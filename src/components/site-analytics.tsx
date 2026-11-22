@@ -12,18 +12,13 @@ import {
 
 /**
  * Starts site analytics once the page is interactive (docs/analytics.md).
- * Renders nothing; without a key it never loads the SDK, and if the SDK fails
- * to load the page goes on as if analytics were off. Events reported before
- * the SDK starts wait for it (`report`).
+ * Renders nothing; in a build without a key (`posthogKey`) it never loads the
+ * SDK, and if the SDK fails to load the page goes on as if analytics were
+ * off. Events reported before the SDK starts wait for it (`report`).
  */
-export function SiteAnalytics({
-  projectKey = posthogKey,
-  load = loadPostHog,
-}: {
-  projectKey?: string;
-  load?: () => Promise<PostHogClient>;
-}) {
+export function SiteAnalytics({ load = loadPostHog }: { load?: () => Promise<PostHogClient> }) {
   useEffect(() => {
+    const projectKey = posthogKey();
     if (!projectKey) return;
     let cancelled = false;
     const start = () =>
@@ -40,6 +35,6 @@ export function SiteAnalytics({
       cancelled = true;
       window.removeEventListener("load", start);
     };
-  }, [projectKey, load]);
+  }, [load]);
   return null;
 }

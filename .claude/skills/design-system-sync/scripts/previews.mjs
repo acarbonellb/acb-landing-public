@@ -47,6 +47,7 @@ const cards = {
     pad(`h(A.AgentCard, { agent: D.agentProjects[0] })`)],
   Agent: ["Sections", 520, 1024, "Live chat window (requests cannot leave the artifact)", main(`h(A.Agent)`)],
   Contact: ["Sections", 320, 1024, "", main(`h(A.Contact)`)],
+  CookieNotice: ["Chrome", 64, 720, "First visit to a build with analytics: fixed at the bottom left; [ok] hides it", `h(A.CookieNotice)`],
   Page: ["Page", 4000, 1280, "The whole home page, as src/app/page.tsx composes it", `h(A.Page)`],
 };
 
