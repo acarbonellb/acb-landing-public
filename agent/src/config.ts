@@ -35,14 +35,17 @@ const envSchema = z.object({
   AGENT_MAX_TOKENS: intFromEnv.default(chatLimits.maxTokens),
   AGENT_MAX_ITERATIONS: intFromEnv.default(chatLimits.maxModelCalls),
   AGENT_MAX_REQUEST_TOKENS: intFromEnv.default(chatLimits.maxRequestTokens),
+  // A visitor asks a few questions a minute at most.
   RATE_LIMIT_CHAT_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_PER_MINUTE: intFromEnv.default(60),
-  // The page reads /stats once per load (and caches it 5 minutes), so a few
-  // per minute per IP is plenty.
+  // The page reads /stats once per load and caches it 5 minutes.
   RATE_LIMIT_STATS_PER_MINUTE: intFromEnv.default(30),
   // Global ceilings, all keys together, so rotating keys can't multiply what
-  // one source gets. Sized well above the per-IP limits.
-  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(60),
+  // one source gets. Chat is sized by store cost, so a day-long flood at it
+  // stays under the threshold in docs/guardrails.md ("Store cost"). /stats
+  // answers from a 10 s snapshot (usage.ts) and /mcp writes nothing of its
+  // own, so their ceilings cost no more in store operations.
+  RATE_LIMIT_CHAT_GLOBAL_PER_MINUTE: intFromEnv.default(10),
   RATE_LIMIT_MCP_GLOBAL_PER_MINUTE: intFromEnv.default(600),
   RATE_LIMIT_STATS_GLOBAL_PER_MINUTE: intFromEnv.default(300),
   // Under the $5/month hard limit set on the Anthropic workspace, so this

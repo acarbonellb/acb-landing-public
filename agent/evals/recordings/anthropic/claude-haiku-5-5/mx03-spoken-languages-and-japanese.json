@@ -1,0 +1,416 @@
+{
+  "caseId": "mx03",
+  "slug": "spoken-languages-and-japanese",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+      "latencyMs": 802,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1681,
+          "cacheWriteInputTokens": 1677
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01U1c8AuLSgraRnsNUZWk9kd",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1681,
+              "cacheWriteInputTokens": 1677,
+              "outputTokens": 75
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS4gUKEAgUGAI4AUIIdGhpbmtpbmcSDIijGydPz4FgMiL2jRoMW8qv+L9hE5e6Db/RIjAdB3vTKsSShiRGAGSt85oQ7UobFqIOvM6+ZXc4piR2mOiTbByFqOB4hN0pUq/qPLcq/wRGE2xu+4C7SyxKlQLtZpBqVNv3Rt+e/ZR6lvZskXKiM0Z79NOq94smGTL767fIwb0nyENKths/RkZnhTUAR/rWxS0khPjsT4XPMoSUEWo7NspuPGsPUP1jFE9oDw6MBTwN44vpb2InjEMBdXMqQUGsmcUUopfv0rDrrwnGIvSkt6Ak3GxPAcNZdcLwR5BSiQDu5z+q7QcmCcPlcTSfADNbzVcHXGyXbqQva62GboHHMhPpGQ2TFgnVeWf0zhr5zAFn80h/RB7wEOV2bVdpQqJAoYbea1ZgXFio0F+KPuP4Hay6u9D9jfIpEM+pFAxXisWb9/g8M7ZYKVJhjbD15z2eAn4KaZ/ETr4JZbD1ZIbf5LckyGt4KiIx2tMsLMdft7bQ2ZAD4vYkKpTltbZ3LW3oBeicnsICN0MFSHl8SICgfehhcP+c/6/lxym/pD1UB/rZ694Z9RkHmszWfKuW7MjZh0Odo3032XA3duvP8lxx4hsl0SWMYq6l/visjEYnubROVw7beEXFEBm7aGAJHHMbFu/wpdLChAV3E26kB4jNn1EDqaLABhHmNxiqZTbVg37epFZy7eGSH7mzJfFRIZ270ASgnlRFgZPMPjPf+TOD7LC3hm/C+WGgKMcvb6EfIkIb4YNXnHjMHRVM9E6Yj4ltRzCaiotGC6zuCNZgzvAv/RB5s31mdJwMFIIv6xq4726WeG4T/pun4AeBQPMUs+zKN4rq84uybHXc3LxGDpwR+vOpG4fwMfD6PFnLqWw0MV4CEKyT+iC20UMjbupEW/jZMx9nEm/I49QyraAL9Wf6HzG8oPaJu5M565L+bBM44hU8Whfi5osiTVvIpGRwaxAYAQ=="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01U1c8AuLSgraRnsNUZWk9kd",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "13d8e5ae73cdfde6de2b5ab423e365a926f7f24aa8bab147bde4a9dc9975b6fb",
+      "latencyMs": 725,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2202,
+          "cacheWriteInputTokens": 523,
+          "cacheReadInputTokens": 1677
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto speaks"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spanish (native) and English"
+        },
+        {
+          "type": "text_delta",
+          "text": " (C1).\n\nI can't"
+        },
+        {
+          "type": "text_delta",
+          "text": " help with the Japanese transl"
+        },
+        {
+          "type": "text_delta",
+          "text": "ation, since"
+        },
+        {
+          "type": "text_delta",
+          "text": " I only"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer questions about Alber"
+        },
+        {
+          "type": "text_delta",
+          "text": "to and"
+        },
+        {
+          "type": "text_delta",
+          "text": " his work. I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can t"
+        },
+        {
+          "type": "text_delta",
+          "text": "ell you about his A"
+        },
+        {
+          "type": "text_delta",
+          "text": "I agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects, his experience,"
+        },
+        {
+          "type": "text_delta",
+          "text": " or his tech stack."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can't help with the Japanese translation, since I only answer questions about Alberto and his work. I can tell you about his AI agent projects, his experience, or his tech stack.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2202,
+              "cacheWriteInputTokens": 523,
+              "cacheReadInputTokens": 1677,
+              "outputTokens": 77
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can't help with the Japanese translation, since I only answer questions about Alberto and his work. I can tell you about his AI agent projects, his experience, or his tech stack."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+          "latencyMs": 750,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1681,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01BvU7nyMt2UkoNnZdYqZZmn",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1681,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 87
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQShQYKEAgUGAI4AUIIdGhpbmtpbmcSDCkTxixeBRohB8JhhRoMe66Y/UdWS3gRpnLYIjB+rHvXzbgITBaOgcj+dORvoklPtFI1FOUE6WRnQpMsgRjPRkYyzdrfOmlwJxsbm28qogW2AWaA2pSAEHEyBmO7JbIOSETnz207AiUE/JhcwbFSaIPUKsLEMiAHz0brp3w7mkT7VfUGWorKC0mjKhFD4/t9qjo54fO6Kv1W1WF9+59y678lrPbfsaB5U/0Y00ql2jqDwCSRljtG3HcKRHJm6beJAV01VThw7hlXn7BSx0BXohYuQiNuEiKnbz4gj9ub8MUrvypOuvhJFwbSRSwyS949MXKQ5RO9K4aSvzPxUnznlST4de5XFdURRdB7NjY4W2OkeUfWGWBgBhENOepHDglar90QhZ4JHJELxKkz7rh4UBq6QX3niQkqTcr2YAG0b4IuqIOjY1L1q/7c3UlhgAPNMOpwzakwTz6vj6dr8Vuz9Kh9H3U3LvDHSr6rQQvHY4CoteJP1TapEd4WbWZVVRetehv1Qc1Fo7fd28Wuv2Em2gaRhzwY9P76kS28aeAAFEFNoIxZpKAA+fOCln9t8q+V5bXcAVpBmfseVSrlbTC6E5SZf8DSNjLt9Ikmtd4RL1quSd8GiCKamjMkwI0sXh4qiGKyFOj8FbCgi9hkxSecGJVpHxwBOF1lBNBscfAa0Qkuqonl+LwwskZhXCEX4HT44eOr1Y3kIIKLvNXEfJg4NQmp48haTwWMn4DrEGP2YwfoVbFQ2pnasBbuqe3NWExS1gCDo0sJemiHd8PNMb7JF8UF9UfZB+ob6NMaRF7NcT+GkOyKkAg7D3Ii1CbNkUHbmhcG2QITir69+VpTO6CotWZ3JvB8I06qKh/+oOdv+DufD+NnIkGjH69JAvl5UMk1XL61IgzN+JfJ6E3GkAhfznn1saSbUbWHY1OyBrXnOeFXoLXk+5WDk1PXQrTby6SatdV5dDZ0o12/B35I3dTc8ct/8SXZLwYpt9oQ/uzVWoPe3RgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01BvU7nyMt2UkoNnZdYqZZmn",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "cab7c04343831b2409d3fa2b0090117275b6f23bbd2e8fdad5671a51147761d1",
+          "latencyMs": 657,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2214,
+              "cacheWriteInputTokens": 535,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto speaks Sp"
+            },
+            {
+              "type": "text_delta",
+              "text": "anish (native) and English ("
+            },
+            {
+              "type": "text_delta",
+              "text": "C1).\n\nI can only answ"
+            },
+            {
+              "type": "text_delta",
+              "text": "er questions about Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": ", so I can't help with the"
+            },
+            {
+              "type": "text_delta",
+              "text": " Japanese phrase."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would you like to know about his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI agents, his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience or his st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can only answer questions about Alberto, so I can't help with the Japanese phrase. Would you like to know about his AI agents, his experience or his stack?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2214,
+                  "cacheWriteInputTokens": 535,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 72
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can only answer questions about Alberto, so I can't help with the Japanese phrase. Would you like to know about his AI agents, his experience or his stack?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+          "latencyMs": 786,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1681,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01Jwr3rvfcS4UkR8ujvCtg46",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1681,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 95
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSmwYKEAgUGAI4AUIIdGhpbmtpbmcSDMgWdjYPS0zXuRRzaxoM8MARasCITxY1XDfKIjCtl6iUnTuWuBm+uhMzgtahoj1h2gl79gOMGKcHoJC8Pm/75UkUEZ+mi4/7+MepY58quAU4AEGjpLx7+vV8zZf4wuyTC7KpfkBgoPTzEEb/yhyH0QM1x4rxFo/5Lj4f1JG6Yxzsm0iSQi/kbB7vEAmqZj9GfRb618csonwyFMONzFNcmzvuF+RDUz+p7/3j6k1YD7lz8wgfrEEt4W6X8uJ1mxWdxIPLMIWJQiD2hOQT4AeCit7eaK3ifdk3bFStPBqxM9l3P1pBEw9zNNkFAE9KgABjuzAKwzVllDx/7rWryJJvdED9KnNeF3EpGVDiwIZe6f4vpzUF2YSvFuV0HsgaZB7Jis222Mnv8G1UfU3MBcQylutEpNWGz7dTzSUxWUruACNRmwaD9+GrgWIl7HHPlJTubF7w72FQZ86EW/W/xweivmMRjtsX3WdlaIoryZG5ih+4gdZYWivRBZGqYOcwaTCrxPerHjObJnZWuDmpV9MDLO6Nf2Dn4WT0TfTOa5DT1HdURg/5NmMRguEwrE/Hxh73SiAF3mxKplr+T2IWCAw+k3uyvJDRu9YGKO3C5q89XbQEkxMXADKPdrQXeeIdKXnea9HN1GJ6P/ME/L1ZvxBr9K4Fp+blfyveGbl0E/3TMlMb5+M1n404VmKHBpZN5xrG1BWtc1O8UOJDLwWK0d3R3l+UnxPATpB8Cl9xlIJxCS60wW4BwsQE9Qdj099hYGdrE4ZdxxkmTuGK5crlhPa0pRjMFnVp/MlBNVxi1ybnwMfg5ZttwDkN8XUv6gGViB2JVZJQP2RElqEGthzhJ/ArldfUOf95OaoisDBOimU+T0bN0rZzZi4mEavStEbaes2XLfBiUNXOqwgfCUb7nSpoR32nZ1heZH8chpgKt+eE1IM1Jet5Zs8Y/mKL+vM7rV/Byp24RrdIYBJKAuCnnEi3H51BS0FxNPh3gxZQbRsWD5SNgGs9HM2WOT59Dme8X5dPFBzqRjGYtdsYAQ=="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01Jwr3rvfcS4UkR8ujvCtg46",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "416500e7639a6739e13778537a272250140e032b27add0b825c56ddb2bcfa5de",
+          "latencyMs": 720,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2222,
+              "cacheWriteInputTokens": 543,
+              "cacheReadInputTokens": 1677
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish (native) and English"
+            },
+            {
+              "type": "text_delta",
+              "text": " (C1)."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nI"
+            },
+            {
+              "type": "text_delta",
+              "text": " can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer questions about Alber"
+            },
+            {
+              "type": "text_delta",
+              "text": "to, so I can't help with"
+            },
+            {
+              "type": "text_delta",
+              "text": " the Japanese ph"
+            },
+            {
+              "type": "text_delta",
+              "text": "rase."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would you like to know more about his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " proj"
+            },
+            {
+              "type": "text_delta",
+              "text": "ects or his exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can only answer questions about Alberto, so I can't help with the Japanese phrase. Would you like to know more about his AI agent projects or his experience?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2222,
+                  "cacheWriteInputTokens": 543,
+                  "cacheReadInputTokens": 1677,
+                  "outputTokens": 71
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1).\n\nI can only answer questions about Alberto, so I can't help with the Japanese phrase. Would you like to know more about his AI agent projects or his experience?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

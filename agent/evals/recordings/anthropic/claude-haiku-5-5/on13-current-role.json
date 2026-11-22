@@ -1,0 +1,497 @@
+{
+  "caseId": "on13",
+  "slug": "current-role",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+      "latencyMs": 729,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1668,
+          "cacheWriteInputTokens": 1664
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_019auUDx8LrsZq5VgZqEhY1Q",
+                "name": "get_experience",
+                "input": {
+                  "company": "coverwallet"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1668,
+              "cacheWriteInputTokens": 1664,
+              "outputTokens": 52
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_019auUDx8LrsZq5VgZqEhY1Q",
+                "name": "get_experience",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "company": "coverwallet"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "87f7413065428b3b38fb64e8c495e2d75832009e68bde4781647b82b96b02b78",
+      "latencyMs": 880,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1992,
+          "cacheWriteInputTokens": 326,
+          "cacheReadInputTokens": 1664
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto is a Sen"
+        },
+        {
+          "type": "text_delta",
+          "text": "ior Software Engineer at"
+        },
+        {
+          "type": "text_delta",
+          "text": " CoverWallet, an"
+        },
+        {
+          "type": "text_delta",
+          "text": " insurtech platform,"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " role"
+        },
+        {
+          "type": "text_delta",
+          "text": " he has held since 2019 "
+        },
+        {
+          "type": "text_delta",
+          "text": "(based"
+        },
+        {
+          "type": "text_delta",
+          "text": " in Madrid / rem"
+        },
+        {
+          "type": "text_delta",
+          "text": "ote). He has"
+        },
+        {
+          "type": "text_delta",
+          "text": " led cross-team projects from"
+        },
+        {
+          "type": "text_delta",
+          "text": " architecture to production, integr"
+        },
+        {
+          "type": "text_delta",
+          "text": "ated third-party insurance car"
+        },
+        {
+          "type": "text_delta",
+          "text": "rier APIs, introdu"
+        },
+        {
+          "type": "text_delta",
+          "text": "ced AI agents into the team"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s work"
+        },
+        {
+          "type": "text_delta",
+          "text": "flow for"
+        },
+        {
+          "type": "text_delta",
+          "text": " code review, refactoring and"
+        },
+        {
+          "type": "text_delta",
+          "text": " docs, and mentored new"
+        },
+        {
+          "type": "text_delta",
+          "text": " hires."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1992,
+              "cacheWriteInputTokens": 326,
+              "cacheReadInputTokens": 1664,
+              "outputTokens": 120
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+          "latencyMs": 655,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_013Rhb8y2W1qCaLY2ZxkfYqi",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 52
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_013Rhb8y2W1qCaLY2ZxkfYqi",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "22ff8d75f18e6628a9ed111b7b16ccb736bb3aff3d95c8de61858ccc4aea7ec4",
+          "latencyMs": 867,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1992,
+              "cacheReadInputTokens": 1990
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is a Sen"
+            },
+            {
+              "type": "text_delta",
+              "text": "ior Software Engineer at"
+            },
+            {
+              "type": "text_delta",
+              "text": " CoverWallet, an"
+            },
+            {
+              "type": "text_delta",
+              "text": " insurtech platform,"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
+              "text": " role"
+            },
+            {
+              "type": "text_delta",
+              "text": " he has held since 2019 "
+            },
+            {
+              "type": "text_delta",
+              "text": "and still"
+            },
+            {
+              "type": "text_delta",
+              "text": " holds."
+            },
+            {
+              "type": "text_delta",
+              "text": " Based in Madrid /"
+            },
+            {
+              "type": "text_delta",
+              "text": " Remote, he has led cross"
+            },
+            {
+              "type": "text_delta",
+              "text": "-team projects from"
+            },
+            {
+              "type": "text_delta",
+              "text": " architecture to production, integr"
+            },
+            {
+              "type": "text_delta",
+              "text": "ated third-party insurance car"
+            },
+            {
+              "type": "text_delta",
+              "text": "rier APIs, introdu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ced AI agents into the team"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s work"
+            },
+            {
+              "type": "text_delta",
+              "text": "flow (code review, refact"
+            },
+            {
+              "type": "text_delta",
+              "text": "oring, docs), and m"
+            },
+            {
+              "type": "text_delta",
+              "text": "entored new hires."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow (code review, refactoring, docs), and mentored new hires.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1992,
+                  "cacheReadInputTokens": 1990,
+                  "outputTokens": 126
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow (code review, refactoring, docs), and mentored new hires."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
+          "latencyMs": 665,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1668,
+              "cacheReadInputTokens": 1664
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01VP3w23zGfZkQob49mY5QfZ",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1668,
+                  "cacheReadInputTokens": 1664,
+                  "outputTokens": 52
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01VP3w23zGfZkQob49mY5QfZ",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "6379de624dfde3c7077745bfd0ffde06b222cbdfab6aa571bd89a9f68ae32254",
+          "latencyMs": 889,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1992,
+              "cacheReadInputTokens": 1990
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is a Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software Engineer at C"
+            },
+            {
+              "type": "text_delta",
+              "text": "overWallet, an"
+            },
+            {
+              "type": "text_delta",
+              "text": " insurtech platform,"
+            },
+            {
+              "type": "text_delta",
+              "text": " where he has"
+            },
+            {
+              "type": "text_delta",
+              "text": " wor"
+            },
+            {
+              "type": "text_delta",
+              "text": "ked since 2019 (based"
+            },
+            {
+              "type": "text_delta",
+              "text": " in Madrid / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "ote). He has"
+            },
+            {
+              "type": "text_delta",
+              "text": " led cross-team projects from"
+            },
+            {
+              "type": "text_delta",
+              "text": " architecture to production, integr"
+            },
+            {
+              "type": "text_delta",
+              "text": "ated third-party insurance car"
+            },
+            {
+              "type": "text_delta",
+              "text": "rier APIs, intro"
+            },
+            {
+              "type": "text_delta",
+              "text": "duced AI agents into the"
+            },
+            {
+              "type": "text_delta",
+              "text": " team"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s work"
+            },
+            {
+              "type": "text_delta",
+              "text": "flow for"
+            },
+            {
+              "type": "text_delta",
+              "text": " code review, refactoring and"
+            },
+            {
+              "type": "text_delta",
+              "text": " docs, and mentored new"
+            },
+            {
+              "type": "text_delta",
+              "text": " hires."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, where he has worked since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1992,
+                  "cacheReadInputTokens": 1990,
+                  "outputTokens": 120
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, where he has worked since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

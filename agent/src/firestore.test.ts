@@ -9,34 +9,18 @@ const emulator = (fake: ReturnType<typeof fakeFirestore>) =>
     fetch: fake.fetch,
   });
 
+// What every `DocumentStore` does (round trips, races) is in the contract
+// suite, `document-store.contract.test.ts`, which also runs on the emulator.
+// These are the Firestore store's own: its requests, auth and failures.
 describe("createFirestoreDocumentStore", () => {
-  it("creates a document, then reads back every kind of value it wrote", async () => {
-    const fake = fakeFirestore();
-    const store = emulator(fake);
-    const doc = {
-      count: 3,
-      usd: 0.25,
-      label: "a",
-      on: true,
-      none: null,
-      expireAt: new Date("2026-11-04T10:00:00.000Z"),
-      holds: { h1: { usd: 1.5 } },
-    };
-    await store.update("rateLimits/chat:1.2.3.4", () => ({ doc, result: undefined }));
-
-    const read = await store.update("rateLimits/chat:1.2.3.4", (current) => ({ result: current }));
-    expect(read).toEqual(doc);
-    expect(fake.docs.has(`${root}/rateLimits/chat:1.2.3.4`)).toBe(true);
-  });
-
   it("encodes document ids in the URL", async () => {
     const fake = fakeFirestore();
     const store = emulator(fake);
-    await store.update("rateLimits/chat:2001%3Adb8%3A%3A1", () => ({ doc: { count: 1 }, result: 0 }));
+    await store.update("counters/chat:2001%3Adb8%3A%3A1", () => ({ doc: { count: 1 }, result: 0 }));
     expect(fake.requests[0].url).toBe(
-      `http://localhost:8081/v1/${root}/rateLimits/chat%3A2001%253Adb8%253A%253A1`,
+      `http://localhost:8081/v1/${root}/counters/chat%3A2001%253Adb8%253A%253A1`,
     );
-    expect(fake.docs.has(`${root}/rateLimits/chat:2001%3Adb8%3A%3A1`)).toBe(true);
+    expect(fake.docs.has(`${root}/counters/chat:2001%3Adb8%3A%3A1`)).toBe(true);
   });
 
   it("writes nothing when the change returns no document", async () => {
@@ -78,7 +62,8 @@ describe("createFirestoreDocumentStore", () => {
       fetch: fake.fetch,
       maxAttempts: 3,
     });
-    fake.beforeCommit = () => fake.write(`${root}/c/x`, {});
+    let otherWrites = 0;
+    fake.beforeCommit = () => fake.write(`${root}/c/x`, { n: { integerValue: String(++otherWrites) } });
     await expect(store.update("c/x", () => ({ doc: {}, result: 0 }))).rejects.toThrow(/after 3 conflicts/);
 
     await expect(
@@ -168,14 +153,14 @@ describe("createFirestoreDocumentStore", () => {
       emulatorHost: "localhost:8081",
       fetch: async () =>
         Response.json(
-          { error: { status: "INTERNAL", message: "rateLimits/chat:203.0.113.7" } },
+          { error: { status: "INTERNAL", message: "counters/chat:203.0.113.7" } },
           { status: 500 },
         ),
     });
     const error = await store
-      .update("rateLimits/chat:203.0.113.7", () => ({ result: 0 }))
+      .update("counters/chat:203.0.113.7", () => ({ result: 0 }))
       .catch((e: unknown) => e);
-    expect(String(error)).toMatch(/rateLimits/);
+    expect(String(error)).toMatch(/counters/);
     expect(String(error)).not.toMatch(/203\.0\.113\.7/);
   });
 });

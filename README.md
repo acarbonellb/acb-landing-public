@@ -18,8 +18,8 @@ A static Next.js site (React, TypeScript, Tailwind CSS) on Firebase Hosting, and
                                               └─ guardrails, usage stats
                                                      │
                                                      ▼
-                                              Firestore (rate limits,
-                                              spend, usage)
+                                              Firestore (spend cap,
+                                              daily quota, usage)
 
  GitHub Actions: lint, unit, agent and browser tests, eval replay
    ──► build once ──► deploy the tested artifacts (agent, then site)
@@ -27,7 +27,7 @@ A static Next.js site (React, TypeScript, Tailwind CSS) on Firebase Hosting, and
 
 - **Site**: a static export with no server. The chat calls the agent directly; the public MCP endpoint is the site's `/mcp`, rewritten to the agent.
 - **Agent**: five read-only tools, served to MCP clients and to a Claude tool-use loop that streams answers to the chat. Every answer it gives is signed, so it only reads back answers it gave.
-- **Store**: Firestore holds the rate limits, the spend cap, the daily quota and the weekly usage stats, shared by every instance.
+- **Store**: Firestore holds the durable state, the spend cap, the daily quota and the weekly usage stats. The rate limits are in memory, on the one instance the service runs.
 - **CI**: every push runs the tests and replays the agent's eval recordings; `main` deploys the exact build that was tested.
 
 ## Running it

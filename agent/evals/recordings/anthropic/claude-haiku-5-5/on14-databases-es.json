@@ -1,0 +1,456 @@
+{
+  "caseId": "on14",
+  "slug": "databases-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+      "latencyMs": 856,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1670,
+          "cacheWriteInputTokens": 1666
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01DHAA446CR7EsQzffX1xJn6",
+                "name": "get_stack",
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1670,
+              "cacheWriteInputTokens": 1666,
+              "outputTokens": 109
+            },
+            "providerContent": [
+              {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS/gUKEAgUGAI4AUIIdGhpbmtpbmcSDE1cOY0LUtkiJ7etXRoMPo7qpOB/Yr4bt4mzIjCEU7zPhNTJvOF4tO9M3I2tH0/6EVGKu8nnwiI8HTtcHGZe66tx+ohq5iWUIRTmcg0qmwXvt7oLzR4pEyLIuNduMx9mmycTWcY4KhELZ3mbkyIi8PRfwiFmuxQ6B+UFfdQnd0PhaQWf0Nee62lIZqIPFjoAaqnCyYjNJnN03hdGtYT2ikGpHHlkfHNDg34Z5VLnAtiNjFo6ZYtAxN20G2kxGWH3GUxTURBG6eW7gfHSMlIHc56pvqaylXEoUEJI9+mKMLfm9DeHh6+1xPrc/UbCQ2crMScwKt65yc07gd2nhTBiqILylb/UXTr4Nwdh0+1JnWUgvZju/zSmIOQ1240LzAgI73UkBq75CF3CqZBouTiqSZ8muPShMwVyGerE+l0sxE6oUPqUhn6yWm5i6i9SnH+KV8mamMfTc9dBENrdTBnNVsoqmNNmpHZCDbWVG/BEY0SIE0fnZGJInqVETI2alYv1hW9vw/XoEtdSxAyHQOizZreZpfFwZVWYtRlge6l8NSIeAxU1UP/jGcKQYHmkURVGoBEPIw6irE36MAwW6oCf44mPnbNweaD2Bot3zy+J9mmQyNYzMv5v4yD8lWhunkNkOgyo3e6ySd3HCUObuIpx18cK59KbyYln4gBPEQtGgACpTBV/rd4BAotYKyjEGZEtC0N+PGqdJE/dcqFCj/pQg8cSh8hT+h+1kwoHk1jf+p2oFRVOMjMNMPH/LslLH1XDVaVHFTK+hIsh0kQ+2p2M9vf5hRSMnLyRWI5lt0BDJPlhlX4ScUo/5nUYBUSytx7SlS40mqzbksDY97t/IVUc6EM2NefxON2i1gn8t3MNiCOuBI6SuNIbcMMvCozRigUftlrdGOQgLRNXGeiWivlxlAoG8y2XGKHvJKQrtuGXnq6edl8Aj5sLXt9Go5wusIhhItg+aMWxh1wfzH20OS2/yCpH4zWeMqaz9djwGAE="
+              },
+              {
+                "type": "tool_use",
+                "id": "toolu_01DHAA446CR7EsQzffX1xJn6",
+                "name": "get_stack",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {
+                  "group": "backend"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "b977673726eefe2c16b91a146a6bf6421c88c24f5ace59666490746da16b192f",
+      "latencyMs": 812,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1855,
+          "cacheWriteInputTokens": 187,
+          "cacheReadInputTokens": 1666
+        },
+        {
+          "type": "text_delta",
+          "text": "Según"
+        },
+        {
+          "type": "text_delta",
+          "text": " su perfil,"
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abaja con **Postg"
+        },
+        {
+          "type": "text_delta",
+          "text": "reSQL** y **M"
+        },
+        {
+          "type": "text_delta",
+          "text": "ongoDB**. Si"
+        },
+        {
+          "type": "text_delta",
+          "text": " quie"
+        },
+        {
+          "type": "text_delta",
+          "text": "res saber más sobre c"
+        },
+        {
+          "type": "text_delta",
+          "text": "ómo los"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "ha usado en sus proy"
+        },
+        {
+          "type": "text_delta",
+          "text": "ectos, puedo"
+        },
+        {
+          "type": "text_delta",
+          "text": " rev"
+        },
+        {
+          "type": "text_delta",
+          "text": "isar su experiencia la"
+        },
+        {
+          "type": "text_delta",
+          "text": "boral."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Según su perfil, Alberto trabaja con **PostgreSQL** y **MongoDB**. Si quieres saber más sobre cómo los ha usado en sus proyectos, puedo revisar su experiencia laboral.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 1855,
+              "cacheWriteInputTokens": 187,
+              "cacheReadInputTokens": 1666,
+              "outputTokens": 78
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Según su perfil, Alberto trabaja con **PostgreSQL** y **MongoDB**. Si quieres saber más sobre cómo los ha usado en sus proyectos, puedo revisar su experiencia laboral."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+          "latencyMs": 652,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01JZZyeRxF2CAPXacDJHeF2t",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01JZZyeRxF2CAPXacDJHeF2t",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "19ad1b7524b82872597271a43959b26f72f147722e8ea8f2139daa3402d9b9c8",
+          "latencyMs": 794,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1795,
+              "cacheWriteInputTokens": 127,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "text_delta",
+              "text": "Según"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " perfil, Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja con **"
+            },
+            {
+              "type": "text_delta",
+              "text": "PostgreSQL**"
+            },
+            {
+              "type": "text_delta",
+              "text": " y **MongoDB**"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " dentro de su st"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack de backend y"
+            },
+            {
+              "type": "text_delta",
+              "text": " datos (junto con Node"
+            },
+            {
+              "type": "text_delta",
+              "text": ".js, NestJS,"
+            },
+            {
+              "type": "text_delta",
+              "text": " Express, Next.js,"
+            },
+            {
+              "type": "text_delta",
+              "text": " REST y GraphQL"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Según su perfil, Alberto trabaja con **PostgreSQL** y **MongoDB**, dentro de su stack de backend y datos (junto con Node.js, NestJS, Express, Next.js, REST y GraphQL).",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1795,
+                  "cacheWriteInputTokens": 127,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 80
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Según su perfil, Alberto trabaja con **PostgreSQL** y **MongoDB**, dentro de su stack de backend y datos (junto con Node.js, NestJS, Express, Next.js, REST y GraphQL)."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "899a2e53dc725ddd3098d47aac8ebfa154299c6dd54fef4e16a7815fc117dd08",
+          "latencyMs": 664,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1670,
+              "cacheReadInputTokens": 1666
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01FJsKaq4vsLzZNYo1iMXGw1",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1670,
+                  "cacheReadInputTokens": 1666,
+                  "outputTokens": 49
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01FJsKaq4vsLzZNYo1iMXGw1",
+                    "name": "get_stack",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "group": "backend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "81609e2b5cff66284ae51913c8e36a9bd455d520b963f19dd9e3c90bddc7aab0",
+          "latencyMs": 826,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1795,
+              "cacheReadInputTokens": 1793
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto conoce d"
+            },
+            {
+              "type": "text_delta",
+              "text": "os bases de datos según"
+            },
+            {
+              "type": "text_delta",
+              "text": " su perfil: **Post"
+            },
+            {
+              "type": "text_delta",
+              "text": "greSQL** y **"
+            },
+            {
+              "type": "text_delta",
+              "text": "MongoDB**."
+            },
+            {
+              "type": "text_delta",
+              "text": " Si"
+            },
+            {
+              "type": "text_delta",
+              "text": " quieres sa"
+            },
+            {
+              "type": "text_delta",
+              "text": "ber más sobre c"
+            },
+            {
+              "type": "text_delta",
+              "text": "ómo las"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "ha usado en pro"
+            },
+            {
+              "type": "text_delta",
+              "text": "yectos conc"
+            },
+            {
+              "type": "text_delta",
+              "text": "retos, pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo"
+            },
+            {
+              "type": "text_delta",
+              "text": " bu"
+            },
+            {
+              "type": "text_delta",
+              "text": "scar"
+            },
+            {
+              "type": "text_delta",
+              "text": "lo en su experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " laboral."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto conoce dos bases de datos según su perfil: **PostgreSQL** y **MongoDB**. Si quieres saber más sobre cómo las ha usado en proyectos concretos, puedo buscarlo en su experiencia laboral.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1795,
+                  "cacheReadInputTokens": 1793,
+                  "outputTokens": 86
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto conoce dos bases de datos según su perfil: **PostgreSQL** y **MongoDB**. Si quieres saber más sobre cómo las ha usado en proyectos concretos, puedo buscarlo en su experiencia laboral."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

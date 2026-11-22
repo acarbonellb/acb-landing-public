@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import { createFirestoreDocumentStore } from "./firestore";
 import { fakeFirestore, root } from "./firestore-fake";
+import { countingStore } from "./test-deps";
 import { createUsageRecorder, isoWeek } from "./usage";
 
 const pricing = { inputUsdPerMTok: 4, outputUsdPerMTok: 20 };
@@ -93,7 +94,8 @@ describe("createUsageRecorder", () => {
   });
 
   it("reads p50 and p95 from the latency buckets", async () => {
-    const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing });
+    const clock = fakeClock("2026-11-04T10:00:00Z");
+    const usage = createUsageRecorder({ store: createMemoryDocumentStore(), pricing, now: clock.now });
     // 18 fast answers (≤ 2 s), one slow (≤ 10 s), one past the last bucket.
     for (let i = 0; i < 18; i++) await usage.recordChat(answered(1500 + i * 10));
     await usage.recordChat(answered(9000));
@@ -103,6 +105,7 @@ describe("createUsageRecorder", () => {
     expect(latency).toEqual({ p50Ms: 2000, p95Ms: 10_000 });
 
     await usage.recordChat(answered(400_000));
+    clock.set("2026-11-04T10:00:10Z"); // past the stats' snapshot
     // Now 2 of 21 are past the last bucket: p95 has no upper bound.
     expect((await usage.stats()).current.chat.latency).toEqual({ p50Ms: 2000, p95Ms: null });
   });
@@ -129,6 +132,7 @@ describe("createUsageRecorder", () => {
     const usage = createUsageRecorder({ store, pricing, now: clock.now });
     await usage.recordChat(answered(1800, 400));
     await usage.recordMcp();
+    await usage.flush();
 
     const doc = await store.update("usage/2026-W45", (d) => ({ result: d }));
     expect(doc).toEqual({
@@ -160,6 +164,7 @@ describe("createUsageRecorder", () => {
 
     await expect(usage.recordChat(answered(1000))).resolves.toBeUndefined();
     await expect(usage.recordMcp()).resolves.toBeUndefined();
+    await expect(usage.flush()).resolves.toBeUndefined();
     expect(error).toHaveBeenCalledTimes(2);
     expect(error.mock.calls[0][0]).toMatch(/usage/i);
     // Reading the stats does fail: `/stats` answers it.
@@ -190,6 +195,7 @@ describe("createUsageRecorder", () => {
     await usage.recordChat(answered(1800, 400));
     await usage.recordChat({ outcome: "error:internal", usage: { inputTokens: 0, outputTokens: 0 }, totalMs: 100 });
     await usage.recordMcp();
+    await usage.flush();
     expect([...fake.docs.keys()]).toEqual([`${root}/usage/2026-W45`]);
 
     const writes = fake.requests.filter((r) => r.method === "POST").length;
@@ -206,7 +212,7 @@ describe("createUsageRecorder", () => {
   });
 });
 
-describe("the batched counts: refusals and unknown Google hops", () => {
+describe("the batched counts", () => {
   // Another instance (or the next one, after a restart) reading the same store.
   const reader = (store: DocumentStore, now?: () => number) =>
     createUsageRecorder({ store, pricing, now });
@@ -224,15 +230,54 @@ describe("the batched counts: refusals and unknown Google hops", () => {
     expect(current.mcp.unknownGoogleHops).toBe(1);
   });
 
-  it("are written on a timer", async () => {
-    const store = createMemoryDocumentStore();
-    const usage = createUsageRecorder({ store, pricing, flushEveryMs: 20 });
-    await usage.recordChat({ outcome: "http_429" });
+  it("are written by the next usage once due, never by a timer", async () => {
+    vi.useFakeTimers();
+    try {
+      const store = createMemoryDocumentStore();
+      const clock = fakeClock("2026-11-18T12:00:00Z");
+      const usage = createUsageRecorder({ store, pricing, now: clock.now, flushEveryMs: 10_000 });
+      await usage.recordChat({ outcome: "http_429" });
+      await usage.recordChat({ outcome: "http_429" });
+      expect(vi.getTimerCount()).toBe(0);
 
-    await vi.waitFor(async () =>
-      expect((await reader(store).stats()).current.chat.outcomes).toEqual({ http_429: 1 }),
-    );
-    await usage.close();
+      vi.advanceTimersByTime(60_000);
+      const stored = async () => (await reader(store).stats()).current.chat.outcomes;
+      expect(await stored()).toEqual({ http_429: 1 });
+
+      clock.set("2026-11-18T12:00:10Z");
+      await usage.recordMcp();
+      expect(await stored()).toEqual({ http_429: 2 });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("hold the chat requests that ran too, written by the next usage once due", async () => {
+    const store = createMemoryDocumentStore();
+    const clock = fakeClock("2026-11-18T12:00:00Z");
+    const usage = createUsageRecorder({ store, pricing, now: clock.now, flushEveryMs: 10_000 });
+    await usage.recordChat(answered(1000)); // a fresh instance's first batch is due at once
+    await usage.recordChat(answered(1000));
+    const stored = async () => (await reader(store).stats()).current.chat.requests;
+    expect(await stored()).toBe(1);
+
+    clock.set("2026-11-18T12:00:10Z");
+    await usage.recordMcp();
+    expect(await stored()).toBe(2);
+  });
+
+  it("are written by `/stats` before it reads, and a `/stats` with none waiting writes nothing", async () => {
+    const { store, writes } = countingStore();
+    const usage = createUsageRecorder({ store, pricing, flushEveryMs: 10_000 });
+    await usage.recordMcp(); // a fresh instance's first batch is due at once
+    await usage.recordMcp();
+    expect(writes).toHaveLength(1);
+
+    expect((await usage.stats()).current.mcp.requests).toBe(2);
+    expect(writes).toHaveLength(2);
+    await usage.stats();
+    await usage.stats();
+    expect(writes).toHaveLength(2);
   });
 
   it("land in the week they were counted in", async () => {

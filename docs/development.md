@@ -1,5 +1,7 @@
 # Development
 
+Working on the site locally: running it, where content lives, how the chat finds the agent, and which suite tests what, so a change is checked where it can break, including on the Firestore emulator.
+
 ```bash
 pnpm install
 pnpm dev
@@ -27,7 +29,44 @@ Tests check behaviour through accessible roles, text and the `data-theme` attrib
 | --- | --- | --- |
 | Unit | `pnpm test` (`pnpm test:watch` while developing) | Components with Vitest + React Testing Library. Files sit next to the code: `src/**/*.test.tsx`. Also the repo-tree checks in `repo-hygiene/` (no email address in any file, pinned pipeline, CI triggers, and every link in the README and `docs/` resolving) |
 | Browser | `NEXT_PUBLIC_AGENT_URL=http://localhost:8080 pnpm build && pnpm test:e2e` | Playwright against the static export in `out/`, served locally on port 4173. Files live in `e2e/*.spec.ts`. The `agent` fixture (`e2e/fixtures.ts`) stubs the agent's chat, MCP and stats endpoints, so build with an agent URL (otherwise the page shows "agent coming soon"). The `page` fixture serves pages with the headers from `out/firebase.json` (see [Security headers](deploy.md#security-headers)) and fails a test on any CSP violation. Axe runs once, in `a11y.spec.ts`; overflow checks live in `layout.spec.ts`. |
-| Agent | `pnpm agent:test` | The agent service, with a fake model: see [Agent service](agent.md#commands) |
+| Agent | `pnpm agent:test` | The agent service, with a fake model: see [Agent service](agent.md#commands). The `DocumentStore` contract suite also runs on the Firestore emulator when one is up: see [below](#the-store-contract-on-the-firestore-emulator) |
 | Evals | `pnpm agent:eval:replay --check` | The committed eval recordings, replayed: see [Evals](evals.md) |
 
 Browser tests need Chromium and WebKit: run `pnpm exec playwright install chromium webkit` once, or point `CHROMIUM_PATH` at an existing Chromium binary (it only applies to the Chromium project). WebKit runs `e2e/mobile-menu.spec.ts`, `e2e/contact-mobile.spec.ts` and `e2e/layout.spec.ts` on an iPhone profile with a touch screen; it needs system libraries Chromium doesn't, so on a bare Linux or WSL install run `sudo pnpm exec playwright install-deps webkit` too. Linux WebKit doesn't share every iOS Safari quirk (it focuses a tapped link, for one), so check menu changes on a real iPhone as well.
+
+### The store contract on the Firestore emulator
+
+`agent/src/document-store.contract.test.ts` is one suite run against every `DocumentStore`: the memory store, the Firestore store on the hand-written REST fake (`agent/src/firestore-fake.ts`), and the Firestore store on the real Firestore emulator. It also checks that the fake answers the REST calls the way the emulator does. Without an emulator the emulator half is skipped; CI always runs it, against the same image as below (`.github/workflows/deploy.yml`, pinned by digest).
+
+To run it locally you need Docker (the image brings its own Java):
+
+```bash
+docker run -d --rm --name firestore-emulator -p 8081:8080 \
+  gcr.io/google.com/cloudsdktool/google-cloud-cli:594.0.0-emulators@sha256:4568487af2c00a66e1d3e0f054be208c9c5b499a3999da50428b396e1341e9fd \
+  gcloud emulators firestore start --host-port=0.0.0.0:8080
+until curl -sf http://localhost:8081/ >/dev/null; do sleep 1; done
+FIRESTORE_EMULATOR_HOST=localhost:8081 pnpm agent:test
+docker stop firestore-emulator
+```
+
+Each test uses a project of its own, so the emulator needs no reset between runs. If the fake and the emulator ever disagree, fix the fake: it stands in for Firestore everywhere else in the tests. When bumping the image, take the digest of the versioned `-emulators` tag from the registry (`docker buildx imagetools inspect <image>:<version>-emulators`) and update it here and in the workflow.
+
+### The load test on the Firestore emulator
+
+`agent/scripts/load-test.ts` floods the guardrails locally: it serves the agent from the script's own process, on a local port, wired like production (`createGuardrails`) over the Firestore emulator, with a fake model client, so no model call leaves the machine. For a fixed duration it sends `/chat`, `/mcp` and `/stats` twice each configured ceiling on a fresh rate-limit key per request, plus one key at twice its per-key limit. It is a script, not a CI test.
+
+It reports per endpoint the requests, refusals by reason, errors and latency, the store's writes, reads and conflicts by collection (counted at the REST boundary), and any limit that let through more than its limit could (exit code 1 if one did). It refuses to start unless the store is the Firestore emulator on this machine (`agent/src/load-test-guard.ts`, tested), so it can't reach production or a deployed revision.
+
+With the emulator from the section above on a port of its own:
+
+```bash
+docker run -d --rm --name firestore-emulator-load-test -p 8091:8080 \
+  gcr.io/google.com/cloudsdktool/google-cloud-cli:594.0.0-emulators@sha256:4568487af2c00a66e1d3e0f054be208c9c5b499a3999da50428b396e1341e9fd \
+  gcloud emulators firestore start --host-port=0.0.0.0:8080
+until curl -sf http://localhost:8091/ >/dev/null; do sleep 1; done
+AGENT_STORE=firestore FIRESTORE_PROJECT_ID=load-test FIRESTORE_EMULATOR_HOST=localhost:8091 \
+  pnpm agent:load-test --seconds 120 --shape steady   # then again with --shape burst
+docker stop firestore-emulator-load-test
+```
+
+`--shape steady` spaces each stream's requests evenly; `--shape burst` sends each minute's requests all at once, at the start of the minute, which is what makes concurrent requests race on the same store documents. The ceilings are the configuration's (the `RATE_LIMIT_*` variables, defaults otherwise). Each run uses a project of its own on the emulator, so it starts from an empty store. Record the result, and the commit it ran on, in [Guardrails](guardrails.md#load-test).

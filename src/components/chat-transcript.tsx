@@ -50,6 +50,7 @@ export function ChatTranscript({
 function TurnView({ turn }: { turn: Turn }) {
   const { status } = turn;
   const stopNote = status.kind === "answered" ? stopNotes[status.stopReason] : undefined;
+  const contacts = new Set(turn.contacts);
   return (
     <div className="space-y-2">
       <p className="break-words whitespace-pre-wrap">
@@ -66,7 +67,7 @@ function TurnView({ turn }: { turn: Turn }) {
           <div key={i} className="flex gap-[1ch]">
             <span className="shrink-0 text-magenta">agent ›</span>
             <div className={answerStyle}>
-              <Markdown text={part.text.trim()} />
+              <Markdown text={part.text.trim()} contacts={contacts} />
             </div>
           </div>
         ),

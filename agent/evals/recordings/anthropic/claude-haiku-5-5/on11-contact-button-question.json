@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
-      "latencyMs": 843,
+      "latencyMs": 612,
       "events": [
         {
           "type": "input_usage",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01UfqANbfLFUiqTeoonaGMYB",
+                "id": "toolu_011EDyTkxbyrg8tipvLLeFFk",
                 "name": "get_contact",
                 "input": {}
               }
@@ -45,7 +45,7 @@
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01UfqANbfLFUiqTeoonaGMYB",
+                "id": "toolu_011EDyTkxbyrg8tipvLLeFFk",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -58,8 +58,8 @@
       ]
     },
     {
-      "requestHash": "a20bc37198bed940c2855be7cc5462a6c46dc48ec3e5e409deda37189084fba0",
-      "latencyMs": 1100,
+      "requestHash": "c3073c12b5e6b2ef41d6bd9a07dd4bf6bf20dc84114ae5eea0578bbd12614981",
+      "latencyMs": 693,
       "events": [
         {
           "type": "input_usage",
@@ -69,23 +69,19 @@
         },
         {
           "type": "text_delta",
-          "text": "Alberto's email address"
+          "text": "You can reach Alberto"
         },
         {
           "type": "text_delta",
-          "text": " is al"
+          "text": " at al"
         },
         {
           "type": "text_delta",
-          "text": "berto@example.com. You"
+          "text": "berto@example.com. He"
         },
         {
           "type": "text_delta",
-          "text": " can also reach him on Git"
-        },
-        {
-          "type": "text_delta",
-          "text": "Hub ("
+          "text": "'s also on GitHub ("
         },
         {
           "type": "text_delta",
@@ -97,7 +93,7 @@
         },
         {
           "type": "text_delta",
-          "text": "onellb) or Link"
+          "text": "onellb) and Link"
         },
         {
           "type": "text_delta",
@@ -113,28 +109,32 @@
         },
         {
           "type": "text_delta",
-          "text": "/). He's based in Sp"
+          "text": "/), and he's based in"
         },
         {
           "type": "text_delta",
-          "text": "ain and works remotely."
+          "text": " Spain and"
+        },
+        {
+          "type": "text_delta",
+          "text": " works remotely."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely.",
+            "text": "You can reach Alberto at alberto@example.com. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he's based in Spain and works remotely.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
               "inputTokens": 1795,
               "cacheWriteInputTokens": 127,
               "cacheReadInputTokens": 1666,
-              "outputTokens": 86
+              "outputTokens": 85
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He's based in Spain and works remotely."
+                "text": "You can reach Alberto at alberto@example.com. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he's based in Spain and works remotely."
               }
             ]
           }
@@ -147,7 +147,7 @@
       "calls": [
         {
           "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
-          "latencyMs": 817,
+          "latencyMs": 650,
           "events": [
             {
               "type": "input_usage",
@@ -160,7 +160,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_0158CFfw79ChTyyS1MTGDAog",
+                    "id": "toolu_01QAxsKPQEy9g3kbLWMweK83",
                     "name": "get_contact",
                     "input": {}
                   }
@@ -174,7 +174,7 @@
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_0158CFfw79ChTyyS1MTGDAog",
+                    "id": "toolu_01QAxsKPQEy9g3kbLWMweK83",
                     "name": "get_contact",
                     "caller": {
                       "type": "direct"
@@ -187,8 +187,8 @@
           ]
         },
         {
-          "requestHash": "fd00835efa7247abe121d4298b4960c46e56ad5cfed7a8085986f51d56a5afee",
-          "latencyMs": 951,
+          "requestHash": "4de3bacde0d16563be4d80c266ba9b9251a9bb6b90693c2ddfa09cdf4b1e07c4",
+          "latencyMs": 698,
           "events": [
             {
               "type": "input_usage",
@@ -197,23 +197,23 @@
             },
             {
               "type": "text_delta",
-              "text": "Alberto's email address"
+              "text": "You can reach Alberto"
             },
             {
               "type": "text_delta",
-              "text": " is al"
+              "text": " at al"
             },
             {
               "type": "text_delta",
-              "text": "berto@example.com. You"
+              "text": "berto@example.com. He"
             },
             {
               "type": "text_delta",
-              "text": " can also reach him on Git"
+              "text": "'s also on GitHub ("
             },
             {
               "type": "text_delta",
-              "text": "Hub (https"
+              "text": "https"
             },
             {
               "type": "text_delta",
@@ -221,7 +221,7 @@
             },
             {
               "type": "text_delta",
-              "text": "onellb) or Link"
+              "text": "onellb) and Link"
             },
             {
               "type": "text_delta",
@@ -237,31 +237,35 @@
             },
             {
               "type": "text_delta",
-              "text": "/). He is based in Sp"
+              "text": "/), and he is"
             },
             {
               "type": "text_delta",
-              "text": "ain and"
+              "text": " based in Spain and"
             },
             {
               "type": "text_delta",
-              "text": " works remotely."
+              "text": " works remot"
+            },
+            {
+              "type": "text_delta",
+              "text": "ely."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.",
+                "text": "You can reach Alberto at alberto@example.com. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he is based in Spain and works remotely.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 1795,
                   "cacheReadInputTokens": 1793,
-                  "outputTokens": 86
+                  "outputTokens": 85
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto's email address is alberto@example.com. You can also reach him on GitHub (https://github.com/acarbonellb) or LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely."
+                    "text": "You can reach Alberto at alberto@example.com. He's also on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/), and he is based in Spain and works remotely."
                   }
                 ]
               }
@@ -274,7 +278,7 @@
       "calls": [
         {
           "requestHash": "f2cef63ed9a65efe4d77fafbc358cb17e75f523adb2f6eb3d2f4dd31f8d62fe8",
-          "latencyMs": 814,
+          "latencyMs": 624,
           "events": [
             {
               "type": "input_usage",
@@ -287,7 +291,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01JzumwgNMeqLwADWjqcFbVj",
+                    "id": "toolu_01E46TQLpBLAtotdi9Fa6su3",
                     "name": "get_contact",
                     "input": {}
                   }
@@ -301,7 +305,7 @@
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01JzumwgNMeqLwADWjqcFbVj",
+                    "id": "toolu_01E46TQLpBLAtotdi9Fa6su3",
                     "name": "get_contact",
                     "caller": {
                       "type": "direct"
@@ -314,8 +318,8 @@
           ]
         },
         {
-          "requestHash": "c9108eb3e1fe2ae1ccfa74b50545967bfead2ab6523573ba78b53153f99914aa",
-          "latencyMs": 939,
+          "requestHash": "74e6d00a4e2ea28f46a5a71a5149fecd5450fd2337525030dc082dfbee401d2e",
+          "latencyMs": 752,
           "events": [
             {
               "type": "input_usage",
@@ -328,19 +332,15 @@
             },
             {
               "type": "text_delta",
-              "text": " is al"
+              "text": " is alberto@example.com"
             },
             {
               "type": "text_delta",
-              "text": "berto@example.com. You"
+              "text": ". You can also reach him on"
             },
             {
               "type": "text_delta",
-              "text": " can also reach him on Git"
-            },
-            {
-              "type": "text_delta",
-              "text": "Hub ("
+              "text": " GitHub ("
             },
             {
               "type": "text_delta",

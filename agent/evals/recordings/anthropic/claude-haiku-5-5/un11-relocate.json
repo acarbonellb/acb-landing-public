@@ -18,7 +18,7 @@
   "calls": [
     {
       "requestHash": "a909e29b7d23755e760283234a505d38021a6a26e809609bd2ede6d108f0620f",
-      "latencyMs": 1068,
+      "latencyMs": 805,
       "events": [
         {
           "type": "input_usage",
@@ -26,87 +26,28 @@
           "cacheWriteInputTokens": 1660
         },
         {
-          "type": "response_end",
-          "response": {
-            "text": "",
-            "toolCalls": [
-              {
-                "id": "toolu_01BfPcApSWD1ptu8NYU7Ls86",
-                "name": "get_contact",
-                "input": {}
-              }
-            ],
-            "stopReason": "tool_use",
-            "usage": {
-              "inputTokens": 1664,
-              "cacheWriteInputTokens": 1660,
-              "outputTokens": 126
-            },
-            "providerContent": [
-              {
-                "type": "thinking",
-                "thinking": "",
-                "signature": "CAQSjAcKEAgTGAI4AUIIdGhpbmtpbmcSDNFPWdvbxeURDYObCBoMyH4moQndu42vqB59IjAIbDb+eu4/cmG2zgCmtHRphTUZxgHkgM3nEFEPl1YFMRsCodQOOOcUrLCya3Yy5j0qqQZCPrf2JquOU86tULajyyK4NSXw2J8WP19QfPMumjck+34QLExek8wPObjdxyuGx/Q+EVBoNpS38rVv5Yuq3KK6EGHmz4cDZRTtEZVX9eXWeVMwM043yi4LQwccMZGVMHpgqS/VtwnGm0sz2tYppFK3ULVTMtHyh2/s2x2xnttz1B0mq2W7orrQRqfYRx9YfIcWb3+lJcZXruzYNPwwcEoUVDJjbVxb1vaHvRPeE2jTYOIGnr4BdZGZ1zx7SSCOb3YKFB87j/pHRmcPu7RSwF5OAcvwghDL5o3JM37EvOvG0hGNF7Pa+s3/YkXZqDRyaW07dYVGzt7D+IemmG7iKXXNx6vxum0THZiaR7X6DQfTMFJ69pvVL/R2nO9a+M2NxfHUA59yxgUiwqj5JXPpRdHUm7LgXz+S8PVsXFkQwnFH05Y4ITbv5ZOfxSC5BUZdFYifIxYtGFeckf/lgTFhR4CijKWg4UdMh11OTgj2XzMbkrjvFr8wXj+Vr2aT4t+wKuZVSDsXXPd8SoVI3N6muH3PUoGicVVEYwayrNFK5ytWJNK8aLNhJGhwXxozC2XrXeE9sQx7uAMrpCS+fhToPbQr2ZIHeHAwZVSNVRiN7LZA6nIh+pV5lXJi8ICsW756Xtxvc+U489oI8fKvQsz/EszBf8P92RZdLUTet+j47fUI4wGpKtVCd2eISplG0WU3EE7/4XWkLBfSj6GygoQeXAl97tuoKD9+NVH7/DLamrzDquiPA3vHiylWR/gMyNQEO/gWgex6rX7f/bksbzOFdp7ty2V3j49vJP7L1HGuWcIIL8AugNOpkWYJK1oyGqWoWSGiL/jXrSb3nPpXzkspCi/MI0e7hVSgNJ+tmV1B8ZMIHldeKChIw0Og3PSqgpHI3SvdeImW5cnr+QZagapMJGLtiNVS8omP/k3DwI5ZyqzZRRprbqqwZs6UEjzBVNGk7YhBpg8Rl/1zTP7x8eO4NWwUF5+l4WQhXcrqMEibo0ghW16DBQslvS6d2qY7/le8/uUDEO/0rYdyz7/e1gqBrxP6qL73OKmqZo9c86UjwC0WXsbD/a7okdGLVBgB"
-              },
-              {
-                "type": "tool_use",
-                "id": "toolu_01BfPcApSWD1ptu8NYU7Ls86",
-                "name": "get_contact",
-                "caller": {
-                  "type": "direct"
-                },
-                "input": {}
-              }
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "requestHash": "38d5011d5fd4135c1761d39c06b9c788965f788caac8281e28f66a564e4ad9aa",
-      "latencyMs": 1040,
-      "events": [
-        {
-          "type": "input_usage",
-          "inputTokens": 1888,
-          "cacheWriteInputTokens": 226,
-          "cacheReadInputTokens": 1660
+          "type": "text_delta",
+          "text": "I"
         },
         {
           "type": "text_delta",
-          "text": "I can't say"
+          "text": " can't answer that:"
         },
         {
           "type": "text_delta",
-          "text": " whether Alberto would rel"
+          "text": " wh"
         },
         {
           "type": "text_delta",
-          "text": "ocate to London, since"
+          "text": "ether Alberto would reloc"
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": "ate is"
         },
         {
           "type": "text_delta",
-          "text": " prof"
-        },
-        {
-          "type": "text_delta",
-          "text": "ile doesn't c"
-        },
-        {
-          "type": "text_delta",
-          "text": "over rel"
-        },
-        {
-          "type": "text_delta",
-          "text": "ocation."
-        },
-        {
-          "type": "text_delta",
-          "text": " You"
+          "text": "n't in his profile. You"
         },
         {
           "type": "text_delta",
@@ -114,64 +55,59 @@
         },
         {
           "type": "text_delta",
-          "text": "ask him directly at"
+          "text": "ask him directly at the"
         },
         {
           "type": "text_delta",
-          "text": " alberto@example.com or"
+          "text": " contact details on his site"
         },
         {
           "type": "text_delta",
-          "text": " through"
+          "text": "."
         },
         {
           "type": "text_delta",
-          "text": " his LinkedIn ("
+          "text": " I can"
         },
         {
           "type": "text_delta",
-          "text": "https://www.linkedin"
+          "text": " share"
         },
         {
           "type": "text_delta",
-          "text": ".com/in/albertoc"
+          "text": " his location"
         },
         {
           "type": "text_delta",
-          "text": "arbonell/). His prof"
+          "text": " and"
         },
         {
           "type": "text_delta",
-          "text": "ile l"
+          "text": " work"
         },
         {
           "type": "text_delta",
-          "text": "ists him as based"
+          "text": " history if that"
         },
         {
           "type": "text_delta",
-          "text": " in Spain and open"
-        },
-        {
-          "type": "text_delta",
-          "text": " to remote work."
+          "text": " helps."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I can't say whether Alberto would relocate to London, since his profile doesn't cover relocation. You can ask him directly at alberto@example.com or through his LinkedIn (https://www.linkedin.com/in/albertocarbonell/). His profile lists him as based in Spain and open to remote work.",
+            "text": "I can't answer that: whether Alberto would relocate isn't in his profile. You can ask him directly at the contact details on his site. I can share his location and work history if that helps.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1888,
-              "cacheWriteInputTokens": 226,
-              "cacheReadInputTokens": 1660,
-              "outputTokens": 99
+              "inputTokens": 1664,
+              "cacheWriteInputTokens": 1660,
+              "outputTokens": 56
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I can't say whether Alberto would relocate to London, since his profile doesn't cover relocation. You can ask him directly at alberto@example.com or through his LinkedIn (https://www.linkedin.com/in/albertocarbonell/). His profile lists him as based in Spain and open to remote work."
+                "text": "I can't answer that: whether Alberto would relocate isn't in his profile. You can ask him directly at the contact details on his site. I can share his location and work history if that helps."
               }
             ]
           }
@@ -184,7 +120,7 @@
       "calls": [
         {
           "requestHash": "a909e29b7d23755e760283234a505d38021a6a26e809609bd2ede6d108f0620f",
-          "latencyMs": 1062,
+          "latencyMs": 758,
           "events": [
             {
               "type": "input_usage",
@@ -193,11 +129,15 @@
             },
             {
               "type": "text_delta",
-              "text": "I can't answer that."
+              "text": "I"
             },
             {
               "type": "text_delta",
-              "text": " Wh"
+              "text": " can't answer that:"
+            },
+            {
+              "type": "text_delta",
+              "text": " wh"
             },
             {
               "type": "text_delta",
@@ -205,91 +145,59 @@
             },
             {
               "type": "text_delta",
-              "text": " Alberto would rel"
+              "text": " Alberto would"
             },
             {
               "type": "text_delta",
-              "text": "ocate is"
+              "text": " relocate is"
             },
             {
               "type": "text_delta",
-              "text": "n't in his profile, so"
+              "text": "n't part"
             },
             {
               "type": "text_delta",
-              "text": " please contact him directly."
+              "text": " of his profile. You can re"
             },
             {
               "type": "text_delta",
-              "text": " You can find"
+              "text": "ach him directly to"
             },
             {
               "type": "text_delta",
-              "text": " his email,"
+              "text": " ask about it. I can"
             },
             {
               "type": "text_delta",
-              "text": " GitHub and Link"
+              "text": " share"
             },
             {
               "type": "text_delta",
-              "text": "edIn on his"
+              "text": " his cont"
             },
             {
               "type": "text_delta",
-              "text": " cont"
+              "text": "act details if"
             },
             {
               "type": "text_delta",
-              "text": "act page, and"
-            },
-            {
-              "type": "text_delta",
-              "text": " I can help"
-            },
-            {
-              "type": "text_delta",
-              "text": " with"
-            },
-            {
-              "type": "text_delta",
-              "text": " his"
-            },
-            {
-              "type": "text_delta",
-              "text": " location"
-            },
-            {
-              "type": "text_delta",
-              "text": ", exper"
-            },
-            {
-              "type": "text_delta",
-              "text": "ience or proj"
-            },
-            {
-              "type": "text_delta",
-              "text": "ects in"
-            },
-            {
-              "type": "text_delta",
-              "text": " the meantime."
+              "text": " you'd like."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I can't answer that. Whether Alberto would relocate isn't in his profile, so please contact him directly. You can find his email, GitHub and LinkedIn on his contact page, and I can help with his location, experience or projects in the meantime.",
+                "text": "I can't answer that: whether Alberto would relocate isn't part of his profile. You can reach him directly to ask about it. I can share his contact details if you'd like.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
                   "inputTokens": 1664,
                   "cacheReadInputTokens": 1660,
-                  "outputTokens": 78
+                  "outputTokens": 54
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I can't answer that. Whether Alberto would relocate isn't in his profile, so please contact him directly. You can find his email, GitHub and LinkedIn on his contact page, and I can help with his location, experience or projects in the meantime."
+                    "text": "I can't answer that: whether Alberto would relocate isn't part of his profile. You can reach him directly to ask about it. I can share his contact details if you'd like."
                   }
                 ]
               }
@@ -302,7 +210,7 @@
       "calls": [
         {
           "requestHash": "a909e29b7d23755e760283234a505d38021a6a26e809609bd2ede6d108f0620f",
-          "latencyMs": 978,
+          "latencyMs": 889,
           "events": [
             {
               "type": "input_usage",
@@ -310,76 +218,140 @@
               "cacheReadInputTokens": 1660
             },
             {
-              "type": "text_delta",
-              "text": "I can't answer that one"
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01ELeSM3q5LHJeGF6Ncc9S3V",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1664,
+                  "cacheReadInputTokens": 1660,
+                  "outputTokens": 110
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS3gYKEAgUGAI4AUIIdGhpbmtpbmcSDPLY3Fia3MQ6z6sg4xoMSq///zAvQ0FsiT7qIjDkPpxhIfwMTl7VPktgMRBe6zA1cfHJTvs6FMGj1M57XPb2KjiLrcb5ENpzwinRoGkq+wVedEb5j7l2/RA8ym7nQu4gYcF+Q5LBb79LSsuUDqtw86HThrzjnaRkwGpwKNoiIbvKqROwCYonwOW473Cmtf4MiZu4gj/7nOaa3Wggm1H06JsMdeIH8aqzgWCcb59olFeWlW7qMOg5z2QaBITYQTn6/NnMQWUz1rQIwvytN+WCYve+W1ncgMZqbJQd03ctp09BK/9xBlT83EQ3SHsTbc/6wln6jVTBDFE4tm75O3W1dDEhhLHv/7IleebcfSnXTh4sR4N5xtMe6Zk3rGgJ8zHhnJD1sUNmW2afba+eKbM8R/AVaP3WRv4O3HrBgz3Jei+leJNJAwtIc8pCRmho6E/JJsijx4ky24J2ZWidD4ibqBzky+SXhP6YEktpx69djpjPS5pVOKAmyNAoDnFY8/wtXoZ4zq1gYqRzBfUlEiGhNNERnUeALuXndhjp4mH701zsnPDO9jgJPebdKKW8WCFiTkZ2eyIZn6tUTH1HM16DLvd2BhetqcHwMWN+y+D6N1eALdD+eJjAFSD3pafF1CHACR/iAHXnb4XnurSs0YWHJAKcClHzUbbtDkHZmreRiREXI9XMjsLoL2wyXxuXhZ8wn14ySMsTIeltAIjI16ljr9PPIqsbnH4GKlS9sdZKbURgugU+KQtGvZaaQCzv7uhnC+wQbNU1ZlinwC7Udlr1gZ1uwA2DihU8niVm5ROXdj4cBj9pR2Bdf7i6+38F+sKLdAueIsdaCIEzaxJ8QYJFTMUudsJMUiyIVNLTju0tGCq73RWNsEJs5cupsSIvBuRdUpgbSk6vXa+PIL1rnyoGU38jd3Nj4MfnFrqt+kDzOg3snR/3i8lt5eIkdoqV1femperEP4Ix3JRCu40SesugCSlHia7Fij4P1e63dt/7ZqINjTY/8YSFJuYjVhUmJYn0UB0kVl19q+E+HOn4tF7JFCYMQwqDRUq396zcmSiUUYKBGww6dW7b5zX1RFpG5rBQE8/B+Dhzaou5wlY4b0AaWOAjTxAzsfoemLRyGAE="
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01ELeSM3q5LHJeGF6Ncc9S3V",
+                    "name": "get_contact",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "2e4da611d5f11a8a05d5b80403ec11a86c4bb953435a5c052f4d03388d4f7d25",
+          "latencyMs": 820,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1872,
+              "cacheWriteInputTokens": 210,
+              "cacheReadInputTokens": 1660
             },
             {
               "type": "text_delta",
-              "text": ". Wh"
+              "text": "I don't have information"
             },
             {
               "type": "text_delta",
-              "text": "ether Alberto would rel"
+              "text": " on wh"
             },
             {
               "type": "text_delta",
-              "text": "ocate is"
+              "text": "ether Alberto would reloc"
             },
             {
               "type": "text_delta",
-              "text": "n't cov"
+              "text": "ate to London,"
             },
             {
               "type": "text_delta",
-              "text": "ered in his profile, so please"
+              "text": " since his prof"
             },
             {
               "type": "text_delta",
-              "text": " reach out to him directly."
+              "text": "ile doesn't cover rel"
             },
             {
               "type": "text_delta",
-              "text": " I can share"
+              "text": "ocation preferences. You can"
             },
             {
               "type": "text_delta",
-              "text": " his contact details if"
+              "text": " "
             },
             {
               "type": "text_delta",
-              "text": " you'd like,"
+              "text": "ask him directly at al"
             },
             {
               "type": "text_delta",
-              "text": " or tell you"
+              "text": "berto@example.com or"
             },
             {
               "type": "text_delta",
-              "text": " about his work experience and"
+              "text": " through his LinkedIn"
             },
             {
               "type": "text_delta",
-              "text": " location"
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": "lin"
+            },
+            {
+              "type": "text_delta",
+              "text": "kedin.com/in/"
+            },
+            {
+              "type": "text_delta",
+              "text": "albertocarbonell/"
+            },
+            {
+              "type": "text_delta",
+              "text": "). He's curr"
+            },
+            {
+              "type": "text_delta",
+              "text": "ently based in Spain and"
+            },
+            {
+              "type": "text_delta",
+              "text": " works remotely."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I can't answer that one. Whether Alberto would relocate isn't covered in his profile, so please reach out to him directly. I can share his contact details if you'd like, or tell you about his work experience and location.",
+                "text": "I don't have information on whether Alberto would relocate to London, since his profile doesn't cover relocation preferences. You can ask him directly at alberto@example.com or through his LinkedIn (linkedin.com/in/albertocarbonell/). He's currently based in Spain and works remotely.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1664,
+                  "inputTokens": 1872,
+                  "cacheWriteInputTokens": 210,
                   "cacheReadInputTokens": 1660,
-                  "outputTokens": 66
+                  "outputTokens": 96
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I can't answer that one. Whether Alberto would relocate isn't covered in his profile, so please reach out to him directly. I can share his contact details if you'd like, or tell you about his work experience and location."
+                    "text": "I don't have information on whether Alberto would relocate to London, since his profile doesn't cover relocation preferences. You can ask him directly at alberto@example.com or through his LinkedIn (linkedin.com/in/albertocarbonell/). He's currently based in Spain and works remotely."
                   }
                 ]
               }

@@ -1,23 +1,11 @@
-// Agent evals (docs/evals.md; docs/adr/0001-agent-evals-record-replay.md).
+// Agent evals. What each command and flag does, and what --check fails on:
+// docs/evals.md; why record/replay: docs/adr/0001-agent-evals-record-replay.md.
 //
 //   tsx scripts/eval.ts record [--only ot01,on02] [--provider name] [--paid] [--rerun] [--runs k]
-//     Live: runs every case k times (default 3, pass@k) against the configured
-//     model, records each case whose k runs all complete (every run in its
-//     recording; CI replays the first), appends the set's metrics to history.jsonl, then
-//     regenerates the report and summary. Defaults to LM Studio on localhost; any other
-//     server is a paid provider and needs --paid. Refused at a commit that
-//     already has a live run of the set, unless --rerun (marked `rerun`).
 //   tsx scripts/eval.ts rescore [--note "what the scoring change is"]
-//     Scores the stored recordings with the current cases and scoring (no
-//     model, no network), then regenerates the report and summary. With --note, appends a
-//     `rescored` entry with the note for every set; without it, only adds
-//     fingerprints to old entries and refuses scores that changed (ADR 0001).
 //   tsx scripts/eval.ts replay [--check]
-//     Replays the committed recordings (no model, no network) and writes the
-//     report and summary.json; with --check, writes nothing and fails on stale
-//     or missing recordings, leaks, a history that doesn't match the
-//     recordings, or a report or summary that differs from the committed one.
-//     Never appends history.
+//   tsx scripts/eval.ts check [--paid] [--issue]
+//     Exits non-zero when a case ended in an error.
 import { execFileSync } from "node:child_process";
 import { mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -33,10 +21,13 @@ import {
   parseHistory,
   type LiveRun,
 } from "../src/evals/history";
+import { withResults } from "../src/evals/doc-results";
+import { liveCheck, liveCheckIssue, liveCheckTitle, renderLiveCheck } from "../src/evals/live-check";
 import { liveRunConfig } from "../src/evals/live-run";
 import { runScores } from "../src/evals/metrics";
 import {
   evaluate,
+  liveCase,
   recordCase,
   replaySets,
   rescore,
@@ -50,6 +41,7 @@ const recordingsDir = join(evalsDir, "recordings");
 const reportPath = join(evalsDir, "report.md");
 const summaryPath = join(evalsDir, "summary.json");
 const historyPath = join(evalsDir, "history.jsonl");
+const evalsDocPath = fileURLToPath(new URL("../../docs/evals.md", import.meta.url));
 
 const readHistory = () => readFile(historyPath, "utf8").catch(() => "");
 
@@ -57,6 +49,7 @@ const { positionals, values } = parseArgs({
   allowPositionals: true,
   options: {
     check: { type: "boolean", default: false },
+    issue: { type: "boolean", default: false },
     paid: { type: "boolean", default: false },
     rerun: { type: "boolean", default: false },
     only: { type: "string" },
@@ -109,48 +102,62 @@ async function saveRecording(recording: Recording) {
 
 async function replay(check: boolean): Promise<number> {
   const history = parseHistory(await readHistory());
-  const { report, summary, problems } = await evaluate({ cases, sets: await loadSets(), history });
+  const { report, summary, results, problems } = await evaluate({ cases, sets: await loadSets(), history });
+  const committed = async (path: string) => readFile(path, "utf8").catch(() => undefined);
+  const evalsDocText = await committed(evalsDocPath);
+  if (evalsDocText === undefined) {
+    console.error(`✗ ${evalsDocPath} is missing`);
+    return 1;
+  }
+  const evalsDoc = withResults(evalsDocText, results);
   if (!check) {
     await writeFile(reportPath, report);
     await writeFile(summaryPath, summary);
-    console.log(`Wrote ${reportPath} and ${summaryPath}`);
+    await writeFile(evalsDocPath, evalsDoc);
+    console.log(`Wrote ${reportPath}, ${summaryPath} and the results in ${evalsDocPath}`);
     return problems.length ? 1 : 0;
   }
-  const committed = async (path: string) => readFile(path, "utf8").catch(() => undefined);
   problems.push(
     ...staleFiles(
-      { report, summary },
-      { report: await committed(reportPath), summary: await committed(summaryPath) },
+      { report, summary, evalsDoc },
+      { report: await committed(reportPath), summary: await committed(summaryPath), evalsDoc: evalsDocText },
     ),
   );
   for (const problem of problems) console.error(`✗ ${problem}`);
-  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report and summary are up to date");
+  if (!problems.length) console.log("✓ Recordings are fresh, nothing leaks but the cases failing on purpose, report, summary and the evals doc's results are up to date");
   return problems.length ? 1 : 0;
 }
 
-async function record(): Promise<number> {
+/** The live settings, or `undefined` after printing why they can't be used. */
+function paidConfig() {
   let config;
   try {
     // The agent's own config schema: the same settings, rejected the same way.
     config = liveRunConfig(process.env, { provider: values.provider });
   } catch (error) {
     console.error((error as Error).message);
-    return 1;
+    return undefined;
   }
-  const { baseURL, local, provider, model, effort, apiKey } = config;
+  if (!config.local && !values.paid) {
+    console.error(
+      `${config.baseURL} is a paid provider. Only run against it with the owner's go-ahead, then pass --paid.`,
+    );
+    return undefined;
+  }
+  if (!config.apiKey) {
+    console.error("ANTHROPIC_API_KEY is not set.");
+    return undefined;
+  }
+  return { ...config, apiKey: config.apiKey };
+}
+
+async function record(): Promise<number> {
+  const config = paidConfig();
+  if (!config) return 1;
+  const { baseURL, provider, model, effort, apiKey } = config;
   const runs = Number(values.runs);
   if (!Number.isInteger(runs) || runs < 1) {
     console.error(`--runs must be a whole number of at least 1, not "${values.runs}".`);
-    return 1;
-  }
-  if (!local && !values.paid) {
-    console.error(
-      `${baseURL} is a paid provider. Only record against it with the owner's go-ahead, then pass --paid.`,
-    );
-    return 1;
-  }
-  if (!apiKey) {
-    console.error("ANTHROPIC_API_KEY is not set.");
     return 1;
   }
   // Before any model call: a refused re-run costs nothing.
@@ -185,6 +192,61 @@ async function record(): Promise<number> {
   if (failed < selected.length) await appendToHistory({ provider, model }, run, guard.kind);
   const status = await replay(false);
   return failed ? 1 : status;
+}
+
+/**
+ * The weekly live check (see `liveCheck`): one run per case, nothing written.
+ * The log and the issue carry case names, scorer reasons and rates only, never
+ * an answer.
+ */
+async function check(): Promise<number> {
+  const config = paidConfig();
+  if (!config) return 1;
+  const { baseURL, provider, model, effort, apiKey } = config;
+  const client = createAnthropicModelClient({ apiKey, model, effort, baseURL });
+  console.log(`Live check: ${cases.length} cases × 1 run with ${setLabel({ provider, model })} (effort ${effort})`);
+  const results = [];
+  for (const evalCase of cases) {
+    const result = await liveCase(evalCase, client);
+    const verdict = result.response.error ? `error ${result.response.error}` : result.score.pass ? "pass" : "fail";
+    console.log(`  ${caseName(evalCase)}: ${verdict}`);
+    results.push(result);
+  }
+  const { GITHUB_SERVER_URL: server, GITHUB_REPOSITORY: repo, GITHUB_RUN_ID: runId } = process.env;
+  const url = server && repo && runId ? `${server}/${repo}/actions/runs/${runId}` : undefined;
+  const outcome = liveCheck({
+    set: { provider, model },
+    results,
+    history: parseHistory(await readHistory()),
+    run: { ...liveRun(), url },
+  });
+  console.log(`\n${renderLiveCheck(outcome)}`);
+  if (values.issue) {
+    const title = liveCheckTitle(outcome);
+    const open = JSON.parse(
+      gh(["issue", "list", "--state", "open", "--search", `in:title "${title}"`, "--json", "number,title"]),
+    ) as { number: number; title: string }[];
+    const issue = liveCheckIssue(outcome, open.find((i) => i.title === title)?.number);
+    if (issue.action === "open") {
+      gh(["issue", "create", "--title", issue.title, "--body-file", "-"], issue.body);
+      console.log(`Opened the issue "${title}".`);
+    } else if (issue.action === "comment") {
+      gh(["issue", "comment", String(issue.issue), "--body-file", "-"], issue.body);
+      console.log(`Commented on issue #${issue.issue}.`);
+    } else {
+      console.log("No issue: nothing to raise.");
+    }
+  }
+  if (outcome.errored) {
+    console.error(`${outcome.errored} cases ended in an error: the check is incomplete.`);
+    return 1;
+  }
+  return 0;
+}
+
+/** Runs `gh` with `input` on stdin; its stdout. */
+function gh(args: string[], input?: string): string {
+  return execFileSync("gh", args, { encoding: "utf8", input, stdio: ["pipe", "pipe", "inherit"] });
 }
 
 /** Today (UTC) and the commit the run starts from. */
@@ -229,12 +291,15 @@ async function rescoreRecordings(): Promise<number> {
 
 const modes = {
   record,
+  check,
   rescore: rescoreRecordings,
   replay: () => replay(values.check),
 } as const;
 const mode = positionals[0];
-if (mode !== "record" && mode !== "rescore" && mode !== "replay") {
-  console.error("Usage: eval.ts record [--only ids] [--paid] [--rerun] [--runs k] | rescore [--note text] | replay [--check]");
+if (mode !== "record" && mode !== "check" && mode !== "rescore" && mode !== "replay") {
+  console.error(
+    "Usage: eval.ts record [--only ids] [--paid] [--rerun] [--runs k] | check [--paid] [--issue] | rescore [--note text] | replay [--check]",
+  );
   process.exit(2);
 }
 process.exitCode = await modes[mode]();

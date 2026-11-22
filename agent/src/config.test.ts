@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { chatLimits } from "./chat";
 import { loadConfig } from "./config";
+import { deepHealthChecksPerMinute } from "./health";
+import { defaultFlushEveryMs, defaultStatsMaxAgeMs } from "./usage";
 
 const signingKey = "test-signing-key-0123456789abcdefghijklmnop";
 
@@ -59,11 +61,11 @@ describe("loadConfig", () => {
     });
   });
 
-  it("defaults the guardrails: per-IP limits, global ceilings well above them, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
+  it("defaults the guardrails: per-IP limits, global ceilings sized by store cost, a $0.10 daily quota, a $4 monthly cap (under the $5 provider limit), Haiku 5.5 prices", () => {
     expect(loadConfig({}).guardrails).toEqual({
       chatRequestsPerMinute: 10,
       mcpRequestsPerMinute: 60,
-      chatGlobalRequestsPerMinute: 60,
+      chatGlobalRequestsPerMinute: 10,
       mcpGlobalRequestsPerMinute: 600,
       statsRequestsPerMinute: 30,
       statsGlobalRequestsPerMinute: 300,
@@ -71,6 +73,37 @@ describe("loadConfig", () => {
       dailyQuotaUsd: 0.1,
       pricing: { inputUsdPerMTok: 0.1, outputUsdPerMTok: 0.5 },
     });
+  });
+
+  it("keeps a day-long flood at the default ceilings under the $0.12/day store threshold (docs/guardrails.md, Store cost)", () => {
+    // Firestore Standard edition, europe-southwest1, USD per document
+    // (Google Cloud's pricing page, read 2026-11-22), free tier ignored.
+    const read = 0.035 / 100_000;
+    const write = 0.106 / 100_000;
+    const ttlDelete = 0.012 / 100_000;
+    // Each store write is a read then a commit (firestore.ts). The worst case
+    // per request, from the table in docs/guardrails.md: a chat request that
+    // runs writes 4 (spend-writes-http.test.ts), on a fresh key whose daily
+    // document a TTL delete removes later, and its usage joins the batch;
+    // `/mcp` writes nothing of its own. `/stats` answers from a snapshot
+    // (usage.ts), so only one call per snapshot reaches the store: it writes
+    // the waiting batch and reads two weeks. Its ceiling only caps that if
+    // it is lower than one call per snapshot.
+    const chat = 4 * (read + write) + ttlDelete;
+    const statsRead = read + write + 2 * read;
+    const minutesPerDay = 24 * 60;
+    const msPerDay = minutesPerDay * 60_000;
+    const { chatGlobalRequestsPerMinute, statsGlobalRequestsPerMinute } = loadConfig({}).guardrails;
+    const statsReads = Math.min(msPerDay / defaultStatsMaxAgeMs, minutesPerDay * statsGlobalRequestsPerMinute);
+    const usageBatches = msPerDay / defaultFlushEveryMs;
+    const perDay =
+      minutesPerDay * chatGlobalRequestsPerMinute * chat +
+      statsReads * statsRead +
+      usageBatches * (read + write) +
+      minutesPerDay * deepHealthChecksPerMinute * read;
+    // The default ceiling is past one call per snapshot: the window bounds it.
+    expect(statsReads).toBe(8_640);
+    expect(perDay).toBeLessThan(0.12);
   });
 
   it("reads guardrail overrides; a zero spend cap is allowed (chat off)", () => {

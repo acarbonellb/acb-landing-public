@@ -1,0 +1,525 @@
+{
+  "caseId": "on25",
+  "slug": "job-title-es",
+  "provider": "anthropic",
+  "model": "claude-haiku-5-5",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
+      "latencyMs": 661,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 1669,
+          "cacheWriteInputTokens": 1665
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "toolu_01Lg4xV6SbUi8zh8zAqBcn33",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 1669,
+              "cacheWriteInputTokens": 1665,
+              "outputTokens": 27
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "toolu_01Lg4xV6SbUi8zh8zAqBcn33",
+                "name": "get_profile",
+                "caller": {
+                  "type": "direct"
+                },
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "4a738c961874c89e3291c7317edddac8093e83b1b1e012f98d2782ef3390ee69",
+      "latencyMs": 929,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2142,
+          "cacheWriteInputTokens": 475,
+          "cacheReadInputTokens": 1665
+        },
+        {
+          "type": "text_delta",
+          "text": "Alberto es"
+        },
+        {
+          "type": "text_delta",
+          "text": " **"
+        },
+        {
+          "type": "text_delta",
+          "text": "Senior Software Engine"
+        },
+        {
+          "type": "text_delta",
+          "text": "er —"
+        },
+        {
+          "type": "text_delta",
+          "text": " AI Agents & Full"
+        },
+        {
+          "type": "text_delta",
+          "text": "-Stack TypeSc"
+        },
+        {
+          "type": "text_delta",
+          "text": "ript**, con base"
+        },
+        {
+          "type": "text_delta",
+          "text": " en España y en"
+        },
+        {
+          "type": "text_delta",
+          "text": " modal"
+        },
+        {
+          "type": "text_delta",
+          "text": "idad remota"
+        },
+        {
+          "type": "text_delta",
+          "text": ". Se"
+        },
+        {
+          "type": "text_delta",
+          "text": " cent"
+        },
+        {
+          "type": "text_delta",
+          "text": "ra en constru"
+        },
+        {
+          "type": "text_delta",
+          "text": "ir agentes de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA que real"
+        },
+        {
+          "type": "text_delta",
+          "text": "izan tr"
+        },
+        {
+          "type": "text_delta",
+          "text": "abajo real de princip"
+        },
+        {
+          "type": "text_delta",
+          "text": "io a fin, además"
+        },
+        {
+          "type": "text_delta",
+          "text": " de des"
+        },
+        {
+          "type": "text_delta",
+          "text": "arrollo"
+        },
+        {
+          "type": "text_delta",
+          "text": " full-stack con"
+        },
+        {
+          "type": "text_delta",
+          "text": " TypeScript, Node"
+        },
+        {
+          "type": "text_delta",
+          "text": ".js y PostgreS"
+        },
+        {
+          "type": "text_delta",
+          "text": "QL."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España y en modalidad remota. Se centra en construir agentes de IA que realizan trabajo real de principio a fin, además de desarrollo full-stack con TypeScript, Node.js y PostgreSQL.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2142,
+              "cacheWriteInputTokens": 475,
+              "cacheReadInputTokens": 1665,
+              "outputTokens": 110
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España y en modalidad remota. Se centra en construir agentes de IA que realizan trabajo real de principio a fin, además de desarrollo full-stack con TypeScript, Node.js y PostgreSQL."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
+          "latencyMs": 616,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1669,
+              "cacheReadInputTokens": 1665
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01M4YCfmaxZ3jMyESR1Pbgn1",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1669,
+                  "cacheReadInputTokens": 1665,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01M4YCfmaxZ3jMyESR1Pbgn1",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "f6a189da3db193af6563e99aaca70c38c7edff440878feb87480f6c2eb8519ca",
+          "latencyMs": 852,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2142,
+              "cacheReadInputTokens": 2140
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto es"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er —"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": "I Agents & Full-"
+            },
+            {
+              "type": "text_delta",
+              "text": "Stack TypeScript"
+            },
+            {
+              "type": "text_delta",
+              "text": "**, con base en España"
+            },
+            {
+              "type": "text_delta",
+              "text": " (remoto). T"
+            },
+            {
+              "type": "text_delta",
+              "text": "iene más de 10 años"
+            },
+            {
+              "type": "text_delta",
+              "text": " de experiencia con"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript, Node"
+            },
+            {
+              "type": "text_delta",
+              "text": ".js y PostgreS"
+            },
+            {
+              "type": "text_delta",
+              "text": "Q"
+            },
+            {
+              "type": "text_delta",
+              "text": "L, y se centra en constru"
+            },
+            {
+              "type": "text_delta",
+              "text": "ir agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA que real"
+            },
+            {
+              "type": "text_delta",
+              "text": "izan trabajo de"
+            },
+            {
+              "type": "text_delta",
+              "text": " princip"
+            },
+            {
+              "type": "text_delta",
+              "text": "io a fin."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España (remoto). Tiene más de 10 años de experiencia con TypeScript, Node.js y PostgreSQL, y se centra en construir agentes de IA que realizan trabajo de principio a fin.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2142,
+                  "cacheReadInputTokens": 2140,
+                  "outputTokens": 109
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España (remoto). Tiene más de 10 años de experiencia con TypeScript, Node.js y PostgreSQL, y se centra en construir agentes de IA que realizan trabajo de principio a fin."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
+          "latencyMs": 624,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1669,
+              "cacheReadInputTokens": 1665
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01VeanNDckSYUudpqvdxaJUk",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1669,
+                  "cacheReadInputTokens": 1665,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01VeanNDckSYUudpqvdxaJUk",
+                    "name": "get_profile",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "6038889d81820c0feb21e02e7de109357c1638add65a0b0c2ec74666dddac294",
+          "latencyMs": 973,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2142,
+              "cacheReadInputTokens": 2140
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto es"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er —"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI Agents & Full"
+            },
+            {
+              "type": "text_delta",
+              "text": "-Stack TypeSc"
+            },
+            {
+              "type": "text_delta",
+              "text": "ript**"
+            },
+            {
+              "type": "text_delta",
+              "text": ", con"
+            },
+            {
+              "type": "text_delta",
+              "text": " base"
+            },
+            {
+              "type": "text_delta",
+              "text": " en España y en"
+            },
+            {
+              "type": "text_delta",
+              "text": " mod"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " remoto."
+            },
+            {
+              "type": "text_delta",
+              "text": " Se"
+            },
+            {
+              "type": "text_delta",
+              "text": " centra en constru"
+            },
+            {
+              "type": "text_delta",
+              "text": "ir agentes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA que real"
+            },
+            {
+              "type": "text_delta",
+              "text": "izan tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abajo real de princip"
+            },
+            {
+              "type": "text_delta",
+              "text": "io a fin, jun"
+            },
+            {
+              "type": "text_delta",
+              "text": "to con más"
+            },
+            {
+              "type": "text_delta",
+              "text": " de 10 años de experi"
+            },
+            {
+              "type": "text_delta",
+              "text": "encia en"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript, Node"
+            },
+            {
+              "type": "text_delta",
+              "text": ".js y PostgreS"
+            },
+            {
+              "type": "text_delta",
+              "text": "QL."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España y en modo remoto. Se centra en construir agentes de IA que realizan trabajo real de principio a fin, junto con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2142,
+                  "cacheReadInputTokens": 2140,
+                  "outputTokens": 112
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**, con base en España y en modo remoto. Se centra en construir agentes de IA que realizan trabajo real de principio a fin, junto con más de 10 años de experiencia en TypeScript, Node.js y PostgreSQL."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

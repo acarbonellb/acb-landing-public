@@ -367,13 +367,13 @@ describe("Agent", () => {
     expect(note).toHaveTextContent(/your questions go to claude \(anthropic\)/i);
     expect(note).toHaveTextContent(/conversations aren't stored/i);
     expect(note).toHaveTextContent(/30 days/);
-    // Every per-IP document the agent keeps, and when it goes: Firestore TTL
+    // The one per-IP document the agent keeps, and when it goes: Firestore TTL
     // deletes expired documents within about a day, not at once.
-    expect(note).toHaveTextContent(/rate limit that expires after a minute/i);
     expect(note).toHaveTextContent(/daily spend quota that expires at midnight UTC/i);
     expect(note).toHaveTextContent(/deleted within a day of expiring/i);
-    // The refusal cache holds a refused IP in memory only, until its minute ends.
-    expect(note).toHaveTextContent(/in the agent's memory until its minute ends/i);
+    // The rate limits count an IP in memory only, for their one-minute window.
+    expect(note).toHaveTextContent(/rate limits count your IP in the agent's memory for a minute/i);
+    expect(note).not.toHaveTextContent(/refused IP/i);
     const form = screen.getByRole("textbox", { name: /ask the agent/i }).closest("form")!;
     expect(form.nextElementSibling).toBe(note);
   });

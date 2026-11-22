@@ -11,12 +11,13 @@ import type { AnswerSigner, VerifiedConversation } from "./answer-signing";
 import { chatRequestSchema, createChatAgent, errorMessages, type ChatLimits } from "./chat";
 import { describeError, logEvent, logStoreError, withRequestId } from "./log";
 import type { DailyQuota } from "./daily-quota";
+import type { DeepHealthCheck } from "./health";
 import { createMcpServer } from "./mcp";
 import { meteredChat } from "./metered-chat";
 import type { ModelClient } from "./model";
 import { watchingProviderLimit, type ProviderLimitWatch } from "./provider-limit";
-import type { RateLimitDecision, RateLimiter } from "./rate-limit";
-import type { SpendCap } from "./spend-cap";
+import { globalKey, type RateLimiter } from "./rate-limit";
+import type { SpendCap, SpendCapStatus } from "./spend-cap";
 import { combineReservations } from "./spend-holds";
 import type { Toolset } from "./tools";
 import { logChatRequest, type UsageRecorder } from "./usage";
@@ -40,6 +41,8 @@ export const httpErrorMessages = {
   dailyQuota:
     "You've asked the agent a lot today, so it's resting for you until tomorrow. You can still read everything on this page or contact Alberto directly.",
   statsUnavailable: "Usage stats are unavailable.",
+  /** The deep health check failed; its reason is in the logs, not the answer. */
+  unhealthy: "The agent isn't ready to serve.",
   unsignedAnswer:
     "An earlier answer in this conversation is missing its signature or was changed, so the agent can't continue it. Reload the page to start a new conversation.",
   spendCap:
@@ -85,6 +88,10 @@ export type AppDeps = {
    * user-triggered fetchers ranges: the sign the ranges snapshot is stale.
    */
   isUnknownGoogleHop: (c: Context) => boolean;
+  /** What `/health?deep=1` checks: one store read and the required production config (`health.ts`). */
+  deepHealth: DeepHealthCheck;
+  /** In memory, one window for all clients, so the deep check can't run up store reads. */
+  deepHealthRateLimiter: RateLimiter;
 };
 
 const jsonError = (
@@ -106,6 +113,10 @@ const jsonRpcError = (
   data: { code: HttpErrorCode; retryAfterSeconds?: number },
 ) => c.json({ jsonrpc: "2.0", id: null, error: { code, message, data } }, status);
 
+/** The `429` of `/health?deep=1` and `/stats`, once `rateLimit` has set `Retry-After`. */
+const refuseRateLimited = (c: Context) =>
+  jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited });
+
 /** How each route answers an error it didn't handle, in its own error contract. */
 const unhandledErrorResponders: Record<string, (c: Context) => Response> = {
   [paths.chat]: (c) => {
@@ -122,45 +133,47 @@ const unhandledErrorFallback = (c: Context) =>
   jsonError(c, 503, { code: "unavailable", message: errorMessages.unavailable });
 
 /**
- * What a route does when its store fails: `open` keeps answering without the
- * guardrail, `closed` refuses (the error reaches `app.onError`, which answers
- * in the route's error contract).
- */
-type StoreFailurePolicy = "open" | "closed";
-
-/**
  * Per-client rate limit: lets the request through, or sets `Retry-After` and
- * answers with `refuse` (each endpoint words the refusal in its protocol). If
- * the limiter's store fails, `onStoreFailure` decides.
+ * answers with `refuse` (each endpoint words the refusal in its protocol).
+ * The limiters are in memory (ADR 0003, amendment), so there is no store to
+ * fail here and no policy for it.
  */
 function rateLimit(
   limiter: RateLimiter,
   rateLimitKey: (c: Context) => string,
-  onStoreFailure: StoreFailurePolicy,
   refuse: (c: Context, retryAfterSeconds: number) => Response | Promise<Response>,
 ): MiddlewareHandler {
   return async (c, next) => {
-    let decision: RateLimitDecision;
-    try {
-      decision = await limiter.hit(rateLimitKey(c));
-    } catch (error) {
-      if (onStoreFailure === "closed") throw error;
-      logStoreError("rate_limit", `Rate limit: store failed, letting ${c.req.path} through`, error, {
-        route: c.req.path,
-      });
-      return next();
-    }
+    const decision = await limiter.hit(rateLimitKey(c));
     if (decision.allowed) return next();
     c.header("Retry-After", String(decision.retryAfterSeconds));
     return refuse(c, decision.retryAfterSeconds);
   };
 }
 
+/** The usage of a chat request refused before any model call. */
+const nothingSpent = { inputTokens: 0, outputTokens: 0 };
+
 /** Notes when a chat request arrived, in its context, for its latency (`usage.ts`). */
 const markChatStart = createMiddleware<{ Variables: { chatStartedAt: number } }>(async (c, next) => {
   c.set("chatStartedAt", performance.now());
   await next();
 });
+
+/**
+ * Hands `work` to the request's execution context: the server (`server.ts`)
+ * resolves the request's handler only once it's done. Without a context
+ * (`app.request` in a test) nothing waits for it.
+ */
+function waitUntil(c: Context, work: Promise<unknown>) {
+  let ctx;
+  try {
+    ctx = c.executionCtx;
+  } catch {
+    return;
+  }
+  ctx.waitUntil(work);
+}
 
 /**
  * Logs a chat request the usage stats don't record: refused as invalid
@@ -214,6 +227,8 @@ export function createApp(deps: AppDeps): Hono {
     rateLimitKey,
     mcpRateLimitKey,
     isUnknownGoogleHop,
+    deepHealth,
+    deepHealthRateLimiter,
   } = deps;
   // One agent for every chat request: its estimate and its run share the
   // toolset, limits and system prompt.
@@ -234,16 +249,28 @@ export function createApp(deps: AppDeps): Hono {
     await withRequestId(requestId, next);
   });
 
-  app.get(paths.health, (c) => c.json({ status: "ok" }));
+  // Liveness only, unless `?deep=1` asks for the deep check (`health.ts`),
+  // which the post-deploy smoke check runs on the candidate revision. Each
+  // deep check reads the store, so they share one in-memory window.
+  app.get(
+    paths.health,
+    async (c, next) => (c.req.query("deep") === "1" ? next() : c.json({ status: "ok" })),
+    rateLimit(deepHealthRateLimiter, () => globalKey, refuseRateLimited),
+    async (c) => {
+      const report = await deepHealth.check();
+      if (!report.healthy) {
+        return jsonError(c, 503, { code: "unavailable", message: httpErrorMessages.unhealthy });
+      }
+      return c.json({ status: "ok" });
+    },
+  );
 
   // Public usage aggregates (no content, no IPs), read by the site from any
   // origin. Under its own per-IP limit and global ceiling.
   app.use(paths.stats, cors({ origin: "*", allowMethods: ["GET"] }));
   app.get(
     paths.stats,
-    rateLimit(statsRateLimiter, rateLimitKey, "open", (c) =>
-      jsonError(c, 429, { code: "rate_limited", message: httpErrorMessages.rateLimited }),
-    ),
+    rateLimit(statsRateLimiter, rateLimitKey, refuseRateLimited),
     async (c) => {
       try {
         const body = await usage.stats();
@@ -285,7 +312,7 @@ export function createApp(deps: AppDeps): Hono {
   // Per-IP limit. Answered as a JSON-RPC error so MCP clients can surface it.
   app.use(
     paths.mcp,
-    rateLimit(mcpRateLimiter, mcpRateLimitKey, "open", (c, retryAfterSeconds) =>
+    rateLimit(mcpRateLimiter, mcpRateLimitKey, (c, retryAfterSeconds) =>
       jsonRpcError(c, 429, -32000, httpErrorMessages.rateLimited, {
         code: "rate_limited",
         retryAfterSeconds,
@@ -303,10 +330,10 @@ export function createApp(deps: AppDeps): Hono {
     });
     const server = createMcpServer(toolset);
     await server.connect(transport);
-    // Not awaited: the answer doesn't wait on the weekly document, which every
-    // request writes. The recorder never throws.
-    void usage.recordMcp();
-    return transport.handleRequest(c.req.raw);
+    // Counted alongside the answer, and awaited: a due batch is written
+    // inside this request, while it has the CPU. The recorder never throws.
+    const [res] = await Promise.all([transport.handleRequest(c.req.raw), usage.recordMcp()]);
+    return res;
   });
 
   // The chat spends model tokens, so only the site's own origins may call it
@@ -327,7 +354,7 @@ export function createApp(deps: AppDeps): Hono {
     paths.chat,
     markChatStart,
     // Counted before anything else, so malformed requests count too.
-    rateLimit(chatRateLimiter, rateLimitKey, "closed", async (c, retryAfterSeconds) => {
+    rateLimit(chatRateLimiter, rateLimitKey, async (c, retryAfterSeconds) => {
       await usage.recordChat({ outcome: "http_429" });
       return jsonError(c, 429, {
         code: "rate_limited",
@@ -369,9 +396,19 @@ export function createApp(deps: AppDeps): Hono {
           resetsAt: quota.resetsAt,
         });
       }
-      const spend = await spendCap.reserve(worstCase);
+      // Whether the spend cap refuses or its store throws, the quota's hold is
+      // settled first, with nothing spent: a request that never runs mustn't
+      // keep it until it expires, and then be charged its worst case. The
+      // error then reaches `app.onError`, which answers `503`.
+      let spend: SpendCapStatus;
+      try {
+        spend = await spendCap.reserve(worstCase);
+      } catch (error) {
+        await quota.reservation.settle(nothingSpent);
+        throw error;
+      }
       if (spend.exhausted) {
-        await quota.reservation.settle();
+        await quota.reservation.settle(nothingSpent);
         await usage.recordChat({ outcome: "http_503" });
         return jsonError(c, 503, {
           code: "unavailable",
@@ -394,17 +431,25 @@ export function createApp(deps: AppDeps): Hono {
         startedAt: c.get("chatStartedAt"),
         signal: abort.signal,
       }));
+      // The request's handler resolves only once the run is drained, so an
+      // abandoned chat is charged and settled inside its request.
+      let drained!: () => void;
+      waitUntil(c, new Promise<void>((resolve) => (drained = resolve)));
       return streamSSE(c, async (stream) => {
         stream.onAbort(stop);
         // Drained to the end even once the visitor has left: every model call
         // is paid for, and the metered chat records it when the run ends.
-        for await (const event of events) {
-          if (stream.aborted) continue;
-          try {
-            await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
-          } catch {
-            stop();
+        try {
+          for await (const event of events) {
+            if (stream.aborted) continue;
+            try {
+              await stream.writeSSE({ event: event.type, data: JSON.stringify(event) });
+            } catch {
+              stop();
+            }
           }
+        } finally {
+          drained();
         }
       });
     },

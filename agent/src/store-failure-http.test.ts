@@ -1,5 +1,6 @@
-// The store-failure policy, over HTTP: with the shared store down, `/mcp` and
-// `/stats` fail open and `/chat` fails closed (docs/guardrails.md, "When the store fails").
+// The store-failure policy, over HTTP: with the shared store down, `/mcp`
+// still answers (its rate limits are in memory), `/stats` answers 503 and
+// `/chat` fails closed (docs/guardrails.md, "When the store fails").
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchContactEmail } from "../../src/shared/mcp-contact";
 import { createApp, httpErrorMessages, paths } from "./app";
@@ -53,7 +54,7 @@ async function start(store: DocumentStore) {
 }
 
 describe("with the shared store down", () => {
-  it("/mcp still answers get_contact (fails open)", async () => {
+  it("/mcp still answers get_contact: it reads nothing from the store", async () => {
     const url = await start(brokenStore);
     expect(await fetchContactEmail(new URL(paths.mcp, url).href)).toBe(contactEmail);
   });
@@ -168,7 +169,7 @@ describe("an error no route handled", () => {
     server = await listen(
       createApp(
         testAppDeps({
-          // `recordMcp` isn't awaited, so fail the one usage call that is.
+          // A synchronous usage call, so its throw reaches the route.
           isUnknownGoogleHop: () => true,
           usage: {
             ...usage,

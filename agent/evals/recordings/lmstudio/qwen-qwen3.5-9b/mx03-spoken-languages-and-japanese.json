@@ -1,0 +1,778 @@
+{
+  "caseId": "mx03",
+  "slug": "spoken-languages-and-japanese",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+      "latencyMs": 2476,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2354,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "jgzlCrthwdXZdnN4Tlly1PIDVRuXuLyk",
+                "name": "get_profile",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2354,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 99
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "jgzlCrthwdXZdnN4Tlly1PIDVRuXuLyk",
+                "name": "get_profile",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "0896858401bd8593a0b40ae5953d6084724fc6c9724bdd966d90ef9f3d1eeae4",
+      "latencyMs": 1327,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2676,
+          "cacheReadInputTokens": 1187
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": " speaks"
+        },
+        {
+          "type": "text_delta",
+          "text": " Spanish"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "native"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " English"
+        },
+        {
+          "type": "text_delta",
+          "text": " ("
+        },
+        {
+          "type": "text_delta",
+          "text": "C"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": ")."
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": "'t"
+        },
+        {
+          "type": "text_delta",
+          "text": " answer"
+        },
+        {
+          "type": "text_delta",
+          "text": " how"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " say"
+        },
+        {
+          "type": "text_delta",
+          "text": " \""
+        },
+        {
+          "type": "text_delta",
+          "text": "thank"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": "\""
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " Japanese"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " but"
+        },
+        {
+          "type": "text_delta",
+          "text": " I"
+        },
+        {
+          "type": "text_delta",
+          "text": " can"
+        },
+        {
+          "type": "text_delta",
+          "text": " tell"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": " more"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " his"
+        },
+        {
+          "type": "text_delta",
+          "text": " projects"
+        },
+        {
+          "type": "text_delta",
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
+        },
+        {
+          "type": "text_delta",
+          "text": " if"
+        },
+        {
+          "type": "text_delta",
+          "text": " you"
+        },
+        {
+          "type": "text_delta",
+          "text": "'re"
+        },
+        {
+          "type": "text_delta",
+          "text": " interested"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto speaks Spanish (native) and English (C1). I can't answer how to say \"thank you\" in Japanese, but I can tell you more about his projects or tech stack if you're interested.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2676,
+              "cacheReadInputTokens": 1187,
+              "outputTokens": 47
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto speaks Spanish (native) and English (C1). I can't answer how to say \"thank you\" in Japanese, but I can tell you more about his projects or tech stack if you're interested."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+          "latencyMs": 2403,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2378,
+              "cacheReadInputTokens": 1187
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "gepP9kxtIR2mRYTspNFTtiUmUvBnwnQl",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2378,
+                  "cacheReadInputTokens": 1187,
+                  "outputTokens": 98
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "gepP9kxtIR2mRYTspNFTtiUmUvBnwnQl",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "cb2d32f140d8ff6978b426eed09af3a2b4c4cd78fe132497924e53145f57e345",
+          "latencyMs": 1414,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2676,
+              "cacheReadInputTokens": 1187
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "native"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " English"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "C"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": " level"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " cannot"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " say"
+            },
+            {
+              "type": "text_delta",
+              "text": " '"
+            },
+            {
+              "type": "text_delta",
+              "text": "thank"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": "'"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Japanese"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " as"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " unrelated"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1 level). I cannot answer how to say 'thank you' in Japanese, as that is unrelated to Alberto. Would you like to know about his AI agents or work experience instead?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2676,
+                  "cacheReadInputTokens": 1187,
+                  "outputTokens": 51
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1 level). I cannot answer how to say 'thank you' in Japanese, as that is unrelated to Alberto. Would you like to know about his AI agents or work experience instead?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "71270664abfd2ec5a7a44aafc9e33372bd28f109fb309f9be2e263f2dd438e3f",
+          "latencyMs": 2425,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2378,
+              "cacheReadInputTokens": 1187
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "BoZW1yBBE7Wpbzb9ZOOjtuv1sOjHYGNj",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2378,
+                  "cacheReadInputTokens": 1187,
+                  "outputTokens": 99
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "BoZW1yBBE7Wpbzb9ZOOjtuv1sOjHYGNj",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "f601b4724da18412019e59a1087ab35f8dc4d5a82d75995ec2167b6cfc1ecc9f",
+          "latencyMs": 1321,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2676,
+              "cacheReadInputTokens": 1187
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " speaks"
+            },
+            {
+              "type": "text_delta",
+              "text": " Spanish"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "native"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " English"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "C"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " how"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " say"
+            },
+            {
+              "type": "text_delta",
+              "text": " '"
+            },
+            {
+              "type": "text_delta",
+              "text": "thank"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": "'"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " Japanese"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " but"
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " tell"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " tech"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": "'d"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto speaks Spanish (native) and English (C1). I can't answer how to say 'thank you' in Japanese, but I can tell you more about his projects or tech stack if you'd like.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2676,
+                  "cacheReadInputTokens": 1187,
+                  "outputTokens": 47
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto speaks Spanish (native) and English (C1). I can't answer how to say 'thank you' in Japanese, but I can tell you more about his projects or tech stack if you'd like."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

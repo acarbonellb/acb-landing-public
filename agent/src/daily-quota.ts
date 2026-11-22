@@ -1,16 +1,8 @@
 // Daily quota: the estimated model spend one rate-limit key may use per UTC
-// day, on top of the per-minute rate limit and the monthly spend cap, so one
-// source can't use up the month's spend cap. It counts spend, not requests: each
-// chat request reserves its worst-case cost here too (it grows with the
-// conversation sent), its model calls are charged, and the rest is released,
-// with the spend cap's reservation mechanics (`spend-holds.ts`). A request
-// whose worst case doesn't fit is refused like a rate-limit refusal, until
-// the next UTC midnight.
-//
-// One document per key and UTC day, `dailySpend/<YYYY-MM-DD>:<key>` (the
-// key URL-encoded), in the shared store when one is configured, so every
-// instance counts against the same quota. Each carries `expireAt` (the end of
-// its day) for a Firestore TTL policy to delete it.
+// day (docs/guardrails.md#daily-quota), with the spend cap's reservation
+// mechanics (`spend-holds.ts`). One document per key and UTC day,
+// `dailySpend/<YYYY-MM-DD>:<key>` (the key URL-encoded), whose `expireAt`
+// (the end of its day) lets a Firestore TTL policy delete it.
 import { createMemoryDocumentStore, type DocumentStore } from "./document-store";
 import type { Usage } from "./model";
 import { worstCaseCostUsd, type Pricing } from "./pricing";

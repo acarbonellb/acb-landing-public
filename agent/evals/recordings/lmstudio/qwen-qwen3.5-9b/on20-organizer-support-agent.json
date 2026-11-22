@@ -1,0 +1,934 @@
+{
+  "caseId": "on20",
+  "slug": "organizer-support-agent",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+      "latencyMs": 1555,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2345,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "xLeXddkn9NBjNPMecqW3kSDDHA4NXZOC",
+                "name": "get_projects",
+                "input": {}
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2345,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 60
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "xLeXddkn9NBjNPMecqW3kSDDHA4NXZOC",
+                "name": "get_projects",
+                "input": {}
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "eacb73521925d8d113ae655486397853f3127d47b2a787b1cb4999cbd0eebf7a",
+      "latencyMs": 1933,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 3116,
+          "cacheReadInputTokens": 1178
+        },
+        {
+          "type": "text_delta",
+          "text": "Albert"
+        },
+        {
+          "type": "text_delta",
+          "text": "o"
+        },
+        {
+          "type": "text_delta",
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " Organizer"
+        },
+        {
+          "type": "text_delta",
+          "text": " Support"
+        },
+        {
+          "type": "text_delta",
+          "text": " Agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " designed"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " an"
+        },
+        {
+          "type": "text_delta",
+          "text": " online"
+        },
+        {
+          "type": "text_delta",
+          "text": " event"
+        },
+        {
+          "type": "text_delta",
+          "text": " ticket"
+        },
+        {
+          "type": "text_delta",
+          "text": "ing"
+        },
+        {
+          "type": "text_delta",
+          "text": " platform"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " It"
+        },
+        {
+          "type": "text_delta",
+          "text": " answers"
+        },
+        {
+          "type": "text_delta",
+          "text": " event"
+        },
+        {
+          "type": "text_delta",
+          "text": " organizers"
+        },
+        {
+          "type": "text_delta",
+          "text": "'"
+        },
+        {
+          "type": "text_delta",
+          "text": " questions"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
+        },
+        {
+          "type": "text_delta",
+          "text": " sales"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " payouts"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " setup"
+        },
+        {
+          "type": "text_delta",
+          "text": " without"
+        },
+        {
+          "type": "text_delta",
+          "text": " requiring"
+        },
+        {
+          "type": "text_delta",
+          "text": " human"
+        },
+        {
+          "type": "text_delta",
+          "text": " review"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " The"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent"
+        },
+        {
+          "type": "text_delta",
+          "text": " pulls"
+        },
+        {
+          "type": "text_delta",
+          "text": " live"
+        },
+        {
+          "type": "text_delta",
+          "text": " data"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " PostgreSQL"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " payments"
+        },
+        {
+          "type": "text_delta",
+          "text": " API"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " provide"
+        },
+        {
+          "type": "text_delta",
+          "text": " these"
+        },
+        {
+          "type": "text_delta",
+          "text": " answers"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " It"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " currently"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " \""
+        },
+        {
+          "type": "text_delta",
+          "text": "coming"
+        },
+        {
+          "type": "text_delta",
+          "text": "-so"
+        },
+        {
+          "type": "text_delta",
+          "text": "on"
+        },
+        {
+          "type": "text_delta",
+          "text": "\""
+        },
+        {
+          "type": "text_delta",
+          "text": " status"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "Alberto's Organizer Support Agent is designed for an online event ticketing platform. It answers event organizers' questions about sales, payouts, and setup without requiring human review. The agent pulls live data from PostgreSQL and the payments API to provide these answers. It is currently in \"coming-soon\" status.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 3116,
+              "cacheReadInputTokens": 1178,
+              "outputTokens": 64
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "Alberto's Organizer Support Agent is designed for an online event ticketing platform. It answers event organizers' questions about sales, payouts, and setup without requiring human review. The agent pulls live data from PostgreSQL and the payments API to provide these answers. It is currently in \"coming-soon\" status."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+          "latencyMs": 1620,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "mYK4GIkq0LF9JHn1qiSZtJ8DnIsiS6SW",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 64
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "mYK4GIkq0LF9JHn1qiSZtJ8DnIsiS6SW",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "601df217407d1ee2f28dc223d4e39dca17f83a1b324d2136dd33bb6b0437d8df",
+          "latencyMs": 1527,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 3116,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " Organizer"
+            },
+            {
+              "type": "text_delta",
+              "text": " Support"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " answers"
+            },
+            {
+              "type": "text_delta",
+              "text": " event"
+            },
+            {
+              "type": "text_delta",
+              "text": " organizers"
+            },
+            {
+              "type": "text_delta",
+              "text": "'"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " sales"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " payouts"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " setup"
+            },
+            {
+              "type": "text_delta",
+              "text": " without"
+            },
+            {
+              "type": "text_delta",
+              "text": " human"
+            },
+            {
+              "type": "text_delta",
+              "text": " review"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " It"
+            },
+            {
+              "type": "text_delta",
+              "text": " pulls"
+            },
+            {
+              "type": "text_delta",
+              "text": " live"
+            },
+            {
+              "type": "text_delta",
+              "text": " data"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
+            },
+            {
+              "type": "text_delta",
+              "text": " PostgreSQL"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " payments"
+            },
+            {
+              "type": "text_delta",
+              "text": " API"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " The"
+            },
+            {
+              "type": "text_delta",
+              "text": " project"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " currently"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " \""
+            },
+            {
+              "type": "text_delta",
+              "text": "coming"
+            },
+            {
+              "type": "text_delta",
+              "text": " soon"
+            },
+            {
+              "type": "text_delta",
+              "text": "\""
+            },
+            {
+              "type": "text_delta",
+              "text": " status"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's Organizer Support Agent answers event organizers' questions about sales, payouts, and setup without human review. It pulls live data from PostgreSQL and the payments API. The project is currently in \"coming soon\" status.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 3116,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 47
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's Organizer Support Agent answers event organizers' questions about sales, payouts, and setup without human review. It pulls live data from PostgreSQL and the payments API. The project is currently in \"coming soon\" status."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e657d69348227871f69603f4d98cf5510fceaf0bef3b87516e4aa2a316013924",
+          "latencyMs": 1884,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2360,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "u1xD2svfRGT43azmd1SYGbpZyi78wwLl",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2360,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 75
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "u1xD2svfRGT43azmd1SYGbpZyi78wwLl",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "888c5cbb571b56c6fb0ebac4b35aaef4934dd47e759bd2c2fe2580255c2e971b",
+          "latencyMs": 2156,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 3116,
+              "cacheReadInputTokens": 1178
+            },
+            {
+              "type": "text_delta",
+              "text": "The"
+            },
+            {
+              "type": "text_delta",
+              "text": " Organizer"
+            },
+            {
+              "type": "text_delta",
+              "text": " Support"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " an"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " designed"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " an"
+            },
+            {
+              "type": "text_delta",
+              "text": " online"
+            },
+            {
+              "type": "text_delta",
+              "text": " event"
+            },
+            {
+              "type": "text_delta",
+              "text": " ticket"
+            },
+            {
+              "type": "text_delta",
+              "text": "ing"
+            },
+            {
+              "type": "text_delta",
+              "text": " platform"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " It"
+            },
+            {
+              "type": "text_delta",
+              "text": " answers"
+            },
+            {
+              "type": "text_delta",
+              "text": " event"
+            },
+            {
+              "type": "text_delta",
+              "text": " organizers"
+            },
+            {
+              "type": "text_delta",
+              "text": "'"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " sales"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " payouts"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " setup"
+            },
+            {
+              "type": "text_delta",
+              "text": " without"
+            },
+            {
+              "type": "text_delta",
+              "text": " requiring"
+            },
+            {
+              "type": "text_delta",
+              "text": " human"
+            },
+            {
+              "type": "text_delta",
+              "text": " review"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " The"
+            },
+            {
+              "type": "text_delta",
+              "text": " agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " pulls"
+            },
+            {
+              "type": "text_delta",
+              "text": " live"
+            },
+            {
+              "type": "text_delta",
+              "text": " data"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
+            },
+            {
+              "type": "text_delta",
+              "text": " PostgreSQL"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " payments"
+            },
+            {
+              "type": "text_delta",
+              "text": " API"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " provide"
+            },
+            {
+              "type": "text_delta",
+              "text": " these"
+            },
+            {
+              "type": "text_delta",
+              "text": " answers"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " It"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " currently"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " \""
+            },
+            {
+              "type": "text_delta",
+              "text": "coming"
+            },
+            {
+              "type": "text_delta",
+              "text": "-so"
+            },
+            {
+              "type": "text_delta",
+              "text": "on"
+            },
+            {
+              "type": "text_delta",
+              "text": "\""
+            },
+            {
+              "type": "text_delta",
+              "text": " status"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " meaning"
+            },
+            {
+              "type": "text_delta",
+              "text": " it"
+            },
+            {
+              "type": "text_delta",
+              "text": " hasn"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " been"
+            },
+            {
+              "type": "text_delta",
+              "text": " built"
+            },
+            {
+              "type": "text_delta",
+              "text": " yet"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "The Organizer Support Agent is an AI agent designed for an online event ticketing platform. It answers event organizers' questions about sales, payouts, and setup without requiring human review. The agent pulls live data from PostgreSQL and the payments API to provide these answers. It's currently in \"coming-soon\" status, meaning it hasn't been built yet.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 3116,
+                  "cacheReadInputTokens": 1178,
+                  "outputTokens": 73
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "The Organizer Support Agent is an AI agent designed for an online event ticketing platform. It answers event organizers' questions about sales, payouts, and setup without requiring human review. The agent pulls live data from PostgreSQL and the payments API to provide these answers. It's currently in \"coming-soon\" status, meaning it hasn't been built yet."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

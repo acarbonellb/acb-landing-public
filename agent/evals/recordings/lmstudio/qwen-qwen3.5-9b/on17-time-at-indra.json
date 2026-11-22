@@ -1,0 +1,850 @@
+{
+  "caseId": "on17",
+  "slug": "time-at-indra",
+  "provider": "lmstudio",
+  "model": "qwen/qwen3.5-9b",
+  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "settings": {
+    "effort": "low",
+    "requestParams": {
+      "output_config": {
+        "effort": "low"
+      },
+      "cache_control": {
+        "type": "ephemeral"
+      }
+    }
+  },
+  "calls": [
+    {
+      "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
+      "latencyMs": 2122,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2343,
+          "cacheReadInputTokens": 1163
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "",
+            "toolCalls": [
+              {
+                "id": "5AZejMIz1nLGs4fNVRoCb2ppzgEyVm5e",
+                "name": "get_experience",
+                "input": {
+                  "company": "indra"
+                }
+              }
+            ],
+            "stopReason": "tool_use",
+            "usage": {
+              "inputTokens": 2343,
+              "cacheReadInputTokens": 1163,
+              "outputTokens": 83
+            },
+            "providerContent": [
+              {
+                "type": "tool_use",
+                "id": "5AZejMIz1nLGs4fNVRoCb2ppzgEyVm5e",
+                "name": "get_experience",
+                "input": {
+                  "company": "indra"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "requestHash": "ccf64281cf1cc94a58f4e427a8d84317e2ff529f8da7c0a2e6b905c63086edcb",
+      "latencyMs": 1593,
+      "events": [
+        {
+          "type": "input_usage",
+          "inputTokens": 2469,
+          "cacheReadInputTokens": 1176
+        },
+        {
+          "type": "text_delta",
+          "text": "At"
+        },
+        {
+          "type": "text_delta",
+          "text": " Indra"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "5"
+        },
+        {
+          "type": "text_delta",
+          "text": " to"
+        },
+        {
+          "type": "text_delta",
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "2"
+        },
+        {
+          "type": "text_delta",
+          "text": "0"
+        },
+        {
+          "type": "text_delta",
+          "text": "1"
+        },
+        {
+          "type": "text_delta",
+          "text": "6"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " worked"
+        },
+        {
+          "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Developer"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cor"
+        },
+        {
+          "type": "text_delta",
+          "text": "uña"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "text_delta",
+          "text": " His"
+        },
+        {
+          "type": "text_delta",
+          "text": " highlights"
+        },
+        {
+          "type": "text_delta",
+          "text": " include"
+        },
+        {
+          "type": "text_delta",
+          "text": " working"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
+        },
+        {
+          "type": "text_delta",
+          "text": " Java"
+        },
+        {
+          "type": "text_delta",
+          "text": "/S"
+        },
+        {
+          "type": "text_delta",
+          "text": "pring"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " Oracle"
+        },
+        {
+          "type": "text_delta",
+          "text": " PL"
+        },
+        {
+          "type": "text_delta",
+          "text": "/"
+        },
+        {
+          "type": "text_delta",
+          "text": "SQL"
+        },
+        {
+          "type": "text_delta",
+          "text": " for"
+        },
+        {
+          "type": "text_delta",
+          "text": " telecom"
+        },
+        {
+          "type": "text_delta",
+          "text": " clients"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " handling"
+        },
+        {
+          "type": "text_delta",
+          "text": " QA"
+        },
+        {
+          "type": "text_delta",
+          "text": " and"
+        },
+        {
+          "type": "text_delta",
+          "text": " hot"
+        },
+        {
+          "type": "text_delta",
+          "text": "fix"
+        },
+        {
+          "type": "text_delta",
+          "text": "es"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
+        },
+        {
+          "type": "response_end",
+          "response": {
+            "text": "At Indra, from 2015 to 2016, Alberto worked as a Software Developer in A Coruña. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes.",
+            "toolCalls": [],
+            "stopReason": "end_turn",
+            "usage": {
+              "inputTokens": 2469,
+              "cacheReadInputTokens": 1176,
+              "outputTokens": 54
+            },
+            "providerContent": [
+              {
+                "type": "text",
+                "text": "At Indra, from 2015 to 2016, Alberto worked as a Software Developer in A Coruña. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "moreRuns": [
+    {
+      "calls": [
+        {
+          "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
+          "latencyMs": 2161,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2356,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "3cgiMf8KCjW9mQ3t75ZmbxNsdbNiLcY8",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "indra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2356,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 75
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "3cgiMf8KCjW9mQ3t75ZmbxNsdbNiLcY8",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "indra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "0f962b967a798500f5c363ae8bebfee93b07808f0fa6fc9e5e8fadb8c5ec43f1",
+          "latencyMs": 1631,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2469,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "text_delta",
+              "text": "At"
+            },
+            {
+              "type": "text_delta",
+              "text": " Indra"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " worked"
+            },
+            {
+              "type": "text_delta",
+              "text": " as"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " His"
+            },
+            {
+              "type": "text_delta",
+              "text": " highlights"
+            },
+            {
+              "type": "text_delta",
+              "text": " include"
+            },
+            {
+              "type": "text_delta",
+              "text": " using"
+            },
+            {
+              "type": "text_delta",
+              "text": " Java"
+            },
+            {
+              "type": "text_delta",
+              "text": "/S"
+            },
+            {
+              "type": "text_delta",
+              "text": "pring"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Oracle"
+            },
+            {
+              "type": "text_delta",
+              "text": " PL"
+            },
+            {
+              "type": "text_delta",
+              "text": "/"
+            },
+            {
+              "type": "text_delta",
+              "text": "SQL"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " telecom"
+            },
+            {
+              "type": "text_delta",
+              "text": " clients"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " along"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " QA"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " hot"
+            },
+            {
+              "type": "text_delta",
+              "text": "fix"
+            },
+            {
+              "type": "text_delta",
+              "text": "es"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include using Java/Spring and Oracle PL/SQL for telecom clients, along with QA and hotfixes.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2469,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 53
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include using Java/Spring and Oracle PL/SQL for telecom clients, along with QA and hotfixes."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
+          "latencyMs": 2041,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2356,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "41jXi18uC75SxnYbiyrnDVw3AUbWG9go",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "indra"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2356,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 75
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "41jXi18uC75SxnYbiyrnDVw3AUbWG9go",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "indra"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "17afa8c9feaf86b5e3d02b405d3daee8b9d2f9cb0ebd368f87e9372ec1e5fea1",
+          "latencyMs": 1407,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2469,
+              "cacheReadInputTokens": 1176
+            },
+            {
+              "type": "text_delta",
+              "text": "At"
+            },
+            {
+              "type": "text_delta",
+              "text": " Indra"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": " worked"
+            },
+            {
+              "type": "text_delta",
+              "text": " as"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Developer"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " Cor"
+            },
+            {
+              "type": "text_delta",
+              "text": "uña"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "0"
+            },
+            {
+              "type": "text_delta",
+              "text": "1"
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " His"
+            },
+            {
+              "type": "text_delta",
+              "text": " highlights"
+            },
+            {
+              "type": "text_delta",
+              "text": " include"
+            },
+            {
+              "type": "text_delta",
+              "text": " working"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " Java"
+            },
+            {
+              "type": "text_delta",
+              "text": "/S"
+            },
+            {
+              "type": "text_delta",
+              "text": "pring"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Oracle"
+            },
+            {
+              "type": "text_delta",
+              "text": " PL"
+            },
+            {
+              "type": "text_delta",
+              "text": "/"
+            },
+            {
+              "type": "text_delta",
+              "text": "SQL"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " telecom"
+            },
+            {
+              "type": "text_delta",
+              "text": " clients"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " handling"
+            },
+            {
+              "type": "text_delta",
+              "text": " QA"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " hot"
+            },
+            {
+              "type": "text_delta",
+              "text": "fix"
+            },
+            {
+              "type": "text_delta",
+              "text": "es"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2469,
+                  "cacheReadInputTokens": 1176,
+                  "outputTokens": 53
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

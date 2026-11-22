@@ -3,21 +3,54 @@
 
 export const root = "projects/acb-landing/databases/(default)/documents";
 
+type Fields = Record<string, unknown>;
+
+/** `fields` as Firestore stores them: a map with no fields loses its empty `fields`. */
+function normalize(fields: Fields): Fields {
+  return Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => {
+      const map = (value as { mapValue?: { fields?: Fields } }).mapValue;
+      if (!map) return [key, value];
+      const inner = normalize(map.fields ?? {});
+      return [key, { mapValue: Object.keys(inner).length ? { fields: inner } : {} }];
+    }),
+  );
+}
+
+/** A key-order-independent form of `fields`, to tell whether a write changes a document. */
+const canonical = (value: unknown): string =>
+  value && typeof value === "object"
+    ? `{${Object.keys(value)
+        .sort()
+        .map((k) => `${JSON.stringify(k)}:${canonical((value as Fields)[k])}`)
+        .join(",")}}`
+    : JSON.stringify(value);
+
 /**
  * Just enough of the Firestore REST API: get and commit of single documents,
- * with the `exists` / `updateTime` preconditions. `beforeCommit` runs before
- * each commit, to play another writer.
+ * with the `exists` / `updateTime` preconditions, answered as the Firestore
+ * emulator answers them (the contract suite in `document-store.contract.test.ts`
+ * checks it). As in Firestore, a write that changes nothing keeps the
+ * document's update time. `beforeCommit` runs before each commit, to play
+ * another writer.
  */
 export function fakeFirestore() {
-  const docs = new Map<string, { fields: unknown; updateTime: string }>();
+  const docs = new Map<string, { fields: Fields; createTime: string; updateTime: string }>();
   let clock = 0;
+  const tick = () => `2026-11-04T00:00:00.${String(++clock).padStart(6, "0")}Z`;
   const requests: { method: string; url: string; authorization: string | null }[] = [];
   const fake = {
     docs,
     requests,
     beforeCommit: undefined as (() => void) | undefined,
-    write(name: string, fields: unknown) {
-      docs.set(name, { fields, updateTime: `2026-11-04T00:00:00.${String(++clock).padStart(6, "0")}Z` });
+    /** Writes `fields` to the document `name`, as another writer would; returns its update time. */
+    write(name: string, fields: Fields): string {
+      const current = docs.get(name);
+      const stored = normalize(fields);
+      if (current && canonical(current.fields) === canonical(stored)) return current.updateTime;
+      const updateTime = tick();
+      docs.set(name, { fields: stored, createTime: current?.createTime ?? updateTime, updateTime });
+      return updateTime;
     },
     fetch: async (input: string | URL | Request, init?: RequestInit) => {
       const url = new URL(String(input));
@@ -34,7 +67,14 @@ export function fakeFirestore() {
       if (method === "GET") {
         const doc = docs.get(path);
         if (!doc) return json(404, { error: { code: 404, status: "NOT_FOUND" } });
-        return json(200, { name: path, ...doc });
+        const { fields, createTime, updateTime } = doc;
+        // Firestore leaves `fields` out of a document that has none.
+        return json(200, {
+          name: path,
+          ...(Object.keys(fields).length ? { fields } : {}),
+          createTime,
+          updateTime,
+        });
       }
       if (method === "POST" && path === `${root}:commit`) {
         fake.beforeCommit?.();
@@ -47,8 +87,11 @@ export function fakeFirestore() {
         if (pre.updateTime && pre.updateTime !== current?.updateTime) {
           return json(400, { error: { code: 400, status: "FAILED_PRECONDITION" } });
         }
-        fake.write(write.update.name, write.update.fields);
-        return json(200, { writeResults: [{}] });
+        const clockBefore = clock;
+        const updateTime = fake.write(write.update.name, write.update.fields ?? {});
+        // The commit's own time: the write's, or a fresh one if it changed nothing.
+        const commitTime = clock > clockBefore ? updateTime : tick();
+        return json(200, { writeResults: [{ updateTime }], commitTime });
       }
       return json(500, { error: { code: 500, status: "INTERNAL" } });
     },

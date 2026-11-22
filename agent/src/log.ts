@@ -1,16 +1,8 @@
-// Structured logs: one JSON line per event, which Cloud Logging parses
-// natively (`severity` sets the entry's severity, `message` its summary, the
-// rest lands in `jsonPayload`). Every line has a stable `event` name; the
-// docs (docs/logs-and-alerts.md) list them with their fields, and the
-// Cloud Monitoring alerts match on them.
-//
-// A line logged while a request is being served carries that request's
-// `requestId` (kept in an AsyncLocalStorage by `withRequestId`), so a chat
-// stream's events and its store writes can be tied together.
-//
-// No line carries message content, a client IP or the contact email: fields
-// are counts, ids, outcomes and error messages that are scrubbed at the
-// source (`firestore.ts` names the collection only, never a document id).
+// Structured logs: one JSON line per event with a stable `event` name, listed
+// with their fields in docs/logs-and-alerts.md, where the alerts match on
+// them. A line logged while a request is served carries its `requestId`, kept
+// in an AsyncLocalStorage by `withRequestId`. No line carries message
+// content, a client IP or the contact email.
 import { AsyncLocalStorage } from "node:async_hooks";
 
 export type Severity = "INFO" | "WARNING" | "ERROR";
@@ -52,12 +44,11 @@ export function logEvent(
 
 /** The store operations a `store_error` line names (docs/logs-and-alerts.md). */
 export type StoreOperation =
-  | "rate_limit"
   | "usage_record"
   | "usage_stats"
-  | "spend_record"
   | "spend_settle"
-  | "provider_limit";
+  | "provider_limit"
+  | "health_check";
 
 /** Logs one failed store operation as `store_error`, with the error described. */
 export function logStoreError(

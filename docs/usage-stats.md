@@ -4,15 +4,23 @@ The [agent](agent.md) keeps weekly aggregates of its own traffic (`agent/src/usa
 
 ## What is recorded
 
-Each chat request, once it ends, is folded into its ISO week's document: the request, its outcome, its tokens (all model calls, estimated ones included), its estimated cost (the model's list prices, `agent/src/pricing.ts`) and two latencies, from arrival to the end of the stream and to the first text, as counts in fixed histogram buckets (250 ms … 5 min, plus an unbounded one). Outcomes (`ChatOutcome` in [`src/shared/stats-contract.ts`](../src/shared/stats-contract.ts)) are the stream's `stopReason`, `error:<code>` for a stream `error`, `aborted` when the visitor left mid-answer, and `http_429` / `http_503` for refusals before streaming (no latency for those). Malformed requests (400, 413) aren't recorded.
+Each chat request, once it ends, is counted in the next [batch](#batching) for its ISO week's document: the request, its outcome, its tokens (all model calls, estimated ones included), its estimated cost (the model's list prices, `agent/src/pricing.ts`) and two latencies, from arrival to the end of the stream and to the first text, as counts in fixed histogram buckets (250 ms … 5 min, plus an unbounded one). Outcomes (`ChatOutcome` in [`src/shared/stats-contract.ts`](../src/shared/stats-contract.ts)) are the stream's `stopReason`, `error:<code>` for a stream `error`, `aborted` when the visitor left mid-answer, and `http_429` / `http_503` for refusals before streaming (no latency for those). Malformed requests (400, 413) aren't recorded.
 
-Each MCP HTTP request served is counted, nothing more (a client's session is several: initialize, list, calls), and the answer doesn't wait for that write; `/stats` itself isn't counted. `mcp.unknownGoogleHops` counts `/mcp` requests, refused ones included, whose right-most `X-Forwarded-For` hop is a Google address (in `goog.json`, not in `cloud.json`) outside the user-triggered fetchers ranges: where Hosting's peer would show up if it moved outside the snapshot, so its visitors share one rate-limit key (see [Client IP](guardrails.md#client-ip)). Google Cloud's ranges (`cloud.json`) are left out on purpose: any Google Cloud customer can send from them, so counting them would be noise, not a sign of Hosting moving. It should stay at 0; if it doesn't, refresh the snapshot.
+Each MCP HTTP request served is counted, nothing more (a client's session is several: initialize, list, calls), in the next [batch](#batching); `/stats` itself isn't counted. `mcp.unknownGoogleHops` counts `/mcp` requests, refused ones included, whose right-most `X-Forwarded-For` hop is a Google address (in `goog.json`, not in `cloud.json`) outside the user-triggered fetchers ranges: where Hosting's peer would show up if it moved outside the snapshot, so its visitors share one rate-limit key (see [Client IP](guardrails.md#client-ip)). Google Cloud's ranges (`cloud.json`) are left out on purpose: any Google Cloud customer can send from them, so counting them would be noise, not a sign of Hosting moving. It should stay at 0; if it doesn't, refresh the snapshot.
 
 The address itself is never kept. **No message content and no IPs** are ever recorded. Recording is best effort: a failure is logged and the request goes on.
 
 ## Batching
 
-Refusals before streaming (`http_429`, `http_503`) and `unknownGoogleHops` aren't written one by one: each instance counts them in memory and folds them into the week's document in one write every 10 seconds, before answering `/stats`, and on shutdown (`SIGTERM`). A batch that fails to write is logged and kept for the next one. So a flood the guardrails already refuse costs one write per batch, not one per request; `/stats` still counts each refusal once its batch is written (another instance's latest batch may be up to 10 seconds behind).
+Nothing is written one request at a time: each instance counts chat requests, MCP requests and `unknownGoogleHops` in memory and folds them into the week's document in one write. Usage is only ever written inside a request, never by a background timer, because Cloud Run throttles the CPU once a response is sent. A batch is written:
+
+| When | By |
+|---|---|
+| A batch is due (10 seconds since the last write; the first is due at once) | The next chat or MCP request that records usage, before it answers |
+| A `/stats` request finds its [snapshot](#get-stats) stale and a batch is waiting | `/stats`, before it reads, so it counts this instance's usage up to that moment |
+| The instance shuts down (`SIGTERM`) | The shutdown handler, before and after the server closes |
+
+A batch that fails to write is logged and kept for the next one. So a flood costs one write per batch, not one per request, and the `chat_error_rate` alert is judged as each batch is written, up to 10 s after the request that crossed it. Another instance's pending batch is only written by its own next request or its shutdown, so `/stats` may lag behind it.
 
 ## The weekly document
 
@@ -40,6 +48,10 @@ Histogram keys are bucket upper bounds in ms (`inf` past the last). `errorWindow
 
 Answers this week's and the previous week's aggregates, any origin (CORS `*`), `Cache-Control: public, max-age=300`, under its own [per-IP limit and global ceiling](guardrails.md#per-ip-rate-limits) (`RATE_LIMIT_STATS_PER_MINUTE`, `RATE_LIMIT_STATS_GLOBAL_PER_MINUTE`); `503 unavailable` if the store can't be read. The body is `StatsResponse` in [`src/shared/stats-contract.ts`](../src/shared/stats-contract.ts), which documents each field (`answered`, `errorRate`, the latency percentiles).
 
+It answers from an in-memory snapshot (`statsMaxAgeMs` in `agent/src/usage.ts`, 10 s): a call within 10 s of the last read gets that read's answer, with no store read or write. Once the snapshot is 10 s old the next call writes the waiting batch and reads both weeks again; calls that arrive while that read is in flight wait for it and share its answer. So `/stats` reflects this instance's usage recorded up to 10 s before it, and at most one call per 10 s reaches the store, whatever the traffic. A failed read isn't kept: the next call reads again.
+
+The snapshot is per instance, like the rate limits; the deploy runs one ([ADR 0003, amendment](adr/0003-agent-firestore-over-rest.md#amendment-128-rate-limits-are-per-instance-on-one-instance)), and during a canary each of the two revisions keeps its own.
+
 ## Cost
 
-One more Firestore write per chat request that streams and per MCP request, one per batch of refusals (at most one per instance every 10 seconds, plus one before each `/stats` read when a batch is waiting), and two document reads per `/stats` call (cached by browsers for 5 minutes). Every chat and MCP request in a week writes the same document; at this site's traffic that is far below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.
+One Firestore write per [batch](#batching) and two document reads per `/stats` call that finds its snapshot stale, at most one every 10 s; all store operations per request are in [Store cost](guardrails.md#store-cost). Every batch in a week writes the same document, at most one every 10 s plus one per stale `/stats` snapshot (so at most two every 10 s, whatever the `/stats` ceiling): below Firestore's limit of about one sustained write per second per document, and a conflict only retries. One small document a week accumulates; no TTL is needed.

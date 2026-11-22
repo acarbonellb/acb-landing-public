@@ -3,22 +3,13 @@
 # notification channel and one log-based alert policy per alert event
 # (docs/logs-and-alerts.md). Run by the owner, by hand; never in CI.
 #
-#   setup [--dry-run] <project-id> <email>
-#       Creates the channel and the policies, or updates them in place when
-#       they exist (matched by display name), so re-running it after a change
-#       or a rebuilt project converges on the same set. --dry-run runs no gcloud
-#       command: it prints every command the setup would run, and the channel
-#       and policy files it would pass.
-#   test [--dry-run] <project-id> [event]
-#       Writes one synthetic log entry for `event` (default store_unavailable)
-#       as if the agent had logged it, so its policy fires and emails the
-#       channel (within a few minutes). The entry carries "test": true.
+#   setup [--dry-run] <project-id> <email>   create or update in place, by display name
+#   test [--dry-run] <project-id> [event]     one synthetic alert event (default store_unavailable)
 #
-# The email address is only ever an argument: it goes to gcloud in a temporary
-# file (mode 600, deleted on exit), never on a command line, and this script
-# never prints it. The channel and policies hold no address beyond the
-# channel's own label. Needs gcloud's beta component (notification channels
-# have no GA command): gcloud components install beta.
+# What each does and when to run it: docs/logs-and-alerts.md#alerts-cloud-monitoring.
+# The email address never reaches a command line or the output: it goes to
+# gcloud in a temporary file (mode 600, deleted on exit). Notification
+# channels have no GA command, so this needs `gcloud components install beta`.
 set -euo pipefail
 
 usage() {
@@ -42,7 +33,7 @@ alerts=(
   'spend_cap_reached|ERROR|The spend cap refused a chat request: chat is closed until next month|month=month spent_usd=spentUsd cap_usd=capUsd resets_at=resetsAt|Spent USD ${log.extracted_label.spent_usd} of ${log.extracted_label.cap_usd} in ${log.extracted_label.month}; chat reopens at ${log.extracted_label.resets_at}. Check the usage stats for unusual traffic; raise MONTHLY_SPEND_CAP_USD only on purpose.'
   'provider_limit|ERROR|The model provider refused a call on its own spend or credit limit|month=month|Chat fails until the provider account has credit or a higher limit. provider_limit_cleared is logged on the next successful model call.'
   'chat_error_rate|ERROR|Chat error rate above ${log.extracted_label.threshold} over the last hour|error_rate=errorRate errors=errors streamed=streamed threshold=threshold week=week|${log.extracted_label.errors} of ${log.extracted_label.streamed} streamed chat requests in the last hour ended in an error. Look at chat_failed and chat_request lines (outcome error:*) in Cloud Logging. chat_error_rate_recovered is logged once it is back under the threshold.'
-  'store_unavailable|ERROR|The agent'"'"'s shared store is failing (${log.extracted_label.collection})|collection=collection|Firestore updates fail: rate limits and the spend cap fail open or closed per route (docs/guardrails.md). Look at store_error lines in Cloud Logging. store_recovered is logged on the next successful update.'
+  'store_unavailable|ERROR|The agent'"'"'s shared store is failing (${log.extracted_label.collection})|collection=collection|Firestore updates fail: the chat fails closed (503) while its daily quota and spend cap can'"'"'t be reserved, and usage stats go unrecorded; the rate limits are in memory and keep holding (docs/guardrails.md). Look at store_error lines in Cloud Logging. store_recovered is logged on the next successful update.'
 )
 
 dry_run=false
