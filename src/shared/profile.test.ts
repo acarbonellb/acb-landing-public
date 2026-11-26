@@ -31,7 +31,7 @@ describe("content module", () => {
 
   it("lists the three agents, each with an accurate status", () => {
     expect(agentProjects.map((a) => [a.name, a.status])).toEqual([
-      ["Fraud Detection Agent", "offline-evals"],
+      ["Fraud Detection Agent", "deployed"],
       ["Organizer Support Agent", "coming-soon"],
       ["Portfolio Agent", "personal-project"],
     ]);
@@ -43,10 +43,10 @@ describe("content module", () => {
       "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
     );
     expect(fraud?.result).toBe(
-      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+      "Offline evals, 92 cases (62 reference, 30 modelled on real events): on a local 9B model, approved fraud fell from 54% to 8% across iterations, and fraud approved without a human from 27% to 0%. Each failure becomes a new regression case.",
     );
     expect(fraud?.resultDetail).toBe(
-      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
+      "Claude Haiku 5.5, the deployed model, on the reference set: 92% accuracy vs 68%, 0% of fraud approved vs 8%, fewer cases escalated to a human (60% vs 76%), about $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
     );
   });
 
@@ -54,6 +54,7 @@ describe("content module", () => {
     const repo = "https://github.com/acarbonellb/acb-landing-public";
     const portfolio = agentProjects.find((a) => a.slug === "portfolio-agent");
     expect(portfolio?.href).toBe("#agent");
+    expect(portfolio?.resultDetail).toBe("Real failures become new regression cases.");
     expect(portfolio?.links).toEqual([
       { label: "source", href: `${repo}/tree/main/agent` },
       { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },

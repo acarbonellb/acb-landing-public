@@ -28,7 +28,7 @@ export type Profile = {
 /** Statuses the CV states; a project without one makes no status claim. */
 export const agentStatuses = [
   "in-progress",
-  "offline-evals",
+  "deployed",
   "coming-soon",
   "personal-project",
 ] as const;
@@ -122,14 +122,14 @@ export const agentProjects: AgentProject[] = [
   {
     slug: "fraud-detection-agent",
     name: "Fraud Detection Agent",
-    status: "offline-evals",
+    status: "deployed",
     context: ticketing,
     description:
       "Reviews newly published events and organizers on an event ticketing platform and leaves an approve / reject / request-info recommendation, with its reasons, for a human admin. Graded autonomy: it auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.",
     result:
-      "Offline evals, 31 cases: on a local 9B model, approved fraud fell from 54% to 8% over twelve iterations, and fraud approved without a human from 27% to 0%. Claude Haiku 5.5, chosen for deployment: 86% accuracy vs 71%, 1% of fraud approved vs 8%.",
+      "Offline evals, 92 cases (62 reference, 30 modelled on real events): on a local 9B model, approved fraud fell from 54% to 8% across iterations, and fraud approved without a human from 27% to 0%. Each failure becomes a new regression case.",
     resultDetail:
-      "Haiku escalates more cases to a human (86% vs 71%). About $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
+      "Claude Haiku 5.5, the deployed model, on the reference set: 92% accuracy vs 68%, 0% of fraud approved vs 8%, fewer cases escalated to a human (60% vs 76%), about $0.002 per review. Haiku: mean of 3 runs; local model: 1 run.",
     stack: ["TypeScript", "PostgreSQL", "GCP"],
   },
   {
@@ -154,7 +154,9 @@ export const agentProjects: AgentProject[] = [
     // build time (src/lib/eval-results.ts), from the eval history a live run
     // writes. Served through a tool, the line would be in the recordings, so
     // every live run would change the tool output and make its own recordings
-    // stale: a re-record loop. It stays page-only.
+    // stale: a re-record loop. It stays page-only. The detail line is fixed
+    // copy, so serving it creates no such loop.
+    resultDetail: "Real failures become new regression cases.",
     links: [
       { label: "source", href: `${repo}/tree/main/agent` },
       { label: "eval report", href: `${repo}/blob/main/agent/evals/report.md` },

@@ -35,7 +35,7 @@ const fixture: Content = {
     {
       slug: "loom",
       name: "Loom Agent",
-      status: "offline-evals",
+      status: "deployed",
       context: "Side business",
       description: "Weaves patterns.",
       result: "Offline evals: wrong patterns fell from 40% to 5%.",
@@ -200,7 +200,7 @@ describe("get_projects", () => {
         },
         {
           name: "Loom Agent",
-          status: "offline-evals",
+          status: "deployed",
           context: "Side business",
           description: "Weaves patterns.",
           result: "Offline evals: wrong patterns fell from 40% to 5%.",
@@ -224,7 +224,7 @@ describe("get_projects", () => {
   });
 
   it("filters by status, still saying how he runs agents", () => {
-    const result = tools.call("get_projects", { status: "offline-evals" });
+    const result = tools.call("get_projects", { status: "deployed" });
     expect(result.projects.map((p) => p.name)).toEqual(["Loom Agent"]);
     expect(result.practices.map((p) => p.title)).toEqual([
       "Tables checked twice",
@@ -239,7 +239,7 @@ describe("get_projects", () => {
 
   it("lists every status in its description", () => {
     const tool = tools.list().find((t) => t.name === "get_projects")!;
-    for (const label of ["in progress", "offline evals", "coming soon", "personal project"]) {
+    for (const label of ["in progress", "deployed", "coming soon", "personal project"]) {
       expect(tool.description).toContain(label);
     }
   });

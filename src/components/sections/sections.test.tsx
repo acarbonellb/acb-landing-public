@@ -76,7 +76,7 @@ const agentProjects: AgentProject[] = [
   {
     slug: "gear-agent",
     name: "Gear Agent",
-    status: "offline-evals",
+    status: "deployed",
     context: "Built for a clockmaker",
     description: "Checks gear ratios.",
     result: "Offline evals: wrong ratios fell from 40% to 5%.",
@@ -247,11 +247,11 @@ describe("Projects", () => {
     expect(loom.queryByText(/in progress|personal project|live/)).not.toBeInTheDocument();
   });
 
-  it("shows the offline-evals and coming-soon badges", () => {
+  it("shows the deployed and coming-soon badges", () => {
     render(<Projects agentProjects={agentProjects} practices={practices} />);
 
     const gear = within(screen.getByRole("article", { name: "./Gear Agent" }));
-    expect(gear.getByText("offline evals · deployment next")).toBeInTheDocument();
+    expect(gear.getByText("deployed")).toBeInTheDocument();
     const lace = within(screen.getByRole("article", { name: "./Lace Agent" }));
     expect(lace.getByText("coming soon")).toBeInTheDocument();
   });

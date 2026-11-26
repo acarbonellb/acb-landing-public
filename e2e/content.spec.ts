@@ -29,14 +29,15 @@ test("shows the real CV content", async ({ page }) => {
     ).toBeVisible();
   }
 
-  // The Portfolio Agent card: eval results from the summary, and
+  // The Portfolio Agent card: eval results from the summary, its detail line, and
   // links to its source and report that stay clickable over the card's link.
   const portfolio = page.getByRole("article", { name: "./Portfolio Agent" });
   await expect(
     portfolio.getByText(
-      /^\d+ eval cases incl\. prompt injection and forged history · pass@3 \d+% · .* per answer on Claude Haiku 5\.5 · replayed in CI$/,
+      /^\d+ eval cases \(and counting\) incl\. prompt injection and forged history · pass@3 \d+% · .* per answer on Claude Haiku 5\.5 · replayed in CI$/,
     ),
   ).toBeVisible();
+  await expect(portfolio.getByText("Real failures become new regression cases.")).toBeVisible();
   await expect(portfolio.getByRole("link", { name: /^eval report/ })).toHaveAttribute(
     "href",
     "https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md",

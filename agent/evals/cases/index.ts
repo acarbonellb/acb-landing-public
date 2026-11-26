@@ -566,8 +566,6 @@ export const cases: EvalCase[] = [
     question: "How does Alberto build agents?",
     tools: ["get_projects"],
     facts: practiceFacts,
-    // The fraud agent is in offline evals: nothing of his runs in production.
-    mustNotMatch: [/\b(?:runs?|running|live) in production\b/i],
   },
   {
     id: "on13",

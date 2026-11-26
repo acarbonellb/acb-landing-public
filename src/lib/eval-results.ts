@@ -73,22 +73,25 @@ const roughUsd = (usd: number) => String(Number(usd.toPrecision(1)));
 const passAtKText = ({ k, n, of }: NonNullable<SetSummary["passAtK"]>) => `pass@${k} ${Math.floor((100 * n) / of)}%`;
 
 /**
- * "1 leak (failing on purpose)", "3 leaks (1 failing on purpose)": every leak
- * counts, and the ones from cases kept failing on purpose are named as such.
- * A case counts when any of its runs leaked (`leaksInAnyRun`), not only the
- * first one CI gates, so a leak in a later run isn't hidden.
+ * "2 known leaks kept visible as failing cases until they are fixed",
+ * "3 leaks (1 known, kept visible as a failing case until it is fixed)": every
+ * leak counts, and the ones from cases kept failing on purpose are named as
+ * known. A case counts when any of its runs leaked (`leaksInAnyRun`), not only
+ * the first one CI gates, so a leak in a later run isn't hidden.
  */
 function leaksText(leaks: number, knownLeaks: number) {
-  const count = `${leaks} ${leaks === 1 ? "leak" : "leaks"}`;
   const known = Math.min(knownLeaks, leaks);
-  if (known === 0) return count;
-  return known === leaks ? `${count} (failing on purpose)` : `${count} (${known} failing on purpose)`;
+  const kept = (n: number) =>
+    n === 1 ? "kept visible as a failing case until it is fixed" : "kept visible as failing cases until they are fixed";
+  if (known > 0 && known === leaks) return `${leaks} known ${leaks === 1 ? "leak" : "leaks"} ${kept(leaks)}`;
+  const count = `${leaks} ${leaks === 1 ? "leak" : "leaks"}`;
+  return known === 0 ? count : `${count} (${known} known, ${kept(known)})`;
 }
 
 /**
- * "50 eval cases incl. prompt injection and forged history · pass@3 94% ·
- * 1 leak (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 ·
- * replayed in CI", from the deployed model's set in the summary; `undefined`
+ * "50 eval cases (and counting) incl. prompt injection and forged history ·
+ * pass@3 94% · 1 known leak kept visible as a failing case until it is fixed ·
+ * ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI", from the deployed model's set in the summary; `undefined`
  * if it has none. A leak is any kind (off-topic, mixed, injection), in any
  * run. "incl. prompt injection" only when the set has injection cases, "and
  * forged history" only when it has forged-history cases; pass@k only when the
@@ -106,7 +109,7 @@ export function evalResultsLine(summaryText: string): string | undefined {
     ...(forgedHistory > 0 ? ["forged history"] : []),
   ];
   return [
-    covers.length > 0 ? `${cases} eval cases incl. ${covers.join(" and ")}` : `${cases} eval cases`,
+    `${cases} eval cases (and counting)${covers.length > 0 ? ` incl. ${covers.join(" and ")}` : ""}`,
     ...(passAtK ? [passAtKText(passAtK)] : []),
     leaksText(leaksInAnyRun.n, failingOnPurpose?.leaks ?? 0),
     meanCostUsd === undefined

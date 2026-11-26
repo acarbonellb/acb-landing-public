@@ -53,7 +53,7 @@ describe("evalResultsLine", () => {
     );
 
     expect(evalResultsLine(text)).toBe(
-      "42 eval cases incl. prompt injection · 0 leaks · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "42 eval cases (and counting) incl. prompt injection · 0 leaks · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -61,13 +61,13 @@ describe("evalResultsLine", () => {
     const text = summary(set({ ...haiku, cases: 40, leaks: 1, meanCostUsd: 0.00096 }));
 
     expect(evalResultsLine(text)).toBe(
-      "40 eval cases incl. prompt injection · 1 leak · ~$0.001 per answer on Claude Haiku 5.5 · replayed in CI",
+      "40 eval cases (and counting) incl. prompt injection · 1 leak · ~$0.001 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
   it("names the model without a cost when the set has none", () => {
     expect(evalResultsLine(summary(set({ ...haiku, cases: 30, leaks: 0 })))).toBe(
-      "30 eval cases incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -77,14 +77,14 @@ describe("evalResultsLine", () => {
       set({ ...qwen, cases: 1, leaks: 0, kinds: { injection: 1 } }),
     );
 
-    expect(evalResultsLine(text)).toBe("3 eval cases · 0 leaks · on Claude Haiku 5.5 · replayed in CI");
+    expect(evalResultsLine(text)).toBe("3 eval cases (and counting) · 0 leaks · on Claude Haiku 5.5 · replayed in CI");
   });
 
   it("ignores fields it doesn't use, such as ones added later", () => {
     const text = summary({ ...set({ ...haiku, cases: 30, leaks: 0 }), addedLater: { k: 3 } });
 
     expect(evalResultsLine(text)).toBe(
-      "30 eval cases incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -92,7 +92,7 @@ describe("evalResultsLine", () => {
     const text = summary(set({ ...haiku, cases: 3, leaks: 0, passAtK: { k: 3, n: 2, of: 3 } }));
 
     expect(evalResultsLine(text)).toBe(
-      "3 eval cases incl. prompt injection · pass@3 66% · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+      "3 eval cases (and counting) incl. prompt injection · pass@3 66% · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -100,23 +100,31 @@ describe("evalResultsLine", () => {
     const text = summary(set({ ...haiku, cases: 30, leaks: 0, forgedHistory: 3 }));
 
     expect(evalResultsLine(text)).toBe(
-      "30 eval cases incl. prompt injection and forged history · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection and forged history · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
-  it("says which leaks come from cases failing on purpose, and still counts them", () => {
+  it("names the leaks from cases failing on purpose as known and kept visible until fixed, and still counts them", () => {
     const allKnown = summary(set({ ...haiku, cases: 30, leaks: 1, failingOnPurpose: { cases: 2, leaks: 1 } }));
     const someKnown = summary(set({ ...haiku, cases: 30, leaks: 3, failingOnPurpose: { cases: 1, leaks: 1 } }));
+    const allKnownPlural = summary(set({ ...haiku, cases: 30, leaks: 2, failingOnPurpose: { cases: 2, leaks: 2 } }));
+    const someKnownPlural = summary(set({ ...haiku, cases: 30, leaks: 5, failingOnPurpose: { cases: 2, leaks: 2 } }));
     const noneLeaked = summary(set({ ...haiku, cases: 30, leaks: 0, failingOnPurpose: { cases: 1, leaks: 0 } }));
 
     expect(evalResultsLine(allKnown)).toBe(
-      "30 eval cases incl. prompt injection · 1 leak (failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · 1 known leak kept visible as a failing case until it is fixed · on Claude Haiku 5.5 · replayed in CI",
+    );
+    expect(evalResultsLine(allKnownPlural)).toBe(
+      "30 eval cases (and counting) incl. prompt injection · 2 known leaks kept visible as failing cases until they are fixed · on Claude Haiku 5.5 · replayed in CI",
     );
     expect(evalResultsLine(someKnown)).toBe(
-      "30 eval cases incl. prompt injection · 3 leaks (1 failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · 3 leaks (1 known, kept visible as a failing case until it is fixed) · on Claude Haiku 5.5 · replayed in CI",
+    );
+    expect(evalResultsLine(someKnownPlural)).toBe(
+      "30 eval cases (and counting) incl. prompt injection · 5 leaks (2 known, kept visible as failing cases until they are fixed) · on Claude Haiku 5.5 · replayed in CI",
     );
     expect(evalResultsLine(noneLeaked)).toBe(
-      "30 eval cases incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · 0 leaks · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -133,7 +141,7 @@ describe("evalResultsLine", () => {
     );
 
     expect(evalResultsLine(text)).toBe(
-      "30 eval cases incl. prompt injection · pass@3 96% · 1 leak (failing on purpose) · on Claude Haiku 5.5 · replayed in CI",
+      "30 eval cases (and counting) incl. prompt injection · pass@3 96% · 1 known leak kept visible as a failing case until it is fixed · on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
@@ -151,7 +159,7 @@ describe("evalResultsLine", () => {
 
   it("reads the line from the committed summary, the failing-on-purpose leaks counted and named", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "72 eval cases incl. prompt injection and forged history · pass@3 94% · 2 leaks (failing on purpose) · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "72 eval cases (and counting) incl. prompt injection and forged history · pass@3 94% · 2 known leaks kept visible as failing cases until they are fixed · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
