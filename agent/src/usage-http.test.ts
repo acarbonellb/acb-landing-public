@@ -269,28 +269,30 @@ describe("usage recording", () => {
   });
 
   describe("MCP requests, batched", () => {
-    // Read by another instance, so nothing this one still holds is counted.
-    const stored = async (store: DocumentStore) =>
-      (await createUsageRecorder({ store, pricing }).stats()).current.mcp.requests;
+    // Read by another instance, so nothing this one still holds is counted,
+    // on the same clock, so the week it reads is the week written.
+    const stored = async (store: DocumentStore, now: () => number) =>
+      (await createUsageRecorder({ store, pricing, now }).stats()).current.mcp.requests;
 
     it("are in the store once the request that makes the batch due has answered, with no timer", async () => {
       const store = createMemoryDocumentStore();
       let t = Date.parse("2026-11-18T12:00:00Z");
-      const usage = createUsageRecorder({ store, pricing, now: () => t, flushEveryMs: 10_000 });
+      const now = () => t;
+      const usage = createUsageRecorder({ store, pricing, now, flushEveryMs: 10_000 });
       const { url } = await start([], { usage });
 
       // The first one is due at once.
       expect((await listTools(url)).status).toBe(200);
-      expect(await stored(store)).toBe(1);
+      expect(await stored(store, now)).toBe(1);
 
       // Inside the batch interval it waits for the next request that is due.
       t += 1000;
       expect((await listTools(url)).status).toBe(200);
-      expect(await stored(store)).toBe(1);
+      expect(await stored(store, now)).toBe(1);
 
       t += 10_000;
       expect((await listTools(url)).status).toBe(200);
-      expect(await stored(store)).toBe(3);
+      expect(await stored(store, now)).toBe(3);
     });
 
     it("are counted by /stats at most 10 s after they have answered", async () => {

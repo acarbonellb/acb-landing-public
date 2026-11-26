@@ -241,7 +241,7 @@ describe("the batched counts", () => {
       expect(vi.getTimerCount()).toBe(0);
 
       vi.advanceTimersByTime(60_000);
-      const stored = async () => (await reader(store).stats()).current.chat.outcomes;
+      const stored = async () => (await reader(store, clock.now).stats()).current.chat.outcomes;
       expect(await stored()).toEqual({ http_429: 1 });
 
       clock.set("2026-11-18T12:00:10Z");
@@ -258,7 +258,7 @@ describe("the batched counts", () => {
     const usage = createUsageRecorder({ store, pricing, now: clock.now, flushEveryMs: 10_000 });
     await usage.recordChat(answered(1000)); // a fresh instance's first batch is due at once
     await usage.recordChat(answered(1000));
-    const stored = async () => (await reader(store).stats()).current.chat.requests;
+    const stored = async () => (await reader(store, clock.now).stats()).current.chat.requests;
     expect(await stored()).toBe(1);
 
     clock.set("2026-11-18T12:00:10Z");
