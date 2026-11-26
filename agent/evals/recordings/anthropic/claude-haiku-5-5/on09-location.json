@@ -3,7 +3,7 @@
   "slug": "location",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-      "latencyMs": 605,
+      "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+      "latencyMs": 492,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1661,
-          "cacheWriteInputTokens": 1657
+          "inputTokens": 1653,
+          "cacheWriteInputTokens": 1649
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01LX66a3xzD5nnr7QXf5Vicx",
+                "id": "toolu_01UArRERz1LTm8Dd7Shj3As3",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1661,
-              "cacheWriteInputTokens": 1657,
+              "inputTokens": 1653,
+              "cacheWriteInputTokens": 1649,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01LX66a3xzD5nnr7QXf5Vicx",
+                "id": "toolu_01UArRERz1LTm8Dd7Shj3As3",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "995c8fa92946a6a0aa0ca846a497be6fb3a76664f27e85f5aad85eafe5c4e30e",
-      "latencyMs": 457,
+      "requestHash": "7898dfc36bf4a24ddd74bb307ed60b5a97d1e2dc3e9aabd80c3233a6cc7e0f4c",
+      "latencyMs": 440,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2134,
+          "inputTokens": 2126,
           "cacheWriteInputTokens": 475,
-          "cacheReadInputTokens": 1657
+          "cacheReadInputTokens": 1649
         },
         {
           "type": "text_delta",
@@ -86,9 +86,9 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2134,
+              "inputTokens": 2126,
               "cacheWriteInputTokens": 475,
-              "cacheReadInputTokens": 1657,
+              "cacheReadInputTokens": 1649,
               "outputTokens": 18
             },
             "providerContent": [
@@ -106,13 +106,13 @@
     {
       "calls": [
         {
-          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-          "latencyMs": 654,
+          "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+          "latencyMs": 517,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1661,
-              "cacheReadInputTokens": 1657
+              "inputTokens": 1653,
+              "cacheReadInputTokens": 1649
             },
             {
               "type": "response_end",
@@ -120,21 +120,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01E8sqskHuGuQFuJwR2xNK5T",
+                    "id": "toolu_012phE9RewgLKMjvV96ykQzG",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1661,
-                  "cacheReadInputTokens": 1657,
+                  "inputTokens": 1653,
+                  "cacheReadInputTokens": 1649,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01E8sqskHuGuQFuJwR2xNK5T",
+                    "id": "toolu_012phE9RewgLKMjvV96ykQzG",
                     "name": "get_profile",
                     "caller": {
                       "type": "direct"
@@ -147,13 +147,13 @@
           ]
         },
         {
-          "requestHash": "6e667a2cd6be6232ef57f7d71d854a617e386ab8247c956f4ccf204ed6189bef",
-          "latencyMs": 527,
+          "requestHash": "c0af1423c385f21e371492460be1e3151988824fa4f6dfd4e0bf7b2aaf4810fa",
+          "latencyMs": 509,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2134,
-              "cacheReadInputTokens": 2132
+              "inputTokens": 2126,
+              "cacheReadInputTokens": 2124
             },
             {
               "type": "text_delta",
@@ -174,8 +174,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2134,
-                  "cacheReadInputTokens": 2132,
+                  "inputTokens": 2126,
+                  "cacheReadInputTokens": 2124,
                   "outputTokens": 18
                 },
                 "providerContent": [
@@ -193,13 +193,13 @@
     {
       "calls": [
         {
-          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-          "latencyMs": 632,
+          "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+          "latencyMs": 484,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1661,
-              "cacheReadInputTokens": 1657
+              "inputTokens": 1653,
+              "cacheReadInputTokens": 1649
             },
             {
               "type": "response_end",
@@ -207,21 +207,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01LyNo4bsSzU724rsTkMzvm7",
+                    "id": "toolu_01FAczjm6trb9d2B37Frf9ii",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1661,
-                  "cacheReadInputTokens": 1657,
+                  "inputTokens": 1653,
+                  "cacheReadInputTokens": 1649,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01LyNo4bsSzU724rsTkMzvm7",
+                    "id": "toolu_01FAczjm6trb9d2B37Frf9ii",
                     "name": "get_profile",
                     "caller": {
                       "type": "direct"
@@ -234,13 +234,13 @@
           ]
         },
         {
-          "requestHash": "dfe375320cc519f16f3eb14c6193507c0eef2314599e0f98a399a19648934b84",
-          "latencyMs": 486,
+          "requestHash": "490e4fb96531ad42a3e1ade45f9ae0db481ec9c113dcc18434721a0870d7d41e",
+          "latencyMs": 485,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2134,
-              "cacheReadInputTokens": 2132
+              "inputTokens": 2126,
+              "cacheReadInputTokens": 2124
             },
             {
               "type": "text_delta",
@@ -261,8 +261,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2134,
-                  "cacheReadInputTokens": 2132,
+                  "inputTokens": 2126,
+                  "cacheReadInputTokens": 2124,
                   "outputTokens": 18
                 },
                 "providerContent": [

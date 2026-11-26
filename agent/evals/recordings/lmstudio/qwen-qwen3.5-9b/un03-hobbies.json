@@ -3,7 +3,7 @@
   "slug": "hobbies",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
-      "latencyMs": 4035,
+      "requestHash": "cb0cd6a2c51ad64535097cb37f99bce468dc9048cc42f88485042124b7ea2955",
+      "latencyMs": 4254,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2330,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "sxWmsnoIw4LC1rOgjBceNZv421jencVq",
+                "id": "hTOMZEkawgBrTTIZsLmz6EEIwlmuTUFw",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2342,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 164
+              "inputTokens": 2330,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 170
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "sxWmsnoIw4LC1rOgjBceNZv421jencVq",
+                "id": "hTOMZEkawgBrTTIZsLmz6EEIwlmuTUFw",
                 "name": "get_profile",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "4f91a476b4a4c5521c790a7c8ff1b23438d7e7a20fe7c410038fc4f221163745",
-      "latencyMs": 938,
+      "requestHash": "5e9d4a9581983000b33fe6f109bd70fe2c89dbdbac8bdd7327883a726ac9b76b",
+      "latencyMs": 949,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2652,
-          "cacheReadInputTokens": 1175
+          "inputTokens": 2640,
+          "cacheReadInputTokens": 1169
         },
         {
           "type": "text_delta",
@@ -182,8 +182,8 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175,
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169,
               "outputTokens": 31
             },
             "providerContent": [
@@ -201,13 +201,13 @@
     {
       "calls": [
         {
-          "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
-          "latencyMs": 4013,
+          "requestHash": "cb0cd6a2c51ad64535097cb37f99bce468dc9048cc42f88485042124b7ea2955",
+          "latencyMs": 3719,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -215,21 +215,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "hk5Sc2GS5FiIY2rxlZudYehcvHgiYq4W",
+                    "id": "SSq6e0GbhOK3f4OdpbUf7yumwyUo1Gp9",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 165
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 150
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "hk5Sc2GS5FiIY2rxlZudYehcvHgiYq4W",
+                    "id": "SSq6e0GbhOK3f4OdpbUf7yumwyUo1Gp9",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -239,197 +239,13 @@
           ]
         },
         {
-          "requestHash": "45b22c23a7278d89527b740f1397a8ff82c3c9f13ed27a3410c8e461110bf4b1",
-          "latencyMs": 941,
+          "requestHash": "4c442c94b85d0e85153dd8a75e43d55c7731e4990845328f3a290f2823bc2e23",
+          "latencyMs": 958,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175
-            },
-            {
-              "type": "text_delta",
-              "text": "Albert"
-            },
-            {
-              "type": "text_delta",
-              "text": "o"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s"
-            },
-            {
-              "type": "text_delta",
-              "text": " profile"
-            },
-            {
-              "type": "text_delta",
-              "text": " doesn"
-            },
-            {
-              "type": "text_delta",
-              "text": "'t"
-            },
-            {
-              "type": "text_delta",
-              "text": " list"
-            },
-            {
-              "type": "text_delta",
-              "text": " any"
-            },
-            {
-              "type": "text_delta",
-              "text": " hobbies"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Would"
-            },
-            {
-              "type": "text_delta",
-              "text": " you"
-            },
-            {
-              "type": "text_delta",
-              "text": " like"
-            },
-            {
-              "type": "text_delta",
-              "text": " to"
-            },
-            {
-              "type": "text_delta",
-              "text": " know"
-            },
-            {
-              "type": "text_delta",
-              "text": " about"
-            },
-            {
-              "type": "text_delta",
-              "text": " his"
-            },
-            {
-              "type": "text_delta",
-              "text": " AI"
-            },
-            {
-              "type": "text_delta",
-              "text": " agents"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " work"
-            },
-            {
-              "type": "text_delta",
-              "text": " experience"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " or"
-            },
-            {
-              "type": "text_delta",
-              "text": " tech"
-            },
-            {
-              "type": "text_delta",
-              "text": " stack"
-            },
-            {
-              "type": "text_delta",
-              "text": " instead"
-            },
-            {
-              "type": "text_delta",
-              "text": "?"
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2652,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 31
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents, work experience, or tech stack instead?"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "60c5cc77c59d46186381a64bbf54a025627cd5728d384900cb1383cbb830fe3f",
-          "latencyMs": 5803,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "XMzwRdhfqxj36aYERz2ksKPaHI8GeQav",
-                    "name": "get_profile",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 239
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "XMzwRdhfqxj36aYERz2ksKPaHI8GeQav",
-                    "name": "get_profile",
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "75f0b61e2966870656cc98da0b9bebef6ccf273a2f7ed42350b62883804af6df",
-          "latencyMs": 942,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -550,14 +366,186 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2652,
-                  "cacheReadInputTokens": 1175,
+                  "inputTokens": 2640,
+                  "cacheReadInputTokens": 1169,
                   "outputTokens": 31
                 },
                 "providerContent": [
                   {
                     "type": "text",
                     "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his work experience, AI agents, or tech stack instead?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "cb0cd6a2c51ad64535097cb37f99bce468dc9048cc42f88485042124b7ea2955",
+          "latencyMs": 4227,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "pjxVSdTdFjR1Nkl36cQt5FWgeGwhTEoU",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 171
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "pjxVSdTdFjR1Nkl36cQt5FWgeGwhTEoU",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "50ad6df9cb673b690aff66fc23a719e3682069ab8cd865b973f3fb316ad93dcd",
+          "latencyMs": 892,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
+            },
+            {
+              "type": "text_delta",
+              "text": " doesn"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t"
+            },
+            {
+              "type": "text_delta",
+              "text": " list"
+            },
+            {
+              "type": "text_delta",
+              "text": " any"
+            },
+            {
+              "type": "text_delta",
+              "text": " hobbies"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " experience"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents or his work experience instead?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2640,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 28
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's profile doesn't list any hobbies. Would you like to know about his AI agents or his work experience instead?"
                   }
                 ]
               }

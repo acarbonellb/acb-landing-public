@@ -163,7 +163,7 @@ function buildTools(content: Content) {
       name: "get_projects",
       title: "Agent projects",
       description:
-        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, offline evals with deployment next, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one), stack and links (e.g. its source code, where public). Also how he builds and runs agents: evals, human in the loop, cost and limits, measuring changes, each with links to public sources where they exist. Optionally filter the projects by status.",
+        "AI agents Alberto has built: what each does, its context, its status (only when there is one: in progress, deployed, coming soon meaning not built yet, or personal project), its measured result with a detail line (only when there is one), stack and links (e.g. its source code, where public). Also how he builds and runs agents: evals, human in the loop, cost and limits, measuring changes, each with links to public sources where they exist. Optionally filter the projects by status.",
       inputSchema: z
         .object({
           status: z

@@ -3,7 +3,7 @@
   "slug": "github",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-      "latencyMs": 623,
+      "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+      "latencyMs": 477,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1664,
-          "cacheWriteInputTokens": 1660
+          "inputTokens": 1656,
+          "cacheWriteInputTokens": 1652
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01RxpdAKUjji4Q5abAWwzzFt",
+                "id": "toolu_01LiesSRkXetHFT2b2ia2Gv4",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1664,
-              "cacheWriteInputTokens": 1660,
+              "inputTokens": 1656,
+              "cacheWriteInputTokens": 1652,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01RxpdAKUjji4Q5abAWwzzFt",
+                "id": "toolu_01LiesSRkXetHFT2b2ia2Gv4",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "39869b3607140ab67e328500acc15ff455e0a16dd3bb87e9c34111221635a0d5",
-      "latencyMs": 680,
+      "requestHash": "792ad755aeabcec77272fb22348ca1ad9bb14faeb53a76e0155556557f81288e",
+      "latencyMs": 624,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1789,
+          "inputTokens": 1781,
           "cacheWriteInputTokens": 127,
-          "cacheReadInputTokens": 1660
+          "cacheReadInputTokens": 1652
         },
         {
           "type": "text_delta",
@@ -89,7 +89,7 @@
         },
         {
           "type": "text_delta",
-          "text": " via his"
+          "text": " on"
         },
         {
           "type": "text_delta",
@@ -110,19 +110,19 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or via his LinkedIn at https://www.linkedin.com/in/albertocarbonell/.",
+            "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1789,
+              "inputTokens": 1781,
               "cacheWriteInputTokens": 127,
-              "cacheReadInputTokens": 1660,
-              "outputTokens": 71
+              "cacheReadInputTokens": 1652,
+              "outputTokens": 70
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or via his LinkedIn at https://www.linkedin.com/in/albertocarbonell/."
+                "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/."
               }
             ]
           }
@@ -134,13 +134,13 @@
     {
       "calls": [
         {
-          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-          "latencyMs": 613,
+          "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+          "latencyMs": 497,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1664,
-              "cacheReadInputTokens": 1660
+              "inputTokens": 1656,
+              "cacheReadInputTokens": 1652
             },
             {
               "type": "response_end",
@@ -148,21 +148,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01Cowoi1JEjJ22WbawZe9D55",
+                    "id": "toolu_018u8nYdhUzTmzRQYCur4npC",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1664,
-                  "cacheReadInputTokens": 1660,
+                  "inputTokens": 1656,
+                  "cacheReadInputTokens": 1652,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01Cowoi1JEjJ22WbawZe9D55",
+                    "id": "toolu_018u8nYdhUzTmzRQYCur4npC",
                     "name": "get_contact",
                     "caller": {
                       "type": "direct"
@@ -175,13 +175,128 @@
           ]
         },
         {
-          "requestHash": "155c31bf6ac284c1765df2afcd9e5fc6e22a1ea63194589d2580d95474302fa6",
-          "latencyMs": 742,
+          "requestHash": "18783eb88c3d9f35ac7429a40b622f37addbec4bee10311bb8cbd68bcb5d2f35",
+          "latencyMs": 614,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1789,
-              "cacheReadInputTokens": 1787
+              "inputTokens": 1781,
+              "cacheReadInputTokens": 1779
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto's GitH"
+            },
+            {
+              "type": "text_delta",
+              "text": "ub is https://github.com/"
+            },
+            {
+              "type": "text_delta",
+              "text": "acarbonellb. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can also reach him at"
+            },
+            {
+              "type": "text_delta",
+              "text": " alberto@example.com or"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " LinkedIn at"
+            },
+            {
+              "type": "text_delta",
+              "text": " https://www.linkedin"
+            },
+            {
+              "type": "text_delta",
+              "text": ".com/in/albertoc"
+            },
+            {
+              "type": "text_delta",
+              "text": "arbonell/."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1781,
+                  "cacheReadInputTokens": 1779,
+                  "outputTokens": 70
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+          "latencyMs": 492,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1656,
+              "cacheReadInputTokens": 1652
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01GU4FqCjgWTeZGx2Nx9fUaT",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1656,
+                  "cacheReadInputTokens": 1652,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01GU4FqCjgWTeZGx2Nx9fUaT",
+                    "name": "get_contact",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "2e10f13aa6acc5355b06d79b0ae4155dffec846691afcbbecdb6cc88beef4dce",
+          "latencyMs": 637,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1781,
+              "cacheReadInputTokens": 1779
             },
             {
               "type": "text_delta",
@@ -234,123 +349,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1789,
-                  "cacheReadInputTokens": 1787,
-                  "outputTokens": 70
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-          "latencyMs": 682,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1664,
-              "cacheReadInputTokens": 1660
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_01QhDtJxNLdR7ULuByrAMaz3",
-                    "name": "get_contact",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1664,
-                  "cacheReadInputTokens": 1660,
-                  "outputTokens": 27
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_01QhDtJxNLdR7ULuByrAMaz3",
-                    "name": "get_contact",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "186774645300e91f0e86622db1bc7da13ae21233fe69c551e781dd3c6b9108f4",
-          "latencyMs": 627,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1789,
-              "cacheReadInputTokens": 1787
-            },
-            {
-              "type": "text_delta",
-              "text": "Alberto's GitH"
-            },
-            {
-              "type": "text_delta",
-              "text": "ub is"
-            },
-            {
-              "type": "text_delta",
-              "text": " https://github.com/acar"
-            },
-            {
-              "type": "text_delta",
-              "text": "bonellb. You can also"
-            },
-            {
-              "type": "text_delta",
-              "text": " reach him at al"
-            },
-            {
-              "type": "text_delta",
-              "text": "berto@example.com or on"
-            },
-            {
-              "type": "text_delta",
-              "text": " LinkedIn at"
-            },
-            {
-              "type": "text_delta",
-              "text": " https://www.linkedin"
-            },
-            {
-              "type": "text_delta",
-              "text": ".com/in/albertoc"
-            },
-            {
-              "type": "text_delta",
-              "text": "arbonell/."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto's GitHub is https://github.com/acarbonellb. You can also reach him at alberto@example.com or on LinkedIn at https://www.linkedin.com/in/albertocarbonell/.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 1789,
-                  "cacheReadInputTokens": 1787,
+                  "inputTokens": 1781,
+                  "cacheReadInputTokens": 1779,
                   "outputTokens": 70
                 },
                 "providerContent": [

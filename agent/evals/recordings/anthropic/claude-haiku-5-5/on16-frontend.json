@@ -3,7 +3,7 @@
   "slug": "frontend",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
-      "latencyMs": 678,
+      "requestHash": "c3d2510a418a96af2d6ff89d05c7ffefd4981197f88b1afa3443905d50d3e4b8",
+      "latencyMs": 542,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1668,
-          "cacheWriteInputTokens": 1664
+          "inputTokens": 1660,
+          "cacheWriteInputTokens": 1656
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01LyT1BVyd9f1fZtmiGkPAAr",
+                "id": "toolu_0113gpMawLrn7YavhEckoVb9",
                 "name": "get_stack",
                 "input": {
                   "group": "frontend"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1668,
-              "cacheWriteInputTokens": 1664,
+              "inputTokens": 1660,
+              "cacheWriteInputTokens": 1656,
               "outputTokens": 50
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01LyT1BVyd9f1fZtmiGkPAAr",
+                "id": "toolu_0113gpMawLrn7YavhEckoVb9",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -62,14 +62,14 @@
       ]
     },
     {
-      "requestHash": "5522c53b7ca34bc73d29cb2cf19868855d2f33fb6927ceb29e0fed73e1ee7081",
-      "latencyMs": 505,
+      "requestHash": "f4eb0365f260fc52c848ad7fa1cac1534c45148f36582e70848ece48f249bfa6",
+      "latencyMs": 533,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1763,
+          "inputTokens": 1755,
           "cacheWriteInputTokens": 97,
-          "cacheReadInputTokens": 1664
+          "cacheReadInputTokens": 1656
         },
         {
           "type": "text_delta",
@@ -81,11 +81,11 @@
         },
         {
           "type": "text_delta",
-          "text": " React, React Native and Ang"
+          "text": " React, React Native and"
         },
         {
           "type": "text_delta",
-          "text": "ular."
+          "text": " Angular."
         },
         {
           "type": "response_end",
@@ -94,9 +94,9 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1763,
+              "inputTokens": 1755,
               "cacheWriteInputTokens": 97,
-              "cacheReadInputTokens": 1664,
+              "cacheReadInputTokens": 1656,
               "outputTokens": 23
             },
             "providerContent": [
@@ -114,13 +114,13 @@
     {
       "calls": [
         {
-          "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
-          "latencyMs": 779,
+          "requestHash": "c3d2510a418a96af2d6ff89d05c7ffefd4981197f88b1afa3443905d50d3e4b8",
+          "latencyMs": 538,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1668,
-              "cacheReadInputTokens": 1664
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
             },
             {
               "type": "response_end",
@@ -128,7 +128,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01XSdYLwdhfGKLU2kuntvz5G",
+                    "id": "toolu_01TLWecV58aFSiKyXNvwGRcb",
                     "name": "get_stack",
                     "input": {
                       "group": "frontend"
@@ -137,14 +137,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1668,
-                  "cacheReadInputTokens": 1664,
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
                   "outputTokens": 50
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01XSdYLwdhfGKLU2kuntvz5G",
+                    "id": "toolu_01TLWecV58aFSiKyXNvwGRcb",
                     "name": "get_stack",
                     "caller": {
                       "type": "direct"
@@ -159,13 +159,13 @@
           ]
         },
         {
-          "requestHash": "7b181a2243761092dc4da09de3de510122fac0be07d18f0d909f7b3b00649743",
-          "latencyMs": 504,
+          "requestHash": "8f4c78e4dfb9958209ae5a83c6bc7331c36096d235b5cd322884511e91f58317",
+          "latencyMs": 573,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1763,
-              "cacheReadInputTokens": 1761
+              "inputTokens": 1755,
+              "cacheReadInputTokens": 1753
             },
             {
               "type": "text_delta",
@@ -186,8 +186,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1763,
-                  "cacheReadInputTokens": 1761,
+                  "inputTokens": 1755,
+                  "cacheReadInputTokens": 1753,
                   "outputTokens": 23
                 },
                 "providerContent": [
@@ -205,13 +205,13 @@
     {
       "calls": [
         {
-          "requestHash": "bfef8cb37339edc9174c0208d26250b7c5310941b559a8f80b4cfce5e050a393",
-          "latencyMs": 666,
+          "requestHash": "c3d2510a418a96af2d6ff89d05c7ffefd4981197f88b1afa3443905d50d3e4b8",
+          "latencyMs": 555,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1668,
-              "cacheReadInputTokens": 1664
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
             },
             {
               "type": "response_end",
@@ -219,7 +219,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_013c5ijcxdMc3w4mp59SMqYZ",
+                    "id": "toolu_015d8FmY8cpEy2CEwFQEn1dp",
                     "name": "get_stack",
                     "input": {
                       "group": "frontend"
@@ -228,14 +228,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1668,
-                  "cacheReadInputTokens": 1664,
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
                   "outputTokens": 50
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_013c5ijcxdMc3w4mp59SMqYZ",
+                    "id": "toolu_015d8FmY8cpEy2CEwFQEn1dp",
                     "name": "get_stack",
                     "caller": {
                       "type": "direct"
@@ -250,13 +250,13 @@
           ]
         },
         {
-          "requestHash": "f589f8cfafc0a443065fde2140d0f79784fea16033a2919a9fdc229474bbf28e",
-          "latencyMs": 634,
+          "requestHash": "7c6d46d9c4aefb495b441e31126dd36d52bc9614089d76f22a45527553974d34",
+          "latencyMs": 511,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1763,
-              "cacheReadInputTokens": 1761
+              "inputTokens": 1755,
+              "cacheReadInputTokens": 1753
             },
             {
               "type": "text_delta",
@@ -268,11 +268,11 @@
             },
             {
               "type": "text_delta",
-              "text": " React, React Native and Ang"
+              "text": " React, React Native and"
             },
             {
               "type": "text_delta",
-              "text": "ular."
+              "text": " Angular."
             },
             {
               "type": "response_end",
@@ -281,8 +281,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1763,
-                  "cacheReadInputTokens": 1761,
+                  "inputTokens": 1755,
+                  "cacheReadInputTokens": 1753,
                   "outputTokens": 23
                 },
                 "providerContent": [

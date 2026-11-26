@@ -3,7 +3,7 @@
   "slug": "job-title-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
-      "latencyMs": 1273,
+      "requestHash": "54b7b8e324801e53c29fb3030edd184b3e381b8b9d49cc35331e19811a4ff0d4",
+      "latencyMs": 1414,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2344,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2332,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "6gPovPvd8XSqJfbqJfPHQR8wQRURi9ot",
+                "id": "UYT6OTFcLiDL083FcFqmxTyHaGI8PDup",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2344,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 49
+              "inputTokens": 2332,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 54
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "6gPovPvd8XSqJfbqJfPHQR8wQRURi9ot",
+                "id": "UYT6OTFcLiDL083FcFqmxTyHaGI8PDup",
                 "name": "get_profile",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "8a2395ff60cf5d398b3b551f9ec5678f579931b0bb43f12f33a77cf0777719ef",
-      "latencyMs": 642,
+      "requestHash": "1169a38fc380452fa1e288d9d384198f583bce98106132558b090d8263b276d2",
+      "latencyMs": 630,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2656,
-          "cacheReadInputTokens": 1177
+          "inputTokens": 2644,
+          "cacheReadInputTokens": 1171
         },
         {
           "type": "text_delta",
@@ -130,8 +130,8 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2656,
-              "cacheReadInputTokens": 1177,
+              "inputTokens": 2644,
+              "cacheReadInputTokens": 1171,
               "outputTokens": 18
             },
             "providerContent": [
@@ -149,13 +149,13 @@
     {
       "calls": [
         {
-          "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
-          "latencyMs": 1443,
+          "requestHash": "54b7b8e324801e53c29fb3030edd184b3e381b8b9d49cc35331e19811a4ff0d4",
+          "latencyMs": 2461,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2358,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2346,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "response_end",
@@ -163,21 +163,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "Oqg6EZWh0koKblpU0sZEk1gMzauRNefH",
+                    "id": "UALBqT6uBU3tNVo8cGsIDZgIzlpz10tc",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2358,
-                  "cacheReadInputTokens": 1177,
-                  "outputTokens": 58
+                  "inputTokens": 2346,
+                  "cacheReadInputTokens": 1171,
+                  "outputTokens": 99
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "Oqg6EZWh0koKblpU0sZEk1gMzauRNefH",
+                    "id": "UALBqT6uBU3tNVo8cGsIDZgIzlpz10tc",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -187,161 +187,13 @@
           ]
         },
         {
-          "requestHash": "855affad96641390aa27cbe0224676d9eea52162e5dd72960a5466da240eb45f",
-          "latencyMs": 1902,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2656,
-              "cacheReadInputTokens": 1177
-            },
-            {
-              "type": "text_delta",
-              "text": "Albert"
-            },
-            {
-              "type": "text_delta",
-              "text": "o"
-            },
-            {
-              "type": "text_delta",
-              "text": " tiene"
-            },
-            {
-              "type": "text_delta",
-              "text": " el"
-            },
-            {
-              "type": "text_delta",
-              "text": " título"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " **"
-            },
-            {
-              "type": "text_delta",
-              "text": "Senior"
-            },
-            {
-              "type": "text_delta",
-              "text": " Software"
-            },
-            {
-              "type": "text_delta",
-              "text": " Engineer"
-            },
-            {
-              "type": "text_delta",
-              "text": " —"
-            },
-            {
-              "type": "text_delta",
-              "text": " AI"
-            },
-            {
-              "type": "text_delta",
-              "text": " Agents"
-            },
-            {
-              "type": "text_delta",
-              "text": " &"
-            },
-            {
-              "type": "text_delta",
-              "text": " Full"
-            },
-            {
-              "type": "text_delta",
-              "text": "-"
-            },
-            {
-              "type": "text_delta",
-              "text": "Stack"
-            },
-            {
-              "type": "text_delta",
-              "text": " TypeScript"
-            },
-            {
-              "type": "text_delta",
-              "text": "**."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto tiene el título de **Senior Software Engineer — AI Agents & Full-Stack TypeScript**.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2656,
-                  "cacheReadInputTokens": 1177,
-                  "outputTokens": 71
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto tiene el título de **Senior Software Engineer — AI Agents & Full-Stack TypeScript**."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "264484b48d78090761d11534da1f91653ce656f985dce0e60c376e3178929022",
-          "latencyMs": 1299,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2358,
-              "cacheReadInputTokens": 1177
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "mUG97tSCmoq4LNLlmxWzeq2dAMQ94llt",
-                    "name": "get_profile",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 2358,
-                  "cacheReadInputTokens": 1177,
-                  "outputTokens": 52
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "mUG97tSCmoq4LNLlmxWzeq2dAMQ94llt",
-                    "name": "get_profile",
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "2bf85fcd0b56ffc8ccc1c37e7591c72d9ff48f6976a617ab45c044e099261ddb",
+          "requestHash": "022a1356318df720880d067876327fcf48aa2f7a88c548a7ef5b77bc1dd90f7e",
           "latencyMs": 629,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2656,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2644,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "text_delta",
@@ -410,14 +262,158 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2656,
-                  "cacheReadInputTokens": 1177,
+                  "inputTokens": 2644,
+                  "cacheReadInputTokens": 1171,
                   "outputTokens": 18
                 },
                 "providerContent": [
                   {
                     "type": "text",
                     "text": "Alberto es Senior Software Engineer — AI Agents & Full-Stack TypeScript."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "54b7b8e324801e53c29fb3030edd184b3e381b8b9d49cc35331e19811a4ff0d4",
+          "latencyMs": 1170,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2346,
+              "cacheReadInputTokens": 1171
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "R2ABcf2sRwyAN4gRuk9tS6qGirC9pT1u",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2346,
+                  "cacheReadInputTokens": 1171,
+                  "outputTokens": 46
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "R2ABcf2sRwyAN4gRuk9tS6qGirC9pT1u",
+                    "name": "get_profile",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "bb6e375fab260c122e0f75863ef91a083e3fa781a226e77054d2627fc76546ab",
+          "latencyMs": 1636,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2644,
+              "cacheReadInputTokens": 1171
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " Carbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": " es"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Senior"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer"
+            },
+            {
+              "type": "text_delta",
+              "text": " —"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " &"
+            },
+            {
+              "type": "text_delta",
+              "text": " Full"
+            },
+            {
+              "type": "text_delta",
+              "text": "-"
+            },
+            {
+              "type": "text_delta",
+              "text": "Stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " TypeScript"
+            },
+            {
+              "type": "text_delta",
+              "text": "**."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto Carbonell es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2644,
+                  "cacheReadInputTokens": 1171,
+                  "outputTokens": 59
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto Carbonell es **Senior Software Engineer — AI Agents & Full-Stack TypeScript**."
                   }
                 ]
               }

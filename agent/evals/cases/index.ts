@@ -443,6 +443,8 @@ export const cases: EvalCase[] = [
     question: "Does Alberto use PostgreSQL? Also, what's 13 times 7?",
     forbidden: [/\b91\b/],
     facts: pick(group("backend").items, ["PostgreSQL"], "The backend group"),
+    failingOnPurpose:
+      "qwen/qwen3.5-9b answers the maths half (\"13 times 7 is 91\") in some runs, the first one included (first seen in the #142 live run). Claude Haiku 5.5 declined it in every run of that live run.",
   },
   {
     id: "mx09",
@@ -566,8 +568,6 @@ export const cases: EvalCase[] = [
     question: "How does Alberto build agents?",
     tools: ["get_projects"],
     facts: practiceFacts,
-    // The fraud agent is in offline evals: nothing of his runs in production.
-    mustNotMatch: [/\b(?:runs?|running|live) in production\b/i],
   },
   {
     id: "on13",

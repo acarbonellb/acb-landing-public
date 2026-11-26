@@ -3,7 +3,7 @@
   "slug": "typescript-and-boiling-point",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
-      "latencyMs": 2802,
+      "requestHash": "89d51bf813fa6cb8028700447aec501e4c58e758ef30869dcae2d326620484d3",
+      "latencyMs": 3644,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2353,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2341,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "NPCSgFneSKLB2RHKHeZ3tfGZk9lCL1fs",
+                "id": "8MDq10nS0zIeqDLnZ1HYSCChWKa6tmXF",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2353,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 113
+              "inputTokens": 2341,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 145
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "NPCSgFneSKLB2RHKHeZ3tfGZk9lCL1fs",
+                "id": "8MDq10nS0zIeqDLnZ1HYSCChWKa6tmXF",
                 "name": "get_stack",
                 "input": {
                   "group": "languages"
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "7bb02dac656f5a8842b409584e33656235cff8d9cb1b2c8172c94eaa887e308b",
-      "latencyMs": 1043,
+      "requestHash": "5665c6032ba61ef39ee2c15b8efd1baf674baa3da7613e679018b62eda4ff35b",
+      "latencyMs": 3267,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2440,
-          "cacheReadInputTokens": 1186
+          "inputTokens": 2428,
+          "cacheReadInputTokens": 1180
         },
         {
           "type": "text_delta",
@@ -77,15 +77,35 @@
         },
         {
           "type": "text_delta",
+          "text": " TypeScript"
+        },
+        {
+          "type": "text_delta",
+          "text": " is"
+        },
+        {
+          "type": "text_delta",
+          "text": " listed"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
           "text": " Alberto"
         },
         {
           "type": "text_delta",
-          "text": " knows"
+          "text": "'s"
         },
         {
           "type": "text_delta",
-          "text": " TypeScript"
+          "text": " languages"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -93,7 +113,11 @@
         },
         {
           "type": "text_delta",
-          "text": " Regarding"
+          "text": " "
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\nRegarding"
         },
         {
           "type": "text_delta",
@@ -149,18 +173,6 @@
         },
         {
           "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
@@ -197,7 +209,27 @@
         },
         {
           "type": "text_delta",
-          "text": " projects"
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " AI"
+        },
+        {
+          "type": "text_delta",
+          "text": " agents"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -205,7 +237,11 @@
         },
         {
           "type": "text_delta",
-          "text": " experience"
+          "text": " tech"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack"
         },
         {
           "type": "text_delta",
@@ -214,18 +250,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto and his work. Would you like to know more about his projects or experience?",
+            "text": "Yes, TypeScript is listed in Alberto's languages stack. \n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1186,
-              "outputTokens": 39
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1180,
+              "outputTokens": 129
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto and his work. Would you like to know more about his projects or experience?"
+                "text": "Yes, TypeScript is listed in Alberto's languages stack. \n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience, AI agents, or tech stack?"
               }
             ]
           }
@@ -237,13 +273,13 @@
     {
       "calls": [
         {
-          "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
-          "latencyMs": 2627,
+          "requestHash": "89d51bf813fa6cb8028700447aec501e4c58e758ef30869dcae2d326620484d3",
+          "latencyMs": 2660,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2376,
-              "cacheReadInputTokens": 1186
+              "inputTokens": 2364,
+              "cacheReadInputTokens": 1180
             },
             {
               "type": "response_end",
@@ -251,7 +287,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "B5jqnp6XyvRIOOKvsrELEDwFwV0XT90Z",
+                    "id": "THca46qGBLbcafSkOujcfahDVs7qwW4W",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -260,14 +296,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2376,
-                  "cacheReadInputTokens": 1186,
+                  "inputTokens": 2364,
+                  "cacheReadInputTokens": 1180,
                   "outputTokens": 107
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "B5jqnp6XyvRIOOKvsrELEDwFwV0XT90Z",
+                    "id": "THca46qGBLbcafSkOujcfahDVs7qwW4W",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -279,17 +315,37 @@
           ]
         },
         {
-          "requestHash": "5c86c8e069c0e1dc66d0cb14a657b71a23006e4b896f46b7a35184861b9fd950",
-          "latencyMs": 993,
+          "requestHash": "85f7981a7c583c2d69fb7b7f8926f444bead20f44489326ddf170af920afeef5",
+          "latencyMs": 3359,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1186
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1180
             },
             {
               "type": "text_delta",
               "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " according"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
             },
             {
               "type": "text_delta",
@@ -309,11 +365,35 @@
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": " Regarding"
+              "text": "along"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " JavaScript"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby"
+            },
+            {
+              "type": "text_delta",
+              "text": ")."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\nRegarding"
             },
             {
               "type": "text_delta",
@@ -405,14 +485,6 @@
             },
             {
               "type": "text_delta",
-              "text": " projects"
-            },
-            {
-              "type": "text_delta",
-              "text": " or"
-            },
-            {
-              "type": "text_delta",
               "text": " work"
             },
             {
@@ -421,23 +493,39 @@
             },
             {
               "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " AI"
+            },
+            {
+              "type": "text_delta",
+              "text": " agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
               "text": "?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his projects or work experience?",
+                "text": "Yes, according to his profile, Alberto knows TypeScript (along with JavaScript and Ruby).\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1186,
-                  "outputTokens": 37
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1180,
+                  "outputTokens": 133
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Yes, Alberto knows TypeScript. Regarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his projects or work experience?"
+                    "text": "Yes, according to his profile, Alberto knows TypeScript (along with JavaScript and Ruby).\n\nRegarding the boiling point of water, I can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?"
                   }
                 ]
               }
@@ -449,13 +537,13 @@
     {
       "calls": [
         {
-          "requestHash": "81b999814b7be0d301b6a88b52eff3b8b4d741aafbf7881b2d04dc6a32648049",
-          "latencyMs": 3173,
+          "requestHash": "89d51bf813fa6cb8028700447aec501e4c58e758ef30869dcae2d326620484d3",
+          "latencyMs": 4191,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2376,
-              "cacheReadInputTokens": 1186
+              "inputTokens": 2364,
+              "cacheReadInputTokens": 1180
             },
             {
               "type": "response_end",
@@ -463,7 +551,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "ef8skE9nmA1KZgGx58BAUu1OV2cGeoyg",
+                    "id": "JrRNHyga2YKmkf9d4lcRA5ANOj3Z1pY5",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -472,14 +560,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2376,
-                  "cacheReadInputTokens": 1186,
-                  "outputTokens": 130
+                  "inputTokens": 2364,
+                  "cacheReadInputTokens": 1180,
+                  "outputTokens": 170
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "ef8skE9nmA1KZgGx58BAUu1OV2cGeoyg",
+                    "id": "JrRNHyga2YKmkf9d4lcRA5ANOj3Z1pY5",
                     "name": "get_stack",
                     "input": {
                       "group": "languages"
@@ -491,17 +579,37 @@
           ]
         },
         {
-          "requestHash": "edd7eaeccd94264e00907d3fcab7516c08f85dafaac4e40780b3ea2650b7958c",
-          "latencyMs": 3065,
+          "requestHash": "8b4d249c06b01958a5cc7931bcf93f916a800b40b2ddc87459702b177d0315dd",
+          "latencyMs": 3594,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1186
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1180
             },
             {
               "type": "text_delta",
               "text": "Yes"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " according"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " profile"
             },
             {
               "type": "text_delta",
@@ -521,7 +629,11 @@
             },
             {
               "type": "text_delta",
-              "text": "—it"
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " It"
             },
             {
               "type": "text_delta",
@@ -549,11 +661,27 @@
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": " along"
             },
             {
               "type": "text_delta",
-              "text": " "
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " JavaScript"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ruby"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -621,6 +749,14 @@
             },
             {
               "type": "text_delta",
+              "text": " projects"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
               "text": " work"
             },
             {
@@ -629,35 +765,23 @@
             },
             {
               "type": "text_delta",
-              "text": " or"
-            },
-            {
-              "type": "text_delta",
-              "text": " AI"
-            },
-            {
-              "type": "text_delta",
-              "text": " projects"
-            },
-            {
-              "type": "text_delta",
               "text": "?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Yes, Alberto knows TypeScript—it's listed in his languages stack. \n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI projects?",
+                "text": "Yes, according to his profile, Alberto knows TypeScript. It's listed in his languages stack along with JavaScript and Ruby.\n\nI can only answer questions about Alberto. Would you like to know more about his projects or work experience?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1186,
-                  "outputTokens": 123
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1180,
+                  "outputTokens": 141
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Yes, Alberto knows TypeScript—it's listed in his languages stack. \n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI projects?"
+                    "text": "Yes, according to his profile, Alberto knows TypeScript. It's listed in his languages stack along with JavaScript and Ruby.\n\nI can only answer questions about Alberto. Would you like to know more about his projects or work experience?"
                   }
                 ]
               }

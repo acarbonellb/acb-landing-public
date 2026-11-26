@@ -3,7 +3,7 @@
   "slug": "infrastructure",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
-      "latencyMs": 1842,
+      "requestHash": "071434184eecca2cac2a73cf4ecb7de1c00952dc145e8174ce11527407421e6e",
+      "latencyMs": 1854,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2345,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2333,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "JGIU1h0RzmiFXpzvXnpqsHjvSlX3Xyqn",
+                "id": "1uw7jXreNup7m2WTgbNLDOLH5aeKnbNr",
                 "name": "get_stack",
                 "input": {
                   "group": "infra"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2345,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 73
+              "inputTokens": 2333,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 72
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "JGIU1h0RzmiFXpzvXnpqsHjvSlX3Xyqn",
+                "id": "1uw7jXreNup7m2WTgbNLDOLH5aeKnbNr",
                 "name": "get_stack",
                 "input": {
                   "group": "infra"
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "0c0f69845b04ca372bcd4634e464772d00816809e3059f177541dd210961e084",
-      "latencyMs": 889,
+      "requestHash": "87b91c457d7965d18453b56dc7d4d9b5002ad8fc6b064821e244a6834769c24c",
+      "latencyMs": 904,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2440,
-          "cacheReadInputTokens": 1178
+          "inputTokens": 2428,
+          "cacheReadInputTokens": 1172
         },
         {
           "type": "text_delta",
@@ -190,8 +190,8 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1178,
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1172,
               "outputTokens": 32
             },
             "providerContent": [
@@ -209,13 +209,13 @@
     {
       "calls": [
         {
-          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
-          "latencyMs": 1808,
+          "requestHash": "071434184eecca2cac2a73cf4ecb7de1c00952dc145e8174ce11527407421e6e",
+          "latencyMs": 1970,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2360,
-              "cacheReadInputTokens": 1178
+              "inputTokens": 2348,
+              "cacheReadInputTokens": 1172
             },
             {
               "type": "response_end",
@@ -223,7 +223,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "jfzF6VHRSDi9emnYC4LgxzPSccSxxF7o",
+                    "id": "76OEds6Z6un3bRhXIEGVRMGlfac5P1zu",
                     "name": "get_stack",
                     "input": {
                       "group": "infra"
@@ -232,14 +232,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2360,
-                  "cacheReadInputTokens": 1178,
-                  "outputTokens": 72
+                  "inputTokens": 2348,
+                  "cacheReadInputTokens": 1172,
+                  "outputTokens": 78
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "jfzF6VHRSDi9emnYC4LgxzPSccSxxF7o",
+                    "id": "76OEds6Z6un3bRhXIEGVRMGlfac5P1zu",
                     "name": "get_stack",
                     "input": {
                       "group": "infra"
@@ -251,13 +251,13 @@
           ]
         },
         {
-          "requestHash": "98098a3da411f70b62efa135d807c5a7fba5622d7175ebcd998a4adc648c8df0",
-          "latencyMs": 893,
+          "requestHash": "4361058253ac7cd5b1df851b98a6210b15cd544f1244cb601460aab08cce0c34",
+          "latencyMs": 900,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1178
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1172
             },
             {
               "type": "text_delta",
@@ -382,8 +382,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1178,
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1172,
                   "outputTokens": 32
                 },
                 "providerContent": [
@@ -401,13 +401,13 @@
     {
       "calls": [
         {
-          "requestHash": "b6f928af4b08b86735887dd7a53aba376288b347a9457eb0190787d6a6e2ac56",
-          "latencyMs": 1830,
+          "requestHash": "071434184eecca2cac2a73cf4ecb7de1c00952dc145e8174ce11527407421e6e",
+          "latencyMs": 2103,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2360,
-              "cacheReadInputTokens": 1178
+              "inputTokens": 2348,
+              "cacheReadInputTokens": 1172
             },
             {
               "type": "response_end",
@@ -415,7 +415,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "MPc1gf4D3K9RmnTr5mGZmVsp1HbiwNmX",
+                    "id": "QJD2dsLxwQnQphu98qTQrZOB3BLq8uhX",
                     "name": "get_stack",
                     "input": {
                       "group": "infra"
@@ -424,14 +424,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2360,
-                  "cacheReadInputTokens": 1178,
-                  "outputTokens": 73
+                  "inputTokens": 2348,
+                  "cacheReadInputTokens": 1172,
+                  "outputTokens": 83
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "MPc1gf4D3K9RmnTr5mGZmVsp1HbiwNmX",
+                    "id": "QJD2dsLxwQnQphu98qTQrZOB3BLq8uhX",
                     "name": "get_stack",
                     "input": {
                       "group": "infra"
@@ -443,13 +443,13 @@
           ]
         },
         {
-          "requestHash": "10a1a0ce653459c5bcd70d3add81040df6737b1d62533cc429e577678235cfd7",
-          "latencyMs": 902,
+          "requestHash": "f9ed06c39ad6eb996a855144e7c3a0d3bec5e28ca90098fedb978511cd51bb6c",
+          "latencyMs": 897,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1178
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1172
             },
             {
               "type": "text_delta",
@@ -574,8 +574,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1178,
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1172,
                   "outputTokens": 32
                 },
                 "providerContent": [

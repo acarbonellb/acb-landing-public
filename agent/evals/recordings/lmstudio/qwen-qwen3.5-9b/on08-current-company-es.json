@@ -3,7 +3,7 @@
   "slug": "current-company-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
-      "latencyMs": 2420,
+      "requestHash": "d887c21dd54a61215253fa1898d390a2cfc3ad5b442f44fc8407d6b2be4c7941",
+      "latencyMs": 2326,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2344,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2332,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,32 +31,32 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "nW92AomWlcqBhNuwigLCmL0azGw8AePv",
+                "id": "a8c4ajrWQyRdB7f8gCaTKVHLn59aTGNa",
                 "name": "get_profile",
                 "input": {}
               },
               {
-                "id": "zMjs5wq3RNaSILVrlWAlQCuO0Kzz4am0",
+                "id": "SxTlUacuzK1wuho7UiAcUZ2mUHR0jeAY",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2344,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 97
+              "inputTokens": 2332,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 92
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "nW92AomWlcqBhNuwigLCmL0azGw8AePv",
+                "id": "a8c4ajrWQyRdB7f8gCaTKVHLn59aTGNa",
                 "name": "get_profile",
                 "input": {}
               },
               {
                 "type": "tool_use",
-                "id": "zMjs5wq3RNaSILVrlWAlQCuO0Kzz4am0",
+                "id": "SxTlUacuzK1wuho7UiAcUZ2mUHR0jeAY",
                 "name": "get_experience",
                 "input": {}
               }
@@ -66,13 +66,13 @@
       ]
     },
     {
-      "requestHash": "4deca6bc8a0d8dc86b4f855a3a305dd2845f6aabeafd7d2725b71ed3542c8878",
-      "latencyMs": 712,
+      "requestHash": "0aaaf36e6a629facbfef88bc45e59cee23acf597e7e3b7abd9fa380ab60f5a44",
+      "latencyMs": 683,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2980,
-          "cacheReadInputTokens": 1177
+          "inputTokens": 2968,
+          "cacheReadInputTokens": 1171
         },
         {
           "type": "text_delta",
@@ -96,19 +96,11 @@
         },
         {
           "type": "text_delta",
-          "text": " **"
-        },
-        {
-          "type": "text_delta",
-          "text": "Cover"
+          "text": " Cover"
         },
         {
           "type": "text_delta",
           "text": "Wallet"
-        },
-        {
-          "type": "text_delta",
-          "text": "**"
         },
         {
           "type": "text_delta",
@@ -133,18 +125,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto trabaja actualmente en **CoverWallet** como Senior Software Engineer.",
+            "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2980,
-              "cacheReadInputTokens": 1177,
-              "outputTokens": 17
+              "inputTokens": 2968,
+              "cacheReadInputTokens": 1171,
+              "outputTokens": 15
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente en **CoverWallet** como Senior Software Engineer."
+                "text": "Alberto trabaja actualmente en CoverWallet como Senior Software Engineer."
               }
             ]
           }
@@ -156,13 +148,13 @@
     {
       "calls": [
         {
-          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
-          "latencyMs": 2019,
+          "requestHash": "d887c21dd54a61215253fa1898d390a2cfc3ad5b442f44fc8407d6b2be4c7941",
+          "latencyMs": 2051,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2358,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2346,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "response_end",
@@ -170,32 +162,32 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "Qf3okoKEGVntlONjgcb1RpGLa7YjqvPv",
+                    "id": "C5ENkmjW6G2fhVkfyYjADp0TkINezNSl",
                     "name": "get_profile",
                     "input": {}
                   },
                   {
-                    "id": "WYAz92olVfFr0h8cvE5v9ZyJ7QTgvsQP",
+                    "id": "SdEZk1ShUDDa0Js2EoG6HjxG82VjxQPp",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2358,
-                  "cacheReadInputTokens": 1177,
+                  "inputTokens": 2346,
+                  "cacheReadInputTokens": 1171,
                   "outputTokens": 82
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "Qf3okoKEGVntlONjgcb1RpGLa7YjqvPv",
+                    "id": "C5ENkmjW6G2fhVkfyYjADp0TkINezNSl",
                     "name": "get_profile",
                     "input": {}
                   },
                   {
                     "type": "tool_use",
-                    "id": "WYAz92olVfFr0h8cvE5v9ZyJ7QTgvsQP",
+                    "id": "SdEZk1ShUDDa0Js2EoG6HjxG82VjxQPp",
                     "name": "get_experience",
                     "input": {}
                   }
@@ -205,13 +197,13 @@
           ]
         },
         {
-          "requestHash": "99d141a7e2309b379c196cd7bf259421383a071610120600927a808498145ceb",
-          "latencyMs": 737,
+          "requestHash": "5ade5822f4ab0a7f85bf80ec67f7550a952952c73a41bc18a4dafdbc01239921",
+          "latencyMs": 735,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2980,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2968,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "text_delta",
@@ -276,8 +268,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2980,
-                  "cacheReadInputTokens": 1177,
+                  "inputTokens": 2968,
+                  "cacheReadInputTokens": 1171,
                   "outputTokens": 17
                 },
                 "providerContent": [
@@ -295,13 +287,13 @@
     {
       "calls": [
         {
-          "requestHash": "92fab5ccf911ead06fcd804d936f150c4a496cc1d960041e0ffcfdacdfa95933",
-          "latencyMs": 2410,
+          "requestHash": "d887c21dd54a61215253fa1898d390a2cfc3ad5b442f44fc8407d6b2be4c7941",
+          "latencyMs": 2028,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2358,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2346,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "response_end",
@@ -309,32 +301,32 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "VeWW1nUSY0GAyxBFSqo4ALecgrvDS5UG",
+                    "id": "7NeQhrDDvYgkVMqiCXPTXZZn7LhjAobT",
                     "name": "get_profile",
                     "input": {}
                   },
                   {
-                    "id": "3OAOrMsHZu5BeGamnA8LTDUzeaSY2De4",
+                    "id": "WtE4BGd5GNajsyXJnhMqAwujqDbII5iE",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2358,
-                  "cacheReadInputTokens": 1177,
-                  "outputTokens": 92
+                  "inputTokens": 2346,
+                  "cacheReadInputTokens": 1171,
+                  "outputTokens": 81
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "VeWW1nUSY0GAyxBFSqo4ALecgrvDS5UG",
+                    "id": "7NeQhrDDvYgkVMqiCXPTXZZn7LhjAobT",
                     "name": "get_profile",
                     "input": {}
                   },
                   {
                     "type": "tool_use",
-                    "id": "3OAOrMsHZu5BeGamnA8LTDUzeaSY2De4",
+                    "id": "WtE4BGd5GNajsyXJnhMqAwujqDbII5iE",
                     "name": "get_experience",
                     "input": {}
                   }
@@ -344,13 +336,13 @@
           ]
         },
         {
-          "requestHash": "46bdb21e8f2a0ace0a14541e89f8b5ad12e7dfc47258ccb1f45c256e8838ccf0",
-          "latencyMs": 833,
+          "requestHash": "055bc3dddda82bc61152db36871c7d156e434c82b0e5e0e05e63b93ac5c14f5f",
+          "latencyMs": 738,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2980,
-              "cacheReadInputTokens": 1177
+              "inputTokens": 2968,
+              "cacheReadInputTokens": 1171
             },
             {
               "type": "text_delta",
@@ -415,8 +407,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2980,
-                  "cacheReadInputTokens": 1177,
+                  "inputTokens": 2968,
+                  "cacheReadInputTokens": 1171,
                   "outputTokens": 17
                 },
                 "providerContent": [

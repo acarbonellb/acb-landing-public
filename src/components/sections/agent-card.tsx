@@ -5,7 +5,7 @@ import { SourceLink } from "./source-link";
 
 const statusColour: Record<AgentStatus, string> = {
   "in-progress": "border-yellow text-yellow",
-  "offline-evals": "border-green text-green",
+  deployed: "border-green text-green",
   "coming-soon": "border-comment text-comment",
   "personal-project": "border-cyan text-cyan",
 };

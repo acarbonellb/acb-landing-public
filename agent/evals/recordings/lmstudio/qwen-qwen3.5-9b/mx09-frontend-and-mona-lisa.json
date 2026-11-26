@@ -3,7 +3,7 @@
   "slug": "frontend-and-mona-lisa",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
-      "latencyMs": 2912,
+      "requestHash": "1fc95ccd303dfe32d549b8e57287d5efda606829cf90f3494812812cd0736611",
+      "latencyMs": 4566,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2350,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2338,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ioNwojWLJx4t7A9KU6g7ypUxZMfIQZze",
+                "id": "5jFJVZbGm6rYMG94HZEia3Gp7HylcvKd",
                 "name": "get_stack",
                 "input": {
                   "group": "frontend"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2350,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 117
+              "inputTokens": 2338,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 183
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ioNwojWLJx4t7A9KU6g7ypUxZMfIQZze",
+                "id": "5jFJVZbGm6rYMG94HZEia3Gp7HylcvKd",
                 "name": "get_stack",
                 "input": {
                   "group": "frontend"
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "f35b1de03fa973f351406bd39156624b770cae2617e5cb220c33cb106f9ba91e",
-      "latencyMs": 3363,
+      "requestHash": "681d299d592a37a9c8e87d73c1a10803e9524a0c0d0332c6bc1fb9239add4222",
+      "latencyMs": 3982,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2435,
-          "cacheReadInputTokens": 1183
+          "inputTokens": 2423,
+          "cacheReadInputTokens": 1177
         },
         {
           "type": "text_delta",
@@ -78,6 +78,26 @@
         {
           "type": "text_delta",
           "text": " knows"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " following"
+        },
+        {
+          "type": "text_delta",
+          "text": " frontend"
+        },
+        {
+          "type": "text_delta",
+          "text": " frameworks"
+        },
+        {
+          "type": "text_delta",
+          "text": ":"
         },
         {
           "type": "text_delta",
@@ -106,18 +126,6 @@
         {
           "type": "text_delta",
           "text": " Angular"
-        },
-        {
-          "type": "text_delta",
-          "text": " as"
-        },
-        {
-          "type": "text_delta",
-          "text": " frontend"
-        },
-        {
-          "type": "text_delta",
-          "text": " frameworks"
         },
         {
           "type": "text_delta",
@@ -189,18 +197,6 @@
         },
         {
           "type": "text_delta",
-          "text": " work"
-        },
-        {
-          "type": "text_delta",
-          "text": " experience"
-        },
-        {
-          "type": "text_delta",
-          "text": " or"
-        },
-        {
-          "type": "text_delta",
           "text": " AI"
         },
         {
@@ -209,7 +205,15 @@
         },
         {
           "type": "text_delta",
-          "text": " instead"
+          "text": " or"
+        },
+        {
+          "type": "text_delta",
+          "text": " work"
+        },
+        {
+          "type": "text_delta",
+          "text": " experience"
         },
         {
           "type": "text_delta",
@@ -218,18 +222,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto knows React, React Native, and Angular as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?",
+            "text": "Alberto knows the following frontend frameworks: React, React Native, and Angular.\n\nI can only answer questions about Alberto. Would you like to know more about his AI agents or work experience?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2435,
-              "cacheReadInputTokens": 1183,
-              "outputTokens": 135
+              "inputTokens": 2423,
+              "cacheReadInputTokens": 1177,
+              "outputTokens": 158
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto knows React, React Native, and Angular as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?"
+                "text": "Alberto knows the following frontend frameworks: React, React Native, and Angular.\n\nI can only answer questions about Alberto. Would you like to know more about his AI agents or work experience?"
               }
             ]
           }
@@ -241,13 +245,13 @@
     {
       "calls": [
         {
-          "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
-          "latencyMs": 4641,
+          "requestHash": "1fc95ccd303dfe32d549b8e57287d5efda606829cf90f3494812812cd0736611",
+          "latencyMs": 3131,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2370,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "response_end",
@@ -255,7 +259,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "4WVXgbFBX3vmERJIP2hg07KboSMiTALw",
+                    "id": "EhNgFjTlQHFAaOipSCMMUC1NzSa6ekXu",
                     "name": "get_stack",
                     "input": {
                       "group": "frontend"
@@ -264,14 +268,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2370,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 191
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 126
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "4WVXgbFBX3vmERJIP2hg07KboSMiTALw",
+                    "id": "EhNgFjTlQHFAaOipSCMMUC1NzSa6ekXu",
                     "name": "get_stack",
                     "input": {
                       "group": "frontend"
@@ -283,13 +287,13 @@
           ]
         },
         {
-          "requestHash": "22b066f09fcf1d878398f71791cf84e7b8303802fa4d76e8a9456187de0ba503",
-          "latencyMs": 3079,
+          "requestHash": "fd032fa559544d9c8a18b23bd021a222bcd633c8e5c3540e1c6b03c13ad3032f",
+          "latencyMs": 3138,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2435,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 2423,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "text_delta",
@@ -305,23 +309,35 @@
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " the"
             },
             {
               "type": "text_delta",
-              "text": "React"
+              "text": " following"
             },
             {
               "type": "text_delta",
-              "text": "**,"
+              "text": " frontend"
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " frameworks"
             },
             {
               "type": "text_delta",
-              "text": "React"
+              "text": ":"
+            },
+            {
+              "type": "text_delta",
+              "text": " React"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " React"
             },
             {
               "type": "text_delta",
@@ -329,7 +345,7 @@
             },
             {
               "type": "text_delta",
-              "text": "**,"
+              "text": ","
             },
             {
               "type": "text_delta",
@@ -337,15 +353,239 @@
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " Angular"
             },
             {
               "type": "text_delta",
-              "text": "Angular"
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": "**"
+              "text": "\n\nRegarding"
+            },
+            {
+              "type": "text_delta",
+              "text": " who"
+            },
+            {
+              "type": "text_delta",
+              "text": " painted"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " Mona"
+            },
+            {
+              "type": "text_delta",
+              "text": " Lisa"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can"
+            },
+            {
+              "type": "text_delta",
+              "text": " only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer"
+            },
+            {
+              "type": "text_delta",
+              "text": " questions"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Would"
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " like"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " know"
+            },
+            {
+              "type": "text_delta",
+              "text": " more"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects"
+            },
+            {
+              "type": "text_delta",
+              "text": " instead"
+            },
+            {
+              "type": "text_delta",
+              "text": "?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto knows the following frontend frameworks: React, React Native, and Angular.\n\nRegarding who painted the Mona Lisa, I can only answer questions about Alberto. Would you like to know more about his work or projects instead?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2423,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 124
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto knows the following frontend frameworks: React, React Native, and Angular.\n\nRegarding who painted the Mona Lisa, I can only answer questions about Alberto. Would you like to know more about his work or projects instead?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "1fc95ccd303dfe32d549b8e57287d5efda606829cf90f3494812812cd0736611",
+          "latencyMs": 4561,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "LcOBm3uFSRp05Owbt79E21Zm4sRnwaYP",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 184
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "LcOBm3uFSRp05Owbt79E21Zm4sRnwaYP",
+                    "name": "get_stack",
+                    "input": {
+                      "group": "frontend"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "7e7a4e0dcdd845c61723b91026ef1139137c3fc22706a72f32ac4236f7088ee8",
+          "latencyMs": 3423,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2423,
+              "cacheReadInputTokens": 1177
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": " knows"
+            },
+            {
+              "type": "text_delta",
+              "text": " React"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " React"
+            },
+            {
+              "type": "text_delta",
+              "text": " Native"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " Angular"
             },
             {
               "type": "text_delta",
@@ -429,246 +669,6 @@
             },
             {
               "type": "text_delta",
-              "text": " AI"
-            },
-            {
-              "type": "text_delta",
-              "text": " agents"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " work"
-            },
-            {
-              "type": "text_delta",
-              "text": " experience"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " or"
-            },
-            {
-              "type": "text_delta",
-              "text": " tech"
-            },
-            {
-              "type": "text_delta",
-              "text": " stack"
-            },
-            {
-              "type": "text_delta",
-              "text": "?"
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto knows **React**, **React Native**, and **Angular** as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2435,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 123
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto knows **React**, **React Native**, and **Angular** as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his AI agents, work experience, or tech stack?"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "20e4c111cb5523ab3b243f202f329e2cf495fea56d35b817fe4585a5b7973d10",
-          "latencyMs": 3088,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2370,
-              "cacheReadInputTokens": 1183
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "5XvNPcckRbdBvXf7aLHbvGsWovrL99QN",
-                    "name": "get_stack",
-                    "input": {
-                      "group": "frontend"
-                    }
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 2370,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 126
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "5XvNPcckRbdBvXf7aLHbvGsWovrL99QN",
-                    "name": "get_stack",
-                    "input": {
-                      "group": "frontend"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "3f60c21d73cefbc00c9b5b7a41c150a051f6be2a92d20e8cda2667f1cefe409b",
-          "latencyMs": 3908,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2435,
-              "cacheReadInputTokens": 1183
-            },
-            {
-              "type": "text_delta",
-              "text": "Albert"
-            },
-            {
-              "type": "text_delta",
-              "text": "o"
-            },
-            {
-              "type": "text_delta",
-              "text": " knows"
-            },
-            {
-              "type": "text_delta",
-              "text": " these"
-            },
-            {
-              "type": "text_delta",
-              "text": " frontend"
-            },
-            {
-              "type": "text_delta",
-              "text": " frameworks"
-            },
-            {
-              "type": "text_delta",
-              "text": ":"
-            },
-            {
-              "type": "text_delta",
-              "text": " React"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " React"
-            },
-            {
-              "type": "text_delta",
-              "text": " Native"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " and"
-            },
-            {
-              "type": "text_delta",
-              "text": " Angular"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\nI"
-            },
-            {
-              "type": "text_delta",
-              "text": " can"
-            },
-            {
-              "type": "text_delta",
-              "text": " only"
-            },
-            {
-              "type": "text_delta",
-              "text": " answer"
-            },
-            {
-              "type": "text_delta",
-              "text": " questions"
-            },
-            {
-              "type": "text_delta",
-              "text": " about"
-            },
-            {
-              "type": "text_delta",
-              "text": " Alberto"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Would"
-            },
-            {
-              "type": "text_delta",
-              "text": " you"
-            },
-            {
-              "type": "text_delta",
-              "text": " like"
-            },
-            {
-              "type": "text_delta",
-              "text": " to"
-            },
-            {
-              "type": "text_delta",
-              "text": " know"
-            },
-            {
-              "type": "text_delta",
-              "text": " more"
-            },
-            {
-              "type": "text_delta",
-              "text": " about"
-            },
-            {
-              "type": "text_delta",
-              "text": " his"
-            },
-            {
-              "type": "text_delta",
               "text": " work"
             },
             {
@@ -689,27 +689,23 @@
             },
             {
               "type": "text_delta",
-              "text": " instead"
-            },
-            {
-              "type": "text_delta",
               "text": "?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto knows these frontend frameworks: React, React Native, and Angular.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?",
+                "text": "Alberto knows React, React Native, and Angular as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2435,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 158
+                  "inputTokens": 2423,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 135
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto knows these frontend frameworks: React, React Native, and Angular.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents instead?"
+                    "text": "Alberto knows React, React Native, and Angular as frontend frameworks.\n\nI can only answer questions about Alberto. Would you like to know more about his work experience or AI agents?"
                   }
                 ]
               }

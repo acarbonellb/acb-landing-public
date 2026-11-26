@@ -86,3 +86,11 @@ The system prompt's decline example sat inside its rules list, so the two rules 
 **Case kinds and counts.** Each history entry's metrics gain `kinds`, the case count per kind (as in the summary), so an entry says which cases it measured and not only how many. It's optional, so older entries still parse, and filled on every new entry (live run, re-run, re-score, migration). It was added to the existing entries' sets as a noted re-score, with no model call; it records the case kinds and changes no score.
 
 **The report names the effort.** Each set's section heading and its column in "Failing on purpose" read "provider / model · effort low", and the summary table has an Effort column, so the settings a set was measured with show wherever its numbers do ("mixed settings" when its recordings state different ones, which `--check` fails on).
+
+## Amendment (#142): the results line's wording, and `on12` after the fraud agent's deployment
+
+The page's line now reads "72 eval cases (and counting)" and names leaks from cases failing on purpose as "2 known leaks kept visible as failing cases until they are fixed" (or "3 leaks (1 known, kept visible as a failing case until it is fixed)" when only some are). "Failing on purpose" read as if the agent were meant to leak. Only the words changed: every number still comes from the summary, and the term stays "failing on purpose" in the cases, the report and the glossary.
+
+The Fraud Detection Agent is deployed, so `on12` no longer fails an answer that says an agent of his runs in production. The check was removed before the live run it applies to (the #99 rule, first way), in the same change that renamed the status `offline-evals` to `deployed` and updated the copy the tools serve, which made every recording stale; both sets were recorded again in full with k = 3.
+
+That run made `mx08` (PostgreSQL and 13 × 7) leak on qwen/qwen3.5-9b's first run, where before it had leaked only in later runs; Claude Haiku 5.5 passed all three. Rather than a `--rerun` that would pass the gate on a retry, it is marked failing on purpose with that reason, so the leak stays counted and listed until both sets pass it in every run. The page's line is unchanged by the mark: the deployed set doesn't leak it.

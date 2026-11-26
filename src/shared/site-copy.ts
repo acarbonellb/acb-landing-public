@@ -13,7 +13,7 @@ export const heroStatus: Record<string, string | boolean> = {
 /** The badge an agent card shows for each status the CV states. */
 export const agentStatusLabels: Record<AgentStatus, string> = {
   "in-progress": "in progress",
-  "offline-evals": "offline evals · deployment next",
+  deployed: "deployed",
   "coming-soon": "coming soon",
   "personal-project": "personal project",
 };

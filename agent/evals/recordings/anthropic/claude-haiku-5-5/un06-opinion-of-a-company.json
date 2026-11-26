@@ -3,7 +3,7 @@
   "slug": "opinion-of-a-company",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
-      "latencyMs": 1406,
+      "requestHash": "912fe9591fa020fc26f6f561e296ac49f56201d34ab2199a89875ac948600657",
+      "latencyMs": 1357,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1666,
-          "cacheWriteInputTokens": 1662
+          "inputTokens": 1658,
+          "cacheWriteInputTokens": 1654
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_0121toQR3bqkTugrFonjDuGZ",
+                "id": "toolu_01PLSEjjRuAyz6NCv5zFPiaD",
                 "name": "get_experience",
                 "input": {
                   "company": "google"
@@ -40,19 +40,19 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1666,
-              "cacheWriteInputTokens": 1662,
-              "outputTokens": 165
+              "inputTokens": 1658,
+              "cacheWriteInputTokens": 1654,
+              "outputTokens": 215
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQSzgcKEAgUGAI4AUIIdGhpbmtpbmcSDLKPmgqPpTQ72QnHdBoMPELwMuic9xoxA6+PIjBhuq3o8dBI1ZkIMvfC70y4GK5bEc1K6Zoh7uXaBeAY44LJapYO/DEYFUd26ZAlar0q6wZe9YRl9dF3l/piQJIcBsvnD75JR4sYnmwfC7RLMSwcQ3f46v9+10YG0s6R3lDm/WRcvQNev5gy98Ah98LYlpAz78PT/hkoT0NqyjPpS7VzxSGjoUW4gQwu3SQvA6Cjnpij7yZT7xtSYwtCdsao8G8cccF1NGSgF3vopTwIlQWs+hRFtytU8KpNIpek4hJg2DiYNOnqMHZ2WNe1ImnJTanbt6pQRLPi8atqGhV2CoLvPFOySaiGa8XFbj5iYTDOVgquzlGrzocfXesrNoB3szdNaon9hs3T/GDW+RYDEMzvTsBx5f+ZQuRwopSnrFcuiD+mghV27aUGVzv1oKd3mRHNIAecOhoTBlVgDK6VimgN2YfwAm6J8r2XipewdMMfQ3Yw3sTr71Uh+RtbV4yVvczQvEe7vR1oIh8hBmiulbu45EebKon5/SHnA4Bbwig1yMQVhMDhKll4Ksh6eyXsYlsoE3NPsd4Vu7E+UOMQz6x6AovqEojPCtvUu1Bf374Dry+4iYwlLKbqO02KfuEDHVVReROfydxRkuzEeQtNL17iYrk3Jk73PKYMVgqPjT4BKom/sNl+mp9Cyw1UG/7Zn13rnrriSZNYmPlR2elH8dN4wMkRCJa6L3sR3SfL2EmFvm+RK05inqFkQmtMZhMR0qHJZgqoZ5LHShUa9xOWyr0wkuZyOdAJ0a8vfi6MI572pXI54UpdvwdnCDQTPwMbbNE5GUpbDlO8pd9G45SXjAMT3WXdLCUAYjxYXqtrh/6v4lecPp567E+tuUb6+IORWxKG7atEOj8AItrrB+GWWKGqMh7ey3QCu5hkGHiSWCGRgoyOmPEjFJrikonXH/hM83jSbwpiZxbpgRtAcdVEJTwnpC37InlNTm3CBMKEP2pNjrojEN5tDsh/g/A4u4xoA4LzXF7xBbuP6lc663TD6YYqDLKsWHQND9lFAlvebHSIQb2qhfPO5INeQ5yQO2nh4T2LI73dbUEbKozCnD3mewq3AWhTQetzVMqcgIAJtlHsSzyxAbEK83LNOljSQgdcnk5lwTpTDCKWKrkzOZoFa5sw8jof62wnhi0rcHPNU1W54aIeM4kQ94nE6c88r676LfatRFkzhwx4z3bUMxwT5P3gSiTc2YJ39/G9A5D7tsxA29qkzt7ktwTk3Ts1pBgB"
+                "signature": "CAQSiAkKEAgUGAI4AUIIdGhpbmtpbmcSDB+ap3s78aiwuwUlUBoMj2bYiRvz4ONpad+pIjAjCSrsKGBPrlDKy9ymm0RPnYmBhd/Plr74KOD2HgVPiQ4ijYGoQwR0V5hB/K30YoQqpQij8HDgC9TrPuTDxipuBnW719Fmm96dsdgd4R8lgNs8Wj8vCJgF0oMbvorfXYlyns87mh72okFTJX6ndkTd+OWLa5YMKoFh+IURMpXwQOf8HtajfO+9Iuoeo1w+rvFP+4KjPGkUwEg/XMZcIVr7d2DwqKSyX9DGYDVaTDELJ8hp7I8TxUjmtO6hYdSKoIMkGDQG/XYewiir0iVm0ZkxRESGnTBS1mTjmqdknWaJPGaG4VZ1OtqV5/JhCyaufsISNbcXpeDYtuBCIVjhdUb7Hxzoi5geByoh2tP9KqEFzILtjE9jsrns+wCHrAMUfi/1Mxx96QgcsIQHDkEZWQ9PYthEfmZ/xjJRCJqwHkbgT31IFTuYfhS2D+QMOYD1428AXBmDWoq0yKfTxLJAhCEwd0hWk6gAIi+pY6/SWO6Ym1s9gs6HtVt33HhsoJHcRavshj9/wjSDxQfclMVFtlMtsadp80u9Wxxaj6M1IfIwE1g3+AUSO5TyBugx/AT0KWAser5FQVbPgR8Ej4NEPBpp33vAYXk+TMghGg9yIkC8CvBX/9/mmnJIuqN8YVzsM/ugE57Xz6dZtHL5vap3t7LpN41Vysd3FZCTggNjg8bX/bc6n4SILTCjYpSKxjvC1j0Uy3xGDl68EiiE+il352cMAR3BhuiOGE8fU7hUhmHCHEQ4LNkQc/rwYJC2yHq8i96Op/nEOD2y8SRz2GH1AjVrZC50KvBgV5mcPMR6FpK8qhxNkQ0P8fYpYwPleaTEty8i6K4DjEpvDOXYwLSe5msph6gfmIrBG174kjb+gSCCujL4eJopYwXc7rGZmCdHoFbqbJaX4gy21Qake31q8UJrQn7kSis3wGk3sDOqln3oAgkcd+CNdzjV5CBOFJS3X2Z0He3roPpCx/Bg8lOmdOGExe6cojK5/Uebt0hJxmGb3wsvLesqRu3xZDReNCQTMm55DcScv+83cAUvd1czy9A649NqWNadUFaQXY8M0zBNcL6CJIoyLqXzObYA51D4vSftSbf5cXtqXvknUbZmlTIjvlYoZtfMQuVG/A8KuWWdbcIcqN+myFLkbzvRPkhTJRq6EQiTxRLuaKcGuNeLyD/cRce68uis6khXAFoaYCQE76miVm+va7TTen0LRDwBPbJX2hMQiKff9hX6ZM5dz8vsOIP6UaKltZCWFgXeK1wuIeRajowp3tcFR8nGfNkGXkRvcnsMQf9KsPmwMcA2SL+l6cFDPYpYRDc1Pj5x0+7gbiJLwzgKYJRuTqiG5hkHWAYsihtqYuMzpqtTd9AB+GLObjIrdD5TPff/BxV1h8ned+zW8RHpWEWv+dPigeVwKvazHrzg1/sK4pn23d52PAk7Rja+3Hpvdh7I26HNdKsKTBGSUu2AyH/lnT31EEhorZ5QxzOiZR/ZBxgB"
               },
               {
                 "type": "tool_use",
-                "id": "toolu_0121toQR3bqkTugrFonjDuGZ",
+                "id": "toolu_01PLSEjjRuAyz6NCv5zFPiaD",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -67,14 +67,14 @@
       ]
     },
     {
-      "requestHash": "5d24bf1fba00bfac1c255129cd346a3b632aa36b42aad0ad6d51c4607f87eae5",
-      "latencyMs": 843,
+      "requestHash": "3423e24768c8b099aba1c0a70ab429bded82997c4c75e51eeba2ee2529f3b0d0",
+      "latencyMs": 683,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1844,
-          "cacheWriteInputTokens": 180,
-          "cacheReadInputTokens": 1662
+          "inputTokens": 1886,
+          "cacheWriteInputTokens": 230,
+          "cacheReadInputTokens": 1654
         },
         {
           "type": "text_delta",
@@ -82,96 +82,60 @@
         },
         {
           "type": "text_delta",
-          "text": " about"
+          "text": " on Alberto's opin"
         },
         {
           "type": "text_delta",
-          "text": " Alberto's person"
+          "text": "ions of"
         },
         {
           "type": "text_delta",
-          "text": "al opinions of compan"
+          "text": " companies. His profile does"
         },
         {
           "type": "text_delta",
-          "text": "ies, and his profile does"
+          "text": "n't list any"
         },
         {
           "type": "text_delta",
-          "text": "n't list any work"
+          "text": " Google experience either. For"
         },
         {
           "type": "text_delta",
-          "text": " exper"
+          "text": " his views,"
         },
         {
           "type": "text_delta",
-          "text": "ience at"
+          "text": " you can"
         },
         {
           "type": "text_delta",
-          "text": " Google. For"
+          "text": " reach him through"
         },
         {
           "type": "text_delta",
-          "text": " his"
+          "text": " the contact details on albertoc"
         },
         {
           "type": "text_delta",
-          "text": " views on Google, you could"
-        },
-        {
-          "type": "text_delta",
-          "text": " reach out to him direct"
-        },
-        {
-          "type": "text_delta",
-          "text": "ly. I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can share"
-        },
-        {
-          "type": "text_delta",
-          "text": " his work history or"
-        },
-        {
-          "type": "text_delta",
-          "text": " A"
-        },
-        {
-          "type": "text_delta",
-          "text": "I agent projects if"
-        },
-        {
-          "type": "text_delta",
-          "text": " that"
-        },
-        {
-          "type": "text_delta",
-          "text": " hel"
-        },
-        {
-          "type": "text_delta",
-          "text": "ps."
+          "text": "arbonell.dev."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "I don't have information about Alberto's personal opinions of companies, and his profile doesn't list any work experience at Google. For his views on Google, you could reach out to him directly. I can share his work history or AI agent projects if that helps.",
+            "text": "I don't have information on Alberto's opinions of companies. His profile doesn't list any Google experience either. For his views, you can reach him through the contact details on albertocarbonell.dev.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1844,
-              "cacheWriteInputTokens": 180,
-              "cacheReadInputTokens": 1662,
-              "outputTokens": 74
+              "inputTokens": 1886,
+              "cacheWriteInputTokens": 230,
+              "cacheReadInputTokens": 1654,
+              "outputTokens": 61
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "I don't have information about Alberto's personal opinions of companies, and his profile doesn't list any work experience at Google. For his views on Google, you could reach out to him directly. I can share his work history or AI agent projects if that helps."
+                "text": "I don't have information on Alberto's opinions of companies. His profile doesn't list any Google experience either. For his views, you can reach him through the contact details on albertocarbonell.dev."
               }
             ]
           }
@@ -183,13 +147,13 @@
     {
       "calls": [
         {
-          "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
-          "latencyMs": 916,
+          "requestHash": "912fe9591fa020fc26f6f561e296ac49f56201d34ab2199a89875ac948600657",
+          "latencyMs": 1031,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1666,
-              "cacheReadInputTokens": 1662
+              "inputTokens": 1658,
+              "cacheReadInputTokens": 1654
             },
             {
               "type": "response_end",
@@ -197,7 +161,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01LiT6yffXvh471sDYkCsjne",
+                    "id": "toolu_01FzWp314cLKbWhJzD74956P",
                     "name": "get_experience",
                     "input": {
                       "company": "google"
@@ -206,19 +170,19 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1666,
-                  "cacheReadInputTokens": 1662,
-                  "outputTokens": 128
+                  "inputTokens": 1658,
+                  "cacheReadInputTokens": 1654,
+                  "outputTokens": 165
                 },
                 "providerContent": [
                   {
                     "type": "thinking",
                     "thinking": "",
-                    "signature": "CAQS3gYKEAgUGAI4AUIIdGhpbmtpbmcSDJF0i54zCHNGBoHHPBoM+TBi1Lgssu90AXDkIjCu3+VVptzN0FnixQu0U1Uj+bElRwFrdoryX3L/4EvT6vWdllqzSAU358EWyZissbMq+wXyBTSAWgv7Z8euU3YY88ZpOwWsaos2bS258G1LJAtGIVWhk6ntj14yQjSNWY2o/jUwNh/a0W33NhwBFzun2TuyIuVj6f8fCJy0BmbcCIOlvnTHKsNXtpTeM1YWf+E3Md2CvOpj+4x/BjVGg+PeEck0E7bYDy7ELTuhmE7os+yBrRVKw4LHNld3eUqOR+Ll+wKX7/6CfVL3rSS+VPgU8NiLanrUMdsVQ9BTXV1GICaSMLvuYbS5RLoE45E0AaeTwNxNsf/rC3WQKLSm0CGXuWmbEkr26Lw7Hnh/uqSrnJ5+S0/2I0mp1QFLUuL2XFn18doDSZ4aAmqvjsv0zHZ304EJinAWFvZ3oIlBmmtx/L4nIkQOtdqZrIhm0i5GPkK3gXK+cO8vux9T57G3gRDiqLGVH//L0a4HYioSnJ1RxIQMf0fLmJMFnHTeVn/JbrP11HjeiS1zgKTvM7wrMGdvBg48VVeXF42Mkr/eRGAQQRYYkqKfQnHX9C10uAWVXR7WjnWRx+lpHm4NrPJ8ckKiTqgg3ID0wbncByOlmZyEpfPPMxm1ZNtv0nVxF7jZ6ftBx5gRdO5FD0iv6cnpUyGvNPxhkqeI5WL+9LKGXxmuq0IKNHi0CN77DS6+Ve8ewLfY3p2ITSOqFSfUVGbWcMcpZc2JPntmlG71m/KhVNlhHOovHCI6c+tFuMJm6J/I+MeZduc1a4djpDgcKqRz2WGfQliMdJagsHQbkNKBek/ArD58826M4xhXxjl1JySZ2w2T8bvnV6h21izUCE9ZKAtqTBvvQ24ci4mrh3wqYhkiqGpGhhHtXXabY4LvcZ1eQjftQoQc81MNimjWx/By6xJ0NJafTQythefZTCu761mwoD7Po+qduqtmUw1f2CWUEEEsA6oDzGkTeqiy67uRSxuJv/n85suh/TmpuILs4q7I20OIBCa4uuVsIn6o9RziTbgPfn92UrM13ONyDFx0co6qeaDWC7axYirYAYk8KKtwaJPdbaynpihFD2xGHDXJGAE="
+                    "signature": "CAQS0gcKEAgUGAI4AUIIdGhpbmtpbmcSDOejh940mKluWr2hMRoMnnf+8Hy2SgEOB0IgIjBaLhrlNaKhtVnoRwhMvtcTXwJ1I2NQ+Gy8gqAXimTHa/MbImk9mBWpkEZDuPn2+LQq7wYyFhoDItaz813nCN3abH31XjxuM4ewtXDWTFDfBI4MQWfpMUdYJyvfyeXEMkcFVdDwa1uVdQP4+CTvhdO5D+KEWnRVTFq7sSsPR4LE151bKLTuLOGIejJYE509fUPJiEfJ4YcdZ/C0WyT6O9OVM+lfYGodAYxtUrl6fMxvRthIR4xKIHbmaB3romBNfeQ9r2jjOmCmfF6FPSkoPQsXJ/P9O/7qU25Ll/esGO7JUgrH6Gs1QvtsAfbEwzFHB41ksgbcATCPaShBtbqpDbFzOCBE0wvvAUPPZObMqFwT8zYnntLBOsdIQGIT9nSjzrDySGjB207sG3dS+Hq941HYqR1RmYelRfLzzHxNgNRudWn1ZMeoUEwR87afG7KSQcES6Y27Ir3PQCJMQJAu5maLww8RNcYAjpMoKj/nOPKnwnrR5+uXjmQHuYk4z2YmCnavkWm/7HQKryzQl6lGrS3KqgC+JIUXddZoh/KDvnQd7sQrRqbhtbUz3q4VkpKgaecd+XF7KHxx8asQGwVc0bSeYTi4t08hH3cw9Yn3OBybrVpYSfEfP/GZqA9oog2prkAplEBiS/0Vc3cKLGQlXFyk+I/8QVBCrvduaM/Q9g7boNPBJjZgaj6C79vgZiJn5W6bht0Xu/uoG6yIkKyRXY61s6QJByy9svfwfVcpcdYl5g0VdPheHPib3O9gyNIHezERa6GDI4um60rG8zeOyBUdQsBxWeJsC4tyHs1SxsLTyJBozdBnSV8FekUdY200M3gycwLOMbVmkUpr8CZ1pdhM7OwptAUmeD1w2lLnixqfw/PECkCiVnXn6Qs/H97uZNR2uyK9z+xYHjpU24cXXGVt6inaQ9FxAh8S11derTj2L47pdxNdeAYTAK6s+qInoWxDv62NXh86Kz6XqQNcQES3b9TAAkKpalwBPhsljEkxQNFH0qiwQv+KwvUcGXhcRf8TmPzli4MFv7MrffFn6umOJ3/8XZsMG9bcYv6ayGU+Bo+KSXCwtWV5hA8dVfFS3eJdL1z1hk30mb786ZTxBhy7193pCcysd9zqQLxHGu1h0ENisZt/E4DmalgzmIBvwVStjCPXbAhCZUHsKfo4FPXB+jZ6t8dCy41O44xSLm1Ydpm1nLIIta8KrizOdM8YeU/Tzf0DCXQUE7IO673TdmAeqVYYAQ=="
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_01LiT6yffXvh471sDYkCsjne",
+                    "id": "toolu_01FzWp314cLKbWhJzD74956P",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -233,168 +197,18 @@
           ]
         },
         {
-          "requestHash": "257ca2ec16359f99c7182bee0ad357ab2174394302506192a29699f896b81784",
-          "latencyMs": 791,
+          "requestHash": "0f3422f1a6fb722e36a91d3305e4069cb14ef99750a07fb117ba1966b33add99",
+          "latencyMs": 926,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1807,
-              "cacheWriteInputTokens": 143,
-              "cacheReadInputTokens": 1662
+              "inputTokens": 1836,
+              "cacheWriteInputTokens": 180,
+              "cacheReadInputTokens": 1654
             },
             {
               "type": "text_delta",
-              "text": "I don't have any"
-            },
-            {
-              "type": "text_delta",
-              "text": " information about Alberto's op"
-            },
-            {
-              "type": "text_delta",
-              "text": "inions on"
-            },
-            {
-              "type": "text_delta",
-              "text": " Google."
-            },
-            {
-              "type": "text_delta",
-              "text": " His profile doesn't list"
-            },
-            {
-              "type": "text_delta",
-              "text": " any work exper"
-            },
-            {
-              "type": "text_delta",
-              "text": "ience at Google, either"
-            },
-            {
-              "type": "text_delta",
-              "text": ". For his views,"
-            },
-            {
-              "type": "text_delta",
-              "text": " you could"
-            },
-            {
-              "type": "text_delta",
-              "text": " reach out to him directly."
-            },
-            {
-              "type": "text_delta",
-              "text": " I"
-            },
-            {
-              "type": "text_delta",
-              "text": " can t"
-            },
-            {
-              "type": "text_delta",
-              "text": "ell you about his work"
-            },
-            {
-              "type": "text_delta",
-              "text": " experience or his AI agent"
-            },
-            {
-              "type": "text_delta",
-              "text": " projects if you'd like."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "I don't have any information about Alberto's opinions on Google. His profile doesn't list any work experience at Google, either. For his views, you could reach out to him directly. I can tell you about his work experience or his AI agent projects if you'd like.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 1807,
-                  "cacheWriteInputTokens": 143,
-                  "cacheReadInputTokens": 1662,
-                  "outputTokens": 77
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "I don't have any information about Alberto's opinions on Google. His profile doesn't list any work experience at Google, either. For his views, you could reach out to him directly. I can tell you about his work experience or his AI agent projects if you'd like."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "d1559ecbb087da45778ba5a482aa104035eea5352dbfabfe6b3f753ea42bdd1b",
-          "latencyMs": 990,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1666,
-              "cacheReadInputTokens": 1662
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_01DhC7gwNbm2QnZPpvGB6RMU",
-                    "name": "get_experience",
-                    "input": {
-                      "company": "google"
-                    }
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1666,
-                  "cacheReadInputTokens": 1662,
-                  "outputTokens": 166
-                },
-                "providerContent": [
-                  {
-                    "type": "thinking",
-                    "thinking": "",
-                    "signature": "CAQSwwcKEAgUGAI4AUIIdGhpbmtpbmcSDG4BHYqDpkBdwT4dERoM1nF4L+dHPjFP/TpFIjDv6cbnpJBCw1x4OH/AC2WaeZKHV5iYF0OAXgNfRQk36hzfSDH1OgkaLU2FXQ2RyPUq4AZXdF9cNnNEsTEw7MfH5TyAR5rvPstlzjgJziI0Ptd3AIbpls7jnAzVpgTaj/SDa4yYaPnAQnkawApkY/S21DAh55GDQpXLlfknIxd2VAG99KNZroTV+3LHAseBSs0B4ZbCUi9Wfik7LT+FZUanUU3mB5sT2vc1o7z8fO0eDkOthqxibznQHQPxw9+8JSc+/uSlPIMQn/ZSs0R6Eq9bIxir5CiHiKAeUaBLO8Mya55QF5Pq8X8900W7fb9vsctbYvpmKHlC68WauG0L6AB6sXFubms8Ori700Z0YbSm65aqmBsUv83Zfa+kYw1yjp9sh4H0hD64zWoyM8x5EaFiHpXyotoXZsaXnM7ibCtKvUcMZqQmY1+Z7yqVin4nSpNVYdh62rzdIfWBGj87wPaq7nkwifceERtHGjr3e73tWoMTCnseUcpmhWqskNYM12Ol82C8yuGz70u1NmWq7X0zrwaUFAGB0OCjaMwHDvsidAwvSAEW11WRyHM4UFJ8rsg6H+yxCdXyFGDsKwvi1AxSCrP9UaRwNUGCfikHH12kOJ1l98iFlCfcaUt5bELoNELdSxUpqV0QMfBbjxe05UnKMtMR94f6qEpnsupWEYRReX6wWHDeCldIoJOK1DsZHZdGcGxQWAodzxrEWcVFIebCjv12PVA8HsZRWivB1IHzwSQpE4y1dNquGQ+o86cxP5SXvFAa9MttVhS+/Sh2ChcW/I3Lue694SoEuclo04l/kUqfQLANrAPU49V7fYGZc9KakpZPgmjJiMOoV9DQLaMI7DcR96GuPAPvtww3fnpMN2KHpG56NTNV8Hfp1UTln8Dv9zALCseqeBCu2wo9+CJDa65DRWnfFqh9rDH139LlI7GVqEdLIusil6RDGvOVWv+lpEY0gBOJtWNVX9COVISMHgoqwndOSobJGvUp5MRsENx0KtAg+F55bTHAyjzo9b8RwnbqV5lbfRsavFxx/kIE11PJo6ThAwa+/p3FsaDxzWSCOxXzitHAbMHAxz9C4YnbmtNN/U/vC6dpF6FW6dw1Kn0OjZVepo6MLlrPEql8vxuIZ7dEBPx5mBSm80f7h3LTbHilwMyefqJjW2WGqaOgS8jZ7zVBPcjN4L2mLX87oEaSHDQt9iBIOg/gLGn/Jq3Wxd4YAQ=="
-                  },
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_01DhC7gwNbm2QnZPpvGB6RMU",
-                    "name": "get_experience",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {
-                      "company": "google"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "dac7fc9b05d716ab718965a2a300f4592fd7e8450488e335b27338f59014cf0a",
-          "latencyMs": 913,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1845,
-              "cacheWriteInputTokens": 181,
-              "cacheReadInputTokens": 1662
-            },
-            {
-              "type": "text_delta",
-              "text": "I"
-            },
-            {
-              "type": "text_delta",
-              "text": " don"
+              "text": "I don"
             },
             {
               "type": "text_delta",
@@ -402,11 +216,11 @@
             },
             {
               "type": "text_delta",
-              "text": " on Alberto's opin"
+              "text": " on Alberto's person"
             },
             {
               "type": "text_delta",
-              "text": "ions of compan"
+              "text": "al opinions of compan"
             },
             {
               "type": "text_delta",
@@ -414,11 +228,11 @@
             },
             {
               "type": "text_delta",
-              "text": "n't list any work"
+              "text": "n't list any"
             },
             {
               "type": "text_delta",
-              "text": " exper"
+              "text": " work exper"
             },
             {
               "type": "text_delta",
@@ -430,35 +244,27 @@
             },
             {
               "type": "text_delta",
-              "text": " views on Google, you could"
+              "text": " views,"
             },
             {
               "type": "text_delta",
-              "text": " cont"
+              "text": " you can"
             },
             {
               "type": "text_delta",
-              "text": "act him direct"
+              "text": " reach out to him direct"
             },
             {
               "type": "text_delta",
-              "text": "ly. His cont"
+              "text": "ly. I"
             },
             {
               "type": "text_delta",
-              "text": "act details are available"
+              "text": " can"
             },
             {
               "type": "text_delta",
-              "text": " on his site"
-            },
-            {
-              "type": "text_delta",
-              "text": ", or I"
-            },
-            {
-              "type": "text_delta",
-              "text": " can t"
+              "text": " t"
             },
             {
               "type": "text_delta",
@@ -466,32 +272,163 @@
             },
             {
               "type": "text_delta",
-              "text": " experience or A"
+              "text": " experience, A"
             },
             {
               "type": "text_delta",
-              "text": "I agent"
+              "text": "I ag"
             },
             {
               "type": "text_delta",
-              "text": " projects."
+              "text": "ent"
+            },
+            {
+              "type": "text_delta",
+              "text": " projects, or tech stack"
+            },
+            {
+              "type": "text_delta",
+              "text": " if that"
+            },
+            {
+              "type": "text_delta",
+              "text": " hel"
+            },
+            {
+              "type": "text_delta",
+              "text": "ps."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "I don't have information on Alberto's opinions of companies, and his profile doesn't list any work experience at Google. For his views on Google, you could contact him directly. His contact details are available on his site, or I can tell you about his work experience or AI agent projects.",
+                "text": "I don't have information on Alberto's personal opinions of companies, and his profile doesn't list any work experience at Google. For his views, you can reach out to him directly. I can tell you about his work experience, AI agent projects, or tech stack if that helps.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1845,
-                  "cacheWriteInputTokens": 181,
-                  "cacheReadInputTokens": 1662,
+                  "inputTokens": 1836,
+                  "cacheWriteInputTokens": 180,
+                  "cacheReadInputTokens": 1654,
                   "outputTokens": 81
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "I don't have information on Alberto's opinions of companies, and his profile doesn't list any work experience at Google. For his views on Google, you could contact him directly. His contact details are available on his site, or I can tell you about his work experience or AI agent projects."
+                    "text": "I don't have information on Alberto's personal opinions of companies, and his profile doesn't list any work experience at Google. For his views, you can reach out to him directly. I can tell you about his work experience, AI agent projects, or tech stack if that helps."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "912fe9591fa020fc26f6f561e296ac49f56201d34ab2199a89875ac948600657",
+          "latencyMs": 1528,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1658,
+              "cacheReadInputTokens": 1654
+            },
+            {
+              "type": "text_delta",
+              "text": "I don't have information"
+            },
+            {
+              "type": "text_delta",
+              "text": " about"
+            },
+            {
+              "type": "text_delta",
+              "text": " Alberto's person"
+            },
+            {
+              "type": "text_delta",
+              "text": "al opinions of compan"
+            },
+            {
+              "type": "text_delta",
+              "text": "ies, including"
+            },
+            {
+              "type": "text_delta",
+              "text": " Google. His profile does"
+            },
+            {
+              "type": "text_delta",
+              "text": "n't cover that. You"
+            },
+            {
+              "type": "text_delta",
+              "text": " can "
+            },
+            {
+              "type": "text_delta",
+              "text": "ask him directly through his cont"
+            },
+            {
+              "type": "text_delta",
+              "text": "act details,"
+            },
+            {
+              "type": "text_delta",
+              "text": " which I can share if"
+            },
+            {
+              "type": "text_delta",
+              "text": " you'd like. I"
+            },
+            {
+              "type": "text_delta",
+              "text": " can also tell you about any"
+            },
+            {
+              "type": "text_delta",
+              "text": " work exper"
+            },
+            {
+              "type": "text_delta",
+              "text": "ience he"
+            },
+            {
+              "type": "text_delta",
+              "text": " has list"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed, if that"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s use"
+            },
+            {
+              "type": "text_delta",
+              "text": "ful."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "I don't have information about Alberto's personal opinions of companies, including Google. His profile doesn't cover that. You can ask him directly through his contact details, which I can share if you'd like. I can also tell you about any work experience he has listed, if that's useful.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1658,
+                  "cacheReadInputTokens": 1654,
+                  "outputTokens": 179
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQSkAcKEAgUGAI4AUIIdGhpbmtpbmcSDCtYoQAk5awfWfbzwRoMD6NIPQ3WwJ2PUUxpIjCtTk51bNcm2xqDaVK7f6txm37QCWFCofAzsmWN/zdfHnDxgEtTrKuMAFfjDniQ/XgqrQa4nr7rbHWossK7QMGw3PPxp9XItRjxFJfZC0WovFjXsvLDA1izP6sk6WQYloZDofNrDJqmMa0b1YZ+JxX8PpKLQp+b5H1u3nQ74pxCViTu+W/d6ClN9mXN0kvmV2Z8iPZeNalN6h4eQ87PsJVjs/L3BjX6SPl4CkcHGRLyQrN1hWuBtVPOFS0qdpk0Uz6eHS4+nsaScFG+B0ubJLO+Y8Txpt1Htst74SBGx+ycZkwGFf71GtKdPKOvjy7PBwNH+9gfj6rcR5xWKTDmI5O+aUd+Is6B0oL8TiIZFyzU3A94r+TJA8x10ebBZeNqXypEjQ9+GJc2Vn9IUHTQnEJnah1wtzDvNpj+qkyjJrAZTUco40zV0OmHCZhQ5FkfHcrSp3KE4uGkkkaFU+GdFJj4JGjGLr33pXh1SEiGTHkkMxFyHypyeNrRWevVUXvivUz5jDshz/P6tAm9LwAZbhkwLVmmOU+MQB9TyrIA14Y9FSn1mYtSBtO1JOxXugdowYUzvwmx0dCDVi+One63D2EI8Ca0pqNz2E5WEF60psbzZszMBHVQxdVVfA3xWxHlGkLQ7UCxWMc5zZX8QWjnN4PTWmJP0AzJxl0SAQCpxDzxnPLBYWujt6JUE0wElYMw6OQYgIMjI08NFfyVY2K85Nu/4SwdW5XO/Y86pHiY8Ik37ZNqAWdWdhvGA/Uaaq30TJFfT5vP0EBvaW+uz8R3osiNLUzon+z/LZW8mEzviSC+pIOMqZ8pkREfQuVLVbuJqf4rpPN61McQOu1SaCz4D0CRHWk6NZw5rc2Dw8ZxV7VBX5lZX73HulM/9t5HtNEt4i0xREd5clD4cswyUHeqZjNQS1AQBbeikNqCdBZAx2XZ07IM1UuhfubdGDT3aL/EWKdoOuToNzb985bL1yBllktVUCPOmhvT2LwSMyLCGKC1lteUPE/R833EipJNJnCPan5ao7RIfvEm08RKLh7YsfpsoriskKdSDx0lHSmFW9LLi6O8bCUWm8tQtvwFqzNeAdf2lciY6GDKTU5Lnb9SWAIwEJYEF1vtiOiP63g4XK96B+8mYPawIZZIC+sy7xuKcs8YAQ=="
+                  },
+                  {
+                    "type": "text",
+                    "text": "I don't have information about Alberto's personal opinions of companies, including Google. His profile doesn't cover that. You can ask him directly through his contact details, which I can share if you'd like. I can also tell you about any work experience he has listed, if that's useful."
                   }
                 ]
               }

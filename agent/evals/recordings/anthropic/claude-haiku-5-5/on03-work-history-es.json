@@ -3,7 +3,7 @@
   "slug": "work-history-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
-      "latencyMs": 604,
+      "requestHash": "6e3d9cb3e49b161a7e9421f708c7445db43995ac653671eccdb4f47d7a58029c",
+      "latencyMs": 954,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1667,
-          "cacheWriteInputTokens": 1663
+          "inputTokens": 1659,
+          "cacheWriteInputTokens": 1655
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Qo8Sqj4mKkhvmTjM7aLHdo",
+                "id": "toolu_01Gw7dEomi3io45WDWukQ2Us",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1667,
-              "cacheWriteInputTokens": 1663,
+              "inputTokens": 1659,
+              "cacheWriteInputTokens": 1655,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Qo8Sqj4mKkhvmTjM7aLHdo",
+                "id": "toolu_01Gw7dEomi3io45WDWukQ2Us",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "60f68acbffc3f4275135afb3d35cdd804b6bda348a94776a5a50c1e8766a7602",
-      "latencyMs": 947,
+      "requestHash": "6e84685a31308d131e661de818b6dd0dc8dfbd125778b8601ded9252ea929fd1",
+      "latencyMs": 2194,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2229,
+          "inputTokens": 2221,
           "cacheWriteInputTokens": 564,
-          "cacheReadInputTokens": 1663
+          "cacheReadInputTokens": 1655
         },
         {
           "type": "text_delta",
@@ -77,15 +77,23 @@
         },
         {
           "type": "text_delta",
-          "text": "\n\n- **CoverWall"
+          "text": "\n\n-"
         },
         {
           "type": "text_delta",
-          "text": "et** (2"
+          "text": " **CoverWallet**"
         },
         {
           "type": "text_delta",
-          "text": "019 – actual"
+          "text": " (2"
+        },
+        {
+          "type": "text_delta",
+          "text": "019 – act"
+        },
+        {
+          "type": "text_delta",
+          "text": "ual"
         },
         {
           "type": "text_delta",
@@ -101,11 +109,7 @@
         },
         {
           "type": "text_delta",
-          "text": " Madrid /"
-        },
-        {
-          "type": "text_delta",
-          "text": " rem"
+          "text": " Madrid / rem"
         },
         {
           "type": "text_delta",
@@ -113,27 +117,83 @@
         },
         {
           "type": "text_delta",
-          "text": "ataforma ins"
+          "text": "ataforma insurtech que"
         },
         {
           "type": "text_delta",
-          "text": "urtech."
+          "text": " integra a"
         },
         {
           "type": "text_delta",
-          "text": "\n- **M&GT"
+          "text": "seguradoras extern"
         },
         {
           "type": "text_delta",
-          "text": " Consulting** (2016 "
+          "text": "as en"
         },
         {
           "type": "text_delta",
-          "text": "– 2019): Software"
+          "text": " un único"
         },
         {
           "type": "text_delta",
-          "text": " Developer, en Madrid"
+          "text": " flujo de compra."
+        },
+        {
+          "type": "text_delta",
+          "text": "\n- **M&GT Cons"
+        },
+        {
+          "type": "text_delta",
+          "text": "ulting** (2016 –"
+        },
+        {
+          "type": "text_delta",
+          "text": " 2019): Software Develop"
+        },
+        {
+          "type": "text_delta",
+          "text": "er,"
+        },
+        {
+          "type": "text_delta",
+          "text": " en Madrid. AP"
+        },
+        {
+          "type": "text_delta",
+          "text": "Is REST con"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node.js y ap"
+        },
+        {
+          "type": "text_delta",
+          "text": "ps web y"
+        },
+        {
+          "type": "text_delta",
+          "text": " móviles ("
+        },
+        {
+          "type": "text_delta",
+          "text": "iOS/Android),"
+        },
+        {
+          "type": "text_delta",
+          "text": " además de so"
+        },
+        {
+          "type": "text_delta",
+          "text": "luciones blockchain con"
+        },
+        {
+          "type": "text_delta",
+          "text": " Hyperledger F"
+        },
+        {
+          "type": "text_delta",
+          "text": "abric y Ethereum"
         },
         {
           "type": "text_delta",
@@ -149,7 +209,27 @@
         },
         {
           "type": "text_delta",
-          "text": " A Coruña."
+          "text": " A Coruña. Java"
+        },
+        {
+          "type": "text_delta",
+          "text": "/Spring y"
+        },
+        {
+          "type": "text_delta",
+          "text": " Oracle PL/SQ"
+        },
+        {
+          "type": "text_delta",
+          "text": "L para clientes de"
+        },
+        {
+          "type": "text_delta",
+          "text": " telecomunicaciones"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -157,32 +237,36 @@
         },
         {
           "type": "text_delta",
-          "text": "les s"
+          "text": "les de"
         },
         {
           "type": "text_delta",
-          "text": "obre alguno de estos"
+          "text": " al"
         },
         {
           "type": "text_delta",
-          "text": " puestos?"
+          "text": "guno de est"
+        },
+        {
+          "type": "text_delta",
+          "text": "os puestos?"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña.\n\n¿Quieres más detalles sobre alguno de estos puestos?",
+            "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid. APIs REST con Node.js y apps web y móviles (iOS/Android), además de soluciones blockchain con Hyperledger Fabric y Ethereum.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres más detalles de alguno de estos puestos?",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2229,
+              "inputTokens": 2221,
               "cacheWriteInputTokens": 564,
-              "cacheReadInputTokens": 1663,
-              "outputTokens": 150
+              "cacheReadInputTokens": 1655,
+              "outputTokens": 253
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña.\n\n¿Quieres más detalles sobre alguno de estos puestos?"
+                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid. APIs REST con Node.js y apps web y móviles (iOS/Android), además de soluciones blockchain con Hyperledger Fabric y Ethereum.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres más detalles de alguno de estos puestos?"
               }
             ]
           }
@@ -194,13 +278,13 @@
     {
       "calls": [
         {
-          "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
-          "latencyMs": 641,
+          "requestHash": "6e3d9cb3e49b161a7e9421f708c7445db43995ac653671eccdb4f47d7a58029c",
+          "latencyMs": 1279,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1667,
-              "cacheReadInputTokens": 1663
+              "inputTokens": 1659,
+              "cacheReadInputTokens": 1655
             },
             {
               "type": "response_end",
@@ -208,21 +292,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01Taesg2SKVgQz5AyUq2kAdg",
+                    "id": "toolu_01STBeSZWBoc46wAHxbVvcLS",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1667,
-                  "cacheReadInputTokens": 1663,
+                  "inputTokens": 1659,
+                  "cacheReadInputTokens": 1655,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01Taesg2SKVgQz5AyUq2kAdg",
+                    "id": "toolu_01STBeSZWBoc46wAHxbVvcLS",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -235,13 +319,13 @@
           ]
         },
         {
-          "requestHash": "98ef46b2e65539f746e6179a5ea3b63768ea67b91294f5e6034028c2d48cf9b7",
-          "latencyMs": 1445,
+          "requestHash": "0c4fa133b014630c972c962ec73bfa50d80079beae507413d9d3c34244e4b544",
+          "latencyMs": 1907,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2229,
-              "cacheReadInputTokens": 2227
+              "inputTokens": 2221,
+              "cacheReadInputTokens": 2219
             },
             {
               "type": "text_delta",
@@ -257,23 +341,59 @@
             },
             {
               "type": "text_delta",
-              "text": "** (Madrid /"
+              "text": "** (2"
             },
             {
               "type": "text_delta",
-              "text": " Remo"
+              "text": "019 —"
             },
             {
               "type": "text_delta",
-              "text": "to),"
+              "text": " act"
             },
             {
               "type": "text_delta",
-              "text": " Senior Software Engineer"
+              "text": "ualid"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": "ad): Senior Software"
+            },
+            {
+              "type": "text_delta",
+              "text": " Engineer, Madrid"
+            },
+            {
+              "type": "text_delta",
+              "text": " / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto. Pl"
+            },
+            {
+              "type": "text_delta",
+              "text": "ataforma insurtech;"
+            },
+            {
+              "type": "text_delta",
+              "text": " l"
+            },
+            {
+              "type": "text_delta",
+              "text": "id"
+            },
+            {
+              "type": "text_delta",
+              "text": "era proyectos de"
+            },
+            {
+              "type": "text_delta",
+              "text": " princip"
+            },
+            {
+              "type": "text_delta",
+              "text": "io a fin y"
             },
             {
               "type": "text_delta",
@@ -281,43 +401,15 @@
             },
             {
               "type": "text_delta",
-              "text": "2019 "
+              "text": "ha integrado AP"
             },
             {
               "type": "text_delta",
-              "text": "– actualid"
+              "text": "Is de a"
             },
             {
               "type": "text_delta",
-              "text": "ad. Pl"
-            },
-            {
-              "type": "text_delta",
-              "text": "ataforma ins"
-            },
-            {
-              "type": "text_delta",
-              "text": "urtech;"
-            },
-            {
-              "type": "text_delta",
-              "text": " integra a"
-            },
-            {
-              "type": "text_delta",
-              "text": "seguradoras extern"
-            },
-            {
-              "type": "text_delta",
-              "text": "as en un"
-            },
-            {
-              "type": "text_delta",
-              "text": " flujo de compra único"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
+              "text": "seguradoras."
             },
             {
               "type": "text_delta",
@@ -325,27 +417,23 @@
             },
             {
               "type": "text_delta",
-              "text": " Consulting** (Madr"
+              "text": " Consulting** (2016 "
             },
             {
               "type": "text_delta",
-              "text": "id), Software Developer,"
+              "text": "— 2019): Software"
             },
             {
               "type": "text_delta",
-              "text": " 2016 – 2019"
+              "text": " Developer, Madrid."
             },
             {
               "type": "text_delta",
-              "text": ". AP"
+              "text": " APIs REST en Node"
             },
             {
               "type": "text_delta",
-              "text": "Is REST en Node."
-            },
-            {
-              "type": "text_delta",
-              "text": "js, ap"
+              "text": ".js, ap"
             },
             {
               "type": "text_delta",
@@ -353,7 +441,11 @@
             },
             {
               "type": "text_delta",
-              "text": " y móviles,"
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " móviles,"
             },
             {
               "type": "text_delta",
@@ -377,75 +469,75 @@
             },
             {
               "type": "text_delta",
-              "text": " **Indra** (A"
+              "text": " **Indra** (2015"
             },
             {
               "type": "text_delta",
-              "text": " Coruña), Software Develop"
+              "text": " — 2016): Software"
             },
             {
               "type": "text_delta",
-              "text": "er, 2015 – "
+              "text": " Developer, A Coru"
             },
             {
               "type": "text_delta",
-              "text": "2016. Java/Sp"
+              "text": "ña. Java/Spring"
             },
             {
               "type": "text_delta",
-              "text": "ring y Oracle PL"
+              "text": " y Oracle PL/"
             },
             {
               "type": "text_delta",
-              "text": "/SQL para clientes"
+              "text": "SQL para clientes de"
             },
             {
               "type": "text_delta",
-              "text": " de telecomunicaci"
+              "text": " telecomunicaciones"
             },
             {
               "type": "text_delta",
-              "text": "ones.\n\n¿Quie"
+              "text": ".\n\n¿Qu"
             },
             {
               "type": "text_delta",
-              "text": "res saber más sobre alg"
+              "text": "ieres saber más sobre"
             },
             {
               "type": "text_delta",
-              "text": "ún pu"
+              "text": " al"
             },
             {
               "type": "text_delta",
-              "text": "esto o sobre los"
+              "text": "guno de est"
             },
             {
               "type": "text_delta",
-              "text": " ag"
+              "text": "os puestos o s"
             },
             {
               "type": "text_delta",
-              "text": "entes de"
+              "text": "obre sus agentes de"
             },
             {
               "type": "text_delta",
-              "text": " IA que ha construido?"
+              "text": " IA?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (Madrid / Remoto), Senior Software Engineer, 2019 – actualidad. Plataforma insurtech; integra aseguradoras externas en un flujo de compra único.\n- **M&GT Consulting** (Madrid), Software Developer, 2016 – 2019. APIs REST en Node.js, apps web y móviles, y soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (A Coruña), Software Developer, 2015 – 2016. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres saber más sobre algún puesto o sobre los agentes de IA que ha construido?",
+                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 — actualidad): Senior Software Engineer, Madrid / remoto. Plataforma insurtech; lidera proyectos de principio a fin y ha integrado APIs de aseguradoras.\n- **M&GT Consulting** (2016 — 2019): Software Developer, Madrid. APIs REST en Node.js, apps web y móviles, y soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (2015 — 2016): Software Developer, A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres saber más sobre alguno de estos puestos o sobre sus agentes de IA?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2229,
-                  "cacheReadInputTokens": 2227,
-                  "outputTokens": 259
+                  "inputTokens": 2221,
+                  "cacheReadInputTokens": 2219,
+                  "outputTokens": 265
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (Madrid / Remoto), Senior Software Engineer, 2019 – actualidad. Plataforma insurtech; integra aseguradoras externas en un flujo de compra único.\n- **M&GT Consulting** (Madrid), Software Developer, 2016 – 2019. APIs REST en Node.js, apps web y móviles, y soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (A Coruña), Software Developer, 2015 – 2016. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres saber más sobre algún puesto o sobre los agentes de IA que ha construido?"
+                    "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 — actualidad): Senior Software Engineer, Madrid / remoto. Plataforma insurtech; lidera proyectos de principio a fin y ha integrado APIs de aseguradoras.\n- **M&GT Consulting** (2016 — 2019): Software Developer, Madrid. APIs REST en Node.js, apps web y móviles, y soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (2015 — 2016): Software Developer, A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres saber más sobre alguno de estos puestos o sobre sus agentes de IA?"
                   }
                 ]
               }
@@ -457,13 +549,13 @@
     {
       "calls": [
         {
-          "requestHash": "5fe77e6c3e22e2dea37a9d26e0fc8ee2261dc431c2ac3d633d53dabbaf2a57ba",
-          "latencyMs": 624,
+          "requestHash": "6e3d9cb3e49b161a7e9421f708c7445db43995ac653671eccdb4f47d7a58029c",
+          "latencyMs": 1571,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1667,
-              "cacheReadInputTokens": 1663
+              "inputTokens": 1659,
+              "cacheReadInputTokens": 1655
             },
             {
               "type": "response_end",
@@ -471,21 +563,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_014jCnoGsmjbscZW1aVwF8GQ",
+                    "id": "toolu_014gyZrTkok8RvDcmUJFuTCX",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1667,
-                  "cacheReadInputTokens": 1663,
+                  "inputTokens": 1659,
+                  "cacheReadInputTokens": 1655,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_014jCnoGsmjbscZW1aVwF8GQ",
+                    "id": "toolu_014gyZrTkok8RvDcmUJFuTCX",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -498,13 +590,13 @@
           ]
         },
         {
-          "requestHash": "8f4a905e695c104b8c48b4b054ec80ec0a6946d5ffa010efb760e68c1dc64b6d",
-          "latencyMs": 960,
+          "requestHash": "a3e11a03c4ebf8af2dc8d5bb922e5c5f1f57fbee48d31fa1fcf5e1b4c89c0baf",
+          "latencyMs": 2094,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2229,
-              "cacheReadInputTokens": 2227
+              "inputTokens": 2221,
+              "cacheReadInputTokens": 2219
             },
             {
               "type": "text_delta",
@@ -524,7 +616,15 @@
             },
             {
               "type": "text_delta",
-              "text": "019 – actual"
+              "text": "019 "
+            },
+            {
+              "type": "text_delta",
+              "text": "– act"
+            },
+            {
+              "type": "text_delta",
+              "text": "ual"
             },
             {
               "type": "text_delta",
@@ -548,31 +648,83 @@
             },
             {
               "type": "text_delta",
-              "text": "ataforma ins"
+              "text": "ataforma insurtech que"
             },
             {
               "type": "text_delta",
-              "text": "urtech."
+              "text": " integra a"
             },
             {
               "type": "text_delta",
-              "text": "\n- **M&GT"
+              "text": "seguradoras extern"
             },
             {
               "type": "text_delta",
-              "text": " Consulting** (2016 "
+              "text": "as en"
             },
             {
               "type": "text_delta",
-              "text": "– 2019): Software"
+              "text": " un único"
             },
             {
               "type": "text_delta",
-              "text": " Developer, en Madrid"
+              "text": " flujo de comp"
             },
             {
               "type": "text_delta",
-              "text": ".\n- **Indra**"
+              "text": "ra.\n- **M&G"
+            },
+            {
+              "type": "text_delta",
+              "text": "T Consulting** (2"
+            },
+            {
+              "type": "text_delta",
+              "text": "016 – 2019):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Software Developer, en Mad"
+            },
+            {
+              "type": "text_delta",
+              "text": "rid. AP"
+            },
+            {
+              "type": "text_delta",
+              "text": "Is REST en Node."
+            },
+            {
+              "type": "text_delta",
+              "text": "js y"
+            },
+            {
+              "type": "text_delta",
+              "text": " apps web/mó"
+            },
+            {
+              "type": "text_delta",
+              "text": "viles para clientes internac"
+            },
+            {
+              "type": "text_delta",
+              "text": "ionales, además de soluci"
+            },
+            {
+              "type": "text_delta",
+              "text": "ones blockchain ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Hyperledger F"
+            },
+            {
+              "type": "text_delta",
+              "text": "abric y Ethereum"
+            },
+            {
+              "type": "text_delta",
+              "text": ").\n- **Indra**"
             },
             {
               "type": "text_delta",
@@ -584,39 +736,63 @@
             },
             {
               "type": "text_delta",
-              "text": " A Coruña."
+              "text": " A Coruña. Java"
             },
             {
               "type": "text_delta",
-              "text": "\n\n¿Quieres más"
+              "text": "/Spring y Orac"
             },
             {
               "type": "text_delta",
-              "text": " detalles sobre al"
+              "text": "le PL/SQL para"
             },
             {
               "type": "text_delta",
-              "text": "guno de est"
+              "text": " clientes de"
             },
             {
               "type": "text_delta",
-              "text": "os puestos?"
+              "text": " telecomunicaciones"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\n¿Quieres más detal"
+            },
+            {
+              "type": "text_delta",
+              "text": "les de"
+            },
+            {
+              "type": "text_delta",
+              "text": " al"
+            },
+            {
+              "type": "text_delta",
+              "text": "guno de estos pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "estos?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña.\n\n¿Quieres más detalles sobre alguno de estos puestos?",
+                "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid. APIs REST en Node.js y apps web/móviles para clientes internacionales, además de soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (2015 – 2016): Software Developer, en A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres más detalles de alguno de estos puestos?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2229,
-                  "cacheReadInputTokens": 2227,
-                  "outputTokens": 150
+                  "inputTokens": 2221,
+                  "cacheReadInputTokens": 2219,
+                  "outputTokens": 254
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid.\n- **Indra** (2015 – 2016): Software Developer, en A Coruña.\n\n¿Quieres más detalles sobre alguno de estos puestos?"
+                    "text": "Alberto ha trabajado en:\n\n- **CoverWallet** (2019 – actualidad): Senior Software Engineer, en Madrid / remoto. Plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n- **M&GT Consulting** (2016 – 2019): Software Developer, en Madrid. APIs REST en Node.js y apps web/móviles para clientes internacionales, además de soluciones blockchain (Hyperledger Fabric y Ethereum).\n- **Indra** (2015 – 2016): Software Developer, en A Coruña. Java/Spring y Oracle PL/SQL para clientes de telecomunicaciones.\n\n¿Quieres más detalles de alguno de estos puestos?"
                   }
                 ]
               }

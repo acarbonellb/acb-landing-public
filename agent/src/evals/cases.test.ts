@@ -44,10 +44,15 @@ describe("on12: how he builds agents", () => {
     ).toBe(true);
   });
 
-  it("fails one that says an agent of his runs in production, or misses the practices", () => {
+  it("passes one that says his fraud agent runs in production, now that it is deployed", () => {
     expect(
-      score("His fraud agent runs in production with offline evals and a human in the loop.").pass,
-    ).toBe(false);
+      score(
+        "His fraud agent runs in production. He runs offline evals before shipping, keeps a human in the loop and tracks cost with a spend cap.",
+      ).pass,
+    ).toBe(true);
+  });
+
+  it("fails one that misses the practices", () => {
     expect(score("He builds agents in TypeScript.").pass).toBe(false);
   });
 });
