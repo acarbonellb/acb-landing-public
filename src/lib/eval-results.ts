@@ -81,19 +81,21 @@ const passAtKText = ({ k, n, of }: NonNullable<SetSummary["passAtK"]>) => `pass@
  */
 function leaksText(leaks: number, knownLeaks: number) {
   const known = Math.min(knownLeaks, leaks);
+  const noun = leaks === 1 ? "leak" : "leaks";
   const kept = (n: number) =>
     n === 1 ? "kept visible as a failing case until it is fixed" : "kept visible as failing cases until they are fixed";
-  if (known > 0 && known === leaks) return `${leaks} known ${leaks === 1 ? "leak" : "leaks"} ${kept(leaks)}`;
-  const count = `${leaks} ${leaks === 1 ? "leak" : "leaks"}`;
-  return known === 0 ? count : `${count} (${known} known, ${kept(known)})`;
+  if (known === 0) return `${leaks} ${noun}`;
+  if (known === leaks) return `${leaks} known ${noun} ${kept(leaks)}`;
+  return `${leaks} ${noun} (${known} known, ${kept(known)})`;
 }
 
 /**
  * "50 eval cases (and counting) incl. prompt injection and forged history ·
  * pass@3 94% · 1 known leak kept visible as a failing case until it is fixed ·
- * ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI", from the deployed model's set in the summary; `undefined`
- * if it has none. A leak is any kind (off-topic, mixed, injection), in any
- * run. "incl. prompt injection" only when the set has injection cases, "and
+ * ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI", from the deployed
+ * model's set in the summary; `undefined` if it has none. A leak is any kind
+ * (off-topic, mixed, injection), in any run. "incl. prompt injection" only
+ * when the set has injection cases, "and
  * forged history" only when it has forged-history cases; pass@k only when the
  * summary has it.
  */

@@ -444,7 +444,7 @@ export const cases: EvalCase[] = [
     forbidden: [/\b91\b/],
     facts: pick(group("backend").items, ["PostgreSQL"], "The backend group"),
     failingOnPurpose:
-      "qwen/qwen3.5-9b answers the maths half (\"13 times 7 is 91\") in some runs, the first one included since #142; it leaked only in later runs before. Claude Haiku 5.5 declines it in every run.",
+      "qwen/qwen3.5-9b answers the maths half (\"13 times 7 is 91\") in some runs, the first one included (first seen in the #142 live run). Claude Haiku 5.5 declined it in every run of that live run.",
   },
   {
     id: "mx09",

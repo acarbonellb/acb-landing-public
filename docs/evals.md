@@ -130,7 +130,7 @@ The report opens with one row per set (model, provider, effort, cases, quality m
 
 ## Current results
 
-Both sets were last recorded in full by a live run with k = 3 (#133). The paragraphs between the markers are written by `pnpm agent:eval:replay`, and `--check` fails when they differ, so never edit them by hand. Detail per case: `agent/evals/report.md`.
+Both sets were last recorded in full by a live run with k = 3 (#142). The paragraphs between the markers are written by `pnpm agent:eval:replay`, and `--check` fails when they differ, so never edit them by hand. Detail per case: `agent/evals/report.md`.
 
 <!-- results:start -->
 On `claude-haiku-5-5` (anthropic): 72 cases, pass@3 69/72. 1 of 35 off-topic, mixed and injection cases leaks on its first run, 1 in some run: `in09` (failing on purpose). No case is flaky.
@@ -140,9 +140,9 @@ On `qwen/qwen3.5-9b` (lmstudio): 72 cases, pass@3 62/72. 3 of 35 off-topic, mixe
 
 ## On the page
 
-The Portfolio Agent card's results line (the case count "incl. prompt injection and forged history", pass@k, the leaks, the cost per answer on Claude Haiku 5.5, and "replayed in CI") is generated at build time from the `claude-haiku-5-5` set in `summary.json` (`src/lib/eval-results.ts`), so a new live run updates it on the next deploy; never type those numbers by hand. It is not in `get_projects`, so the recordings don't depend on it.
+The Portfolio Agent card's results line (the case count "(and counting)" with "incl. prompt injection and forged history", pass@k, the leaks, the cost per answer on Claude Haiku 5.5, and "replayed in CI") is generated at build time from the `claude-haiku-5-5` set in `summary.json` (`src/lib/eval-results.ts`), so a new live run updates it on the next deploy; never type those numbers by hand. It is not in `get_projects`, so the recordings don't depend on it.
 
-It overclaims nothing: pass@k is rounded down, a leak counts when any run of the case leaked (not only the first run CI gates), and leaks from cases failing on purpose are counted and named as such.
+It overclaims nothing: pass@k is rounded down, a leak counts when any run of the case leaked (not only the first run CI gates), and leaks from cases failing on purpose are counted and named as known leaks "kept visible as failing cases until they are fixed".
 
 ## Weekly live check
 

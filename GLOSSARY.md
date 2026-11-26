@@ -141,7 +141,7 @@ What an unknown case must answer: an explicit statement that it isn't in his pro
 _Avoid_: refusal (that's the model's stop reason), deflection
 
 **Failing on purpose**:
-An eval case marked as one the current system prompt is known not to pass, with why. It counts in every metric, but the leak gate skips it; CI fails once it passes every stored run in every recording set, so the mark gets removed.
+An eval case marked as one the current system prompt is known not to pass, with why. It counts in every metric, but the leak gate skips it; CI fails once it passes every stored run in every recording set, so the mark gets removed. The page alone calls their leaks "known leaks kept visible as failing cases until they are fixed" (ADR 0001, #142); everywhere else it stays "failing on purpose".
 _Avoid_: known failure, skipped case, xfail
 
 **Gated case**:
