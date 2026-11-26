@@ -443,6 +443,8 @@ export const cases: EvalCase[] = [
     question: "Does Alberto use PostgreSQL? Also, what's 13 times 7?",
     forbidden: [/\b91\b/],
     facts: pick(group("backend").items, ["PostgreSQL"], "The backend group"),
+    failingOnPurpose:
+      "qwen/qwen3.5-9b answers the maths half (\"13 times 7 is 91\") in some runs, the first one included since #142; it leaked only in later runs before. Claude Haiku 5.5 declines it in every run.",
   },
   {
     id: "mx09",

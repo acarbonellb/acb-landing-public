@@ -3,7 +3,7 @@
   "slug": "how-he-builds-agents",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-      "latencyMs": 628,
+      "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+      "latencyMs": 499,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1662,
-          "cacheWriteInputTokens": 1658
+          "inputTokens": 1654,
+          "cacheWriteInputTokens": 1650
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01WpqBFSu8JQk5x3nZWm4mFh",
+                "id": "toolu_01NML29cmMCCs64o7YaGE4V8",
                 "name": "get_projects",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1662,
-              "cacheWriteInputTokens": 1658,
+              "inputTokens": 1654,
+              "cacheWriteInputTokens": 1650,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01WpqBFSu8JQk5x3nZWm4mFh",
+                "id": "toolu_01NML29cmMCCs64o7YaGE4V8",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "f78706d301676525195c08eba1d0372ecda6073822626562e8239d8359cdcc5e",
-      "latencyMs": 2328,
+      "requestHash": "148abcf56ef812e4bbe3ea15b236d0c13546485272debd78797d34bd5dd30e8e",
+      "latencyMs": 1751,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2834,
-          "cacheWriteInputTokens": 1174,
-          "cacheReadInputTokens": 1658
+          "inputTokens": 2870,
+          "cacheWriteInputTokens": 1218,
+          "cacheReadInputTokens": 1650
         },
         {
           "type": "text_delta",
@@ -73,35 +73,19 @@
         },
         {
           "type": "text_delta",
-          "text": " with a foc"
+          "text": " with a str"
         },
         {
           "type": "text_delta",
-          "text": "us on measu"
+          "text": "ong foc"
         },
         {
           "type": "text_delta",
-          "text": "ring them"
+          "text": "us on measurement and human"
         },
         {
           "type": "text_delta",
-          "text": " before"
-        },
-        {
-          "type": "text_delta",
-          "text": " they"
-        },
-        {
-          "type": "text_delta",
-          "text": " ship and keeping a"
-        },
-        {
-          "type": "text_delta",
-          "text": " human in the loop where"
-        },
-        {
-          "type": "text_delta",
-          "text": " it matters.\n\n- **"
+          "text": " oversight:\n\n- **"
         },
         {
           "type": "text_delta",
@@ -109,11 +93,7 @@
         },
         {
           "type": "text_delta",
-          "text": ":** The"
-        },
-        {
-          "type": "text_delta",
-          "text": " agent on his portfolio"
+          "text": ":** His"
         },
         {
           "type": "text_delta",
@@ -121,7 +101,11 @@
         },
         {
           "type": "text_delta",
-          "text": " records e"
+          "text": "'s"
+        },
+        {
+          "type": "text_delta",
+          "text": " agent records e"
         },
         {
           "type": "text_delta",
@@ -133,71 +117,43 @@
         },
         {
           "type": "text_delta",
-          "text": " no model"
+          "text": " no network."
         },
         {
           "type": "text_delta",
-          "text": " or network."
+          "text": " A"
         },
         {
           "type": "text_delta",
-          "text": " A stale recording or an off"
+          "text": " stale recording or an off-"
         },
         {
           "type": "text_delta",
-          "text": "-topic answ"
+          "text": "topic leak fails the build"
         },
         {
           "type": "text_delta",
-          "text": "er fails the build."
+          "text": ".\n- **Graded aut"
         },
         {
           "type": "text_delta",
-          "text": " ([ADR 0001"
+          "text": "onomy with"
         },
         {
           "type": "text_delta",
-          "text": "](https://github.com/ac"
+          "text": " a human in the loop:**"
         },
         {
           "type": "text_delta",
-          "text": "arbonellb/acb"
+          "text": " His de"
         },
         {
           "type": "text_delta",
-          "text": "-landing-public/blob"
+          "text": "ployed Fraud Det"
         },
         {
           "type": "text_delta",
-          "text": "/main/docs/adr"
-        },
-        {
-          "type": "text_delta",
-          "text": "/0001-agent-ev"
-        },
-        {
-          "type": "text_delta",
-          "text": "als-record-replay.md"
-        },
-        {
-          "type": "text_delta",
-          "text": "))\n- **Graded aut"
-        },
-        {
-          "type": "text_delta",
-          "text": "onomy, human"
-        },
-        {
-          "type": "text_delta",
-          "text": " in the loop:** His f"
-        },
-        {
-          "type": "text_delta",
-          "text": "raud detection agent recomm"
-        },
-        {
-          "type": "text_delta",
-          "text": "ends appro"
+          "text": "ection Agent recommends appro"
         },
         {
           "type": "text_delta",
@@ -209,39 +165,59 @@
         },
         {
           "type": "text_delta",
-          "text": "in decides. It only au"
+          "text": "in decides. It auto-"
         },
         {
           "type": "text_delta",
-          "text": "to-approves on evidence"
+          "text": "approves only on evidence ver"
         },
         {
           "type": "text_delta",
-          "text": " verified in code, and web s"
+          "text": "ified in code, and web sources"
         },
         {
           "type": "text_delta",
-          "text": "ources can hold a decision back"
+          "text": " can hold a decision back but"
         },
         {
           "type": "text_delta",
-          "text": " but never approve it.\n-"
+          "text": " never approve it.\n- **"
         },
         {
           "type": "text_delta",
-          "text": " **Cost and limits t"
+          "text": "Reg"
         },
         {
           "type": "text_delta",
-          "text": "racked:** The"
+          "text": "ression cases from"
         },
         {
           "type": "text_delta",
-          "text": " port"
+          "text": " failures:** Each real"
         },
         {
           "type": "text_delta",
-          "text": "folio agent has a per"
+          "text": " failure bec"
+        },
+        {
+          "type": "text_delta",
+          "text": "omes a new reg"
+        },
+        {
+          "type": "text_delta",
+          "text": "ression case"
+        },
+        {
+          "type": "text_delta",
+          "text": ".\n- **Cost and"
+        },
+        {
+          "type": "text_delta",
+          "text": " limits tracked:** The"
+        },
+        {
+          "type": "text_delta",
+          "text": " site's agent has a per"
         },
         {
           "type": "text_delta",
@@ -257,188 +233,108 @@
         },
         {
           "type": "text_delta",
-          "text": " Each eval report shows m"
+          "text": " Eval reports show tok"
         },
         {
           "type": "text_delta",
-          "text": "ean tokens, latency and"
+          "text": "ens, latency and cost per"
         },
         {
           "type": "text_delta",
-          "text": " cost per case."
+          "text": " case.\n- **Changes"
         },
         {
           "type": "text_delta",
-          "text": " ([gu"
+          "text": " measured run over run:**"
         },
         {
           "type": "text_delta",
-          "text": "ardrails](https://github."
+          "text": " Every eval run is"
         },
         {
           "type": "text_delta",
-          "text": "com/acarbonellb"
+          "text": " logged to a history, so chang"
         },
         {
           "type": "text_delta",
-          "text": "/acb-landing-public"
+          "text": "es to pr"
         },
         {
           "type": "text_delta",
-          "text": "#guardrails))\n-"
+          "text": "ompts, tools or content show"
         },
         {
           "type": "text_delta",
-          "text": " **Changes measured run over"
+          "text": " up against"
         },
         {
           "type": "text_delta",
-          "text": " run:** Every eval run"
+          "text": " the previ"
         },
         {
           "type": "text_delta",
-          "text": " appends its metrics to a"
+          "text": "ous run."
         },
         {
           "type": "text_delta",
-          "text": " history, so changes to promp"
+          "text": "\n\nStack exam"
         },
         {
           "type": "text_delta",
-          "text": "ts, tools or content show up"
+          "text": "ples: TypeScript,"
         },
         {
           "type": "text_delta",
-          "text": " against"
+          "text": " Claude, MCP, P"
         },
         {
           "type": "text_delta",
-          "text": " the previous run."
+          "text": "ostgreSQL and G"
         },
         {
           "type": "text_delta",
-          "text": " ([eval history](https://"
+          "text": "CP. If you want,"
         },
         {
           "type": "text_delta",
-          "text": "github.com/acarbon"
+          "text": " I"
         },
         {
           "type": "text_delta",
-          "text": "ellb/acb-landing"
+          "text": " can go"
         },
         {
           "type": "text_delta",
-          "text": "-public/blob/main/"
+          "text": " into the Fraud Det"
         },
         {
           "type": "text_delta",
-          "text": "agent/evals/history."
+          "text": "ection Agent's results or"
         },
         {
           "type": "text_delta",
-          "text": "jsonl))"
+          "text": " the portfolio agent's"
         },
         {
           "type": "text_delta",
-          "text": "\n\nResults so"
-        },
-        {
-          "type": "text_delta",
-          "text": " far: on"
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " fraud detection agent ("
-        },
-        {
-          "type": "text_delta",
-          "text": "31 off"
-        },
-        {
-          "type": "text_delta",
-          "text": "line c"
-        },
-        {
-          "type": "text_delta",
-          "text": "ases), approved fraud f"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell from 54% to 8"
-        },
-        {
-          "type": "text_delta",
-          "text": "% over twelve iterations"
-        },
-        {
-          "type": "text_delta",
-          "text": " on a local 9B model."
-        },
-        {
-          "type": "text_delta",
-          "text": " He ch"
-        },
-        {
-          "type": "text_delta",
-          "text": "ose Claude Haiku"
-        },
-        {
-          "type": "text_delta",
-          "text": " 5.5 for deploy"
-        },
-        {
-          "type": "text_delta",
-          "text": "ment, at "
-        },
-        {
-          "type": "text_delta",
-          "text": "86% accuracy vers"
-        },
-        {
-          "type": "text_delta",
-          "text": "us 71%"
-        },
-        {
-          "type": "text_delta",
-          "text": " and about $0.002 per"
-        },
-        {
-          "type": "text_delta",
-          "text": " review. Its stack is T"
-        },
-        {
-          "type": "text_delta",
-          "text": "ypeScript, Postg"
-        },
-        {
-          "type": "text_delta",
-          "text": "reSQL and GCP"
-        },
-        {
-          "type": "text_delta",
-          "text": "."
+          "text": " source code."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto builds agents with a focus on measuring them before they ship and keeping a human in the loop where it matters.\n\n- **Offline evals before shipping:** The agent on his portfolio site records eval cases against a real model and replays them in CI with no model or network. A stale recording or an off-topic answer fails the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy, human in the loop:** His fraud detection agent recommends approve, reject or request-info, and a human admin decides. It only auto-approves on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** The portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Each eval report shows mean tokens, latency and cost per case. ([guardrails](https://github.com/acarbonellb/acb-landing-public#guardrails))\n- **Changes measured run over run:** Every eval run appends its metrics to a history, so changes to prompts, tools or content show up against the previous run. ([eval history](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/history.jsonl))\n\nResults so far: on his fraud detection agent (31 offline cases), approved fraud fell from 54% to 8% over twelve iterations on a local 9B model. He chose Claude Haiku 5.5 for deployment, at 86% accuracy versus 71% and about $0.002 per review. Its stack is TypeScript, PostgreSQL and GCP.",
+            "text": "Alberto builds agents with a strong focus on measurement and human oversight:\n\n- **Offline evals before shipping:** His site's agent records eval cases against a real model and replays them in CI with no network. A stale recording or an off-topic leak fails the build.\n- **Graded autonomy with a human in the loop:** His deployed Fraud Detection Agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Regression cases from failures:** Each real failure becomes a new regression case.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show tokens, latency and cost per case.\n- **Changes measured run over run:** Every eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n\nStack examples: TypeScript, Claude, MCP, PostgreSQL and GCP. If you want, I can go into the Fraud Detection Agent's results or the portfolio agent's source code.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2834,
-              "cacheWriteInputTokens": 1174,
-              "cacheReadInputTokens": 1658,
-              "outputTokens": 553
+              "inputTokens": 2870,
+              "cacheWriteInputTokens": 1218,
+              "cacheReadInputTokens": 1650,
+              "outputTokens": 372
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto builds agents with a focus on measuring them before they ship and keeping a human in the loop where it matters.\n\n- **Offline evals before shipping:** The agent on his portfolio site records eval cases against a real model and replays them in CI with no model or network. A stale recording or an off-topic answer fails the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy, human in the loop:** His fraud detection agent recommends approve, reject or request-info, and a human admin decides. It only auto-approves on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** The portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Each eval report shows mean tokens, latency and cost per case. ([guardrails](https://github.com/acarbonellb/acb-landing-public#guardrails))\n- **Changes measured run over run:** Every eval run appends its metrics to a history, so changes to prompts, tools or content show up against the previous run. ([eval history](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/history.jsonl))\n\nResults so far: on his fraud detection agent (31 offline cases), approved fraud fell from 54% to 8% over twelve iterations on a local 9B model. He chose Claude Haiku 5.5 for deployment, at 86% accuracy versus 71% and about $0.002 per review. Its stack is TypeScript, PostgreSQL and GCP."
+                "text": "Alberto builds agents with a strong focus on measurement and human oversight:\n\n- **Offline evals before shipping:** His site's agent records eval cases against a real model and replays them in CI with no network. A stale recording or an off-topic leak fails the build.\n- **Graded autonomy with a human in the loop:** His deployed Fraud Detection Agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Regression cases from failures:** Each real failure becomes a new regression case.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show tokens, latency and cost per case.\n- **Changes measured run over run:** Every eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n\nStack examples: TypeScript, Claude, MCP, PostgreSQL and GCP. If you want, I can go into the Fraud Detection Agent's results or the portfolio agent's source code."
               }
             ]
           }
@@ -450,13 +346,13 @@
     {
       "calls": [
         {
-          "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-          "latencyMs": 652,
+          "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+          "latencyMs": 536,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1662,
-              "cacheReadInputTokens": 1658
+              "inputTokens": 1654,
+              "cacheReadInputTokens": 1650
             },
             {
               "type": "response_end",
@@ -464,21 +360,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01SAyhks44S2nFxKULZ3cfGv",
+                    "id": "toolu_01RzSPf6SwjZSwwzfSHYvqc5",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1662,
-                  "cacheReadInputTokens": 1658,
+                  "inputTokens": 1654,
+                  "cacheReadInputTokens": 1650,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01SAyhks44S2nFxKULZ3cfGv",
+                    "id": "toolu_01RzSPf6SwjZSwwzfSHYvqc5",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -491,13 +387,13 @@
           ]
         },
         {
-          "requestHash": "c87d01f4c060e951f0436867b06e81601faf8693d9fc16e8e8dfc76cd805fe86",
-          "latencyMs": 1973,
+          "requestHash": "2e0f5ed042d213a196912b5353fa0f4fb43b9bc2cca9aa36c4c3470a262ad68e",
+          "latencyMs": 2040,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2834,
-              "cacheReadInputTokens": 2832
+              "inputTokens": 2870,
+              "cacheReadInputTokens": 2868
             },
             {
               "type": "text_delta",
@@ -505,119 +401,127 @@
             },
             {
               "type": "text_delta",
-              "text": " with a focus on measurement"
+              "text": " with a str"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": "ong foc"
             },
             {
               "type": "text_delta",
-              "text": " human oversight and c"
+              "text": "us on ev"
             },
             {
               "type": "text_delta",
-              "text": "ost control:\n\n- **Off"
+              "text": "aluation,"
             },
             {
               "type": "text_delta",
-              "text": "line evals before shipping:"
+              "text": " human"
             },
             {
               "type": "text_delta",
-              "text": "**"
+              "text": " oversight and cost control"
             },
             {
               "type": "text_delta",
-              "text": " E"
+              "text": ":"
             },
             {
               "type": "text_delta",
-              "text": "val cases are recorded against"
+              "text": "\n\n- **Offline evals"
             },
             {
               "type": "text_delta",
-              "text": " a real model and replayed in"
+              "text": " before shipping:**"
             },
             {
               "type": "text_delta",
-              "text": " CI with no network"
+              "text": " Agents"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " are t"
             },
             {
               "type": "text_delta",
-              "text": " so st"
+              "text": "ested against"
             },
             {
               "type": "text_delta",
-              "text": "ale recordings or off-top"
+              "text": " rec"
             },
             {
               "type": "text_delta",
-              "text": "ic answ"
+              "text": "orded eval cases that"
             },
             {
               "type": "text_delta",
-              "text": "ers fail the build. "
+              "text": " repl"
             },
             {
               "type": "text_delta",
-              "text": "([ADR 0001]("
+              "text": "ay in CI with"
             },
             {
               "type": "text_delta",
-              "text": "https://github.com/acar"
+              "text": " no model or network. A stale"
             },
             {
               "type": "text_delta",
-              "text": "bonellb/acb-"
+              "text": " recording or an off-topic"
             },
             {
               "type": "text_delta",
-              "text": "landing-public/blob/"
+              "text": " leak fails the build."
             },
             {
               "type": "text_delta",
-              "text": "main/docs/adr/"
+              "text": " Real failures become new regression c"
             },
             {
               "type": "text_delta",
-              "text": "0001-agent-evals"
+              "text": "ases.\n- **Graded"
             },
             {
               "type": "text_delta",
-              "text": "-record-replay.md))"
+              "text": " autonomy with"
             },
             {
               "type": "text_delta",
-              "text": "\n- **Graded auton"
+              "text": " a human in the loop:**"
             },
             {
               "type": "text_delta",
-              "text": "omy with a human in the lo"
+              "text": " His de"
             },
             {
               "type": "text_delta",
-              "text": "op:** In his f"
+              "text": "ployed fraud detection ag"
             },
             {
               "type": "text_delta",
-              "text": "raud detection agent, the"
+              "text": "ent rec"
             },
             {
               "type": "text_delta",
-              "text": " agent recommends and"
+              "text": "ommends appro"
             },
             {
               "type": "text_delta",
-              "text": " a human admin decides. It"
+              "text": "ve, reject or request-info"
             },
             {
               "type": "text_delta",
-              "text": " au"
+              "text": ", and a human admin mak"
+            },
+            {
+              "type": "text_delta",
+              "text": "es the final"
+            },
+            {
+              "type": "text_delta",
+              "text": " call. It au"
             },
             {
               "type": "text_delta",
@@ -637,19 +541,362 @@
             },
             {
               "type": "text_delta",
-              "text": "\n- **Cost and limits"
+              "text": "\n- **C"
             },
             {
               "type": "text_delta",
-              "text": " tracked:** His"
+              "text": "ost and limits tracked:"
             },
             {
               "type": "text_delta",
-              "text": " port"
+              "text": "** The"
             },
             {
               "type": "text_delta",
-              "text": "folio agent has a per"
+              "text": " site's agent has a per"
+            },
+            {
+              "type": "text_delta",
+              "text": "-request token budget, per-"
+            },
+            {
+              "type": "text_delta",
+              "text": "IP rate limits and a"
+            },
+            {
+              "type": "text_delta",
+              "text": " monthly spend cap."
+            },
+            {
+              "type": "text_delta",
+              "text": " Each eval report shows m"
+            },
+            {
+              "type": "text_delta",
+              "text": "ean tokens, latency and"
+            },
+            {
+              "type": "text_delta",
+              "text": " cost per case.\n- **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Chang"
+            },
+            {
+              "type": "text_delta",
+              "text": "es measured run over run:**"
+            },
+            {
+              "type": "text_delta",
+              "text": " Each eval run is"
+            },
+            {
+              "type": "text_delta",
+              "text": " logged to a history, so chang"
+            },
+            {
+              "type": "text_delta",
+              "text": "es to"
+            },
+            {
+              "type": "text_delta",
+              "text": " prompts, tools or content"
+            },
+            {
+              "type": "text_delta",
+              "text": " show up against"
+            },
+            {
+              "type": "text_delta",
+              "text": " the previ"
+            },
+            {
+              "type": "text_delta",
+              "text": "ous run.\n\nSt"
+            },
+            {
+              "type": "text_delta",
+              "text": "ack: TypeScript,"
+            },
+            {
+              "type": "text_delta",
+              "text": " Claude, MCP,"
+            },
+            {
+              "type": "text_delta",
+              "text": " PostgreSQL and"
+            },
+            {
+              "type": "text_delta",
+              "text": " GCP. For"
+            },
+            {
+              "type": "text_delta",
+              "text": " example, the fraud ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent went"
+            },
+            {
+              "type": "text_delta",
+              "text": " from "
+            },
+            {
+              "type": "text_delta",
+              "text": "68% to 92% accu"
+            },
+            {
+              "type": "text_delta",
+              "text": "racy on its"
+            },
+            {
+              "type": "text_delta",
+              "text": " reference set after"
+            },
+            {
+              "type": "text_delta",
+              "text": " switching to Claude Ha"
+            },
+            {
+              "type": "text_delta",
+              "text": "iku,"
+            },
+            {
+              "type": "text_delta",
+              "text": " at about $0.002 per"
+            },
+            {
+              "type": "text_delta",
+              "text": " review. Want"
+            },
+            {
+              "type": "text_delta",
+              "text": " details"
+            },
+            {
+              "type": "text_delta",
+              "text": " on any"
+            },
+            {
+              "type": "text_delta",
+              "text": " of these projects?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto builds agents with a strong focus on evaluation, human oversight and cost control:\n\n- **Offline evals before shipping:** Agents are tested against recorded eval cases that replay in CI with no model or network. A stale recording or an off-topic leak fails the build. Real failures become new regression cases.\n- **Graded autonomy with a human in the loop:** His deployed fraud detection agent recommends approve, reject or request-info, and a human admin makes the final call. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Each eval report shows mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n\nStack: TypeScript, Claude, MCP, PostgreSQL and GCP. For example, the fraud agent went from 68% to 92% accuracy on its reference set after switching to Claude Haiku, at about $0.002 per review. Want details on any of these projects?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2870,
+                  "cacheReadInputTokens": 2868,
+                  "outputTokens": 389
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto builds agents with a strong focus on evaluation, human oversight and cost control:\n\n- **Offline evals before shipping:** Agents are tested against recorded eval cases that replay in CI with no model or network. A stale recording or an off-topic leak fails the build. Real failures become new regression cases.\n- **Graded autonomy with a human in the loop:** His deployed fraud detection agent recommends approve, reject or request-info, and a human admin makes the final call. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Each eval report shows mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n\nStack: TypeScript, Claude, MCP, PostgreSQL and GCP. For example, the fraud agent went from 68% to 92% accuracy on its reference set after switching to Claude Haiku, at about $0.002 per review. Want details on any of these projects?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+          "latencyMs": 484,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1654,
+              "cacheReadInputTokens": 1650
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_0147cnLnry7jomWCBxF1aMWG",
+                    "name": "get_projects",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1654,
+                  "cacheReadInputTokens": 1650,
+                  "outputTokens": 27
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_0147cnLnry7jomWCBxF1aMWG",
+                    "name": "get_projects",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "1aad4d97397f37bae2ae5918d044b53cfe5a1fdb6499278e8661865a8d858241",
+          "latencyMs": 1676,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2870,
+              "cacheReadInputTokens": 2868
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto builds agents"
+            },
+            {
+              "type": "text_delta",
+              "text": " with a str"
+            },
+            {
+              "type": "text_delta",
+              "text": "ong foc"
+            },
+            {
+              "type": "text_delta",
+              "text": "us on measurement and human"
+            },
+            {
+              "type": "text_delta",
+              "text": " oversight:\n\n- **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Offline evals before shipping"
+            },
+            {
+              "type": "text_delta",
+              "text": ":** His"
+            },
+            {
+              "type": "text_delta",
+              "text": " site's agent records e"
+            },
+            {
+              "type": "text_delta",
+              "text": "val cases against a real model and"
+            },
+            {
+              "type": "text_delta",
+              "text": " replays them in CI with"
+            },
+            {
+              "type": "text_delta",
+              "text": " no network."
+            },
+            {
+              "type": "text_delta",
+              "text": " A"
+            },
+            {
+              "type": "text_delta",
+              "text": " stale recording or an off-"
+            },
+            {
+              "type": "text_delta",
+              "text": "topic leak fails the build"
+            },
+            {
+              "type": "text_delta",
+              "text": ".\n- **Graded aut"
+            },
+            {
+              "type": "text_delta",
+              "text": "onomy with a human in the"
+            },
+            {
+              "type": "text_delta",
+              "text": " loop:** His de"
+            },
+            {
+              "type": "text_delta",
+              "text": "ployed"
+            },
+            {
+              "type": "text_delta",
+              "text": " Fraud Detection Ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent recommends approve"
+            },
+            {
+              "type": "text_delta",
+              "text": ", reject or request-"
+            },
+            {
+              "type": "text_delta",
+              "text": "info, and a human admin dec"
+            },
+            {
+              "type": "text_delta",
+              "text": "ides. It auto-approves"
+            },
+            {
+              "type": "text_delta",
+              "text": " only on evidence verified in"
+            },
+            {
+              "type": "text_delta",
+              "text": " code,"
+            },
+            {
+              "type": "text_delta",
+              "text": " and web sources can hold a"
+            },
+            {
+              "type": "text_delta",
+              "text": " decision back but never approve it"
+            },
+            {
+              "type": "text_delta",
+              "text": ".\n- **Reg"
+            },
+            {
+              "type": "text_delta",
+              "text": "ression cases from"
+            },
+            {
+              "type": "text_delta",
+              "text": " failures:** Each real"
+            },
+            {
+              "type": "text_delta",
+              "text": " failure becomes a new reg"
+            },
+            {
+              "type": "text_delta",
+              "text": "ression case.\n- **C"
+            },
+            {
+              "type": "text_delta",
+              "text": "ost and limits tracked:"
+            },
+            {
+              "type": "text_delta",
+              "text": "** The"
+            },
+            {
+              "type": "text_delta",
+              "text": " site's agent has a per"
             },
             {
               "type": "text_delta",
@@ -689,15 +936,15 @@
             },
             {
               "type": "text_delta",
-              "text": " appended to a history, so chang"
+              "text": " app"
             },
             {
               "type": "text_delta",
-              "text": "es to"
+              "text": "ended to a history, so promp"
             },
             {
               "type": "text_delta",
-              "text": " prompts, tools or content"
+              "text": "t, tool or content changes"
             },
             {
               "type": "text_delta",
@@ -705,426 +952,7 @@
             },
             {
               "type": "text_delta",
-              "text": " the previ"
-            },
-            {
-              "type": "text_delta",
-              "text": "ous run.\n\nFor example, on"
-            },
-            {
-              "type": "text_delta",
-              "text": " the fraud detection agent"
-            },
-            {
-              "type": "text_delta",
-              "text": " (off"
-            },
-            {
-              "type": "text_delta",
-              "text": "line evals, 31 c"
-            },
-            {
-              "type": "text_delta",
-              "text": "ases), he mo"
-            },
-            {
-              "type": "text_delta",
-              "text": "ved from a local 9B model"
-            },
-            {
-              "type": "text_delta",
-              "text": " to Claude Haiku"
-            },
-            {
-              "type": "text_delta",
-              "text": " 5.5,"
-            },
-            {
-              "type": "text_delta",
-              "text": " which reached 86% accu"
-            },
-            {
-              "type": "text_delta",
-              "text": "racy versus 71%"
-            },
-            {
-              "type": "text_delta",
-              "text": " and let 1% of fra"
-            },
-            {
-              "type": "text_delta",
-              "text": "ud through vers"
-            },
-            {
-              "type": "text_delta",
-              "text": "us 8%,"
-            },
-            {
-              "type": "text_delta",
-              "text": " at about $0.002 per"
-            },
-            {
-              "type": "text_delta",
-              "text": " review. The"
-            },
-            {
-              "type": "text_delta",
-              "text": " stack for"
-            },
-            {
-              "type": "text_delta",
-              "text": " that project"
-            },
-            {
-              "type": "text_delta",
-              "text": " is TypeScript, P"
-            },
-            {
-              "type": "text_delta",
-              "text": "ostgreSQL and G"
-            },
-            {
-              "type": "text_delta",
-              "text": "CP."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto builds agents with a focus on measurement, human oversight and cost control:\n\n- **Offline evals before shipping:** Eval cases are recorded against a real model and replayed in CI with no network, so stale recordings or off-topic answers fail the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy with a human in the loop:** In his fraud detection agent, the agent recommends and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** His portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is appended to a history, so changes to prompts, tools or content show up against the previous run.\n\nFor example, on the fraud detection agent (offline evals, 31 cases), he moved from a local 9B model to Claude Haiku 5.5, which reached 86% accuracy versus 71% and let 1% of fraud through versus 8%, at about $0.002 per review. The stack for that project is TypeScript, PostgreSQL and GCP.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2834,
-                  "cacheReadInputTokens": 2832,
-                  "outputTokens": 444
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto builds agents with a focus on measurement, human oversight and cost control:\n\n- **Offline evals before shipping:** Eval cases are recorded against a real model and replayed in CI with no network, so stale recordings or off-topic answers fail the build. ([ADR 0001](https://github.com/acarbonellb/acb-landing-public/blob/main/docs/adr/0001-agent-evals-record-replay.md))\n- **Graded autonomy with a human in the loop:** In his fraud detection agent, the agent recommends and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Cost and limits tracked:** His portfolio agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is appended to a history, so changes to prompts, tools or content show up against the previous run.\n\nFor example, on the fraud detection agent (offline evals, 31 cases), he moved from a local 9B model to Claude Haiku 5.5, which reached 86% accuracy versus 71% and let 1% of fraud through versus 8%, at about $0.002 per review. The stack for that project is TypeScript, PostgreSQL and GCP."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-          "latencyMs": 639,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1662,
-              "cacheReadInputTokens": 1658
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_0177bgLu1jAjrcW7m6BDEiRM",
-                    "name": "get_projects",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1662,
-                  "cacheReadInputTokens": 1658,
-                  "outputTokens": 27
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_0177bgLu1jAjrcW7m6BDEiRM",
-                    "name": "get_projects",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "a18ff1e8139cd842758815a3f47e56efb2738e6ea0855120d516e3bad93f2177",
-          "latencyMs": 1933,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2834,
-              "cacheReadInputTokens": 2832
-            },
-            {
-              "type": "text_delta",
-              "text": "Alberto builds agents"
-            },
-            {
-              "type": "text_delta",
-              "text": " with a str"
-            },
-            {
-              "type": "text_delta",
-              "text": "ong foc"
-            },
-            {
-              "type": "text_delta",
-              "text": "us on ev"
-            },
-            {
-              "type": "text_delta",
-              "text": "aluation,"
-            },
-            {
-              "type": "text_delta",
-              "text": " control and c"
-            },
-            {
-              "type": "text_delta",
-              "text": "ost:"
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\n- **Offline evals"
-            },
-            {
-              "type": "text_delta",
-              "text": " before shipping:**"
-            },
-            {
-              "type": "text_delta",
-              "text": " Agent e"
-            },
-            {
-              "type": "text_delta",
-              "text": "val cases are recorded against"
-            },
-            {
-              "type": "text_delta",
-              "text": " a real model and replayed in"
-            },
-            {
-              "type": "text_delta",
-              "text": " CI with no model or network."
-            },
-            {
-              "type": "text_delta",
-              "text": " A stale recording or an off"
-            },
-            {
-              "type": "text_delta",
-              "text": "-topic leak fails the"
-            },
-            {
-              "type": "text_delta",
-              "text": " build.\n- **Human"
-            },
-            {
-              "type": "text_delta",
-              "text": " in the loop,"
-            },
-            {
-              "type": "text_delta",
-              "text": " graded autonomy:**"
-            },
-            {
-              "type": "text_delta",
-              "text": " His"
-            },
-            {
-              "type": "text_delta",
-              "text": " fraud det"
-            },
-            {
-              "type": "text_delta",
-              "text": "ection agent recommends appro"
-            },
-            {
-              "type": "text_delta",
-              "text": "ve, reject or request-info"
-            },
-            {
-              "type": "text_delta",
-              "text": ", and a human admin decides"
-            },
-            {
-              "type": "text_delta",
-              "text": ". It"
-            },
-            {
-              "type": "text_delta",
-              "text": " au"
-            },
-            {
-              "type": "text_delta",
-              "text": "to-approves only on evid"
-            },
-            {
-              "type": "text_delta",
-              "text": "ence verified in code, and web"
-            },
-            {
-              "type": "text_delta",
-              "text": " sources can hold a decision"
-            },
-            {
-              "type": "text_delta",
-              "text": " back but never approve it."
-            },
-            {
-              "type": "text_delta",
-              "text": "\n- **Measured changes:"
-            },
-            {
-              "type": "text_delta",
-              "text": "** Every eval run is"
-            },
-            {
-              "type": "text_delta",
-              "text": " logged to a history, so chang"
-            },
-            {
-              "type": "text_delta",
-              "text": "es to prompts, tools"
-            },
-            {
-              "type": "text_delta",
-              "text": " or content show up against"
-            },
-            {
-              "type": "text_delta",
-              "text": " the previ"
-            },
-            {
-              "type": "text_delta",
-              "text": "ous run.\n- **C"
-            },
-            {
-              "type": "text_delta",
-              "text": "ost and limits:** He"
-            },
-            {
-              "type": "text_delta",
-              "text": " tracks token"
-            },
-            {
-              "type": "text_delta",
-              "text": " budgets per"
-            },
-            {
-              "type": "text_delta",
-              "text": " request, per-IP rate"
-            },
-            {
-              "type": "text_delta",
-              "text": " limits and a monthly sp"
-            },
-            {
-              "type": "text_delta",
-              "text": "end cap."
-            },
-            {
-              "type": "text_delta",
-              "text": " E"
-            },
-            {
-              "type": "text_delta",
-              "text": "val reports show mean tok"
-            },
-            {
-              "type": "text_delta",
-              "text": "ens, latency and cost per"
-            },
-            {
-              "type": "text_delta",
-              "text": " case."
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\nSt"
-            },
-            {
-              "type": "text_delta",
-              "text": "ack includ"
-            },
-            {
-              "type": "text_delta",
-              "text": "es TypeScript,"
-            },
-            {
-              "type": "text_delta",
-              "text": " Claude, MCP, P"
-            },
-            {
-              "type": "text_delta",
-              "text": "ostgreSQL and G"
-            },
-            {
-              "type": "text_delta",
-              "text": "CP. For example, the f"
-            },
-            {
-              "type": "text_delta",
-              "text": "raud detection agent went"
-            },
-            {
-              "type": "text_delta",
-              "text": " from "
-            },
-            {
-              "type": "text_delta",
-              "text": "54% to"
-            },
-            {
-              "type": "text_delta",
-              "text": " 8% approved fraud"
-            },
-            {
-              "type": "text_delta",
-              "text": " over twelve off"
-            },
-            {
-              "type": "text_delta",
-              "text": "line iterations,"
-            },
-            {
-              "type": "text_delta",
-              "text": " and it"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s"
-            },
-            {
-              "type": "text_delta",
-              "text": " now"
-            },
-            {
-              "type": "text_delta",
-              "text": " set"
-            },
-            {
-              "type": "text_delta",
-              "text": " to use Claude Hai"
-            },
-            {
-              "type": "text_delta",
-              "text": "ku 5.5 at"
-            },
-            {
-              "type": "text_delta",
-              "text": " about $0.002 per review"
-            },
-            {
-              "type": "text_delta",
-              "text": ". Want"
+              "text": " the previous run.\n\nWant"
             },
             {
               "type": "text_delta",
@@ -1132,31 +960,35 @@
             },
             {
               "type": "text_delta",
-              "text": " on any"
+              "text": " on a"
             },
             {
               "type": "text_delta",
-              "text": " of these"
+              "text": " specific project, such as the"
             },
             {
               "type": "text_delta",
-              "text": " projects?"
+              "text": " Fraud Detection Ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "ent's results?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto builds agents with a strong focus on evaluation, control and cost:\n\n- **Offline evals before shipping:** Agent eval cases are recorded against a real model and replayed in CI with no model or network. A stale recording or an off-topic leak fails the build.\n- **Human in the loop, graded autonomy:** His fraud detection agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Measured changes:** Every eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n- **Cost and limits:** He tracks token budgets per request, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n\nStack includes TypeScript, Claude, MCP, PostgreSQL and GCP. For example, the fraud detection agent went from 54% to 8% approved fraud over twelve offline iterations, and it's now set to use Claude Haiku 5.5 at about $0.002 per review. Want details on any of these projects?",
+                "text": "Alberto builds agents with a strong focus on measurement and human oversight:\n\n- **Offline evals before shipping:** His site's agent records eval cases against a real model and replays them in CI with no network. A stale recording or an off-topic leak fails the build.\n- **Graded autonomy with a human in the loop:** His deployed Fraud Detection Agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Regression cases from failures:** Each real failure becomes a new regression case.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is appended to a history, so prompt, tool or content changes show up against the previous run.\n\nWant details on a specific project, such as the Fraud Detection Agent's results?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2834,
-                  "cacheReadInputTokens": 2832,
-                  "outputTokens": 375
+                  "inputTokens": 2870,
+                  "cacheReadInputTokens": 2868,
+                  "outputTokens": 333
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto builds agents with a strong focus on evaluation, control and cost:\n\n- **Offline evals before shipping:** Agent eval cases are recorded against a real model and replayed in CI with no model or network. A stale recording or an off-topic leak fails the build.\n- **Human in the loop, graded autonomy:** His fraud detection agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Measured changes:** Every eval run is logged to a history, so changes to prompts, tools or content show up against the previous run.\n- **Cost and limits:** He tracks token budgets per request, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n\nStack includes TypeScript, Claude, MCP, PostgreSQL and GCP. For example, the fraud detection agent went from 54% to 8% approved fraud over twelve offline iterations, and it's now set to use Claude Haiku 5.5 at about $0.002 per review. Want details on any of these projects?"
+                    "text": "Alberto builds agents with a strong focus on measurement and human oversight:\n\n- **Offline evals before shipping:** His site's agent records eval cases against a real model and replays them in CI with no network. A stale recording or an off-topic leak fails the build.\n- **Graded autonomy with a human in the loop:** His deployed Fraud Detection Agent recommends approve, reject or request-info, and a human admin decides. It auto-approves only on evidence verified in code, and web sources can hold a decision back but never approve it.\n- **Regression cases from failures:** Each real failure becomes a new regression case.\n- **Cost and limits tracked:** The site's agent has a per-request token budget, per-IP rate limits and a monthly spend cap. Eval reports show mean tokens, latency and cost per case.\n- **Changes measured run over run:** Each eval run is appended to a history, so prompt, tool or content changes show up against the previous run.\n\nWant details on a specific project, such as the Fraud Detection Agent's results?"
                   }
                 ]
               }

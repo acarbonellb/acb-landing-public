@@ -3,7 +3,7 @@
   "slug": "how-he-uses-claude",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
-      "latencyMs": 5668,
+      "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
+      "latencyMs": 7974,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2330,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "9DG5vAnScVasM1x24n2LCJ9eDxn6NOiV",
+                "id": "QDyYH0soOnOQU0tFdZKeEwR5ISNX1jWe",
                 "name": "get_stack",
                 "input": {
                   "group": "ai"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2342,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 232
+              "inputTokens": 2330,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 324
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "9DG5vAnScVasM1x24n2LCJ9eDxn6NOiV",
+                "id": "QDyYH0soOnOQU0tFdZKeEwR5ISNX1jWe",
                 "name": "get_stack",
                 "input": {
                   "group": "ai"
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "00360fbbad7c2e29ced586eda50aa46bc07190589a0ba437f70db4670c7d6ed0",
-      "latencyMs": 1782,
+      "requestHash": "75116a9003573088612fbf5c219ab4391db8e469d5b21ea258af7a4c259ae105",
+      "latencyMs": 1829,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2442,
-          "cacheReadInputTokens": 1175
+          "inputTokens": 2430,
+          "cacheReadInputTokens": 1169
         },
         {
           "type": "text_delta",
@@ -117,11 +117,11 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": ","
         },
         {
           "type": "text_delta",
-          "text": " He"
+          "text": " which"
         },
         {
           "type": "text_delta",
@@ -129,11 +129,7 @@
         },
         {
           "type": "text_delta",
-          "text": " works"
-        },
-        {
-          "type": "text_delta",
-          "text": " with"
+          "text": " includes"
         },
         {
           "type": "text_delta",
@@ -178,6 +174,10 @@
         {
           "type": "text_delta",
           "text": " local"
+        },
+        {
+          "type": "text_delta",
+          "text": " with"
         },
         {
           "type": "text_delta",
@@ -253,6 +253,10 @@
         },
         {
           "type": "text_delta",
+          "text": " specific"
+        },
+        {
+          "type": "text_delta",
           "text": " details"
         },
         {
@@ -273,15 +277,11 @@
         },
         {
           "type": "text_delta",
-          "text": " these"
+          "text": " it"
         },
         {
           "type": "text_delta",
           "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " specific"
         },
         {
           "type": "text_delta",
@@ -293,15 +293,19 @@
         },
         {
           "type": "text_delta",
-          "text": " I"
+          "text": " you"
         },
         {
           "type": "text_delta",
-          "text": " can"
+          "text": " could"
         },
         {
           "type": "text_delta",
-          "text": " check"
+          "text": " ask"
+        },
+        {
+          "type": "text_delta",
+          "text": " about"
         },
         {
           "type": "text_delta",
@@ -309,23 +313,23 @@
         },
         {
           "type": "text_delta",
-          "text": " portfolio"
+          "text": " deployed"
         },
         {
           "type": "text_delta",
-          "text": " if"
+          "text": " or"
         },
         {
           "type": "text_delta",
-          "text": " you"
+          "text": " in"
         },
         {
           "type": "text_delta",
-          "text": "'d"
+          "text": "-progress"
         },
         {
           "type": "text_delta",
-          "text": " like"
+          "text": " agents"
         },
         {
           "type": "text_delta",
@@ -334,18 +338,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto uses Claude as part of his AI/agents stack. He also works with Grok, open-source models (via cloud or local Ollama), tool calling, MCP, agent evals, and monitoring. For more details on how he applies these in specific projects, I can check his portfolio if you'd like.",
+            "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via cloud or local with Ollama), tool calling, MCP, agent evals, and monitoring. For more specific details on how he applies it in projects, you could ask about his deployed or in-progress agents.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2442,
-              "cacheReadInputTokens": 1175,
-              "outputTokens": 69
+              "inputTokens": 2430,
+              "cacheReadInputTokens": 1169,
+              "outputTokens": 70
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses Claude as part of his AI/agents stack. He also works with Grok, open-source models (via cloud or local Ollama), tool calling, MCP, agent evals, and monitoring. For more details on how he applies these in specific projects, I can check his portfolio if you'd like."
+                "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via cloud or local with Ollama), tool calling, MCP, agent evals, and monitoring. For more specific details on how he applies it in projects, you could ask about his deployed or in-progress agents."
               }
             ]
           }
@@ -357,13 +361,13 @@
     {
       "calls": [
         {
-          "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
-          "latencyMs": 4711,
+          "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
+          "latencyMs": 4145,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -371,38 +375,38 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "Xpr3b8HPgYSw7Rop3Oa2WNfUXPAfDWf8",
-                    "name": "get_projects",
-                    "input": {}
-                  },
-                  {
-                    "id": "XcQOUC58UVigmmyfSu6TrirlMb72KaHk",
+                    "id": "89nuZ7kk5kLjS6Swp6hHjLfSISJiYbRC",
                     "name": "get_stack",
                     "input": {
                       "group": "ai"
                     }
+                  },
+                  {
+                    "id": "KDrLkift1tvofq0WayxcQkqRc5WVr7S8",
+                    "name": "get_projects",
+                    "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 193
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 168
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "Xpr3b8HPgYSw7Rop3Oa2WNfUXPAfDWf8",
-                    "name": "get_projects",
-                    "input": {}
-                  },
-                  {
-                    "type": "tool_use",
-                    "id": "XcQOUC58UVigmmyfSu6TrirlMb72KaHk",
+                    "id": "89nuZ7kk5kLjS6Swp6hHjLfSISJiYbRC",
                     "name": "get_stack",
                     "input": {
                       "group": "ai"
                     }
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "KDrLkift1tvofq0WayxcQkqRc5WVr7S8",
+                    "name": "get_projects",
+                    "input": {}
                   }
                 ]
               }
@@ -410,13 +414,13 @@
           ]
         },
         {
-          "requestHash": "2542dcaaf8d95cf392ff20d7026a1a8ca6e0546a56be2052e29f1ad9182ee1cc",
-          "latencyMs": 4604,
+          "requestHash": "21b4d00f7bb0a5fc53c3dc6e3374909b84d7908742737d656b7b16b1e25d7710",
+          "latencyMs": 5237,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3186,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 3204,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -440,6 +444,14 @@
             },
             {
               "type": "text_delta",
+              "text": " several"
+            },
+            {
+              "type": "text_delta",
+              "text": " of"
+            },
+            {
+              "type": "text_delta",
               "text": " his"
             },
             {
@@ -456,19 +468,259 @@
             },
             {
               "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Specifically"
-            },
-            {
-              "type": "text_delta",
               "text": ":"
             },
             {
               "type": "text_delta",
-              "text": "\n\n-"
+              "text": "\n\n1"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Fra"
+            },
+            {
+              "type": "text_delta",
+              "text": "ud"
+            },
+            {
+              "type": "text_delta",
+              "text": " Detection"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "deploy"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed"
+            },
+            {
+              "type": "text_delta",
+              "text": "):"
+            },
+            {
+              "type": "text_delta",
+              "text": " Uses"
+            },
+            {
+              "type": "text_delta",
+              "text": " Claude"
+            },
+            {
+              "type": "text_delta",
+              "text": " Ha"
+            },
+            {
+              "type": "text_delta",
+              "text": "iku"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "5"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " review"
+            },
+            {
+              "type": "text_delta",
+              "text": " events"
+            },
+            {
+              "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " organizers"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
+              "text": " ticket"
+            },
+            {
+              "type": "text_delta",
+              "text": "ing"
+            },
+            {
+              "type": "text_delta",
+              "text": " platform"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " recommending"
+            },
+            {
+              "type": "text_delta",
+              "text": " approve"
+            },
+            {
+              "type": "text_delta",
+              "text": "/re"
+            },
+            {
+              "type": "text_delta",
+              "text": "ject"
+            },
+            {
+              "type": "text_delta",
+              "text": "/request"
+            },
+            {
+              "type": "text_delta",
+              "text": "-info"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " reasons"
+            },
+            {
+              "type": "text_delta",
+              "text": " for"
+            },
+            {
+              "type": "text_delta",
+              "text": " human"
+            },
+            {
+              "type": "text_delta",
+              "text": " admin"
+            },
+            {
+              "type": "text_delta",
+              "text": " review"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " It"
+            },
+            {
+              "type": "text_delta",
+              "text": " achieved"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "9"
+            },
+            {
+              "type": "text_delta",
+              "text": "2"
+            },
+            {
+              "type": "text_delta",
+              "text": "%"
+            },
+            {
+              "type": "text_delta",
+              "text": " accuracy"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " fraud"
+            },
+            {
+              "type": "text_delta",
+              "text": " detection"
+            },
+            {
+              "type": "text_delta",
+              "text": " vs"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "6"
+            },
+            {
+              "type": "text_delta",
+              "text": "8"
+            },
+            {
+              "type": "text_delta",
+              "text": "%"
+            },
+            {
+              "type": "text_delta",
+              "text": " baseline"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": "\n\n2"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -484,27 +736,27 @@
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": "**"
             },
             {
               "type": "text_delta",
-              "text": " Uses"
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": " Claude"
+              "text": "personal"
             },
             {
               "type": "text_delta",
-              "text": " as"
+              "text": " project"
             },
             {
               "type": "text_delta",
-              "text": " part"
+              "text": "):"
             },
             {
               "type": "text_delta",
-              "text": " of"
+              "text": " Powers"
             },
             {
               "type": "text_delta",
@@ -512,11 +764,11 @@
             },
             {
               "type": "text_delta",
-              "text": " MCP"
+              "text": " AI"
             },
             {
               "type": "text_delta",
-              "text": " server"
+              "text": " agent"
             },
             {
               "type": "text_delta",
@@ -536,11 +788,11 @@
             },
             {
               "type": "text_delta",
-              "text": " to"
+              "text": " that"
             },
             {
               "type": "text_delta",
-              "text": " answer"
+              "text": " answers"
             },
             {
               "type": "text_delta",
@@ -608,75 +860,11 @@
             },
             {
               "type": "text_delta",
-              "text": " at"
+              "text": " on"
             },
             {
               "type": "text_delta",
-              "text": " https"
-            },
-            {
-              "type": "text_delta",
-              "text": "://"
-            },
-            {
-              "type": "text_delta",
-              "text": "github"
-            },
-            {
-              "type": "text_delta",
-              "text": ".com"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "arbon"
-            },
-            {
-              "type": "text_delta",
-              "text": "ell"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "-"
-            },
-            {
-              "type": "text_delta",
-              "text": "landing"
-            },
-            {
-              "type": "text_delta",
-              "text": "-public"
-            },
-            {
-              "type": "text_delta",
-              "text": "/tree"
-            },
-            {
-              "type": "text_delta",
-              "text": "/main"
-            },
-            {
-              "type": "text_delta",
-              "text": "/"
-            },
-            {
-              "type": "text_delta",
-              "text": "agent"
+              "text": " GitHub"
             },
             {
               "type": "text_delta",
@@ -684,7 +872,11 @@
             },
             {
               "type": "text_delta",
-              "text": "\n\n-"
+              "text": "\n\n3"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -692,15 +884,15 @@
             },
             {
               "type": "text_delta",
-              "text": "Fra"
+              "text": "Organ"
             },
             {
               "type": "text_delta",
-              "text": "ud"
+              "text": "izer"
             },
             {
               "type": "text_delta",
-              "text": " Detection"
+              "text": " Support"
             },
             {
               "type": "text_delta",
@@ -708,143 +900,63 @@
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": "**"
             },
             {
               "type": "text_delta",
-              "text": " Ch"
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": "ose"
+              "text": "coming"
             },
             {
               "type": "text_delta",
-              "text": " Claude"
+              "text": " soon"
             },
             {
               "type": "text_delta",
-              "text": " Ha"
+              "text": "):"
             },
             {
               "type": "text_delta",
-              "text": "iku"
+              "text": " Will"
             },
             {
               "type": "text_delta",
-              "text": " "
+              "text": " answer"
             },
             {
               "type": "text_delta",
-              "text": "5"
+              "text": " event"
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": " organizers"
             },
             {
               "type": "text_delta",
-              "text": "5"
+              "text": "'"
             },
             {
               "type": "text_delta",
-              "text": " for"
+              "text": " questions"
             },
             {
               "type": "text_delta",
-              "text": " deployment"
+              "text": " about"
             },
             {
               "type": "text_delta",
-              "text": " after"
+              "text": " sales"
             },
             {
               "type": "text_delta",
-              "text": " comparing"
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": " it"
-            },
-            {
-              "type": "text_delta",
-              "text": " with"
-            },
-            {
-              "type": "text_delta",
-              "text": " a"
-            },
-            {
-              "type": "text_delta",
-              "text": " local"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "9"
-            },
-            {
-              "type": "text_delta",
-              "text": "B"
-            },
-            {
-              "type": "text_delta",
-              "text": " model"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " It"
-            },
-            {
-              "type": "text_delta",
-              "text": " showed"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "8"
-            },
-            {
-              "type": "text_delta",
-              "text": "6"
-            },
-            {
-              "type": "text_delta",
-              "text": "%"
-            },
-            {
-              "type": "text_delta",
-              "text": " accuracy"
-            },
-            {
-              "type": "text_delta",
-              "text": " vs"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "7"
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "%,"
+              "text": " payouts"
             },
             {
               "type": "text_delta",
@@ -852,39 +964,7 @@
             },
             {
               "type": "text_delta",
-              "text": " only"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "%"
-            },
-            {
-              "type": "text_delta",
-              "text": " of"
-            },
-            {
-              "type": "text_delta",
-              "text": " fraud"
-            },
-            {
-              "type": "text_delta",
-              "text": " cases"
-            },
-            {
-              "type": "text_delta",
-              "text": " were"
-            },
-            {
-              "type": "text_delta",
-              "text": " approved"
+              "text": " setup"
             },
             {
               "type": "text_delta",
@@ -900,67 +980,23 @@
             },
             {
               "type": "text_delta",
-              "text": " ("
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": "vs"
+              "text": "\n\nAlbert"
             },
             {
               "type": "text_delta",
-              "text": " "
+              "text": "o"
             },
             {
               "type": "text_delta",
-              "text": "8"
+              "text": " also"
             },
             {
               "type": "text_delta",
-              "text": "%"
-            },
-            {
-              "type": "text_delta",
-              "text": " with"
-            },
-            {
-              "type": "text_delta",
-              "text": " the"
-            },
-            {
-              "type": "text_delta",
-              "text": " local"
-            },
-            {
-              "type": "text_delta",
-              "text": " model"
-            },
-            {
-              "type": "text_delta",
-              "text": ")."
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\n-"
-            },
-            {
-              "type": "text_delta",
-              "text": " **"
-            },
-            {
-              "type": "text_delta",
-              "text": "General"
-            },
-            {
-              "type": "text_delta",
-              "text": " AI"
-            },
-            {
-              "type": "text_delta",
-              "text": " Stack"
-            },
-            {
-              "type": "text_delta",
-              "text": "**:"
+              "text": " uses"
             },
             {
               "type": "text_delta",
@@ -968,19 +1004,23 @@
             },
             {
               "type": "text_delta",
-              "text": " is"
+              "text": " as"
             },
             {
               "type": "text_delta",
-              "text": " listed"
+              "text": " part"
             },
             {
               "type": "text_delta",
-              "text": " among"
+              "text": " of"
             },
             {
               "type": "text_delta",
               "text": " his"
+            },
+            {
+              "type": "text_delta",
+              "text": " broader"
             },
             {
               "type": "text_delta",
@@ -996,19 +1036,11 @@
             },
             {
               "type": "text_delta",
-              "text": " skills"
+              "text": " stack"
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " along"
-            },
-            {
-              "type": "text_delta",
-              "text": " with"
+              "text": " alongside"
             },
             {
               "type": "text_delta",
@@ -1020,7 +1052,7 @@
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " and"
             },
             {
               "type": "text_delta",
@@ -1036,23 +1068,83 @@
             },
             {
               "type": "text_delta",
+              "text": " via"
+            },
+            {
+              "type": "text_delta",
+              "text": " O"
+            },
+            {
+              "type": "text_delta",
+              "text": "ll"
+            },
+            {
+              "type": "text_delta",
+              "text": "ama"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " He"
+            },
+            {
+              "type": "text_delta",
+              "text": " practices"
+            },
+            {
+              "type": "text_delta",
+              "text": " graded"
+            },
+            {
+              "type": "text_delta",
+              "text": " autonomy"
+            },
+            {
+              "type": "text_delta",
+              "text": " with"
+            },
+            {
+              "type": "text_delta",
+              "text": " human"
+            },
+            {
+              "type": "text_delta",
+              "text": "-in"
+            },
+            {
+              "type": "text_delta",
+              "text": "-the"
+            },
+            {
+              "type": "text_delta",
+              "text": "-loop"
+            },
+            {
+              "type": "text_delta",
+              "text": " decisions"
+            },
+            {
+              "type": "text_delta",
               "text": ","
             },
             {
               "type": "text_delta",
-              "text": " tool"
+              "text": " tracks"
             },
             {
               "type": "text_delta",
-              "text": " calling"
+              "text": " costs"
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": " and"
             },
             {
               "type": "text_delta",
-              "text": " MCP"
+              "text": " limits"
             },
             {
               "type": "text_delta",
@@ -1064,7 +1156,11 @@
             },
             {
               "type": "text_delta",
-              "text": " agent"
+              "text": " runs"
+            },
+            {
+              "type": "text_delta",
+              "text": " offline"
             },
             {
               "type": "text_delta",
@@ -1076,15 +1172,11 @@
             },
             {
               "type": "text_delta",
-              "text": "/"
+              "text": " before"
             },
             {
               "type": "text_delta",
-              "text": "monitor"
-            },
-            {
-              "type": "text_delta",
-              "text": "ing"
+              "text": " shipping"
             },
             {
               "type": "text_delta",
@@ -1093,18 +1185,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto uses Claude in his AI agent projects. Specifically:\n\n- **Portfolio Agent**: Uses Claude as part of the MCP server on his portfolio site to answer visitor questions about his experience and projects in natural language. The source code is available at https://github.com/acarbonellb/acb-landing-public/tree/main/agent.\n\n- **Fraud Detection Agent**: Chose Claude Haiku 5.5 for deployment after comparing it with a local 9B model. It showed 86% accuracy vs 71%, and only 1% of fraud cases were approved without human review (vs 8% with the local model).\n\n- **General AI Stack**: Claude is listed among his AI/agents skills, along with Grok, open-source models, tool calling, MCP, and agent evals/monitoring.",
+                "text": "Alberto uses Claude in several of his AI agent projects:\n\n1. **Fraud Detection Agent** (deployed): Uses Claude Haiku 5.5 to review events and organizers on a ticketing platform, recommending approve/reject/request-info with reasons for human admin review. It achieved 92% accuracy on fraud detection vs 68% baseline.\n\n2. **Portfolio Agent** (personal project): Powers the AI agent on his portfolio site that answers visitor questions about his experience and projects in natural language. The source code is available on GitHub.\n\n3. **Organizer Support Agent** (coming soon): Will answer event organizers' questions about sales, payouts and setup without human review.\n\nAlberto also uses Claude as part of his broader AI/agents stack alongside Grok and open-source models via Ollama. He practices graded autonomy with human-in-the-loop decisions, tracks costs and limits, and runs offline evals before shipping.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3186,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 174
+                  "inputTokens": 3204,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 197
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto uses Claude in his AI agent projects. Specifically:\n\n- **Portfolio Agent**: Uses Claude as part of the MCP server on his portfolio site to answer visitor questions about his experience and projects in natural language. The source code is available at https://github.com/acarbonellb/acb-landing-public/tree/main/agent.\n\n- **Fraud Detection Agent**: Chose Claude Haiku 5.5 for deployment after comparing it with a local 9B model. It showed 86% accuracy vs 71%, and only 1% of fraud cases were approved without human review (vs 8% with the local model).\n\n- **General AI Stack**: Claude is listed among his AI/agents skills, along with Grok, open-source models, tool calling, MCP, and agent evals/monitoring."
+                    "text": "Alberto uses Claude in several of his AI agent projects:\n\n1. **Fraud Detection Agent** (deployed): Uses Claude Haiku 5.5 to review events and organizers on a ticketing platform, recommending approve/reject/request-info with reasons for human admin review. It achieved 92% accuracy on fraud detection vs 68% baseline.\n\n2. **Portfolio Agent** (personal project): Powers the AI agent on his portfolio site that answers visitor questions about his experience and projects in natural language. The source code is available on GitHub.\n\n3. **Organizer Support Agent** (coming soon): Will answer event organizers' questions about sales, payouts and setup without human review.\n\nAlberto also uses Claude as part of his broader AI/agents stack alongside Grok and open-source models via Ollama. He practices graded autonomy with human-in-the-loop decisions, tracks costs and limits, and runs offline evals before shipping."
                   }
                 ]
               }
@@ -1116,13 +1208,13 @@
     {
       "calls": [
         {
-          "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
-          "latencyMs": 5213,
+          "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
+          "latencyMs": 5358,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -1130,27 +1222,23 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "7O5OXeafLMNOl9q9DMExJlzgWptS6uy3",
+                    "id": "XQLFmaBEW7h6WJjcf0sAKEh1BjoBDknR",
                     "name": "get_stack",
-                    "input": {
-                      "group": "ai"
-                    }
+                    "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 214
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 218
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "7O5OXeafLMNOl9q9DMExJlzgWptS6uy3",
+                    "id": "XQLFmaBEW7h6WJjcf0sAKEh1BjoBDknR",
                     "name": "get_stack",
-                    "input": {
-                      "group": "ai"
-                    }
+                    "input": {}
                   }
                 ]
               }
@@ -1158,13 +1246,13 @@
           ]
         },
         {
-          "requestHash": "fc51828847273462f5d65451d5a0a0a68912e192d40090448e35162cd3712cc1",
-          "latencyMs": 1756,
+          "requestHash": "dd3bb5f475b39f97722ec1837992d7117f9bee87772f913cbe40ca3229026edb",
+          "latencyMs": 1871,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2442,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2524,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -1312,10 +1400,6 @@
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
               "text": " and"
             },
             {
@@ -1348,7 +1432,7 @@
             },
             {
               "type": "text_delta",
-              "text": " applies"
+              "text": " integrates"
             },
             {
               "type": "text_delta",
@@ -1356,7 +1440,7 @@
             },
             {
               "type": "text_delta",
-              "text": " in"
+              "text": " into"
             },
             {
               "type": "text_delta",
@@ -1376,27 +1460,7 @@
             },
             {
               "type": "text_delta",
-              "text": " here"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " but"
-            },
-            {
-              "type": "text_delta",
-              "text": " you"
-            },
-            {
-              "type": "text_delta",
-              "text": " can"
-            },
-            {
-              "type": "text_delta",
-              "text": " explore"
+              "text": " in"
             },
             {
               "type": "text_delta",
@@ -1404,11 +1468,11 @@
             },
             {
               "type": "text_delta",
-              "text": " agent"
+              "text": " profile"
             },
             {
               "type": "text_delta",
-              "text": " projects"
+              "text": ";"
             },
             {
               "type": "text_delta",
@@ -1416,11 +1480,39 @@
             },
             {
               "type": "text_delta",
-              "text": " more"
+              "text": " that"
             },
             {
               "type": "text_delta",
-              "text": " context"
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " you"
+            },
+            {
+              "type": "text_delta",
+              "text": " might"
+            },
+            {
+              "type": "text_delta",
+              "text": " want"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " contact"
+            },
+            {
+              "type": "text_delta",
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": " directly"
             },
             {
               "type": "text_delta",
@@ -1429,18 +1521,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via Ollama), tool calling, MCP, agent evals, and monitoring. Specific details on how he applies it in projects aren't listed here, but you can explore his agent projects for more context.",
+                "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via Ollama), tool calling, MCP, agent evals and monitoring. Specific details on how he integrates it into projects aren't listed in his profile; for that, you might want to contact him directly.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2442,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 68
+                  "inputTokens": 2524,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 69
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via Ollama), tool calling, MCP, agent evals, and monitoring. Specific details on how he applies it in projects aren't listed here, but you can explore his agent projects for more context."
+                    "text": "Alberto uses Claude as part of his AI/agents stack, which also includes Grok, open-source models (via Ollama), tool calling, MCP, agent evals and monitoring. Specific details on how he integrates it into projects aren't listed in his profile; for that, you might want to contact him directly."
                   }
                 ]
               }

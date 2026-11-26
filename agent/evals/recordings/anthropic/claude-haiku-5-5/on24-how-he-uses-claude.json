@@ -3,7 +3,7 @@
   "slug": "how-he-uses-claude",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
+      "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
       "latencyMs": 958,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1663,
-          "cacheWriteInputTokens": 1659
+          "inputTokens": 1655,
+          "cacheWriteInputTokens": 1651
         },
         {
           "type": "response_end",
@@ -31,12 +31,12 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Pz59uCNvz7MNMezbi8ravM",
+                "id": "toolu_01ApF8rZ88drd3AVpENmM5tw",
                 "name": "get_projects",
                 "input": {}
               },
               {
-                "id": "toolu_01MHU4NKPrcmxn83MMY6i57e",
+                "id": "toolu_01SEtz35Jc18ied4CL6xGVwf",
                 "name": "get_stack",
                 "input": {
                   "group": "ai"
@@ -45,19 +45,19 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1663,
-              "cacheWriteInputTokens": 1659,
-              "outputTokens": 147
+              "inputTokens": 1655,
+              "cacheWriteInputTokens": 1651,
+              "outputTokens": 144
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQSnwYKEAgUGAI4AUIIdGhpbmtpbmcSDMbgJjYZDKG7G6u8BxoMS73dEx4tsP0aCsOLIjB7rbFTcTLnnzmfxBxYy8eZAJzCZf7OT3RV2dPuOvvFPJ6Kas06veJeE0jSlE936l8qvAURSaPSl00rZSqcQgDFQj//QmEwj3UcFPLkEHPlp9y7IBE8ej9/s5owNgQelFKc3g6bMAJgDedq/C0rdg1zNzuxAiTL1qLBjRb76p/AlNLkbl6kGS9s/mMajJY1DKwnD0nLs8x7nAFN40MYVC5juXhhQ+ho4n/FsThTcfr6/wFKvRACiJPLDizNe7HKl8WDNmEG5xNk1jIx+2CWjVrAIH34RLqQUefTlibexeA9i28Bw0EZYbMCTDqT4671ytWcDUg73Dm8Tad0JeElkzh6m2WTq7GIwMbqia99cjnOcj98T5Ei+3NRuQ70St83RCzfhiP9Khu9GIu/3vf/mtl0RQKpcwNgscQhhW9ZBP+Z2uMrHhiKg9TLNxRN4ZgOatLLEJzeEsYtEKBseXXps4cc9IIQ7TckeBcDiVx7dKYFiGhCYl59vKJjOeprcfHif0z0oCxWZBWpNqrdMF9rtSakpYR3nYhj0EGZT/euVsqh93WDrDPBUyeFnC1Z2XVClL3lcgC+DedZ0jl/pJ9h+oF4tzlAIVs5eEgyi7CT9nUa926+flanDGpNI1hVF98e3SjPx9isVrJZf1a9yhsLeBmYx3aTsy7JMcamszvU2aX1IAT7knvWHuEpi7M7GKMSiU0e6ThIhdI53tCnXbjBGomh2ImuVVMkMQVUD4KBnq8a2lv2XBBtBx1/0+SSpCvf076VnTKPBIiJVacwROkGsaHX3k7NCFJ7bnj99Sbjt87WiyxAu+hLDlC6LBUzGSrx0Tr7k5H/VwMe62V/uLcz2kzy7vrjIkellngsVWu2otlTQYzBv7ThVtDlWtVxJ0Fqv0rgrT0E7S58MDySObSX+8uTX0kmIqJTUlDoBtERkVDKI0BpqpHpEK32lqITdjV1LX9WutVCE5gwv8zmNK9C199MtYfSp3QticApaYnuwy/JGAE="
+                "signature": "CAQSqgYKEAgUGAI4AUIIdGhpbmtpbmcSDMzbEW9DfaT7ljq5gBoMs41TWVCCiW3Xvf2qIjBbgbYRBcRVOxOs/Lwz1exT7wpKkJu32f+uyPD+yaewNMeyGHXOcqaiIoOWSDnf8oQqxwWvQjb0Yt+uvENLP/3tWIOy8smShV8Pl4i+kGcxHh4YSl1EMGqaFIbj6fdcXL++dngHo9EMSIU3YbjMosislY8M+HlkGtBZW8+ciZJnHLbqLIwLqQBEIf9vICwgSlBiz9QNv/oywowS5rGxPYLiRD4eIwS63KMVT6AvpjIhUqMvZxrTbSbYon3Ot94szFj7u4ky9cjCqFi96urrkPRKD3jeh+hptOEylp3V+DE2ARFGGnaZSgkL3Dq2cEFfugISEJnlRBLXg2CcEfNgkzFwfu+Cd0rawFQPsXuhYpKRD2i4TsmMbKImrLT9QRIZgqd6H8QXxgmB8d5mzc20J1m8XrytOpRH2RB0g2bEJVbtWQfHeiczGD03mPv0QpbNt8K4niJwACUj7zS2V7SMOL9WLPiE4YY0Cw6yqAvleHl+vZkTUm+Zpel9aWMrUODMRtLU7Gitk3htENhTjMNeRN9Z75+xCl1VXdjI4ULYq1AWO+fENIcxL5vlr+NzX9B2+ONOwkcM2gUXPPM/JDBpBQ+v70hF0XDQjUeeXCGzbNTv2tR5v+z9pqJjLpJfwGqQkzGVUw8qlAYPjH0zYym7tBb7PVTkuVWq4zbNTLADkLDrujzo7FS9EoozjYA67HN2MIxsYeXtGhJOHXEjYmOOW0wLDT5PUjPrWguJzlBiBaHz507aAIvRpptAb/lBBIn0ZiUY/HCRlwZTSyv0H+k5MKEN3/K4D5dAdBA8yDqiQdQG58m+ch52EUtT86IYqBshoJkKuCkSel/0XFBx6LvTxZeiujYao/Uixkn7KsksCMdPt55gvlpkgee9Qe1Ie73g6f2T/CBOGPjmi9JAq+SZgonhHLtdpFYJYQfBo8yIshPeuJKLrQemCxM1n2XI5kBaaTBI39mz1wKy4VAVCYnStS9bo4V2VErKNdOPAh9Vw5IG13Xuk4dU1UoZQ9UYAQ=="
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01Pz59uCNvz7MNMezbi8ravM",
+                "id": "toolu_01ApF8rZ88drd3AVpENmM5tw",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -66,7 +66,7 @@
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01MHU4NKPrcmxn83MMY6i57e",
+                "id": "toolu_01SEtz35Jc18ied4CL6xGVwf",
                 "name": "get_stack",
                 "caller": {
                   "type": "direct"
@@ -81,14 +81,14 @@
       ]
     },
     {
-      "requestHash": "9e4d7a1da6129ec9534a4f94708585cf65ba21f95f9c07db1c0b691830540ded",
-      "latencyMs": 1675,
+      "requestHash": "acdcf076d10b26bdc3e689428325cc76753f9833f688642230a9f3ae4757963a",
+      "latencyMs": 1683,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 3085,
-          "cacheWriteInputTokens": 1424,
-          "cacheReadInputTokens": 1659
+          "inputTokens": 3118,
+          "cacheWriteInputTokens": 1465,
+          "cacheReadInputTokens": 1651
         },
         {
           "type": "text_delta",
@@ -96,51 +96,123 @@
         },
         {
           "type": "text_delta",
-          "text": "ude in several of"
+          "text": "ude across his AI agent"
         },
         {
           "type": "text_delta",
-          "text": " his agent projects:\n\n-"
+          "text": " work:"
         },
         {
           "type": "text_delta",
-          "text": " **Portfolio Ag"
+          "text": "\n\n- **Fraud"
         },
         {
           "type": "text_delta",
-          "text": "ent**"
+          "text": " Detection Agent**"
         },
         {
           "type": "text_delta",
-          "text": " (this site):"
+          "text": " (deployed,"
         },
         {
           "type": "text_delta",
-          "text": " built"
+          "text": " for an online event ticketing"
         },
         {
           "type": "text_delta",
-          "text": " on"
+          "text": " platform): run"
         },
         {
           "type": "text_delta",
-          "text": " Claude and"
+          "text": "s on"
         },
         {
           "type": "text_delta",
-          "text": " T"
+          "text": " Claude Haiku "
         },
         {
           "type": "text_delta",
-          "text": "ypeScript. It answers"
+          "text": "5.5. On his"
         },
         {
           "type": "text_delta",
-          "text": " visitors' questions about his"
+          "text": " reference set it"
         },
         {
           "type": "text_delta",
-          "text": " experience and projects,"
+          "text": " reached 92% accurac"
+        },
+        {
+          "type": "text_delta",
+          "text": "y,"
+        },
+        {
+          "type": "text_delta",
+          "text": " appro"
+        },
+        {
+          "type": "text_delta",
+          "text": "ved 0% of fraud"
+        },
+        {
+          "type": "text_delta",
+          "text": " cases, and c"
+        },
+        {
+          "type": "text_delta",
+          "text": "ost about $0.002 per"
+        },
+        {
+          "type": "text_delta",
+          "text": " review. It rec"
+        },
+        {
+          "type": "text_delta",
+          "text": "ommends approve, reject,"
+        },
+        {
+          "type": "text_delta",
+          "text": " or request-info, and a human"
+        },
+        {
+          "type": "text_delta",
+          "text": " admin mak"
+        },
+        {
+          "type": "text_delta",
+          "text": "es the final call"
+        },
+        {
+          "type": "text_delta",
+          "text": ".\n- **Portfol"
+        },
+        {
+          "type": "text_delta",
+          "text": "io Agent** (this"
+        },
+        {
+          "type": "text_delta",
+          "text": " site): built"
+        },
+        {
+          "type": "text_delta",
+          "text": " with Claude and M"
+        },
+        {
+          "type": "text_delta",
+          "text": "CP."
+        },
+        {
+          "type": "text_delta",
+          "text": " It answers visitors' quest"
+        },
+        {
+          "type": "text_delta",
+          "text": "ions about his experience and projects"
+        },
+        {
+          "type": "text_delta",
+          "text": ","
         },
         {
           "type": "text_delta",
@@ -152,7 +224,11 @@
         },
         {
           "type": "text_delta",
-          "text": "ents can query it. Its"
+          "text": "ents can query it."
+        },
+        {
+          "type": "text_delta",
+          "text": " The"
         },
         {
           "type": "text_delta",
@@ -164,164 +240,108 @@
         },
         {
           "type": "text_delta",
-          "text": " GitHub.\n- **"
+          "text": " GitHub."
         },
         {
           "type": "text_delta",
-          "text": "Fraud Detection"
+          "text": "\n\nHis"
         },
         {
           "type": "text_delta",
-          "text": " Agent** (offline evals"
+          "text": " general"
         },
         {
           "type": "text_delta",
-          "text": ", for"
+          "text": " approach includ"
         },
         {
           "type": "text_delta",
-          "text": " an"
+          "text": "es off"
         },
         {
           "type": "text_delta",
-          "text": " online "
+          "text": "line evals that"
         },
         {
           "type": "text_delta",
-          "text": "ticketing platform): it"
+          "text": " repl"
         },
         {
           "type": "text_delta",
-          "text": " reviews new events and organiz"
+          "text": "ay rec"
         },
         {
           "type": "text_delta",
-          "text": "ers and recommends approve,"
+          "text": "orded cases in CI,"
         },
         {
           "type": "text_delta",
-          "text": " reject, or request-info for"
+          "text": " meas"
         },
         {
           "type": "text_delta",
-          "text": " a human admin. In off"
+          "text": "uring each"
         },
         {
           "type": "text_delta",
-          "text": "line evals ("
+          "text": " change against"
         },
         {
           "type": "text_delta",
-          "text": "31 cases), Claude"
+          "text": " the previ"
         },
         {
           "type": "text_delta",
-          "text": " Haiku 5.5"
+          "text": "ous run, and"
         },
         {
           "type": "text_delta",
-          "text": " was chosen for deploy"
+          "text": " t"
         },
         {
           "type": "text_delta",
-          "text": "ment over a local 9B model"
+          "text": "racking token budgets and"
         },
         {
           "type": "text_delta",
-          "text": ","
+          "text": " cost"
         },
         {
           "type": "text_delta",
-          "text": " with"
+          "text": "s. His AI st"
         },
         {
           "type": "text_delta",
-          "text": " 86% accuracy vers"
+          "text": "ack also l"
         },
         {
           "type": "text_delta",
-          "text": "us 71% and "
+          "text": "ists Grok and open-source"
         },
         {
           "type": "text_delta",
-          "text": "1% of fraud approved"
+          "text": " models run"
         },
         {
           "type": "text_delta",
-          "text": " versus 8%. It"
-        },
-        {
-          "type": "text_delta",
-          "text": " costs about $0.002 "
-        },
-        {
-          "type": "text_delta",
-          "text": "per review.\n\nHe also works with"
-        },
-        {
-          "type": "text_delta",
-          "text": " Gr"
-        },
-        {
-          "type": "text_delta",
-          "text": "ok and open-source models (c"
-        },
-        {
-          "type": "text_delta",
-          "text": "loud and local via Oll"
-        },
-        {
-          "type": "text_delta",
-          "text": "ama), and his"
-        },
-        {
-          "type": "text_delta",
-          "text": " agent"
-        },
-        {
-          "type": "text_delta",
-          "text": " pract"
-        },
-        {
-          "type": "text_delta",
-          "text": "ices include off"
-        },
-        {
-          "type": "text_delta",
-          "text": "line evals,"
-        },
-        {
-          "type": "text_delta",
-          "text": " human-in-the-loop"
-        },
-        {
-          "type": "text_delta",
-          "text": " review, and"
-        },
-        {
-          "type": "text_delta",
-          "text": " tracked"
-        },
-        {
-          "type": "text_delta",
-          "text": " cost and limits."
+          "text": " locally via Ollama."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto uses Claude in several of his agent projects:\n\n- **Portfolio Agent** (this site): built on Claude and TypeScript. It answers visitors' questions about his experience and projects, and it is also exposed as an MCP server so external agents can query it. Its source and eval report are public on GitHub.\n- **Fraud Detection Agent** (offline evals, for an online ticketing platform): it reviews new events and organizers and recommends approve, reject, or request-info for a human admin. In offline evals (31 cases), Claude Haiku 5.5 was chosen for deployment over a local 9B model, with 86% accuracy versus 71% and 1% of fraud approved versus 8%. It costs about $0.002 per review.\n\nHe also works with Grok and open-source models (cloud and local via Ollama), and his agent practices include offline evals, human-in-the-loop review, and tracked cost and limits.",
+            "text": "Alberto uses Claude across his AI agent work:\n\n- **Fraud Detection Agent** (deployed, for an online event ticketing platform): runs on Claude Haiku 5.5. On his reference set it reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review. It recommends approve, reject, or request-info, and a human admin makes the final call.\n- **Portfolio Agent** (this site): built with Claude and MCP. It answers visitors' questions about his experience and projects, and it is also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub.\n\nHis general approach includes offline evals that replay recorded cases in CI, measuring each change against the previous run, and tracking token budgets and costs. His AI stack also lists Grok and open-source models run locally via Ollama.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 3085,
-              "cacheWriteInputTokens": 1424,
-              "cacheReadInputTokens": 1659,
-              "outputTokens": 298
+              "inputTokens": 3118,
+              "cacheWriteInputTokens": 1465,
+              "cacheReadInputTokens": 1651,
+              "outputTokens": 279
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto uses Claude in several of his agent projects:\n\n- **Portfolio Agent** (this site): built on Claude and TypeScript. It answers visitors' questions about his experience and projects, and it is also exposed as an MCP server so external agents can query it. Its source and eval report are public on GitHub.\n- **Fraud Detection Agent** (offline evals, for an online ticketing platform): it reviews new events and organizers and recommends approve, reject, or request-info for a human admin. In offline evals (31 cases), Claude Haiku 5.5 was chosen for deployment over a local 9B model, with 86% accuracy versus 71% and 1% of fraud approved versus 8%. It costs about $0.002 per review.\n\nHe also works with Grok and open-source models (cloud and local via Ollama), and his agent practices include offline evals, human-in-the-loop review, and tracked cost and limits."
+                "text": "Alberto uses Claude across his AI agent work:\n\n- **Fraud Detection Agent** (deployed, for an online event ticketing platform): runs on Claude Haiku 5.5. On his reference set it reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review. It recommends approve, reject, or request-info, and a human admin makes the final call.\n- **Portfolio Agent** (this site): built with Claude and MCP. It answers visitors' questions about his experience and projects, and it is also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub.\n\nHis general approach includes offline evals that replay recorded cases in CI, measuring each change against the previous run, and tracking token budgets and costs. His AI stack also lists Grok and open-source models run locally via Ollama."
               }
             ]
           }
@@ -333,13 +353,13 @@
     {
       "calls": [
         {
-          "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
-          "latencyMs": 952,
+          "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
+          "latencyMs": 1059,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1663,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 1655,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "response_end",
@@ -347,12 +367,12 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01YVRBaHP8TibRnC9qe2y3Fy",
+                    "id": "toolu_017U1aynBdN3PPPQs2atxDn5",
                     "name": "get_projects",
                     "input": {}
                   },
                   {
-                    "id": "toolu_01HVYBPVykTcG9SEyyiWYKyQ",
+                    "id": "toolu_01PpXvvBTdMUz5LNXB3AaMso",
                     "name": "get_stack",
                     "input": {
                       "group": "ai"
@@ -361,19 +381,19 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1663,
-                  "cacheReadInputTokens": 1659,
-                  "outputTokens": 131
+                  "inputTokens": 1655,
+                  "cacheReadInputTokens": 1651,
+                  "outputTokens": 152
                 },
                 "providerContent": [
                   {
                     "type": "thinking",
                     "thinking": "",
-                    "signature": "CAQS+gUKEAgUGAI4AUIIdGhpbmtpbmcSDCfXeMTE5VJHE1vzlxoM+5eQbKjRkJO1YzJkIjCW+ACuy3/SbTOobexmAFaSwkftx3jpyvpivBbdtLepJIy09WL39Zkaj1Jy40SFbPsqlwUQhy2PQxD4ORjckFrMFoq00zGb11aN7Dq9SnIgTD/rxqYKgUxzKSeHUGggX7N1N4xboKa8KXE+76KxATXlhFisKRU/yTOMDhGGs/dtx1tXr9L9BjEUnWGOAzFrfDTprzPv5WcwGTmBLa0ni2MwcPNQguvi3uG/Wjq4/f6qy+veu7YIjlo3hAcV6m/cEc0QyFIXA845c7l1J3oL1OuPZMmchN96ABg0j7aOgPAmnhX7AP00jPy1+iAqTmiuqmskIwDxkJAYeZjQnqHOdLNT8VO35ySbmcN+YBXdXhnbXb3RpBThZo58GexBfsn2QUz1ZYLqPEtPrmMPUF3wP6gk4MOZgRa80BR+w539y0C7zcgIV8h9zhhMg7z0snbuF4M3t/dy3ocWlY3Yt5uAxUld2uiiZq6666njhCwZUXmb7qjG+5FETmTAm+WD7fiYCRaKIYmIjmSy/uDAMn2Ljvp63eSe6Vv8LMaXV8kPbYx+/Nc6uUAV5yxHjWtSTIwem/IEqfHDKkq4903kjDcHRgxyZh1RK3MeKTxMt++e+jd0sZU7po/e23aKcEHnQ8ZofEOxxbm4iWiZKMRmOWjxmvHz+1uVMUQELEgunlquEAqcvdJGXDHbaPqIz4XM6Z+icDg07VwUafv0otTTB0+tZF/CEs1ZNfDn8Z/3dYRdXZzeIGH6uAW0jS5MK4PV8KIrJ8/ukorP6BVrKfnBlTgKfC37GttKXgxcJRnRDi+Mn/5Ds8cXNudKk50AUrstbMUGTt2qbfBZ/xt5W4XMowBrV8ddToptDQTFE3BzTkdG6t4rt1WGeniwHRGBGWG3eK7FQRuyxzcJdyi9kqOJEzYMyGDEw58ONR/kojIXWhCtY0B0fLobUAsOurva70sYAQ=="
+                    "signature": "CAQSrAYKEAgUGAI4AUIIdGhpbmtpbmcSDAo8s3HBANOTJA0mgBoM1Ar8U66FzHyFvbssIjCpCagcI657lZIOEdxn4852y+6vS5MdQ0nJbrtn2JG8+VmneMDhbhg0L+GJlRY+wcAqyQV/gh08iLTR0ksYvH+/0JZAsL9dIfv9hyGWcvgHooL5yUvPIJpVetPl0hTJ5oCnKTBW3OpBE2r8W7HdztiQ+sY6sIbalXuwGFJ8GY3Zy28BURVCXlHOvKcbXq4Btpjh17jMaHq2lCD8pM2MBFsUEWzeA6B20LXXwIIsb64X5rq2s+AYOq0Mm5oIsWYijfC68CJH2TfMEg8miUcJrrUvlYHQQwC7x6id6/MM6LcaR8r/jpA8A8X627yMXh5BeEgTEtONaPW1fmMidrsNh2wY53XOK8Vi1WCRJqDXLP31Mm6lXygwAFLTOhglrdZzTZRk/YoJ/0dlZIVahd2U9XOhKe5u+KOaFbDa50U+RiJ/YrXXumKMT7IrzxNKg7le0sSlGhYXc0hCPGNKfzLUDUZ07Zro/JDytKSXrQYvP/X5Cl4ZtftSI+ZIcXytAB6zIB/PAI+ibRT8r+6E1Fke6yBzlTejXFhORAjLh5wPAv3A7ECoJPkHBGaJ2D4qPk+BJKRPGwV5ac0wcOBkhaxN8Y9towXTdT9pWeP4Cwy0/UKeigKxvAZlwWsqg25o/R4VgZPW8gDVlNjdzxk2R34kHWz6HK13F3bXjylR0VmAjHcUYDsYWzDOGixwU7F804lp7rXZepTc4pvmA5HByRBjAqwmpaQISlgkY+54v8OyjgX85e/xe4mPFDIH89ArSBdPB3aq9+9//B1iqfbdixEJCNAoSNFz8knQluPg2m2OYJjhCNoVJfKD+NoC9hDY65XwXtvst9B/UwvZ/qEJOe2HLv1a/QJAWd/J5kvZDzbTSS2SHrjdLrV4ll9r1IxCf1oqN7CHEGAyF8bsbG9xY6xjeEF/zvEX2BlPyUm8UOe/UWEMKFvj4hNiOSwFtestbbBEJDssGEnBU2qPrgcT7WJkm+fqhoXEOerrecKYwBp1a5HUmYV2lCnPmF4mdluEoxgB"
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_01YVRBaHP8TibRnC9qe2y3Fy",
+                    "id": "toolu_017U1aynBdN3PPPQs2atxDn5",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -382,7 +402,7 @@
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_01HVYBPVykTcG9SEyyiWYKyQ",
+                    "id": "toolu_01PpXvvBTdMUz5LNXB3AaMso",
                     "name": "get_stack",
                     "caller": {
                       "type": "direct"
@@ -397,50 +417,26 @@
           ]
         },
         {
-          "requestHash": "1c8f254eaa7ce3317b48cb45cdc8032119f2d402947f22fe31762c36d2e34d03",
-          "latencyMs": 1993,
+          "requestHash": "e2e93edcc7663bdd60d9dbbfafb427e1c89d3e9e1e62934b87e612d74096220c",
+          "latencyMs": 1495,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3069,
-              "cacheWriteInputTokens": 1408,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 3126,
+              "cacheWriteInputTokens": 1473,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "text_delta",
-              "text": "Alberto"
+              "text": "Alberto uses Cla"
             },
             {
               "type": "text_delta",
-              "text": " uses Claude in two of"
+              "text": "ude in several of his agent"
             },
             {
               "type": "text_delta",
-              "text": " his agent"
-            },
-            {
-              "type": "text_delta",
-              "text": " projects,"
-            },
-            {
-              "type": "text_delta",
-              "text": " and"
-            },
-            {
-              "type": "text_delta",
-              "text": " it"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s listed in"
-            },
-            {
-              "type": "text_delta",
-              "text": " his AI skills."
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\n- **F"
+              "text": " projects:\n\n- **F"
             },
             {
               "type": "text_delta",
@@ -448,55 +444,79 @@
             },
             {
               "type": "text_delta",
-              "text": "**"
+              "text": "** (deployed): re"
             },
             {
               "type": "text_delta",
-              "text": " (offline evals, not y"
+              "text": "views newly published events and organ"
             },
             {
               "type": "text_delta",
-              "text": "et de"
+              "text": "izers on an online"
             },
             {
               "type": "text_delta",
-              "text": "ployed): He compared a"
+              "text": " ticketing platform and rec"
             },
             {
               "type": "text_delta",
-              "text": " local 9B model with Cla"
+              "text": "ommends approve, reject,"
             },
             {
               "type": "text_delta",
-              "text": "ude Haiku 5."
+              "text": " or request-"
             },
             {
               "type": "text_delta",
-              "text": "5 and chose Hai"
+              "text": "info for a human admin. The"
             },
             {
               "type": "text_delta",
-              "text": "ku for deployment. Ha"
+              "text": " deployed model is Claude"
             },
             {
               "type": "text_delta",
-              "text": "iku reached 86% acc"
+              "text": " Haiku 5.5"
             },
             {
               "type": "text_delta",
-              "text": "uracy versus 71%"
+              "text": ". On his"
             },
             {
               "type": "text_delta",
-              "text": " for the local model,"
+              "text": " reference e"
             },
             {
               "type": "text_delta",
-              "text": " and appro"
+              "text": "val set it"
             },
             {
               "type": "text_delta",
-              "text": "ved 1% of fraud"
+              "text": " reached 92% accurac"
+            },
+            {
+              "type": "text_delta",
+              "text": "y ("
+            },
+            {
+              "type": "text_delta",
+              "text": "v"
+            },
+            {
+              "type": "text_delta",
+              "text": "s 68% for a local model"
+            },
+            {
+              "type": "text_delta",
+              "text": "), appro"
+            },
+            {
+              "type": "text_delta",
+              "text": "ved 0% of fraud"
+            },
+            {
+              "type": "text_delta",
+              "text": " (vs 8%), and"
             },
             {
               "type": "text_delta",
@@ -504,91 +524,59 @@
             },
             {
               "type": "text_delta",
-              "text": "ases versus 8%. It"
+              "text": "ost about $0.002 per"
             },
             {
               "type": "text_delta",
-              "text": " costs about $0.002 "
+              "text": " review.\n- **Portf"
             },
             {
               "type": "text_delta",
-              "text": "per review. The"
+              "text": "olio Agent** (person"
             },
             {
               "type": "text_delta",
-              "text": " agent rec"
+              "text": "al project): the"
             },
             {
               "type": "text_delta",
-              "text": "ommends appro"
+              "text": " ass"
             },
             {
               "type": "text_delta",
-              "text": "ve, reject or"
+              "text": "istant you"
             },
             {
               "type": "text_delta",
-              "text": " request-info,"
+              "text": "'re tal"
             },
             {
               "type": "text_delta",
-              "text": " and a human admin mak"
+              "text": "king to now. It's built with"
             },
             {
               "type": "text_delta",
-              "text": "es the final decision.\n-"
+              "text": " T"
             },
             {
               "type": "text_delta",
-              "text": " **Portfolio Ag"
+              "text": "ypeScript,"
             },
             {
               "type": "text_delta",
-              "text": "ent** (this site): It"
+              "text": " Claude and MCP,"
             },
             {
               "type": "text_delta",
-              "text": "'s"
+              "text": " and it's also exposed as"
             },
             {
               "type": "text_delta",
-              "text": " built on Claude with"
+              "text": " an MCP server so external ag"
             },
             {
               "type": "text_delta",
-              "text": " TypeScript and MC"
-            },
-            {
-              "type": "text_delta",
-              "text": "P, answ"
-            },
-            {
-              "type": "text_delta",
-              "text": "ers"
-            },
-            {
-              "type": "text_delta",
-              "text": " visitors' questions about his"
-            },
-            {
-              "type": "text_delta",
-              "text": " work"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " and is also exposed as an"
-            },
-            {
-              "type": "text_delta",
-              "text": " MCP server so external agents"
-            },
-            {
-              "type": "text_delta",
-              "text": " can query it. The"
+              "text": "ents can query it. The"
             },
             {
               "type": "text_delta",
@@ -600,29 +588,60 @@
             },
             {
               "type": "text_delta",
-              "text": " GitHub."
+              "text": " GitHub.\n\nHe also"
+            },
+            {
+              "type": "text_delta",
+              "text": " uses Cla"
+            },
+            {
+              "type": "text_delta",
+              "text": "ude al"
+            },
+            {
+              "type": "text_delta",
+              "text": "ongside Grok and open-"
+            },
+            {
+              "type": "text_delta",
+              "text": "source models (c"
+            },
+            {
+              "type": "text_delta",
+              "text": "loud and local via Oll"
+            },
+            {
+              "type": "text_delta",
+              "text": "ama), and works"
+            },
+            {
+              "type": "text_delta",
+              "text": " with tool calling,"
+            },
+            {
+              "type": "text_delta",
+              "text": " MCP, and agent ev"
+            },
+            {
+              "type": "text_delta",
+              "text": "als."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto uses Claude in two of his agent projects, and it's listed in his AI skills.\n\n- **Fraud Detection Agent** (offline evals, not yet deployed): He compared a local 9B model with Claude Haiku 5.5 and chose Haiku for deployment. Haiku reached 86% accuracy versus 71% for the local model, and approved 1% of fraud cases versus 8%. It costs about $0.002 per review. The agent recommends approve, reject or request-info, and a human admin makes the final decision.\n- **Portfolio Agent** (this site): It's built on Claude with TypeScript and MCP, answers visitors' questions about his work, and is also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub.",
+                "text": "Alberto uses Claude in several of his agent projects:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. The deployed model is Claude Haiku 5.5. On his reference eval set it reached 92% accuracy (vs 68% for a local model), approved 0% of fraud (vs 8%), and cost about $0.002 per review.\n- **Portfolio Agent** (personal project): the assistant you're talking to now. It's built with TypeScript, Claude and MCP, and it's also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub.\n\nHe also uses Claude alongside Grok and open-source models (cloud and local via Ollama), and works with tool calling, MCP, and agent evals.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3069,
-                  "cacheWriteInputTokens": 1408,
-                  "cacheReadInputTokens": 1659,
-                  "outputTokens": 386
+                  "inputTokens": 3126,
+                  "cacheWriteInputTokens": 1473,
+                  "cacheReadInputTokens": 1651,
+                  "outputTokens": 283
                 },
                 "providerContent": [
                   {
-                    "type": "thinking",
-                    "thinking": "",
-                    "signature": "CAQS2wcKEAgUGAI4AUIIdGhpbmtpbmcSDE7T6Tl/ZObj+u4HXxoMy14FFJo8h3dJrZpeIjBwrmW68PfiAqYfPN1GYO/YYrSS2hWRy3a3DueBHgBILyd5f69oxcp6b1XLn4ZKNLgq+AbtxyWGB18uPO3wQjpoWk7r9/+GSccYGvg1Y8IvfmoMVupEPQ1Y4iHyGuX6qbCkGaNtx+VhgaAQg9/n6cqQT16gaEFoxsNfLsvgpbapAF6+7h15hszXHKlqO68qhQuaLnOXMXE0yHIyNwvteR57WMnc8E0vYWcet34d519wu0xhDFlfLLE3/1Ay/qWtUprAWol5QFUu1qQlNPuUBs2Yyj4DvteXOaG2mbZEbizfMClr242W7RiT+Zrh9XWu3aKbVVSxq15QX6Fg1l9N7UAl23Tne0sMkHCUUWVrSNUvXQfaP/do5LxuKMj0vYIFA/pqGwdjFEWgcXXr/z2z+qmTBN7r8jw/bNiA2CjGpfRecyHT96n+HDuYvYrVPGJTS7YoZYI0Y77UowoHNhZ0RXikng+oQRni1Rgn+n9k9vksYS0ZiQPaB5N212tyqquD8zoeyikNSkpJp/bwx2uDgp7ac9B+pV6+YNzEqWkpcFpl3D7MNHP2Hg4HPjAzFugBlbW0OWZTgJt/9rx+Ibhxaf2AS4TFpe6IqTtRqNzJTkUjeu3vW4ISzCeIXzWLLhAVSCQ6SPdDpB5Wx0Nxz2vIzzQ0Ju2gxZYHznphqzO6Cfk15YpOTuRHf2qWv4D2+EWQbd01EKEQkWfhZWR5E1fQsskQE8RLqjZs0h8GT/Ky3v9d/AFQVrqKwqC4V6SIS5Ll8pvAEz2BY9iLq/fMXqdl+DXW5ffPBrU7gO3TK2kplwWHYgmwwXqZlA+L/YtJUZJBtB9dSV/ohFuK64PI1OQuUOjWgo92HLoibtDol7rtdBAGqJOsf0XyZfwOgYUD2D7jx4uPieT5Fn2RrcQw2DhcONQxIvV1iae99bN8q2UWvjTj7Q2WB77b8rOlFkcnZE0fPgKekRZXpfqzETFI2ITX/W4Kmw6dWmJ/mUKNZwFIM6PMHAw8TkhPbZ2fY/u4EDtlCKG2sQp2PZq4zVujh0vCtU/MMIni1LbG4Tjw2S9Nr+0V4u/b0DcS7Z3ea44DqipEbQcHbYPHQbP0MXLuCrwEUbChF2avl/ilFAyf3cseJGkgGIfut3a4IQ29d0nhV3lUvVbu2WG5HKl3fmcuhgxlmrjtregYCkqLljtSByosA5evaQ0zP6k3bopl36jpBAHS6sR/qmsfkLzJyj8oXeLzZFxsr7p3yAHaKpZm3TIYAQ=="
-                  },
-                  {
                     "type": "text",
-                    "text": "Alberto uses Claude in two of his agent projects, and it's listed in his AI skills.\n\n- **Fraud Detection Agent** (offline evals, not yet deployed): He compared a local 9B model with Claude Haiku 5.5 and chose Haiku for deployment. Haiku reached 86% accuracy versus 71% for the local model, and approved 1% of fraud cases versus 8%. It costs about $0.002 per review. The agent recommends approve, reject or request-info, and a human admin makes the final decision.\n- **Portfolio Agent** (this site): It's built on Claude with TypeScript and MCP, answers visitors' questions about his work, and is also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub."
+                    "text": "Alberto uses Claude in several of his agent projects:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. The deployed model is Claude Haiku 5.5. On his reference eval set it reached 92% accuracy (vs 68% for a local model), approved 0% of fraud (vs 8%), and cost about $0.002 per review.\n- **Portfolio Agent** (personal project): the assistant you're talking to now. It's built with TypeScript, Claude and MCP, and it's also exposed as an MCP server so external agents can query it. The source and eval report are public on GitHub.\n\nHe also uses Claude alongside Grok and open-source models (cloud and local via Ollama), and works with tool calling, MCP, and agent evals."
                   }
                 ]
               }
@@ -634,13 +653,13 @@
     {
       "calls": [
         {
-          "requestHash": "a89809e12c358d9fc70cafa16a5535fa70101bdb369e405473a144404d6643f4",
-          "latencyMs": 1161,
+          "requestHash": "74da26fafb02d3cc6aa258cdfb5378f991886559c59325a56db60160df7f41a4",
+          "latencyMs": 1034,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1663,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 1655,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "response_end",
@@ -648,12 +667,12 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01RsycCC9fiVoADzWkWBi53c",
+                    "id": "toolu_01Sim1uS8MP2fgafxVbs7w7h",
                     "name": "get_projects",
                     "input": {}
                   },
                   {
-                    "id": "toolu_013mA2JKJtBGh8CyDGN9Sz78",
+                    "id": "toolu_01TzcEKmaufMLCBmatwZWaoU",
                     "name": "get_stack",
                     "input": {
                       "group": "ai"
@@ -662,19 +681,19 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1663,
-                  "cacheReadInputTokens": 1659,
-                  "outputTokens": 158
+                  "inputTokens": 1655,
+                  "cacheReadInputTokens": 1651,
+                  "outputTokens": 159
                 },
                 "providerContent": [
                   {
                     "type": "thinking",
                     "thinking": "",
-                    "signature": "CAQSyAYKEAgUGAI4AUIIdGhpbmtpbmcSDAtRHFthL7VeXgGpaxoMAarJ75oe1TrEfikNIjA2r/ukavULXsDC/Qdh8k8SPsCMelZETB2Rez+46N9tke91HgtPo2XVk+R8sClJDQAq5QWGThKiKXbByU3uPwu6kJQDT7cun5VKQ0yKZr/ChD/Pg+/kr7ThEvEEBL6qEvtQcbfAXPp1BzDf8PIoULAGPRBwNn6ubT572axF4btHx/0Ib7uMBwq60szIYhsVL9K1JdzYaMHDoEQSfpF/ZYklTDUW/brGdjl21rBQaSrcBK1kiSEFI+CMnHRpojX560NrzLrlPy7VF9j8Xlf+2/4LtmK93RFuaLwPuOu9xiERN5Br1Ttar6Y7n2MuvcRjmHTcxqLOPBYjnfd7JiBK84ysdfFp1YTQ6P3tosnyUPDGfrqLD+47Mr8KeCf3pm6R7eoZmRBd6O33VSlYjG9GmWbn7VZXmR+zHIRk8iWvOedW11wayYOSRR88QjPoyOXLMBG2gsawwSzpMbqCTyiXoXdSVj+7Acpivq9cLqsqJ3lQulbjMnm5wZ+1fvtkyROOUspAMrgUVmSQD7IF5C5CHazgUxD+yEi2y+yXxOPUIihkfEsGJ/vf8lAbw9b+aKnaGm/ssV3bdTHpPubajPHpGHFM0WzCbFulqQ0tmcypr8sg2T4ihpZqBWPZGUybhopLI/04lDypZ0VCIqrS7Xzh6VJHnvKUrCKiNruySHVBdAVtHfIn/T3Zkj5xZLho4npeskZ2kHZLizmIFK1InV9iET22LKdQANEk5cNCrDPeOHPz+lbnwVMkcT0sP8SM5eSeySeCXn6eRTIJW5CZyKpKL73rvRRYru8mlkEXjBK32p3R4SYHtTdmTWpHQqa+j5SqTJPlz9OrjJOv3KySTuqSGOLvJoMp8pBV5S/hQ9Y8Nd8tpVBPO9+Di3B4hRux58cFNwwNFgHfAai5MHJI3KCOKvqMepwL2+SqYp4dVLkrWggmjWpPQSY4suI5rBgL1c0ReVPaJjadBOVzjxkLY/AzDki6ayCF1RKgQSYUnN+Ep4oUE5wmbu6HOn0mdLXXIvwY/6xvJXUhyen9B6ow52zGjSj6UhBKu4M9SXMYAQ=="
+                    "signature": "CAQSyQYKEAgUGAI4AUIIdGhpbmtpbmcSDE9UR3xFHy/b7coBaBoMLVQcT5pR8g1aVKAzIjDfbtf+YYiK8LzS0NIyWcuWcp4nmIQYgZGmuOkB1PoRpN8EIp97//ga+SlpCPO30sIq5gXsJW3vGNAvtiRJ7QVv2xqOuA+HIIefEFr48CyWxE1avjMvD7KDEQtLHHRbCsULvAg8KqP6LTRjZRN1aqYETRM5WmvN6vTihrKXAEF970f7hk06qD/MBCx0ityIlJOienkMCurwlqb8qvpmwDx6vFu/9sn9G4Jb0uh5wMYkEtmDFZhqK5Z7WUkUx9wIOfssrokrCZaiKfFUIIXlZ8cH96glP7ganbONJxz0+utfwFdQcs39f8gDm13/vnp1NDymv21pobetZnVzZVzk8I2glz3y2oQXK6rlrdE9u47OiscVYfxq13y8dxExcSM+xna5bdPzZo0EqMvKVExRdFFbwi/5eJtpi1PBehGwlaHsREv/l4LwBeAYGYt8AxgVF5EuL0H71T8wWaU4iyzN6MEkEXXGmXqfYaKIRGtTFiVNpmpAuM1j3AdprpD6lUXfxlhR9fOrLmUHO+8t4P2KFfrV3TLgiC/g3VfZWuX3D3/b2Jokw+A/6my3tj8xr4m4NBqx2Dq0iqia/+ZF8oRksYK+1Lt15AZi4wLhUVvC9ojNLBxzJ1TCh3SjETyM8zdzQ78QqQKqHqG7uGWOdU5ObRC3yYNCtOzqxESFqvHP2VvomIFD504LS6uLhO1/5K2jbIThtWrV+BYQDMKIW1lrRohxlIXLPkOTKCGVzbLYs4SNFd7S3tbe/2iqTVmLgXq/7GneDu6mq00u14fXqCrQJoib8maUOMmH5lTX0eeCk5MfTx998KwwXfHRsPPg2RCiDGP24KqZQAAP0If7T2vup0cg5L6qeCO5crnIWxVApIJaExaHLM/cuo94sw1aFFmQ7vOMXdnG2Nxi0AKNl8zEU+uL4rzou2nc4O1oJ4lI4MDQddKXSAqRo+NfAaMgF0I6x1JQ8oApQK1M2h276n78ntUEg/2O+wwFP7xYhGA83nzQyaFP8yu8GOoR47yp5yhL0gffHw4+f80qwWVOf48E8QYRX7RY3mIplZ0RGAE="
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_01RsycCC9fiVoADzWkWBi53c",
+                    "id": "toolu_01Sim1uS8MP2fgafxVbs7w7h",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -683,7 +702,7 @@
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_013mA2JKJtBGh8CyDGN9Sz78",
+                    "id": "toolu_01TzcEKmaufMLCBmatwZWaoU",
                     "name": "get_stack",
                     "caller": {
                       "type": "direct"
@@ -698,14 +717,14 @@
           ]
         },
         {
-          "requestHash": "3d73dfff64b16204ecedcdd5cec0b4d383792e79a9c57e7b88a66e9c1fb379b2",
-          "latencyMs": 1481,
+          "requestHash": "df18816ab51720cc5623735464bd5f5cca0bd332b65cbbb202a038423e2331b1",
+          "latencyMs": 1708,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3096,
-              "cacheWriteInputTokens": 1435,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 3133,
+              "cacheWriteInputTokens": 1480,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "text_delta",
@@ -713,212 +732,260 @@
             },
             {
               "type": "text_delta",
-              "text": "ude in several of"
+              "text": "ude across"
             },
             {
               "type": "text_delta",
-              "text": " his agent projects:\n\n-"
+              "text": " his"
             },
             {
               "type": "text_delta",
-              "text": " **Portfolio Ag"
+              "text": " agent work:"
             },
             {
               "type": "text_delta",
-              "text": "ent ("
+              "text": "\n\n- **Fraud"
             },
             {
               "type": "text_delta",
-              "text": "this site):** Built"
+              "text": " Detection Agent (deploy"
             },
             {
               "type": "text_delta",
-              "text": " on"
+              "text": "ed):** run"
             },
             {
               "type": "text_delta",
-              "text": " Claude and"
+              "text": "s on Claude Hai"
             },
             {
               "type": "text_delta",
-              "text": " exposed through MCP,"
+              "text": "ku 5.5."
             },
             {
               "type": "text_delta",
-              "text": " so it"
+              "text": " On his"
             },
             {
               "type": "text_delta",
-              "text": " answers visitors' questions"
+              "text": " re"
             },
             {
               "type": "text_delta",
-              "text": " about his work"
+              "text": "ference e"
             },
             {
               "type": "text_delta",
-              "text": " and can"
+              "text": "val set it"
             },
             {
               "type": "text_delta",
-              "text": " also"
+              "text": " reached 92% accurac"
             },
             {
               "type": "text_delta",
-              "text": " be queried by external agents."
+              "text": "y,"
             },
             {
               "type": "text_delta",
-              "text": " The"
+              "text": " appro"
             },
             {
               "type": "text_delta",
-              "text": " source is on GitHub."
+              "text": "ved 0% of fraud"
             },
             {
               "type": "text_delta",
-              "text": "\n- **Fraud"
+              "text": " cases (v"
             },
             {
               "type": "text_delta",
-              "text": " Detection Agent:** For"
+              "text": "s 8% for the"
             },
             {
               "type": "text_delta",
-              "text": " an online"
+              "text": " local model he"
             },
             {
               "type": "text_delta",
-              "text": " event ticketing platform,"
+              "text": " comp"
             },
             {
               "type": "text_delta",
-              "text": " it re"
+              "text": "ared against), and c"
             },
             {
               "type": "text_delta",
-              "text": "views new events and organizers"
+              "text": "ost about $0.002 per"
             },
             {
               "type": "text_delta",
-              "text": " and recommends approve"
+              "text": " review."
             },
             {
               "type": "text_delta",
-              "text": ", reject, or request-info"
+              "text": " It rec"
             },
             {
               "type": "text_delta",
-              "text": " for"
+              "text": "ommends approve, reject,"
             },
             {
               "type": "text_delta",
-              "text": " a human admin. In"
+              "text": " or request-info,"
             },
             {
               "type": "text_delta",
-              "text": " off"
+              "text": " and a human admin mak"
             },
             {
               "type": "text_delta",
-              "text": "line evals ("
+              "text": "es the final call"
             },
             {
               "type": "text_delta",
-              "text": "31 cases), Claude"
+              "text": ".\n- **Portfol"
             },
             {
               "type": "text_delta",
-              "text": " Haiku 5.5"
+              "text": "io Agent (personal project"
             },
             {
               "type": "text_delta",
-              "text": " was chosen for deploy"
+              "text": "):"
             },
             {
               "type": "text_delta",
-              "text": "ment over a local 9B model"
+              "text": "** this site's ass"
             },
             {
               "type": "text_delta",
-              "text": ": 86% accuracy"
+              "text": "istant is"
             },
             {
               "type": "text_delta",
-              "text": " vs 71%, and "
+              "text": " built on"
             },
             {
               "type": "text_delta",
-              "text": "1% of fraud approved"
+              "text": " Claude and ex"
             },
             {
               "type": "text_delta",
-              "text": " vs 8%. It"
+              "text": "posed as an MCP server"
             },
             {
               "type": "text_delta",
-              "text": " costs about $0.002 "
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": "per review.\n\nHe also works with"
+              "text": " Its source and eval report are"
             },
             {
               "type": "text_delta",
-              "text": " Grok and open-source models"
+              "text": " public on GitHub."
             },
             {
               "type": "text_delta",
-              "text": " (c"
+              "text": "\n\nHis"
             },
             {
               "type": "text_delta",
-              "text": "loud and local via Oll"
+              "text": " general practices for"
             },
             {
               "type": "text_delta",
-              "text": "ama), and his"
+              "text": " these"
             },
             {
               "type": "text_delta",
-              "text": " practices include off"
+              "text": " agents include offline evals that"
             },
             {
               "type": "text_delta",
-              "text": "line evals before shipping,"
+              "text": " replay rec"
             },
             {
               "type": "text_delta",
-              "text": " human"
+              "text": "orded cases in"
             },
             {
               "type": "text_delta",
-              "text": "-in-the-loop dec"
+              "text": " CI, t"
             },
             {
               "type": "text_delta",
-              "text": "isions, and tracking token"
+              "text": "racking c"
             },
             {
               "type": "text_delta",
-              "text": " cost and limits."
+              "text": "ost and r"
+            },
+            {
+              "type": "text_delta",
+              "text": "ate limits, and measuring"
+            },
+            {
+              "type": "text_delta",
+              "text": " each"
+            },
+            {
+              "type": "text_delta",
+              "text": " change against"
+            },
+            {
+              "type": "text_delta",
+              "text": " the previous run. He"
+            },
+            {
+              "type": "text_delta",
+              "text": " also l"
+            },
+            {
+              "type": "text_delta",
+              "text": "ists Gr"
+            },
+            {
+              "type": "text_delta",
+              "text": "ok and"
+            },
+            {
+              "type": "text_delta",
+              "text": " open-source models ("
+            },
+            {
+              "type": "text_delta",
+              "text": "cloud and local via "
+            },
+            {
+              "type": "text_delta",
+              "text": "Ollama) in"
+            },
+            {
+              "type": "text_delta",
+              "text": " his A"
+            },
+            {
+              "type": "text_delta",
+              "text": "I stack."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto uses Claude in several of his agent projects:\n\n- **Portfolio Agent (this site):** Built on Claude and exposed through MCP, so it answers visitors' questions about his work and can also be queried by external agents. The source is on GitHub.\n- **Fraud Detection Agent:** For an online event ticketing platform, it reviews new events and organizers and recommends approve, reject, or request-info for a human admin. In offline evals (31 cases), Claude Haiku 5.5 was chosen for deployment over a local 9B model: 86% accuracy vs 71%, and 1% of fraud approved vs 8%. It costs about $0.002 per review.\n\nHe also works with Grok and open-source models (cloud and local via Ollama), and his practices include offline evals before shipping, human-in-the-loop decisions, and tracking token cost and limits.",
+                "text": "Alberto uses Claude across his agent work:\n\n- **Fraud Detection Agent (deployed):** runs on Claude Haiku 5.5. On his reference eval set it reached 92% accuracy, approved 0% of fraud cases (vs 8% for the local model he compared against), and cost about $0.002 per review. It recommends approve, reject, or request-info, and a human admin makes the final call.\n- **Portfolio Agent (personal project):** this site's assistant is built on Claude and exposed as an MCP server. Its source and eval report are public on GitHub.\n\nHis general practices for these agents include offline evals that replay recorded cases in CI, tracking cost and rate limits, and measuring each change against the previous run. He also lists Grok and open-source models (cloud and local via Ollama) in his AI stack.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3096,
-                  "cacheWriteInputTokens": 1435,
-                  "cacheReadInputTokens": 1659,
-                  "outputTokens": 282
+                  "inputTokens": 3133,
+                  "cacheWriteInputTokens": 1480,
+                  "cacheReadInputTokens": 1651,
+                  "outputTokens": 268
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto uses Claude in several of his agent projects:\n\n- **Portfolio Agent (this site):** Built on Claude and exposed through MCP, so it answers visitors' questions about his work and can also be queried by external agents. The source is on GitHub.\n- **Fraud Detection Agent:** For an online event ticketing platform, it reviews new events and organizers and recommends approve, reject, or request-info for a human admin. In offline evals (31 cases), Claude Haiku 5.5 was chosen for deployment over a local 9B model: 86% accuracy vs 71%, and 1% of fraud approved vs 8%. It costs about $0.002 per review.\n\nHe also works with Grok and open-source models (cloud and local via Ollama), and his practices include offline evals before shipping, human-in-the-loop decisions, and tracking token cost and limits."
+                    "text": "Alberto uses Claude across his agent work:\n\n- **Fraud Detection Agent (deployed):** runs on Claude Haiku 5.5. On his reference eval set it reached 92% accuracy, approved 0% of fraud cases (vs 8% for the local model he compared against), and cost about $0.002 per review. It recommends approve, reject, or request-info, and a human admin makes the final call.\n- **Portfolio Agent (personal project):** this site's assistant is built on Claude and exposed as an MCP server. Its source and eval report are public on GitHub.\n\nHis general practices for these agents include offline evals that replay recorded cases in CI, tracking cost and rate limits, and measuring each change against the previous run. He also lists Grok and open-source models (cloud and local via Ollama) in his AI stack."
                   }
                 ]
               }

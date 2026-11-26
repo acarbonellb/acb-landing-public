@@ -3,7 +3,7 @@
   "slug": "years-of-experience",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "61d9e3c2a15469d36595f0ca2666a49b0d212f8da29978cde5df6f0c5c61d4b4",
-      "latencyMs": 696,
+      "requestHash": "2a52982ac284012f65dfa6b225e51b5079874e143162900737afbabd89ed8b72",
+      "latencyMs": 481,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1665,
-          "cacheWriteInputTokens": 1661
+          "inputTokens": 1657,
+          "cacheWriteInputTokens": 1653
         },
         {
           "type": "response_end",
@@ -31,36 +31,22 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01EXEnigm3uPGtMPTctQXovx",
+                "id": "toolu_012CzYupe8RJSjyUTvPr485e",
                 "name": "get_experience",
-                "input": {}
-              },
-              {
-                "id": "toolu_01WP6Lfusa4yfVgwQd54Puj1",
-                "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1665,
-              "cacheWriteInputTokens": 1661,
-              "outputTokens": 51
+              "inputTokens": 1657,
+              "cacheWriteInputTokens": 1653,
+              "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01EXEnigm3uPGtMPTctQXovx",
+                "id": "toolu_012CzYupe8RJSjyUTvPr485e",
                 "name": "get_experience",
-                "caller": {
-                  "type": "direct"
-                },
-                "input": {}
-              },
-              {
-                "type": "tool_use",
-                "id": "toolu_01WP6Lfusa4yfVgwQd54Puj1",
-                "name": "get_profile",
                 "caller": {
                   "type": "direct"
                 },
@@ -72,50 +58,62 @@
       ]
     },
     {
-      "requestHash": "4ab97949f506391a9e89032db430bb60934bcb1e1876d439d6402f8b712b7545",
-      "latencyMs": 976,
+      "requestHash": "1903ca39c4868d422561bbd445539d1bd3f5e5b07e68daa9fdf8996e75a93cf6",
+      "latencyMs": 1610,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2745,
-          "cacheWriteInputTokens": 1082,
-          "cacheReadInputTokens": 1661
+          "inputTokens": 2219,
+          "cacheWriteInputTokens": 564,
+          "cacheReadInputTokens": 1653
         },
         {
           "type": "text_delta",
-          "text": "Alberto has over"
+          "text": "Alberto has"
         },
         {
           "type": "text_delta",
-          "text": " 10 years of professional exper"
+          "text": " been working as"
         },
         {
           "type": "text_delta",
-          "text": "ience in"
+          "text": " a software eng"
         },
         {
           "type": "text_delta",
-          "text": " software eng"
+          "text": "ineer since 2015, so"
         },
         {
           "type": "text_delta",
-          "text": "ineering."
+          "text": " ro"
         },
         {
           "type": "text_delta",
-          "text": " His work"
+          "text": "ughly "
         },
         {
           "type": "text_delta",
-          "text": " history includ"
+          "text": "ten years,"
         },
         {
           "type": "text_delta",
-          "text": "es:\n\n- **Cover"
+          "text": " based on the"
         },
         {
           "type": "text_delta",
-          "text": "Wallet**"
+          "text": " ro"
+        },
+        {
+          "type": "text_delta",
+          "text": "les listed in his profile:"
+        },
+        {
+          "type": "text_delta",
+          "text": "\n\n- **CoverWall"
+        },
+        {
+          "type": "text_delta",
+          "text": "et**"
         },
         {
           "type": "text_delta",
@@ -123,15 +121,19 @@
         },
         {
           "type": "text_delta",
-          "text": "ineer, "
+          "text": "ineer,"
         },
         {
           "type": "text_delta",
-          "text": "2019 – present,"
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": " Madrid / Remote"
+          "text": "2019 to"
+        },
+        {
+          "type": "text_delta",
+          "text": " present"
         },
         {
           "type": "text_delta",
@@ -147,56 +149,41 @@
         },
         {
           "type": "text_delta",
-          "text": "– 2019, Madr"
+          "text": "to 2019)\n- **"
         },
         {
           "type": "text_delta",
-          "text": "id)\n- **Indra"
+          "text": "Indra** (Software"
         },
         {
           "type": "text_delta",
-          "text": "** (Software Developer,"
+          "text": " Developer, 2015 to"
         },
         {
           "type": "text_delta",
-          "text": " 2015 – 2016"
-        },
-        {
-          "type": "text_delta",
-          "text": ", A Coruña)"
-        },
-        {
-          "type": "text_delta",
-          "text": "\n\nWould you like details"
-        },
-        {
-          "type": "text_delta",
-          "text": " on his AI agent proj"
-        },
-        {
-          "type": "text_delta",
-          "text": "ects or his current role at"
-        },
-        {
-          "type": "text_delta",
-          "text": " CoverWallet?"
+          "text": " 2016)"
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto has over 10 years of professional experience in software engineering. His work history includes:\n\n- **CoverWallet** (Senior Software Engineer, 2019 – present, Madrid / Remote)\n- **M&GT Consulting** (Software Developer, 2016 – 2019, Madrid)\n- **Indra** (Software Developer, 2015 – 2016, A Coruña)\n\nWould you like details on his AI agent projects or his current role at CoverWallet?",
+            "text": "Alberto has been working as a software engineer since 2015, so roughly ten years, based on the roles listed in his profile:\n\n- **CoverWallet** (Senior Software Engineer, 2019 to present)\n- **M&GT Consulting** (Software Developer, 2016 to 2019)\n- **Indra** (Software Developer, 2015 to 2016)",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2745,
-              "cacheWriteInputTokens": 1082,
-              "cacheReadInputTokens": 1661,
-              "outputTokens": 154
+              "inputTokens": 2219,
+              "cacheWriteInputTokens": 564,
+              "cacheReadInputTokens": 1653,
+              "outputTokens": 222
             },
             "providerContent": [
               {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS+QYKEAgUGAI4AUIIdGhpbmtpbmcSDCoaRYyMO/+HKluHshoMxaIAGxhCjkZPYMa5IjBVIET+SURSvJVlXvs38OAhDw2wWRyeT8vSO89hvAlRebS6gpL+t8LtbIMJHxX4ARIqlgZgEAVSqY0MJ8G4c/7sRG6UIKFI5E8UlTb56B/VN3LpgLtnTGDZbUjZRzJXcjQM/TTGiGjneCHZUwGgFid0JSAryiyI4um7XtdQG82Cu2PsnbeUCeJM33bq+k0feLROGTCZUIYDAaasBytq9EBLeKiqlDaGhGx1ioKZdJhLuUvVTT7uI/sQdO76PBYVCcmeE9q59GK9lrmsoXiGZ8J+BGjC3sMSpHrAYFOBTwCtegLy4VUGjEcfFHEHxqmOl/MTYC9EvZZiExQ3bov+yVIibnmE2yHubmmKqFxPrc0F557UtECKcTVwFw39+b5kRyYM1KObIik42y0wLMwXfSSUTwO+GZKKO/U613Vf6uckTHcpTdy4LXkuKHbkIuScVWb0Xit0Vq4Y1OOd0/Dqh/2+ilR8ODUokp9kDmq7SrMvSI8ooGx3t0zq2sLAh4FofR1J7sZvodXvVUUm5BlC0uD81fImOpuPVaeCYrjh/NF9bMyqUdxqPnf/eW4wNCO7LUGv2Y+MovZWr6gfmxqq+TzDZGZgZj607NoMHoscxLUPK1cVfWMXZk+eEYceV1uikt/2j/3TvEH49vSbwj4MNMN3TFd9vUSjULx/S0XD9sfJf58FumOC/U2QViqfHxkj/RGKNL3Ih2V7LUwz42VxTBSFbpjaOxCl3C0XZd6RPjbIr8DmuqkFkmrmSZCFP7TAKFPb0tTyya+UIjfpzBVsRnC/YPl5HCe6ia4gbevgbNX+pr4AtVnEjyUY2jnNkNuRVYpluIuLezjcOHB3axRp6j6Gc+o6VyTGOGRY3E7nO/DxzjhTOiHom74FiG2gihLbBtxQblGQf/6vkEig1+JJJmPqU+Rz0oXIbiH6a/uEpCf082tija8n6JAi5XcxYffZDA2oEyTwFUsbyGlUHRgu+5K8sJz56tQkT3iY/elEVPYlj1mfWdz+TX0OAG2b5vTjgFLKn9DU+CeptWnShhBQCYtqvvsQp76yPl1i2IM3iCvezXwgOl1vD1jbGTIqvqF6ujofwM72GdboNmKx0Sz8Od/Z/qeA7FfQp6u/GAE="
+              },
+              {
                 "type": "text",
-                "text": "Alberto has over 10 years of professional experience in software engineering. His work history includes:\n\n- **CoverWallet** (Senior Software Engineer, 2019 – present, Madrid / Remote)\n- **M&GT Consulting** (Software Developer, 2016 – 2019, Madrid)\n- **Indra** (Software Developer, 2015 – 2016, A Coruña)\n\nWould you like details on his AI agent projects or his current role at CoverWallet?"
+                "text": "Alberto has been working as a software engineer since 2015, so roughly ten years, based on the roles listed in his profile:\n\n- **CoverWallet** (Senior Software Engineer, 2019 to present)\n- **M&GT Consulting** (Software Developer, 2016 to 2019)\n- **Indra** (Software Developer, 2015 to 2016)"
               }
             ]
           }
@@ -208,13 +195,13 @@
     {
       "calls": [
         {
-          "requestHash": "61d9e3c2a15469d36595f0ca2666a49b0d212f8da29978cde5df6f0c5c61d4b4",
-          "latencyMs": 657,
+          "requestHash": "2a52982ac284012f65dfa6b225e51b5079874e143162900737afbabd89ed8b72",
+          "latencyMs": 534,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1665,
-              "cacheReadInputTokens": 1661
+              "inputTokens": 1657,
+              "cacheReadInputTokens": 1653
             },
             {
               "type": "response_end",
@@ -222,26 +209,26 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_019EUKi7xGsRnh2Ffjcw8zEZ",
+                    "id": "toolu_0117XnbjZ95Mw3FJYZuduD8h",
                     "name": "get_experience",
                     "input": {}
                   },
                   {
-                    "id": "toolu_01WUNHi8GJSu5U1s6Ak65o4z",
+                    "id": "toolu_0142EdaRPUVZ174i5E7NP2gN",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1665,
-                  "cacheReadInputTokens": 1661,
+                  "inputTokens": 1657,
+                  "cacheReadInputTokens": 1653,
                   "outputTokens": 51
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_019EUKi7xGsRnh2Ffjcw8zEZ",
+                    "id": "toolu_0117XnbjZ95Mw3FJYZuduD8h",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -250,7 +237,7 @@
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_01WUNHi8GJSu5U1s6Ak65o4z",
+                    "id": "toolu_0142EdaRPUVZ174i5E7NP2gN",
                     "name": "get_profile",
                     "caller": {
                       "type": "direct"
@@ -263,61 +250,66 @@
           ]
         },
         {
-          "requestHash": "f41a371a63a01ddfb0e2c2d897ccd5dfd19f67db5275fe69a638702e5f8ab93e",
-          "latencyMs": 783,
+          "requestHash": "42040d9051e38122d48ba8ec431a244ab510359a50b7d4d01a1c89add6ac2ba7",
+          "latencyMs": 786,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2745,
-              "cacheReadInputTokens": 2743
+              "inputTokens": 2737,
+              "cacheWriteInputTokens": 1082,
+              "cacheReadInputTokens": 1653
             },
             {
               "type": "text_delta",
-              "text": "Alberto has more"
+              "text": "Alberto has over"
             },
             {
               "type": "text_delta",
-              "text": " than 10 years of professional"
+              "text": " 10 years of professional exper"
             },
             {
               "type": "text_delta",
-              "text": " experience in software eng"
+              "text": "ience."
             },
             {
               "type": "text_delta",
-              "text": "ineering, according to his profile"
+              "text": " His career"
             },
             {
               "type": "text_delta",
-              "text": ". His career started"
+              "text": " began in 2015 as"
             },
             {
               "type": "text_delta",
-              "text": " in 2015 at Ind"
+              "text": " a"
             },
             {
               "type": "text_delta",
-              "text": "ra, mo"
+              "text": " Software Developer at Indra"
             },
             {
               "type": "text_delta",
-              "text": "ved to M&GT Cons"
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": "ulting from"
+              "text": " then moved to M&GT"
             },
             {
               "type": "text_delta",
-              "text": " 2016 to 2019"
+              "text": " Consulting (2016–"
             },
             {
               "type": "text_delta",
-              "text": ", and he"
+              "text": "2019), and he"
             },
             {
               "type": "text_delta",
-              "text": " has been a"
+              "text": " has"
+            },
+            {
+              "type": "text_delta",
+              "text": " been a"
             },
             {
               "type": "text_delta",
@@ -334,18 +326,19 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto has more than 10 years of professional experience in software engineering, according to his profile. His career started in 2015 at Indra, moved to M&GT Consulting from 2016 to 2019, and he has been a Senior Software Engineer at CoverWallet since 2019.",
+                "text": "Alberto has over 10 years of professional experience. His career began in 2015 as a Software Developer at Indra, then moved to M&GT Consulting (2016–2019), and he has been a Senior Software Engineer at CoverWallet since 2019.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2745,
-                  "cacheReadInputTokens": 2743,
-                  "outputTokens": 90
+                  "inputTokens": 2737,
+                  "cacheWriteInputTokens": 1082,
+                  "cacheReadInputTokens": 1653,
+                  "outputTokens": 83
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto has more than 10 years of professional experience in software engineering, according to his profile. His career started in 2015 at Indra, moved to M&GT Consulting from 2016 to 2019, and he has been a Senior Software Engineer at CoverWallet since 2019."
+                    "text": "Alberto has over 10 years of professional experience. His career began in 2015 as a Software Developer at Indra, then moved to M&GT Consulting (2016–2019), and he has been a Senior Software Engineer at CoverWallet since 2019."
                   }
                 ]
               }
@@ -357,13 +350,13 @@
     {
       "calls": [
         {
-          "requestHash": "61d9e3c2a15469d36595f0ca2666a49b0d212f8da29978cde5df6f0c5c61d4b4",
-          "latencyMs": 621,
+          "requestHash": "2a52982ac284012f65dfa6b225e51b5079874e143162900737afbabd89ed8b72",
+          "latencyMs": 504,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1665,
-              "cacheReadInputTokens": 1661
+              "inputTokens": 1657,
+              "cacheReadInputTokens": 1653
             },
             {
               "type": "response_end",
@@ -371,21 +364,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_0182G56k1x531VjcWp9hGUgX",
+                    "id": "toolu_017CEpJTsvRC2xyYLessPHGu",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1665,
-                  "cacheReadInputTokens": 1661,
+                  "inputTokens": 1657,
+                  "cacheReadInputTokens": 1653,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_0182G56k1x531VjcWp9hGUgX",
+                    "id": "toolu_017CEpJTsvRC2xyYLessPHGu",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -398,14 +391,13 @@
           ]
         },
         {
-          "requestHash": "66ea0c2d851d7ea150e2f78c8e0b01626da2a01b70819b813c070c38062fea14",
-          "latencyMs": 1031,
+          "requestHash": "c1ec252f13169cf205a6b70aad0cb32adf06cb8409e6060ae8580227c668cc16",
+          "latencyMs": 907,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2227,
-              "cacheWriteInputTokens": 564,
-              "cacheReadInputTokens": 1661
+              "inputTokens": 2219,
+              "cacheReadInputTokens": 2217
             },
             {
               "type": "text_delta",
@@ -413,15 +405,23 @@
             },
             {
               "type": "text_delta",
-              "text": " 10 years of professional software"
+              "text": " 10 years of profess"
             },
             {
               "type": "text_delta",
-              "text": " development experience, based on his work"
+              "text": "ional experience as"
             },
             {
               "type": "text_delta",
-              "text": " history from 2015 to the"
+              "text": " a software developer, based on his"
+            },
+            {
+              "type": "text_delta",
+              "text": " work history from 2015 to"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
             },
             {
               "type": "text_delta",
@@ -437,11 +437,15 @@
             },
             {
               "type": "text_delta",
-              "text": "ineer, 2019 –"
+              "text": "ineer,"
             },
             {
               "type": "text_delta",
-              "text": " now"
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "2019–now"
             },
             {
               "type": "text_delta",
@@ -457,76 +461,35 @@
             },
             {
               "type": "text_delta",
-              "text": " Developer, 2016 –"
+              "text": " Developer, 2016–2"
             },
             {
               "type": "text_delta",
-              "text": " 2019)\n- **"
+              "text": "019)\n- **Indra"
             },
             {
               "type": "text_delta",
-              "text": "Indra** (Software Develop"
+              "text": "** (Software Developer,"
             },
             {
               "type": "text_delta",
-              "text": "er, 2015 – "
-            },
-            {
-              "type": "text_delta",
-              "text": "2016)\n\nThe"
-            },
-            {
-              "type": "text_delta",
-              "text": " prof"
-            },
-            {
-              "type": "text_delta",
-              "text": "ile l"
-            },
-            {
-              "type": "text_delta",
-              "text": "ists years"
-            },
-            {
-              "type": "text_delta",
-              "text": " only,"
-            },
-            {
-              "type": "text_delta",
-              "text": " so for"
-            },
-            {
-              "type": "text_delta",
-              "text": " a more exact fig"
-            },
-            {
-              "type": "text_delta",
-              "text": "ure, you could"
-            },
-            {
-              "type": "text_delta",
-              "text": " cont"
-            },
-            {
-              "type": "text_delta",
-              "text": "act him directly."
+              "text": " 2015–2016)"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto has about 10 years of professional software development experience, based on his work history from 2015 to the present:\n\n- **CoverWallet** (Senior Software Engineer, 2019 – now)\n- **M&GT Consulting** (Software Developer, 2016 – 2019)\n- **Indra** (Software Developer, 2015 – 2016)\n\nThe profile lists years only, so for a more exact figure, you could contact him directly.",
+                "text": "Alberto has about 10 years of professional experience as a software developer, based on his work history from 2015 to the present:\n\n- **CoverWallet** (Senior Software Engineer, 2019–now)\n- **M&GT Consulting** (Software Developer, 2016–2019)\n- **Indra** (Software Developer, 2015–2016)",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2227,
-                  "cacheWriteInputTokens": 564,
-                  "cacheReadInputTokens": 1661,
-                  "outputTokens": 139
+                  "inputTokens": 2219,
+                  "cacheReadInputTokens": 2217,
+                  "outputTokens": 111
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto has about 10 years of professional software development experience, based on his work history from 2015 to the present:\n\n- **CoverWallet** (Senior Software Engineer, 2019 – now)\n- **M&GT Consulting** (Software Developer, 2016 – 2019)\n- **Indra** (Software Developer, 2015 – 2016)\n\nThe profile lists years only, so for a more exact figure, you could contact him directly."
+                    "text": "Alberto has about 10 years of professional experience as a software developer, based on his work history from 2015 to the present:\n\n- **CoverWallet** (Senior Software Engineer, 2019–now)\n- **M&GT Consulting** (Software Developer, 2016–2019)\n- **Indra** (Software Developer, 2015–2016)"
                   }
                 ]
               }

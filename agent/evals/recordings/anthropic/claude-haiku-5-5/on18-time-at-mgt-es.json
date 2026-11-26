@@ -3,7 +3,7 @@
   "slug": "time-at-mgt-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-      "latencyMs": 705,
+      "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+      "latencyMs": 573,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1674,
-          "cacheWriteInputTokens": 1670
+          "inputTokens": 1666,
+          "cacheWriteInputTokens": 1662
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01JyKgg2TNiPcjMTZxXJcjYg",
+                "id": "toolu_01VepXiZXU7QX9aHRS9boyWB",
                 "name": "get_experience",
                 "input": {
                   "company": "M&GT"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1674,
-              "cacheWriteInputTokens": 1670,
+              "inputTokens": 1666,
+              "cacheWriteInputTokens": 1662,
               "outputTokens": 51
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01JyKgg2TNiPcjMTZxXJcjYg",
+                "id": "toolu_01VepXiZXU7QX9aHRS9boyWB",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -62,78 +62,30 @@
       ]
     },
     {
-      "requestHash": "10fe2b2c29cf730ae6c599d6fb908697b263febd657c47bfe27dda718abaf251",
-      "latencyMs": 880,
+      "requestHash": "bba96000a26ff1c0c865e96f9addaa1aa557caba3685bcd8f3d2d5e03b29b8d2",
+      "latencyMs": 845,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1894,
+          "inputTokens": 1886,
           "cacheWriteInputTokens": 222,
-          "cacheReadInputTokens": 1670
+          "cacheReadInputTokens": 1662
         },
         {
           "type": "text_delta",
-          "text": "Alberto tr"
+          "text": "En M&GT Consul"
         },
         {
           "type": "text_delta",
-          "text": "abajó en"
+          "text": "ting, Alberto trab"
         },
         {
           "type": "text_delta",
-          "text": " M&GT Consulting"
+          "text": "ajó como Software Developer"
         },
         {
           "type": "text_delta",
-          "text": " como Software Developer en"
-        },
-        {
-          "type": "text_delta",
-          "text": " Madrid,"
-        },
-        {
-          "type": "text_delta",
-          "text": " entre 2016 y "
-        },
-        {
-          "type": "text_delta",
-          "text": "2019. All"
-        },
-        {
-          "type": "text_delta",
-          "text": "í construyó AP"
-        },
-        {
-          "type": "text_delta",
-          "text": "Is REST en Node."
-        },
-        {
-          "type": "text_delta",
-          "text": "js y"
-        },
-        {
-          "type": "text_delta",
-          "text": " a"
-        },
-        {
-          "type": "text_delta",
-          "text": "plicaciones web y mó"
-        },
-        {
-          "type": "text_delta",
-          "text": "viles (iOS y"
-        },
-        {
-          "type": "text_delta",
-          "text": " Android) para clientes internac"
-        },
-        {
-          "type": "text_delta",
-          "text": "ionales de"
-        },
-        {
-          "type": "text_delta",
-          "text": " gran tamaño, y"
+          "text": " en Madrid,"
         },
         {
           "type": "text_delta",
@@ -141,7 +93,51 @@
         },
         {
           "type": "text_delta",
-          "text": "regó soluciones bl"
+          "text": "re 2016 y 2"
+        },
+        {
+          "type": "text_delta",
+          "text": "019. S"
+        },
+        {
+          "type": "text_delta",
+          "text": "us tareas principales fue"
+        },
+        {
+          "type": "text_delta",
+          "text": "ron:\n\n- Des"
+        },
+        {
+          "type": "text_delta",
+          "text": "arrollar APIs RE"
+        },
+        {
+          "type": "text_delta",
+          "text": "ST en Node.js y a"
+        },
+        {
+          "type": "text_delta",
+          "text": "plicaciones web y"
+        },
+        {
+          "type": "text_delta",
+          "text": " móviles ("
+        },
+        {
+          "type": "text_delta",
+          "text": "iOS y Android) para"
+        },
+        {
+          "type": "text_delta",
+          "text": " grandes clientes internac"
+        },
+        {
+          "type": "text_delta",
+          "text": "ionales.\n- Entreg"
+        },
+        {
+          "type": "text_delta",
+          "text": "ar soluciones bl"
         },
         {
           "type": "text_delta",
@@ -158,19 +154,19 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Allí construyó APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño, y entregó soluciones blockchain con Hyperledger Fabric y Ethereum.",
+            "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales fueron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para grandes clientes internacionales.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1894,
+              "inputTokens": 1886,
               "cacheWriteInputTokens": 222,
-              "cacheReadInputTokens": 1670,
-              "outputTokens": 124
+              "cacheReadInputTokens": 1662,
+              "outputTokens": 137
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Allí construyó APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño, y entregó soluciones blockchain con Hyperledger Fabric y Ethereum."
+                "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales fueron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para grandes clientes internacionales.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum."
               }
             ]
           }
@@ -182,13 +178,13 @@
     {
       "calls": [
         {
-          "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-          "latencyMs": 683,
+          "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+          "latencyMs": 602,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1674,
-              "cacheReadInputTokens": 1670
+              "inputTokens": 1666,
+              "cacheReadInputTokens": 1662
             },
             {
               "type": "response_end",
@@ -196,7 +192,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_018MzmTmkPapW6AdzFJxMzwh",
+                    "id": "toolu_01BAiLUuUSkm4kcmxQkNRBrb",
                     "name": "get_experience",
                     "input": {
                       "company": "M&GT"
@@ -205,14 +201,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1674,
-                  "cacheReadInputTokens": 1670,
+                  "inputTokens": 1666,
+                  "cacheReadInputTokens": 1662,
                   "outputTokens": 51
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_018MzmTmkPapW6AdzFJxMzwh",
+                    "id": "toolu_01BAiLUuUSkm4kcmxQkNRBrb",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -227,49 +223,45 @@
           ]
         },
         {
-          "requestHash": "f9d0131609921cb8cb041bd87c0d207e06efea28079970502e35da2a26943165",
-          "latencyMs": 953,
+          "requestHash": "1af83a89b5a8e5ac5de51c257ade8118f3522a4c4e537865bad9d32a6047d1b6",
+          "latencyMs": 916,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1894,
-              "cacheReadInputTokens": 1892
+              "inputTokens": 1886,
+              "cacheReadInputTokens": 1884
             },
             {
               "type": "text_delta",
-              "text": "Alberto tr"
+              "text": "En M&GT Consul"
             },
             {
               "type": "text_delta",
-              "text": "abajó en"
+              "text": "ting, Alberto trab"
             },
             {
               "type": "text_delta",
-              "text": " M&GT Consulting"
+              "text": "ajó como Software Developer"
             },
             {
               "type": "text_delta",
-              "text": " como Software Developer en"
+              "text": " en Madrid,"
             },
             {
               "type": "text_delta",
-              "text": " Madrid, ent"
+              "text": " entre 2016 y "
             },
             {
               "type": "text_delta",
-              "text": "re 2016 y 2"
+              "text": "2019. S"
             },
             {
               "type": "text_delta",
-              "text": "019. Sus t"
+              "text": "us principales t"
             },
             {
               "type": "text_delta",
-              "text": "areas principales inc"
-            },
-            {
-              "type": "text_delta",
-              "text": "luyeron:\n\n-"
+              "text": "areas fueron:\n\n-"
             },
             {
               "type": "text_delta",
@@ -293,51 +285,59 @@
             },
             {
               "type": "text_delta",
-              "text": " móviles (iOS/"
+              "text": " móviles (iOS y"
             },
             {
               "type": "text_delta",
-              "text": "Android) para gr"
+              "text": " Android) para cl"
             },
             {
               "type": "text_delta",
-              "text": "andes clientes internacion"
+              "text": "ientes internacionales de"
             },
             {
               "type": "text_delta",
-              "text": "ales.\n- Entregar"
+              "text": " gran tamaño."
             },
             {
               "type": "text_delta",
-              "text": " soluciones bl"
+              "text": "\n- Entregar soluci"
             },
             {
               "type": "text_delta",
-              "text": "ockchain con Hyper"
+              "text": "ones bl"
             },
             {
               "type": "text_delta",
-              "text": "ledger Fabric y"
+              "text": "ockchain s"
             },
             {
               "type": "text_delta",
-              "text": " Ethereum."
+              "text": "obre Hyperledger"
+            },
+            {
+              "type": "text_delta",
+              "text": " Fabric y Eth"
+            },
+            {
+              "type": "text_delta",
+              "text": "ereum."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales incluyeron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS/Android) para grandes clientes internacionales.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum.",
+                "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus principales tareas fueron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño.\n- Entregar soluciones blockchain sobre Hyperledger Fabric y Ethereum.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1894,
-                  "cacheReadInputTokens": 1892,
-                  "outputTokens": 138
+                  "inputTokens": 1886,
+                  "cacheReadInputTokens": 1884,
+                  "outputTokens": 143
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales incluyeron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS/Android) para grandes clientes internacionales.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum."
+                    "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus principales tareas fueron:\n\n- Desarrollar APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño.\n- Entregar soluciones blockchain sobre Hyperledger Fabric y Ethereum."
                   }
                 ]
               }
@@ -349,13 +349,13 @@
     {
       "calls": [
         {
-          "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-          "latencyMs": 695,
+          "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+          "latencyMs": 602,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1674,
-              "cacheReadInputTokens": 1670
+              "inputTokens": 1666,
+              "cacheReadInputTokens": 1662
             },
             {
               "type": "response_end",
@@ -363,7 +363,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01GBnQhaFmxuCXmfYiWkG5W3",
+                    "id": "toolu_01DKpDzasQHA91huWPRAKBS6",
                     "name": "get_experience",
                     "input": {
                       "company": "M&GT"
@@ -372,14 +372,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1674,
-                  "cacheReadInputTokens": 1670,
+                  "inputTokens": 1666,
+                  "cacheReadInputTokens": 1662,
                   "outputTokens": 51
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01GBnQhaFmxuCXmfYiWkG5W3",
+                    "id": "toolu_01DKpDzasQHA91huWPRAKBS6",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -394,49 +394,57 @@
           ]
         },
         {
-          "requestHash": "af681fbae51672f637f01d503d184a84db0c8e55e3fe42d3f01623bb39a87e8d",
-          "latencyMs": 892,
+          "requestHash": "627570be2b364fe45608550b4c0d895b760d0e0807d830ffcd50c47fba801d96",
+          "latencyMs": 912,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1894,
-              "cacheReadInputTokens": 1892
+              "inputTokens": 1886,
+              "cacheReadInputTokens": 1884
             },
             {
               "type": "text_delta",
-              "text": "Alberto tr"
+              "text": "En M&GT Consul"
             },
             {
               "type": "text_delta",
-              "text": "abajó en"
+              "text": "ting, Alberto trab"
             },
             {
               "type": "text_delta",
-              "text": " M&GT Consulting"
+              "text": "ajó como"
             },
             {
               "type": "text_delta",
-              "text": " como Software Developer en"
+              "text": " Software Developer en Madr"
             },
             {
               "type": "text_delta",
-              "text": " Madrid, ent"
+              "text": "id,"
             },
             {
               "type": "text_delta",
-              "text": "re 2016 y 2"
+              "text": " entre 2016 y "
             },
             {
               "type": "text_delta",
-              "text": "019. Sus t"
+              "text": "2019. S"
             },
             {
               "type": "text_delta",
-              "text": "areas principales fueron:"
+              "text": "us"
             },
             {
               "type": "text_delta",
-              "text": "\n\n- Construir AP"
+              "text": " principales tareas fueron"
+            },
+            {
+              "type": "text_delta",
+              "text": ":\n\n- Construir"
+            },
+            {
+              "type": "text_delta",
+              "text": " AP"
             },
             {
               "type": "text_delta",
@@ -444,35 +452,35 @@
             },
             {
               "type": "text_delta",
-              "text": "js y a"
+              "text": "js y aplicaciones"
             },
             {
               "type": "text_delta",
-              "text": "plicaciones web y"
+              "text": " web y"
             },
             {
               "type": "text_delta",
-              "text": " móvi"
+              "text": " móviles (iOS y"
             },
             {
               "type": "text_delta",
-              "text": "les (iOS/Android"
+              "text": " Android) para clientes intern"
             },
             {
               "type": "text_delta",
-              "text": ") para gr"
+              "text": "acionales de"
             },
             {
               "type": "text_delta",
-              "text": "andes clientes internacion"
+              "text": " gran tamaño."
             },
             {
               "type": "text_delta",
-              "text": "ales.\n- Desarr"
+              "text": "\n- Entregar soluci"
             },
             {
               "type": "text_delta",
-              "text": "ollar soluciones bl"
+              "text": "ones bl"
             },
             {
               "type": "text_delta",
@@ -489,18 +497,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales fueron:\n\n- Construir APIs REST en Node.js y aplicaciones web y móviles (iOS/Android) para grandes clientes internacionales.\n- Desarrollar soluciones blockchain con Hyperledger Fabric y Ethereum.",
+                "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus principales tareas fueron:\n\n- Construir APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1894,
-                  "cacheReadInputTokens": 1892,
-                  "outputTokens": 135
+                  "inputTokens": 1886,
+                  "cacheReadInputTokens": 1884,
+                  "outputTokens": 138
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto trabajó en M&GT Consulting como Software Developer en Madrid, entre 2016 y 2019. Sus tareas principales fueron:\n\n- Construir APIs REST en Node.js y aplicaciones web y móviles (iOS/Android) para grandes clientes internacionales.\n- Desarrollar soluciones blockchain con Hyperledger Fabric y Ethereum."
+                    "text": "En M&GT Consulting, Alberto trabajó como Software Developer en Madrid, entre 2016 y 2019. Sus principales tareas fueron:\n\n- Construir APIs REST en Node.js y aplicaciones web y móviles (iOS y Android) para clientes internacionales de gran tamaño.\n- Entregar soluciones blockchain con Hyperledger Fabric y Ethereum."
                   }
                 ]
               }

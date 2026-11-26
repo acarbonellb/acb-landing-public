@@ -3,7 +3,7 @@
   "slug": "spoken-languages",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-      "latencyMs": 1532,
+      "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+      "latencyMs": 1670,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2330,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "nBrSjTMsnMKz4qbuenCowNMDOR8cRhaw",
+                "id": "HfTCSwC0hFoaIkx64E2O1CxuKviQwJbJ",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2342,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 60
+              "inputTokens": 2330,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 65
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "nBrSjTMsnMKz4qbuenCowNMDOR8cRhaw",
+                "id": "HfTCSwC0hFoaIkx64E2O1CxuKviQwJbJ",
                 "name": "get_profile",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "e881e57e77a1bd51ff9812958c5582dfd3b08520dadb9210a9c798b0b07a0763",
-      "latencyMs": 574,
+      "requestHash": "bd66ddea2a4a5c31241fcbe0f4cbee9044cf5a782b37232e737520aed81a3fbb",
+      "latencyMs": 607,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2652,
-          "cacheReadInputTokens": 1175
+          "inputTokens": 2640,
+          "cacheReadInputTokens": 1169
         },
         {
           "type": "text_delta",
@@ -113,23 +113,27 @@
         },
         {
           "type": "text_delta",
+          "text": " level"
+        },
+        {
+          "type": "text_delta",
           "text": ")."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto speaks Spanish (native) and English (C1).",
+            "text": "Alberto speaks Spanish (native) and English (C1 level).",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175,
-              "outputTokens": 16
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169,
+              "outputTokens": 17
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto speaks Spanish (native) and English (C1)."
+                "text": "Alberto speaks Spanish (native) and English (C1 level)."
               }
             ]
           }
@@ -141,13 +145,13 @@
     {
       "calls": [
         {
-          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-          "latencyMs": 1502,
+          "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+          "latencyMs": 2191,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -155,21 +159,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "PTexG3WsgrfXhVER9Uu02xCbOesU4iD6",
+                    "id": "6DXHyp0BnjFG6t0SebfEusihvtKg0xsD",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 60
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 88
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "PTexG3WsgrfXhVER9Uu02xCbOesU4iD6",
+                    "id": "6DXHyp0BnjFG6t0SebfEusihvtKg0xsD",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -179,13 +183,13 @@
           ]
         },
         {
-          "requestHash": "3b161bca8d744cf05c0cc831958a2ffab9668c12963f7262b667aedc69072526",
-          "latencyMs": 576,
+          "requestHash": "cd68e9be55bd531ba086b229e5cea77e5fa08155c6fff3628c03b9e6de90919f",
+          "latencyMs": 585,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -246,8 +250,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2652,
-                  "cacheReadInputTokens": 1175,
+                  "inputTokens": 2640,
+                  "cacheReadInputTokens": 1169,
                   "outputTokens": 16
                 },
                 "providerContent": [
@@ -265,13 +269,13 @@
     {
       "calls": [
         {
-          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-          "latencyMs": 1468,
+          "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+          "latencyMs": 1420,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -279,21 +283,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "BUeVd8nx784SIPZvcvv2rBmrAzQBKs1N",
+                    "id": "UEtG4dqffchHqQhhfiTavHoZZi9iABBj",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 59
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 56
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "BUeVd8nx784SIPZvcvv2rBmrAzQBKs1N",
+                    "id": "UEtG4dqffchHqQhhfiTavHoZZi9iABBj",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -303,13 +307,13 @@
           ]
         },
         {
-          "requestHash": "65632c2ef37634c2d6df16ef6d3a25c84d45e604500b4d67cd57c8ff9d494293",
-          "latencyMs": 571,
+          "requestHash": "c1ffdeaa2c0a7b2122c3bd9b4e7df9339c2f0eba6adc95c7c6349e016904af51",
+          "latencyMs": 586,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2652,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2640,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -370,8 +374,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2652,
-                  "cacheReadInputTokens": 1175,
+                  "inputTokens": 2640,
+                  "cacheReadInputTokens": 1169,
                   "outputTokens": 16
                 },
                 "providerContent": [

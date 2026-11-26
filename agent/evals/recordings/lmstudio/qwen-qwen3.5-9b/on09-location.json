@@ -3,7 +3,7 @@
   "slug": "location",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-      "latencyMs": 1565,
+      "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+      "latencyMs": 1773,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2341,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2329,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "VacTKbiosCs6maiz5dbUgf3W51whkof7",
+                "id": "R33pX8dUcDLmi1cRZyEszlCuFFIaDMyF",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2341,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 57
+              "inputTokens": 2329,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 69
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "VacTKbiosCs6maiz5dbUgf3W51whkof7",
+                "id": "R33pX8dUcDLmi1cRZyEszlCuFFIaDMyF",
                 "name": "get_profile",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "567d3d87864ca0153f62927fe3599e9ae676f6b04afe43f722b903faba12a770",
-      "latencyMs": 522,
+      "requestHash": "9d0d5eaec81ecab0ef5bce95c78c39deaa4388b851347c926c751f54599e7ed4",
+      "latencyMs": 511,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2650,
-          "cacheReadInputTokens": 1174
+          "inputTokens": 2638,
+          "cacheReadInputTokens": 1168
         },
         {
           "type": "text_delta",
@@ -110,8 +110,8 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2650,
-              "cacheReadInputTokens": 1174,
+              "inputTokens": 2638,
+              "cacheReadInputTokens": 1168,
               "outputTokens": 13
             },
             "providerContent": [
@@ -129,13 +129,13 @@
     {
       "calls": [
         {
-          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-          "latencyMs": 1498,
+          "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+          "latencyMs": 3463,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2352,
-              "cacheReadInputTokens": 1174
+              "inputTokens": 2340,
+              "cacheReadInputTokens": 1168
             },
             {
               "type": "response_end",
@@ -143,22 +143,22 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "yhGT1FhEfVUIfF6GCMUNUHcGfgLuBsOD",
-                    "name": "get_profile",
+                    "id": "cRas3abS9YbSyOvDWQOX09O8jELnL67I",
+                    "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2352,
-                  "cacheReadInputTokens": 1174,
-                  "outputTokens": 60
+                  "inputTokens": 2340,
+                  "cacheReadInputTokens": 1168,
+                  "outputTokens": 140
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "yhGT1FhEfVUIfF6GCMUNUHcGfgLuBsOD",
-                    "name": "get_profile",
+                    "id": "cRas3abS9YbSyOvDWQOX09O8jELnL67I",
+                    "name": "get_contact",
                     "input": {}
                   }
                 ]
@@ -167,13 +167,13 @@
           ]
         },
         {
-          "requestHash": "d32d6dac9031a67c4001ceb5e8f3bd395356fb06383f84ee6844b8cf182997a8",
-          "latencyMs": 496,
+          "requestHash": "720208db9d28ce80b5158daab0c96fd33d736a8f35ed398401e22c57d47b4e4d",
+          "latencyMs": 435,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2650,
-              "cacheReadInputTokens": 1174
+              "inputTokens": 2426,
+              "cacheReadInputTokens": 1168
             },
             {
               "type": "text_delta",
@@ -222,8 +222,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2650,
-                  "cacheReadInputTokens": 1174,
+                  "inputTokens": 2426,
+                  "cacheReadInputTokens": 1168,
                   "outputTokens": 13
                 },
                 "providerContent": [
@@ -241,13 +241,13 @@
     {
       "calls": [
         {
-          "requestHash": "0a0e416e28fba680ef088c775289cc3f2ea63aad9db665980f253446afe351b8",
-          "latencyMs": 1466,
+          "requestHash": "2a996663b190d143a498ed124ae3cf2b3d83a008c6c86e519d5d7e17be15e9e2",
+          "latencyMs": 1880,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2352,
-              "cacheReadInputTokens": 1174
+              "inputTokens": 2340,
+              "cacheReadInputTokens": 1168
             },
             {
               "type": "response_end",
@@ -255,21 +255,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "tExAyLMQbQgX62fg0S35A6wUBFY5azsG",
+                    "id": "JcYt5hX1syUasASQ2ylkXOSZVKTBqDfq",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2352,
-                  "cacheReadInputTokens": 1174,
-                  "outputTokens": 59
+                  "inputTokens": 2340,
+                  "cacheReadInputTokens": 1168,
+                  "outputTokens": 75
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "tExAyLMQbQgX62fg0S35A6wUBFY5azsG",
+                    "id": "JcYt5hX1syUasASQ2ylkXOSZVKTBqDfq",
                     "name": "get_profile",
                     "input": {}
                   }
@@ -279,13 +279,13 @@
           ]
         },
         {
-          "requestHash": "91681f127f6f3fbe1a8167423d2e05e989a3f5d7cce693e789f9a1327ea501b7",
-          "latencyMs": 503,
+          "requestHash": "d296c7a5ced27003a1a236645bc8073387932a45c4a97ecede1f60fe93f597dc",
+          "latencyMs": 518,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2650,
-              "cacheReadInputTokens": 1174
+              "inputTokens": 2638,
+              "cacheReadInputTokens": 1168
             },
             {
               "type": "text_delta",
@@ -334,8 +334,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2650,
-                  "cacheReadInputTokens": 1174,
+                  "inputTokens": 2638,
+                  "cacheReadInputTokens": 1168,
                   "outputTokens": 13
                 },
                 "providerContent": [

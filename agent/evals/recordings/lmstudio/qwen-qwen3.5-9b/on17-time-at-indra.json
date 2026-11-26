@@ -3,7 +3,7 @@
   "slug": "time-at-indra",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
-      "latencyMs": 2122,
+      "requestHash": "2bd0ce31b879b66a70ced0fdc66f85d377f055f55d59fa27cfd517fdfb2d52e9",
+      "latencyMs": 1701,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2343,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2331,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,26 +31,26 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "5AZejMIz1nLGs4fNVRoCb2ppzgEyVm5e",
+                "id": "Q7LRofNrtdgPOrvH8gEXHOCRrU89Xdio",
                 "name": "get_experience",
                 "input": {
-                  "company": "indra"
+                  "company": "Indra"
                 }
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2343,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 83
+              "inputTokens": 2331,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 66
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "5AZejMIz1nLGs4fNVRoCb2ppzgEyVm5e",
+                "id": "Q7LRofNrtdgPOrvH8gEXHOCRrU89Xdio",
                 "name": "get_experience",
                 "input": {
-                  "company": "indra"
+                  "company": "Indra"
                 }
               }
             ]
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "ccf64281cf1cc94a58f4e427a8d84317e2ff529f8da7c0a2e6b905c63086edcb",
-      "latencyMs": 1593,
+      "requestHash": "42f5338dffcb3487137e3b4e61a9fe8459ad945d8abda51514efc1190784c473",
+      "latencyMs": 1504,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2469,
-          "cacheReadInputTokens": 1176
+          "inputTokens": 2458,
+          "cacheReadInputTokens": 1170
         },
         {
           "type": "text_delta",
@@ -78,6 +78,46 @@
         {
           "type": "text_delta",
           "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " Alberto"
+        },
+        {
+          "type": "text_delta",
+          "text": " worked"
+        },
+        {
+          "type": "text_delta",
+          "text": " as"
+        },
+        {
+          "type": "text_delta",
+          "text": " a"
+        },
+        {
+          "type": "text_delta",
+          "text": " Software"
+        },
+        {
+          "type": "text_delta",
+          "text": " Developer"
+        },
+        {
+          "type": "text_delta",
+          "text": " in"
+        },
+        {
+          "type": "text_delta",
+          "text": " A"
+        },
+        {
+          "type": "text_delta",
+          "text": " Cor"
+        },
+        {
+          "type": "text_delta",
+          "text": "uña"
         },
         {
           "type": "text_delta",
@@ -126,50 +166,6 @@
         {
           "type": "text_delta",
           "text": "6"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " Alberto"
-        },
-        {
-          "type": "text_delta",
-          "text": " worked"
-        },
-        {
-          "type": "text_delta",
-          "text": " as"
-        },
-        {
-          "type": "text_delta",
-          "text": " a"
-        },
-        {
-          "type": "text_delta",
-          "text": " Software"
-        },
-        {
-          "type": "text_delta",
-          "text": " Developer"
-        },
-        {
-          "type": "text_delta",
-          "text": " in"
-        },
-        {
-          "type": "text_delta",
-          "text": " A"
-        },
-        {
-          "type": "text_delta",
-          "text": " Cor"
-        },
-        {
-          "type": "text_delta",
-          "text": "uña"
         },
         {
           "type": "text_delta",
@@ -245,7 +241,11 @@
         },
         {
           "type": "text_delta",
-          "text": " handling"
+          "text": " focusing"
+        },
+        {
+          "type": "text_delta",
+          "text": " on"
         },
         {
           "type": "text_delta",
@@ -274,18 +274,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "At Indra, from 2015 to 2016, Alberto worked as a Software Developer in A Coruña. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes.",
+            "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2469,
-              "cacheReadInputTokens": 1176,
+              "inputTokens": 2458,
+              "cacheReadInputTokens": 1170,
               "outputTokens": 54
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "At Indra, from 2015 to 2016, Alberto worked as a Software Developer in A Coruña. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes."
+                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes."
               }
             ]
           }
@@ -297,13 +297,13 @@
     {
       "calls": [
         {
-          "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
-          "latencyMs": 2161,
+          "requestHash": "2bd0ce31b879b66a70ced0fdc66f85d377f055f55d59fa27cfd517fdfb2d52e9",
+          "latencyMs": 1862,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2356,
-              "cacheReadInputTokens": 1176
+              "inputTokens": 2344,
+              "cacheReadInputTokens": 1170
             },
             {
               "type": "response_end",
@@ -311,7 +311,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "3cgiMf8KCjW9mQ3t75ZmbxNsdbNiLcY8",
+                    "id": "6kfmcuYSCt2UyWyMzcTFNu8ayzyZCSoP",
                     "name": "get_experience",
                     "input": {
                       "company": "indra"
@@ -320,14 +320,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2356,
-                  "cacheReadInputTokens": 1176,
-                  "outputTokens": 75
+                  "inputTokens": 2344,
+                  "cacheReadInputTokens": 1170,
+                  "outputTokens": 74
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "3cgiMf8KCjW9mQ3t75ZmbxNsdbNiLcY8",
+                    "id": "6kfmcuYSCt2UyWyMzcTFNu8ayzyZCSoP",
                     "name": "get_experience",
                     "input": {
                       "company": "indra"
@@ -339,13 +339,13 @@
           ]
         },
         {
-          "requestHash": "0f962b967a798500f5c363ae8bebfee93b07808f0fa6fc9e5e8fadb8c5ec43f1",
-          "latencyMs": 1631,
+          "requestHash": "1cd7297bc1bfbf3c945386dff2e67e04686d8bf9901f7e4c431a71d60e62aaac",
+          "latencyMs": 1463,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2469,
-              "cacheReadInputTokens": 1176
+              "inputTokens": 2457,
+              "cacheReadInputTokens": 1170
             },
             {
               "type": "text_delta",
@@ -453,19 +453,27 @@
             },
             {
               "type": "text_delta",
-              "text": " His"
+              "text": " During"
             },
             {
               "type": "text_delta",
-              "text": " highlights"
+              "text": " this"
             },
             {
               "type": "text_delta",
-              "text": " include"
+              "text": " period"
             },
             {
               "type": "text_delta",
-              "text": " using"
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " he"
+            },
+            {
+              "type": "text_delta",
+              "text": " used"
             },
             {
               "type": "text_delta",
@@ -517,11 +525,11 @@
             },
             {
               "type": "text_delta",
-              "text": " along"
+              "text": " focusing"
             },
             {
               "type": "text_delta",
-              "text": " with"
+              "text": " on"
             },
             {
               "type": "text_delta",
@@ -550,18 +558,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include using Java/Spring and Oracle PL/SQL for telecom clients, along with QA and hotfixes.",
+                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. During this period, he used Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2469,
-                  "cacheReadInputTokens": 1176,
-                  "outputTokens": 53
+                  "inputTokens": 2457,
+                  "cacheReadInputTokens": 1170,
+                  "outputTokens": 55
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include using Java/Spring and Oracle PL/SQL for telecom clients, along with QA and hotfixes."
+                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. During this period, he used Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes."
                   }
                 ]
               }
@@ -573,13 +581,13 @@
     {
       "calls": [
         {
-          "requestHash": "5b614a4816518aab172369f8a4ed0aa1d3674b73be07b500757be250160258dc",
-          "latencyMs": 2041,
+          "requestHash": "2bd0ce31b879b66a70ced0fdc66f85d377f055f55d59fa27cfd517fdfb2d52e9",
+          "latencyMs": 1876,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2356,
-              "cacheReadInputTokens": 1176
+              "inputTokens": 2344,
+              "cacheReadInputTokens": 1170
             },
             {
               "type": "response_end",
@@ -587,7 +595,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "41jXi18uC75SxnYbiyrnDVw3AUbWG9go",
+                    "id": "wLJyup8GmB3sh3gzjnNdRrqjSgF8QBcz",
                     "name": "get_experience",
                     "input": {
                       "company": "indra"
@@ -596,14 +604,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2356,
-                  "cacheReadInputTokens": 1176,
+                  "inputTokens": 2344,
+                  "cacheReadInputTokens": 1170,
                   "outputTokens": 75
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "41jXi18uC75SxnYbiyrnDVw3AUbWG9go",
+                    "id": "wLJyup8GmB3sh3gzjnNdRrqjSgF8QBcz",
                     "name": "get_experience",
                     "input": {
                       "company": "indra"
@@ -615,13 +623,13 @@
           ]
         },
         {
-          "requestHash": "17afa8c9feaf86b5e3d02b405d3daee8b9d2f9cb0ebd368f87e9372ec1e5fea1",
-          "latencyMs": 1407,
+          "requestHash": "a597b5621db90ab76474500b0d8bff566a6014bc88d209bac7116ff38cb9d126",
+          "latencyMs": 1468,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2469,
-              "cacheReadInputTokens": 1176
+              "inputTokens": 2457,
+              "cacheReadInputTokens": 1170
             },
             {
               "type": "text_delta",
@@ -729,23 +737,27 @@
             },
             {
               "type": "text_delta",
-              "text": " His"
+              "text": " During"
             },
             {
               "type": "text_delta",
-              "text": " highlights"
+              "text": " this"
             },
             {
               "type": "text_delta",
-              "text": " include"
+              "text": " period"
             },
             {
               "type": "text_delta",
-              "text": " working"
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": " with"
+              "text": " he"
+            },
+            {
+              "type": "text_delta",
+              "text": " used"
             },
             {
               "type": "text_delta",
@@ -797,7 +809,11 @@
             },
             {
               "type": "text_delta",
-              "text": " handling"
+              "text": " focusing"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
             },
             {
               "type": "text_delta",
@@ -826,18 +842,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes.",
+                "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. During this period, he used Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2469,
-                  "cacheReadInputTokens": 1176,
-                  "outputTokens": 53
+                  "inputTokens": 2457,
+                  "cacheReadInputTokens": 1170,
+                  "outputTokens": 55
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. His highlights include working with Java/Spring and Oracle PL/SQL for telecom clients, handling QA and hotfixes."
+                    "text": "At Indra, Alberto worked as a Software Developer in A Coruña from 2015 to 2016. During this period, he used Java/Spring and Oracle PL/SQL for telecom clients, focusing on QA and hotfixes."
                   }
                 ]
               }

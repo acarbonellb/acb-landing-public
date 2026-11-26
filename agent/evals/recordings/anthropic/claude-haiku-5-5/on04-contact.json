@@ -3,7 +3,7 @@
   "slug": "contact",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "e3c121a135ac5a9db69b67567afbac6bd1f587c1160f45d261b4ab6dff1ee222",
-      "latencyMs": 636,
+      "requestHash": "474e2e7b301d8a310c862fad469a70b3a80f9bd26d36fa5a6bde66ffc65e7e80",
+      "latencyMs": 518,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1659,
-          "cacheWriteInputTokens": 1655
+          "inputTokens": 1651,
+          "cacheWriteInputTokens": 1647
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Sjd9GWqC7tyroFTkNP4KNc",
+                "id": "toolu_01WAsZ1gTEbChiEfYenPr9d6",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1659,
-              "cacheWriteInputTokens": 1655,
+              "inputTokens": 1651,
+              "cacheWriteInputTokens": 1647,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Sjd9GWqC7tyroFTkNP4KNc",
+                "id": "toolu_01WAsZ1gTEbChiEfYenPr9d6",
                 "name": "get_contact",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "8006d753d26ee8819c81d24fcd4bd077a8ef66221d72b9dc5fe7b291cc0a35c4",
-      "latencyMs": 725,
+      "requestHash": "dc584e928a49b329b1e357b3f1531bdb692dbdb3374c5db14c9347733c152b0b",
+      "latencyMs": 660,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1784,
+          "inputTokens": 1776,
           "cacheWriteInputTokens": 127,
-          "cacheReadInputTokens": 1655
+          "cacheReadInputTokens": 1647
         },
         {
           "type": "text_delta",
@@ -73,47 +73,39 @@
         },
         {
           "type": "text_delta",
-          "text": " at"
+          "text": " at:\n\n- **Email:"
         },
         {
           "type": "text_delta",
-          "text": ":\n\n- **Email:**"
+          "text": "** alberto@example.com"
         },
         {
           "type": "text_delta",
-          "text": " alberto@example.com"
+          "text": "\n- **GitHub:"
         },
         {
           "type": "text_delta",
-          "text": "\n- **GitHub:**"
+          "text": "** https://github.com/ac"
         },
         {
           "type": "text_delta",
-          "text": " https"
+          "text": "arbonellb\n- **"
         },
         {
           "type": "text_delta",
-          "text": "://github.com/acarb"
+          "text": "LinkedIn:**"
         },
         {
           "type": "text_delta",
-          "text": "onellb\n- **Lin"
+          "text": " https://www.linkedin"
         },
         {
           "type": "text_delta",
-          "text": "kedIn:** https://"
+          "text": ".com/in/albertoc"
         },
         {
           "type": "text_delta",
-          "text": "www.linkedin.com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/in/albertocarb"
-        },
-        {
-          "type": "text_delta",
-          "text": "onell/\n\nHe is"
+          "text": "arbonell/\n\nHe is"
         },
         {
           "type": "text_delta",
@@ -130,9 +122,9 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1784,
+              "inputTokens": 1776,
               "cacheWriteInputTokens": 127,
-              "cacheReadInputTokens": 1655,
+              "cacheReadInputTokens": 1647,
               "outputTokens": 93
             },
             "providerContent": [
@@ -150,13 +142,13 @@
     {
       "calls": [
         {
-          "requestHash": "e3c121a135ac5a9db69b67567afbac6bd1f587c1160f45d261b4ab6dff1ee222",
-          "latencyMs": 606,
+          "requestHash": "474e2e7b301d8a310c862fad469a70b3a80f9bd26d36fa5a6bde66ffc65e7e80",
+          "latencyMs": 481,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1659,
-              "cacheReadInputTokens": 1655
+              "inputTokens": 1651,
+              "cacheReadInputTokens": 1647
             },
             {
               "type": "response_end",
@@ -164,21 +156,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_013w9zhUjrtaPgzDNaqWQmJp",
+                    "id": "toolu_014bYXLGwmS3iS6KkvoVSusH",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1659,
-                  "cacheReadInputTokens": 1655,
+                  "inputTokens": 1651,
+                  "cacheReadInputTokens": 1647,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_013w9zhUjrtaPgzDNaqWQmJp",
+                    "id": "toolu_014bYXLGwmS3iS6KkvoVSusH",
                     "name": "get_contact",
                     "caller": {
                       "type": "direct"
@@ -191,13 +183,13 @@
           ]
         },
         {
-          "requestHash": "a81eecef92b204e68e2c89afac7644bfdbe62a175b1d37cadb7f7ac1dd919b05",
-          "latencyMs": 714,
+          "requestHash": "1c194966d68587176ea1b4641bc4fb4685a119e440f56729835e7741fdc7b5f2",
+          "latencyMs": 679,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1784,
-              "cacheReadInputTokens": 1782
+              "inputTokens": 1776,
+              "cacheReadInputTokens": 1774
             },
             {
               "type": "text_delta",
@@ -241,11 +233,11 @@
             },
             {
               "type": "text_delta",
-              "text": "bonell/\n\nHe is"
+              "text": "bonell/"
             },
             {
               "type": "text_delta",
-              "text": " based in Spain and"
+              "text": "\n\nHe's based in Spain and"
             },
             {
               "type": "text_delta",
@@ -254,18 +246,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "You can reach Alberto at:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely.",
+                "text": "You can reach Alberto at:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe's based in Spain and works remotely.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1784,
-                  "cacheReadInputTokens": 1782,
+                  "inputTokens": 1776,
+                  "cacheReadInputTokens": 1774,
                   "outputTokens": 93
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "You can reach Alberto at:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe is based in Spain and works remotely."
+                    "text": "You can reach Alberto at:\n\n- **Email:** alberto@example.com\n- **GitHub:** https://github.com/acarbonellb\n- **LinkedIn:** https://www.linkedin.com/in/albertocarbonell/\n\nHe's based in Spain and works remotely."
                   }
                 ]
               }
@@ -277,13 +269,13 @@
     {
       "calls": [
         {
-          "requestHash": "e3c121a135ac5a9db69b67567afbac6bd1f587c1160f45d261b4ab6dff1ee222",
-          "latencyMs": 602,
+          "requestHash": "474e2e7b301d8a310c862fad469a70b3a80f9bd26d36fa5a6bde66ffc65e7e80",
+          "latencyMs": 463,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1659,
-              "cacheReadInputTokens": 1655
+              "inputTokens": 1651,
+              "cacheReadInputTokens": 1647
             },
             {
               "type": "response_end",
@@ -291,21 +283,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01PB1pna4KzqkhPnU6SqEXK2",
+                    "id": "toolu_01MRKXULTkEDNrTmV4zEF9Ug",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1659,
-                  "cacheReadInputTokens": 1655,
+                  "inputTokens": 1651,
+                  "cacheReadInputTokens": 1647,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01PB1pna4KzqkhPnU6SqEXK2",
+                    "id": "toolu_01MRKXULTkEDNrTmV4zEF9Ug",
                     "name": "get_contact",
                     "caller": {
                       "type": "direct"
@@ -318,13 +310,13 @@
           ]
         },
         {
-          "requestHash": "25a194a769a2f7391c757e03c0b34a22240cb9b2126e7a2bf1ff46aedd86b9aa",
-          "latencyMs": 683,
+          "requestHash": "11a57e55ccca8562a5a444241b77711a62ec0d00666baca002f3475e1a2b527e",
+          "latencyMs": 681,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1784,
-              "cacheReadInputTokens": 1782
+              "inputTokens": 1776,
+              "cacheReadInputTokens": 1774
             },
             {
               "type": "text_delta",
@@ -385,8 +377,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1784,
-                  "cacheReadInputTokens": 1782,
+                  "inputTokens": 1776,
+                  "cacheReadInputTokens": 1774,
                   "outputTokens": 93
                 },
                 "providerContent": [

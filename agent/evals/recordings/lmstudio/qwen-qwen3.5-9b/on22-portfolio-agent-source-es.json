@@ -3,7 +3,7 @@
   "slug": "portfolio-agent-source-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "d3c8f9a3e6eeeea6f5d17aa3c6b6b158c3d163eedc1225aeeb3f3e7e1ab645c0",
-      "latencyMs": 2321,
+      "requestHash": "0a15364a42070a1d393e9cb1868eee9e31e0ed17a2aa35ea9e82641704e3a7ad",
+      "latencyMs": 2068,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2350,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2338,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ltjD5LHrvQ4aFcpM12LFQi8TFijzkbxK",
+                "id": "H0XPKi7mRlBB8pwy78AgVueJjjhwzRqU",
                 "name": "get_projects",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2350,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 79
+              "inputTokens": 2338,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 81
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ltjD5LHrvQ4aFcpM12LFQi8TFijzkbxK",
+                "id": "H0XPKi7mRlBB8pwy78AgVueJjjhwzRqU",
                 "name": "get_projects",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "45a34ba878bf3de996696ffa0756c93282be7d58a46da9b4ad9eb4eda5235091",
-      "latencyMs": 5242,
+      "requestHash": "171b4c130de8e8a59df40d5e61b4f1662393a6997fd27f3b443e4c32034e3225",
+      "latencyMs": 4304,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 3126,
-          "cacheReadInputTokens": 1183
+          "inputTokens": 3144,
+          "cacheReadInputTokens": 1177
         },
         {
           "type": "text_delta",
@@ -289,15 +289,11 @@
         },
         {
           "type": "text_delta",
-          "text": "\n\nAd"
+          "text": "\n\nT"
         },
         {
           "type": "text_delta",
-          "text": "emás"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
+          "text": "ambién"
         },
         {
           "type": "text_delta",
@@ -317,7 +313,11 @@
         },
         {
           "type": "text_delta",
-          "text": " evaluación"
+          "text": " evalu"
+        },
+        {
+          "type": "text_delta",
+          "text": "aciones"
         },
         {
           "type": "text_delta",
@@ -333,91 +333,11 @@
         },
         {
           "type": "text_delta",
-          "text": "\n["
+          "text": " ["
         },
         {
           "type": "text_delta",
-          "text": "https"
-        },
-        {
-          "type": "text_delta",
-          "text": "://"
-        },
-        {
-          "type": "text_delta",
-          "text": "github"
-        },
-        {
-          "type": "text_delta",
-          "text": ".com"
-        },
-        {
-          "type": "text_delta",
-          "text": "/ac"
-        },
-        {
-          "type": "text_delta",
-          "text": "arbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": "b"
-        },
-        {
-          "type": "text_delta",
-          "text": "/ac"
-        },
-        {
-          "type": "text_delta",
-          "text": "b"
-        },
-        {
-          "type": "text_delta",
-          "text": "-"
-        },
-        {
-          "type": "text_delta",
-          "text": "landing"
-        },
-        {
-          "type": "text_delta",
-          "text": "-public"
-        },
-        {
-          "type": "text_delta",
-          "text": "/blob"
-        },
-        {
-          "type": "text_delta",
-          "text": "/main"
-        },
-        {
-          "type": "text_delta",
-          "text": "/"
-        },
-        {
-          "type": "text_delta",
-          "text": "agent"
-        },
-        {
-          "type": "text_delta",
-          "text": "/"
-        },
-        {
-          "type": "text_delta",
-          "text": "eval"
-        },
-        {
-          "type": "text_delta",
-          "text": "s"
-        },
-        {
-          "type": "text_delta",
-          "text": "/report"
+          "text": "report"
         },
         {
           "type": "text_delta",
@@ -522,18 +442,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nAdemás, hay un informe de evaluación disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)",
+            "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí: [report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 3126,
-              "cacheReadInputTokens": 1183,
-              "outputTokens": 186
+              "inputTokens": 3144,
+              "cacheReadInputTokens": 1177,
+              "outputTokens": 160
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nAdemás, hay un informe de evaluación disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)"
+                "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí: [report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)"
               }
             ]
           }
@@ -545,13 +465,13 @@
     {
       "calls": [
         {
-          "requestHash": "d3c8f9a3e6eeeea6f5d17aa3c6b6b158c3d163eedc1225aeeb3f3e7e1ab645c0",
-          "latencyMs": 1783,
+          "requestHash": "0a15364a42070a1d393e9cb1868eee9e31e0ed17a2aa35ea9e82641704e3a7ad",
+          "latencyMs": 2051,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2370,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "response_end",
@@ -559,21 +479,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "iE8ngWCRUeTkjLNOPm5Avgs6o7R4IlTb",
+                    "id": "bdyRfisItxJ5rZx5N70ygSkbvCNPYX11",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2370,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 72
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 82
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "iE8ngWCRUeTkjLNOPm5Avgs6o7R4IlTb",
+                    "id": "bdyRfisItxJ5rZx5N70ygSkbvCNPYX11",
                     "name": "get_projects",
                     "input": {}
                   }
@@ -583,13 +503,13 @@
           ]
         },
         {
-          "requestHash": "c53b218f10a0d0f3e45eaab9c6d2f9a8b70060e5eeb784be9a6905b3b763c654",
-          "latencyMs": 4768,
+          "requestHash": "d175f8edf8023741b0fa142b75f1c95bf81c90a3a1d34b163f02400c172c788e",
+          "latencyMs": 3708,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3126,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 3144,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "text_delta",
@@ -641,19 +561,7 @@
             },
             {
               "type": "text_delta",
-              "text": " en"
-            },
-            {
-              "type": "text_delta",
-              "text": " este"
-            },
-            {
-              "type": "text_delta",
-              "text": " repos"
-            },
-            {
-              "type": "text_delta",
-              "text": "itorio"
+              "text": " aquí"
             },
             {
               "type": "text_delta",
@@ -661,75 +569,27 @@
             },
             {
               "type": "text_delta",
-              "text": "\n\n["
+              "text": "\n\n-"
             },
             {
               "type": "text_delta",
-              "text": "https"
+              "text": " ["
             },
             {
               "type": "text_delta",
-              "text": "://"
+              "text": "GitHub"
             },
             {
               "type": "text_delta",
-              "text": "github"
+              "text": " -"
             },
             {
               "type": "text_delta",
-              "text": ".com"
+              "text": " Source"
             },
             {
               "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "arbon"
-            },
-            {
-              "type": "text_delta",
-              "text": "ell"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "-"
-            },
-            {
-              "type": "text_delta",
-              "text": "landing"
-            },
-            {
-              "type": "text_delta",
-              "text": "-public"
-            },
-            {
-              "type": "text_delta",
-              "text": "/tree"
-            },
-            {
-              "type": "text_delta",
-              "text": "/main"
-            },
-            {
-              "type": "text_delta",
-              "text": "/"
-            },
-            {
-              "type": "text_delta",
-              "text": "agent"
+              "text": " code"
             },
             {
               "type": "text_delta",
@@ -825,7 +685,15 @@
             },
             {
               "type": "text_delta",
-              "text": " informe"
+              "text": " ["
+            },
+            {
+              "type": "text_delta",
+              "text": "inform"
+            },
+            {
+              "type": "text_delta",
+              "text": "e"
             },
             {
               "type": "text_delta",
@@ -838,110 +706,6 @@
             {
               "type": "text_delta",
               "text": "aciones"
-            },
-            {
-              "type": "text_delta",
-              "text": " disponible"
-            },
-            {
-              "type": "text_delta",
-              "text": " aquí"
-            },
-            {
-              "type": "text_delta",
-              "text": ":"
-            },
-            {
-              "type": "text_delta",
-              "text": "\n["
-            },
-            {
-              "type": "text_delta",
-              "text": "https"
-            },
-            {
-              "type": "text_delta",
-              "text": "://"
-            },
-            {
-              "type": "text_delta",
-              "text": "github"
-            },
-            {
-              "type": "text_delta",
-              "text": ".com"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "arbon"
-            },
-            {
-              "type": "text_delta",
-              "text": "ell"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "text_delta",
-              "text": "-"
-            },
-            {
-              "type": "text_delta",
-              "text": "landing"
-            },
-            {
-              "type": "text_delta",
-              "text": "-public"
-            },
-            {
-              "type": "text_delta",
-              "text": "/blob"
-            },
-            {
-              "type": "text_delta",
-              "text": "/main"
-            },
-            {
-              "type": "text_delta",
-              "text": "/"
-            },
-            {
-              "type": "text_delta",
-              "text": "agent"
-            },
-            {
-              "type": "text_delta",
-              "text": "/"
-            },
-            {
-              "type": "text_delta",
-              "text": "eval"
-            },
-            {
-              "type": "text_delta",
-              "text": "s"
-            },
-            {
-              "type": "text_delta",
-              "text": "/report"
-            },
-            {
-              "type": "text_delta",
-              "text": ".md"
             },
             {
               "type": "text_delta",
@@ -969,7 +733,7 @@
             },
             {
               "type": "text_delta",
-              "text": "arbon"
+              "text": "bon"
             },
             {
               "type": "text_delta",
@@ -1040,20 +804,44 @@
               "text": ")"
             },
             {
+              "type": "text_delta",
+              "text": " disponible"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " repos"
+            },
+            {
+              "type": "text_delta",
+              "text": "itorio"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
               "type": "response_end",
               "response": {
-                "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)",
+                "text": "Puedes ver el código fuente del **Portfolio Agent** aquí:\n\n- [GitHub - Source code](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un [informe de evaluaciones](https://github.com/acbonellb/acb-landing-public/blob/main/agent/evals/report.md) disponible en el repositorio.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3126,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 181
+                  "inputTokens": 3144,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 136
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)"
+                    "text": "Puedes ver el código fuente del **Portfolio Agent** aquí:\n\n- [GitHub - Source code](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un [informe de evaluaciones](https://github.com/acbonellb/acb-landing-public/blob/main/agent/evals/report.md) disponible en el repositorio."
                   }
                 ]
               }
@@ -1065,13 +853,13 @@
     {
       "calls": [
         {
-          "requestHash": "d3c8f9a3e6eeeea6f5d17aa3c6b6b158c3d163eedc1225aeeb3f3e7e1ab645c0",
-          "latencyMs": 2023,
+          "requestHash": "0a15364a42070a1d393e9cb1868eee9e31e0ed17a2aa35ea9e82641704e3a7ad",
+          "latencyMs": 1984,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2370,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 2358,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "response_end",
@@ -1079,21 +867,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "0kEnXz58fsXLkudkVLfotg5HIMcHwP7J",
+                    "id": "oj3SWe73oDBc6pTVae6fLAiF6m0x2nmQ",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2370,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 82
+                  "inputTokens": 2358,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 79
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "0kEnXz58fsXLkudkVLfotg5HIMcHwP7J",
+                    "id": "oj3SWe73oDBc6pTVae6fLAiF6m0x2nmQ",
                     "name": "get_projects",
                     "input": {}
                   }
@@ -1103,13 +891,13 @@
           ]
         },
         {
-          "requestHash": "7626e37704254a684137b5e5d0df37743c26c22dd05f931f143ee20eb762b0ef",
-          "latencyMs": 4747,
+          "requestHash": "1b76672b112c41fa359da7242660971c30e486919b2167b7ce6592eb9eb94716",
+          "latencyMs": 5972,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3126,
-              "cacheReadInputTokens": 1183
+              "inputTokens": 3144,
+              "cacheReadInputTokens": 1177
             },
             {
               "type": "text_delta",
@@ -1174,14 +962,6 @@
             {
               "type": "text_delta",
               "text": "itorio"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " GitHub"
             },
             {
               "type": "text_delta",
@@ -1337,11 +1117,15 @@
             },
             {
               "type": "text_delta",
-              "text": "\n\nT"
+              "text": "\n\nAd"
             },
             {
               "type": "text_delta",
-              "text": "ambién"
+              "text": "emás"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
             },
             {
               "type": "text_delta",
@@ -1353,7 +1137,7 @@
             },
             {
               "type": "text_delta",
-              "text": " informe"
+              "text": " reporte"
             },
             {
               "type": "text_delta",
@@ -1361,11 +1145,7 @@
             },
             {
               "type": "text_delta",
-              "text": " evalu"
-            },
-            {
-              "type": "text_delta",
-              "text": "aciones"
+              "text": " evaluación"
             },
             {
               "type": "text_delta",
@@ -1568,20 +1348,200 @@
               "text": ")"
             },
             {
+              "type": "text_delta",
+              "text": "\n\nT"
+            },
+            {
+              "type": "text_delta",
+              "text": "ambién"
+            },
+            {
+              "type": "text_delta",
+              "text": " hay"
+            },
+            {
+              "type": "text_delta",
+              "text": " otros"
+            },
+            {
+              "type": "text_delta",
+              "text": " agentes"
+            },
+            {
+              "type": "text_delta",
+              "text": " en"
+            },
+            {
+              "type": "text_delta",
+              "text": " su"
+            },
+            {
+              "type": "text_delta",
+              "text": " portfolio"
+            },
+            {
+              "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
+              "text": " como"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Fra"
+            },
+            {
+              "type": "text_delta",
+              "text": "ud"
+            },
+            {
+              "type": "text_delta",
+              "text": " Detection"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "deploy"
+            },
+            {
+              "type": "text_delta",
+              "text": "ed"
+            },
+            {
+              "type": "text_delta",
+              "text": ")"
+            },
+            {
+              "type": "text_delta",
+              "text": " y"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " **"
+            },
+            {
+              "type": "text_delta",
+              "text": "Organ"
+            },
+            {
+              "type": "text_delta",
+              "text": "izer"
+            },
+            {
+              "type": "text_delta",
+              "text": " Support"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": "**"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "coming"
+            },
+            {
+              "type": "text_delta",
+              "text": "-so"
+            },
+            {
+              "type": "text_delta",
+              "text": "on"
+            },
+            {
+              "type": "text_delta",
+              "text": "),"
+            },
+            {
+              "type": "text_delta",
+              "text": " pero"
+            },
+            {
+              "type": "text_delta",
+              "text": " solo"
+            },
+            {
+              "type": "text_delta",
+              "text": " el"
+            },
+            {
+              "type": "text_delta",
+              "text": " Portfolio"
+            },
+            {
+              "type": "text_delta",
+              "text": " Agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " tiene"
+            },
+            {
+              "type": "text_delta",
+              "text": " código"
+            },
+            {
+              "type": "text_delta",
+              "text": " fuente"
+            },
+            {
+              "type": "text_delta",
+              "text": " público"
+            },
+            {
+              "type": "text_delta",
+              "text": " actualmente"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
               "type": "response_end",
               "response": {
-                "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)",
+                "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nAdemás, hay un reporte de evaluación disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)\n\nTambién hay otros agentes en su portfolio, como el **Fraud Detection Agent** (deployed) y el **Organizer Support Agent** (coming-soon), pero solo el Portfolio Agent tiene código fuente público actualmente.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3126,
-                  "cacheReadInputTokens": 1183,
-                  "outputTokens": 181
+                  "inputTokens": 3144,
+                  "cacheReadInputTokens": 1177,
+                  "outputTokens": 228
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio de GitHub:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nTambién hay un informe de evaluaciones disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)"
+                    "text": "Puedes ver el código fuente del **Portfolio Agent** en este repositorio:\n\n[https://github.com/acarbonellb/acb-landing-public/tree/main/agent](https://github.com/acarbonellb/acb-landing-public/tree/main/agent)\n\nAdemás, hay un reporte de evaluación disponible aquí:\n[https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md)\n\nTambién hay otros agentes en su portfolio, como el **Fraud Detection Agent** (deployed) y el **Organizer Support Agent** (coming-soon), pero solo el Portfolio Agent tiene código fuente público actualmente."
                   }
                 ]
               }

@@ -3,7 +3,7 @@
   "slug": "current-job-and-maths-es",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
-      "latencyMs": 818,
+      "requestHash": "f21a67c7ab82df22a2ff622303010491f0b8d5dea9cd967c242523f2cdf80f45",
+      "latencyMs": 754,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1691,
-          "cacheWriteInputTokens": 1687
+          "inputTokens": 1683,
+          "cacheWriteInputTokens": 1679
         },
         {
           "type": "response_end",
@@ -31,26 +31,26 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01GbSeopcQzUJw9axwrhtG88",
+                "id": "toolu_01Qtpmi6rfvcFvH262aNWXPq",
                 "name": "get_experience",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1691,
-              "cacheWriteInputTokens": 1687,
-              "outputTokens": 84
+              "inputTokens": 1683,
+              "cacheWriteInputTokens": 1679,
+              "outputTokens": 69
             },
             "providerContent": [
               {
                 "type": "thinking",
                 "thinking": "",
-                "signature": "CAQS9wUKEAgUGAI4AUIIdGhpbmtpbmcSDAGyTNp8NqIS4wSqYBoM0l3iYfrWBR//2uinIjCCyuxtVsSD5VbqN4svK9CzDVODJ1S67/aRpSe6qiViVetIp27oALUapJZiEXscf6IqlAWmO9An1g5K4jbsxBG0WF0m9xsT9rt7UJdO4aULKADPvM6Aj+tGp9UFuNFGGALyLDl5OZQ65IJM9EbI3g7eStcTPNHcNbVJNhswGGHhQ0SDpZuaNX2QF6cThy57/0+fySFVMDopdFNnD3NPoHd2PJHM5u8SgnZCQ8bGIwWmiQXtvcbFtfrGXabE3WbZxq5YIZt2iyvUx24dQhsE3DM0RFEo3fOQsDinKj2kZ2sRyaFeP3yn1u1Z4hVAYWPocN7BT1KQnFg4yM4uW2Ye6uAa489WEpMvAI/I5CstLL5H1KJR2jHYfRGDIlISjPjRw/jgjad4x4jci+hzM170UNceywLKHA4uJH+ykersGu9xNSAmL9tEHMBfoaMK+3q8Z/jpBMzMur9vVwKBFvMB4HOZEzOOvDXdAUklp63ucWEfDQ8b8Ze1cPStKrlayZneDG2YY68peDvMbA5sluFWgBROPnuLjp7+ymDj5kHNusxhhQE7oHocNjBU3VWKwIe1q3V1mXPB/4rBmMnBXIoQteJkwwS8cd476iVhiPTsWjlD/Jzgfq4zIOeEI3EzlLOgaLY2azMmVPRJeQiUQasNpdLZWfMOSUh8N1yLqN7ctyPG68IabkhEcpzzu5ERl0sRfpP6U4QrSsR9DkDJzkGshgL8tUrxHoc4uGH08X3uwGv+k92Q6mPqAZO4WSzyaTh+kX7TgdWEcE0fxAdFuRJI+3ZUBrJEGH3K/UMF9A5/IVh9D4JXfecgDrQw9jtzoi2jRfrnFUrLMyNHMsk0aipS9e+M85KrqR2fZTdhFQvq45dA7GQpZOpro3rZDYF6WIBZvPfWX+QBdhgvT+NVabaG6QEJvI/rZeJrfYUfr+PuOWhMiaQjTX4EzBkYAQ=="
+                "signature": "CAQS2AUKEAgUGAI4AUIIdGhpbmtpbmcSDP8jaGZAeeD0ARz38RoMQiZCXFudqZJqb75NIjD66LgPfemTG+57mN/tKPRxw0Xuj+r5x8w2g5uFB4CVBQHdJyzLpGaZzKwRkzNO+4gq9QRISPh53JJW9/MvwxH6hpMcpssFYr46/StgJOl2weuKX9U7pawQ52/MaPO73SKaPgdoQYT+lp349db2CgzpvEzYi7rXcZ2DSodQlz7+COtsQomR9e1Djfz67bFHcAuDVBMs6ivgyQ54TJbZGT7fIXiNVpt8OQdLJ6Z78cJ07QqmFFV9HnyxOIgekGMIJMm9x14kchsvwfYfIOrQjtP5921qvWQhLBukWmViaCdNTkbo3Deua3aFQhysm3K9XSiMJBcgHP1GrMHKgRISsEHk1SGd52tjkyJFhggcCNQ2VHbsXvngzhyRD1e5rJh4K1QjkRqMSYoNVMqSjirIV3lSSne8RzcO+Zy8tA+S1bRdAaCjAg/CIybGHhAzVp1MWIoKlAIWkVg78j17ccQTB+/9pu7lS11/4iJMqmx3MV5Es9ytG4IL0CY616yOwyz8Msa7KOtVX+De4AlhkRUR8kt8a6pWgBuZlhFBq4+x8RDVlwNyCW2d7UiGiu9vs1b3Vv0s3iWRnnrbAkotAxgXZKUKQJOCWAOwp104KwIrJyIlzDoKkg2Hgj4HXyL7IwieyqL1hbaLt3AI+Ek85+bOdosk+SZcHNu8YuwdT422B7gUzHUL9bLfKbG+M2jHeVXfbPLB1I0Om11Up5bpI7LhGDMxBZotj1eZo8jb7n6y7mtUmok5DUtdmAE3GeMCSxFhFGYZUbY04JUHg6tvU9PhqD4PtkqyFc/M+ea0aiBld/++ymskl0vCkdi5Be54ozcKvZDpbHBVvLe8SpIRzcNLqP9AY1S2Xu/O3Pxek14I3mzZbIKJ9U/MlENCHQBuMeIli7+jiwyd2etCCBgB"
               },
               {
                 "type": "tool_use",
-                "id": "toolu_01GbSeopcQzUJw9axwrhtG88",
+                "id": "toolu_01Qtpmi6rfvcFvH262aNWXPq",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -63,14 +63,14 @@
       ]
     },
     {
-      "requestHash": "b8f01e92f65c14d902e06684467a5d63374b2d6970b2cf62d59743b54e61faac",
-      "latencyMs": 1025,
+      "requestHash": "33ec4dda6608a662ebce1bb8c5d934058425d4d3b2108614c3d7aec3875ca943",
+      "latencyMs": 1158,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2310,
-          "cacheWriteInputTokens": 621,
-          "cacheReadInputTokens": 1687
+          "inputTokens": 2287,
+          "cacheWriteInputTokens": 606,
+          "cacheReadInputTokens": 1679
         },
         {
           "type": "text_delta",
@@ -98,15 +98,15 @@
         },
         {
           "type": "text_delta",
-          "text": "oto),"
+          "text": "oto)"
         },
         {
           "type": "text_delta",
-          "text": " desde 2019."
+          "text": " desde 2019. Es"
         },
         {
           "type": "text_delta",
-          "text": " Es una plataforma ins"
+          "text": " una plataforma ins"
         },
         {
           "type": "text_delta",
@@ -114,11 +114,11 @@
         },
         {
           "type": "text_delta",
-          "text": "seguradoras extern"
+          "text": "seguradoras externas en"
         },
         {
           "type": "text_delta",
-          "text": "as en un único"
+          "text": " un único"
         },
         {
           "type": "text_delta",
@@ -126,72 +126,96 @@
         },
         {
           "type": "text_delta",
-          "text": "ra.\n\nNo"
+          "text": "ra.\n\nL"
         },
         {
           "type": "text_delta",
-          "text": " puedo responder la"
+          "text": "o de"
         },
         {
           "type": "text_delta",
-          "text": " p"
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": "regunta de 9 por"
+          "text": "9 por 8 que"
         },
         {
           "type": "text_delta",
-          "text": " 8, porque sol"
+          "text": "da fuera de l"
         },
         {
           "type": "text_delta",
-          "text": "o h"
+          "text": "o que puedo responder,"
         },
         {
           "type": "text_delta",
-          "text": "ablo de Alberto y"
+          "text": " ya que solo h"
         },
         {
           "type": "text_delta",
-          "text": " su trabajo. "
+          "text": "abl"
         },
         {
           "type": "text_delta",
-          "text": "¿Quieres saber más"
+          "text": "o de Alberto y"
         },
         {
           "type": "text_delta",
-          "text": " sobre sus proyect"
+          "text": " su"
         },
         {
           "type": "text_delta",
-          "text": "os con"
+          "text": " trabajo."
         },
         {
           "type": "text_delta",
-          "text": " agentes de IA o su"
+          "text": " Si quieres,"
         },
         {
           "type": "text_delta",
-          "text": " experiencia profesional?"
+          "text": " pu"
+        },
+        {
+          "type": "text_delta",
+          "text": "edo cont"
+        },
+        {
+          "type": "text_delta",
+          "text": "arte sobre sus pro"
+        },
+        {
+          "type": "text_delta",
+          "text": "yectos con"
+        },
+        {
+          "type": "text_delta",
+          "text": " agentes de"
+        },
+        {
+          "type": "text_delta",
+          "text": " IA o su experiencia"
+        },
+        {
+          "type": "text_delta",
+          "text": " previa."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la pregunta de 9 por 8, porque solo hablo de Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos con agentes de IA o su experiencia profesional?",
+            "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto) desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nLo de 9 por 8 queda fuera de lo que puedo responder, ya que solo hablo de Alberto y su trabajo. Si quieres, puedo contarte sobre sus proyectos con agentes de IA o su experiencia previa.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2310,
-              "cacheWriteInputTokens": 621,
-              "cacheReadInputTokens": 1687,
-              "outputTokens": 154
+              "inputTokens": 2287,
+              "cacheWriteInputTokens": 606,
+              "cacheReadInputTokens": 1679,
+              "outputTokens": 163
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la pregunta de 9 por 8, porque solo hablo de Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos con agentes de IA o su experiencia profesional?"
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto) desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nLo de 9 por 8 queda fuera de lo que puedo responder, ya que solo hablo de Alberto y su trabajo. Si quieres, puedo contarte sobre sus proyectos con agentes de IA o su experiencia previa."
               }
             ]
           }
@@ -203,13 +227,13 @@
     {
       "calls": [
         {
-          "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
-          "latencyMs": 812,
+          "requestHash": "f21a67c7ab82df22a2ff622303010491f0b8d5dea9cd967c242523f2cdf80f45",
+          "latencyMs": 844,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1691,
-              "cacheReadInputTokens": 1687
+              "inputTokens": 1683,
+              "cacheReadInputTokens": 1679
             },
             {
               "type": "response_end",
@@ -217,26 +241,26 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_011JYGHQenmza7BGLd6Xx9yj",
+                    "id": "toolu_01WJK2W8nJVEgg62u4BfmKuK",
                     "name": "get_experience",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1691,
-                  "cacheReadInputTokens": 1687,
-                  "outputTokens": 90
+                  "inputTokens": 1683,
+                  "cacheReadInputTokens": 1679,
+                  "outputTokens": 82
                 },
                 "providerContent": [
                   {
                     "type": "thinking",
                     "thinking": "",
-                    "signature": "CAQS+QUKEAgUGAI4AUIIdGhpbmtpbmcSDDQRXodO1MbX5iyMZBoMrTRqRwPx+FgRE0bvIjAmDRVseg1RUSnmAHHsFUWLnLA7f9/p1nsbnmS9yYYI5SSaVvarDV0Dpv1TdrLAWyYqlgWQSK+3BAYO2sozJHElqo2IzfuSKDl/NF35ui14s/Q4LDWSTAOMkDDflZphv8+fcrxXeZgfxvEYmD6qGT91MCrGoxQCyAKsRy+gEXv+z4iZayv2b4b9E3f+h+Vom2EpqjBz0O1MgBRlsDrGOR7/oH2TtzoMLq/ytMAnBhANdJcXe/85vBbVFR3Ux2x7N+xgeSb1ZZ5iCDhN7p7lmXP/BilL3LG7ziwbGa/WPbb3vrcVkHlTJuIdqbEwBGwuut6fvSx/fp8n87qtgbInNTTmpg9xtuAnGdM6rJeAhzKKXXVOVFselfZ+lpyHvaSkPT7pRetfpmqRFWqiUAMXvOxhaRrM7GBAmU/Nbrqtw0m8fSZzPfiymk46tcEnWpHCTLNpwHG7o081Uw5Ns52PYgCuqqK8qwmCKR399Zx9UI3Qs55hH0M+I21MLsaP/VOqjCtm55Q/dF2pvD5yyHo1Bs6Y5UQp18ZP2t836UVQA2ULRyulmGlZ/EvmeOSTczVCp9+wE9/p+SmSV7rEti5120cl9HVNil+FH9CdMl1d8dVb8DJAkv0PdLz8tGKuZnbMVtgF2NaD4g6NAM11l2P7BlxJFUAt00fwOX1LKQL97BEw/46DuHgx2UBdld6wfWrDteWdElSGlOkmEkKmlrZMkcoqDoPD1wXpAqdR1Yci9apSN7zbxYxuiBoHaWtlEjp/4Pjat2AcNR0ozhCFJ/YM33l5nnXBis1w5lPoWbCrOOCkQ59osVr72eOprNrmdkoamQRFFekhugD88HFtK7Ieh/NKMQv/hOKzXt23Out020RMdkTN4+gn8xZ2RB8Y/CORz0H5Uyf6Q7EX4lnFssJFgaMvlFhbukmtiKVoxhK1SmOS2G2k9+JTUMQbGRgB"
+                    "signature": "CAQS9AUKEAgUGAI4AUIIdGhpbmtpbmcSDH4l2eIV9Wyi7Br8vxoMb8WID8gumGm2tqMfIjBYVQdxw0Epxy3LZcA1v4Eaw3b+f2Nn7i1cjn+Cn4UYH2gLjO9NpahKxdsvOu57kFgqkQVyrFNrKPrU4rVxfCii/Y+ckBjS2j3804bNJBBRXiOEdEhhc5SOq9N/GltlNrcZGRia7vf2EwVI0b/jBx0nQSJPs4FjbpP0apUSI8xfy8LKGo6ZHgHtMk74Yx2dN+AKAQv4UKiGm1P1pJ9tAEFrknYbVhm2cNof+hrkLvD84++4luNuz13A4XQoPGz5MPE8YZVN1ChQqszta4KWvoCJmw7HRTelGRm613qV6JF1Cs8PAA011MfT9dscm2JYDtMzcM/ve32bjRuJrQg8vdTK2HgiGI096x+C6Tw1e61FYbVHvNYvMVzAJ5hQgK/dokAXyUkIxN/DoSkBGTIecjmA9ooUwGWjWgkvJekpz5xTljv9ez6bPkydQ5QWHhrvgf6yVAHYls7EAmoVd6qhaVGxK24JZIf7QfTbwnjxTEJGxhBiUFJf57f1NtlCkvNEdaHEXAASmA1+IN1/Jv+BpLe/VNAOg2drHHnUbcHFKfdcgZFRLduRdsvyl/vu4hQ4kulJsLmo/wexUkLUPMBNDQRqHgUMW6ehtEl3q9B7gF36F7WZDLCHpAew7+JS+CUn7zHZ6PC+tVqqDMsshGK/EcNDrneEuwgFrjVIK7zRIjnUNK7gNS8NCulio/FAFzQrmVkto+BtDZmnfxngk/StE6tsM+EcV6XpR6v70O0qQIOZHCs5Sz0dL3CahX9UUOSowdakwFVyv19zGHcZSuXYnYqF2ZID60AgxU5FxwzwthIHuThiv08Gf+GI3n7S6E6p8UnFEOmu6oYfRPWjdqpn/sfkr2s9/JxbQGgAxnbh/7/cGxRFJPSaQ7SiokOPz61+qbQn2V2dU/HKRE+eIFZ9dS4Ft1IVCnA5gYxCESDl2oXJO1iD/3cYAQ=="
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_011JYGHQenmza7BGLd6Xx9yj",
+                    "id": "toolu_01WJK2W8nJVEgg62u4BfmKuK",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -249,14 +273,14 @@
           ]
         },
         {
-          "requestHash": "5673a908301c39787d163b4cd7cb5011d76149e845cd0bd6dd2e93e7b8688570",
-          "latencyMs": 1122,
+          "requestHash": "4c37df93bfde809cc8401a093ff2b8f1f2449e29769952073e81ca4fd0ae5dc1",
+          "latencyMs": 1170,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2316,
-              "cacheWriteInputTokens": 627,
-              "cacheReadInputTokens": 1687
+              "inputTokens": 2300,
+              "cacheWriteInputTokens": 619,
+              "cacheReadInputTokens": 1679
             },
             {
               "type": "text_delta",
@@ -264,225 +288,19 @@
             },
             {
               "type": "text_delta",
-              "text": "abaja act"
+              "text": "abaja actualmente como"
             },
             {
               "type": "text_delta",
-              "text": "ualmente como"
+              "text": " Senior Software Engine"
             },
             {
               "type": "text_delta",
-              "text": " Senior Software Engineer"
+              "text": "er en CoverWallet"
             },
             {
               "type": "text_delta",
-              "text": " en CoverWallet ("
-            },
-            {
-              "type": "text_delta",
-              "text": "Madrid / rem"
-            },
-            {
-              "type": "text_delta",
-              "text": "oto),"
-            },
-            {
-              "type": "text_delta",
-              "text": " desde 2019."
-            },
-            {
-              "type": "text_delta",
-              "text": " Es una plataforma ins"
-            },
-            {
-              "type": "text_delta",
-              "text": "urtech que integra a"
-            },
-            {
-              "type": "text_delta",
-              "text": "seguradoras externas en"
-            },
-            {
-              "type": "text_delta",
-              "text": " un único flujo de comp"
-            },
-            {
-              "type": "text_delta",
-              "text": "ra.\n\nNo"
-            },
-            {
-              "type": "text_delta",
-              "text": " puedo responder la"
-            },
-            {
-              "type": "text_delta",
-              "text": " par"
-            },
-            {
-              "type": "text_delta",
-              "text": "te de la"
-            },
-            {
-              "type": "text_delta",
-              "text": " multiplicación,"
-            },
-            {
-              "type": "text_delta",
-              "text": " ya que sol"
-            },
-            {
-              "type": "text_delta",
-              "text": "o h"
-            },
-            {
-              "type": "text_delta",
-              "text": "ablo de Alberto y"
-            },
-            {
-              "type": "text_delta",
-              "text": " su tray"
-            },
-            {
-              "type": "text_delta",
-              "text": "ectoria. ¿"
-            },
-            {
-              "type": "text_delta",
-              "text": "Qu"
-            },
-            {
-              "type": "text_delta",
-              "text": "ieres saber más sobre"
-            },
-            {
-              "type": "text_delta",
-              "text": " su"
-            },
-            {
-              "type": "text_delta",
-              "text": " tr"
-            },
-            {
-              "type": "text_delta",
-              "text": "abajo en CoverW"
-            },
-            {
-              "type": "text_delta",
-              "text": "allet o sob"
-            },
-            {
-              "type": "text_delta",
-              "text": "re los agentes de IA"
-            },
-            {
-              "type": "text_delta",
-              "text": " que ha constru"
-            },
-            {
-              "type": "text_delta",
-              "text": "ido?"
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la parte de la multiplicación, ya que solo hablo de Alberto y su trayectoria. ¿Quieres saber más sobre su trabajo en CoverWallet o sobre los agentes de IA que ha construido?",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2316,
-                  "cacheWriteInputTokens": 627,
-                  "cacheReadInputTokens": 1687,
-                  "outputTokens": 160
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la parte de la multiplicación, ya que solo hablo de Alberto y su trayectoria. ¿Quieres saber más sobre su trabajo en CoverWallet o sobre los agentes de IA que ha construido?"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "9c04757c7e44a00c1a27607f394ce082ede0cd5d778ad8904aa41635084f8e13",
-          "latencyMs": 867,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1691,
-              "cacheReadInputTokens": 1687
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_018cKiWoQ2VAZxiPrXp7681s",
-                    "name": "get_experience",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1691,
-                  "cacheReadInputTokens": 1687,
-                  "outputTokens": 83
-                },
-                "providerContent": [
-                  {
-                    "type": "thinking",
-                    "thinking": "",
-                    "signature": "CAQS+AUKEAgUGAI4AUIIdGhpbmtpbmcSDDdE9i3G1HPm+jbdOxoM75Lhvcb17DGV7yhpIjCY7Hms77m6hEq2XwWkUqywCdzkfjvmCNiXH2yZvjtIsa3GktPlVw9K3JBg7c2w/NQqlQWyxwwJRS38LH1IKEJ1Rp9QbWrPw9Upg0k2hKOGyPvx5jSq4BMlG3jnC8Il7kJLasXw6mfA2YjBUeknH8G/H1fyvvRvmO62CVwySzaU95IujQKZJ0C6AMMwGY4bA1a1hUXe3QDoPwDYTmq1L3snUhRlAkS64VXo90Zd4Ve6ifqFKygPXatvnKK1sUg9iNVulPANv7gj/olgwXBSnhUwtwu0iqraHCBfSD+Huzb+pEzRQP9n10Pg0TMqLye8Nfwg0E/WVDt78rv4z/TpYVMWUu/cNmoRBqUIkCskRuOC+DcPQL/iAxbGG6c5BbVe7bUfn9VOTFP7tM1eTYixmxTFDgZYWcqOvRuHEDAOoc4dM1UjOTKgNp4IjVD4ESSRp7LzSEUpuHmBTVWGAuVIQ/vPVmliA3BhaNfvogOtOWZUk8GQ0dhOkpXrOVs3B0D498NOnAHp1YbrMe+wcVcg2gXt5dfFtj2bAWLDBQfGPgnCcrmMZMrdte1ayv3zksAtRM9T1LH3J7JgbGgLR2uKgS0bXtbJ/Z1KBbnLJLzZwoYIBuBdmJqSj1/90BlJk5qxIM+UyvPItUKgr/07qzfTXw0MPnArxnCWVvUzGQgOv8DdQ12PJTEfJPf/wWne3nVHT2P9V5IDFm4+Y7YhDBXtD/bD2qvLhi5pAELWwaZvhPtk/ky2NA+dOF6h3+V9Vja10O1Hj7UD3JBt6olml1vtCdpbWahyXiIQVS70HmQNx93mO9zvdKfhWedi1L5gmYtK/9uCU5urwoRtvx8ipjGLCGrnApEkddPmUzFKYKaIMtFB3LeFNACooVEk5xrpUV3VfGoDQMqX3FSLL4+xhcIore+LlrodQDqtSh0Kne0+Qh+CYOwIVA7xuTFrGAE="
-                  },
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_018cKiWoQ2VAZxiPrXp7681s",
-                    "name": "get_experience",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "869c7a78821d2fb3e6b78d24711a9b707011ea5fafcf0fca997ac5d33e0d47b6",
-          "latencyMs": 1087,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2309,
-              "cacheWriteInputTokens": 620,
-              "cacheReadInputTokens": 1687
-            },
-            {
-              "type": "text_delta",
-              "text": "Alberto tr"
-            },
-            {
-              "type": "text_delta",
-              "text": "abaja act"
-            },
-            {
-              "type": "text_delta",
-              "text": "ualmente como Senior"
-            },
-            {
-              "type": "text_delta",
-              "text": " Software Engineer en Co"
-            },
-            {
-              "type": "text_delta",
-              "text": "verWallet ("
+              "text": " ("
             },
             {
               "type": "text_delta",
@@ -514,31 +332,257 @@
             },
             {
               "type": "text_delta",
-              "text": " único flujo de compra."
+              "text": " único"
             },
             {
               "type": "text_delta",
-              "text": "\n\nNo"
+              "text": " flujo de comp"
             },
             {
               "type": "text_delta",
-              "text": " puedo responder la p"
+              "text": "ra.\n\nNo"
             },
             {
               "type": "text_delta",
-              "text": "regunta de mat"
+              "text": " pu"
             },
             {
               "type": "text_delta",
-              "text": "emáticas, "
+              "text": "edo "
             },
             {
               "type": "text_delta",
-              "text": "ya que solo h"
+              "text": "ayudar"
             },
             {
               "type": "text_delta",
-              "text": "ablo de Alberto y"
+              "text": "te con la"
+            },
+            {
+              "type": "text_delta",
+              "text": " mult"
+            },
+            {
+              "type": "text_delta",
+              "text": "iplicación,"
+            },
+            {
+              "type": "text_delta",
+              "text": " "
+            },
+            {
+              "type": "text_delta",
+              "text": "ya que sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o resp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ondo pre"
+            },
+            {
+              "type": "text_delta",
+              "text": "guntas sobre Al"
+            },
+            {
+              "type": "text_delta",
+              "text": "berto y"
+            },
+            {
+              "type": "text_delta",
+              "text": " su trabajo. "
+            },
+            {
+              "type": "text_delta",
+              "text": "¿Qu"
+            },
+            {
+              "type": "text_delta",
+              "text": "ieres saber más sobre"
+            },
+            {
+              "type": "text_delta",
+              "text": " sus proyectos de ag"
+            },
+            {
+              "type": "text_delta",
+              "text": "entes de"
+            },
+            {
+              "type": "text_delta",
+              "text": " IA o su experiencia"
+            },
+            {
+              "type": "text_delta",
+              "text": " anterior?"
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la multiplicación, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos de agentes de IA o su experiencia anterior?",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2300,
+                  "cacheWriteInputTokens": 619,
+                  "cacheReadInputTokens": 1679,
+                  "outputTokens": 159
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo ayudarte con la multiplicación, ya que solo respondo preguntas sobre Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos de agentes de IA o su experiencia anterior?"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "f21a67c7ab82df22a2ff622303010491f0b8d5dea9cd967c242523f2cdf80f45",
+          "latencyMs": 876,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1683,
+              "cacheReadInputTokens": 1679
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01MoZmom9MXESCyGURwvHzbs",
+                    "name": "get_experience",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1683,
+                  "cacheReadInputTokens": 1679,
+                  "outputTokens": 84
+                },
+                "providerContent": [
+                  {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS8AUKEAgUGAI4AUIIdGhpbmtpbmcSDBxFmBkIjS0QLCpxShoM1/YCJBlR7k1KNg1TIjDLlsgvEjQ9qzNBWqGbXpfvmBTfbOtKql27QtoqN1z7gWffQSRQfR3A2pamoGdIvpMqjQWxRpcraczFuFJ6lKqwAYGL8EpOpUAYel+mQ/0yOJU7KViNTdtmVIQqDI1srS7ZDryt/WRjOKdCV3pw38nnz/EDBfGThvpnJmkDAgq2fE/nfUXxSlRaMuUlj4rbozo1RhpgNZrpczv1nsng8T0Yf8wrfQ4CFGR5J3K8cjhKUhjmmsY77VnRxUAW8LhKD2hTMOG1idvx2vWHw9SteJNzpzKQ1SUewl4BKB0bYeHDbvRZNhj2LzxlbpycMrrWQcW0XRqdd9BjV9olCBLd39ijCwSIasZKuzArbRTbKoQJtvsjrHiVGLgh4E2Tkg+r3rMvINJIKi5JKsp4i95j0mf3sHOuIaJLDCWC9izDmlzqUiqBXzrNcRxednsVhOIim0rLc4oSdb8KoeEJuEJOG8lMpT3zpcAe0XAK2/aFpLWzcrKwxNlD2x3TW7XQl1nMi+NPf1fJD10RYxPTzJMgyA/3bSITt7Tw+ggnSagrm0my/hIL5i9gyKFw1P47zKfYW6aiVky059bqhHL0Z7P/jsBAMRFouTY82c2On+DzGlbjpLYMvmjWh3F9c2d+7QKeZ8MiFp5ulPkkVumrU6SiV4b9BaDaoypDIBFiRZjIj+u3L15S2LHezqglHwavqVqRj9CG9r8IHqJWtzH1rAdneKgVnlwN54CAXOvUabeRzuXASSCeGpa1toREC53JrOmnQ7/zbHczPWZU8HnUEpUQ5Ak1VZmsBubVP23nO7s7nDA7P9u4jzZIUTSKwAvTfIubsGCbjkpVlR3K8w4Jj2LowoN8H8MTIZPagUFRhh362gnWLRn8VCkSt32xf/XAYzBIRa8B7t1mWGMxSuLzZ/u+JTJ0oyT/8RPU22jz5GR7usUxpRgB"
+                  },
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01MoZmom9MXESCyGURwvHzbs",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "2d51df746d11444c8f23a62ae11fea17f640b96ba975e19969f476d8130b0ddf",
+          "latencyMs": 1597,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2302,
+              "cacheWriteInputTokens": 621,
+              "cacheReadInputTokens": 1679
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto tr"
+            },
+            {
+              "type": "text_delta",
+              "text": "abaja actualmente como"
+            },
+            {
+              "type": "text_delta",
+              "text": " Senior Software Engine"
+            },
+            {
+              "type": "text_delta",
+              "text": "er en CoverWallet"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "Madrid / rem"
+            },
+            {
+              "type": "text_delta",
+              "text": "oto),"
+            },
+            {
+              "type": "text_delta",
+              "text": " desde 2019. Es"
+            },
+            {
+              "type": "text_delta",
+              "text": " una plataforma insurt"
+            },
+            {
+              "type": "text_delta",
+              "text": "ech que integra a"
+            },
+            {
+              "type": "text_delta",
+              "text": "seguradoras externas en"
+            },
+            {
+              "type": "text_delta",
+              "text": " un único"
+            },
+            {
+              "type": "text_delta",
+              "text": " flujo de comp"
+            },
+            {
+              "type": "text_delta",
+              "text": "ra.\n\nNo"
+            },
+            {
+              "type": "text_delta",
+              "text": " pu"
+            },
+            {
+              "type": "text_delta",
+              "text": "edo responder a la mult"
+            },
+            {
+              "type": "text_delta",
+              "text": "iplicación de 9 "
+            },
+            {
+              "type": "text_delta",
+              "text": "por 8, ya que sol"
+            },
+            {
+              "type": "text_delta",
+              "text": "o h"
+            },
+            {
+              "type": "text_delta",
+              "text": "abl"
+            },
+            {
+              "type": "text_delta",
+              "text": "o de Alberto y"
             },
             {
               "type": "text_delta",
@@ -546,35 +590,19 @@
             },
             {
               "type": "text_delta",
-              "text": " trabajo."
+              "text": " trabajo. ¿"
             },
             {
               "type": "text_delta",
-              "text": " Si quieres,"
+              "text": "Qu"
             },
             {
               "type": "text_delta",
-              "text": " puedo cont"
+              "text": "ieres saber más sobre"
             },
             {
               "type": "text_delta",
-              "text": "arte más"
-            },
-            {
-              "type": "text_delta",
-              "text": " sobre su"
-            },
-            {
-              "type": "text_delta",
-              "text": " experiencia en"
-            },
-            {
-              "type": "text_delta",
-              "text": " CoverWallet o s"
-            },
-            {
-              "type": "text_delta",
-              "text": "obre los"
+              "text": " sus proyectos con"
             },
             {
               "type": "text_delta",
@@ -582,28 +610,28 @@
             },
             {
               "type": "text_delta",
-              "text": " IA que ha constru"
+              "text": " IA o su st"
             },
             {
               "type": "text_delta",
-              "text": "ido."
+              "text": "ack tecnológico?"
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la pregunta de matemáticas, ya que solo hablo de Alberto y su trabajo. Si quieres, puedo contarte más sobre su experiencia en CoverWallet o sobre los agentes de IA que ha construido.",
+                "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder a la multiplicación de 9 por 8, ya que solo hablo de Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos con agentes de IA o su stack tecnológico?",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2309,
-                  "cacheWriteInputTokens": 620,
-                  "cacheReadInputTokens": 1687,
-                  "outputTokens": 163
+                  "inputTokens": 2302,
+                  "cacheWriteInputTokens": 621,
+                  "cacheReadInputTokens": 1679,
+                  "outputTokens": 157
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder la pregunta de matemáticas, ya que solo hablo de Alberto y su trabajo. Si quieres, puedo contarte más sobre su experiencia en CoverWallet o sobre los agentes de IA que ha construido."
+                    "text": "Alberto trabaja actualmente como Senior Software Engineer en CoverWallet (Madrid / remoto), desde 2019. Es una plataforma insurtech que integra aseguradoras externas en un único flujo de compra.\n\nNo puedo responder a la multiplicación de 9 por 8, ya que solo hablo de Alberto y su trabajo. ¿Quieres saber más sobre sus proyectos con agentes de IA o su stack tecnológico?"
                   }
                 ]
               }

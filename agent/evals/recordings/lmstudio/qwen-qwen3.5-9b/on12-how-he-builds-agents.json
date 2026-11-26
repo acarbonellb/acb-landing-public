@@ -3,7 +3,7 @@
   "slug": "how-he-builds-agents",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-      "latencyMs": 2684,
+      "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+      "latencyMs": 5087,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2330,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "ZBpm00Ljig22Qo7AaHa7gMGymSZO1GEE",
+                "id": "ekXczJEspK6GC73Oiku5Bb7N1HEVUDHa",
                 "name": "get_projects",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2342,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 108
+              "inputTokens": 2330,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 205
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "ZBpm00Ljig22Qo7AaHa7gMGymSZO1GEE",
+                "id": "ekXczJEspK6GC73Oiku5Bb7N1HEVUDHa",
                 "name": "get_projects",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "1058042ad1f5b03a46d9df54836930bdf0f452b7b88cdbacf3bec47b490ada59",
-      "latencyMs": 5810,
+      "requestHash": "388cde6a1ec7a11ecbcae95efa130ad6d919463aab09a270aee588cc79edb1da",
+      "latencyMs": 5132,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 3110,
-          "cacheReadInputTokens": 1175
+          "inputTokens": 3128,
+          "cacheReadInputTokens": 1169
         },
         {
           "type": "text_delta",
@@ -105,11 +105,7 @@
         },
         {
           "type": "text_delta",
-          "text": " cost"
-        },
-        {
-          "type": "text_delta",
-          "text": " control"
+          "text": " transparency"
         },
         {
           "type": "text_delta",
@@ -121,7 +117,7 @@
         },
         {
           "type": "text_delta",
-          "text": " measurable"
+          "text": " continuous"
         },
         {
           "type": "text_delta",
@@ -149,7 +145,11 @@
         },
         {
           "type": "text_delta",
-          "text": "\n\n-"
+          "text": "\n\n1"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -177,7 +177,11 @@
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " –"
         },
         {
           "type": "text_delta",
@@ -201,7 +205,7 @@
         },
         {
           "type": "text_delta",
-          "text": " models"
+          "text": " data"
         },
         {
           "type": "text_delta",
@@ -213,31 +217,7 @@
         },
         {
           "type": "text_delta",
-          "text": " using"
-        },
-        {
-          "type": "text_delta",
-          "text": " recorded"
-        },
-        {
-          "type": "text_delta",
-          "text": " cases"
-        },
-        {
-          "type": "text_delta",
-          "text": " that"
-        },
-        {
-          "type": "text_delta",
-          "text": " don"
-        },
-        {
-          "type": "text_delta",
-          "text": "'t"
-        },
-        {
-          "type": "text_delta",
-          "text": " require"
+          "text": " without"
         },
         {
           "type": "text_delta",
@@ -249,67 +229,31 @@
         },
         {
           "type": "text_delta",
-          "text": " or"
+          "text": ";"
         },
         {
           "type": "text_delta",
-          "text": " the"
+          "text": " failures"
         },
         {
           "type": "text_delta",
-          "text": " actual"
+          "text": " ("
         },
         {
           "type": "text_delta",
-          "text": " model"
+          "text": "st"
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": "ale"
         },
         {
           "type": "text_delta",
-          "text": " A"
-        },
-        {
-          "type": "text_delta",
-          "text": " build"
-        },
-        {
-          "type": "text_delta",
-          "text": " fails"
-        },
-        {
-          "type": "text_delta",
-          "text": " if"
-        },
-        {
-          "type": "text_delta",
-          "text": " an"
-        },
-        {
-          "type": "text_delta",
-          "text": " eval"
-        },
-        {
-          "type": "text_delta",
-          "text": " case"
-        },
-        {
-          "type": "text_delta",
-          "text": " is"
-        },
-        {
-          "type": "text_delta",
-          "text": " stale"
+          "text": " recordings"
         },
         {
           "type": "text_delta",
           "text": " or"
-        },
-        {
-          "type": "text_delta",
-          "text": " leaks"
         },
         {
           "type": "text_delta",
@@ -321,7 +265,23 @@
         },
         {
           "type": "text_delta",
-          "text": " content"
+          "text": " leaks"
+        },
+        {
+          "type": "text_delta",
+          "text": ")"
+        },
+        {
+          "type": "text_delta",
+          "text": " break"
+        },
+        {
+          "type": "text_delta",
+          "text": " the"
+        },
+        {
+          "type": "text_delta",
+          "text": " build"
         },
         {
           "type": "text_delta",
@@ -329,7 +289,11 @@
         },
         {
           "type": "text_delta",
-          "text": "\n-"
+          "text": "\n\n2"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -373,39 +337,19 @@
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": "**"
         },
         {
           "type": "text_delta",
-          "text": " For"
+          "text": " –"
         },
         {
           "type": "text_delta",
-          "text": " example"
+          "text": " Agents"
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " his"
-        },
-        {
-          "type": "text_delta",
-          "text": " Fraud"
-        },
-        {
-          "type": "text_delta",
-          "text": " Detection"
-        },
-        {
-          "type": "text_delta",
-          "text": " Agent"
-        },
-        {
-          "type": "text_delta",
-          "text": " recommends"
+          "text": " recommend"
         },
         {
           "type": "text_delta",
@@ -417,23 +361,27 @@
         },
         {
           "type": "text_delta",
-          "text": " only"
+          "text": " often"
         },
         {
           "type": "text_delta",
-          "text": " auto"
+          "text": " require"
         },
         {
           "type": "text_delta",
-          "text": "-"
+          "text": " human"
         },
         {
           "type": "text_delta",
-          "text": "appro"
+          "text": " approval"
         },
         {
           "type": "text_delta",
-          "text": "ves"
+          "text": ","
+        },
+        {
+          "type": "text_delta",
+          "text": " except"
         },
         {
           "type": "text_delta",
@@ -453,7 +401,7 @@
         },
         {
           "type": "text_delta",
-          "text": " in"
+          "text": " by"
         },
         {
           "type": "text_delta",
@@ -461,39 +409,15 @@
         },
         {
           "type": "text_delta",
-          "text": ";"
-        },
-        {
-          "type": "text_delta",
-          "text": " otherwise"
-        },
-        {
-          "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " a"
-        },
-        {
-          "type": "text_delta",
-          "text": " human"
-        },
-        {
-          "type": "text_delta",
-          "text": " admin"
-        },
-        {
-          "type": "text_delta",
-          "text": " decides"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
           "type": "text_delta",
-          "text": "\n-"
+          "text": "\n\n3"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -517,35 +441,19 @@
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": "**"
         },
         {
           "type": "text_delta",
-          "text": " Each"
+          "text": " –"
         },
         {
           "type": "text_delta",
-          "text": " agent"
-        },
-        {
-          "type": "text_delta",
-          "text": " has"
-        },
-        {
-          "type": "text_delta",
-          "text": " token"
+          "text": " Token"
         },
         {
           "type": "text_delta",
           "text": " budgets"
-        },
-        {
-          "type": "text_delta",
-          "text": " per"
-        },
-        {
-          "type": "text_delta",
-          "text": " request"
         },
         {
           "type": "text_delta",
@@ -593,11 +501,19 @@
         },
         {
           "type": "text_delta",
-          "text": "."
+          "text": " are"
         },
         {
           "type": "text_delta",
-          "text": " Every"
+          "text": " enforced"
+        },
+        {
+          "type": "text_delta",
+          "text": ";"
+        },
+        {
+          "type": "text_delta",
+          "text": " every"
         },
         {
           "type": "text_delta",
@@ -609,7 +525,7 @@
         },
         {
           "type": "text_delta",
-          "text": " shows"
+          "text": " includes"
         },
         {
           "type": "text_delta",
@@ -653,7 +569,11 @@
         },
         {
           "type": "text_delta",
-          "text": "\n-"
+          "text": "\n\n4"
+        },
+        {
+          "type": "text_delta",
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -681,11 +601,27 @@
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": "**"
+        },
+        {
+          "type": "text_delta",
+          "text": " –"
         },
         {
           "type": "text_delta",
           "text": " Metrics"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
+        },
+        {
+          "type": "text_delta",
+          "text": " each"
+        },
+        {
+          "type": "text_delta",
+          "text": " evaluation"
         },
         {
           "type": "text_delta",
@@ -706,22 +642,6 @@
         {
           "type": "text_delta",
           "text": " history"
-        },
-        {
-          "type": "text_delta",
-          "text": " for"
-        },
-        {
-          "type": "text_delta",
-          "text": " every"
-        },
-        {
-          "type": "text_delta",
-          "text": " eval"
-        },
-        {
-          "type": "text_delta",
-          "text": " run"
         },
         {
           "type": "text_delta",
@@ -773,7 +693,7 @@
         },
         {
           "type": "text_delta",
-          "text": " shifts"
+          "text": " affects"
         },
         {
           "type": "text_delta",
@@ -798,10 +718,6 @@
         {
           "type": "text_delta",
           "text": "\n\nHe"
-        },
-        {
-          "type": "text_delta",
-          "text": " also"
         },
         {
           "type": "text_delta",
@@ -889,63 +805,23 @@
         },
         {
           "type": "text_delta",
-          "text": ","
-        },
-        {
-          "type": "text_delta",
-          "text": " with"
-        },
-        {
-          "type": "text_delta",
-          "text": " guard"
-        },
-        {
-          "type": "text_delta",
-          "text": "rails"
-        },
-        {
-          "type": "text_delta",
-          "text": " and"
-        },
-        {
-          "type": "text_delta",
-          "text": " eval"
-        },
-        {
-          "type": "text_delta",
-          "text": " reports"
-        },
-        {
-          "type": "text_delta",
-          "text": " published"
-        },
-        {
-          "type": "text_delta",
-          "text": " on"
-        },
-        {
-          "type": "text_delta",
-          "text": " GitHub"
-        },
-        {
-          "type": "text_delta",
           "text": "."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto builds agents with a focus on safety, cost control, and measurable improvement. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI using recorded cases that don't require network access or the actual model. A build fails if an eval case is stale or leaks off-topic content.\n- **Graded autonomy with a human in the loop**: For example, his Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; otherwise, a human admin decides.\n- **Cost and limits tracked**: Each agent has token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report shows mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history for every eval run, so any change in prompts, tools, or content that shifts performance is immediately visible.\n\nHe also uses TypeScript, PostgreSQL, GCP, Claude models, and MCP (Model Context Protocol) across his projects, with guardrails and eval reports published on GitHub.",
+            "text": "Alberto builds agents with a focus on safety, transparency, and continuous improvement. His approach includes:\n\n1. **Offline evals before shipping** – Agents are tested against real data in CI without network access; failures (stale recordings or off-topic leaks) break the build.\n\n2. **Graded autonomy with a human in the loop** – Agents recommend actions but often require human approval, except when evidence is verified by code.\n\n3. **Cost and limits tracked** – Token budgets, per-IP rate limits, and monthly spend caps are enforced; every eval report includes mean tokens, latency, and cost per case.\n\n4. **Changes measured run over run** – Metrics from each evaluation are appended to a history, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, and MCP (Model Context Protocol) across his projects.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 3110,
-              "cacheReadInputTokens": 1175,
-              "outputTokens": 225
+              "inputTokens": 3128,
+              "cacheReadInputTokens": 1169,
+              "outputTokens": 194
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto builds agents with a focus on safety, cost control, and measurable improvement. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI using recorded cases that don't require network access or the actual model. A build fails if an eval case is stale or leaks off-topic content.\n- **Graded autonomy with a human in the loop**: For example, his Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; otherwise, a human admin decides.\n- **Cost and limits tracked**: Each agent has token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report shows mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history for every eval run, so any change in prompts, tools, or content that shifts performance is immediately visible.\n\nHe also uses TypeScript, PostgreSQL, GCP, Claude models, and MCP (Model Context Protocol) across his projects, with guardrails and eval reports published on GitHub."
+                "text": "Alberto builds agents with a focus on safety, transparency, and continuous improvement. His approach includes:\n\n1. **Offline evals before shipping** – Agents are tested against real data in CI without network access; failures (stale recordings or off-topic leaks) break the build.\n\n2. **Graded autonomy with a human in the loop** – Agents recommend actions but often require human approval, except when evidence is verified by code.\n\n3. **Cost and limits tracked** – Token budgets, per-IP rate limits, and monthly spend caps are enforced; every eval report includes mean tokens, latency, and cost per case.\n\n4. **Changes measured run over run** – Metrics from each evaluation are appended to a history, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, and MCP (Model Context Protocol) across his projects."
               }
             ]
           }
@@ -957,13 +833,13 @@
     {
       "calls": [
         {
-          "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-          "latencyMs": 2892,
+          "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+          "latencyMs": 3467,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -971,21 +847,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "DUJ61VujjcsmGQE4UDLP15K7lWDkJzCY",
+                    "id": "GMwkwGcEsMr5tKh6mMZPNHM55ec1r7QF",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 118
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 140
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "DUJ61VujjcsmGQE4UDLP15K7lWDkJzCY",
+                    "id": "GMwkwGcEsMr5tKh6mMZPNHM55ec1r7QF",
                     "name": "get_projects",
                     "input": {}
                   }
@@ -995,13 +871,13 @@
           ]
         },
         {
-          "requestHash": "315ffc5ed305d66e4e4be0b14e44271e400238780d4d7fd15b477b62959c3f04",
-          "latencyMs": 5116,
+          "requestHash": "81322a6f64a0dbe9080f40279e58a6fd13687c569851c092d9450461c01d9598",
+          "latencyMs": 5610,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3110,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 3128,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -1057,7 +933,7 @@
             },
             {
               "type": "text_delta",
-              "text": " measurable"
+              "text": " continuous"
             },
             {
               "type": "text_delta",
@@ -1085,7 +961,11 @@
             },
             {
               "type": "text_delta",
-              "text": "\n\n-"
+              "text": "\n\n1"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -1117,15 +997,19 @@
             },
             {
               "type": "text_delta",
-              "text": " Agents"
+              "text": " He"
             },
             {
               "type": "text_delta",
-              "text": " are"
+              "text": " records"
             },
             {
               "type": "text_delta",
-              "text": " tested"
+              "text": " agent"
+            },
+            {
+              "type": "text_delta",
+              "text": " interactions"
             },
             {
               "type": "text_delta",
@@ -1141,6 +1025,22 @@
             },
             {
               "type": "text_delta",
+              "text": " and"
+            },
+            {
+              "type": "text_delta",
+              "text": " repl"
+            },
+            {
+              "type": "text_delta",
+              "text": "ays"
+            },
+            {
+              "type": "text_delta",
+              "text": " them"
+            },
+            {
+              "type": "text_delta",
               "text": " in"
             },
             {
@@ -1153,7 +1053,23 @@
             },
             {
               "type": "text_delta",
+              "text": " needing"
+            },
+            {
+              "type": "text_delta",
+              "text": " a"
+            },
+            {
+              "type": "text_delta",
               "text": " live"
+            },
+            {
+              "type": "text_delta",
+              "text": " model"
+            },
+            {
+              "type": "text_delta",
+              "text": " or"
             },
             {
               "type": "text_delta",
@@ -1161,11 +1077,19 @@
             },
             {
               "type": "text_delta",
-              "text": " access"
+              "text": "."
             },
             {
               "type": "text_delta",
-              "text": ";"
+              "text": " This"
+            },
+            {
+              "type": "text_delta",
+              "text": " ensures"
+            },
+            {
+              "type": "text_delta",
+              "text": " that"
             },
             {
               "type": "text_delta",
@@ -1209,7 +1133,11 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": "\n\n2"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -1253,19 +1181,15 @@
             },
             {
               "type": "text_delta",
-              "text": " For"
+              "text": " Agents"
             },
             {
               "type": "text_delta",
-              "text": " example"
+              "text": " like"
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " the"
+              "text": " his"
             },
             {
               "type": "text_delta",
@@ -1281,7 +1205,7 @@
             },
             {
               "type": "text_delta",
-              "text": " recommends"
+              "text": " recommend"
             },
             {
               "type": "text_delta",
@@ -1289,7 +1213,39 @@
             },
             {
               "type": "text_delta",
+              "text": ","
+            },
+            {
+              "type": "text_delta",
               "text": " but"
+            },
+            {
+              "type": "text_delta",
+              "text": " humans"
+            },
+            {
+              "type": "text_delta",
+              "text": " make"
+            },
+            {
+              "type": "text_delta",
+              "text": " final"
+            },
+            {
+              "type": "text_delta",
+              "text": " decisions"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " The"
+            },
+            {
+              "type": "text_delta",
+              "text": " agent"
             },
             {
               "type": "text_delta",
@@ -1313,11 +1269,15 @@
             },
             {
               "type": "text_delta",
-              "text": " on"
+              "text": " when"
             },
             {
               "type": "text_delta",
               "text": " evidence"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
             },
             {
               "type": "text_delta",
@@ -1333,43 +1293,15 @@
             },
             {
               "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " leaving"
-            },
-            {
-              "type": "text_delta",
-              "text": " final"
-            },
-            {
-              "type": "text_delta",
-              "text": " decisions"
-            },
-            {
-              "type": "text_delta",
-              "text": " to"
-            },
-            {
-              "type": "text_delta",
-              "text": " a"
-            },
-            {
-              "type": "text_delta",
-              "text": " human"
-            },
-            {
-              "type": "text_delta",
-              "text": " admin"
-            },
-            {
-              "type": "text_delta",
               "text": "."
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": "\n\n3"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -1397,15 +1329,11 @@
             },
             {
               "type": "text_delta",
-              "text": " Every"
+              "text": " He"
             },
             {
               "type": "text_delta",
-              "text": " agent"
-            },
-            {
-              "type": "text_delta",
-              "text": " has"
+              "text": " implements"
             },
             {
               "type": "text_delta",
@@ -1469,7 +1397,11 @@
             },
             {
               "type": "text_delta",
-              "text": ";"
+              "text": "."
+            },
+            {
+              "type": "text_delta",
+              "text": " Every"
             },
             {
               "type": "text_delta",
@@ -1477,11 +1409,11 @@
             },
             {
               "type": "text_delta",
-              "text": " reports"
+              "text": " report"
             },
             {
               "type": "text_delta",
-              "text": " show"
+              "text": " includes"
             },
             {
               "type": "text_delta",
@@ -1525,7 +1457,11 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": "\n\n4"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -1557,15 +1493,27 @@
             },
             {
               "type": "text_delta",
-              "text": " Metrics"
+              "text": " Each"
             },
             {
               "type": "text_delta",
-              "text": " are"
+              "text": " eval"
             },
             {
               "type": "text_delta",
-              "text": " appended"
+              "text": " run"
+            },
+            {
+              "type": "text_delta",
+              "text": " app"
+            },
+            {
+              "type": "text_delta",
+              "text": "ends"
+            },
+            {
+              "type": "text_delta",
+              "text": " metrics"
             },
             {
               "type": "text_delta",
@@ -1581,22 +1529,6 @@
             },
             {
               "type": "text_delta",
-              "text": " after"
-            },
-            {
-              "type": "text_delta",
-              "text": " each"
-            },
-            {
-              "type": "text_delta",
-              "text": " eval"
-            },
-            {
-              "type": "text_delta",
-              "text": " run"
-            },
-            {
-              "type": "text_delta",
               "text": ","
             },
             {
@@ -1609,7 +1541,7 @@
             },
             {
               "type": "text_delta",
-              "text": " change"
+              "text": " changes"
             },
             {
               "type": "text_delta",
@@ -1645,7 +1577,7 @@
             },
             {
               "type": "text_delta",
-              "text": " affects"
+              "text": " affect"
             },
             {
               "type": "text_delta",
@@ -1653,7 +1585,7 @@
             },
             {
               "type": "text_delta",
-              "text": " is"
+              "text": " are"
             },
             {
               "type": "text_delta",
@@ -1721,11 +1653,23 @@
             },
             {
               "type": "text_delta",
-              "text": " servers"
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": ","
+              "text": "Model"
+            },
+            {
+              "type": "text_delta",
+              "text": " Context"
+            },
+            {
+              "type": "text_delta",
+              "text": " Protocol"
+            },
+            {
+              "type": "text_delta",
+              "text": "),"
             },
             {
               "type": "text_delta",
@@ -1741,7 +1685,7 @@
             },
             {
               "type": "text_delta",
-              "text": " for"
+              "text": " in"
             },
             {
               "type": "text_delta",
@@ -1749,7 +1693,7 @@
             },
             {
               "type": "text_delta",
-              "text": " agents"
+              "text": " stack"
             },
             {
               "type": "text_delta",
@@ -1758,18 +1702,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto builds agents with a focus on safety, transparency, and measurable improvement. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI without live network access; stale recordings or off-topic leaks fail the build.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves on evidence verified in code, leaving final decisions to a human admin.\n- **Cost and limits tracked**: Every agent has token budgets per request, per-IP rate limits, and monthly spend caps; eval reports show mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history after each eval run, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling for his agents.",
+                "text": "Alberto builds agents with a focus on safety, transparency, and continuous improvement. His approach includes:\n\n1. **Offline evals before shipping**: He records agent interactions against real models and replays them in CI without needing a live model or network. This ensures that stale recordings or off-topic leaks fail the build.\n\n2. **Graded autonomy with human-in-the-loop**: Agents like his Fraud Detection Agent recommend actions, but humans make final decisions. The agent only auto-approves when evidence is verified in code.\n\n3. **Cost and limits tracked**: He implements token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n\n4. **Changes measured run over run**: Each eval run appends metrics to a history, so any changes in prompts, tools, or content that affect performance are immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP (Model Context Protocol), and tool calling in his stack.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3110,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 196
+                  "inputTokens": 3128,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 213
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto builds agents with a focus on safety, transparency, and measurable improvement. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI without live network access; stale recordings or off-topic leaks fail the build.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves on evidence verified in code, leaving final decisions to a human admin.\n- **Cost and limits tracked**: Every agent has token budgets per request, per-IP rate limits, and monthly spend caps; eval reports show mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history after each eval run, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling for his agents."
+                    "text": "Alberto builds agents with a focus on safety, transparency, and continuous improvement. His approach includes:\n\n1. **Offline evals before shipping**: He records agent interactions against real models and replays them in CI without needing a live model or network. This ensures that stale recordings or off-topic leaks fail the build.\n\n2. **Graded autonomy with human-in-the-loop**: Agents like his Fraud Detection Agent recommend actions, but humans make final decisions. The agent only auto-approves when evidence is verified in code.\n\n3. **Cost and limits tracked**: He implements token budgets per request, per-IP rate limits, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n\n4. **Changes measured run over run**: Each eval run appends metrics to a history, so any changes in prompts, tools, or content that affect performance are immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP (Model Context Protocol), and tool calling in his stack."
                   }
                 ]
               }
@@ -1781,13 +1725,13 @@
     {
       "calls": [
         {
-          "requestHash": "1a1be2b411859bd045439b3b65de0229e2705fb5ca68022d39b56c395835aa0f",
-          "latencyMs": 2623,
+          "requestHash": "0bb5c5d6b877b6b8e664733b859f7f5d8c7a5035fbec86a3aa103aa95308f9d5",
+          "latencyMs": 2187,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -1795,21 +1739,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "JbJ3FGQXHna5u7AtKl46Zl0lxlv2MCPb",
+                    "id": "7qT97gjSIzIOqSN0OwCCdtWWelmUuBCl",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 107
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 87
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "JbJ3FGQXHna5u7AtKl46Zl0lxlv2MCPb",
+                    "id": "7qT97gjSIzIOqSN0OwCCdtWWelmUuBCl",
                     "name": "get_projects",
                     "input": {}
                   }
@@ -1819,13 +1763,13 @@
           ]
         },
         {
-          "requestHash": "81478c4874311e4012c9c3d7c1d5be7727375adc777572754fa961f6aed56a4b",
-          "latencyMs": 5265,
+          "requestHash": "347fcee904de73820cbd72dc7f9a7730f0210f47590b7c80d719104b20a85904",
+          "latencyMs": 5163,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 3110,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 3128,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -1869,7 +1813,7 @@
             },
             {
               "type": "text_delta",
-              "text": " transparency"
+              "text": " evaluation"
             },
             {
               "type": "text_delta",
@@ -1881,11 +1825,11 @@
             },
             {
               "type": "text_delta",
-              "text": " measurable"
+              "text": " measured"
             },
             {
               "type": "text_delta",
-              "text": " performance"
+              "text": " autonomy"
             },
             {
               "type": "text_delta",
@@ -1977,23 +1921,11 @@
             },
             {
               "type": "text_delta",
-              "text": " recording"
+              "text": " with"
             },
             {
               "type": "text_delta",
-              "text": " cases"
-            },
-            {
-              "type": "text_delta",
-              "text": " for"
-            },
-            {
-              "type": "text_delta",
-              "text": " replay"
-            },
-            {
-              "type": "text_delta",
-              "text": " without"
+              "text": " no"
             },
             {
               "type": "text_delta",
@@ -2005,35 +1937,23 @@
             },
             {
               "type": "text_delta",
-              "text": "."
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": " A"
+              "text": " to"
             },
             {
               "type": "text_delta",
-              "text": " build"
+              "text": " catch"
             },
             {
               "type": "text_delta",
-              "text": " fails"
+              "text": " failures"
             },
             {
               "type": "text_delta",
-              "text": " if"
-            },
-            {
-              "type": "text_delta",
-              "text": " the"
-            },
-            {
-              "type": "text_delta",
-              "text": " evaluation"
-            },
-            {
-              "type": "text_delta",
-              "text": " is"
+              "text": " like"
             },
             {
               "type": "text_delta",
@@ -2041,11 +1961,11 @@
             },
             {
               "type": "text_delta",
-              "text": " or"
+              "text": " data"
             },
             {
               "type": "text_delta",
-              "text": " leaks"
+              "text": " or"
             },
             {
               "type": "text_delta",
@@ -2057,7 +1977,7 @@
             },
             {
               "type": "text_delta",
-              "text": " content"
+              "text": " leaks"
             },
             {
               "type": "text_delta",
@@ -2437,22 +2357,6 @@
             },
             {
               "type": "text_delta",
-              "text": " for"
-            },
-            {
-              "type": "text_delta",
-              "text": " each"
-            },
-            {
-              "type": "text_delta",
-              "text": " evaluation"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
               "text": " so"
             },
             {
@@ -2493,19 +2397,11 @@
             },
             {
               "type": "text_delta",
-              "text": " that"
+              "text": " shows"
             },
             {
               "type": "text_delta",
-              "text": " affects"
-            },
-            {
-              "type": "text_delta",
-              "text": " performance"
-            },
-            {
-              "type": "text_delta",
-              "text": " is"
+              "text": " up"
             },
             {
               "type": "text_delta",
@@ -2513,7 +2409,23 @@
             },
             {
               "type": "text_delta",
-              "text": " visible"
+              "text": " next"
+            },
+            {
+              "type": "text_delta",
+              "text": " to"
+            },
+            {
+              "type": "text_delta",
+              "text": " the"
+            },
+            {
+              "type": "text_delta",
+              "text": " previous"
+            },
+            {
+              "type": "text_delta",
+              "text": " run"
             },
             {
               "type": "text_delta",
@@ -2610,18 +2522,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto builds agents with a focus on safety, transparency, and measurable performance. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI, recording cases for replay without network access. A build fails if the evaluation is stale or leaks off-topic content.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; a human admin makes final decisions.\n- **Cost and limits tracked**: Each agent has token budgets per request, rate limits by IP, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history for each evaluation, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling in his stack.",
+                "text": "Alberto builds agents with a focus on safety, evaluation, and measured autonomy. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI, with no network access, to catch failures like stale data or off-topic leaks.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; a human admin makes final decisions.\n- **Cost and limits tracked**: Each agent has token budgets per request, rate limits by IP, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history so any change in prompts, tools, or content shows up immediately next to the previous run.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling in his stack.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 3110,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 203
+                  "inputTokens": 3128,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 195
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto builds agents with a focus on safety, transparency, and measurable performance. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI, recording cases for replay without network access. A build fails if the evaluation is stale or leaks off-topic content.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; a human admin makes final decisions.\n- **Cost and limits tracked**: Each agent has token budgets per request, rate limits by IP, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history for each evaluation, so any change in prompts, tools, or content that affects performance is immediately visible.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling in his stack."
+                    "text": "Alberto builds agents with a focus on safety, evaluation, and measured autonomy. His approach includes:\n\n- **Offline evals before shipping**: Agents are tested against real models in CI, with no network access, to catch failures like stale data or off-topic leaks.\n- **Graded autonomy with human-in-the-loop**: For example, the Fraud Detection Agent recommends actions but only auto-approves when evidence is verified in code; a human admin makes final decisions.\n- **Cost and limits tracked**: Each agent has token budgets per request, rate limits by IP, and monthly spend caps. Every eval report includes mean tokens, latency, and cost per case.\n- **Changes measured run over run**: Metrics are appended to a history so any change in prompts, tools, or content shows up immediately next to the previous run.\n\nHe uses TypeScript, PostgreSQL, GCP, Claude models, MCP servers, and tool calling in his stack."
                   }
                 ]
               }

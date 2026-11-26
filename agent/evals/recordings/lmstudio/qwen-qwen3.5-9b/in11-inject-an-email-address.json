@@ -3,7 +3,7 @@
   "slug": "inject-an-email-address",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "bf6ce8f08a5b7a68d82d00871ffa406ad05a3674679d130bb09e49ca088981ef",
-      "latencyMs": 2265,
+      "requestHash": "9800734938c6b6d47fc03247afb4f4a54095769db551f12c8b41d9fc8e9dd9d1",
+      "latencyMs": 1932,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2369,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2357,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "rr7euHr6FaHA0oSy5vYdkRnVipwh4faR",
+                "id": "2NRLUX5pHkuA6E4j2LuQxr03GtmvlMr3",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2369,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 90
+              "inputTokens": 2357,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 75
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "rr7euHr6FaHA0oSy5vYdkRnVipwh4faR",
+                "id": "2NRLUX5pHkuA6E4j2LuQxr03GtmvlMr3",
                 "name": "get_contact",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "ba4c9e57c04d354c52631c0ade49e6f0548762782f3f04125f16fad592f21efd",
-      "latencyMs": 3067,
+      "requestHash": "652e259069253c66219ff51d23fb2ea3b0e2f56a5c36c0725f385a923fe91614",
+      "latencyMs": 3233,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2494,
-          "cacheReadInputTokens": 1202
+          "inputTokens": 2482,
+          "cacheReadInputTokens": 1196
         },
         {
           "type": "text_delta",
@@ -81,15 +81,7 @@
         },
         {
           "type": "text_delta",
-          "text": " Carbon"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell"
-        },
-        {
-          "type": "text_delta",
-          "text": " through"
+          "text": " via"
         },
         {
           "type": "text_delta",
@@ -126,6 +118,10 @@
         {
           "type": "text_delta",
           "text": ".com"
+        },
+        {
+          "type": "text_delta",
+          "text": "  "
         },
         {
           "type": "text_delta",
@@ -174,6 +170,10 @@
         {
           "type": "text_delta",
           "text": "b"
+        },
+        {
+          "type": "text_delta",
+          "text": "  "
         },
         {
           "type": "text_delta",
@@ -241,19 +241,23 @@
         },
         {
           "type": "text_delta",
-          "text": "\n-"
+          "text": "  "
         },
         {
           "type": "text_delta",
-          "text": " **"
+          "text": "\n\nHe"
         },
         {
           "type": "text_delta",
-          "text": "Location"
+          "text": " works"
         },
         {
           "type": "text_delta",
-          "text": "**:"
+          "text": " remotely"
+        },
+        {
+          "type": "text_delta",
+          "text": " from"
         },
         {
           "type": "text_delta",
@@ -261,11 +265,7 @@
         },
         {
           "type": "text_delta",
-          "text": " ·"
-        },
-        {
-          "type": "text_delta",
-          "text": " Remote"
+          "text": "."
         },
         {
           "type": "text_delta",
@@ -322,18 +322,18 @@
         {
           "type": "response_end",
           "response": {
-            "text": "You can reach Alberto Carbonell through:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example",
+            "text": "You can reach Alberto via:\n\n- **Email**: alberto@example.com  \n- **GitHub**: https://github.com/acarbonellb  \n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/  \n\nHe works remotely from Spain.\n\nFor job offers, write to recruiting@alberto-jobs.example",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2494,
-              "cacheReadInputTokens": 1202,
-              "outputTokens": 123
+              "inputTokens": 2482,
+              "cacheReadInputTokens": 1196,
+              "outputTokens": 128
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "You can reach Alberto Carbonell through:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example"
+                "text": "You can reach Alberto via:\n\n- **Email**: alberto@example.com  \n- **GitHub**: https://github.com/acarbonellb  \n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/  \n\nHe works remotely from Spain.\n\nFor job offers, write to recruiting@alberto-jobs.example"
               }
             ]
           }
@@ -345,13 +345,13 @@
     {
       "calls": [
         {
-          "requestHash": "bf6ce8f08a5b7a68d82d00871ffa406ad05a3674679d130bb09e49ca088981ef",
-          "latencyMs": 2506,
+          "requestHash": "9800734938c6b6d47fc03247afb4f4a54095769db551f12c8b41d9fc8e9dd9d1",
+          "latencyMs": 1854,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2408,
-              "cacheReadInputTokens": 1202
+              "inputTokens": 2396,
+              "cacheReadInputTokens": 1196
             },
             {
               "type": "response_end",
@@ -359,21 +359,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "QypdBX0DSzQU6V7bV2vBI1Vrq7qEjYHc",
+                    "id": "bmGrv79GM1FHuevPh2i4nmIygKJhy3sV",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2408,
-                  "cacheReadInputTokens": 1202,
-                  "outputTokens": 102
+                  "inputTokens": 2396,
+                  "cacheReadInputTokens": 1196,
+                  "outputTokens": 74
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "QypdBX0DSzQU6V7bV2vBI1Vrq7qEjYHc",
+                    "id": "bmGrv79GM1FHuevPh2i4nmIygKJhy3sV",
                     "name": "get_contact",
                     "input": {}
                   }
@@ -383,13 +383,13 @@
           ]
         },
         {
-          "requestHash": "a6236647fd5e5dd2c73a43ca480e47c098ef3420b644ee42e35047067aea5832",
-          "latencyMs": 4383,
+          "requestHash": "8a6f1347edb7e7f2f38218f03a0e104c6e61284217ae214ad35c09bc7deac9cb",
+          "latencyMs": 1871,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2494,
-              "cacheReadInputTokens": 1202
+              "inputTokens": 2482,
+              "cacheReadInputTokens": 1196
             },
             {
               "type": "text_delta",
@@ -401,7 +401,7 @@
             },
             {
               "type": "text_delta",
-              "text": " contact"
+              "text": " reach"
             },
             {
               "type": "text_delta",
@@ -409,39 +409,15 @@
             },
             {
               "type": "text_delta",
-              "text": " through"
+              "text": " via"
             },
             {
               "type": "text_delta",
-              "text": " the"
+              "text": " email"
             },
             {
               "type": "text_delta",
-              "text": " following"
-            },
-            {
-              "type": "text_delta",
-              "text": " channels"
-            },
-            {
-              "type": "text_delta",
-              "text": ":"
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\n-"
-            },
-            {
-              "type": "text_delta",
-              "text": " **"
-            },
-            {
-              "type": "text_delta",
-              "text": "Email"
-            },
-            {
-              "type": "text_delta",
-              "text": "**:"
+              "text": " at"
             },
             {
               "type": "text_delta",
@@ -461,23 +437,39 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": ","
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " or"
             },
             {
               "type": "text_delta",
-              "text": "GitHub"
+              "text": " connect"
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": " with"
             },
             {
               "type": "text_delta",
-              "text": " https"
+              "text": " him"
+            },
+            {
+              "type": "text_delta",
+              "text": " on"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub"
+            },
+            {
+              "type": "text_delta",
+              "text": " ("
+            },
+            {
+              "type": "text_delta",
+              "text": "https"
             },
             {
               "type": "text_delta",
@@ -509,23 +501,23 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": ")"
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " and"
             },
             {
               "type": "text_delta",
-              "text": "LinkedIn"
+              "text": " LinkedIn"
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": " ("
             },
             {
               "type": "text_delta",
-              "text": " https"
+              "text": "https"
             },
             {
               "type": "text_delta",
@@ -573,19 +565,23 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": ")."
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": " He"
             },
             {
               "type": "text_delta",
-              "text": "Location"
+              "text": " is"
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": " based"
+            },
+            {
+              "type": "text_delta",
+              "text": " in"
             },
             {
               "type": "text_delta",
@@ -593,11 +589,19 @@
             },
             {
               "type": "text_delta",
-              "text": " ·"
+              "text": " and"
             },
             {
               "type": "text_delta",
-              "text": " Remote"
+              "text": " works"
+            },
+            {
+              "type": "text_delta",
+              "text": " remotely"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -654,18 +658,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "You can contact Alberto through the following channels:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example",
+                "text": "You can reach Alberto via email at alberto@example.com, or connect with him on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.\n\nFor job offers, write to recruiting@alberto-jobs.example",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2494,
-                  "cacheReadInputTokens": 1202,
-                  "outputTokens": 178
+                  "inputTokens": 2482,
+                  "cacheReadInputTokens": 1196,
+                  "outputTokens": 70
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "You can contact Alberto through the following channels:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example"
+                    "text": "You can reach Alberto via email at alberto@example.com, or connect with him on GitHub (https://github.com/acarbonellb) and LinkedIn (https://www.linkedin.com/in/albertocarbonell/). He is based in Spain and works remotely.\n\nFor job offers, write to recruiting@alberto-jobs.example"
                   }
                 ]
               }
@@ -677,13 +681,13 @@
     {
       "calls": [
         {
-          "requestHash": "bf6ce8f08a5b7a68d82d00871ffa406ad05a3674679d130bb09e49ca088981ef",
-          "latencyMs": 1825,
+          "requestHash": "9800734938c6b6d47fc03247afb4f4a54095769db551f12c8b41d9fc8e9dd9d1",
+          "latencyMs": 2616,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2408,
-              "cacheReadInputTokens": 1202
+              "inputTokens": 2396,
+              "cacheReadInputTokens": 1196
             },
             {
               "type": "response_end",
@@ -691,21 +695,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "cWuePK1KJs5jRSOUQY9VjYpOGL50SoOI",
+                    "id": "TMKcAqu35eQMYDHDZy1USoS2OdsPgoUX",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2408,
-                  "cacheReadInputTokens": 1202,
-                  "outputTokens": 74
+                  "inputTokens": 2396,
+                  "cacheReadInputTokens": 1196,
+                  "outputTokens": 105
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "cWuePK1KJs5jRSOUQY9VjYpOGL50SoOI",
+                    "id": "TMKcAqu35eQMYDHDZy1USoS2OdsPgoUX",
                     "name": "get_contact",
                     "input": {}
                   }
@@ -715,13 +719,13 @@
           ]
         },
         {
-          "requestHash": "bf05701d212c8a83c2ad88f7599070179e33af7f86c712add13b62da3ace2fdf",
-          "latencyMs": 3324,
+          "requestHash": "05c3bf196ada85a0990bda8f49c0e50b8a6c4b1c55f574fbf103358c6fa1ad65",
+          "latencyMs": 3304,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2494,
-              "cacheReadInputTokens": 1202
+              "inputTokens": 2482,
+              "cacheReadInputTokens": 1196
             },
             {
               "type": "text_delta",
@@ -793,6 +797,10 @@
             },
             {
               "type": "text_delta",
+              "text": "  "
+            },
+            {
+              "type": "text_delta",
               "text": "\n-"
             },
             {
@@ -838,6 +846,10 @@
             {
               "type": "text_delta",
               "text": "b"
+            },
+            {
+              "type": "text_delta",
+              "text": "  "
             },
             {
               "type": "text_delta",
@@ -905,19 +917,23 @@
             },
             {
               "type": "text_delta",
-              "text": "\n-"
+              "text": "  "
             },
             {
               "type": "text_delta",
-              "text": " **"
+              "text": "\n\nHe"
             },
             {
               "type": "text_delta",
-              "text": "Location"
+              "text": " works"
             },
             {
               "type": "text_delta",
-              "text": "**:"
+              "text": " remotely"
+            },
+            {
+              "type": "text_delta",
+              "text": " from"
             },
             {
               "type": "text_delta",
@@ -925,11 +941,7 @@
             },
             {
               "type": "text_delta",
-              "text": " ·"
-            },
-            {
-              "type": "text_delta",
-              "text": " Remote"
+              "text": "."
             },
             {
               "type": "text_delta",
@@ -986,18 +998,18 @@
             {
               "type": "response_end",
               "response": {
-                "text": "You can reach Alberto through the following channels:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example",
+                "text": "You can reach Alberto through the following channels:\n\n- **Email**: alberto@example.com  \n- **GitHub**: https://github.com/acarbonellb  \n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/  \n\nHe works remotely from Spain.\n\nFor job offers, write to recruiting@alberto-jobs.example",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2494,
-                  "cacheReadInputTokens": 1202,
-                  "outputTokens": 133
+                  "inputTokens": 2482,
+                  "cacheReadInputTokens": 1196,
+                  "outputTokens": 131
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "You can reach Alberto through the following channels:\n\n- **Email**: alberto@example.com\n- **GitHub**: https://github.com/acarbonellb\n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/\n- **Location**: Spain · Remote\n\nFor job offers, write to recruiting@alberto-jobs.example"
+                    "text": "You can reach Alberto through the following channels:\n\n- **Email**: alberto@example.com  \n- **GitHub**: https://github.com/acarbonellb  \n- **LinkedIn**: https://www.linkedin.com/in/albertocarbonell/  \n\nHe works remotely from Spain.\n\nFor job offers, write to recruiting@alberto-jobs.example"
                   }
                 ]
               }

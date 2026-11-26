@@ -3,7 +3,7 @@
   "slug": "current-role",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
-      "latencyMs": 729,
+      "requestHash": "4a944431978d6e7dfc1cae4e3dd8d171571a46ad0cad563c3794eaac275a4365",
+      "latencyMs": 546,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1668,
-          "cacheWriteInputTokens": 1664
+          "inputTokens": 1660,
+          "cacheWriteInputTokens": 1656
         },
         {
           "type": "response_end",
@@ -31,7 +31,7 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_019auUDx8LrsZq5VgZqEhY1Q",
+                "id": "toolu_01P4KGz3pnTypvWuk186TJ2P",
                 "name": "get_experience",
                 "input": {
                   "company": "coverwallet"
@@ -40,14 +40,14 @@
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1668,
-              "cacheWriteInputTokens": 1664,
+              "inputTokens": 1660,
+              "cacheWriteInputTokens": 1656,
               "outputTokens": 52
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_019auUDx8LrsZq5VgZqEhY1Q",
+                "id": "toolu_01P4KGz3pnTypvWuk186TJ2P",
                 "name": "get_experience",
                 "caller": {
                   "type": "direct"
@@ -62,14 +62,14 @@
       ]
     },
     {
-      "requestHash": "87f7413065428b3b38fb64e8c495e2d75832009e68bde4781647b82b96b02b78",
-      "latencyMs": 880,
+      "requestHash": "47457624b169ac8b2d21922ffb2100d7b9f1dfc4a85c4a1e87f0827113969d35",
+      "latencyMs": 998,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1992,
+          "inputTokens": 1984,
           "cacheWriteInputTokens": 326,
-          "cacheReadInputTokens": 1664
+          "cacheReadInputTokens": 1656
         },
         {
           "type": "text_delta",
@@ -97,23 +97,31 @@
         },
         {
           "type": "text_delta",
-          "text": " he has held since 2019 "
+          "text": " he has held"
         },
         {
           "type": "text_delta",
-          "text": "(based"
+          "text": " since 2019 (based in"
         },
         {
           "type": "text_delta",
-          "text": " in Madrid / rem"
+          "text": " Madrid / Remote"
         },
         {
           "type": "text_delta",
-          "text": "ote). He has"
+          "text": "). He"
         },
         {
           "type": "text_delta",
-          "text": " led cross-team projects from"
+          "text": " has"
+        },
+        {
+          "type": "text_delta",
+          "text": " led c"
+        },
+        {
+          "type": "text_delta",
+          "text": "ross-team projects from"
         },
         {
           "type": "text_delta",
@@ -125,15 +133,19 @@
         },
         {
           "type": "text_delta",
-          "text": "rier APIs, introdu"
+          "text": "rier APIs,"
         },
         {
           "type": "text_delta",
-          "text": "ced AI agents into the team"
+          "text": " intro"
         },
         {
           "type": "text_delta",
-          "text": "'s work"
+          "text": "duced AI agents into the"
+        },
+        {
+          "type": "text_delta",
+          "text": " team's work"
         },
         {
           "type": "text_delta",
@@ -149,24 +161,40 @@
         },
         {
           "type": "text_delta",
-          "text": " hires."
+          "text": " hires. The main"
+        },
+        {
+          "type": "text_delta",
+          "text": " stack there"
+        },
+        {
+          "type": "text_delta",
+          "text": " is TypeScript,"
+        },
+        {
+          "type": "text_delta",
+          "text": " Node.js, React and "
+        },
+        {
+          "type": "text_delta",
+          "text": "Ruby on Rails."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires.",
+            "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / Remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires. The main stack there is TypeScript, Node.js, React and Ruby on Rails.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 1992,
+              "inputTokens": 1984,
               "cacheWriteInputTokens": 326,
-              "cacheReadInputTokens": 1664,
-              "outputTokens": 120
+              "cacheReadInputTokens": 1656,
+              "outputTokens": 149
             },
             "providerContent": [
               {
                 "type": "text",
-                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires."
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / Remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires. The main stack there is TypeScript, Node.js, React and Ruby on Rails."
               }
             ]
           }
@@ -178,13 +206,13 @@
     {
       "calls": [
         {
-          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
-          "latencyMs": 655,
+          "requestHash": "4a944431978d6e7dfc1cae4e3dd8d171571a46ad0cad563c3794eaac275a4365",
+          "latencyMs": 535,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1668,
-              "cacheReadInputTokens": 1664
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
             },
             {
               "type": "response_end",
@@ -192,7 +220,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_013Rhb8y2W1qCaLY2ZxkfYqi",
+                    "id": "toolu_01GPBXpDPmtSa3fEunujoSBo",
                     "name": "get_experience",
                     "input": {
                       "company": "coverwallet"
@@ -201,14 +229,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1668,
-                  "cacheReadInputTokens": 1664,
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
                   "outputTokens": 52
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_013Rhb8y2W1qCaLY2ZxkfYqi",
+                    "id": "toolu_01GPBXpDPmtSa3fEunujoSBo",
                     "name": "get_experience",
                     "caller": {
                       "type": "direct"
@@ -223,25 +251,29 @@
           ]
         },
         {
-          "requestHash": "22ff8d75f18e6628a9ed111b7b16ccb736bb3aff3d95c8de61858ccc4aea7ec4",
-          "latencyMs": 867,
+          "requestHash": "e6a595a0ed7fd482a60099f56042995acfa9487b19a8f5896ebb226d68251dd4",
+          "latencyMs": 913,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1992,
-              "cacheReadInputTokens": 1990
+              "inputTokens": 1984,
+              "cacheReadInputTokens": 1982
             },
             {
               "type": "text_delta",
-              "text": "Alberto is a Sen"
+              "text": "Alberto is"
             },
             {
               "type": "text_delta",
-              "text": "ior Software Engineer at"
+              "text": " a Senior Software Eng"
             },
             {
               "type": "text_delta",
-              "text": " CoverWallet, an"
+              "text": "ineer at CoverWall"
+            },
+            {
+              "type": "text_delta",
+              "text": "et, an"
             },
             {
               "type": "text_delta",
@@ -253,15 +285,15 @@
             },
             {
               "type": "text_delta",
-              "text": " role"
+              "text": " role he"
             },
             {
               "type": "text_delta",
-              "text": " he has held since 2019 "
+              "text": " has held since 2019 and"
             },
             {
               "type": "text_delta",
-              "text": "and still"
+              "text": " still"
             },
             {
               "type": "text_delta",
@@ -273,162 +305,15 @@
             },
             {
               "type": "text_delta",
-              "text": " Remote, he has led cross"
+              "text": " Remote, he has"
             },
             {
               "type": "text_delta",
-              "text": "-team projects from"
+              "text": " led c"
             },
             {
               "type": "text_delta",
-              "text": " architecture to production, integr"
-            },
-            {
-              "type": "text_delta",
-              "text": "ated third-party insurance car"
-            },
-            {
-              "type": "text_delta",
-              "text": "rier APIs, introdu"
-            },
-            {
-              "type": "text_delta",
-              "text": "ced AI agents into the team"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s work"
-            },
-            {
-              "type": "text_delta",
-              "text": "flow (code review, refact"
-            },
-            {
-              "type": "text_delta",
-              "text": "oring, docs), and m"
-            },
-            {
-              "type": "text_delta",
-              "text": "entored new hires."
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow (code review, refactoring, docs), and mentored new hires.",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 1992,
-                  "cacheReadInputTokens": 1990,
-                  "outputTokens": 126
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow (code review, refactoring, docs), and mentored new hires."
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "d091017f454eea4a7a4305141495c644d3b4d32eb5c112057015e0ca89357fa0",
-          "latencyMs": 665,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1668,
-              "cacheReadInputTokens": 1664
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "toolu_01VP3w23zGfZkQob49mY5QfZ",
-                    "name": "get_experience",
-                    "input": {
-                      "company": "coverwallet"
-                    }
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 1668,
-                  "cacheReadInputTokens": 1664,
-                  "outputTokens": 52
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "toolu_01VP3w23zGfZkQob49mY5QfZ",
-                    "name": "get_experience",
-                    "caller": {
-                      "type": "direct"
-                    },
-                    "input": {
-                      "company": "coverwallet"
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "6379de624dfde3c7077745bfd0ffde06b222cbdfab6aa571bd89a9f68ae32254",
-          "latencyMs": 889,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 1992,
-              "cacheReadInputTokens": 1990
-            },
-            {
-              "type": "text_delta",
-              "text": "Alberto is a Senior"
-            },
-            {
-              "type": "text_delta",
-              "text": " Software Engineer at C"
-            },
-            {
-              "type": "text_delta",
-              "text": "overWallet, an"
-            },
-            {
-              "type": "text_delta",
-              "text": " insurtech platform,"
-            },
-            {
-              "type": "text_delta",
-              "text": " where he has"
-            },
-            {
-              "type": "text_delta",
-              "text": " wor"
-            },
-            {
-              "type": "text_delta",
-              "text": "ked since 2019 (based"
-            },
-            {
-              "type": "text_delta",
-              "text": " in Madrid / rem"
-            },
-            {
-              "type": "text_delta",
-              "text": "ote). He has"
-            },
-            {
-              "type": "text_delta",
-              "text": " led cross-team projects from"
+              "text": "ross-team projects from"
             },
             {
               "type": "text_delta",
@@ -440,7 +325,11 @@
             },
             {
               "type": "text_delta",
-              "text": "rier APIs, intro"
+              "text": "rier APIs,"
+            },
+            {
+              "type": "text_delta",
+              "text": " intro"
             },
             {
               "type": "text_delta",
@@ -448,11 +337,7 @@
             },
             {
               "type": "text_delta",
-              "text": " team"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s work"
+              "text": " team's work"
             },
             {
               "type": "text_delta",
@@ -473,18 +358,193 @@
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, where he has worked since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires.",
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 1992,
-                  "cacheReadInputTokens": 1990,
-                  "outputTokens": 120
+                  "inputTokens": 1984,
+                  "cacheReadInputTokens": 1982,
+                  "outputTokens": 126
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, where he has worked since 2019 (based in Madrid / remote). He has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires."
+                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 and still holds. Based in Madrid / Remote, he has led cross-team projects from architecture to production, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "4a944431978d6e7dfc1cae4e3dd8d171571a46ad0cad563c3794eaac275a4365",
+          "latencyMs": 544,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1660,
+              "cacheReadInputTokens": 1656
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "toolu_01ToDHPgJ8z98PSf8p3wc9od",
+                    "name": "get_experience",
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 1660,
+                  "cacheReadInputTokens": 1656,
+                  "outputTokens": 52
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "toolu_01ToDHPgJ8z98PSf8p3wc9od",
+                    "name": "get_experience",
+                    "caller": {
+                      "type": "direct"
+                    },
+                    "input": {
+                      "company": "coverwallet"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "dc0eead9126af80ece2e8899fba5c495dc84cb79c42e460ae761cb476f690796",
+          "latencyMs": 926,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 1984,
+              "cacheReadInputTokens": 1982
+            },
+            {
+              "type": "text_delta",
+              "text": "Alberto is a Sen"
+            },
+            {
+              "type": "text_delta",
+              "text": "ior Software Engineer at"
+            },
+            {
+              "type": "text_delta",
+              "text": " CoverWallet, an"
+            },
+            {
+              "type": "text_delta",
+              "text": " insurtech platform,"
+            },
+            {
+              "type": "text_delta",
+              "text": " a role he has held since 2"
+            },
+            {
+              "type": "text_delta",
+              "text": "019 (based in Madr"
+            },
+            {
+              "type": "text_delta",
+              "text": "id / Remote). He"
+            },
+            {
+              "type": "text_delta",
+              "text": " has"
+            },
+            {
+              "type": "text_delta",
+              "text": " led cross-team projects end"
+            },
+            {
+              "type": "text_delta",
+              "text": " to end, integrated third-"
+            },
+            {
+              "type": "text_delta",
+              "text": "party insurance carrier AP"
+            },
+            {
+              "type": "text_delta",
+              "text": "Is,"
+            },
+            {
+              "type": "text_delta",
+              "text": " introduced AI agents into"
+            },
+            {
+              "type": "text_delta",
+              "text": " the team's work"
+            },
+            {
+              "type": "text_delta",
+              "text": "flow for"
+            },
+            {
+              "type": "text_delta",
+              "text": " code review, refactoring and"
+            },
+            {
+              "type": "text_delta",
+              "text": " docs, and mentored new"
+            },
+            {
+              "type": "text_delta",
+              "text": " hires."
+            },
+            {
+              "type": "text_delta",
+              "text": " The"
+            },
+            {
+              "type": "text_delta",
+              "text": " main"
+            },
+            {
+              "type": "text_delta",
+              "text": " stack is T"
+            },
+            {
+              "type": "text_delta",
+              "text": "ypeScript, Node."
+            },
+            {
+              "type": "text_delta",
+              "text": "js, React and Ruby"
+            },
+            {
+              "type": "text_delta",
+              "text": " on Rails."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / Remote). He has led cross-team projects end to end, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires. The main stack is TypeScript, Node.js, React and Ruby on Rails.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 1984,
+                  "cacheReadInputTokens": 1982,
+                  "outputTokens": 145
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto is a Senior Software Engineer at CoverWallet, an insurtech platform, a role he has held since 2019 (based in Madrid / Remote). He has led cross-team projects end to end, integrated third-party insurance carrier APIs, introduced AI agents into the team's workflow for code review, refactoring and docs, and mentored new hires. The main stack is TypeScript, Node.js, React and Ruby on Rails."
                   }
                 ]
               }

@@ -3,7 +3,7 @@
   "slug": "agents-and-sql-query",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "728b700cdfd7d550cb6d3a5c6050cc26f288e933b3c2111a6122dc7e86cba567",
-      "latencyMs": 618,
+      "requestHash": "733c51c7ec33c88f721aa9385fc84d18f8f88256440d4f007614aeebdb9b22b9",
+      "latencyMs": 812,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1682,
-          "cacheWriteInputTokens": 1678
+          "inputTokens": 1674,
+          "cacheWriteInputTokens": 1670
         },
         {
           "type": "response_end",
@@ -31,21 +31,26 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_011pnxxucueSfsd1Rqz5GqH5",
+                "id": "toolu_011NQwf2tj4dR5eEhPtLS2qW",
                 "name": "get_projects",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1682,
-              "cacheWriteInputTokens": 1678,
-              "outputTokens": 27
+              "inputTokens": 1674,
+              "cacheWriteInputTokens": 1670,
+              "outputTokens": 85
             },
             "providerContent": [
               {
+                "type": "thinking",
+                "thinking": "",
+                "signature": "CAQS/QUKEAgUGAI4AUIIdGhpbmtpbmcSDD6SMN1XyAsO8QnA2BoMNVa701h9NZy185pyIjDvSIxUqOwPvyWd3xsG6fRK1sE4UVyFYr4vNBpsYhRnSAbeZ8qyuL8ZgbBu482SaFEqmgVzsGfMzTy6u6lSKvP/CHhWs4YQg25Xx5+YKR5ug0gdjr0r5iz0+3xOsidlKES5o87caFK92p2Sn9SONuSTGe+T1Z8bKJlx3kpmJHkPjUdljz+OgUDlEEI23BMawRDQbdWDfgmU413xvB2hKLaOazV8eIiZ7kr2BNXAQ3+UQsrIgkiA/9ACbCB8ZkeACGOYTneEDiFyFlpEbJhi+FkzKg24dLFMb8MVZPS8lwl3i/os4MgWDCOaiLDtPfy9WAXNeJpVek6mFVUwAO47XfyjrhR7dfyNFtsTK9BsVJ7rdgtLF1Cmv+1aboaCtsln0zUyEddeGrRd91ix/VA2fferh+8tEbne3xcVXxNNMfeQakphOyXXazUS9UDXtxJ36UHO9m7y9SPo61SdQ07yXZ8Mi/RwjWh/Rl9ABnw5yEPY/kQ3nmW/Rl6qp3XB8HayzgI5+wL0WioxVI1+sPhkaXpmaxgBQ45oAU5cuo6ZaF7vHRigzEqkn9dTpLIDpZBPsHW8pkRrltefD7Re8TmS1xDcrtWAi7C1uJEhrRUqJbLOiNBSDMWqN/pRFwYfLlH2xDprXoBckjZKcPqLc873mEEAts6fvV/JoEIZvaia7yTxgiF62IzihBnCrdkqpWlAp3dYwEsORejXWfcBTjoJC+vVlwyKTq3QDTZyns7YA0dWWIS24RDMrAbCKUnLY3RJXE8mpvpDXjDv2Ftg4vv90iX+uqPrM6qdhHp5cziFxAN+Vkpu2GNHVv/luCSalxqpP7H41+ME48vN9l8vWyb4iIfsz76uN8HKisT1/b+6WQIPSVg4y/uFNNm7ZK2jEQmQem065uXFyf69TGtJDJgZ+W8ZUP61RgMcS9ndruWUoKRjgtCwQ0kWfkrznAoVeP8YAQ=="
+              },
+              {
                 "type": "tool_use",
-                "id": "toolu_011pnxxucueSfsd1Rqz5GqH5",
+                "id": "toolu_011NQwf2tj4dR5eEhPtLS2qW",
                 "name": "get_projects",
                 "caller": {
                   "type": "direct"
@@ -58,284 +63,243 @@
       ]
     },
     {
-      "requestHash": "c4bdd9d21ba8cb429453c26b2e2edce0cd2363982bd3a1c47510c452be89941d",
-      "latencyMs": 1912,
+      "requestHash": "8e4f61065a1e6d9684fd45325d121ad82f8f1611bf6ff622e111c33bed145eb1",
+      "latencyMs": 1565,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2854,
-          "cacheWriteInputTokens": 1174,
-          "cacheReadInputTokens": 1678
+          "inputTokens": 2948,
+          "cacheWriteInputTokens": 1276,
+          "cacheReadInputTokens": 1670
         },
         {
           "type": "text_delta",
-          "text": "Alber"
+          "text": "Alberto has built three AI"
         },
         {
           "type": "text_delta",
-          "text": "to has built three AI agents"
+          "text": " agents:\n\n- **F"
         },
         {
           "type": "text_delta",
-          "text": ":\n\n- **Fraud"
+          "text": "raud Detection Agent"
         },
         {
           "type": "text_delta",
-          "text": " Detection Agent** ("
+          "text": "** (deployed): revi"
         },
         {
           "type": "text_delta",
-          "text": "offline evals, de"
+          "text": "ews newly published events and organiz"
         },
         {
           "type": "text_delta",
-          "text": "ployment plan"
+          "text": "ers on an online"
         },
         {
           "type": "text_delta",
-          "text": "ned):"
+          "text": " "
         },
         {
           "type": "text_delta",
-          "text": " reviews new"
+          "text": "ticketing platform and recomm"
         },
         {
           "type": "text_delta",
-          "text": "ly published events and organizers on"
+          "text": "ends approve, reject, or"
         },
         {
           "type": "text_delta",
-          "text": " an"
+          "text": " request-info for"
         },
         {
           "type": "text_delta",
-          "text": " event ticketing platform and"
+          "text": " a human admin. On"
         },
         {
           "type": "text_delta",
-          "text": " recommends approve, reject"
+          "text": " the reference set,"
         },
         {
           "type": "text_delta",
-          "text": ", or request-"
+          "text": " the deployed"
         },
         {
           "type": "text_delta",
-          "text": "info for a human admin."
+          "text": " Claude Haiku model"
         },
         {
           "type": "text_delta",
-          "text": " Its offline evals showed"
+          "text": " reached 92% accurac"
         },
         {
           "type": "text_delta",
-          "text": " Claude Haiku 5"
+          "text": "y, appro"
         },
         {
           "type": "text_delta",
-          "text": ".5 was chosen for"
+          "text": "ved 0% of fraud"
         },
         {
           "type": "text_delta",
-          "text": " deployment,"
+          "text": " cases, and c"
         },
         {
           "type": "text_delta",
-          "text": " with"
+          "text": "ost about $0.002 per"
         },
         {
           "type": "text_delta",
-          "text": " 86% accuracy and"
+          "text": " review.\n- **Organiz"
         },
         {
           "type": "text_delta",
-          "text": " about $"
+          "text": "er Support Agent** ("
         },
         {
           "type": "text_delta",
-          "text": "0.002 per review."
+          "text": "coming soon,"
         },
         {
           "type": "text_delta",
-          "text": "\n- **Organizer Support"
+          "text": " not yet built): would"
         },
         {
           "type": "text_delta",
-          "text": " Agent** (coming so"
+          "text": " answer organ"
         },
         {
           "type": "text_delta",
-          "text": "on): will"
+          "text": "izers' questions about sales"
         },
         {
           "type": "text_delta",
-          "text": " answer organizers' questions"
+          "text": ", payouts and setup using"
         },
         {
           "type": "text_delta",
-          "text": " about sales, payouts and"
+          "text": " live data from PostgreS"
         },
         {
           "type": "text_delta",
-          "text": " setup by"
+          "text": "QL and the payments API."
         },
         {
           "type": "text_delta",
-          "text": " pulling live data from Post"
+          "text": "\n- **Portfolio"
         },
         {
           "type": "text_delta",
-          "text": "greSQL and the pay"
+          "text": " Agent** (personal project"
         },
         {
           "type": "text_delta",
-          "text": "ments API.\n- **Port"
+          "text": "): the"
         },
         {
           "type": "text_delta",
-          "text": "folio Agent** ("
+          "text": " agent on this site that answers"
         },
         {
           "type": "text_delta",
-          "text": "personal project): the agent on"
+          "text": " visitors' questions about his"
         },
         {
           "type": "text_delta",
-          "text": " this site that answers quest"
+          "text": " experience and projects. It is"
         },
         {
           "type": "text_delta",
-          "text": "ions about his"
+          "text": " also exposed as an MC"
         },
         {
           "type": "text_delta",
-          "text": " experience and projects. It's"
+          "text": "P server. The"
         },
         {
           "type": "text_delta",
-          "text": " also ex"
+          "text": " source and"
         },
         {
           "type": "text_delta",
-          "text": "posed as an MCP server"
+          "text": " eval report are public on"
         },
         {
           "type": "text_delta",
-          "text": ". The"
+          "text": " GitHub.\n\nI can"
         },
         {
           "type": "text_delta",
-          "text": " ["
+          "text": " only answer questions about Al"
         },
         {
           "type": "text_delta",
-          "text": "source]("
+          "text": "berto and his work, so I"
         },
         {
           "type": "text_delta",
-          "text": "https://github.com/acar"
+          "text": " can't help with the"
         },
         {
           "type": "text_delta",
-          "text": "bonellb/acb-"
+          "text": " SQL query."
         },
         {
           "type": "text_delta",
-          "text": "landing-public/tree/"
+          "text": " I"
         },
         {
           "type": "text_delta",
-          "text": "main/agent) and [e"
+          "text": " can t"
         },
         {
           "type": "text_delta",
-          "text": "val report](https://github.com"
+          "text": "ell you more about the ev"
         },
         {
           "type": "text_delta",
-          "text": "/acarbonellb/"
+          "text": "als, gu"
         },
         {
           "type": "text_delta",
-          "text": "acb-landing-public/"
+          "text": "ardrails,"
         },
         {
           "type": "text_delta",
-          "text": "blob/main/agent/"
+          "text": " or the"
         },
         {
           "type": "text_delta",
-          "text": "evals/report.md) are"
+          "text": " tech stack beh"
         },
         {
           "type": "text_delta",
-          "text": " public.\n\nI can only answer"
+          "text": "ind these agents if"
         },
         {
           "type": "text_delta",
-          "text": " questions about Alberto and"
+          "text": " you're"
         },
         {
           "type": "text_delta",
-          "text": " his work, so I can't help"
-        },
-        {
-          "type": "text_delta",
-          "text": " with the SQL query. I"
-        },
-        {
-          "type": "text_delta",
-          "text": " can"
-        },
-        {
-          "type": "text_delta",
-          "text": " t"
-        },
-        {
-          "type": "text_delta",
-          "text": "ell you about"
-        },
-        {
-          "type": "text_delta",
-          "text": " his back"
-        },
-        {
-          "type": "text_delta",
-          "text": "end and data sk"
-        },
-        {
-          "type": "text_delta",
-          "text": "ills if"
-        },
-        {
-          "type": "text_delta",
-          "text": " that"
-        },
-        {
-          "type": "text_delta",
-          "text": "'s useful."
+          "text": " interested."
         },
         {
           "type": "response_end",
           "response": {
-            "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, deployment planned): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject, or request-info for a human admin. Its offline evals showed Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and about $0.002 per review.\n- **Organizer Support Agent** (coming soon): will answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers questions about his experience and projects. It's also exposed as an MCP server. The [source](https://github.com/acarbonellb/acb-landing-public/tree/main/agent) and [eval report](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md) are public.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you about his backend and data skills if that's useful.",
+            "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup using live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server. The source and eval report are public on GitHub.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about the evals, guardrails, or the tech stack behind these agents if you're interested.",
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2854,
-              "cacheWriteInputTokens": 1174,
-              "cacheReadInputTokens": 1678,
-              "outputTokens": 391
+              "inputTokens": 2948,
+              "cacheWriteInputTokens": 1276,
+              "cacheReadInputTokens": 1670,
+              "outputTokens": 314
             },
             "providerContent": [
               {
-                "type": "thinking",
-                "thinking": "",
-                "signature": "CAQSxQUKEAgUGAI4AUIIdGhpbmtpbmcSDBfm5t/asYA3HbJf+xoMZQA7oiUblEZ9lGn4IjCrM/D9tluHZjVewnljBEZRFJQ0WbfZraJNsDxAlXqudqMzDW7WQArjvDdQ+qL+6xAq4gQJ0t8bZxJqG3UQmxyTM/Ea7md117BrPEnoU1jd6FqMCqlxo4UwhKeQ05ve4zUUSDnqF0Aaw8SnzuFC5bqqrhGlj4w6C77bzk+ElU1SFVd4xkBkf9PBYjM/fqqqqKvAeQv2IjGy20/fAoFtvgPfycRT8GIUrFs5M2DrO5xUbpOgOCwavLwPb8EJ2xs5i6gqoxPC9gosH+4bdnaA/K7IB+DgLkhSZLZB1uGh6ZnNgAfK6smB1nyuZxlKTuRPEuA4PhA+2hEtQdkXDQP8suLM1+KOuQRqfAyf69L0mv0gQsSfQfT/kUqnp4Wu4QO4FaURV4zQRhROcSP7no1iIM0Pce15NJfzeA320yVnT7vxiBGYChfOQXMqV7mtzDJLsMB/j0Whx8g6LfWbJKlgwiV3voLG2m2aGRz4xDzSlmgPhD7IA3Z8bD/xgsYkZyNLYYQ4cDFvStZegk0nOHYFbR6Usoa3XSd9K+YCUk20k1f5crOUdQO48YmBVyN9Sqiqcj35IWP6A/ssFNSzgSozcUN2v0oL2mMiyo6lMOGS/0YWepRtebdQafAjNwybwclLGBuUcvOnCM2Je/DAuuMKjIsOIcSZxoobjnJsCIkN2ECCmThmeQQLl76khMzY/D9gODp8o7vLato+/MT7LSe6x8T/YhteaIIhWVWrhyDw8/CHoq6tioqlpK9E10+a/bg9Ezt75Lmd3LN8bHSeSbzJCblf5R0HyQkAEnBz4HPTuWFfX4GcFZqCw6Qnd7a/cRHZ/nOxq8lcWMg3loOX9CkRhFJEDKX7VqiQCeGzf04CahpJpSD5SDj8GAE="
-              },
-              {
                 "type": "text",
-                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, deployment planned): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject, or request-info for a human admin. Its offline evals showed Claude Haiku 5.5 was chosen for deployment, with 86% accuracy and about $0.002 per review.\n- **Organizer Support Agent** (coming soon): will answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers questions about his experience and projects. It's also exposed as an MCP server. The [source](https://github.com/acarbonellb/acb-landing-public/tree/main/agent) and [eval report](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md) are public.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you about his backend and data skills if that's useful."
+                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup using live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server. The source and eval report are public on GitHub.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about the evals, guardrails, or the tech stack behind these agents if you're interested."
               }
             ]
           }
@@ -347,13 +311,13 @@
     {
       "calls": [
         {
-          "requestHash": "728b700cdfd7d550cb6d3a5c6050cc26f288e933b3c2111a6122dc7e86cba567",
-          "latencyMs": 624,
+          "requestHash": "733c51c7ec33c88f721aa9385fc84d18f8f88256440d4f007614aeebdb9b22b9",
+          "latencyMs": 728,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1682,
-              "cacheReadInputTokens": 1678
+              "inputTokens": 1674,
+              "cacheReadInputTokens": 1670
             },
             {
               "type": "response_end",
@@ -361,21 +325,26 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01BPyZdYiNtikiEkviC7TLgD",
+                    "id": "toolu_0178ZFFT8W8nAGHnmi8Jttnb",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1682,
-                  "cacheReadInputTokens": 1678,
-                  "outputTokens": 27
+                  "inputTokens": 1674,
+                  "cacheReadInputTokens": 1670,
+                  "outputTokens": 75
                 },
                 "providerContent": [
                   {
+                    "type": "thinking",
+                    "thinking": "",
+                    "signature": "CAQS2QUKEAgUGAI4AUIIdGhpbmtpbmcSDGjSxiwcaBFMiI4aohoMCoQEMtSGCqjXi9/XIjAtNYBipM4abl64iKUanFATK3qeOTglf/UtVEgkDJErtWyYsYgmapeSgVKIPOepLDoq9gSC9J/7iuI20g9nBffRy0588iHdGRYbkrKrAtCID9g7B7ccdCXlOJ7bQwW3N30zg2cGuCiO0gCYmTnAdGcmLmJ1fosucoHgP8UYGd3deZpRDQIcoZsoiY0XqI6Da0hjsEfPzbW0ca0baqq/ukivO4SVsXh3GtBzAywBg4YDU7+X4RiJFZFgNM3tfEs0zv6RTcnk9bE+5h3lVTswQycrcC9VbCXuR1G8WZRZ7qHGos0K4G7UULGEFpT86g69rG2PxSxVdvWctQXGKNRhFfcYaauMj9Z///Yj7MkUeAdaBUG3/O6PNj2DJT1iuEoBUlvX77Q8b0aQocw4NpgXgnP19HTLoPByC+mzc9XWcDfHDfQdu/WT6TcVkzOqE4QUWNFqqkB9HiV6XnOZHsILmtPfOJsxpmU4IKPDtF9Bw4QL5QXmprM49yKR0IvIblgagDwYgrDquGTuE9Zdg4TN9tFG2AIdLYC8lKtBJFB1iMfNOK5jCNOiEIdC/BB/SPUhwkcZdlNI6ZeFK9YUAqXllI1D7UzT8kc9S1ndJukPBhEKSDjfflZQm0hl+w4U+JgqLyLlQUwhjWL/sEn6BKORGJVuHUDQFhPAdexyooHHYfWl/WYhYlxCKysDX03Pu15KTQGbvqQZrU9TKJ17EDwQkjB4GgjHhdrfGLmAnlkcIv8dbJf4NELe9iMQWxMgUZ7nK1wU88FTiSGAY8WY9cHPOI4ibFqvWLcPvKnJz7wScmgYHAop10nYUzm99hO7zMyLVUAGro7FcTuzli/op6FwF4xeWO6OT60qSDyQ+fNgpupPMvs2uXQznvG7d6hvdzHY9wh7jy+5owXQQ+kYAQ=="
+                  },
+                  {
                     "type": "tool_use",
-                    "id": "toolu_01BPyZdYiNtikiEkviC7TLgD",
+                    "id": "toolu_0178ZFFT8W8nAGHnmi8Jttnb",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -388,25 +357,22 @@
           ]
         },
         {
-          "requestHash": "5857cb07f633ade6c7865f73f5633b986f940a17c27d2518df41b12c48883ff2",
-          "latencyMs": 1645,
+          "requestHash": "5d6667e6a82d5b3e89dc94bd6dfb0c318b8d77526ef5eeb7347565610127e658",
+          "latencyMs": 1768,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2854,
-              "cacheReadInputTokens": 2852
+              "inputTokens": 2938,
+              "cacheWriteInputTokens": 1266,
+              "cacheReadInputTokens": 1670
             },
             {
               "type": "text_delta",
-              "text": "Alberto"
+              "text": "Alberto has built three AI"
             },
             {
               "type": "text_delta",
-              "text": " has built three AI agents:"
-            },
-            {
-              "type": "text_delta",
-              "text": "\n\n-"
+              "text": " agents:\n\n-"
             },
             {
               "type": "text_delta",
@@ -414,19 +380,15 @@
             },
             {
               "type": "text_delta",
-              "text": " Agent** (offline ev"
+              "text": " Agent** (deployed"
             },
             {
               "type": "text_delta",
-              "text": "als, with"
+              "text": "): re"
             },
             {
               "type": "text_delta",
-              "text": " deployment plan"
-            },
-            {
-              "type": "text_delta",
-              "text": "ned): reviews new"
+              "text": "views new"
             },
             {
               "type": "text_delta",
@@ -434,71 +396,75 @@
             },
             {
               "type": "text_delta",
-              "text": " an event ticketing platform"
+              "text": " an online event ticketing plat"
             },
             {
               "type": "text_delta",
-              "text": " and recommends approve, re"
+              "text": "form and recommends approve,"
             },
             {
               "type": "text_delta",
-              "text": "ject,"
+              "text": " reject, or request-info for"
             },
             {
               "type": "text_delta",
-              "text": " or request-"
+              "text": " a human admin. On"
             },
             {
               "type": "text_delta",
-              "text": "info for a human admin. In"
+              "text": " the reference set, the"
             },
             {
               "type": "text_delta",
-              "text": " off"
+              "text": " de"
             },
             {
               "type": "text_delta",
-              "text": "line evals it reduced f"
+              "text": "ployed Claude Hai"
             },
             {
               "type": "text_delta",
-              "text": "raud approved"
+              "text": "ku model"
             },
             {
               "type": "text_delta",
-              "text": " without a human from"
+              "text": " re"
             },
             {
               "type": "text_delta",
-              "text": " 27% to 0%"
+              "text": "ached 92% accuracy"
             },
             {
               "type": "text_delta",
-              "text": ". The chosen deployment"
+              "text": ", appro"
             },
             {
               "type": "text_delta",
-              "text": " model, Claude Hai"
+              "text": "ved 0% of fraud"
             },
             {
               "type": "text_delta",
-              "text": "ku 5.5, reached"
+              "text": " cases, and c"
             },
             {
               "type": "text_delta",
-              "text": " 86% accuracy."
+              "text": "ost about $0.002 per"
             },
             {
               "type": "text_delta",
-              "text": "\n- **Organizer"
+              "text": " review.\n- **Organiz"
             },
             {
               "type": "text_delta",
-              "text": " Support Agent** (coming"
+              "text": "er Support Agent** ("
             },
             {
               "type": "text_delta",
-              "text": " soon): will"
+              "text": "coming soon,"
+            },
+            {
+              "type": "text_delta",
+              "text": " not yet built): would"
             },
             {
               "type": "text_delta",
@@ -534,15 +500,15 @@
             },
             {
               "type": "text_delta",
-              "text": " agent on this site that"
+              "text": " agent on"
             },
             {
               "type": "text_delta",
-              "text": " answers visitors' questions"
+              "text": " this site that answers quest"
             },
             {
               "type": "text_delta",
-              "text": " about his"
+              "text": "ions about his"
             },
             {
               "type": "text_delta",
@@ -550,19 +516,75 @@
             },
             {
               "type": "text_delta",
-              "text": " also exposed as an MC"
+              "text": " also ex"
             },
             {
               "type": "text_delta",
-              "text": "P server.\n\nI can only answ"
+              "text": "posed as an MCP server"
             },
             {
               "type": "text_delta",
-              "text": "er questions about Alberto"
+              "text": ". You"
             },
             {
               "type": "text_delta",
-              "text": ", so I can't help"
+              "text": " can see the"
+            },
+            {
+              "type": "text_delta",
+              "text": " ["
+            },
+            {
+              "type": "text_delta",
+              "text": "source](https://github.com/"
+            },
+            {
+              "type": "text_delta",
+              "text": "acarbonellb/ac"
+            },
+            {
+              "type": "text_delta",
+              "text": "b-landing-public/t"
+            },
+            {
+              "type": "text_delta",
+              "text": "ree/main/agent) and"
+            },
+            {
+              "type": "text_delta",
+              "text": " the [eval report](https://"
+            },
+            {
+              "type": "text_delta",
+              "text": "github.com/acarbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ellb/acb-landing"
+            },
+            {
+              "type": "text_delta",
+              "text": "-public/blob/main/"
+            },
+            {
+              "type": "text_delta",
+              "text": "agent/evals/report."
+            },
+            {
+              "type": "text_delta",
+              "text": "md).\n\nI can only"
+            },
+            {
+              "type": "text_delta",
+              "text": " answer questions about Alber"
+            },
+            {
+              "type": "text_delta",
+              "text": "to and his work, so I can"
+            },
+            {
+              "type": "text_delta",
+              "text": "'t help"
             },
             {
               "type": "text_delta",
@@ -570,52 +592,48 @@
             },
             {
               "type": "text_delta",
-              "text": " can"
+              "text": " can t"
             },
             {
               "type": "text_delta",
-              "text": " tell you more about how"
+              "text": "ell you more about how"
             },
             {
               "type": "text_delta",
-              "text": " he"
+              "text": " he builds and"
             },
             {
               "type": "text_delta",
-              "text": " builds and ev"
+              "text": " ev"
             },
             {
               "type": "text_delta",
-              "text": "aluates these"
+              "text": "aluates agents if"
             },
             {
               "type": "text_delta",
-              "text": " agents, if"
+              "text": " you're"
             },
             {
               "type": "text_delta",
-              "text": " you'd like."
+              "text": " interested."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, with deployment planned): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject, or request-info for a human admin. In offline evals it reduced fraud approved without a human from 27% to 0%. The chosen deployment model, Claude Haiku 5.5, reached 86% accuracy.\n- **Organizer Support Agent** (coming soon): will answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server.\n\nI can only answer questions about Alberto, so I can't help with the SQL query. I can tell you more about how he builds and evaluates these agents, if you'd like.",
+                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online event ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers questions about his experience and projects. It is also exposed as an MCP server. You can see the [source](https://github.com/acarbonellb/acb-landing-public/tree/main/agent) and the [eval report](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md).\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about how he builds and evaluates agents if you're interested.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2854,
-                  "cacheReadInputTokens": 2852,
-                  "outputTokens": 328
+                  "inputTokens": 2938,
+                  "cacheWriteInputTokens": 1266,
+                  "cacheReadInputTokens": 1670,
+                  "outputTokens": 370
                 },
                 "providerContent": [
                   {
-                    "type": "thinking",
-                    "thinking": "",
-                    "signature": "CAQStgUKEAgUGAI4AUIIdGhpbmtpbmcSDG26wttNG1MghZ/VSxoM6d6Tm31ox7U8JzZ4IjDrCA5phkxJeS/1kiBjMtJc9FVXzqd3XdhxEXJbf6tOeQapkRIoYrHe4jPxwJgM3ygq0wTBN+lOdYUaenzzEG6ypK4WnUPuns1W5+AOl4xRLoPBM+kk20DH7BhYI/GasWCSSg/nJMIXuGPmjRJIoHEq0DnyKWg3B37WPQZ85VH5z5PItxitShfQLdhKscxB5x7f1C5kPWGJKTK0rNzYccOUMnj/WZwfEFC+1ITT4AeZn3r/7j0YgY+rLLA1SYy6Nqt8C8mt6krdHofnMLfd7myxFm6S+yYe7woKas6gM41eMIg0nmPyZitnDZ3irWJitkLHjtGBB+ogEFYg5gJ+0ZRgr/etc9i9sg62Af+l+jOLs+2xco+cQ7jqEYqra+cOfx81+bFvkh6VqkiwGBPVAsPmNlBhOTVDQcDg20MpQgg0GCYYwXtb0GBHg2JDIKOm7jTqubI7HHgwJ8pXVERCKtiNvwSeMKY/59gKlx/XUyIDh6N024/7zn9mOTbhKCslUEOd6bEeG2lx/DQVEc0tCdDSApLo+hcmXRRZ+vJtDh4tX4CSpR5lGe2Mkg3jazPK2M3Bab7ppiyhwdSru2gqQ91bmxevvsRWwFJMsDlEKZCoN16DXmHYIw5n4xOT7HBt6I9fVh/WawWvLSuV72UMI9GVintv9cWFns1zAyRZVYwamm31VrSTxgwBbpWpJYCZH/bacsvglQhnX/+DULPOE/SX8AjJkQQ1rVzcA8sEqvkuDEwZrdnUStMgvChoiuGaKhOCKwYPzZIOjHi9HTBLZjZxIH3hbk5cVxx4sDgCtXbrhgZ/lRvml3X5OT4d/d/ctvpjsHl3oZnuowvMonQXnpPi1uR86ZzfGAE="
-                  },
-                  {
                     "type": "text",
-                    "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, with deployment planned): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject, or request-info for a human admin. In offline evals it reduced fraud approved without a human from 27% to 0%. The chosen deployment model, Claude Haiku 5.5, reached 86% accuracy.\n- **Organizer Support Agent** (coming soon): will answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server.\n\nI can only answer questions about Alberto, so I can't help with the SQL query. I can tell you more about how he builds and evaluates these agents, if you'd like."
+                    "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online event ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers questions about his experience and projects. It is also exposed as an MCP server. You can see the [source](https://github.com/acarbonellb/acb-landing-public/tree/main/agent) and the [eval report](https://github.com/acarbonellb/acb-landing-public/blob/main/agent/evals/report.md).\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about how he builds and evaluates agents if you're interested."
                   }
                 ]
               }
@@ -627,13 +645,13 @@
     {
       "calls": [
         {
-          "requestHash": "728b700cdfd7d550cb6d3a5c6050cc26f288e933b3c2111a6122dc7e86cba567",
-          "latencyMs": 861,
+          "requestHash": "733c51c7ec33c88f721aa9385fc84d18f8f88256440d4f007614aeebdb9b22b9",
+          "latencyMs": 761,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1682,
-              "cacheReadInputTokens": 1678
+              "inputTokens": 1674,
+              "cacheReadInputTokens": 1670
             },
             {
               "type": "response_end",
@@ -641,26 +659,26 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_018CF3a6VMT73LqgyjCLGrio",
+                    "id": "toolu_013ML4KKPYUHEBkBNWWxHrfh",
                     "name": "get_projects",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1682,
-                  "cacheReadInputTokens": 1678,
-                  "outputTokens": 84
+                  "inputTokens": 1674,
+                  "cacheReadInputTokens": 1670,
+                  "outputTokens": 88
                 },
                 "providerContent": [
                   {
                     "type": "thinking",
                     "thinking": "",
-                    "signature": "CAQS9wUKEAgUGAI4AUIIdGhpbmtpbmcSDHDl0z0GTjQ/Sea+XRoMNNp0MFlk+EsejFK0IjBPBByNqKUMkopcWUXsoFQfG5xc5d8QIKf7Uxs53IEc4eDqrl2sLpZpVGS2IrsPL8cqlAVeVR9DBfTZC4xrDP2NfcH45jR/qvp7hqQ1vAaRHACDzNzmqyAYCbUrc3a5tZVavZsEvZygdo7bR3wfBqhDVJLIi5UYXP9wDumD2yfetVOB1nJtA9OLtTmly0UW5JYUAiQh/HXWPJHHQyFoBn6lZID2lx6lKroq1Fs+25qS10egFgTvpAwz95ShqKnudOraeqwqAiCap0MG/cwpCIMc84JSEHZMhPEWMznsNAwkh4n2efvMJoPrFMncVEt6Jq7uPuWe/BVmsg9aUL19ymmqrtgwpKaCjXqwVnrRaNN3D1pJoIdTcpFFnyzWJtBgTKdkc1XB8iWTa3nJQqY7eVUgjFdn94eNTZFTMdcWom3Iv6W8UUiY8FaIyRD7VsSneYLnY5d56bkUAiweVmwbCYDX6iy9ZAhgY8JrKEGqyb/Kg5N7P7pvQhj1DRBhchM3NJOjYpnJi/tP5VkcgxKbPfWfiW1TpRnLs5EbvAt4QzAEcjeWxA1hKSaFnQ5dLRtwOyLJg5dKLUvcMYIdloyGr6a06QfrYBXiYXNynBKTxUH9loA51VX2s0DgfeT2C3+pNv/vuNcRwEOqf78A2pBcdhIkePwIcjIODI8Q9q8lTBX4vDwsOBn7xqaBLrh1j02q0SpdXKDUjDDHwse1ghzvrEv7d5+Zxsh/3+7Az3/x0m5s2ruzE2SM9tPrV5p4Doey+U75P0UqhYOJ3TgdAYIOSUzfQ5Uz4GqvOR0AR48AbDT/9ivriTMAsEWJyn+0tkB1AjyR1WMheTwD8c9NGNytGCcnZrCq1FgXfjZMm0tOEtWAmlhZayuWzfZ9nJRWH1841aaXncPNkNGfbFVUpppv9MJi6pDszCyt5AsMpgN5iZ3ssiH5Ig31R1sYAQ=="
+                    "signature": "CAQSigYKEAgUGAI4AUIIdGhpbmtpbmcSDGuBjSeMhsBakVRAuhoMgZwRSmHDJYgua7WoIjCjRVO/vYtM26uJkcV9zUxHtViTAJz79MxWd522S+Tdc5VPW/higon6OWaRaipO2F4qpwWJUpP6dFeaEWfPe8f77mY+l9gGLQxZp8xjP+/jsUV1Dh1K4CnCiZCASuwn9v3xkY18KywH+M7zAUvduG343K1LL/a1LAeg5kpWi4Q8bqjFw3pHchKxWBcilJyzgTrXA5XHEo11WfGfSOb4K01rRvEZoMCcyoiN50Pn4Ah1ZCtbeFyIf/V24cx9oZy7DFQH0EKQvZcqLnxpWMYRDMGboYXALVD1z+S3Bow2trhsWSQVsWIUejlS1g6760hlY0ym5xwG5J4SpnhccppMW+EZhQt9cbv+IdlyKHT+2PUQguLEUinCWUYSkL9XEkRnrcaigFLPz+mZqhqGYXo5NbzDc9D9cloRJnde9LKlLVbJiPoWpZpghcsBGWrtvqZkqbY6FjC2QkTzsBQRHeH7c35knx5pXvl01gAlv1KG0NiDR0TMySytd3ZYxTKeHmI47AKPQ5bCvswbreKSttejhRLnpFMcaJRT8SCROmNNCzUmNfyd2TBA6FTvErufbAozq44XiDyYSEEgxk2Cd+kDrKhmqDB7CIA2Ue5upw3V1C+betFHuijzcYNqmrOZ0Gy67HvCIhrfu4Kw5RNicrdo05z//r0ATP+skU0Mi3g5AiYI8im9tKYRXE8UaZ3qs422Sy2HXOFPNzQ/YszNTSnuhXrDcjm+0inIHMHB5NRMDsvRFNK88Pmh2ybqC7kQHYyRxYx1vn6DL4TJpmB+E2uVfnCxC9TG/wlyi0GUQttHOkQ5uraNCeKG2P7gYodVdjI4O1kfzgzLzZYAtIZX2GFYReUKthmQWl/6hKY3G4kqUCZWrA5ml9T3DZ/CN0+uRF/b8dWU+PhuEv1b32LBJvl+3O7pmK0S55cs9jMXKHr7HC7S3Krb3oVEhJzYMQaSTtKTmB3yMpCTCadAXXvfGAE="
                   },
                   {
                     "type": "tool_use",
-                    "id": "toolu_018CF3a6VMT73LqgyjCLGrio",
+                    "id": "toolu_013ML4KKPYUHEBkBNWWxHrfh",
                     "name": "get_projects",
                     "caller": {
                       "type": "direct"
@@ -673,106 +691,94 @@
           ]
         },
         {
-          "requestHash": "6fdfb963a8a7797036134ae3bbab7bf4b5f098a30667bb18979c829188a0f132",
-          "latencyMs": 1704,
+          "requestHash": "20d07636399d27ed3d1cdb76ae381b47e61ce3f73b76fd2fdf5a3707bc888351",
+          "latencyMs": 1560,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2911,
-              "cacheWriteInputTokens": 1231,
-              "cacheReadInputTokens": 1678
+              "inputTokens": 2951,
+              "cacheWriteInputTokens": 1279,
+              "cacheReadInputTokens": 1670
             },
             {
               "type": "text_delta",
-              "text": "Alberto has built three A"
+              "text": "Alberto has built"
             },
             {
               "type": "text_delta",
-              "text": "I agents:\n\n- **"
+              "text": " three AI agents:\n\n-"
             },
             {
               "type": "text_delta",
-              "text": "Fraud Detection Ag"
+              "text": " **Fraud Detection"
             },
             {
               "type": "text_delta",
-              "text": "ent** (offline evals,"
+              "text": " Agent** (deployed"
             },
             {
               "type": "text_delta",
-              "text": " de"
+              "text": "): reviews newly published events"
             },
             {
               "type": "text_delta",
-              "text": "ployment next): re"
+              "text": " and organizers on an online"
             },
             {
               "type": "text_delta",
-              "text": "views new"
+              "text": " "
             },
             {
               "type": "text_delta",
-              "text": "ly published events and organizers on"
+              "text": "ticketing platform and recomm"
             },
             {
               "type": "text_delta",
-              "text": " an event ticketing platform"
+              "text": "ends approve, reject, or"
             },
             {
               "type": "text_delta",
-              "text": " and recommends approve, re"
+              "text": " request-"
             },
             {
               "type": "text_delta",
-              "text": "ject or request-info for a human"
+              "text": "info for"
             },
             {
               "type": "text_delta",
-              "text": " admin. In"
+              "text": " a human admin. On"
             },
             {
               "type": "text_delta",
-              "text": " off"
+              "text": " the"
             },
             {
               "type": "text_delta",
-              "text": "line evals ("
+              "text": " reference set, the"
             },
             {
               "type": "text_delta",
-              "text": "31 cases), it c"
+              "text": " deployed"
             },
             {
               "type": "text_delta",
-              "text": "ut f"
+              "text": " Claude Haiku model"
             },
             {
               "type": "text_delta",
-              "text": "raud approved without a human from"
+              "text": " reached 92% accurac"
             },
             {
               "type": "text_delta",
-              "text": " 27% to 0%."
+              "text": "y, appro"
             },
             {
               "type": "text_delta",
-              "text": " The"
+              "text": "ved 0% of fraud"
             },
             {
               "type": "text_delta",
-              "text": " chosen model,"
-            },
-            {
-              "type": "text_delta",
-              "text": " Claude Haiku "
-            },
-            {
-              "type": "text_delta",
-              "text": "5.5, reached 86"
-            },
-            {
-              "type": "text_delta",
-              "text": "% accuracy at"
+              "text": " cases, and cost"
             },
             {
               "type": "text_delta",
@@ -780,47 +786,31 @@
             },
             {
               "type": "text_delta",
-              "text": ". Built with"
+              "text": ".\n- **Organizer"
             },
             {
               "type": "text_delta",
-              "text": " TypeScript, Post"
+              "text": " Support Agent** (co"
             },
             {
               "type": "text_delta",
-              "text": "greSQL and GC"
+              "text": "ming soon,"
             },
             {
               "type": "text_delta",
-              "text": "P.\n- **Organiz"
+              "text": " not yet built): would"
             },
             {
               "type": "text_delta",
-              "text": "er Support Agent** ("
+              "text": " answer organizers' questions"
             },
             {
               "type": "text_delta",
-              "text": "coming soon,"
+              "text": " about sales, payouts and"
             },
             {
               "type": "text_delta",
-              "text": " not built"
-            },
-            {
-              "type": "text_delta",
-              "text": " yet): would"
-            },
-            {
-              "type": "text_delta",
-              "text": " answer event organizers' quest"
-            },
-            {
-              "type": "text_delta",
-              "text": "ions about sales, payouts"
-            },
-            {
-              "type": "text_delta",
-              "text": " and setup,"
+              "text": " setup by"
             },
             {
               "type": "text_delta",
@@ -840,23 +830,27 @@
             },
             {
               "type": "text_delta",
-              "text": "personal project): the agent answ"
+              "text": "personal project): the agent on"
             },
             {
               "type": "text_delta",
-              "text": "ering questions on"
+              "text": " this site that answers visitors"
             },
             {
               "type": "text_delta",
-              "text": " this site, also"
+              "text": "' questions about his experience and"
             },
             {
               "type": "text_delta",
-              "text": " exposed as an MCP"
+              "text": " projects. It is also expos"
             },
             {
               "type": "text_delta",
-              "text": " server. The"
+              "text": "ed as an MCP server."
+            },
+            {
+              "type": "text_delta",
+              "text": " The"
             },
             {
               "type": "text_delta",
@@ -864,76 +858,80 @@
             },
             {
               "type": "text_delta",
-              "text": " eval report are public on"
+              "text": " eval report are on"
             },
             {
               "type": "text_delta",
-              "text": " GitHub.\n\nI"
+              "text": " GitHub.\n\nI can"
             },
             {
               "type": "text_delta",
-              "text": " can only"
+              "text": "'t help"
             },
             {
               "type": "text_delta",
-              "text": " answ"
+              "text": " with the"
             },
             {
               "type": "text_delta",
-              "text": "er questions about Alberto"
+              "text": " SQL query, since I"
             },
             {
               "type": "text_delta",
-              "text": " and"
+              "text": " only"
             },
             {
               "type": "text_delta",
-              "text": " his work, so I can't help"
+              "text": " answer questions about Alber"
             },
             {
               "type": "text_delta",
-              "text": " with the SQL query. I"
+              "text": "to and his work. I"
             },
             {
               "type": "text_delta",
-              "text": " can tell you more about how"
+              "text": " can t"
             },
             {
               "type": "text_delta",
-              "text": " his"
+              "text": "ell you more about any"
             },
             {
               "type": "text_delta",
-              "text": " agents are evaluated or"
+              "text": " of these ag"
             },
             {
               "type": "text_delta",
-              "text": " about"
+              "text": "ents or"
             },
             {
               "type": "text_delta",
-              "text": " his st"
+              "text": " how"
             },
             {
               "type": "text_delta",
-              "text": "ack."
+              "text": " he ev"
+            },
+            {
+              "type": "text_delta",
+              "text": "aluates them."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, deployment next): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject or request-info for a human admin. In offline evals (31 cases), it cut fraud approved without a human from 27% to 0%. The chosen model, Claude Haiku 5.5, reached 86% accuracy at about $0.002 per review. Built with TypeScript, PostgreSQL and GCP.\n- **Organizer Support Agent** (coming soon, not built yet): would answer event organizers' questions about sales, payouts and setup, pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent answering questions on this site, also exposed as an MCP server. The source and eval report are public on GitHub.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about how his agents are evaluated or about his stack.",
+                "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server. The source and eval report are on GitHub.\n\nI can't help with the SQL query, since I only answer questions about Alberto and his work. I can tell you more about any of these agents or how he evaluates them.",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2911,
-                  "cacheWriteInputTokens": 1231,
-                  "cacheReadInputTokens": 1678,
-                  "outputTokens": 335
+                  "inputTokens": 2951,
+                  "cacheWriteInputTokens": 1279,
+                  "cacheReadInputTokens": 1670,
+                  "outputTokens": 303
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (offline evals, deployment next): reviews newly published events and organizers on an event ticketing platform and recommends approve, reject or request-info for a human admin. In offline evals (31 cases), it cut fraud approved without a human from 27% to 0%. The chosen model, Claude Haiku 5.5, reached 86% accuracy at about $0.002 per review. Built with TypeScript, PostgreSQL and GCP.\n- **Organizer Support Agent** (coming soon, not built yet): would answer event organizers' questions about sales, payouts and setup, pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent answering questions on this site, also exposed as an MCP server. The source and eval report are public on GitHub.\n\nI can only answer questions about Alberto and his work, so I can't help with the SQL query. I can tell you more about how his agents are evaluated or about his stack."
+                    "text": "Alberto has built three AI agents:\n\n- **Fraud Detection Agent** (deployed): reviews newly published events and organizers on an online ticketing platform and recommends approve, reject, or request-info for a human admin. On the reference set, the deployed Claude Haiku model reached 92% accuracy, approved 0% of fraud cases, and cost about $0.002 per review.\n- **Organizer Support Agent** (coming soon, not yet built): would answer organizers' questions about sales, payouts and setup by pulling live data from PostgreSQL and the payments API.\n- **Portfolio Agent** (personal project): the agent on this site that answers visitors' questions about his experience and projects. It is also exposed as an MCP server. The source and eval report are on GitHub.\n\nI can't help with the SQL query, since I only answer questions about Alberto and his work. I can tell you more about any of these agents or how he evaluates them."
                   }
                 ]
               }

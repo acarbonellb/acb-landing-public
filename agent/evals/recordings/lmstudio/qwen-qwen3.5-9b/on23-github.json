@@ -3,7 +3,7 @@
   "slug": "github",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-      "latencyMs": 1175,
+      "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+      "latencyMs": 1339,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2342,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2330,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "LZBb4XRIY2YZ8VAGanp5MOFKuAt5Evgj",
+                "id": "SlXeEfv2kZHkSPf55Kcxj8n28iQkdIrN",
                 "name": "get_contact",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2342,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 45
+              "inputTokens": 2330,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 51
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "LZBb4XRIY2YZ8VAGanp5MOFKuAt5Evgj",
+                "id": "SlXeEfv2kZHkSPf55Kcxj8n28iQkdIrN",
                 "name": "get_contact",
                 "input": {}
               }
@@ -55,13 +55,13 @@
       ]
     },
     {
-      "requestHash": "12f24eb96ef33be01af480fe1ca397717e0464115bfdc28aef1dff83d3b549d7",
-      "latencyMs": 525,
+      "requestHash": "6e515fb3a2a8f8e65d4ee4a6fc1afd52d894c94c622954f450ad154113edd07e",
+      "latencyMs": 529,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2440,
-          "cacheReadInputTokens": 1175
+          "inputTokens": 2428,
+          "cacheReadInputTokens": 1169
         },
         {
           "type": "text_delta",
@@ -126,8 +126,8 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1175,
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1169,
               "outputTokens": 17
             },
             "providerContent": [
@@ -145,13 +145,13 @@
     {
       "calls": [
         {
-          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-          "latencyMs": 1355,
+          "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+          "latencyMs": 1267,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "response_end",
@@ -159,21 +159,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "EuSZRmZtt7fROsvmyMWiOnmBBNJ5Uba4",
+                    "id": "xF53j1TN0Y4Fv7FqEsR7l6O7HapJ0GTI",
                     "name": "get_contact",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 54
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 50
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "EuSZRmZtt7fROsvmyMWiOnmBBNJ5Uba4",
+                    "id": "xF53j1TN0Y4Fv7FqEsR7l6O7HapJ0GTI",
                     "name": "get_contact",
                     "input": {}
                   }
@@ -183,137 +183,13 @@
           ]
         },
         {
-          "requestHash": "d70506d6180e13de41dd655c77a733ff450aa5acea7286ccf0ab6b88eb00e997",
-          "latencyMs": 1676,
+          "requestHash": "558c6bb98858c47b162cd264e83301fa574641454bc82adb0233c676ee4f985f",
+          "latencyMs": 531,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1175
-            },
-            {
-              "type": "text_delta",
-              "text": "Albert"
-            },
-            {
-              "type": "text_delta",
-              "text": "o"
-            },
-            {
-              "type": "text_delta",
-              "text": "'s"
-            },
-            {
-              "type": "text_delta",
-              "text": " GitHub"
-            },
-            {
-              "type": "text_delta",
-              "text": " is"
-            },
-            {
-              "type": "text_delta",
-              "text": " https"
-            },
-            {
-              "type": "text_delta",
-              "text": "://"
-            },
-            {
-              "type": "text_delta",
-              "text": "github"
-            },
-            {
-              "type": "text_delta",
-              "text": ".com"
-            },
-            {
-              "type": "text_delta",
-              "text": "/ac"
-            },
-            {
-              "type": "text_delta",
-              "text": "arbon"
-            },
-            {
-              "type": "text_delta",
-              "text": "ell"
-            },
-            {
-              "type": "text_delta",
-              "text": "b"
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "Alberto's GitHub is https://github.com/acarbonellb",
-                "toolCalls": [],
-                "stopReason": "end_turn",
-                "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 65
-                },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "Alberto's GitHub is https://github.com/acarbonellb"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "calls": [
-        {
-          "requestHash": "b4e464f8f01a162431d71936f9c6d1c5ac50044f3095254ca05ca20286c6a364",
-          "latencyMs": 1230,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2354,
-              "cacheReadInputTokens": 1175
-            },
-            {
-              "type": "response_end",
-              "response": {
-                "text": "",
-                "toolCalls": [
-                  {
-                    "id": "FDgYHcWJr8CKh275UQbci7A2P6J4jrc3",
-                    "name": "get_contact",
-                    "input": {}
-                  }
-                ],
-                "stopReason": "tool_use",
-                "usage": {
-                  "inputTokens": 2354,
-                  "cacheReadInputTokens": 1175,
-                  "outputTokens": 49
-                },
-                "providerContent": [
-                  {
-                    "type": "tool_use",
-                    "id": "FDgYHcWJr8CKh275UQbci7A2P6J4jrc3",
-                    "name": "get_contact",
-                    "input": {}
-                  }
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "requestHash": "0a1991106c1cfe1292888b4f14c45a0d37fb5f860807be5c2080ad4a09e9bf9c",
-          "latencyMs": 521,
-          "events": [
-            {
-              "type": "input_usage",
-              "inputTokens": 2440,
-              "cacheReadInputTokens": 1175
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1169
             },
             {
               "type": "text_delta",
@@ -378,8 +254,136 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2440,
-                  "cacheReadInputTokens": 1175,
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 17
+                },
+                "providerContent": [
+                  {
+                    "type": "text",
+                    "text": "Alberto's GitHub is https://github.com/acarbonellb."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "calls": [
+        {
+          "requestHash": "e00d0de38488dc3fa8601a705b2be6073d211e6a82ae50d432aa1f093699e32c",
+          "latencyMs": 1291,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2342,
+              "cacheReadInputTokens": 1169
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "",
+                "toolCalls": [
+                  {
+                    "id": "GbztINOr54FizOKArzGLnoy4YKesciBA",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ],
+                "stopReason": "tool_use",
+                "usage": {
+                  "inputTokens": 2342,
+                  "cacheReadInputTokens": 1169,
+                  "outputTokens": 51
+                },
+                "providerContent": [
+                  {
+                    "type": "tool_use",
+                    "id": "GbztINOr54FizOKArzGLnoy4YKesciBA",
+                    "name": "get_contact",
+                    "input": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "requestHash": "96a0eaf7090ab7ee623e6a8f6db8e70d54046f4185ec562f910f8dae19cbe4eb",
+          "latencyMs": 527,
+          "events": [
+            {
+              "type": "input_usage",
+              "inputTokens": 2428,
+              "cacheReadInputTokens": 1169
+            },
+            {
+              "type": "text_delta",
+              "text": "Albert"
+            },
+            {
+              "type": "text_delta",
+              "text": "o"
+            },
+            {
+              "type": "text_delta",
+              "text": "'s"
+            },
+            {
+              "type": "text_delta",
+              "text": " GitHub"
+            },
+            {
+              "type": "text_delta",
+              "text": " is"
+            },
+            {
+              "type": "text_delta",
+              "text": " https"
+            },
+            {
+              "type": "text_delta",
+              "text": "://"
+            },
+            {
+              "type": "text_delta",
+              "text": "github"
+            },
+            {
+              "type": "text_delta",
+              "text": ".com"
+            },
+            {
+              "type": "text_delta",
+              "text": "/ac"
+            },
+            {
+              "type": "text_delta",
+              "text": "arbon"
+            },
+            {
+              "type": "text_delta",
+              "text": "ell"
+            },
+            {
+              "type": "text_delta",
+              "text": "b"
+            },
+            {
+              "type": "text_delta",
+              "text": "."
+            },
+            {
+              "type": "response_end",
+              "response": {
+                "text": "Alberto's GitHub is https://github.com/acarbonellb.",
+                "toolCalls": [],
+                "stopReason": "end_turn",
+                "usage": {
+                  "inputTokens": 2428,
+                  "cacheReadInputTokens": 1169,
                   "outputTokens": 17
                 },
                 "providerContent": [

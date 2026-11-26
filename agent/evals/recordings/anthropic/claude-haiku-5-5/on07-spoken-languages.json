@@ -3,7 +3,7 @@
   "slug": "spoken-languages",
   "provider": "anthropic",
   "model": "claude-haiku-5-5",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-      "latencyMs": 619,
+      "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+      "latencyMs": 1014,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 1663,
-          "cacheWriteInputTokens": 1659
+          "inputTokens": 1655,
+          "cacheWriteInputTokens": 1651
         },
         {
           "type": "response_end",
@@ -31,21 +31,21 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "toolu_01Cjb8oyjJ9pfDVNYnECAi6s",
+                "id": "toolu_01NJ6xfVmGN26H83EU6F15g3",
                 "name": "get_profile",
                 "input": {}
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 1663,
-              "cacheWriteInputTokens": 1659,
+              "inputTokens": 1655,
+              "cacheWriteInputTokens": 1651,
               "outputTokens": 27
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "toolu_01Cjb8oyjJ9pfDVNYnECAi6s",
+                "id": "toolu_01NJ6xfVmGN26H83EU6F15g3",
                 "name": "get_profile",
                 "caller": {
                   "type": "direct"
@@ -58,14 +58,14 @@
       ]
     },
     {
-      "requestHash": "310673e29b680a25b63894f91f0d31a02982ed9523dbbf19c46b3e7ee22e6b74",
-      "latencyMs": 492,
+      "requestHash": "27fb1cd31650303bc638e0e4f1123f2a084111d829f17c547062db84b4209304",
+      "latencyMs": 1189,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2136,
+          "inputTokens": 2128,
           "cacheWriteInputTokens": 475,
-          "cacheReadInputTokens": 1659
+          "cacheReadInputTokens": 1651
         },
         {
           "type": "text_delta",
@@ -86,9 +86,9 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2136,
+              "inputTokens": 2128,
               "cacheWriteInputTokens": 475,
-              "cacheReadInputTokens": 1659,
+              "cacheReadInputTokens": 1651,
               "outputTokens": 22
             },
             "providerContent": [
@@ -106,13 +106,13 @@
     {
       "calls": [
         {
-          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-          "latencyMs": 675,
+          "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+          "latencyMs": 925,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1663,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 1655,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "response_end",
@@ -120,21 +120,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_017rJrCvgUHM7KHECew4sEXX",
+                    "id": "toolu_01Gk2ncCFC8b7m2oikarN7QU",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1663,
-                  "cacheReadInputTokens": 1659,
+                  "inputTokens": 1655,
+                  "cacheReadInputTokens": 1651,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_017rJrCvgUHM7KHECew4sEXX",
+                    "id": "toolu_01Gk2ncCFC8b7m2oikarN7QU",
                     "name": "get_profile",
                     "caller": {
                       "type": "direct"
@@ -147,13 +147,13 @@
           ]
         },
         {
-          "requestHash": "02d0716257c0060a90a4ad2fc7bf20749f92259c7a53cf756c8441fcbe804621",
-          "latencyMs": 500,
+          "requestHash": "4cda4e99da904fb503eb3113404a996c8f80e9b9fbe0ffcc378adda2c9fdb805",
+          "latencyMs": 628,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2136,
-              "cacheReadInputTokens": 2134
+              "inputTokens": 2128,
+              "cacheReadInputTokens": 2126
             },
             {
               "type": "text_delta",
@@ -174,8 +174,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2136,
-                  "cacheReadInputTokens": 2134,
+                  "inputTokens": 2128,
+                  "cacheReadInputTokens": 2126,
                   "outputTokens": 22
                 },
                 "providerContent": [
@@ -193,13 +193,13 @@
     {
       "calls": [
         {
-          "requestHash": "7a9ee2bede8d76dc0f6f932664ae733f9363f26f8e3fbf5e57e4f315a24c345f",
-          "latencyMs": 639,
+          "requestHash": "570a3cb8fbeff9bdaa5ddc77712880261b67a7016283f73e8402c765b9b0a52d",
+          "latencyMs": 1134,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 1663,
-              "cacheReadInputTokens": 1659
+              "inputTokens": 1655,
+              "cacheReadInputTokens": 1651
             },
             {
               "type": "response_end",
@@ -207,21 +207,21 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "toolu_01CAkVJDN1GWiEGsFDfz3CxM",
+                    "id": "toolu_016PmWbprDfcwy6ieeBq9VDf",
                     "name": "get_profile",
                     "input": {}
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 1663,
-                  "cacheReadInputTokens": 1659,
+                  "inputTokens": 1655,
+                  "cacheReadInputTokens": 1651,
                   "outputTokens": 27
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "toolu_01CAkVJDN1GWiEGsFDfz3CxM",
+                    "id": "toolu_016PmWbprDfcwy6ieeBq9VDf",
                     "name": "get_profile",
                     "caller": {
                       "type": "direct"
@@ -234,41 +234,45 @@
           ]
         },
         {
-          "requestHash": "5a8a9fd7aeb1163014899fa5753d79cb018ec4edfa07b9989c4288a84fe7f74f",
-          "latencyMs": 473,
+          "requestHash": "aee64ef12ce6a8172afd0ab119586c668d327de3344d4eff07711688a0adfa0c",
+          "latencyMs": 1161,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2136,
-              "cacheReadInputTokens": 2134
+              "inputTokens": 2128,
+              "cacheReadInputTokens": 2126
             },
             {
               "type": "text_delta",
-              "text": "Alberto speaks"
+              "text": "Alberto speaks two"
             },
             {
               "type": "text_delta",
-              "text": " Spanish (native) and English"
+              "text": " languages:"
             },
             {
               "type": "text_delta",
-              "text": " (C1)."
+              "text": " Spanish (native) and"
+            },
+            {
+              "type": "text_delta",
+              "text": " English (C1)."
             },
             {
               "type": "response_end",
               "response": {
-                "text": "Alberto speaks Spanish (native) and English (C1).",
+                "text": "Alberto speaks two languages: Spanish (native) and English (C1).",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2136,
-                  "cacheReadInputTokens": 2134,
-                  "outputTokens": 22
+                  "inputTokens": 2128,
+                  "cacheReadInputTokens": 2126,
+                  "outputTokens": 26
                 },
                 "providerContent": [
                   {
                     "type": "text",
-                    "text": "Alberto speaks Spanish (native) and English (C1)."
+                    "text": "Alberto speaks two languages: Spanish (native) and English (C1)."
                   }
                 ]
               }

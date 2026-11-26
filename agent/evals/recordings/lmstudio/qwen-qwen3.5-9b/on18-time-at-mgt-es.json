@@ -3,7 +3,7 @@
   "slug": "time-at-mgt-es",
   "provider": "lmstudio",
   "model": "qwen/qwen3.5-9b",
-  "requestIdentity": "47cdb38ad61f834b4a701183e6566c100e18553502c4673bc5fe34b6457f6ab9",
+  "requestIdentity": "4d82cb8e6f1820d32e2901697e6bdee68a725996ff5fd921ec04c93aab802695",
   "settings": {
     "effort": "low",
     "requestParams": {
@@ -17,13 +17,13 @@
   },
   "calls": [
     {
-      "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-      "latencyMs": 3315,
+      "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+      "latencyMs": 1874,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2346,
-          "cacheReadInputTokens": 1163
+          "inputTokens": 2334,
+          "cacheReadInputTokens": 1157
         },
         {
           "type": "response_end",
@@ -31,26 +31,26 @@
             "text": "",
             "toolCalls": [
               {
-                "id": "2eVgjYPdBi3uzWYlikNDHQjog7ymE7Ea",
+                "id": "fXW1teunx9BLj0qFBXfhyBwrn8SQZABj",
                 "name": "get_experience",
                 "input": {
-                  "company": "M&GT"
+                  "company": "M&GT Consulting"
                 }
               }
             ],
             "stopReason": "tool_use",
             "usage": {
-              "inputTokens": 2346,
-              "cacheReadInputTokens": 1163,
-              "outputTokens": 134
+              "inputTokens": 2334,
+              "cacheReadInputTokens": 1157,
+              "outputTokens": 73
             },
             "providerContent": [
               {
                 "type": "tool_use",
-                "id": "2eVgjYPdBi3uzWYlikNDHQjog7ymE7Ea",
+                "id": "fXW1teunx9BLj0qFBXfhyBwrn8SQZABj",
                 "name": "get_experience",
                 "input": {
-                  "company": "M&GT"
+                  "company": "M&GT Consulting"
                 }
               }
             ]
@@ -59,13 +59,13 @@
       ]
     },
     {
-      "requestHash": "3ad9b2441b4145e94c7da08b45c07ee6fdb7463cee18eac1ca409ec05c4297bb",
-      "latencyMs": 2000,
+      "requestHash": "ee4b2872197e33f3072661f26e9cb7cfb530a80bdbb35383681057ce47e72bc2",
+      "latencyMs": 2047,
       "events": [
         {
           "type": "input_usage",
-          "inputTokens": 2498,
-          "cacheReadInputTokens": 1179
+          "inputTokens": 2487,
+          "cacheReadInputTokens": 1173
         },
         {
           "type": "response_end",
@@ -74,9 +74,9 @@
             "toolCalls": [],
             "stopReason": "end_turn",
             "usage": {
-              "inputTokens": 2498,
-              "cacheReadInputTokens": 1179,
-              "outputTokens": 77
+              "inputTokens": 2487,
+              "cacheReadInputTokens": 1173,
+              "outputTokens": 78
             },
             "providerContent": []
           }
@@ -88,13 +88,13 @@
     {
       "calls": [
         {
-          "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-          "latencyMs": 1839,
+          "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+          "latencyMs": 2079,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2362,
-              "cacheReadInputTokens": 1179
+              "inputTokens": 2350,
+              "cacheReadInputTokens": 1173
             },
             {
               "type": "response_end",
@@ -102,7 +102,7 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "mpvkXI0tCWn06Cn1ixN0C1vGrtuEM4CZ",
+                    "id": "EMDECn3qs7aSzh4do99TGayKYXECVfRi",
                     "name": "get_experience",
                     "input": {
                       "company": "M&GT Consulting"
@@ -111,14 +111,14 @@
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2362,
-                  "cacheReadInputTokens": 1179,
-                  "outputTokens": 73
+                  "inputTokens": 2350,
+                  "cacheReadInputTokens": 1173,
+                  "outputTokens": 83
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "mpvkXI0tCWn06Cn1ixN0C1vGrtuEM4CZ",
+                    "id": "EMDECn3qs7aSzh4do99TGayKYXECVfRi",
                     "name": "get_experience",
                     "input": {
                       "company": "M&GT Consulting"
@@ -130,13 +130,13 @@
           ]
         },
         {
-          "requestHash": "3d55d2cf7634734b8d3fdf881a30aaa8752c3db9965933512c9daefe8566ed61",
-          "latencyMs": 1940,
+          "requestHash": "2b05994232830cb8d1728bbf49b8f877114065189a676d612c5f0d68b0f3d42e",
+          "latencyMs": 1942,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2499,
-              "cacheReadInputTokens": 1179
+              "inputTokens": 2487,
+              "cacheReadInputTokens": 1173
             },
             {
               "type": "response_end",
@@ -145,8 +145,8 @@
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2499,
-                  "cacheReadInputTokens": 1179,
+                  "inputTokens": 2487,
+                  "cacheReadInputTokens": 1173,
                   "outputTokens": 74
                 },
                 "providerContent": []
@@ -159,13 +159,13 @@
     {
       "calls": [
         {
-          "requestHash": "2978081ead72a300867a1764a6d3bc976c5921b20368b98332fe043a62f15e71",
-          "latencyMs": 2380,
+          "requestHash": "0a8d38add48a956b6d04fe84f4d9ef37ea16ab253d63980cfb1caf0403075a1e",
+          "latencyMs": 2327,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2362,
-              "cacheReadInputTokens": 1179
+              "inputTokens": 2350,
+              "cacheReadInputTokens": 1173
             },
             {
               "type": "response_end",
@@ -173,23 +173,27 @@
                 "text": "",
                 "toolCalls": [
                   {
-                    "id": "IiqLSpmHqpJiIvo3K9346LbJgr9eGmj3",
+                    "id": "9QA8PI6g11qfMshbexHudUbRYy4Wsuwt",
                     "name": "get_experience",
-                    "input": {}
+                    "input": {
+                      "company": "M&GT Consulting"
+                    }
                   }
                 ],
                 "stopReason": "tool_use",
                 "usage": {
-                  "inputTokens": 2362,
-                  "cacheReadInputTokens": 1179,
-                  "outputTokens": 97
+                  "inputTokens": 2350,
+                  "cacheReadInputTokens": 1173,
+                  "outputTokens": 93
                 },
                 "providerContent": [
                   {
                     "type": "tool_use",
-                    "id": "IiqLSpmHqpJiIvo3K9346LbJgr9eGmj3",
+                    "id": "9QA8PI6g11qfMshbexHudUbRYy4Wsuwt",
                     "name": "get_experience",
-                    "input": {}
+                    "input": {
+                      "company": "M&GT Consulting"
+                    }
                   }
                 ]
               }
@@ -197,299 +201,26 @@
           ]
         },
         {
-          "requestHash": "6640e281896856ae925b5208acea10092cc676ff84237cc766759066397a8272",
-          "latencyMs": 1886,
+          "requestHash": "f26424498ee0901058a2580e369fc814fe120df6ed8c3f6cde0db0251fbf6841",
+          "latencyMs": 2010,
           "events": [
             {
               "type": "input_usage",
-              "inputTokens": 2698,
-              "cacheReadInputTokens": 1179
-            },
-            {
-              "type": "text_delta",
-              "text": "En"
-            },
-            {
-              "type": "text_delta",
-              "text": " M"
-            },
-            {
-              "type": "text_delta",
-              "text": "&"
-            },
-            {
-              "type": "text_delta",
-              "text": "GT"
-            },
-            {
-              "type": "text_delta",
-              "text": " Consulting"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " Alberto"
-            },
-            {
-              "type": "text_delta",
-              "text": " trabaj"
-            },
-            {
-              "type": "text_delta",
-              "text": "ó"
-            },
-            {
-              "type": "text_delta",
-              "text": " como"
-            },
-            {
-              "type": "text_delta",
-              "text": " Software"
-            },
-            {
-              "type": "text_delta",
-              "text": " Developer"
-            },
-            {
-              "type": "text_delta",
-              "text": " desde"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "2"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "6"
-            },
-            {
-              "type": "text_delta",
-              "text": " hasta"
-            },
-            {
-              "type": "text_delta",
-              "text": " "
-            },
-            {
-              "type": "text_delta",
-              "text": "2"
-            },
-            {
-              "type": "text_delta",
-              "text": "0"
-            },
-            {
-              "type": "text_delta",
-              "text": "1"
-            },
-            {
-              "type": "text_delta",
-              "text": "9"
-            },
-            {
-              "type": "text_delta",
-              "text": " en"
-            },
-            {
-              "type": "text_delta",
-              "text": " Madrid"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
-            },
-            {
-              "type": "text_delta",
-              "text": " Sus"
-            },
-            {
-              "type": "text_delta",
-              "text": " principales"
-            },
-            {
-              "type": "text_delta",
-              "text": " log"
-            },
-            {
-              "type": "text_delta",
-              "text": "ros"
-            },
-            {
-              "type": "text_delta",
-              "text": " fueron"
-            },
-            {
-              "type": "text_delta",
-              "text": " construir"
-            },
-            {
-              "type": "text_delta",
-              "text": " APIs"
-            },
-            {
-              "type": "text_delta",
-              "text": " REST"
-            },
-            {
-              "type": "text_delta",
-              "text": " con"
-            },
-            {
-              "type": "text_delta",
-              "text": " Node"
-            },
-            {
-              "type": "text_delta",
-              "text": ".js"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " aplicaciones"
-            },
-            {
-              "type": "text_delta",
-              "text": " web"
-            },
-            {
-              "type": "text_delta",
-              "text": "/m"
-            },
-            {
-              "type": "text_delta",
-              "text": "ó"
-            },
-            {
-              "type": "text_delta",
-              "text": "viles"
-            },
-            {
-              "type": "text_delta",
-              "text": " ("
-            },
-            {
-              "type": "text_delta",
-              "text": "iOS"
-            },
-            {
-              "type": "text_delta",
-              "text": "/"
-            },
-            {
-              "type": "text_delta",
-              "text": "Android"
-            },
-            {
-              "type": "text_delta",
-              "text": ")"
-            },
-            {
-              "type": "text_delta",
-              "text": " para"
-            },
-            {
-              "type": "text_delta",
-              "text": " grandes"
-            },
-            {
-              "type": "text_delta",
-              "text": " clientes"
-            },
-            {
-              "type": "text_delta",
-              "text": " intern"
-            },
-            {
-              "type": "text_delta",
-              "text": "acionales"
-            },
-            {
-              "type": "text_delta",
-              "text": ","
-            },
-            {
-              "type": "text_delta",
-              "text": " además"
-            },
-            {
-              "type": "text_delta",
-              "text": " de"
-            },
-            {
-              "type": "text_delta",
-              "text": " desarrollar"
-            },
-            {
-              "type": "text_delta",
-              "text": " soluciones"
-            },
-            {
-              "type": "text_delta",
-              "text": " blockchain"
-            },
-            {
-              "type": "text_delta",
-              "text": " en"
-            },
-            {
-              "type": "text_delta",
-              "text": " Hyper"
-            },
-            {
-              "type": "text_delta",
-              "text": "ledger"
-            },
-            {
-              "type": "text_delta",
-              "text": " Fabric"
-            },
-            {
-              "type": "text_delta",
-              "text": " y"
-            },
-            {
-              "type": "text_delta",
-              "text": " Ethereum"
-            },
-            {
-              "type": "text_delta",
-              "text": "."
+              "inputTokens": 2487,
+              "cacheReadInputTokens": 1173
             },
             {
               "type": "response_end",
               "response": {
-                "text": "En M&GT Consulting, Alberto trabajó como Software Developer desde 2016 hasta 2019 en Madrid. Sus principales logros fueron construir APIs REST con Node.js y aplicaciones web/móviles (iOS/Android) para grandes clientes internacionales, además de desarrollar soluciones blockchain en Hyperledger Fabric y Ethereum.",
+                "text": "",
                 "toolCalls": [],
                 "stopReason": "end_turn",
                 "usage": {
-                  "inputTokens": 2698,
-                  "cacheReadInputTokens": 1179,
-                  "outputTokens": 70
+                  "inputTokens": 2487,
+                  "cacheReadInputTokens": 1173,
+                  "outputTokens": 77
                 },
-                "providerContent": [
-                  {
-                    "type": "text",
-                    "text": "En M&GT Consulting, Alberto trabajó como Software Developer desde 2016 hasta 2019 en Madrid. Sus principales logros fueron construir APIs REST con Node.js y aplicaciones web/móviles (iOS/Android) para grandes clientes internacionales, además de desarrollar soluciones blockchain en Hyperledger Fabric y Ethereum."
-                  }
-                ]
+                "providerContent": []
               }
             }
           ]

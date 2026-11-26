@@ -159,7 +159,7 @@ describe("evalResultsLine", () => {
 
   it("reads the line from the committed summary, the failing-on-purpose leaks counted and named", () => {
     expect(evalResultsLine(readRepoFile("agent/evals/summary.json"))).toBe(
-      "72 eval cases (and counting) incl. prompt injection and forged history · pass@3 94% · 2 known leaks kept visible as failing cases until they are fixed · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
+      "72 eval cases (and counting) incl. prompt injection and forged history · pass@3 95% · 1 known leak kept visible as a failing case until it is fixed · ~$0.0004 per answer on Claude Haiku 5.5 · replayed in CI",
     );
   });
 
