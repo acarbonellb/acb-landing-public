@@ -7,12 +7,16 @@
 // <project dir> is the artifact's `project/` folder on disk (outside the
 // repo). Writes only under <project dir>/components. Fails when the bundle
 // reads a repo file that sources.json doesn't list, so the hook's watch list
-// can't drift; --update-sources rewrites the bundle list instead.
+// can't drift; --update-sources rewrites the bundle list instead. Ends by
+// listing every file under components/ the build added or changed, against
+// what the folder held before (the files read from the artifact): exactly
+// the build's share of the publish.
 import { createRequire } from "node:module";
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
+import { componentNames, entry, hashes } from "./components.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const skill = dirname(here);
@@ -40,6 +44,7 @@ const sourcesPath = join(skill, "sources.json");
 const sources = JSON.parse(readFileSync(sourcesPath, "utf8"));
 const compDir = join(out, "components");
 const libDir = join(compDir, "lib");
+const before = hashes(compDir);
 mkdirSync(libDir, { recursive: true });
 
 const common = {
@@ -121,12 +126,7 @@ await esbuild.build({
 });
 
 // 2. The components, as `window.Acb`.
-const entry = join(here, "entry.tsx");
-const names = readFileSync(entry, "utf8")
-  .match(/const components = \{([\s\S]*?)\};/)[1]
-  .split(",")
-  .map((s) => s.trim().split(":")[0].trim())
-  .filter(Boolean);
+const names = componentNames();
 const header = `/* @ds-bundle: ${JSON.stringify({ format: 4, namespace: "Acb", components: names.map((name) => ({ name })) })} */\n`;
 const evalSummary = "agent/evals/summary.json";
 const result = await esbuild.build({
@@ -219,3 +219,11 @@ for (const f of ["bundle.js", "bundle.css", "lib/react.production.min.js", "lib/
 }
 const react = JSON.parse(readFileSync(join(repo, "node_modules/react/package.json"), "utf8")).version;
 console.log(`built ${names.length} components and ${previews} previews with React ${react}`);
+
+// The build's share of the publish: what it added or changed.
+const after = hashes(compDir);
+const publish = Object.keys(after)
+  .filter((f) => before[f] !== after[f])
+  .sort()
+  .map((f) => `project/components/${f}${f in before ? "" : " (new)"}`);
+console.log(publish.length ? `publish:\n  ${publish.join("\n  ")}` : "publish: nothing (the build changed no file)");
