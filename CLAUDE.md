@@ -18,7 +18,7 @@ Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents
 
 ### Design System
 
-The Design System artifact (https://claude.ai/artifact/9dpLiwikKeXPNuD9Cj4uUz) is derived from this repo, which stays the source of truth. Re-sync it with the `design-system-sync` skill after a merged change to the files it lists.
+The Design System artifact (https://claude.ai/artifact/9dpLiwikKeXPNuD9Cj4uUz) is generated from `origin/main`, which stays the source of truth. Hooks in `.claude/settings.json` sync it: after a merge, a fetch or pull, and at session start they check whether a file of the skill's `sources.json` changed since the `ds-synced` tag, and if so build it and tell you to publish. Follow that instruction with the `design-system-sync` skill. A hook moves `ds-synced` only after verifying the published files, so a skipped or failed sync is retried at the next trigger.
 
 ### Design canvases
 
