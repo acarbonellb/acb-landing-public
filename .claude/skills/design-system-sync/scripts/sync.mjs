@@ -17,18 +17,19 @@
 //   design-system-sync/<commit>/project/  the folder it lists, unless --out
 // --out <dir> writes the folder to <dir>/project instead (a session's
 // scratchpad, which the Artifact tool can publish from); the manifest stays
-// where it is. The last line of stdout is `manifest: <path>`.
+// where it is. DS_SYNC_STORE moves the whole store (manifest.mjs), as the
+// tests do. The last line of stdout is `manifest: <path>`.
 //
 // --manifest-path only prints where <rev>'s manifest is, building nothing.
 //
 // Every step has a timeout (DS_SYNC_<STEP>_TIMEOUT_MS overrides one, in ms).
 // A failure exits 1 with the reason on stderr.
-import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import { contentType, manifestPath } from "./manifest.mjs";
+import { join, resolve } from "node:path";
 import { hashes } from "./components.mjs";
+import { MAIN, run, shortSha, SKILL, timedOut } from "./git.mjs";
+import { contentType, manifestPath, manifestStore } from "./manifest.mjs";
 
 const started = Date.now();
 const args = process.argv.slice(2);
@@ -44,11 +45,14 @@ function fail(reason) {
   process.exit(1);
 }
 
+// A cold run (fresh worktree, install with an empty pnpm store) installs in
+// about 20 s and builds in about 1 s; these leave room for a slow network.
+// The detection hook caps the whole sync at 5 minutes.
 const minutes = (n) => n * 60_000;
 const timeouts = {
   git: minutes(1),
-  install: minutes(5),
-  build: minutes(5),
+  install: minutes(3),
+  build: minutes(2),
 };
 for (const step of Object.keys(timeouts)) {
   const env = process.env[`DS_SYNC_${step.toUpperCase()}_TIMEOUT_MS`];
@@ -58,23 +62,16 @@ for (const step of Object.keys(timeouts)) {
 // Runs one step; a timeout or a non-zero exit becomes an error naming it.
 function step(name, timeout, cmd, cmdArgs, cwd) {
   try {
-    return execFileSync(cmd, cmdArgs, {
-      cwd,
-      encoding: "utf8",
-      timeout,
-      killSignal: "SIGKILL",
-      stdio: ["ignore", "pipe", "pipe"],
-      maxBuffer: 64 * 1024 * 1024,
-    }).trim();
+    return run(cmd, cmdArgs, { cwd, timeout });
   } catch (e) {
-    if (e.code === "ETIMEDOUT" || e.signal === "SIGKILL") throw new Error(`${name} timed out after ${timeout} ms`);
+    if (timedOut(e)) throw new Error(`${name} timed out after ${timeout} ms`);
     const detail = [e.stderr, e.stdout].map((s) => String(s ?? "").trim()).filter(Boolean).join("\n");
     throw new Error(`${name} failed${detail ? `:\n${detail}` : ` (${e.message})`}`);
   }
 }
 const git = (...a) => step(`git ${a[0]}`, timeouts.git, "git", a, process.cwd());
 
-const ref = option("--ref") ?? "origin/main";
+const ref = option("--ref") ?? MAIN;
 let commit;
 try {
   commit = git("rev-parse", "--verify", "--quiet", `${ref}^{commit}`);
@@ -92,7 +89,7 @@ if (args.includes("--manifest-path")) {
 const pipeline = ["scripts/sync.mjs", "scripts/manifest.mjs", "scripts/build.mjs", "sources.json"];
 const missing = pipeline.filter((p) => {
   try {
-    git("cat-file", "-e", `${commit}:.claude/skills/design-system-sync/${p}`);
+    git("cat-file", "-e", `${commit}:${SKILL}/${p}`);
     return false;
   } catch {
     return true;
@@ -100,11 +97,11 @@ const missing = pipeline.filter((p) => {
 });
 if (missing.length)
   fail(
-    `${ref} (${commit.slice(0, 7)}) predates the sync pipeline: its .claude/skills/design-system-sync lacks ${missing.join(", ")}, ` +
+    `${ref} (${shortSha(commit)}) predates the sync pipeline: its ${SKILL} lacks ${missing.join(", ")}, ` +
       "so its build would give a partial folder. Nothing was built.",
   );
 
-const store = dirname(manifestFile);
+const store = manifestStore(process.cwd());
 const outArg = option("--out");
 const root = outArg ? resolve(outArg) : join(store, commit);
 const temp = mkdtempSync(join(tmpdir(), "ds-sync-"));
@@ -115,7 +112,7 @@ let added = false;
 function cleanUp() {
   if (added) {
     try {
-      execFileSync("git", ["worktree", "remove", "--force", worktree], { stdio: "ignore", timeout: timeouts.git });
+      run("git", ["worktree", "remove", "--force", worktree], { timeout: timeouts.git });
     } catch {
       // Removing the folder below and pruning drops the registration anyway.
     }
@@ -123,7 +120,7 @@ function cleanUp() {
   }
   rmSync(temp, { recursive: true, force: true });
   try {
-    execFileSync("git", ["worktree", "prune"], { stdio: "ignore", timeout: timeouts.git });
+    run("git", ["worktree", "prune"], { timeout: timeouts.git });
   } catch {
     // Nothing left to do: the next prune drops it.
   }
@@ -138,13 +135,13 @@ for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
 try {
   git("worktree", "add", "--detach", worktree, commit);
   added = true;
-  console.log(`building ${ref} (${commit.slice(0, 7)}) in a temporary worktree`);
+  console.log(`building ${ref} (${shortSha(commit)}) in a temporary worktree`);
   step("pnpm install", timeouts.install, "pnpm", ["install", "--frozen-lockfile", "--prefer-offline", "--filter", "."], worktree);
 
   // The commit's own build, into a folder of its own, moved into place once
   // it is complete, so a concurrent or failed run never leaves half a folder.
   const staging = join(temp, "project");
-  const skill = join(worktree, ".claude/skills/design-system-sync");
+  const skill = join(worktree, SKILL);
   const built = step("build.mjs", timeouts.build, "node", [join(skill, "scripts/build.mjs"), staging], worktree);
   if (built) console.log(built);
   const { artifact } = JSON.parse(readFileSync(join(skill, "sources.json"), "utf8"));
@@ -158,7 +155,7 @@ try {
     cpSync(staging, project, { recursive: true });
   }
 
-  const short = commit.slice(0, 7);
+  const short = shortSha(commit);
   const files = Object.entries(hashes(project))
     .map(([path, sha256]) => ({
       path: `project/${path}`,

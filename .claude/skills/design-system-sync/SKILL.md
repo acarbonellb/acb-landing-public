@@ -8,7 +8,7 @@ description: Publish the Design System artifact on claude.ai. Use when a hook sa
 The Design System artifact (`artifact` in [`sources.json`](sources.json)) is generated from `origin/main` by the sync command. Hooks in `.claude/settings.json` keep it current:
 
 - `scripts/detect.mjs`, after a `gh pr merge`, a `git fetch` or `git pull`, and at session start. When a file of `sources.json` changed between the `ds-synced` tag and `origin/main`, it runs the sync command and gives you the instruction below.
-- `scripts/verify.mjs`, after an Artifact `list` with `scope: "files"` on the artifact. It compares every sha256 with the sync manifest and, on a full match, moves `ds-synced` to the manifest's commit and pushes it.
+- `scripts/verify.mjs`, after an Artifact `list` with `scope: "files"` on the artifact. It compares every sha256 with the sync manifest of the commit the local `origin/main` points at and, on a full match, moves `ds-synced` to that commit and pushes it. A manifest of any other commit never moves it.
 
 The sync is done when `verify.mjs` reports `ds-synced moved to <commit> and pushed`. Only that hook moves the tag.
 

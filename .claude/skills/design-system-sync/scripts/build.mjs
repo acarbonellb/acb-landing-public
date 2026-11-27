@@ -175,8 +175,9 @@ const inputs = [
     evalSummary,
   ]),
 ].sort();
-// `content` files (copy and eval results) are inputs too, listed apart so the
-// hook stays quiet about them.
+// `content` files (copy and eval results) are inputs too, kept in their own
+// part of the list so they read as content, not code. Every part triggers a
+// sync (pending.mjs), `content` included.
 const content = sources.content ?? [];
 if (args.includes("--update-sources")) {
   sources.bundle = inputs.filter((p) => !content.includes(p));

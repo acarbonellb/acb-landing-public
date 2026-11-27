@@ -268,6 +268,13 @@ describe("the fetch and pull hook", () => {
 });
 
 describe("where the sync writes", () => {
+  it("writes into the session's scratchpad, one folder per commit", () => {
+    const { clone, scratchpad, main } = repo();
+    const manifest = JSON.parse(readFileSync(manifestIn(context(run(afterBash(clone, scratchpad, "git fetch")).out)), "utf8"));
+    expect(manifest.publish.root).toBe(join(scratchpad, "design-system-sync", main));
+    expect(existsSync(join(scratchpad, "design-system-sync", main, "project/README.md"))).toBe(true);
+  });
+
   it("falls back to an ignored folder inside the working directory without a scratchpad", () => {
     const { clone, main } = repo();
     git(clone, "worktree", "add", "--quiet", "--detach", join(clone, "../linked"), "HEAD");
@@ -295,10 +302,12 @@ describe("the settings entries", () => {
     expect(detecting("SessionStart")).toHaveLength(1);
   });
 
-  it("give every hook a timeout, the detection hooks one longer than the sync's 17 minutes", () => {
+  it("give every hook a timeout, the detection hooks one a little longer than the fetch and the sync's 5 minutes", () => {
     for (const entries of Object.values(settings.hooks) as Entry[][])
       for (const h of entries.flatMap((e) => e.hooks)) expect(h.timeout, h.command).toBeGreaterThan(0);
-    for (const h of [...detecting("PostToolUse", "Bash"), ...detecting("SessionStart")])
-      expect(h.timeout).toBeGreaterThan(17 * 60);
+    for (const h of [...detecting("PostToolUse", "Bash"), ...detecting("SessionStart")]) {
+      expect(h.timeout).toBeGreaterThan(5 * 60 + 20);
+      expect(h.timeout).toBeLessThanOrEqual(6 * 60);
+    }
   });
 });

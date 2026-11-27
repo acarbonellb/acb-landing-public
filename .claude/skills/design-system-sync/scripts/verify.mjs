@@ -1,49 +1,31 @@
 // PostToolUse hook on the Artifact tool: verifies a sync from the tool's real
 // response, so "synced" never rests on the agent's word. It acts only on a
 // `list` with `scope: "files"` for the Design System URL (sources.json
-// `artifact`), and compares the listing with the sync manifests the sync
-// command wrote (manifest.mjs):
+// `artifact`), and compares the listing with one sync manifest only: the one
+// for the commit the local `origin/main` ref points at (manifest.mjs). No
+// network until the marker moves.
 //
-// - a manifest whose every entry is listed with the same sha256, with no
-//   leftover under `project/`: moves the synced marker (marker.mjs) to that
-//   manifest's commit and pushes it;
-// - otherwise it reports, against the newest manifest, the paths that differ
-//   and, for leftovers, the exact removal publish, and leaves the marker.
+// - every manifest entry listed with the same sha256, with no leftover under
+//   `project/`: moves the synced marker (marker.mjs) to that commit and
+//   pushes it;
+// - otherwise it reports the paths that differ and, for leftovers, the exact
+//   removal publish, and leaves the marker.
 //
+// A listing that matches a manifest of another commit (a branch's HEAD, an
+// older main) is a mismatch: only origin/main's sync can move the marker.
 // A response it can't parse is a failure, never a pass. Output is Claude
-// Code's hook JSON on stdout: `additionalContext` for the agent,
-// `systemMessage` for the user. It exits 0 on every path, so no turn is
-// blocked.
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { manifestPath } from "./manifest.mjs";
+// Code's hook JSON on stdout (output.mjs). It exits 0 on every path, so no
+// turn is blocked.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { MAIN, shortSha, SKILL, skillDir } from "./git.mjs";
+import { readManifest } from "./manifest.mjs";
 import { moveMarker, TAG } from "./marker.mjs";
+import { say as write } from "./output.mjs";
+import { mainCommit } from "./pending.mjs";
 
-const skill = dirname(dirname(fileURLToPath(import.meta.url)));
 const url = (u) => String(u ?? "").replace(/\/+$/, "");
-
-function say(systemMessage, additionalContext = systemMessage) {
-  process.stdout.write(
-    JSON.stringify({ systemMessage, hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext } }) + "\n",
-  );
-}
-
-/** Every sync manifest of the clone at `cwd`, newest first. */
-function manifests(cwd) {
-  const store = dirname(manifestPath("x", cwd));
-  let names;
-  try {
-    names = readdirSync(store).filter((n) => /^[0-9a-f]{40}\.json$/.test(n));
-  } catch (e) {
-    if (e.code === "ENOENT") return [];
-    throw e;
-  }
-  return names
-    .map((n) => ({ file: join(store, n), mtime: statSync(join(store, n)).mtimeMs }))
-    .sort((a, b) => b.mtime - a.mtime)
-    .map(({ file }) => JSON.parse(readFileSync(file, "utf8")));
-}
+const say = (user, agent = user) => write("PostToolUse", { user, agent });
 
 /** How the listing differs from `manifest`: entries not listed with their sha256, and leftovers. */
 function compare(manifest, listed) {
@@ -78,7 +60,7 @@ const unknown = (why) =>
 try {
   const input = JSON.parse(readFileSync(0, "utf8"));
   const cwd = input.cwd ?? process.cwd();
-  const { artifact } = JSON.parse(readFileSync(join(skill, "sources.json"), "utf8"));
+  const { artifact } = JSON.parse(readFileSync(join(skillDir, "sources.json"), "utf8"));
   const call = input.tool_input ?? {};
   const ours = input.tool_name === "Artifact" && call.action === "list" && call.scope === "files";
   if (!ours || url(call.url) !== url(artifact)) process.exit(0);
@@ -88,35 +70,31 @@ try {
   } catch (e) {
     throw new Error(unknown(`the Artifact listing has an unknown shape: ${e.message}`));
   }
-  const all = manifests(cwd);
-  if (!all.length)
+  const main = mainCommit(cwd);
+  const manifest = readManifest(main, cwd);
+  if (!manifest)
     throw new Error(
-      "no sync manifest in this clone. Run `node .claude/skills/design-system-sync/scripts/sync.mjs`, publish its manifest, then list the files again",
+      `no sync manifest for ${MAIN} (${shortSha(main)}) in this clone. Run \`node ${SKILL}/scripts/sync.mjs\`, publish its manifest, then list the files again`,
     );
-  const match = all.find((m) => {
-    const { changed, leftovers } = compare(m, listed);
-    return changed.length === 0 && leftovers.length === 0;
-  });
-  if (match) {
-    const short = match.commit.slice(0, 7);
-    const moved = moveMarker(match.commit, cwd);
-    if (moved.ok) say(`Design System verified at ${match.ref}: ${TAG} moved to ${short} and pushed.`);
+  const { changed, leftovers } = compare(manifest, listed);
+  if (!changed.length && !leftovers.length) {
+    const short = shortSha(main);
+    const moved = moveMarker(main, cwd);
+    if (moved.ok) say(`Design System verified at ${manifest.ref}: ${TAG} moved to ${short} and pushed.`);
     else
       say(
-        `Design System matches ${match.ref}, but ${moved.error}. The next trigger syncs it again.`,
-        `Every file matches the sync manifest for ${match.ref}, but ${moved.error}. ` +
+        `Design System matches ${manifest.ref}, but ${moved.error}. The next trigger syncs it again.`,
+        `Every file matches the sync manifest for ${manifest.ref}, but ${moved.error}. ` +
           `${TAG} was not moved. Tell the user; a later sync will verify and push it.`,
       );
   } else {
-    const newest = all[0];
-    const { changed, leftovers } = compare(newest, listed);
-    const lines = [`The listing does not match the sync manifest for ${newest.ref}; ${TAG} was not moved.`];
+    const lines = [`The listing does not match the sync manifest for ${manifest.ref}; ${TAG} was not moved.`];
     if (changed.length) lines.push(`Not listed with the manifest's sha256 (${changed.length}):`, ...changed.map((p) => `- ${p}`));
     if (leftovers.length) {
       // The publish that removes them: the manifest's page, `null` per path.
       const removal = {
-        url: newest.publish.url,
-        file_path: newest.publish.file_path,
+        url: manifest.publish.url,
+        file_path: manifest.publish.file_path,
         files: Object.fromEntries(leftovers.map((p) => [p, null])),
       };
       lines.push(
@@ -128,7 +106,7 @@ try {
       changed.length && `${changed.length} file(s) differ`,
       leftovers.length && `${leftovers.length} leftover(s) to remove`,
     ].filter(Boolean);
-    say(`Design System not verified against ${newest.ref}: ${parts.join(", ")}.`, lines.join("\n"));
+    say(`Design System not verified against ${manifest.ref}: ${parts.join(", ")}.`, lines.join("\n"));
   }
 } catch (e) {
   say(`Design System verification failed: ${e.message}`);

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { HomePage } from "./home-page";
 
@@ -21,14 +21,16 @@ describe("HomePage", () => {
     const links = screen.getAllByRole("link");
     expect(links[0]).toHaveTextContent("Skip to content");
     expect(links[0]).toHaveAttribute("href", "#main");
-    expect(document.getElementById("main")?.tagName).toBe("MAIN");
+    expect(screen.getByRole("main")).toHaveAttribute("id", "main");
   });
 
   it("renders the hero, then every section in page order", () => {
     render(<HomePage evalSummary={summary} />);
 
-    const ids = [...document.querySelectorAll("main section[id]")].map((s) => s.id);
-    expect(ids).toEqual(["top", "about", "stack", "experience", "projects", "agent", "contact"]);
+    const main = within(screen.getByRole("main"));
+    expect(main.getAllByRole("heading")[0]).toBe(main.getByRole("heading", { level: 1 }));
+    const sections = main.getAllByRole("heading", { level: 2 }).map((h) => h.textContent);
+    expect(sections).toEqual(["01.about", "02.stack", "03.experience", "04.projects", "05.ask my agent", "06.contact"]);
   });
 
   it("shows the eval results it is given on the Portfolio Agent card", () => {
