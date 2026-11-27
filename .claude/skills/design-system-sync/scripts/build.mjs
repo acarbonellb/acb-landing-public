@@ -1,23 +1,27 @@
 // Builds the Design System artifact's components from this checkout: React 19
 // as two classic scripts, the site's components as one IIFE (`window.Acb`,
 // running on the page's React, 19 or a Design canvas's 18),
-// the previews, and the stylesheet compiled by the site's own Tailwind.
+// the previews, the stylesheet compiled by the site's own Tailwind, and
+// tokens.json (tokens.mjs).
 //
 // Usage: node build.mjs <project dir> [--update-sources]
 // <project dir> is the artifact's `project/` folder on disk (outside the
 // repo). Writes the skill's `project/` folder (READMEs and the cover card)
-// into it, then the rest under <project dir>/components. Fails when the bundle
+// into it, then tokens.json and the rest under <project dir>/components.
+// Fails when the bundle
 // reads a repo file that sources.json doesn't list, so the hook's watch list
 // can't drift; --update-sources rewrites the bundle list instead. Ends by
 // listing every file the build added or changed, against
 // what the folder held before (the files read from the artifact): exactly
 // the build's share of the publish.
+import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { cpSync, readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
 import { componentNames, entry, hashes } from "./components.mjs";
+import { generateTokens } from "./tokens.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const skill = dirname(here);
@@ -224,6 +228,20 @@ for (const f of ["bundle.js", "bundle.css", "lib/react.production.min.js", "lib/
 }
 const react = JSON.parse(readFileSync(join(repo, "node_modules/react/package.json"), "utf8")).version;
 console.log(`built ${names.length} components and ${previews} previews with React ${react}`);
+
+// 5. tokens.json, for the checked-out commit: `meta.ref` and `meta.synced` are
+// its short sha and its date, so two builds of one commit give the same file.
+// `meta.components` is kept from the tokens.json read from the artifact, if
+// any (check.mjs fails on a component it lacks).
+const tokensPath = join(out, "tokens.json");
+const git = (...a) => execFileSync("git", a, { cwd: repo, encoding: "utf8" }).trim();
+const previous = existsSync(tokensPath) ? JSON.parse(readFileSync(tokensPath, "utf8")) : {};
+const tokens = await generateTokens({
+  ref: `main@${git("rev-parse", "--short=7", "HEAD")}`,
+  synced: git("log", "-1", "--format=%cs", "HEAD"),
+  components: previous.meta?.components,
+});
+writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
 
 // The build's share of the publish: what it added or changed.
 const after = hashes(out);
