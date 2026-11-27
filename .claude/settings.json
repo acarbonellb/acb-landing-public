@@ -22,6 +22,28 @@
             "statusMessage": "Verifying the Design System listing"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/detect.mjs\"",
+            "timeout": 1200
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/detect.mjs\"",
+            "timeout": 1200,
+            "statusMessage": "Checking whether the Design System needs a sync"
+          }
+        ]
       }
     ]
   }

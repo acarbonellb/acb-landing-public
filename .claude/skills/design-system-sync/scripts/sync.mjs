@@ -87,6 +87,23 @@ if (args.includes("--manifest-path")) {
   process.exit(0);
 }
 
+// A commit from before the sync pipeline has an older build.mjs that writes
+// only part of the folder. Refuse it rather than hand over a partial manifest.
+const pipeline = ["scripts/sync.mjs", "scripts/manifest.mjs", "scripts/build.mjs", "sources.json"];
+const missing = pipeline.filter((p) => {
+  try {
+    git("cat-file", "-e", `${commit}:.claude/skills/design-system-sync/${p}`);
+    return false;
+  } catch {
+    return true;
+  }
+});
+if (missing.length)
+  fail(
+    `${ref} (${commit.slice(0, 7)}) predates the sync pipeline: its .claude/skills/design-system-sync lacks ${missing.join(", ")}, ` +
+      "so its build would give a partial folder. Nothing was built.",
+  );
+
 const store = dirname(manifestFile);
 const outArg = option("--out");
 const root = outArg ? resolve(outArg) : join(store, commit);
