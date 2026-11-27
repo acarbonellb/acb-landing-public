@@ -1,8 +1,8 @@
 // Builds the Design System artifact's components from this checkout: React 19
 // as two classic scripts, the site's components as one IIFE (`window.Acb`,
 // running on the page's React, 19 or a Design canvas's 18),
-// the previews, the stylesheet compiled by the site's own Tailwind, and
-// tokens.json (tokens.mjs).
+// the previews, the stylesheet compiled by the site's own Tailwind, the
+// component types (types.mjs) and tokens.json (tokens.mjs).
 //
 // Usage: node build.mjs <project dir> [--update-sources]
 // <project dir> is the artifact's `project/` folder on disk (outside the
@@ -22,6 +22,7 @@ import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
 import { componentNames, entry, hashes } from "./components.mjs";
 import { generateTokens } from "./tokens.mjs";
+import { componentTypes } from "./types.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const skill = dirname(here);
@@ -182,10 +183,16 @@ if (args.includes("--update-sources")) {
   if (stale.length) console.log(`sources.json lists files the bundle no longer reads: ${stale.join(", ")}`);
 }
 
-// 3. Previews first: Tailwind scans them for classes.
+// 3. The component types and each component's source (tokens.json
+// `meta.components`, step 6), from the TypeScript checker (types.mjs): no
+// hand-written copy to go stale.
+const types = componentTypes();
+writeFileSync(join(compDir, "index.d.ts"), types.dts);
+
+// 4. Previews first: Tailwind scans them for classes.
 const previews = writePreviews(out);
 
-// 4. The stylesheet: globals.css without its colour values (they live in
+// 5. The stylesheet: globals.css without its colour values (they live in
 // tokens.json, so an edit on the artifact's page wins), compiled by the
 // site's Tailwind over the components and the previews.
 const globalsCss = readFileSync(join(repo, "src/app/globals.css"), "utf8");
@@ -229,17 +236,15 @@ for (const f of ["bundle.js", "bundle.css", "lib/react.production.min.js", "lib/
 const react = JSON.parse(readFileSync(join(repo, "node_modules/react/package.json"), "utf8")).version;
 console.log(`built ${names.length} components and ${previews} previews with React ${react}`);
 
-// 5. tokens.json, for the checked-out commit: `meta.ref` and `meta.synced` are
+// 6. tokens.json, for the checked-out commit: `meta.ref` and `meta.synced` are
 // its short sha and its date, so two builds of one commit give the same file.
-// `meta.components` is kept from the tokens.json read from the artifact, if
-// any (check.mjs fails on a component it lacks).
+// `meta.components` comes from step 3.
 const tokensPath = join(out, "tokens.json");
 const git = (...a) => execFileSync("git", a, { cwd: repo, encoding: "utf8" }).trim();
-const previous = existsSync(tokensPath) ? JSON.parse(readFileSync(tokensPath, "utf8")) : {};
 const tokens = await generateTokens({
   ref: `main@${git("rev-parse", "--short=7", "HEAD")}`,
   synced: git("log", "-1", "--format=%cs", "HEAD"),
-  components: previous.meta?.components,
+  components: types.sources,
 });
 writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
 

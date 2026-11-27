@@ -1,6 +1,6 @@
 // What build.mjs and check.mjs share: the component names `window.Acb`
-// exports (the keys of `components` in entry.tsx), the agent statuses the
-// site's content allows, and the files under a folder with their hashes.
+// exports (the keys of `components` in entry.tsx) and the files under a
+// folder with their hashes.
 import { createHash } from "node:crypto";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
@@ -14,14 +14,6 @@ export function componentNames() {
     .split(",")
     .map((s) => s.trim().split(":")[0].trim())
     .filter(Boolean);
-}
-
-/** `agentStatuses` in src/shared/profile.ts, the list `AgentStatus` is made from. */
-export function agentStatuses() {
-  const profile = join(dirname(fileURLToPath(import.meta.url)), "../../../../src/shared/profile.ts");
-  const list = readFileSync(profile, "utf8").match(/export const agentStatuses = \[([\s\S]*?)\]/)?.[1];
-  if (!list) throw new Error("src/shared/profile.ts changed shape: agentStatuses was not found");
-  return [...list.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
 }
 
 /** Every file under `dir`, as `{ <path relative to dir>: <sha256> }`. */
