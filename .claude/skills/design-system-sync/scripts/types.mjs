@@ -22,7 +22,11 @@ const header = `// window.Acb: the site's real components (acarbonellb/acb-landi
 // TypeScript by the design-system-sync skill; edits here are overwritten.
 `;
 
-/** `{ dts, sources }`: the types file's text and `{ <component>: <repo path> }`. */
+/**
+ * `{ dts, sources, inputs }`: the types file's text, `{ <component>: <repo path> }`
+ * and the repo files the checker read (type-only imports included, which the
+ * bundle never reads), outside this skill.
+ */
 export function componentTypes() {
   const config = ts.getParsedCommandLineOfConfigFile(join(repo, "tsconfig.json"), {}, {
     ...ts.sys,
@@ -229,5 +233,11 @@ export function componentTypes() {
     "\n\n" +
     declarations.join("\n\n") +
     `\n\n/** The site's real content, as the home page passes it. */\nexport declare const data: {\n${data.join("\n")}\n};\n`;
-  return { dts, sources };
+  const inputs = program
+    .getSourceFiles()
+    .map((f) => f.fileName)
+    .filter(inRepo)
+    .map(repoPath)
+    .filter((p) => !p.startsWith(".claude/"));
+  return { dts, sources, inputs };
 }

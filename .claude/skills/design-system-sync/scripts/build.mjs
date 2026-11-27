@@ -5,19 +5,21 @@
 // component types (types.mjs) and tokens.json (tokens.mjs).
 //
 // Usage: node build.mjs <project dir> [--update-sources]
-// <project dir> is the artifact's `project/` folder on disk (outside the
-// repo). Writes the skill's `project/` folder (READMEs and the cover card)
-// into it, then tokens.json and the rest under <project dir>/components.
-// Fails when the bundle
-// reads a repo file that sources.json doesn't list, so the hook's watch list
-// can't drift; --update-sources rewrites the bundle list instead. Ends by
-// listing every file the build added or changed, against
-// what the folder held before (the files read from the artifact): exactly
-// the build's share of the publish.
+// The sync command (sync.mjs) runs it in a temporary worktree of the commit
+// it syncs, so HEAD is that commit; run it by hand only to try a change.
+// <project dir> is the artifact's whole `project/` folder, written outside
+// the repo: the skill's `project/` folder (READMEs and the cover card),
+// tokens.json, the index (design-system.json, from index.json), the fonts
+// and their licence, and everything under components/.
+// Fails when the bundle or the component types read a repo file that
+// sources.json doesn't list, so the watch list can't drift; --update-sources
+// rewrites the bundle list instead. Ends by listing every file the build
+// added or changed against what the folder held before.
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { cpSync, readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { basename, dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
 import { componentNames, entry, hashes } from "./components.mjs";
@@ -157,12 +159,21 @@ const result = await esbuild.build({
   outfile: join(compDir, "bundle.js"),
 });
 
-// The repo files the bundle read, checked against the watch list.
+// 3. The component types and each component's source (tokens.json
+// `meta.components`, step 6), from the TypeScript checker (types.mjs): no
+// hand-written copy to go stale.
+const types = componentTypes();
+writeFileSync(join(compDir, "index.d.ts"), types.dts);
+
+// The repo files the bundle and the types read, checked against the watch list.
 const inputs = [
-  ...Object.keys(result.metafile.inputs)
-    .map((p) => relative(repo, join(process.cwd(), p)))
-    .filter((p) => !p.includes(":") && !p.startsWith("node_modules/") && !p.startsWith("..") && !p.startsWith(".claude/")),
-  evalSummary,
+  ...new Set([
+    ...Object.keys(result.metafile.inputs)
+      .map((p) => relative(repo, join(process.cwd(), p)))
+      .filter((p) => !p.includes(":") && !p.startsWith("node_modules/") && !p.startsWith("..") && !p.startsWith(".claude/")),
+    ...types.inputs,
+    evalSummary,
+  ]),
 ].sort();
 // `content` files (copy and eval results) are inputs too, listed apart so the
 // hook stays quiet about them.
@@ -175,19 +186,13 @@ if (args.includes("--update-sources")) {
   const missing = inputs.filter((p) => !sources.bundle.includes(p) && !content.includes(p));
   if (missing.length) {
     throw new Error(
-      `the bundle reads files sources.json doesn't list:\n  ${missing.join("\n  ")}\n` +
+      `the bundle or the types read files sources.json doesn't list:\n  ${missing.join("\n  ")}\n` +
         "rerun with --update-sources and commit sources.json",
     );
   }
   const stale = [...sources.bundle, ...content].filter((p) => !inputs.includes(p));
   if (stale.length) console.log(`sources.json lists files the bundle no longer reads: ${stale.join(", ")}`);
 }
-
-// 3. The component types and each component's source (tokens.json
-// `meta.components`, step 6), from the TypeScript checker (types.mjs): no
-// hand-written copy to go stale.
-const types = componentTypes();
-writeFileSync(join(compDir, "index.d.ts"), types.dts);
 
 // 4. Previews first: Tailwind scans them for classes.
 const previews = writePreviews(out);
@@ -247,6 +252,52 @@ const tokens = await generateTokens({
   components: types.sources,
 });
 writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
+
+// 7. The font files tokens.json names (`type.fonts[].file`), from the files
+// token-notes.json gives them, and the font's licence.
+const notes = JSON.parse(readFileSync(join(skill, "token-notes.json"), "utf8"));
+const fontFiles = Object.values(notes.type.families)
+  .map((f) => f.file)
+  .filter(Boolean);
+for (const font of tokens.type.fonts) {
+  const from = fontFiles.find((f) => basename(f) === basename(font.file));
+  if (!from) throw new Error(`tokens.json names ${font.file}, which no family in token-notes.json gives`);
+  mkdirSync(join(out, "fonts"), { recursive: true });
+  cpSync(join(repo, from), join(out, font.file));
+}
+mkdirSync(join(out, "assets/Licenses"), { recursive: true });
+cpSync(join(repo, "assets/OFL-VT323.txt"), join(out, "assets/Licenses/OFL-VT323.txt"));
+
+// 8. The index, design-system.json, from the skill's index.json: the
+// libraries at the React the scripts were built from and `lastChange` from
+// the commit, so it too depends only on the commit. An asset is an upload the
+// index names by its blob id, so a changed asset file fails here: upload it
+// and record its new blob, size and sha256 in index.json.
+const indexSource = JSON.parse(readFileSync(join(skill, "index.json"), "utf8"));
+for (const [path, { source, sha256 }] of Object.entries(indexSource.uploads)) {
+  const actual = createHash("sha256").update(readFileSync(join(repo, source))).digest("hex");
+  if (actual !== sha256) {
+    throw new Error(
+      `${source} changed: upload it to the artifact as ${path} and record its blob, size and sha256 in index.json`,
+    );
+  }
+}
+const short = git("rev-parse", "--short=7", "HEAD");
+const index = {
+  ...indexSource.index,
+  libraries: indexSource.index.libraries.map(({ name, ...rest }) => ({
+    name,
+    version: JSON.parse(readFileSync(join(repo, "node_modules", name, "package.json"), "utf8")).version,
+    ...rest,
+  })),
+  lastChange: {
+    ...indexSource.index.lastChange,
+    at: new Date(git("log", "-1", "--format=%cI", "HEAD")).toISOString().replace(/\.\d{3}Z$/, "Z"),
+    via: `GitHub · ${notes.meta.repo}@${short}`,
+    note: `Synced from main@${short}: ${git("log", "-1", "--format=%s", "HEAD")}`,
+  },
+};
+writeFileSync(join(out, "design-system.json"), JSON.stringify(index, null, 2) + "\n");
 
 // The build's share of the publish: what it added or changed.
 const after = hashes(out);

@@ -1,4 +1,4 @@
-// What build.mjs and check.mjs share: the component names `window.Acb`
+// What build.mjs and sync.mjs share: the component names `window.Acb`
 // exports (the keys of `components` in entry.tsx) and the files under a
 // folder with their hashes.
 import { createHash } from "node:crypto";
