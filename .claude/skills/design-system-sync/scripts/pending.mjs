@@ -2,21 +2,18 @@
 // marker (`ds-synced`, marker.mjs) and `origin/main` lists a file of the
 // sources list. Every part of the list counts, read from sources.json as it
 // is at `origin/main`. Nothing else decides it. Local refs only, no network.
-import { execFileSync } from "node:child_process";
+import { git, MAIN, shortSha, SKILL } from "./git.mjs";
 import { readMarker, TAG } from "./marker.mjs";
 
-export const MAIN = "origin/main";
-const SOURCES = ".claude/skills/design-system-sync/sources.json";
+const SOURCES = `${SKILL}/sources.json`;
 
-function git(cwd, args) {
-  return execFileSync("git", args, {
-    cwd,
-    encoding: "utf8",
-    timeout: 10_000,
-    killSignal: "SIGKILL",
-    stdio: ["ignore", "pipe", "pipe"],
-    maxBuffer: 16 * 1024 * 1024,
-  }).trim();
+/** The commit the local `origin/main` ref points at. No network; throws when the clone has none. */
+export function mainCommit(cwd = process.cwd()) {
+  try {
+    return git(cwd, ["rev-parse", "--verify", "--quiet", `${MAIN}^{commit}`]);
+  } catch {
+    throw new Error(`${MAIN} is not in this clone`);
+  }
 }
 
 /**
@@ -27,17 +24,12 @@ function git(cwd, args) {
 export function pendingSync(cwd = process.cwd()) {
   const marker = readMarker(cwd);
   if (!marker) throw new Error(`the ${TAG} tag is not in this clone, so no sync can be worked out`);
-  let main;
-  try {
-    main = git(cwd, ["rev-parse", "--verify", "--quiet", `${MAIN}^{commit}`]);
-  } catch {
-    throw new Error(`${MAIN} is not in this clone`);
-  }
+  const main = mainCommit(cwd);
   let sources;
   try {
     sources = JSON.parse(git(cwd, ["show", `${main}:${SOURCES}`]));
   } catch {
-    throw new Error(`${MAIN} (${main.slice(0, 7)}) has no readable ${SOURCES}`);
+    throw new Error(`${MAIN} (${shortSha(main)}) has no readable ${SOURCES}`);
   }
   const listed = Object.values(sources)
     .filter(Array.isArray)

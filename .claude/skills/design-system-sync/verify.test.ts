@@ -97,6 +97,34 @@ describe("the verification hook", () => {
     expect(out.hookSpecificOutput.hookEventName).toBe("PostToolUse");
   });
 
+  /** A commit on the clone's branch that origin/main doesn't have, as a session's own HEAD. */
+  const branchCommit = (clone: string) => {
+    git(clone, "commit", "--quiet", "--allow-empty", "-m", "branch work");
+    return git(clone, "rev-parse", "HEAD");
+  };
+
+  it("leaves ds-synced when the listing matches the manifest of a commit that isn't origin/main", () => {
+    const { origin, clone, old, commit } = repo();
+    manifest(clone, branchCommit(clone));
+    manifest(clone, commit, projectFiles.map((f) => ({ ...f, sha256: "1".repeat(64) })));
+    const { status, out } = run(input(clone));
+    expect(status).toBe(0);
+    expect(remoteTag(origin)).toBe(old);
+    expect(git(clone, "rev-parse", "refs/tags/ds-synced")).toBe(old);
+    expect(out.systemMessage).toMatch(/not verified/i);
+    expect(out.systemMessage).toContain(commit.slice(0, 7));
+  });
+
+  it("leaves ds-synced when the only manifest is for a commit that isn't origin/main", () => {
+    const { origin, clone, old, commit } = repo();
+    manifest(clone, branchCommit(clone));
+    const { status, out } = run(input(clone));
+    expect(status).toBe(0);
+    expect(remoteTag(origin)).toBe(old);
+    expect(out.systemMessage).toMatch(/verification failed/i);
+    expect(context(out)).toContain(commit.slice(0, 7));
+  });
+
   it("leaves ds-synced and names the paths when a hash differs", () => {
     const { origin, clone, old, commit } = repo();
     manifest(clone, commit);

@@ -4,12 +4,14 @@ import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, wri
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import ts from "typescript";
-import { beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { agentStatuses } from "@/shared/profile";
 
 // The sync command, run twice on this checkout's HEAD. It builds in a
 // temporary worktree of that commit and writes the artifact's `project/`
-// folder and the sync manifest; these tests read what it wrote.
+// folder and the sync manifest; these tests read what it wrote. Both go to a
+// temporary manifest store (DS_SYNC_STORE), never the clone's real one, which
+// the verification hook reads.
 const skill = __dirname;
 const repoRoot = join(skill, "../../..");
 const sync = join(skill, "scripts/sync.mjs");
@@ -26,10 +28,12 @@ type Manifest = {
   publish: { url: string; root: string; file_path: string; files: Record<string, { from: string; contentType: string }> };
 };
 
+const store = join(mkdtempSync(join(tmpdir(), "ds-store-")), "design-system-sync");
+afterAll(() => rmSync(join(store, ".."), { recursive: true, force: true }));
 const run = (args: string[], opts: { cwd?: string; env?: NodeJS.ProcessEnv } = {}) =>
   spawnSync("node", [sync, ...args], {
     cwd: opts.cwd ?? repoRoot,
-    env: { ...process.env, ...opts.env },
+    env: { ...process.env, DS_SYNC_STORE: store, ...opts.env },
     encoding: "utf8",
     timeout: 600_000,
   });
@@ -167,15 +171,23 @@ describe("the sync command", () => {
     expect(Object.keys(index.assetGroups.Brand.files)).toEqual(["icon.svg"]);
   });
 
-  it("stores the manifest under the git common directory, keyed by commit, found from any worktree", () => {
+  it("writes the manifest and the folder to the store it is given, keyed by commit", () => {
+    expect(manifestPath).toBe(join(store, `${first.commit}.json`));
+    expect(first.root).toBe(join(store, first.commit));
+  });
+
+  it("keeps the store under the git common directory by default, found from any worktree", () => {
     const common = git("rev-parse", "--path-format=absolute", "--git-common-dir");
-    expect(manifestPath).toBe(join(common, "design-system-sync", `${first.commit}.json`));
+    const real = join(common, "design-system-sync", `${first.commit}.json`);
+    const here = run(["--manifest-path", "--ref", first.commit], { env: { DS_SYNC_STORE: "" } });
+    expect(here.status, here.stderr).toBe(0);
+    expect(here.stdout.trim()).toBe(real);
     const other = join(mkdtempSync(join(tmpdir(), "ds-other-")), "wt");
     git("worktree", "add", "--detach", "--no-checkout", other, "HEAD");
     try {
-      const r = run(["--manifest-path", "--ref", first.commit], { cwd: other });
+      const r = run(["--manifest-path", "--ref", first.commit], { cwd: other, env: { DS_SYNC_STORE: "" } });
       expect(r.status, r.stderr).toBe(0);
-      expect(r.stdout.trim()).toBe(manifestPath);
+      expect(r.stdout.trim()).toBe(real);
     } finally {
       git("worktree", "remove", "--force", other);
       rmSync(join(other, ".."), { recursive: true, force: true });
@@ -345,11 +357,15 @@ describe("the render check", () => {
     expect(r.stdout).toContain(`${cards.length} previews render in night and light`);
   }, 600_000);
 
-  it("fails on a card that throws, renders nothing or overflows, naming the card and the theme", () => {
+  // One run of the check for every failure it must name: each run starts a
+  // browser and renders every card in both themes.
+  it("fails on a card that throws, renders nothing or overflows, and on an exported component with no card, naming each", () => {
     const broken = copyWith((p) => {
       renderInCard(p, "Tag", `h(function Broken() { throw new Error("broken Tag card"); })`);
       renderInCard(p, "About", `null`);
       renderInCard(p, "Window", `h("div", { style: { width: "5000px" } }, "too wide")`);
+      const bundle = join(p, "components/bundle.js");
+      writeFileSync(bundle, readFileSync(bundle, "utf8") + "\nwindow.Acb.Gauge = function Gauge() { return null; };\n");
     });
     const r = runCheck(broken);
     expect(r.status).not.toBe(0);
@@ -359,15 +375,6 @@ describe("the render check", () => {
       expect(r.stderr).toMatch(new RegExp(`^${theme} Window: wider than its card$`, "m"));
     }
     expect(r.stderr).not.toMatch(/^\w+ (Header|Page):/m);
-  }, 600_000);
-
-  it("fails on a component the bundle exports with no card, naming it", () => {
-    const broken = copyWith((p) => {
-      const bundle = join(p, "components/bundle.js");
-      writeFileSync(bundle, readFileSync(bundle, "utf8") + "\nwindow.Acb.Gauge = function Gauge() { return null; };\n");
-    });
-    const r = runCheck(broken);
-    expect(r.status).not.toBe(0);
     expect(r.stderr).toMatch(/^Gauge: exported by the bundle with no card \(components\/Gauge\/preview\.html\)$/m);
     expect(r.stderr).not.toMatch(/^(ExternalLink|Markdown):/m);
   }, 600_000);

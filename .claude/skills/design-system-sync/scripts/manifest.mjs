@@ -20,18 +20,22 @@
 //       "files": { "project/tokens.json": { "from": "project/tokens.json", "contentType": "application/json" } }
 //     }
 //   }
-import { execFileSync } from "node:child_process";
+//
+// DS_SYNC_STORE names another folder for the store, so tests never write to
+// the clone's real one.
 import { readFileSync } from "node:fs";
-import { extname, join } from "node:path";
+import { extname, join, resolve } from "node:path";
+import { commonDir } from "./git.mjs";
+
+/** The folder holding every sync manifest of the clone at `cwd`, from any of its worktrees. */
+export function manifestStore(cwd = process.cwd()) {
+  const store = process.env.DS_SYNC_STORE;
+  return store ? resolve(store) : join(commonDir(cwd), "design-system-sync");
+}
 
 /** The manifest's path for `commit` (a full sha), from any worktree of the clone at `cwd`. */
 export function manifestPath(commit, cwd = process.cwd()) {
-  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
-    cwd,
-    encoding: "utf8",
-    timeout: 60_000,
-  }).trim();
-  return join(common, "design-system-sync", `${commit}.json`);
+  return join(manifestStore(cwd), `${commit}.json`);
 }
 
 /** The manifest for `commit`, or undefined when no sync wrote one. */

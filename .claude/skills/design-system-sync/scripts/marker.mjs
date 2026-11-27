@@ -2,30 +2,10 @@
 // whose sync verified. It is force-moved and adds no commit. The
 // verification hook (verify.mjs) moves it; the detection hooks read it to
 // work out whether a sync is pending.
-import { execFileSync } from "node:child_process";
+import { git, MAIN, NETWORK_MS, reason, timedOut } from "./git.mjs";
 
 export const TAG = "ds-synced";
 const REF = `refs/tags/${TAG}`;
-
-// Network steps get longer than local ones; neither may hang a hook.
-const LOCAL_MS = 10_000;
-const NETWORK_MS = 20_000;
-
-function git(cwd, args, timeout = LOCAL_MS) {
-  return execFileSync("git", args, {
-    cwd,
-    encoding: "utf8",
-    timeout,
-    killSignal: "SIGKILL",
-    stdio: ["ignore", "pipe", "pipe"],
-  }).trim();
-}
-
-/** Why a git call failed, in one line. */
-function reason(e) {
-  if (e.code === "ETIMEDOUT" || e.signal === "SIGKILL") return "timed out";
-  return String(e.stderr ?? "").trim().split("\n").filter(Boolean).pop() ?? e.message;
-}
 
 /** The commit the local `ds-synced` tag points at, or undefined when the clone has none. No network. */
 export function readMarker(cwd = process.cwd()) {
@@ -37,15 +17,20 @@ export function readMarker(cwd = process.cwd()) {
 }
 
 /**
- * Updates the local `ds-synced` tag from origin, even when it moved there
- * (a plain fetch keeps a tag it already has). Returns `{ ok, commit, error }`.
+ * One fetch of origin's main and the synced marker, into `origin/main` and
+ * the local `ds-synced` tag, even when the tag moved on origin (a plain fetch
+ * keeps a tag it already has). Returns `{ ok }`, or `{ ok: false, error }`
+ * with the reason in a sentence.
  */
 export function fetchMarker(cwd = process.cwd()) {
   try {
-    git(cwd, ["fetch", "--quiet", "--no-tags", "origin", `+${REF}:${REF}`], NETWORK_MS);
-    return { ok: true, commit: readMarker(cwd) };
+    git(cwd, ["fetch", "--quiet", "--no-tags", "origin", `+refs/heads/main:refs/remotes/${MAIN}`, `+${REF}:${REF}`], NETWORK_MS);
+    return { ok: true };
   } catch (e) {
-    return { ok: false, commit: readMarker(cwd), error: reason(e) };
+    if (timedOut(e)) return { ok: false, error: `fetching origin timed out after ${NETWORK_MS / 1000} s` };
+    if (/couldn't find remote ref refs\/tags\//.test(String(e.stderr ?? "")))
+      return { ok: false, error: `the ${TAG} tag is not on origin` };
+    return { ok: false, error: `fetching origin failed: ${reason(e)}` };
   }
 }
 

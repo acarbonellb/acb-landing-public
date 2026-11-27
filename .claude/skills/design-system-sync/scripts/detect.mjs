@@ -15,25 +15,22 @@
 // the agent nothing. Output is Claude Code's hook JSON on stdout:
 // `additionalContext` for the agent, `systemMessage` for the user. It exits 0
 // on every path, so no turn is blocked.
-import { execFileSync, spawnSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
-import { dirname, isAbsolute, join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
-import { TAG } from "./marker.mjs";
-import { MAIN, pendingSync } from "./pending.mjs";
+import { isAbsolute, join, relative } from "node:path";
+import { MAIN, shortSha, skillDir, timedOut } from "./git.mjs";
+import { manifestStore } from "./manifest.mjs";
+import { fetchMarker, TAG } from "./marker.mjs";
+import { say as write } from "./output.mjs";
+import { pendingSync } from "./pending.mjs";
 
-const scripts = dirname(fileURLToPath(import.meta.url));
-const FETCH_MS = 20_000;
-// Longer than every step of sync.mjs together, shorter than the hook's timeout.
-const SYNC_MS = Number(process.env.DS_DETECT_SYNC_TIMEOUT_MS) || 17 * 60_000;
+// A cold sync (fresh worktree, install with an empty store, build) takes well
+// under a minute; a warm one 2 to 3 s. This cap and the fetch's 20 s stay
+// under the hook's timeout in .claude/settings.json.
+const SYNC_MS = Number(process.env.DS_DETECT_SYNC_TIMEOUT_MS) || 5 * 60_000;
 
 let event = "PostToolUse";
-function say({ user, agent }) {
-  const out = {};
-  if (user) out.systemMessage = user;
-  if (agent) out.hookSpecificOutput = { hookEventName: event, additionalContext: agent };
-  process.stdout.write(JSON.stringify(out) + "\n");
-}
+const say = (parts) => write(event, parts);
 
 /** Each simple command of a shell line, as words. Good enough for the commands it looks for. */
 function commands(line) {
@@ -68,48 +65,27 @@ function bashTrigger(line) {
   return undefined;
 }
 
-/** One fetch of origin's main and the synced marker. Returns the reason on failure. */
-function fetch(cwd) {
-  try {
-    execFileSync(
-      "git",
-      ["fetch", "--quiet", "--no-tags", "origin", `+refs/heads/main:refs/remotes/${MAIN}`, `+refs/tags/${TAG}:refs/tags/${TAG}`],
-      { cwd, encoding: "utf8", timeout: FETCH_MS, killSignal: "SIGKILL", stdio: ["ignore", "pipe", "pipe"] },
-    );
-    return undefined;
-  } catch (e) {
-    if (e.code === "ETIMEDOUT" || e.signal === "SIGKILL") return `fetching origin timed out after ${FETCH_MS / 1000} s`;
-    const err = String(e.stderr ?? "").trim();
-    if (/couldn't find remote ref refs\/tags\//.test(err)) return `the ${TAG} tag is not on origin`;
-    return `fetching origin failed: ${err.split("\n").filter(Boolean).pop() ?? e.message}`;
-  }
-}
-
 /**
  * Where the sync writes the project folder: the session's scratchpad, which
- * the Artifact tool publishes from. Without one, the git common directory
- * when it is inside the working directory, else an ignored folder that is.
+ * the Artifact tool publishes from. Without one, the manifest store (the
+ * sync's default) when it is inside the working directory, else an ignored
+ * folder that is.
  */
 function outDir(cwd, scratchpad, commit) {
   if (scratchpad) return join(scratchpad, "design-system-sync", commit);
-  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
-    cwd,
-    encoding: "utf8",
-    timeout: 10_000,
-  }).trim();
   const inside = (dir) => {
     const r = relative(cwd, dir);
     return r === "" || (!r.startsWith("..") && !isAbsolute(r));
   };
-  if (inside(common)) return undefined;
+  if (inside(manifestStore(cwd))) return undefined;
   return join(cwd, "node_modules/.cache/design-system-sync", commit);
 }
 
 /** Runs the sync command for origin/main. Returns `{ manifest }` or `{ error }`. */
 function runSync(cwd, out) {
-  const args = [join(scripts, "sync.mjs"), "--ref", MAIN, ...(out ? ["--out", out] : [])];
+  const args = [join(skillDir, "scripts/sync.mjs"), "--ref", MAIN, ...(out ? ["--out", out] : [])];
   const r = spawnSync("node", args, { cwd, encoding: "utf8", timeout: SYNC_MS, killSignal: "SIGKILL" });
-  if (r.error?.code === "ETIMEDOUT" || r.signal === "SIGKILL") return { error: `it timed out after ${SYNC_MS / 1000} s` };
+  if (timedOut(r.error) || r.signal === "SIGKILL") return { error: `it timed out after ${SYNC_MS / 1000} s` };
   if (r.status !== 0) {
     const why = String(r.stderr ?? "").trim() || r.error?.message || `exit ${r.status}`;
     return { error: why.replace(/^design-system sync failed: /, "") };
@@ -121,10 +97,10 @@ function runSync(cwd, out) {
 
 function instruction(manifest, check) {
   const { artifact } = manifest;
-  const short = manifest.commit.slice(0, 7);
+  const short = shortSha(manifest.commit);
   const listed = check.changed.length;
   return [
-    `The Design System artifact is behind ${MAIN}: ${listed} listed source file(s) changed since ${TAG} (${check.marker.slice(0, 7)}).`,
+    `The Design System artifact is behind ${MAIN}: ${listed} listed source file(s) changed since ${TAG} (${shortSha(check.marker)}).`,
     `This hook already ran the sync command for ${manifest.ref}; the sync manifest ${manifest.path} lists every file.`,
     "Publish it now, with these three Artifact calls and nothing else:",
     `1. Read ${artifact} with action "read" and no path.`,
@@ -144,9 +120,9 @@ try {
   if (!trigger) process.exit(0);
 
   if (trigger !== "fetch") {
-    const failed = fetch(cwd);
-    if (failed) {
-      say({ user: `Design System sync check skipped: ${failed}. The next trigger checks again.` });
+    const fetched = fetchMarker(cwd);
+    if (!fetched.ok) {
+      say({ user: `Design System sync check skipped: ${fetched.error}. The next trigger checks again.` });
       process.exit(0);
     }
   }
@@ -156,7 +132,7 @@ try {
   if (result.error) {
     say({
       user:
-        `Design System sync failed for ${MAIN} (${check.main.slice(0, 7)}): ${result.error}\n` +
+        `Design System sync failed for ${MAIN} (${shortSha(check.main)}): ${result.error}\n` +
         `The artifact stays behind; ${TAG} is unchanged, so the next trigger tries again.`,
     });
     process.exit(0);
