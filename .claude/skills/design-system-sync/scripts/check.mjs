@@ -1,16 +1,14 @@
 // Renders every preview the way the artifact's frame does (tokens, bundle.css,
 // the React scripts, the bundle, then the preview's body), in every theme,
 // and fails on a runtime error, an empty render or a page wider than its card.
-// First checks that every component `window.Acb` exports (entry.tsx) has its
-// README.md, its `declare const` in index.d.ts and its source in tokens.json
-// `meta.components`, and that nothing is left over for one that is gone.
+// That every component is complete (README, types, source) is sync.test.ts's
+// job, on the sync command's output.
 //
 // Usage: node check.mjs <project dir> <shots dir> [component names to screenshot...]
 import { createRequire } from "node:module";
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { componentNames } from "./components.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const { chromium } = createRequire(join(repo, "package.json"))("@playwright/test");
@@ -34,32 +32,6 @@ const tokensCss =
   themes.slice(1).map((th) => `[data-theme="${th}"] {${colours(th)}}`).join(" ") +
   ` :root {${lengths}${families}}`;
 const comp = join(project, "components");
-
-// Every component in step across the artifact's files (a card is optional:
-// ExternalLink and Markdown have none).
-const exported = componentNames();
-const dts = readFileSync(join(comp, "index.d.ts"), "utf8");
-const declared = [...dts.matchAll(/export declare const (\w+)/g)]
-  .map((m) => m[1])
-  .filter((n) => n !== "data");
-const sourced = Object.keys(t.meta?.components ?? {});
-const folders = readdirSync(comp, { withFileTypes: true })
-  .filter((e) => e.isDirectory() && e.name !== "lib" && e.name !== "Cover")
-  .map((e) => e.name);
-const incomplete = [
-  ...exported.flatMap((n) => [
-    ...(existsSync(join(comp, n, "README.md")) ? [] : [`${n}: no components/${n}/README.md`]),
-    ...(declared.includes(n) ? [] : [`${n}: no \`export declare const ${n}\` in components/index.d.ts`]),
-    ...(sourced.includes(n) ? [] : [`${n}: no tokens.json meta.components.${n}`]),
-  ]),
-  ...[...new Set([...declared, ...sourced, ...folders])]
-    .filter((n) => !exported.includes(n))
-    .map((n) => `${n}: not in entry.tsx \`components\` but still in the artifact's files`),
-];
-if (incomplete.length) {
-  console.error(`components out of step (see the skill's step 4):\n  ${incomplete.join("\n  ")}`);
-  process.exit(1);
-}
 
 const head = (theme) => `<!doctype html><html data-theme="${theme}"><head><meta charset="utf-8">
 <style>${tokensCss}</style><link rel="stylesheet" href="file://${comp}/bundle.css">
@@ -98,4 +70,4 @@ if (failures.length) {
   console.error(failures.join("\n"));
   process.exit(1);
 }
-console.log(`${exported.length} components complete; ${names.length} previews render in ${themes.join(" and ")}`);
+console.log(`${names.length} previews render in ${themes.join(" and ")}`);
