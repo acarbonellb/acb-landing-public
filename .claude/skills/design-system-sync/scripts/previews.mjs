@@ -8,6 +8,10 @@ import { join } from "node:path";
 const main = (inner) => `h("main", { className: "mx-auto max-w-5xl px-4 sm:px-6" }, ${inner})`;
 const pad = (inner) => `h("div", { className: "p-6" }, ${inner})`;
 
+// The components with no card of their own: each renders inside other cards.
+// check.mjs fails on any other component the bundle exports without a card.
+export const withoutCard = ["ExternalLink", "Markdown"];
+
 // name: [group, height, width|null, subtitle, render expression (A = window.Acb, D = A.data)]
 const cards = {
   Window: ["Primitives", 220, 720, "Title bar with traffic lights, retro-shadow",

@@ -1,6 +1,7 @@
 // Renders every preview the way the artifact's frame does (tokens, bundle.css,
 // the React scripts, the bundle, then the preview's body), in every theme,
-// and fails on a runtime error, an empty render or a page wider than its card.
+// and fails on a runtime error, an empty render or a page wider than its card,
+// and on a component the bundle exports with no card (previews.mjs).
 // That every component is complete (README, types, source) is sync.test.ts's
 // job, on the sync command's output.
 //
@@ -9,6 +10,7 @@ import { createRequire } from "node:module";
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { withoutCard } from "./previews.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const { chromium } = createRequire(join(repo, "package.json"))("@playwright/test");
@@ -45,6 +47,19 @@ const animated = new Set(["TypewriterTerminal", "Hero", "Page"]);
 const names = readdirSync(comp).filter((n) => n !== "Cover" && existsSync(join(comp, n, "preview.html")));
 const browser = await chromium.launch();
 const failures = [];
+
+// Every component window.Acb exports has a card, unless previews.mjs says it
+// has none.
+const probe = join(shots, "exports.html");
+writeFileSync(probe, head(themes[0]) + "<body></body></html>");
+const exportsPage = await browser.newPage();
+await exportsPage.goto("file://" + probe);
+const exported = await exportsPage.evaluate(() => Object.keys(window.Acb ?? {}).filter((k) => k !== "data"));
+await exportsPage.close();
+if (!exported.length) failures.push("the bundle exports no components (window.Acb)");
+for (const name of exported)
+  if (!names.includes(name) && !withoutCard.includes(name))
+    failures.push(`${name}: exported by the bundle with no card (components/${name}/preview.html)`);
 for (const theme of themes) {
   for (const name of names) {
     const src = readFileSync(join(comp, name, "preview.html"), "utf8");
