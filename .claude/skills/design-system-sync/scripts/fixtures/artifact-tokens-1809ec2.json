@@ -1,0 +1,429 @@
+{
+  "name": "albertocarbonell.dev",
+  "version": 1,
+  "meta": {
+    "source": "github",
+    "repo": "acarbonellb/acb-landing-public",
+    "ref": "main@1809ec2",
+    "paths": {
+      "tokens": [
+        "src/app/globals.css",
+        "src/lib/palette.ts",
+        "src/app/layout.tsx"
+      ],
+      "fonts": [
+        "assets/VT323-Regular.ttf",
+        "assets/OFL-VT323.txt"
+      ],
+      "assets": [
+        "src/app/icon.svg"
+      ],
+      "docs": [
+        "src/components/ui.tsx",
+        "src/components/sections/hero.tsx"
+      ]
+    },
+    "components": {
+      "Window": "src/components/ui.tsx",
+      "Section": "src/components/ui.tsx",
+      "Tag": "src/components/ui.tsx",
+      "TerminalButton": "src/components/ui.tsx",
+      "ExternalLink": "src/components/ui.tsx",
+      "Header": "src/components/header.tsx",
+      "StatusLine": "src/components/status-line.tsx",
+      "ThemeToggle": "src/components/theme-toggle.tsx",
+      "MobileMenu": "src/components/mobile-menu.tsx",
+      "TypewriterTerminal": "src/components/typewriter-terminal.tsx",
+      "ChatTranscript": "src/components/chat-transcript.tsx",
+      "McpConnect": "src/components/mcp-connect.tsx",
+      "Markdown": "src/components/markdown.tsx",
+      "Hero": "src/components/sections/hero.tsx",
+      "About": "src/components/sections/about.tsx",
+      "Stack": "src/components/sections/stack.tsx",
+      "Experience": "src/components/sections/experience.tsx",
+      "ExperienceEntry": "src/components/experience-entry.tsx",
+      "Projects": "src/components/sections/projects.tsx",
+      "AgentCard": "src/components/sections/agent-card.tsx",
+      "Agent": "src/components/sections/agent.tsx",
+      "Contact": "src/components/sections/contact.tsx",
+      "CookieNotice": "src/components/cookie-notice.tsx",
+      "Page": "src/app/page.tsx"
+    },
+    "data": [
+      "src/shared/profile.ts",
+      "src/shared/site-copy.ts",
+      "agent/evals/summary.json"
+    ],
+    "synced": "2026-11-26"
+  },
+  "color": {
+    "themes": [
+      {
+        "id": "night",
+        "name": "Tokyo Night"
+      },
+      {
+        "id": "light",
+        "name": "Tokyo Light"
+      }
+    ],
+    "tokens": [
+      {
+        "name": "bg",
+        "value": {
+          "night": "#1a1b26",
+          "light": "#e6e7ed"
+        },
+        "usage": "Page background behind the dot grid; also text on solid blue and green fills (primary button, NORMAL badge) and the fill of tags."
+      },
+      {
+        "name": "bg-dark",
+        "value": {
+          "night": "#16161e",
+          "light": "#dcdfe8"
+        },
+        "usage": "Window bodies and other raised panels; also the colour of the hard offset retro-shadow."
+      },
+      {
+        "name": "bg-highlight",
+        "value": {
+          "night": "#292e42",
+          "light": "#cdd1e0"
+        },
+        "usage": "Window title bars (at 50% over bg-dark), hover rows and text selection."
+      },
+      {
+        "name": "border",
+        "value": {
+          "night": "#2f3549",
+          "light": "#a8aecb"
+        },
+        "usage": "Every 1px border (windows, tags, buttons), the dot grid and the section-title rule."
+      },
+      {
+        "name": "fg",
+        "value": {
+          "night": "#c0caf5",
+          "light": "#3054a7"
+        },
+        "usage": "Headings, the hero name and emphasised text on bg, bg-dark and bg-highlight."
+      },
+      {
+        "name": "fg-dark",
+        "value": {
+          "night": "#a9b1d6",
+          "light": "#4a5a94"
+        },
+        "usage": "Default body text (set on body) on bg and bg-dark."
+      },
+      {
+        "name": "comment",
+        "value": {
+          "night": "#8f96b9",
+          "light": "#515a87"
+        },
+        "usage": "Muted text in the voice of a code comment: `// location`, prompts, window titles, metadata. Night value lifted from Tokyo Night's #565f89 to reach WCAG AA on bg and bg-dark."
+      },
+      {
+        "name": "blue",
+        "value": {
+          "night": "#7aa2f7",
+          "light": "#145aba"
+        },
+        "usage": "The one interactive accent: links, hover and focus borders, section numbers, the cursor and the primary button fill."
+      },
+      {
+        "name": "cyan",
+        "value": {
+          "night": "#7dcfff",
+          "light": "#006485"
+        },
+        "usage": "Tag text, inline code and URLs, the `you ›` prompt and link hover."
+      },
+      {
+        "name": "magenta",
+        "value": {
+          "night": "#bb9af7",
+          "light": "#771eed"
+        },
+        "usage": "Keywords and speakers: the hero title line, `agent ›` and `mcp ›` prompts, `export const`, company names."
+      },
+      {
+        "name": "orange",
+        "value": {
+          "night": "#ff9e64",
+          "light": "#904b00"
+        },
+        "usage": "Rare: the light-theme sun glyph in the theme toggle and the border of an unavailable chat notice."
+      },
+      {
+        "name": "yellow",
+        "value": {
+          "night": "#e0af68",
+          "light": "#715832"
+        },
+        "usage": "Commit hashes, tool calls such as `get_contact()`, the in-progress badge and the middle traffic-light dot."
+      },
+      {
+        "name": "green",
+        "value": {
+          "night": "#8fa876",
+          "light": "#4b6431"
+        },
+        "usage": "Strings and success: list bullets, highlights, the NORMAL status badge, the HEAD commit dot and the green traffic-light dot. Night value softened from Tokyo Night's #9ece6a."
+      },
+      {
+        "name": "teal",
+        "value": {
+          "night": "#73daca",
+          "light": "#0d6856"
+        },
+        "usage": "Object keys in the code-styled stack section only."
+      },
+      {
+        "name": "red",
+        "value": {
+          "night": "#f7768e",
+          "light": "#ba093c"
+        },
+        "usage": "Error notices and the red traffic-light dot; never decorative."
+      },
+      {
+        "name": "scanline",
+        "value": {
+          "night": "rgba(0, 0, 0, 0.18)",
+          "light": "rgba(55, 96, 191, 0.06)"
+        },
+        "usage": "The CRT scanline overlay fixed over the whole page (a 3px repeating gradient); not for text or fills."
+      }
+    ]
+  },
+  "type": {
+    "fonts": [
+      {
+        "family": "VT323",
+        "file": "fonts/VT323-Regular.ttf",
+        "weight": "400",
+        "style": "normal"
+      }
+    ],
+    "families": {
+      "mono": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, Menlo, monospace",
+      "sans": "Geist, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+      "pixel": "VT323, \"JetBrains Mono\", monospace"
+    },
+    "groups": [
+      {
+        "name": "Display",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "hero-name",
+            "fontSize": "72px",
+            "lineHeight": 1.05,
+            "fontWeight": 600,
+            "letterSpacing": "-0.03em",
+            "sample": "Alberto Carbonell",
+            "usage": "The h1 only. Fluid on the site: clamp(2.5rem, 6.5vw, 4.5rem), so 40px on phones up to 72px."
+          }
+        ]
+      },
+      {
+        "name": "Headings",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "section-title",
+            "fontSize": "30px",
+            "lineHeight": "36px",
+            "fontWeight": 700,
+            "sample": "03. experience",
+            "usage": "Section h2 in fg, 24px/32px below the sm breakpoint. Its number is set in sans semibold, blue."
+          },
+          {
+            "name": "hero-title",
+            "fontSize": "20px",
+            "lineHeight": "28px",
+            "fontWeight": 400,
+            "sample": "> Senior Software Engineer",
+            "usage": "The line under the hero name, in magenta after a comment-coloured `> `; 18px/28px on phones."
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "body-lg",
+            "fontSize": "18px",
+            "lineHeight": "28px",
+            "fontWeight": 400,
+            "usage": "Lead lines and card titles."
+          },
+          {
+            "name": "body",
+            "fontSize": "16px",
+            "lineHeight": "24px",
+            "fontWeight": 400,
+            "usage": "Default running text."
+          },
+          {
+            "name": "body-sm",
+            "fontSize": "14px",
+            "lineHeight": "20px",
+            "fontWeight": 400,
+            "usage": "The most used size: terminal output, buttons, list items."
+          },
+          {
+            "name": "body-sm-relaxed",
+            "fontSize": "14px",
+            "lineHeight": 1.625,
+            "fontWeight": 400,
+            "usage": "Multi-line terminal and transcript text (leading-relaxed)."
+          },
+          {
+            "name": "caption",
+            "fontSize": "12px",
+            "lineHeight": "16px",
+            "fontWeight": 400,
+            "usage": "Tags, window titles, terminal buttons, metadata."
+          }
+        ]
+      },
+      {
+        "name": "Prose",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "prose-sm",
+            "fontSize": "14px",
+            "lineHeight": 1.625,
+            "fontWeight": 400,
+            "usage": "Human-voice quotes inside cards, in fg after a 2px green left rule. Sans marks the change from terminal output to prose."
+          }
+        ]
+      }
+    ]
+  },
+  "spacing": {
+    "tokens": [
+      {
+        "name": "space-0.5",
+        "value": "2px",
+        "usage": "Tag vertical padding."
+      },
+      {
+        "name": "space-1",
+        "value": "4px",
+        "usage": "Tight vertical padding on small controls."
+      },
+      {
+        "name": "space-1.5",
+        "value": "6px",
+        "usage": "Status-line badge padding."
+      },
+      {
+        "name": "space-2",
+        "value": "8px",
+        "usage": "The default gap between inline items; tag and button horizontal padding."
+      },
+      {
+        "name": "space-2.5",
+        "value": "10px",
+        "usage": "Traffic-light dot diameter."
+      },
+      {
+        "name": "space-3",
+        "value": "12px",
+        "usage": "Window title-bar horizontal padding; gap between hero buttons."
+      },
+      {
+        "name": "space-4",
+        "value": "16px",
+        "usage": "Page side gutter on phones; button horizontal padding."
+      },
+      {
+        "name": "space-5",
+        "value": "20px",
+        "usage": "Window body padding on phones."
+      },
+      {
+        "name": "space-6",
+        "value": "24px",
+        "usage": "Page side gutter and window body padding from sm up; the dot-grid pitch."
+      },
+      {
+        "name": "space-10",
+        "value": "40px",
+        "usage": "Space between hero blocks."
+      },
+      {
+        "name": "space-12",
+        "value": "48px",
+        "usage": "Section vertical padding on phones."
+      },
+      {
+        "name": "space-16",
+        "value": "64px",
+        "usage": "Section vertical padding from sm up; hero top padding on phones."
+      },
+      {
+        "name": "space-24",
+        "value": "96px",
+        "usage": "Hero top padding from sm up."
+      }
+    ]
+  },
+  "radius": {
+    "tokens": [
+      {
+        "name": "radius-sm",
+        "value": "4px",
+        "usage": "Buttons, tags and inputs (Tailwind `rounded`)."
+      },
+      {
+        "name": "radius-md",
+        "value": "6px",
+        "usage": "Windows (`rounded-md`)."
+      },
+      {
+        "name": "radius-full",
+        "value": "9999px",
+        "usage": "Traffic-light and commit dots only."
+      }
+    ]
+  },
+  "shadow": {
+    "tokens": [
+      {
+        "name": "retro-shadow",
+        "value": {
+          "night": "6px 6px 0 0 #16161e",
+          "light": "6px 6px 0 0 #dcdfe8"
+        },
+        "usage": "The only shadow: a hard, unblurred offset in bg-dark under windows and the primary button."
+      }
+    ]
+  },
+  "container": {
+    "note": "Max widths from Tailwind's scale.",
+    "tokens": [
+      {
+        "name": "container-terminal",
+        "value": "672px",
+        "usage": "The hero terminal window (max-w-2xl)."
+      },
+      {
+        "name": "container-prose",
+        "value": "768px",
+        "usage": "Reading-width blocks (max-w-3xl)."
+      },
+      {
+        "name": "container-page",
+        "value": "1024px",
+        "usage": "The main column, centred (max-w-5xl)."
+      }
+    ]
+  }
+}

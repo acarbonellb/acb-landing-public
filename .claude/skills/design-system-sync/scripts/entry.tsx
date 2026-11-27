@@ -1,8 +1,9 @@
 // Design System bundle entry: the site's real components, plus the data the
 // page passes them, so previews and designs render exactly what the site does.
-import { Fragment, type ReactNode, useState } from "react";
+import { useState } from "react";
 import { CookieNotice } from "@/components/cookie-notice";
 import { Header } from "@/components/header";
+import { HomePage } from "@/components/home-page";
 import { resetAnalytics } from "@/lib/analytics";
 import { COOKIE_NOTICE_STORAGE_KEY } from "@/lib/cookie-notice";
 import { About } from "@/components/sections/about";
@@ -25,7 +26,7 @@ import { heroTerminal } from "@/components/hero-terminal";
 import { ExternalLink, Section, Tag, TerminalButton, Window } from "@/components/ui";
 import { agentEndpoints } from "@/lib/agent-endpoint";
 import { withEvalResults } from "@/lib/eval-results";
-import { type SectionId, sections } from "@/lib/sections";
+import { sections } from "@/lib/sections";
 import { practices, agentProjects, experience, profile, skillGroups } from "@/shared/profile";
 import { heroStatus } from "@/shared/site-copy";
 
@@ -47,29 +48,8 @@ const data = {
   heroTerminal: heroTerminal(profile, heroStatus),
 };
 
-/** The whole home page, composed as src/app/page.tsx does. */
-function Page() {
-  const content: Record<SectionId, ReactNode> = {
-    about: <About summary={profile.summary} />,
-    stack: <Stack skillGroups={skillGroups} />,
-    experience: <Experience roles={experience} />,
-    projects: <Projects agentProjects={data.agentProjects} practices={practices} />,
-    agent: <Agent endpoints={endpoints} />,
-    contact: <Contact profile={profile} endpoints={endpoints} />,
-  };
-  return (
-    <>
-      <Header />
-      <main id="main" tabIndex={-1} className="mx-auto max-w-5xl px-4 outline-none sm:px-6">
-        <Hero profile={profile} />
-        {sections.map((s) => (
-          <Fragment key={s.id}>{content[s.id]}</Fragment>
-        ))}
-      </main>
-      <StatusLine />
-    </>
-  );
-}
+/** The whole home page: the component src/app/page.tsx renders. */
+const Page = () => <HomePage evalSummary={__EVAL_SUMMARY__} endpoints={endpoints} />;
 
 const AgentWithDemo = (props: { endpoints?: typeof endpoints }) => (
   <Agent endpoints={props.endpoints === undefined ? endpoints : props.endpoints} />

@@ -1,12 +1,16 @@
 // The artifact's component cards: one preview.html per component, rendering
 // the real component from window.Acb with the site's real data (Acb.data).
 // build.mjs calls writePreviews; a new component needs a card here and a
-// README.md written into the artifact.
+// README.md in the skill's project/components/<Name>/.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const main = (inner) => `h("main", { className: "mx-auto max-w-5xl px-4 sm:px-6" }, ${inner})`;
 const pad = (inner) => `h("div", { className: "p-6" }, ${inner})`;
+
+// The components with no card of their own: each renders inside other cards.
+// check.mjs fails on any other component the bundle exports without a card.
+export const withoutCard = ["ExternalLink", "Markdown"];
 
 // name: [group, height, width|null, subtitle, render expression (A = window.Acb, D = A.data)]
 const cards = {

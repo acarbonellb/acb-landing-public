@@ -1,0 +1,189 @@
+{
+  "name": "albertocarbonell.dev",
+  "version": 1,
+  "meta": {
+    "source": "github",
+    "repo": "acarbonellb/acb-landing-public",
+    "paths": {
+      "tokens": [
+        "src/app/globals.css",
+        "src/lib/palette.ts",
+        "src/app/layout.tsx"
+      ],
+      "fonts": [
+        "assets/VT323-Regular.ttf",
+        "assets/OFL-VT323.txt"
+      ],
+      "assets": [
+        "src/app/icon.svg"
+      ],
+      "docs": [
+        "src/components/ui.tsx",
+        "src/components/sections/hero.tsx"
+      ]
+    },
+    "data": [
+      "src/shared/profile.ts",
+      "src/shared/site-copy.ts",
+      "agent/evals/summary.json"
+    ]
+  },
+  "color": {
+    "themes": {
+      "night": "Tokyo Night",
+      "light": "Tokyo Light"
+    },
+    "tokens": {
+      "bg": "Page background behind the dot grid; also text on solid blue and green fills (primary button, NORMAL badge) and the fill of tags.",
+      "bg-dark": "Window bodies and other raised panels; also the colour of the hard offset retro-shadow.",
+      "bg-highlight": "Window title bars (at 50% over bg-dark), hover rows and text selection.",
+      "border": "Every 1px border (windows, tags, buttons), the dot grid and the section-title rule.",
+      "fg": "Headings, the hero name and emphasised text on bg, bg-dark and bg-highlight.",
+      "fg-dark": "Default body text (set on body) on bg and bg-dark.",
+      "comment": "Muted text in the voice of a code comment: `// location`, prompts, window titles, metadata. Night value lifted from Tokyo Night's #565f89 to reach WCAG AA on bg and bg-dark.",
+      "blue": "The one interactive accent: links, hover and focus borders, section numbers, the cursor and the primary button fill.",
+      "cyan": "Tag text, inline code and URLs, the `you ›` prompt and link hover.",
+      "magenta": "Keywords and speakers: the hero title line, `agent ›` and `mcp ›` prompts, `export const`, company names.",
+      "orange": "Rare: the light-theme sun glyph in the theme toggle and the border of an unavailable chat notice.",
+      "yellow": "Commit hashes, tool calls such as `get_contact()`, the in-progress badge and the middle traffic-light dot.",
+      "green": "Strings and success: list bullets, highlights, the NORMAL status badge, the HEAD commit dot and the green traffic-light dot. Night value softened from Tokyo Night's #9ece6a.",
+      "teal": "Object keys in the code-styled stack section only.",
+      "red": "Error notices and the red traffic-light dot; never decorative.",
+      "scanline": "The CRT scanline overlay fixed over the whole page (a 3px repeating gradient); not for text or fills."
+    }
+  },
+  "type": {
+    "families": {
+      "mono": {
+        "fallback": "ui-monospace, SFMono-Regular, Menlo, monospace"
+      },
+      "sans": {
+        "fallback": "system-ui, -apple-system, \"Segoe UI\", sans-serif"
+      },
+      "pixel": {
+        "file": "assets/VT323-Regular.ttf",
+        "fallback": "\"JetBrains Mono\", monospace"
+      }
+    },
+    "groups": [
+      {
+        "name": "Display",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "hero-name",
+            "class": "font-sans text-[clamp(2.5rem,6.5vw,4.5rem)] leading-[1.05] font-semibold tracking-[-0.03em]",
+            "sample": "Alberto Carbonell",
+            "usage": "The h1 only. Fluid on the site: clamp(2.5rem, 6.5vw, 4.5rem), so 40px on phones up to 72px."
+          }
+        ]
+      },
+      {
+        "name": "Headings",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "section-title",
+            "class": "text-3xl font-bold",
+            "sample": "03. experience",
+            "usage": "Section h2 in fg, 24px/32px below the sm breakpoint. Its number is set in sans semibold, blue."
+          },
+          {
+            "name": "hero-title",
+            "class": "text-xl",
+            "sample": "> Senior Software Engineer",
+            "usage": "The line under the hero name, in magenta after a comment-coloured `> `; 18px/28px on phones."
+          }
+        ]
+      },
+      {
+        "name": "Text",
+        "family": "mono",
+        "styles": [
+          {
+            "name": "body-lg",
+            "class": "text-lg",
+            "usage": "Lead lines and card titles."
+          },
+          {
+            "name": "body",
+            "class": "text-base",
+            "usage": "Default running text."
+          },
+          {
+            "name": "body-sm",
+            "class": "text-sm",
+            "usage": "The most used size: terminal output, buttons, list items."
+          },
+          {
+            "name": "body-sm-relaxed",
+            "class": "text-sm leading-relaxed",
+            "usage": "Multi-line terminal and transcript text (leading-relaxed)."
+          },
+          {
+            "name": "caption",
+            "class": "text-xs",
+            "usage": "Tags, window titles, terminal buttons, metadata."
+          }
+        ]
+      },
+      {
+        "name": "Prose",
+        "family": "sans",
+        "styles": [
+          {
+            "name": "prose-sm",
+            "class": "font-sans text-sm leading-relaxed",
+            "usage": "Human-voice quotes inside cards, in fg after a 2px green left rule. Sans marks the change from terminal output to prose."
+          }
+        ]
+      }
+    ]
+  },
+  "spacing": {
+    "tokens": {
+      "space-0.5": "Tag vertical padding.",
+      "space-1": "Tight vertical padding on small controls.",
+      "space-1.5": "Status-line badge padding.",
+      "space-2": "The default gap between inline items; tag and button horizontal padding.",
+      "space-2.5": "Traffic-light dot diameter.",
+      "space-3": "Window title-bar horizontal padding; gap between hero buttons.",
+      "space-4": "Page side gutter on phones; button horizontal padding.",
+      "space-5": "Window body padding on phones.",
+      "space-6": "Page side gutter and window body padding from sm up; the dot-grid pitch.",
+      "space-10": "Space between hero blocks.",
+      "space-12": "Section vertical padding on phones.",
+      "space-16": "Section vertical padding from sm up; hero top padding on phones.",
+      "space-24": "Hero top padding from sm up."
+    }
+  },
+  "radius": {
+    "tokens": {
+      "radius-sm": "Buttons, tags and inputs (Tailwind `rounded`).",
+      "radius-md": "Windows (`rounded-md`).",
+      "radius-full": "Traffic-light and commit dots only."
+    }
+  },
+  "shadow": {
+    "tokens": {
+      "retro-shadow": "The only shadow: a hard, unblurred offset in bg-dark under windows and the primary button."
+    }
+  },
+  "container": {
+    "note": "Max widths from Tailwind's scale.",
+    "tokens": {
+      "container-terminal": {
+        "class": "max-w-2xl",
+        "usage": "The hero terminal window (max-w-2xl)."
+      },
+      "container-prose": {
+        "class": "max-w-3xl",
+        "usage": "Reading-width blocks (max-w-3xl)."
+      },
+      "container-page": {
+        "class": "max-w-5xl",
+        "usage": "The main column, centred (max-w-5xl)."
+      }
+    }
+  }
+}

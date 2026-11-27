@@ -1,18 +1,16 @@
 // Renders every preview the way the artifact's frame does (tokens, bundle.css,
 // the React scripts, the bundle, then the preview's body), in every theme,
-// and fails on a runtime error, an empty render or a page wider than its card.
-// First checks that every component `window.Acb` exports (entry.tsx) has its
-// README.md, its `declare const` in index.d.ts and its source in tokens.json
-// `meta.components`, and that nothing is left over for one that is gone; and
-// that index.d.ts's hand-written `AgentStatus` lists the statuses the site's
-// content allows (`agentStatuses` in profile.ts).
+// and fails on a runtime error, an empty render or a page wider than its card,
+// and on a component the bundle exports with no card (previews.mjs).
+// That every component is complete (README, types, source) is sync.test.ts's
+// job, on the sync command's output.
 //
 // Usage: node check.mjs <project dir> <shots dir> [component names to screenshot...]
 import { createRequire } from "node:module";
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { agentStatuses, componentNames } from "./components.mjs";
+import { withoutCard } from "./previews.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const { chromium } = createRequire(join(repo, "package.json"))("@playwright/test");
@@ -37,40 +35,6 @@ const tokensCss =
   ` :root {${lengths}${families}}`;
 const comp = join(project, "components");
 
-// Every component in step across the artifact's files (a card is optional:
-// ExternalLink and Markdown have none).
-const exported = componentNames();
-const dts = readFileSync(join(comp, "index.d.ts"), "utf8");
-const declared = [...dts.matchAll(/export declare const (\w+)/g)]
-  .map((m) => m[1])
-  .filter((n) => n !== "data");
-const sourced = Object.keys(t.meta?.components ?? {});
-const folders = readdirSync(comp, { withFileTypes: true })
-  .filter((e) => e.isDirectory() && e.name !== "lib" && e.name !== "Cover")
-  .map((e) => e.name);
-const incomplete = [
-  ...exported.flatMap((n) => [
-    ...(existsSync(join(comp, n, "README.md")) ? [] : [`${n}: no components/${n}/README.md`]),
-    ...(declared.includes(n) ? [] : [`${n}: no \`export declare const ${n}\` in components/index.d.ts`]),
-    ...(sourced.includes(n) ? [] : [`${n}: no tokens.json meta.components.${n}`]),
-  ]),
-  ...[...new Set([...declared, ...sourced, ...folders])]
-    .filter((n) => !exported.includes(n))
-    .map((n) => `${n}: not in entry.tsx \`components\` but still in the artifact's files`),
-];
-const statuses = agentStatuses();
-const typed = [.../export type AgentStatus = ([^;]*);/.exec(dts)?.[1].matchAll(/"([^"]+)"/g) ?? []].map((m) => m[1]);
-if ([...statuses].sort().join() !== [...typed].sort().join()) {
-  incomplete.push(
-    `AgentStatus in components/index.d.ts is ${typed.map((s) => `"${s}"`).join(" | ") || "missing"}; ` +
-      `agentStatuses in src/shared/profile.ts is ${statuses.map((s) => `"${s}"`).join(" | ")}`,
-  );
-}
-if (incomplete.length) {
-  console.error(`components out of step (see the skill's step 4):\n  ${incomplete.join("\n  ")}`);
-  process.exit(1);
-}
-
 const head = (theme) => `<!doctype html><html data-theme="${theme}"><head><meta charset="utf-8">
 <style>${tokensCss}</style><link rel="stylesheet" href="file://${comp}/bundle.css">
 <script src="file://${comp}/lib/react.production.min.js"></script>
@@ -83,6 +47,19 @@ const animated = new Set(["TypewriterTerminal", "Hero", "Page"]);
 const names = readdirSync(comp).filter((n) => n !== "Cover" && existsSync(join(comp, n, "preview.html")));
 const browser = await chromium.launch();
 const failures = [];
+
+// Every component window.Acb exports has a card, unless previews.mjs says it
+// has none.
+const probe = join(shots, "exports.html");
+writeFileSync(probe, head(themes[0]) + "<body></body></html>");
+const exportsPage = await browser.newPage();
+await exportsPage.goto("file://" + probe);
+const exported = await exportsPage.evaluate(() => Object.keys(window.Acb ?? {}).filter((k) => k !== "data"));
+await exportsPage.close();
+if (!exported.length) failures.push("the bundle exports no components (window.Acb)");
+for (const name of exported)
+  if (!names.includes(name) && !withoutCard.includes(name))
+    failures.push(`${name}: exported by the bundle with no card (components/${name}/preview.html)`);
 for (const theme of themes) {
   for (const name of names) {
     const src = readFileSync(join(comp, name, "preview.html"), "utf8");
@@ -108,4 +85,4 @@ if (failures.length) {
   console.error(failures.join("\n"));
   process.exit(1);
 }
-console.log(`${exported.length} components complete; ${names.length} previews render in ${themes.join(" and ")}`);
+console.log(`${names.length} previews render in ${themes.join(" and ")}`);

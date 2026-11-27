@@ -1,33 +1,47 @@
 ---
 name: design-system-sync
-description: Re-sync the site's Design System artifact on claude.ai from this repo. Use after a merged change to a file listed in sources.json (the edit hook names them), when adding or removing a component card, or to check whether the artifact is stale.
+description: Publish the Design System artifact on claude.ai. Use when a hook says the Design System is behind origin/main, or to run the same sync by hand after a failed one is fixed.
 ---
 
 # Design System sync
 
-The Design System artifact (its URL is `artifact` in [`sources.json`](sources.json)) is a **derived copy** of this repo: tokens, fonts, the site icon, and the site's real components compiled for React 19 with live previews and the real data. The repo is the source of truth; the artifact changes only by a re-sync from a commit on `main`.
+The Design System artifact (`artifact` in [`sources.json`](sources.json)) is generated from `origin/main` by the sync command. Hooks in `.claude/settings.json` keep it current:
 
-`sources.json` lists every repo file the artifact is built from, by part: `tokens` (`globals.css`, `layout.tsx`), `assets`, `mirrored` (`page.tsx`, which `scripts/entry.tsx` copies by hand as `Page`), `content` (the copy and eval results the previews show: they change no design), `bundle` (every other file the component bundle reads, written by the build) and `skill` (this skill's scripts that shape the bundle and the cards).
+- `scripts/detect.mjs`, after a `gh pr merge`, a `git fetch` or `git pull`, and at session start. When a file of `sources.json` changed between the `ds-synced` tag and `origin/main`, it runs the sync command and gives you the instruction below.
+- `scripts/verify.mjs`, after an Artifact `list` with `scope: "files"` on the artifact. It compares every sha256 with the sync manifest of the commit the local `origin/main` points at and, on a full match, moves `ds-synced` to that commit and pushes it. A manifest of any other commit never moves it.
 
-## Steps
+The sync is done when `verify.mjs` reports `ds-synced moved to <commit> and pushed`. Only that hook moves the tag.
 
-1. **Find what is stale.** Read `project/tokens.json` from the artifact (`Artifact` read with `path`) and take `meta.ref` (`main@<sha>`). Run `git diff --name-only <sha> origin/main` and match the files against `sources.json`; a `skill` file counts as `bundle` (a component or card added to `entry.tsx` or `previews.mjs` reaches the artifact only by a sync). Done when you have the set of parts to redo, or none, in which case report the artifact current and stop. When only `content` changed, the artifact's design is current and only its copy lags: say so and sync only if the user wants it (any other sync carries the content along, since the build always reads the current files).
-2. **Check out the commit you sync to**: `origin/main`, with `pnpm install --frozen-lockfile` if `node_modules` is missing. Done when `git status` is clean at that commit.
-3. **Read before you write.** First `read` the artifact URL with no `path`: the publish is refused until that read has seen the live version, and a read by `path` doesn't count. Then `read` the type's `SKILL.md` (file shapes, the publish call, the index rules), `project/design-system.json`, `project/tokens.json` and every `project/components/` file a `scope: "files"` listing shows, in one call with `paths`. They land under one folder in your scratchpad: that folder's `project/` is the `<project dir>` below. Done when it holds every `project/components/` file of the listing: `build.mjs` lists what to publish against them, and `check.mjs` reads the READMEs.
-4. **Redo each stale part**:
-   - **tokens**: `node .claude/skills/design-system-sync/scripts/sync-tokens.mjs <project dir>` updates colour values in place. A colour it reports as added gets a usage note from the code that uses it; one reported as gone is removed only with the user's go-ahead. Type, spacing, radius and shadow changes from `layout.tsx` or `globals.css` go into `tokens.json` by hand, exact values.
-   - **mirrored**: make `Page` in `scripts/entry.tsx` compose the page exactly as the new `src/app/page.tsx` does.
-   - **bundle** (and after **tokens** or **mirrored**): `node .claude/skills/design-system-sync/scripts/build.mjs <project dir>`. If it fails because the bundle reads a file `sources.json` doesn't list, rerun with `--update-sources`; the changed `sources.json` goes in a PR.
-   - **assets**: upload a changed icon as an asset and update its record in the index; copy a changed font file to `fonts/`.
-   - **a component added or removed**: its entry in `components` in `scripts/entry.tsx`, its card in `scripts/previews.mjs`, its `README.md`, its props in `components/index.d.ts` and its source in `tokens.json` `meta.components`, all in step.
-   Done when every stale part is rebuilt.
-5. **Check**: `node .claude/skills/design-system-sync/scripts/check.mjs <project dir> <shots dir> Page`. It first fails on a component out of step (the step-4 pieces, or leftovers of one removed) or on an `AgentStatus` in `index.d.ts` that differs from `agentStatuses` in `profile.ts` (that file is hand-written: fix it there), then renders every preview; look at `Page.<theme>.png` in both themes. Done when it prints that every component is complete and every preview renders, and the page looks like the live site.
-6. **Publish**: set `tokens.json` `meta.ref` to `main@<short sha>` and `meta.synced` to today, then publish to the artifact URL in one call exactly the files `build.mjs` listed under `publish:`, plus `tokens.json` and every file you edited by hand (`components/index.d.ts` with `contentType: "text/plain"`), and `null` for each file `check.mjs` reported as left over. The index goes last, read again right before (only the index), carrying a new `lastChange`. Done when the publish succeeds and `git status` shows nothing but the `sources.json`, `entry.tsx` or `previews.mjs` changes you meant.
+## When a hook gives the instruction
 
-## Reference
+The instruction names the artifact URL and the sync manifest. Make its three Artifact calls in order, and no other Artifact call in between:
 
-- **Colours live only in `tokens.json`.** `build.mjs` compiles `globals.css` without its two theme blocks, so the artifact's `tokens.css` supplies every colour and an edit on its page would win. Edits belong in the repo; a token changed on the page is overwritten by the next sync.
-- **The scripts write only outside the repo**: `build.mjs` refuses a `<project dir>` inside it.
-- **The bundle runs on the page's React.** `build.mjs` resolves `react` and `react/jsx-runtime` to `window.React`, with a ref-based `useEffectEvent` when the page's React lacks it, so the same `bundle.js` mounts on the artifact's React 19 and on a Design canvas, whose runtime provides React 18. Bundling React 19's own JSX runtime breaks the canvas (minified React error #31). A new React 19-only API in a component needs the same fallback there.
-- **The agent is unreachable from the artifact.** `entry.tsx` gives the chat `agent.invalid` endpoints, so `Agent` and `Contact` render as on the site and a question sent from a preview fails. The MCP URL shown is the site's public one.
-- **The edit hook** (`scripts/hook.mjs`, wired in `.claude/settings.json`) reminds once per session, on file-tool edits to listed paths outside `content`. Shell edits and changes made outside Claude Code reach the artifact only through step 1.
+1. `read` the artifact URL with no `path`. The publish is refused until a read has seen the live version.
+2. Publish with the manifest's `publish` object as the arguments, copied unchanged (`url`, `root`, `file_path`, `files`).
+3. `list` the artifact URL with `scope: "files"`.
+
+Then act on what `verify.mjs` reports:
+
+- **Moved and pushed**: done.
+- **Leftovers under `project/`**: make the removal publish it prints, unchanged, then `list` again.
+- **Files that differ**, or a refused publish: run the manual sync below once. If they still differ, tell the user which paths.
+- **Matched, but the tag push failed**: tell the user the reason it gives. The next trigger syncs again.
+- **Unknown shape**: tell the user. The tool's response format changed, and `verify.mjs` and its fixture need an update in a pull request.
+
+When `detect.mjs` reports a failed sync instead, it gives the user the reason and you nothing. Fix the cause in a pull request; once merged, the next trigger syncs.
+
+## Manual sync
+
+The same sync the hook runs, for after a fix or when the user asks. From any worktree of the clone:
+
+1. Fetch what `detect.mjs` fetches:
+   `git fetch --quiet --no-tags origin +refs/heads/main:refs/remotes/origin/main +refs/tags/ds-synced:refs/tags/ds-synced`
+2. Run the sync command for `origin/main`, writing into your scratchpad:
+   `node .claude/skills/design-system-sync/scripts/sync.mjs --ref origin/main --out <scratchpad>/design-system-sync/$(git rev-parse origin/main)`
+   Done when it exits 0; its last line is `manifest: <path>`. On exit 1 it prints the reason: fix that in a pull request first.
+3. Read the manifest at that path, then make the three Artifact calls and act on the report exactly as in [When a hook gives the instruction](#when-a-hook-gives-the-instruction).
+
+## Known limits
+
+- **A changed site icon fails the sync** until the icon is uploaded to the artifact as an asset and its new blob, size and sha256 are recorded in `index.json`, in a pull request. The artifact type keeps images as uploads, not files (#156).
+- **The sync writes `project/design-system.json` whole** from `index.json`, so an edit made on the artifact's page is overwritten by the next sync. Make edits in the repo (#157).

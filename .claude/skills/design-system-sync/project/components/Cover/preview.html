@@ -1,0 +1,65 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; }
+  body { background: var(--bg); }
+  .cover { position: relative; width: 960px; height: 288px; overflow: hidden; background: var(--bg); }
+  .cover svg { position: absolute; left: 0; top: 0; }
+  .blue { fill: var(--blue); }
+  .magenta { fill: var(--magenta); }
+  .green { fill: var(--green); }
+  .yellow { fill: var(--yellow); }
+  .tint { fill: var(--border); }
+  .dot { fill: var(--border); }
+  .md { rx: var(--radius-md); }
+  .sm { rx: var(--radius-sm); }
+  .text { position: absolute; left: 48px; bottom: 36px; max-width: 864px; }
+  .name {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 64px;
+    line-height: .95;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+  }
+  .tagline {
+    margin: 16px 0 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--comment);
+  }
+</style>
+</head>
+<body>
+<div class="cover">
+  <svg width="960" height="112" viewBox="0 0 960 112" aria-hidden="true">
+    <!--
+      blocks: blue 288x136 (space-24*3 wide), tint=border 192x112, magenta 120x88, green 72x24 (the favicon's cursor bar), yellow 24x24 (space-6)
+      arrangement: top band, unequal blocks bleeding off the top edge like windows stacked above the fold, left to right by weight
+      pattern: dot grid, "the page sits on a faint dot grid: 1px border dots every space-6" - the site's own background, so it is the most specific row
+      steps and radii: pitch and gaps space-6 (24px), radius-md on slabs, radius-sm on the small bar and square
+    -->
+    <rect class="blue md" x="48" y="-24" width="288" height="136"/>
+    <rect class="tint md" x="360" y="-24" width="192" height="112"/>
+    <rect class="magenta md" x="576" y="-24" width="120" height="88"/>
+    <rect class="green sm" x="576" y="88" width="72" height="24"/>
+    <rect class="yellow sm" x="672" y="88" width="24" height="24"/>
+    <g class="dot">
+      <circle cx="732" cy="12" r="1.5"/><circle cx="756" cy="12" r="1.5"/><circle cx="780" cy="12" r="1.5"/><circle cx="804" cy="12" r="1.5"/><circle cx="828" cy="12" r="1.5"/><circle cx="852" cy="12" r="1.5"/><circle cx="876" cy="12" r="1.5"/><circle cx="900" cy="12" r="1.5"/><circle cx="924" cy="12" r="1.5"/><circle cx="948" cy="12" r="1.5"/>
+      <circle cx="732" cy="36" r="1.5"/><circle cx="756" cy="36" r="1.5"/><circle cx="780" cy="36" r="1.5"/><circle cx="804" cy="36" r="1.5"/><circle cx="828" cy="36" r="1.5"/><circle cx="852" cy="36" r="1.5"/><circle cx="876" cy="36" r="1.5"/><circle cx="900" cy="36" r="1.5"/><circle cx="924" cy="36" r="1.5"/><circle cx="948" cy="36" r="1.5"/>
+      <circle cx="732" cy="60" r="1.5"/><circle cx="756" cy="60" r="1.5"/><circle cx="780" cy="60" r="1.5"/><circle cx="804" cy="60" r="1.5"/><circle cx="828" cy="60" r="1.5"/><circle cx="852" cy="60" r="1.5"/><circle cx="876" cy="60" r="1.5"/><circle cx="900" cy="60" r="1.5"/><circle cx="924" cy="60" r="1.5"/><circle cx="948" cy="60" r="1.5"/>
+      <circle cx="732" cy="84" r="1.5"/><circle cx="756" cy="84" r="1.5"/><circle cx="780" cy="84" r="1.5"/><circle cx="804" cy="84" r="1.5"/><circle cx="828" cy="84" r="1.5"/><circle cx="852" cy="84" r="1.5"/><circle cx="876" cy="84" r="1.5"/><circle cx="900" cy="84" r="1.5"/><circle cx="924" cy="84" r="1.5"/><circle cx="948" cy="84" r="1.5"/>
+    </g>
+  </svg>
+  <div class="text">
+    <p class="name">albertocarbonell.dev</p>
+    <p class="tagline">// Senior Software Engineer — AI Agents &amp; Full-Stack TypeScript</p>
+  </div>
+</div>
+</body>
+</html>

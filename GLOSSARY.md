@@ -181,3 +181,21 @@ _Avoid_: backup, retry, contact form
 **Contact question**:
 The canned message "ask my agent" sends to the chat from the contact section, asking for Alberto's email. The page shows no address itself: the agent answers it, then the MCP tools, then a LinkedIn link.
 _Avoid_: contact form, show email
+
+### Design System
+
+**Design System**:
+The artifact on claude.ai that shows the site's tokens, fonts, icon and real components with live cards. It is a derived copy: every file under its `project/` folder is generated from one commit on `main`, and it changes only by a sync.
+_Avoid_: style guide, component library, design canvas (a canvas is per-task scratch space built from it)
+
+**Sync**:
+Bringing the Design System up to one commit of `main`: the sync command builds the whole `project/` folder from that commit in a temporary worktree and writes the sync manifest, then the agent publishes the manifest and lists the artifact's files to confirm it.
+_Avoid_: deploy, update, refresh
+
+**Sync manifest**:
+The list of every file one sync publishes, with its published path, local file, content type and sha256, plus the publish call itself. It is stored under the git common directory as `design-system-sync/<commit>.json`, so every worktree of the clone finds it.
+_Avoid_: publish list, file list
+
+**Synced marker**:
+The git tag `ds-synced` on GitHub, at the last commit whose sync verified. Only the verification hook moves it, after the artifact's file listing matched the sync manifest; it is force-moved and adds no commit. A sync is pending when a sources file changed between it and `origin/main`.
+_Avoid_: last sync, sync commit, synced branch

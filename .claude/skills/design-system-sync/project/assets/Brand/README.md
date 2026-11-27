@@ -1,0 +1,1 @@
+`icon.svg` is the site icon (favicon): a `blue` prompt chevron and a `green` cursor bar on a `bg` tile outlined in `border`. Its colours are the fixed Tokyo Night hex values, so it does not follow the light theme. Use it as is; do not recolour or redraw it.

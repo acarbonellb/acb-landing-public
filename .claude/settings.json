@@ -2,13 +2,35 @@
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "matcher": "Artifact",
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/hook.mjs\"",
-            "timeout": 10,
-            "statusMessage": "Checking the Design System sources"
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/verify.mjs\"",
+            "timeout": 60,
+            "statusMessage": "Verifying the Design System listing"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/detect.mjs\"",
+            "timeout": 330
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/detect.mjs\"",
+            "timeout": 330,
+            "statusMessage": "Checking whether the Design System needs a sync"
           }
         ]
       }
