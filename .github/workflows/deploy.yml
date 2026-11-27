@@ -50,6 +50,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
+      # Before the unit suite: besides the browser tests, it needs Chromium
+      # for the Design System render check (sync.test.ts runs scripts/check.mjs
+      # on the sync command's output for the checked-out commit).
+      - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm test
       - run: pnpm agent:lint
       - run: pnpm agent:test
@@ -75,7 +79,6 @@ jobs:
           echo "site=$(scripts/artifact-hash.sh out)" >> "$GITHUB_OUTPUT"
           echo "agent=$(scripts/artifact-hash.sh agent/dist/main.js)" >> "$GITHUB_OUTPUT"
 
-      - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm test:e2e
 
       # The browser tests ran against these bytes, not a copy they changed.

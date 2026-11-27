@@ -1,6 +1,6 @@
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import ts from "typescript";
@@ -311,6 +311,66 @@ describe("the component types file", () => {
     const errors = ts.getPreEmitDiagnostics(program).map((d) => ts.flattenDiagnosticMessageText(d.messageText, "\n"));
     expect(errors).toEqual([]);
   });
+});
+
+// The render check (scripts/check.mjs) as a command: a project folder in, an
+// exit code and the failures on stderr out. It needs Playwright's Chromium.
+describe("the render check", () => {
+  const check = join(skill, "scripts/check.mjs");
+  const cards = components.filter((n) => !noCard.includes(n));
+  const runCheck = (project: string) =>
+    spawnSync("node", [check, project, mkdtempSync(join(tmpdir(), "ds-shots-"))], {
+      encoding: "utf8",
+      timeout: 600_000,
+    });
+  // A copy of the sync command's output, with `edit` applied to it.
+  const copyWith = (edit: (project: string) => void) => {
+    const copy = join(mkdtempSync(join(tmpdir(), "ds-broken-")), "project");
+    cpSync(out, copy, { recursive: true });
+    edit(copy);
+    return copy;
+  };
+  // Replaces the render expression of a card's preview.
+  const renderInCard = (project: string, name: string, render: string) => {
+    const file = join(project, "components", name, "preview.html");
+    const html = readFileSync(file, "utf8");
+    const at = html.indexOf(".render(") + ".render(".length;
+    const end = html.lastIndexOf(");\n</script>");
+    writeFileSync(file, html.slice(0, at) + render + html.slice(end));
+  };
+
+  it("renders every card of the sync command's output in the night and the light theme", () => {
+    const r = runCheck(out);
+    expect(r.status, r.stderr).toBe(0);
+    expect(r.stdout).toContain(`${cards.length} previews render in night and light`);
+  }, 600_000);
+
+  it("fails on a card that throws, renders nothing or overflows, naming the card and the theme", () => {
+    const broken = copyWith((p) => {
+      renderInCard(p, "Tag", `h(function Broken() { throw new Error("broken Tag card"); })`);
+      renderInCard(p, "About", `null`);
+      renderInCard(p, "Window", `h("div", { style: { width: "5000px" } }, "too wide")`);
+    });
+    const r = runCheck(broken);
+    expect(r.status).not.toBe(0);
+    for (const theme of ["night", "light"]) {
+      expect(r.stderr).toMatch(new RegExp(`^${theme} Tag: .*broken Tag card`, "m"));
+      expect(r.stderr).toMatch(new RegExp(`^${theme} About: rendered nothing$`, "m"));
+      expect(r.stderr).toMatch(new RegExp(`^${theme} Window: wider than its card$`, "m"));
+    }
+    expect(r.stderr).not.toMatch(/^\w+ (Header|Page):/m);
+  }, 600_000);
+
+  it("fails on a component the bundle exports with no card, naming it", () => {
+    const broken = copyWith((p) => {
+      const bundle = join(p, "components/bundle.js");
+      writeFileSync(bundle, readFileSync(bundle, "utf8") + "\nwindow.Acb.Gauge = function Gauge() { return null; };\n");
+    });
+    const r = runCheck(broken);
+    expect(r.status).not.toBe(0);
+    expect(r.stderr).toMatch(/^Gauge: exported by the bundle with no card \(components\/Gauge\/preview\.html\)$/m);
+    expect(r.stderr).not.toMatch(/^(ExternalLink|Markdown):/m);
+  }, 600_000);
 });
 
 describe("the sources list", () => {
