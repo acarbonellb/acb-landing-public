@@ -3,16 +3,14 @@
 // and fails on a runtime error, an empty render or a page wider than its card.
 // First checks that every component `window.Acb` exports (entry.tsx) has its
 // README.md, its `declare const` in index.d.ts and its source in tokens.json
-// `meta.components`, and that nothing is left over for one that is gone; and
-// that index.d.ts's hand-written `AgentStatus` lists the statuses the site's
-// content allows (`agentStatuses` in profile.ts).
+// `meta.components`, and that nothing is left over for one that is gone.
 //
 // Usage: node check.mjs <project dir> <shots dir> [component names to screenshot...]
 import { createRequire } from "node:module";
 import { readFileSync, readdirSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { agentStatuses, componentNames } from "./components.mjs";
+import { componentNames } from "./components.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 const { chromium } = createRequire(join(repo, "package.json"))("@playwright/test");
@@ -58,14 +56,6 @@ const incomplete = [
     .filter((n) => !exported.includes(n))
     .map((n) => `${n}: not in entry.tsx \`components\` but still in the artifact's files`),
 ];
-const statuses = agentStatuses();
-const typed = [.../export type AgentStatus = ([^;]*);/.exec(dts)?.[1].matchAll(/"([^"]+)"/g) ?? []].map((m) => m[1]);
-if ([...statuses].sort().join() !== [...typed].sort().join()) {
-  incomplete.push(
-    `AgentStatus in components/index.d.ts is ${typed.map((s) => `"${s}"`).join(" | ") || "missing"}; ` +
-      `agentStatuses in src/shared/profile.ts is ${statuses.map((s) => `"${s}"`).join(" | ")}`,
-  );
-}
 if (incomplete.length) {
   console.error(`components out of step (see the skill's step 4):\n  ${incomplete.join("\n  ")}`);
   process.exit(1);

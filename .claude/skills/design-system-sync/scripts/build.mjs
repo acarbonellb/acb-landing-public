@@ -5,7 +5,8 @@
 //
 // Usage: node build.mjs <project dir> [--update-sources]
 // <project dir> is the artifact's `project/` folder on disk (outside the
-// repo). Writes only under <project dir>/components. Fails when the bundle
+// repo). Writes only under <project dir>/components, plus `meta.components`
+// in <project dir>/tokens.json, which must exist. Fails when the bundle
 // reads a repo file that sources.json doesn't list, so the hook's watch list
 // can't drift; --update-sources rewrites the bundle list instead. Ends by
 // listing every file under components/ the build added or changed, against
@@ -17,6 +18,7 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
 import { componentNames, entry, hashes } from "./components.mjs";
+import { componentTypes } from "./types.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const skill = dirname(here);
@@ -173,10 +175,20 @@ if (args.includes("--update-sources")) {
   if (stale.length) console.log(`sources.json lists files the bundle no longer reads: ${stale.join(", ")}`);
 }
 
-// 3. Previews first: Tailwind scans them for classes.
+// 3. The component types and each component's source, from the TypeScript
+// checker (types.mjs): no hand-written copy to go stale.
+const types = componentTypes();
+writeFileSync(join(compDir, "index.d.ts"), types.dts);
+const tokensPath = join(out, "tokens.json");
+if (!existsSync(tokensPath)) throw new Error(`${tokensPath} is missing: read it from the artifact first`);
+const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
+tokens.meta = { ...tokens.meta, components: types.sources };
+writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
+
+// 4. Previews first: Tailwind scans them for classes.
 const previews = writePreviews(out);
 
-// 4. The stylesheet: globals.css without its colour values (they live in
+// 5. The stylesheet: globals.css without its colour values (they live in
 // tokens.json, so an edit on the artifact's page wins), compiled by the
 // site's Tailwind over the components and the previews.
 const globalsCss = readFileSync(join(repo, "src/app/globals.css"), "utf8");
