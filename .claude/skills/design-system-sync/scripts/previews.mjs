@@ -1,7 +1,7 @@
 // The artifact's component cards: one preview.html per component, rendering
 // the real component from window.Acb with the site's real data (Acb.data).
 // build.mjs calls writePreviews; a new component needs a card here and a
-// README.md written into the artifact.
+// README.md in the skill's project/components/<Name>/.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 

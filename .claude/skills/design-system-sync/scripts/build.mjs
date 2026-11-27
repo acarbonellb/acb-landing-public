@@ -1,23 +1,27 @@
 // Builds the Design System artifact's components from this checkout: React 19
 // as two classic scripts, the site's components as one IIFE (`window.Acb`,
 // running on the page's React, 19 or a Design canvas's 18),
-// the previews, and the stylesheet compiled by the site's own Tailwind.
+// the previews, the stylesheet compiled by the site's own Tailwind, the
+// component types (types.mjs) and tokens.json (tokens.mjs).
 //
 // Usage: node build.mjs <project dir> [--update-sources]
 // <project dir> is the artifact's `project/` folder on disk (outside the
-// repo). Writes only under <project dir>/components, plus `meta.components`
-// in <project dir>/tokens.json, which must exist. Fails when the bundle
+// repo). Writes the skill's `project/` folder (READMEs and the cover card)
+// into it, then tokens.json and the rest under <project dir>/components.
+// Fails when the bundle
 // reads a repo file that sources.json doesn't list, so the hook's watch list
 // can't drift; --update-sources rewrites the bundle list instead. Ends by
-// listing every file under components/ the build added or changed, against
+// listing every file the build added or changed, against
 // what the folder held before (the files read from the artifact): exactly
 // the build's share of the publish.
+import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
+import { cpSync, readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
 import { componentNames, entry, hashes } from "./components.mjs";
+import { generateTokens } from "./tokens.mjs";
 import { componentTypes } from "./types.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -46,8 +50,12 @@ const sourcesPath = join(skill, "sources.json");
 const sources = JSON.parse(readFileSync(sourcesPath, "utf8"));
 const compDir = join(out, "components");
 const libDir = join(compDir, "lib");
-const before = hashes(compDir);
+const before = hashes(out);
 mkdirSync(libDir, { recursive: true });
+
+// 0. The hand-written copy (READMEs, the cover card), kept in the skill's
+// `project/` folder at the paths the artifact uses.
+cpSync(join(skill, "project"), out, { recursive: true });
 
 const common = {
   bundle: true,
@@ -175,15 +183,11 @@ if (args.includes("--update-sources")) {
   if (stale.length) console.log(`sources.json lists files the bundle no longer reads: ${stale.join(", ")}`);
 }
 
-// 3. The component types and each component's source, from the TypeScript
-// checker (types.mjs): no hand-written copy to go stale.
+// 3. The component types and each component's source (tokens.json
+// `meta.components`, step 6), from the TypeScript checker (types.mjs): no
+// hand-written copy to go stale.
 const types = componentTypes();
 writeFileSync(join(compDir, "index.d.ts"), types.dts);
-const tokensPath = join(out, "tokens.json");
-if (!existsSync(tokensPath)) throw new Error(`${tokensPath} is missing: read it from the artifact first`);
-const tokens = JSON.parse(readFileSync(tokensPath, "utf8"));
-tokens.meta = { ...tokens.meta, components: types.sources };
-writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
 
 // 4. Previews first: Tailwind scans them for classes.
 const previews = writePreviews(out);
@@ -232,10 +236,22 @@ for (const f of ["bundle.js", "bundle.css", "lib/react.production.min.js", "lib/
 const react = JSON.parse(readFileSync(join(repo, "node_modules/react/package.json"), "utf8")).version;
 console.log(`built ${names.length} components and ${previews} previews with React ${react}`);
 
+// 6. tokens.json, for the checked-out commit: `meta.ref` and `meta.synced` are
+// its short sha and its date, so two builds of one commit give the same file.
+// `meta.components` comes from step 3.
+const tokensPath = join(out, "tokens.json");
+const git = (...a) => execFileSync("git", a, { cwd: repo, encoding: "utf8" }).trim();
+const tokens = await generateTokens({
+  ref: `main@${git("rev-parse", "--short=7", "HEAD")}`,
+  synced: git("log", "-1", "--format=%cs", "HEAD"),
+  components: types.sources,
+});
+writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
+
 // The build's share of the publish: what it added or changed.
-const after = hashes(compDir);
+const after = hashes(out);
 const publish = Object.keys(after)
   .filter((f) => before[f] !== after[f])
   .sort()
-  .map((f) => `project/components/${f}${f in before ? "" : " (new)"}`);
+  .map((f) => `project/${f}${f in before ? "" : " (new)"}`);
 console.log(publish.length ? `publish:\n  ${publish.join("\n  ")}` : "publish: nothing (the build changed no file)");
