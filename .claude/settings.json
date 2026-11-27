@@ -11,6 +11,17 @@
             "statusMessage": "Checking the Design System sources"
           }
         ]
+      },
+      {
+        "matcher": "Artifact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/design-system-sync/scripts/verify.mjs\"",
+            "timeout": 60,
+            "statusMessage": "Verifying the Design System listing"
+          }
+        ]
       }
     ]
   }

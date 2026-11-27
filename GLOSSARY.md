@@ -195,3 +195,7 @@ _Avoid_: deploy, update, refresh
 **Sync manifest**:
 The list of every file one sync publishes, with its published path, local file, content type and sha256, plus the publish call itself. It is stored under the git common directory as `design-system-sync/<commit>.json`, so every worktree of the clone finds it.
 _Avoid_: publish list, file list
+
+**Synced marker**:
+The git tag `ds-synced` on GitHub, at the last commit whose sync verified. Only the verification hook moves it, after the artifact's file listing matched the sync manifest; it is force-moved and adds no commit. A sync is pending when a sources file changed between it and `origin/main`.
+_Avoid_: last sync, sync commit, synced branch
