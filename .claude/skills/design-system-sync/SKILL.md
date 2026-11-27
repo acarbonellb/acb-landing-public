@@ -40,3 +40,8 @@ The same sync the hook runs, for after a fix or when the user asks. From any wor
    `node .claude/skills/design-system-sync/scripts/sync.mjs --ref origin/main --out <scratchpad>/design-system-sync/$(git rev-parse origin/main)`
    Done when it exits 0; its last line is `manifest: <path>`. On exit 1 it prints the reason: fix that in a pull request first.
 3. Read the manifest at that path, then make the three Artifact calls and act on the report exactly as in [When a hook gives the instruction](#when-a-hook-gives-the-instruction).
+
+## Known limits
+
+- **A changed site icon fails the sync** until the icon is uploaded to the artifact as an asset and its new blob, size and sha256 are recorded in `index.json`, in a pull request. The artifact type keeps images as uploads, not files (#156).
+- **The sync writes `project/design-system.json` whole** from `index.json`, so an edit made on the artifact's page is overwritten by the next sync. Make edits in the repo (#157).
