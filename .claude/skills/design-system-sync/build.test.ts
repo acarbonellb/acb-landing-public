@@ -101,6 +101,8 @@ describe("build.mjs generates tokens.json's meta.components from the bundle entr
       Agent: "src/components/sections/agent.tsx",
       Contact: "src/components/sections/contact.tsx",
       CookieNotice: "src/components/cookie-notice.tsx",
+      // The component src/app/page.tsx renders, not a copy in entry.tsx.
+      Page: "src/components/home-page.tsx",
     });
   });
 
