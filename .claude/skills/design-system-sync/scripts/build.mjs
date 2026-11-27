@@ -6,16 +6,17 @@
 //
 // Usage: node build.mjs <project dir> [--update-sources]
 // <project dir> is the artifact's `project/` folder on disk (outside the
-// repo). Writes only <project dir>/tokens.json and under
-// <project dir>/components. Fails when the bundle
+// repo). Writes the skill's `project/` folder (READMEs and the cover card)
+// into it, then tokens.json and the rest under <project dir>/components.
+// Fails when the bundle
 // reads a repo file that sources.json doesn't list, so the hook's watch list
 // can't drift; --update-sources rewrites the bundle list instead. Ends by
-// listing tokens.json and every file under components/ the build added or
-// changed, against what the folder held before (the files read from the
-// artifact): exactly the build's share of the publish.
+// listing every file the build added or changed, against
+// what the folder held before (the files read from the artifact): exactly
+// the build's share of the publish.
 import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
+import { cpSync, readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { writePreviews } from "./previews.mjs";
@@ -48,8 +49,12 @@ const sourcesPath = join(skill, "sources.json");
 const sources = JSON.parse(readFileSync(sourcesPath, "utf8"));
 const compDir = join(out, "components");
 const libDir = join(compDir, "lib");
-const before = hashes(compDir);
+const before = hashes(out);
 mkdirSync(libDir, { recursive: true });
+
+// 0. The hand-written copy (READMEs, the cover card), kept in the skill's
+// `project/` folder at the paths the artifact uses.
+cpSync(join(skill, "project"), out, { recursive: true });
 
 const common = {
   bundle: true,
@@ -226,26 +231,22 @@ console.log(`built ${names.length} components and ${previews} previews with Reac
 
 // 5. tokens.json, for the checked-out commit: `meta.ref` and `meta.synced` are
 // its short sha and its date, so two builds of one commit give the same file.
-// `meta.components` is kept from the tokens.json read from the artifact.
+// `meta.components` is kept from the tokens.json read from the artifact, if
+// any (check.mjs fails on a component it lacks).
 const tokensPath = join(out, "tokens.json");
 const git = (...a) => execFileSync("git", a, { cwd: repo, encoding: "utf8" }).trim();
 const previous = existsSync(tokensPath) ? JSON.parse(readFileSync(tokensPath, "utf8")) : {};
-if (!previous.meta?.components) throw new Error(`${tokensPath} holds no meta.components: read it from the artifact first`);
 const tokens = await generateTokens({
   ref: `main@${git("rev-parse", "--short=7", "HEAD")}`,
   synced: git("log", "-1", "--format=%cs", "HEAD"),
-  components: previous.meta.components,
+  components: previous.meta?.components,
 });
 writeFileSync(tokensPath, JSON.stringify(tokens, null, 2) + "\n");
 
-// The build's share of the publish: tokens.json, and what it added or changed
-// under components/.
-const after = hashes(compDir);
-const publish = [
-  "project/tokens.json",
-  ...Object.keys(after)
-    .filter((f) => before[f] !== after[f])
-    .sort()
-    .map((f) => `project/components/${f}${f in before ? "" : " (new)"}`),
-];
-console.log(`publish:\n  ${publish.join("\n  ")}`);
+// The build's share of the publish: what it added or changed.
+const after = hashes(out);
+const publish = Object.keys(after)
+  .filter((f) => before[f] !== after[f])
+  .sort()
+  .map((f) => `project/${f}${f in before ? "" : " (new)"}`);
+console.log(publish.length ? `publish:\n  ${publish.join("\n  ")}` : "publish: nothing (the build changed no file)");
