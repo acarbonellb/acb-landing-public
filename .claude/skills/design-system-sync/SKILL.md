@@ -7,7 +7,7 @@ description: Re-sync the site's Design System artifact on claude.ai from this re
 
 The Design System artifact (its URL is `artifact` in [`sources.json`](sources.json)) is a **derived copy** of this repo: tokens, fonts, the site icon, and the site's real components compiled for React 19 with live previews and the real data. The repo is the source of truth; the artifact changes only by a re-sync from a commit on `main`.
 
-`sources.json` lists every repo file the artifact is built from, by part: `tokens` (`globals.css`, `layout.tsx`), `assets`, `mirrored` (`page.tsx`, which `scripts/entry.tsx` copies by hand as `Page`), `content` (the copy and eval results the previews show: they change no design), `bundle` (every other file the component bundle reads, written by the build) and `skill` (this skill's scripts that shape the bundle and the cards).
+`sources.json` lists every repo file the artifact is built from, by part: `tokens` (`globals.css`, `layout.tsx`), `assets`, `content` (the copy and eval results the previews show: they change no design), `bundle` (every other file the component bundle reads, written by the build; it includes `home-page.tsx`, the component `page.tsx` renders and the bundle exports as `Page`) and `skill` (this skill's scripts that shape the bundle and the cards).
 
 ## Steps
 
@@ -16,8 +16,7 @@ The Design System artifact (its URL is `artifact` in [`sources.json`](sources.js
 3. **Read before you write.** First `read` the artifact URL with no `path`: the publish is refused until that read has seen the live version, and a read by `path` doesn't count. Then `read` the type's `SKILL.md` (file shapes, the publish call, the index rules), `project/design-system.json`, `project/tokens.json` and every `project/components/` file a `scope: "files"` listing shows, in one call with `paths`. They land under one folder in your scratchpad: that folder's `project/` is the `<project dir>` below. Done when it holds every `project/components/` file of the listing: `build.mjs` lists what to publish against them, and `check.mjs` reads the READMEs.
 4. **Redo each stale part**:
    - **tokens**: `node .claude/skills/design-system-sync/scripts/sync-tokens.mjs <project dir>` updates colour values in place. A colour it reports as added gets a usage note from the code that uses it; one reported as gone is removed only with the user's go-ahead. Type, spacing, radius and shadow changes from `layout.tsx` or `globals.css` go into `tokens.json` by hand, exact values.
-   - **mirrored**: make `Page` in `scripts/entry.tsx` compose the page exactly as the new `src/app/page.tsx` does.
-   - **bundle** (and after **tokens** or **mirrored**): `node .claude/skills/design-system-sync/scripts/build.mjs <project dir>`. If it fails because the bundle reads a file `sources.json` doesn't list, rerun with `--update-sources`; the changed `sources.json` goes in a PR.
+   - **bundle** (and after **tokens**): `node .claude/skills/design-system-sync/scripts/build.mjs <project dir>`. If it fails because the bundle reads a file `sources.json` doesn't list, rerun with `--update-sources`; the changed `sources.json` goes in a PR.
    - **assets**: upload a changed icon as an asset and update its record in the index; copy a changed font file to `fonts/`.
    - **a component added or removed**: its entry in `components` in `scripts/entry.tsx`, its card in `scripts/previews.mjs`, its `README.md`, its props in `components/index.d.ts` and its source in `tokens.json` `meta.components`, all in step.
    Done when every stale part is rebuilt.

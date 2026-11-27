@@ -16,7 +16,7 @@ try {
   if (typeof file === "string") {
     const path = relative(repo, isAbsolute(file) ? file : join(input.cwd ?? repo, file));
     const sources = JSON.parse(readFileSync(join(skill, "sources.json"), "utf8"));
-    const part = ["tokens", "assets", "mirrored", "bundle", "skill"].find((k) => sources[k]?.includes(path));
+    const part = ["tokens", "assets", "bundle", "skill"].find((k) => sources[k]?.includes(path));
     const marker = join(tmpdir(), `design-system-sync-${String(input.session_id).replace(/\W/g, "")}`);
     if (part && !existsSync(marker)) {
       writeFileSync(marker, path);
